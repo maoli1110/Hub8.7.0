@@ -23,23 +23,33 @@ export default new Router({
                 },
                 {
                     path: '/rootManage',
-                    component: resolve => require(['../components/page/VueTable.vue'], resolve)     // vue-datasource组件
+                    component: resolve => require(['../components/page/rootManage/rootManage.vue'], resolve),
+                     children:[
+                        {
+                            path: '/stuffManage',
+                            component: resolve => require(['../components/page/rootManage/explorer.vue'], resolve),
+                        },
+                        {
+                            path: '/roleMeasure',
+                            component: resolve => require(['../components/page/rootManage/qualityMeasure.vue'], resolve),
+                        }
+                    ]
                 },
                 {
                     path: '/bimStore',
                     component: resolve => require(['../components/page/VueTable.vue'], resolve)     // vue-datasource组件
                 },
                 {
-                    path: '/explorer',
-                    component: resolve => require(['../components/setting/setting.vue'], resolve),
+                    path: '/setting',
+                    component: resolve => require(['../components/page/setting/setting.vue'], resolve),
                     children:[
                         {
                             path: '/explorer',
-                            component: resolve => require(['../components/setting/explorer.vue'], resolve),
+                            component: resolve => require(['../components/page/setting/explorer.vue'], resolve),
                         },
                         {
                             path: '/qualityMeasure',
-                            component: resolve => require(['../components/setting/qualityMeasure.vue'], resolve),
+                            component: resolve => require(['../components/page/setting/qualityMeasure.vue'], resolve),
                         }
                     ]
                 }
