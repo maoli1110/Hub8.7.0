@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-sidebar v-bind:prop="navMenuData"></v-sidebar>
+    <v-sidebar v-bind:navMenuProp="navMenuData"></v-sidebar>
     <div class="content">
         <div class="table">
             <div class="crumbs">
@@ -46,24 +46,7 @@
                 url1:'static/navmenu.json',
                 tableData: [],
                 cur_page: 1,
-                // navMenuData: [
-                //     {
-                //         icon: 'el-icon-setting',
-                //         index: '',
-                //         title: '自述6556'
-                //     },
-                //     {
-                //         icon: 'el-icon-star-on',
-                //         index: '',
-                //         title: '图表'
-                //     },
-                //     {
-                //         icon: 'el-icon-upload2',
-                //         index: '',
-                //         title: '拖拽'
-                //     }
-                // ],
-                navMenuData:[]
+                navMenuData:[] //左侧导航数据
             }
         },
         created(){
@@ -83,7 +66,7 @@
                     self.tableData = res.data.list;
                 });
                 self.$axios.get(self.url1).then((res) => {
-                    self.navMenuData = res.data;
+                    self.navMenuData = res.data.company;
                 });
             },
             formatter(row, column) {

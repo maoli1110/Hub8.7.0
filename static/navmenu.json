@@ -1,17 +1,17 @@
- [
-    {
+{
+    "settings": [{
         "icon": "el-icon-setting",
         "index": "",
-        "title": "自述6556"
+        "title": "市政"
+    }],
+    "company":[{
+        "icon": "el-icon-setting",
+        "index": "",
+        "title": "组织结构"
     },
     {
         "icon": "el-icon-star-on",
         "index": "",
-        "title": "图表"
-    },
-    {
-        "icon": "el-icon-upload2",
-        "index": "",
-        "title": "拖拽"
-    }
-]
+        "title": "空间使用"
+    }]
+}

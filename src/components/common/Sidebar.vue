@@ -2,7 +2,7 @@
     <div class="sidebar">
     <!-- <div>{{prop}}</div> -->
         <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" unique-opened router>
-            <template v-for="item in prop">
+            <template v-for="item in navMenuProp">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index">
                         <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template>
@@ -27,7 +27,7 @@
                
             }
         },
-        props:['prop'],
+        props:['navMenuProp'],
         computed:{
             onRoutes(){
                 return this.$route.path.replace('/','');
