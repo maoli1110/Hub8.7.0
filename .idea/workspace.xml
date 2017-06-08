@@ -43,10 +43,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="explorer.vue" pinned="false" current-in-tab="false">
+          <file leaf-file-name="explorer.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/explorer.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="26.483871">
+                <state vertical-scroll-proportion="-0.17046818">
                   <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                   <folding />
                 </state>
@@ -56,17 +56,17 @@
           <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.0">
-                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                <state vertical-scroll-proportion="-2.419355">
+                  <caret line="6" column="62" selection-start-line="6" selection-start-column="62" selection-end-line="6" selection-end-column="62" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="setting.vue" pinned="false" current-in-tab="true">
+          <file leaf-file-name="setting.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/setting.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.06002401">
+                <state vertical-scroll-proportion="-0.8064516">
                   <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
                   <folding />
                 </state>
@@ -146,6 +146,7 @@
         <option value="$PROJECT_DIR$/src/components/common/Home.vue" />
         <option value="$PROJECT_DIR$/src/components/setting/setting.vue" />
         <option value="$PROJECT_DIR$/src/components/page/setting/setting.vue" />
+        <option value="$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue" />
       </list>
     </option>
   </component>
@@ -502,26 +503,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/explorer.vue">
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/setting.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="26.483871">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.8064516">
+          <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="-2.419355">
+          <caret line="6" column="62" selection-start-line="6" selection-start-column="62" selection-end-line="6" selection-end-column="62" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/setting.vue">
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/explorer.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06002401">
-          <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
+        <state vertical-scroll-proportion="-0.17046818">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
