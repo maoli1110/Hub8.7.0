@@ -13,13 +13,9 @@
     </div>
 </template>
 <script>
-//    import vSider from "./siderBar.vue";
     import "../../../static/css/setting-qualityMeasure.css"
     import "../../../static/css/setting-explorer.css"
-
     import vSidebar from '../../common/Sidebar.vue';
-    // import "../../../static/css/setting-qualityMeasure.css"
-    // import "../../../static/css/setting-explorer.css"
     export default{
         data(){
             return {
