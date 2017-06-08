@@ -19,7 +19,7 @@ export default new Router({
                 },
                 {
                     path: '/compangyProfile',
-                    component: resolve => require(['../components/page/BaseTable.vue'], resolve)
+                    component: resolve => require(['../components/page/compangyProfile.vue'], resolve)
                 },
                 {
                     path: '/rootManage',
