@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-sidebar></v-sidebar>
+    <v-sidebar v-bind:prop="navMenuData"></v-sidebar>
     <div class="content">
         <div class="table">
             <div class="crumbs">
@@ -38,13 +38,32 @@
 </template>
 
 <script>
-    import vSidebar from '../../common/Sidebar.vue';
+    import vSidebar from 'components/common/Sidebar.vue';
     export default {
         data() {
             return {
-                url: '../../../../static/vuetable.json',
+                url: 'static/vuetable.json',
+                url1:'static/navmenu.json',
                 tableData: [],
-                cur_page: 1
+                cur_page: 1,
+                // navMenuData: [
+                //     {
+                //         icon: 'el-icon-setting',
+                //         index: '',
+                //         title: '自述6556'
+                //     },
+                //     {
+                //         icon: 'el-icon-star-on',
+                //         index: '',
+                //         title: '图表'
+                //     },
+                //     {
+                //         icon: 'el-icon-upload2',
+                //         index: '',
+                //         title: '拖拽'
+                //     }
+                // ],
+                navMenuData:[]
             }
         },
         created(){
@@ -62,7 +81,10 @@
                 };
                 self.$axios.post(self.url, {page:self.cur_page}).then((res) => {
                     self.tableData = res.data.list;
-                })
+                });
+                self.$axios.get(self.url1).then((res) => {
+                    self.navMenuData = res.data;
+                });
             },
             formatter(row, column) {
                 return row.address;

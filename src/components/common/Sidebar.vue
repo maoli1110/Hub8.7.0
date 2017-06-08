@@ -1,7 +1,8 @@
 <template>
     <div class="sidebar">
+    <!-- <div>{{prop}}</div> -->
         <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" unique-opened router>
-            <template v-for="item in items">
+            <template v-for="item in prop">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index">
                         <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template>
@@ -23,25 +24,10 @@
     export default {
         data() {
             return {
-                items: [
-                    {
-                        icon: 'el-icon-setting',
-                        index: '',
-                        title: '自述'
-                    },
-                    {
-                        icon: 'el-icon-star-on',
-                        index: '',
-                        title: '图表'
-                    },
-                    {
-                        icon: 'el-icon-upload2',
-                        index: '',
-                        title: '拖拽'
-                    }
-                ]
+               
             }
         },
+        props:['prop'],
         computed:{
             onRoutes(){
                 return this.$route.path.replace('/','');
