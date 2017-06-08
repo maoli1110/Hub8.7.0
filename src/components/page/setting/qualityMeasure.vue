@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="search-area">
+    <div v-loading="qualityloading">
+        <div class="search-area"  >
             <el-row>
                 <el-col :span="24">
                     <el-menu  class="el-menu-demo" mode="horizontal" router >
@@ -10,7 +10,7 @@
             </el-row>
             <el-row class="quality-search">
                 <el-col :span="16">
-                    <el-button @click="addnew">添加</el-button>
+                    <el-button >添加</el-button>
                     <el-button>删除</el-button>
                 </el-col >
                 <el-col :span="8">
@@ -33,11 +33,13 @@
             </el-table-column>
             <el-table-column prop="adress" label="备注" :formatter="formatter" sortable>
             </el-table-column>
-            <el-table-column label="操作" width="180">
+            <el-table-column label="操作" width="180" @click.native="addnew">
+
                 <template scope="scope">
-                    <el-icon class="el-icon-edit"></el-icon>
-                    <el-icon class="el-icon-delete2"></el-icon>
-                    <el-icon class="el-icon-document"></el-icon>
+                    <!--<el-button @click="dialogVisible = true">del</el-button>-->
+                    <el-icon class="el-icon-edit" @click.native="dialogFormVisible = true"></el-icon>
+                    <el-icon class="el-icon-delete2" @click.native="open2(scope.$index,scope.row)"></el-icon>
+                    <el-icon class="el-icon-document" @click.native="dialogFormVisible = true"></el-icon>
                 </template>
             </el-table-column>
         </el-table>
@@ -52,6 +54,23 @@
                 :total="400">
             </el-pagination>
         </div>
+        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+            <el-form >
+                <el-form-item label="活动名称" >
+                    <el-input v-model="tableData.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="活动区域" >
+                    <el-select v-model="tableData.date" placeholder="请选择活动区域">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -62,7 +81,9 @@
                 url: '../../../static/vuetable.json',
                 tableData: [],
                 cur_page: 1,
-                menusData:[{name:"流程设置",routerDump:'explorer'},{name:'工程模板',routerDump:'qualityMeasure'},{name:'表单管理',routerDump:'qualityMeasure'}]
+                menusData:[{name:"流程设置",routerDump:'explorer'},{name:'工程模板',routerDump:'qualityMeasure'},{name:'表单管理',routerDump:'qualityMeasure'}],
+                dialogFormVisible: false,
+                qualityloading:false
             }
         },
         created(){
@@ -99,8 +120,38 @@
                 this.$message.error('删除第'+(index+1)+'行');
             },
             //新增页面
-            addnew(){
-                console.info('')
+            open2(index) {
+                this.qualityloading = true;
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.qualityloading = true;
+                 /*   let para = { ids: ids };
+                    batchRemoveUser(para).then((res) => {
+                        this.listLoading = false;
+                        //NProgress.done();
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });*/
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                        this.data();
+                }).catch(() => {
+
+                });
+            },
+            //模态框
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                    done();
+            })
+            .catch(_ => {});
             }
         },
     }
