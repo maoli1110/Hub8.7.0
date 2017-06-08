@@ -1,8 +1,10 @@
 <template>
     <div>
         <!--<v-sider></v-sider>-->
-        <div class="explorer-content">
-            <el-menu :default-active="explorer" class="el-menu-demo" mode="horizontal" router >
+        <v-sidebar></v-sidebar>
+        <div class="content">
+            <el-menu  class="el-menu-demo" mode="horizontal" router >
+
                 <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
             </el-menu>
             <router-view></router-view>
@@ -14,6 +16,10 @@
 //    import vSider from "./siderBar.vue";
     import "../../../static/css/setting-qualityMeasure.css"
     import "../../../static/css/setting-explorer.css"
+
+    import vSidebar from '../../common/Sidebar.vue';
+    // import "../../../static/css/setting-qualityMeasure.css"
+    // import "../../../static/css/setting-explorer.css"
     export default{
         data(){
             return {
@@ -21,7 +27,7 @@
             }
         },
         components:{
-//            vSider,
+            vSidebar,
         }
     }
 </script>
