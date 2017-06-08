@@ -2,7 +2,6 @@
     <div class="wrapper">
         <v-head></v-head>
         <v-navmenu></v-navmenu>
-        <v-sidebar></v-sidebar>
         <div>
             <transition name="move" mode="out-in"><router-view></router-view></transition>
         </div>
