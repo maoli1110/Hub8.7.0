@@ -2,7 +2,7 @@
     <div class="wrapper">
         <v-head></v-head>
         <v-navmenu></v-navmenu>
-        <v-sidebar></v-sidebar>
+        <!--<v-sidebar></v-sidebar>-->
         <div class="content">
             <transition name="move" mode="out-in"><router-view></router-view></transition>
         </div>
@@ -15,7 +15,12 @@
     import vSidebar from './Sidebar.vue';
     export default {
         components:{
-            vHead, vSidebar,vNavmenu
+            vHead,vNavmenu
         }
     }
 </script>
+<style>
+    .content{
+        left:0
+    }
+</style>

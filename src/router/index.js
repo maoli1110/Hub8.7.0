@@ -31,7 +31,17 @@ export default new Router({
                 },
                 {
                     path: '/settings',
-                    component: resolve => require(['../components/page/BaseForm.vue'], resolve)
+                    component: resolve => require(['../components/setting/setting.vue'], resolve),
+                    children:[
+                        {
+                            path: '/explorer',
+                            component: resolve => require(['../components/setting/explorer.vue'], resolve),
+                        },
+                        {
+                            path: '/qualityMeasure',
+                            component: resolve => require(['../components/setting/qualityMeasure.vue'], resolve),
+                        }
+                    ]
                 }
             ]
         },

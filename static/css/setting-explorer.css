@@ -1,0 +1,6 @@
+.explorer-content{
+  margin-left:250px !important;
+}
+.el-table-column--selection .cell{
+    padding-left:0;
+}
