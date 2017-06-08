@@ -3,7 +3,7 @@
         <v-head></v-head>
         <v-navmenu></v-navmenu>
         <!--<v-sidebar></v-sidebar>-->
-        <div class="content">
+        <div>
             <transition name="move" mode="out-in"><router-view></router-view></transition>
         </div>
     </div>
@@ -19,8 +19,3 @@
         }
     }
 </script>
-<style>
-    .content{
-        left:0
-    }
-</style>
