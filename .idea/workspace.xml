@@ -20,7 +20,7 @@
     <favorites_list name="eds_sz" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5265511">
+    <splitter split-orientation="horizontal" split-proportion="0.77138066">
       <split-first>
         <leaf>
           <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
@@ -46,8 +46,8 @@
           <file leaf-file-name="explorer.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/setting/explorer.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.27173913">
-                  <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
+                <state vertical-scroll-proportion="-9.23913">
+                  <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
                   <folding>
                     <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -56,11 +56,21 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="Sidebar.vue" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/components/common/Sidebar.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.30012006">
+                  <caret line="10" column="27" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="setting.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/setting/setting.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-3.2258065">
-                  <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+                <state vertical-scroll-proportion="-9.67742">
+                  <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
                   <folding />
                 </state>
               </provider>
@@ -69,18 +79,8 @@
           <file leaf-file-name="setting-explorer.css" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/static/css/setting-explorer.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.0">
-                  <caret line="0" column="1" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="17" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="App.vue" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/App.vue">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.8064516">
-                  <caret line="2" column="35" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="35" />
+                <state vertical-scroll-proportion="-2.8225806">
+                  <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -89,8 +89,8 @@
           <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/setting/qualityMeasure.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-2.419355">
-                  <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+                <state vertical-scroll-proportion="-2.016129">
+                  <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
@@ -109,17 +109,17 @@
           <file leaf-file-name="Home.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/common/Home.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.0">
-                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+                <state vertical-scroll-proportion="-5.645161">
+                  <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Navmenu.vue" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Navmenu.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/common/Navmenu.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.15006003">
+                <state vertical-scroll-proportion="-2.016129">
                   <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
                   <folding />
                 </state>
@@ -160,14 +160,14 @@
       <list>
         <option value="$PROJECT_DIR$/src/components/setting/siderBar.vue" />
         <option value="$PROJECT_DIR$/static/css/setting-qualityMeasure.css" />
-        <option value="$PROJECT_DIR$/static/css/setting-explorer.css" />
         <option value="$PROJECT_DIR$/src/components/setting/navBar.vue" />
-        <option value="$PROJECT_DIR$/src/components/setting/qualityMeasure.vue" />
-        <option value="$PROJECT_DIR$/src/components/setting/setting.vue" />
-        <option value="$PROJECT_DIR$/src/components/setting/explorer.vue" />
-        <option value="$PROJECT_DIR$/src/components/common/Home.vue" />
         <option value="$PROJECT_DIR$/src/router/index.js" />
         <option value="$PROJECT_DIR$/src/components/common/Navmenu.vue" />
+        <option value="$PROJECT_DIR$/src/components/setting/qualityMeasure.vue" />
+        <option value="$PROJECT_DIR$/src/components/setting/explorer.vue" />
+        <option value="$PROJECT_DIR$/static/css/setting-explorer.css" />
+        <option value="$PROJECT_DIR$/src/components/common/Home.vue" />
+        <option value="$PROJECT_DIR$/src/components/setting/setting.vue" />
       </list>
     </option>
   </component>
@@ -401,7 +401,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.057428874" sideWeight="0.5" order="-1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24288724" sideWeight="0.5" order="-1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -426,14 +426,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.61308414">
           <caret line="0" column="34847" selection-start-line="0" selection-start-column="34847" selection-end-line="0" selection-end-column="34847" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/common/Sidebar.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -478,49 +470,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/setting/qualityMeasure.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.419355">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/setting-explorer.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="1" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/setting/explorer.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.27173913">
-          <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
-          <folding>
-            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/setting/setting.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.2258065">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/common/Home.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/router/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.267858">
@@ -531,8 +480,59 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/common/Navmenu.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15006003">
+        <state vertical-scroll-proportion="-2.016129">
           <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/setting/qualityMeasure.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.016129">
+          <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/setting-explorer.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.8225806">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/setting/explorer.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.23913">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/setting/setting.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.67742">
+          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/common/Home.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.645161">
+          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/common/Sidebar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30012006">
+          <caret line="10" column="27" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
           <folding />
         </state>
       </provider>
