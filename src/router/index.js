@@ -10,16 +10,12 @@ export default new Router({
             redirect: '/login'
         },
         {
-            path: '/readme',
+            path: '/companyProfile',
             component: resolve => require(['../components/common/Home.vue'], resolve),
             children:[
                 {
-                    path: '/',
-                    component: resolve => require(['../components/page/Readme.vue'], resolve)
-                },
-                {
-                    path: '/compangyProfile',
-                    component: resolve => require(['../components/page/compangyProfile.vue'], resolve)
+                    path: '/companyProfile',
+                    component: resolve => require(['../components/page/companyProfile/companyProfile.vue'], resolve)
                 },
                 {
                     path: '/rootManage',
@@ -31,13 +27,13 @@ export default new Router({
                         },
                         {
                             path: '/roleMeasure',
-                            component: resolve => require(['../components/page/rootManage/qualityMeasure.vue'], resolve),
+                            component: resolve => require(['../components/page/rootManage/qualityMeasure.vue'], resolve)
                         }
                     ]
                 },
                 {
                     path: '/bimStore',
-                    component: resolve => require(['../components/page/VueTable.vue'], resolve)     // vue-datasource组件
+                    component: resolve => require(['../components/page/companyProfile/companyProfile.vue'], resolve)
                 },
                 {
                     path: '/setting',
@@ -49,7 +45,7 @@ export default new Router({
                         },
                         {
                             path: '/qualityMeasure',
-                            component: resolve => require(['../components/page/setting/qualityMeasure.vue'], resolve),
+                            component: resolve => require(['../components/page/setting/qualityMeasure.vue'], resolve)
                         }
                     ]
                 }

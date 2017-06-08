@@ -38,11 +38,11 @@
 </template>
 
 <script>
-    import vSidebar from '../common/Sidebar.vue';
+    import vSidebar from '../../common/Sidebar.vue';
     export default {
         data() {
             return {
-                url: '../../../static/vuetable.json',
+                url: '../../../../static/vuetable.json',
                 tableData: [],
                 cur_page: 1
             }
