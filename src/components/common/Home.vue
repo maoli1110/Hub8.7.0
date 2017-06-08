@@ -15,7 +15,7 @@
      import vSidebar from './Sidebar.vue';
     export default {
         components:{
-            vHead,vNavmenu
+            vHead,vNavmenu,vSidebar
         }
     }
 </script>

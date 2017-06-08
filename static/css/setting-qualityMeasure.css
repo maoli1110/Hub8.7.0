@@ -1,22 +1,20 @@
-/*.sidebar{
-    display: block;
-    position: absolute;
-    width: 250px;
-    left: 0;
-    top: 128px;
-    bottom:0;
-    background: #2E363F;
+
+.content .quality-search{
+    margin:10px;
 }
-.sidebar > ul {
-    height:100%;
+.content .el-pagination__total{
+    float:left;
 }
-.sidebar[data-v-1d68ccf6]{
-    top:0 !important;
-    left:0 !important;
+.content .el-input{
+    width:80%
 }
 .content{
-    left:0;
-    padding:0 !important;
-    margin:0 !important;
+    padding: 0 !important ;
 }
-*/
+.content .el-table_1_column_1,td[class^=el-table_1_column]{
+    padding:0 6px !important;
+}
+
+.content .el-table_1_column_2{
+    padding:0 !important;text-align:left;
+}

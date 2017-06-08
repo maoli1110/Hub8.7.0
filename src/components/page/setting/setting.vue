@@ -4,7 +4,6 @@
         <v-sidebar></v-sidebar>
         <div class="content">
             <el-menu  class="el-menu-demo" mode="horizontal" router >
-
                 <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
             </el-menu>
             <router-view></router-view>
@@ -27,3 +26,4 @@
         }
     }
 </script>
+

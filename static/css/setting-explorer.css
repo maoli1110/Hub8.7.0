@@ -7,3 +7,12 @@
 .explorer-content{
 
 }
+.content{
+    padding: 0 !important ;
+}
+.content .el-table_1_column_1,th[class^=el-table_1_column]{
+    padding:0 6px !important;
+}
+.content .el-table_1_column_2{
+    padding:0 !important;text-align:left;
+}
