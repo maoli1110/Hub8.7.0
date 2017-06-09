@@ -18,3 +18,10 @@
 .content .el-table_1_column_2{
     padding:0 !important;text-align:left;
 }
+
+.content .quality-searchTool{
+    float:right;min-width:388px;
+}
+/*.content  .quality-searchTool .quality-searInput{
+    width:40% !important;
+}*/

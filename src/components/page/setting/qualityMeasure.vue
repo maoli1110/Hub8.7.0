@@ -9,13 +9,15 @@
                 </el-col>
             </el-row>
             <el-row class="quality-search">
-                <el-col :span="16">
+                <el-col :span="8">
                     <el-button >添加</el-button>
                     <el-button>删除</el-button>
                 </el-col >
-                <el-col :span="8">
-                    <el-input  placeholder="请输入内容"></el-input>
-                    <el-button type="primary" icon="search">搜索</el-button>
+                <el-col :span="16">
+                    <div clas="quality-searchTool" style="width:45%;float:right">
+                        <el-input  placeholder="请输入内容" class="quality-searInput"></el-input>
+                        <el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>
+                    </div>
                 </el-col>
             </el-row>
         </div>
@@ -121,25 +123,16 @@
             },
             //新增页面
             open2(index) {
-                this.qualityloading = true;
                 this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.qualityloading = true;
-                 /*   let para = { ids: ids };
-                    batchRemoveUser(para).then((res) => {
-                        this.listLoading = false;
-                        //NProgress.done();
-                        this.$message({
-                            message: '删除成功',
-                            type: 'success'
-                        });*/
                         this.$message({
                             message: '删除成功',
                             type: 'success'
                         });
+                        this.tableData.splice(index,1)
                         this.data();
                 }).catch(() => {
 
