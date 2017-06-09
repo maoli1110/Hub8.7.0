@@ -74,11 +74,11 @@
     </div>
 </template>
 <script>
-    import "../../../../static/css/setting-qualityMeasure.css"
+    import "static/css/setting-qualityMeasure.css"
     export default{
         data(){
             return {
-                url: '../../../static/vuetable.json',
+                url: 'static/vuetable.json',
                 tableData: [],
                 cur_page: 1,
                 menusData:[{name:"流程设置",routerDump:'explorer'},{name:'工程模板',routerDump:'qualityMeasure'},{name:'表单管理',routerDump:'qualityMeasure'}],
