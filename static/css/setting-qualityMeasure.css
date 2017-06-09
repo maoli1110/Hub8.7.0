@@ -1,4 +1,9 @@
-
+.content p{
+    font-size:14px;
+}
+.content textarea{
+    resize:none;
+}
 .content .quality-search{
     margin:10px;
 }
@@ -22,6 +27,96 @@
 .content .quality-searchTool{
     float:right;min-width:388px;
 }
-/*.content  .quality-searchTool .quality-searInput{
-    width:40% !important;
+/*BMP(流程设置)*/
+.BMP-process table{
+    width:100%;
+}
+.BMP-process table thead{
+    background:rgb(238, 246, 250);height:40px;line-height:40px;
+}
+
+.BMP-process table th,.BMP-process table td{
+    font-size:14px;text-align:center;height:40px;line-height:40px;border-bottom:1px solid #ddd;
+}
+.BMP-process table td:last-child{
+    text-align:left;
+}
+.BMP-process .table-step{
+    height:calc(100vh - 637px);overflow:auto;border:1px solid #ddd;border-top:none
+}
+.BMP-process .table-step table td{
+    height:40px;line-height:40px;
+}
+.BMP-process .table-step table input{
+    height:30px;
+}
+.content .BMP-info .BMP-serif{
+    border-bottom:1px solid #ddd;margin-top:20px;
+}
+.content .BMP-info,.content .process-set{
+    padding:10px;
+}
+.content .BMP-info .BMP-text,.content .process-set .BMP-text{
+    font-size:14px;padding-bottom:30px;
+}
+
+/*.content .root-name div:nth-child(1){
+    width:100%;height:auto;border:1px solid rgb(238, 246, 250)
 }*/
+.content .root-name div:nth-child(1)>p{
+    height:40px;line-height:40px;background:rgb(238, 246, 246);text-align:center;
+}
+.content .substr{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+.content .root-el{
+    display: inline-block;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    height: 30px;
+    line-height: 30px;
+    padding:5px 10px;
+    margin-right: 10px;
+    width: 107px;
+}
+.content .root-el:hover{
+    background:rgb(238, 246, 246)
+}
+.content .BMP-process .addRoot{
+    padding: 0px 17px;
+    line-height:30px;border-radius:3px;height:30px;
+    border: 1px solid #ddd;font-size:12px;
+    width:60px;float: left;
+   position:relative;margin:5px 5px 5px 0;
+}
+.content .BMP-process  .handle-delete{
+    float: right;
+    line-height: 40px;
+    margin-right: 10px;
+}
+.content .BMP-process .delete-blank{
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    background: #fff;
+}
+.content .addStep{
+    line-height:30px;height:30px;border:1px dashed #ccc;text-align:center;
+}
+.content .BMP-process .rules-box{
+    height: 344px;
+    overflow: auto;border:1px solid #ddd;
+}
+.content .BMP-process .BMP-btns{
+    padding: 10px 10px;
+    text-align: center;
+}
+.content  .quality-searchTool .quality-searInput{
+    width:30% !important;
+    position: absolute;
+    top: -23px;
+    right: 0px;
+}
