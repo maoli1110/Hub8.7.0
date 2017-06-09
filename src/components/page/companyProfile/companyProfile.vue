@@ -39,11 +39,13 @@
 
 <script>
     import vSidebar from 'components/common/Sidebar.vue';
+    import { getNavMenu, getTestApi, postTestApi} from 'src/api/getData.js'
     export default {
         data() {
             return {
-                url: 'static/vuetable.json',
-                url1:'static/navmenu.json',
+                apiUrl: 'static/vuetable.json',
+                apiUrl1:'static/navmenu.json',
+                //apiUrl:'rs/testApi', 正式上线的地址
                 tableData: [],
                 cur_page: 1,
                 navMenuData:[] //左侧导航数据
@@ -51,6 +53,13 @@
         },
         created(){
             this.getData();
+            var host = window.location.host;
+            console.log(host)
+           
+        },
+        mounted(){
+            debugger
+             console.log($(".sidebar").attr('id'));
         },
         methods: {
             handleCurrentChange(val){
@@ -59,15 +68,14 @@
             },
             getData(){
                 let self = this;
-                if(process.env.NODE_ENV === 'development'){
-                    self.url = '/ms/table/list';
-                };
-                self.$axios.post(self.url, {page:self.cur_page}).then((res) => {
-                    self.tableData = res.data.list;
-                });
-                self.$axios.get(self.url1).then((res) => {
+                //获取左侧导航数据
+                getNavMenu(self).then((res) => {
                     self.navMenuData = res.data.company;
-                });
+                })
+                //post接口测试案例
+                postTestApi(self,{page:1}).then((res) => {
+                   console.log(res.data)
+                })
             },
             formatter(row, column) {
                 return row.address;
