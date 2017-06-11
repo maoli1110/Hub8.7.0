@@ -46,6 +46,14 @@ export default new Router({
                         {
                             path: '/qualityMeasure',
                             component: resolve => require(['../components/page/setting/qualityMeasure.vue'], resolve)
+                        },
+                        {
+                            path: '/proTemplate',
+                            component: resolve => require(['../components/page/setting/proTemplate.vue'], resolve)
+                        },
+                        {
+                            path: '/formManage',
+                            component: resolve => require(['../components/page/setting/formManage.vue'], resolve)
                         }
                     ]
                 }

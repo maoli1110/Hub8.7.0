@@ -120,3 +120,35 @@
     top: -23px;
     right: 0px;
 }
+/*关联模型link-model*/
+ .link-model .el-dialog__header{
+   padding:20px !important;
+}
+ .link-model .el-dialog__body{
+     padding-top:0 !important;
+ }
+ .link-model  .link-model-body>div:nth-child(1){
+     border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:10px 0 !important;
+ }
+.link-model .link-table{
+    margin-top:20px;
+}
+.link-model .dialog-footer{
+    text-align:center;
+}
+/*表单变更*/
+.form-change .dialog-changeForm{
+    height:400px;border:1px solid #ddd;padding:0 10px;
+}
+.form-change .dialog-changeForm>.priview-le{
+    line-height:40px;border-bottom:1px solid #ddd;position:relative
+}
+.form-change .dialog-changeForm>.priview-le>div{
+    display:inline-block;
+}
+.form-change .dialog-changeForm>.priview-le .el-icon-search{
+    position:absolute;right:0;top:13px;
+}
+.form-change .dialog-changeForm>.priview-le:last-child{
+    border:none;
+}

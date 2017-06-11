@@ -27,10 +27,10 @@
         },
         methods: {
             getData(){
-                let self = this;
+              /*  let self = this;
                 self.$axios.get(self.url1).then((res) => {
                     self.navMenuData = res.data.settings;
-                });
+                });*/
             }
         },
         components: {

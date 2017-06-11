@@ -1,20 +1,28 @@
 <template>
     <div>
+        <el-row>
+            <el-col :span="24">
+                <el-menu  class="el-menu-demo" mode="horizontal" router >
+                    <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+                </el-menu>
+            </el-col>
+        </el-row>
         <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
-            <el-table-column width="35" type="selection">
+            <el-table-column width="30" type="selection">
             </el-table-column>
-            <el-table-column label="序号" width="110" type="index">
+            <el-table-column label="序号" width="120" type="index">
             </el-table-column>
-            <el-table-column prop="name" label="名称" width="120" sortable>
+            <el-table-column prop="name" label="名称" sortable>
             </el-table-column>
-            <el-table-column prop="date" label="更新时间" sortable>
+            <el-table-column prop="date" label="更新时间"  sortable>
             </el-table-column>
-            <el-table-column prop="name" label="更新人" :formatter="formatter" sortable>
+            <el-table-column prop="name" label="更新人" sortable>
             </el-table-column>
-            <el-table-column label="操作" width="180">
+            <el-table-column label="操作" width="180" @click.native="addnew">
+
                 <template scope="scope">
-                    <el-icon class="el-icon-edit"></el-icon>
-                    <el-icon class="el-icon-delete2"></el-icon>
+                    <!--<el-button @click="dialogVisible = true">del</el-button>-->
+                    <el-icon class="el-icon-edit" @click.native="dialogFormVisible = true"></el-icon>
                 </template>
             </el-table-column>
         </el-table>
@@ -39,8 +47,16 @@
                 url: '../../../static/vuetable.json',
                 tableData: [],
                 cur_page: 1,
-                menusData:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
-
+                menusData:[{name:"流程设置",routerDump:'qualityMeasure'},{name:'工程模板',routerDump:'proTemplate'},{name:'表单管理',routerDump:'formManage'}],
+                tableData: [{
+                    "date": "1997-11-11",
+                    "name": "林丽",
+                    "address": "吉林省 辽源市 龙山区"
+                }, {
+                    "date": "1987-09-24",
+                    "name": "文敏",
+                    "address": "江西省 萍乡市 芦溪县"
+                }],
             }
         },
         components:{
