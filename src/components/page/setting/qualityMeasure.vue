@@ -101,17 +101,19 @@
                                         <td width="50">{{index+1}}</td>
                                         <td width="120"><el-input placeholder="请输入内容"></el-input></td>
                                         <td width="120">
-                                            <el-select value="sfd" placeholder="请选择">
+                                            <el-select value="全部" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
                                        <!--     <el-option
                                                 v-for="item in options"
                                                 :key="item.value"
                                                 :label="item.label"
                                                 :value="item.value">
                                             </el-option>-->
-                                                <el-option :value="123">123</el-option>
+                                                <el-option :value="0">全部</el-option>
+                                                <el-option :value="1">随意</el-option>
                                         </el-select>
                                         </td>
                                         <td >
+                                            <span v-if="rootInfo.addRolesLine.length<1" style="color:gray">点击右侧角色进行添加</span>
                                             <span class="addRoot substr" v-for="(lines,index) in rootInfo.addRolesLine" :title="lines">{{lines}}&nbsp;&nbsp;<el-icon class="el-icon-close delete-blank" @click.native="closeSelf(index)"></el-icon></span>
                                             <!--<span class="addRoot">董事长&nbsp;&nbsp;<el-icon class="el-icon-close"></el-icon></span>-->
                                         </td>
@@ -173,12 +175,12 @@
 
                 menusData:[{name:"流程设置",routerDump:'explorer'},{name:'工程模板',routerDump:'qualityMeasure'},{name:'表单管理',routerDump:'qualityMeasure'}],
                 rootInfo:[
-                    {addRolesLine:[]},
-                    {addRolesLine:[]},
-                    {addRolesLine:[]},
-                    {addRolesLine:[]},
-                    {addRolesLine:[]},
-                    {addRolesLine:[]}
+                    {addRolesLine:[], isStepDisable:false},
+                    {addRolesLine:[],isStepDisable:false},
+                    {addRolesLine:[],isStepDisable:false},
+                    {addRolesLine:[],isStepDisable:false},
+                    {addRolesLine:[],isStepDisable:false},
+                    {addRolesLine:[],isStepDisable:false}
                 ],
                 rootList:[
                     "子公司董事长", "分公司经理", "分公司技术主管","项目经理"," 项目技术主管"," 总工","施工员","经营科"," 项目管理科","办公室",
@@ -188,7 +190,8 @@
                 dialogFormVisible: false,
                 qualityloading:false,
                 isBMP:false,
-                elementIndex:''
+                elementIndex:'',
+//                isStepDisable:false
             }
         },
         created(){
@@ -272,6 +275,13 @@
             },
             //添加角色
             addRoles(index){
+                for(let i = 0;i<this.rootInfo.length;i++){
+                    if(this.rootInfo[i].addRolesLine.length<1){
+                        this.rootInfo[i].isStepDisable = false;
+                    }else{
+                        this. rootInfo[i].isStepDisable = true;
+                    }
+                }
                 if(this.rootInfo[indexTable].addRolesLine.indexOf(this.rootList[index]) ==-1 && this.rootInfo[indexTable].addRolesLine.length<15 && isChange){
                     this.rootInfo[indexTable].addRolesLine.push(this.rootList[index])
                 }
@@ -279,10 +289,12 @@
             },
             //关闭标签
             closeSelf(index){
-                this.addRolesLine.splice(index,1)
+                this.rootInfo[indexTable].addRolesLine.splice(index,1)
             },
             //添加步骤
             addStep(){
+
+
                 if( this.rootInfo.length<15){
                     this.rootInfo.push({addRolesLine:[]})
                 }
