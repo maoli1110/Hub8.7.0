@@ -120,7 +120,31 @@
     top: -23px;
     right: 0px;
 }
+.content .quality-dialog{
+    width: 625px;
+    height: 560px !important;
+    position: absolute;
+    left: 50%;
+    margin-left: -428px;
+    margin-top: -598px;
+    background: #fff;
+    z-index: 9999;
+    border-radius:5px;
+}
+.content .ztree-allCheck{
+    cursor:pointer;
+}
+.content .ztree-allCheck>div{
+    position: absolute;
+    font-size: 14px;
+    margin-left:26px;
+}
+
 /*关联模型link-model*/
+.link-model .el-dialog{
+    width:625px;
+    height:560px;
+}
  .link-model .el-dialog__header{
    padding:20px !important;
 }
@@ -151,4 +175,15 @@
 }
 .form-change .dialog-changeForm>.priview-le:last-child{
     border:none;
+}
+.content .ztree{
+    height: 308px;
+    overflow: auto;
+    padding:25px 20px 20px;
+}
+.content .quality-dialog-header{
+    padding:20px 20px 0;
+}
+.content .quality-dialog-footer{
+    text-align:center;
 }
