@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-menu :default-active="explorer" class="el-menu-demo" mode="horizontal" router >
+        <el-menu :default-active="explorer" class="el-menu-demo nav-bar" mode="horizontal" router >
             <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
         </el-menu>
     </div>
@@ -23,3 +23,8 @@
         }
     }
 </script>
+<style>
+    .nav-bar{
+        background: #648fd4;
+    }
+</style>

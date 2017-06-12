@@ -17,3 +17,8 @@ export const postTestApi = (context,currentPage) => context.$axios.post('eds_sz/
  * 获左侧导航信息
  */
 export const getNavMenu = (context) => context.$axios.get('eds_sz/navMenu/list');
+
+/**
+ * 获取树结构
+ */
+export const getZtreeNode = (context) => context.$axios.get('eds_sz/ztree/list')

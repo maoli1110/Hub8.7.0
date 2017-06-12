@@ -1,6 +1,12 @@
 <template>
     <div class="header">
-        <div class="logo">后台管理系统</div>
+        <div class="logo">
+            <img src="../../../static/img/logo.png" alt="" class="inline pull-left">
+            <div class="pull-left">
+                <div class="enterprise-name">中国公路工程咨询集团有限公司</div>
+                <div class="english-name">CHINA HIGHWAY ENGINEERING CONSULITING CORPORATION</div>
+            </div>
+        </div>
         <div class="user-info">
             <el-dropdown trigger="click" @command="handleCommand">
                 <span class="el-dropdown-link">
@@ -42,14 +48,17 @@
         position: relative;
         box-sizing: border-box;
         width: 100%;
-        height: 70px;
+        height: 90px;
         font-size: 22px;
-        line-height: 70px;
+        /*line-height: 90px;*/
         color: #fff;
+    }
+    .header .logo > * {
+        margin: 15px 10px;
     }
     .header .logo{
         float: left;
-        width:250px;
+        /*width:250px;*/
         text-align: center;
     }
     .user-info {
@@ -76,5 +85,12 @@
     }
     .el-dropdown-menu__item{
         text-align: center;
+    }
+    .enterprise-name{
+        font-size: 28px;
+        font-weight: 400;
+    }
+    .english-name{
+        font-size:14px;
     }
 </style>

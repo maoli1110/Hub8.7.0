@@ -9,11 +9,11 @@ body{
 }
 a{text-decoration: none}
 .content{
-    background: none repeat scroll 0 0 #fff;
+    background: none repeat scroll 0 0 #f5f8fd;
     position: absolute;
-    left: 250px;
+    left: 305px;
     right: 0;
-    top: 128px;
+    top: 150px;
     bottom:0;
     width: auto;
     padding:18px;
@@ -113,3 +113,38 @@ a{text-decoration: none}
 .editor-btn{
     margin-top: 20px;
 }
+/*common*/
+.absol {
+    position: absolute;
+}
+.rela {
+    position: relative;
+}
+.inline {
+    display: inline-block;
+}
+.block {
+    display: block;
+}
+/*rewrite element ui css*/
+.el-menu {
+    /*background-color: #648fd4!important;*/
+}
+.pull-left{
+    float: left;
+}
+.pull-right{
+    float: right;
+}
+/*清除浮动*/
+.clearfix { 
+  *zoom: 1; 
+} 
+.clearfix:before, .clearfix:after { 
+  display: table; 
+  line-height: 0; 
+  content: ""; 
+} 
+.clearfix:after { 
+  clear: both; 
+} 
