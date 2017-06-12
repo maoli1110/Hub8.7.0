@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="qualityloading">
+    <div v-loading="qualityloading" class="quality-page">
         <div class="search-area"  >
             <el-row>
                 <el-col :span="24">
@@ -61,7 +61,7 @@
                     <p class="BMP-text">流程管理>流程设置</p>
                 </el-col>
                 <el-col :span="10">
-                    <span class="BMP-text">流程名称：</span><el-input  placeholder="请输入内容" style="width:40%;height:100px;"></el-input>
+                    <span class="BMP-text">流程名称：</span><el-input  placeholder="请输入内容" v-model="flowName" style="width:40%;height:100px;"></el-input>
                 </el-col>
                 <el-col :span="14" >
                         <span class="BMP-text" style="display:inline-block;vertical-align: top">备注：</span>
@@ -146,7 +146,7 @@
                 <!--link-model-header-->
                 <el-col :span="24" style="padding:20px 0 ;">
                     <el-col :span="14">
-                        <el-button type="primary" @click="dialogLinkVisible=true,dialogFormVisible=false"><el-icon></el-icon>添加关联</el-button>
+                        <el-button type="primary" @click="linkTree=true"><el-icon></el-icon>添加关联</el-button>
                         <el-button type="primary"><el-icon></el-icon>删除关联</el-button>
                     </el-col>
                    <el-col :span="10" style="text-align:right;padding:0;">
@@ -183,91 +183,86 @@
             </div>
         </el-dialog>
         <!--模态框（收起算管理模块）-->
-        <el-dialog title="授权管理模块" :visible.sync="dialogLinkVisible" class="link-model">
-            <el-row class="link-model-body">
-                <!--link-model-header-->
-                <el-col :span="24" style="padding:20px 0;">
-                    <el-col :span="14">
-                        <!-- @click="addDialogLink"-->
-                        <el-button type="primary" @click="dialogLinkVisible = true"><el-icon></el-icon>添加关联</el-button>
-                        <el-button type="primary"><el-icon></el-icon>删除关联</el-button>
-                    </el-col>
-                    <el-col :span="10" style="text-align:right;padding:0;">
-                        <el-input
-                            placeholder="请选择日期"
-                            icon="search"
-                           >
-                        </el-input>
-                    </el-col>
-                </el-col>
-                <el-col :span="24" class="link-table">
-                    <ul class="ztree" id="lineTree"></ul>
-                </el-col>
-            </el-row>
-            <div slot="footer" class="dialog-footer" >
-                <el-button @click="dialogLinkVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogLinkVisible = false">确 定</el-button>
+        <div class="quality-dialog" v-show="linkTree">
+                <div class="quality-dialog-header">
+                    <el-row>
+                        <el-col :span="24" style="padding:0px 0 20px;border-bottom:1px solid #ddd;">
+                            <span style="font-weight:bolder">表单关联</span>
+                            <el-icon class="el-icon-close" style="float:right" @click.native="linkTree=false"></el-icon>
+                        </el-col>
+
+                        <el-col :span="14" style="margin:10px 0 10px;padding-bottom:10px;border-bottom:1px solid #ddd;">
+                            <label for="" style="font-size:14px;">表单目录：</label>
+                            <el-select value="请选择" placeholder="请选择">
+                                <el-option value="">请选择</el-option>
+                                <el-option value="">请选择</el-option>
+                                <el-option value="">请选择</el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="10" style="margin:10px 0 10px;padding-bottom:10px;border-bottom:1px solid #ddd;">
+                            <el-input
+                                placeholder="请选择日期"
+                                icon="search"
+                            >
+                            </el-input>
+                        </el-col>
+
+                    </el-row>
+                </div>
+                <ul class="ztree" id="lineTree"></ul>
+                <div class="quality-dialog-footer">
+                    <el-button type="primary" @click="linkTree=false">确定</el-button>
+                    <el-button type="primary" @click="linkTree=false">取消</el-button>
+                </div>
+                <!--<ul class="ztree" id="lineTree"></ul>-->
             </div>
-        </el-dialog>
     </div>
 </template>
 <script>
     let indexTable = 0;
     let isChange = false;
+    let key;
     import "static/css/setting-qualityMeasure.css";
-    import "static/css/zTreeStyleForApi.css";
-    import "static/js/jquery.ztree.core.js";
-    $(function(){
-
-        var setting = {
-        view: {
-            selectedMulti: false
-        },
-        check: {
-            enable: true
-        },
-        data: {
-            simpleData: {
-                enable: true
-            }
-        },
-        callback: {
-            beforeCheck: beforeCheck,
-            onCheck: onCheck
-        }
-        };
-
-        var zNodes =[
-            { id:1, pId:0, name:"随意勾选 1", open:true},
-            { id:11, pId:1, name:"随意勾选 1-1"},
-            { id:12, pId:1, name:"随意勾选 1-2", open:true},
-            { id:121, pId:12, name:"随意勾选 1-2-1"},
-            { id:122, pId:12, name:"随意勾选 1-2-2"},
-            { id:2, pId:0, name:"禁止勾选 2", open:true, doCheck:false},
-            { id:21, pId:2, name:"禁止勾选 2-1", doCheck:false},
-            { id:22, pId:2, name:"禁止勾选 2-2", checked:true, open:true, doCheck:false},
-            { id:221, pId:22, name:"禁止勾选 2-2-1", doCheck:false},
-            { id:222, pId:22, name:"禁止勾选 2-2-2", checked:true, doCheck:false},
-            { id:23, pId:2, name:"禁止勾选 2-3", doCheck:false}
-        ];
-
-        var code, log, className = "dark";
-        function beforeCheck(treeId, treeNode) {
-            /*	className = (className === "dark" ? "":"dark");
-             showLog("[ "+getTime()+" beforeCheck ]&nbsp;&nbsp;&nbsp;&nbsp;" + treeNode.name );
-             return (treeNode.doCheck !== false);*/
-        }
-        function onCheck(e, treeId, treeNode) {
-    //					showLog("[ "+getTime()+" onCheck ]&nbsp;&nbsp;&nbsp;&nbsp;" + treeNode.name );
-        }
-        $(document).ready(function(){
-            $.fn.zTree.init($("#lineTree"), setting, zNodes)
-        })
-    })
+    import "static/js/ztree/css/zTreeStyle_new.css";
+//    import "static/ztree/css/demo.css";
+    import "static/js/ztree/js/jquery.ztree.core-3.5.js";
+    import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
 
     export default{
             data(){
                 return {
+                    setting : {
+                        view: {
+                            selectedMulti: false,
+                        },
+                        check: {
+                            enable: true
+                        },
+                        data: {
+                            simpleData: {
+                                enable: true
+                            }
+                        },
+                        callback: {
+                            beforeCheck: this.beforeCheck(),
+                            onCheck: this.onCheck()
+                        }
+                    },
+
+                zNodes :[
+                    { id:1, pId:0, name:"随意勾选 1", open:true},
+                    { id:11, pId:1, name:"随意勾选 1-1"},
+                    { id:12, pId:1, name:"随意勾选 1-2", open:true},
+                    { id:121, pId:12, name:"随意勾选 1-2-1"},
+                    { id:122, pId:12, name:"随意勾选 1-2-2"},
+
+                    { id:2, pId:0, name:"禁止勾选 2", open:true},
+                    { id:21, pId:2, name:"禁止勾选 2-1"},
+                    { id:22, pId:2, name:"禁止勾选 2-2"},
+                    { id:221, pId:22, name:"禁止勾选 2-2-1"},
+                    { id:222, pId:22, name:"禁止勾选 2-2-2"},
+                    { id:23, pId:2, name:"禁止勾选 2-3"}
+                ],
                     url: 'static/vuetable.json',
     //                tableData: [],
                     tableData: [{
@@ -319,7 +314,9 @@
                     dialogLinkVisible:false,//授权管理模块
                     qualityloading:false,
                     isBMP:false,
-                    elementIndex:''
+                    elementIndex:'',
+                    linkTree:false,
+                    flowName:"",//流程名称
     //                isStepDisable:false
                 }
             },
@@ -327,7 +324,7 @@
                 this.getData();
             },
             mounted(){
-
+                $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes)
             },
             methods: {
                 handleCurrentChange(val){
@@ -438,11 +435,33 @@
                     }
                     this.rootInfo.splice(6,this.rootInfo.length-1)
                 },
+                flowNameAlert() {
+                    this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                         this.isBMP = false
+                }).catch(() => {
+                        this.isBMP = false
+                    });
+                },
                 BMPok(){
-                    this.isBMP = false;
+
+                    if(!this.flowName.length){
+                       this.flowNameAlert();
+
+                        console.info('流程名称为空')
+                    }
                 },
                 //关联模型模态框
                 addDialogLink(){
+
+                },
+                beforeCheck(){
+
+                },
+                onCheck(){
 
                 },
                 //删除关联模型记录
@@ -453,4 +472,6 @@
 
             }
         }
+
 </script>
+

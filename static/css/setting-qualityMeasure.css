@@ -120,6 +120,17 @@
     top: -23px;
     right: 0px;
 }
+.content .quality-dialog{
+    width: 580px;
+    height: 537px !important;
+    position: absolute;
+    left: 50%;
+    margin-left: -406px;
+    margin-top: -592px;
+    background: #fff;
+    z-index: 9999;
+}
+
 /*关联模型link-model*/
  .link-model .el-dialog__header{
    padding:20px !important;
@@ -151,4 +162,15 @@
 }
 .form-change .dialog-changeForm>.priview-le:last-child{
     border:none;
+}
+.content .ztree{
+    height: 308px;
+    overflow: auto;
+    padding:20px 20px;
+}
+.content .quality-dialog-header{
+    padding:20px 20px 0;
+}
+.content .quality-dialog-footer{
+    text-align:center;
 }
