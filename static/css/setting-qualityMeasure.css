@@ -132,12 +132,40 @@
     border-radius:5px;
 }
 .content .ztree-allCheck{
-    cursor:pointer;
+    cursor:pointer;padding-left:26px;
 }
 .content .ztree-allCheck>div{
     position: absolute;
     font-size: 14px;
-    margin-left:26px;
+    margin-left:35px;
+
+}
+/*simlue-checkbox模拟复选框样式*/
+.content .simlue-label{
+    position:relative;
+}
+.content .simlue-label input{
+    opacity:0;
+}
+.content .simlue-checkbox{
+    width:15px;height:15px;border:1px solid #ccc;display:inline-block;background:#fff; position: absolute;
+    left: 0px;top:2px;
+}
+.content .simlue-label input[type=checkbox]:checked+ :after{
+
+    content: '';
+    display: block;
+    width: 5px;
+    height: 9px;
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(227deg);
+    border-left: 2px solid green;
+    border-top: 2px solid green;
+    transform-origin: 6px 4.5px;
+
+}
+.content #checkAllTrue,.content #checkAllFalse{
+    display:inline-block;
 }
 
 /*关联模型link-model*/

@@ -209,10 +209,11 @@
 
                     </el-row>
                 </div>
-                <div class="ztree-allCheck " @click="checkAll">
-                   <!-- <label><input type="checkbox" /></label>-->
-                    <div  id="checkAllTrue"  v-show="checkTrue">全选</div>
-                    <div  id="checkAllFalse" v-show="!checkTrue">全选</div>
+                <div class="ztree-allCheck ">
+                    <label class="simlue-label"><input type="checkbox"  @click="checkAll"/> <div class="simlue-checkbox"></div>全选
+                        <div  id="checkAllTrue"  v-show="checkTrue"></div>
+                        <div  id="checkAllFalse" v-show="!checkTrue"></div>
+                    </label>
                 </div>
 
                 <ul class="ztree" id="lineTree"></ul>
