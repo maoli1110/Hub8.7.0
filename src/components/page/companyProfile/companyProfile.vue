@@ -35,7 +35,6 @@
             <div>
                  <ul class="ztree" id="lineTree"></ul>
             </div>
-           
         </div>
     </div>
 </div>
