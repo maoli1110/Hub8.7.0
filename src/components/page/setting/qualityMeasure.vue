@@ -97,7 +97,7 @@
                                 <tbody id="bj-style">
                                     <tr v-for="(rootInfo,index) in rootInfo" @click="processSetEdit($event,index)" >
                                         <td width="50">{{index+1}}</td>
-                                        <td width="120"><el-input placeholder="请输入内容"></el-input></td>
+                                        <td width="120"><el-input class="flowTitle" placeholder="请输入内容"></el-input></td>
                                         <td width="120">
                                             <el-select value="全部" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
                                        <!--     <el-option
@@ -146,8 +146,8 @@
                 <!--link-model-header-->
                 <el-col :span="24" style="padding:20px 0 ;">
                     <el-col :span="14">
-                        <el-button type="primary" @click="linkTree=true"><el-icon></el-icon>添加关联</el-button>
-                        <el-button type="primary"><el-icon></el-icon>删除关联</el-button>
+                        <el-button type="primary" @click="BMPAddLink"><el-icon></el-icon>添加关联</el-button>
+                        <el-button type="primary" @click="BMPDeleteLink"><el-icon ></el-icon>删除关联</el-button>
                     </el-col>
                    <el-col :span="10" style="text-align:right;padding:0;">
                        <el-input
@@ -209,6 +209,12 @@
 
                     </el-row>
                 </div>
+                <div class="ztree-allCheck " @click="checkAll">
+                   <!-- <label><input type="checkbox" /></label>-->
+                    <div  id="checkAllTrue"  v-show="checkTrue">全选</div>
+                    <div  id="checkAllFalse" v-show="!checkTrue">全选</div>
+                </div>
+
                 <ul class="ztree" id="lineTree"></ul>
                 <div class="quality-dialog-footer">
                     <el-button type="primary" @click="linkTree=false">确定</el-button>
@@ -227,7 +233,6 @@
 //    import "static/ztree/css/demo.css";
     import "static/js/ztree/js/jquery.ztree.core-3.5.js";
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-
     export default{
             data(){
                 return {
@@ -317,6 +322,7 @@
                     elementIndex:'',
                     linkTree:false,
                     flowName:"",//流程名称
+                    checkTrue:false,
     //                isStepDisable:false
                 }
             },
@@ -324,7 +330,9 @@
                 this.getData();
             },
             mounted(){
-                $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes)
+                $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
+                $("#checkAllTrue").bind("click", {type:"checkAllTrue"}, this.checkNode);
+                $("#checkAllFalse").bind("click", {type:"checkAllFalse"}, this.checkNode);
             },
             methods: {
                 handleCurrentChange(val){
@@ -399,8 +407,9 @@
                 },
                 //删除行
                 deleteHandle(index){
-    //                console.info(index)
-                    this.rootInfo.splice(index,1)
+                    if( this.rootInfo.length>1){
+                        this.rootInfo.splice(index,1)
+                    }
                 },
                 //添加角色
                 addRoles(index){
@@ -422,8 +431,6 @@
                 },
                 //添加步骤
                 addStep(){
-
-
                     if( this.rootInfo.length<15){
                         this.rootInfo.push({addRolesLine:[]})
                     }
@@ -435,36 +442,122 @@
                     }
                     this.rootInfo.splice(6,this.rootInfo.length-1)
                 },
-                flowNameAlert() {
+                flowNameAlert() {//流程名称弹窗
                     this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                         this.isBMP = false
+                         this.isBMP = true
                 }).catch(() => {
-                        this.isBMP = false
+                        this.isBMP = true
                     });
                 },
+                addRulesRoot() {//流程步骤弹窗
+                    this.$confirm('未设置流程步骤,请返回流程步骤?', '保存提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.isBMP = true
+                }).catch(() => {
+                        this.isBMP = true
+                });
+                },
+                deleteLinkModal() {//删除关联模型
+                    this.$confirm('所选表单将解除关联，是否确认?', '删除表单关联', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$message({
+                            message: '删除关联成功',
+                            type: 'success'
+                         });
+                }).catch(() => {
+                });
+                },
                 BMPok(){
-
+                    let tootipsAlert = this.flowNameAlert;
                     if(!this.flowName.length){
                        this.flowNameAlert();
-
-                        console.info('流程名称为空')
                     }
+                    $('.table-step tbody tr').map(function(){
+                        console.info($(this).find('input').val(),'val')
+                        console.info($(this).find('.addRoot').length,'审核角色')
+                        if($(this).find('input').val() && $(this).find('.addRoot').length ==0){
+                           tootipsAlert();
+                        }else if(!($(this).find('input').val()) && $(this).find('.addRoot').length !=0){
+                           tootipsAlert();
+                        }else if($(this).find('input').val() && $(this).find('.addRoot').length !=0){
+                            //后端传值
+                        }
+                    })
+                },
+                //添加关联
+                BMPAddLink(){
+                    this.linkTree=true;
+                },
+
+                //删除关联模型
+                BMPDeleteLink(){
+                    this.deleteLinkModal();
                 },
                 //关联模型模态框
                 addDialogLink(){
 
                 },
+                //ztree-click
                 beforeCheck(){
 
                 },
                 onCheck(){
 
                 },
-                //删除关联模型记录
+                checkNode(e) {
+                    var zTree = $.fn.zTree.getZTreeObj("lineTree"),
+                        type = e.data.type,
+                        nodes = zTree.getSelectedNodes();
+                    if (type.indexOf("All")<0 && nodes.length == 0) {
+                        alert("请先选择一个节点");
+                    }
+
+                    if (type == "checkAllTrue") {
+                        zTree.checkAllNodes(true);
+                    } else if (type == "checkAllFalse") {
+                        zTree.checkAllNodes(false);
+                    } else {
+                       /* var callbackFlag = $("#callbackTrigger").attr("checked");
+                        for (var i=0, l=nodes.length; i<l; i++) {
+                            if (type == "checkTrue") {
+                                zTree.checkNode(nodes[i], true, false, callbackFlag);
+                            } else if (type == "checkFalse") {
+                                zTree.checkNode(nodes[i], false, false, callbackFlag);
+                            } else if (type == "toggle") {
+                                zTree.checkNode(nodes[i], null, false, callbackFlag);
+                            }else if (type == "checkTruePS") {
+                                zTree.checkNode(nodes[i], true, true, callbackFlag);
+                            } else if (type == "checkFalsePS") {
+                                zTree.checkNode(nodes[i], false, true, callbackFlag);
+                            } else if (type == "togglePS") {
+                                zTree.checkNode(nodes[i], null, true, callbackFlag);
+                            }
+                        }*/
+                    }
+                },
+                checkAll(){
+                    $('.ztree-allCheck').toggleClass('ztree-allActive');
+                    if( $('.ztree-allCheck').hasClass('ztree-allActive')){
+                        this.checkTrue = true;
+                        $("#checkAllTrue").click();
+                    }else {
+                        this.checkTrue = false;
+                        $("#checkAllFalse").click();
+                    }
+
+                },
+
+    //删除关联模型记录
                 linkDelete(index){
                     console.log(index);
                     this.tableData.splice(index,1)
