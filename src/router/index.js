@@ -19,15 +19,15 @@ export default new Router({
                 },
                 {
                     path: '/rootManage',
-                    component: resolve => require(['../components/page/rootManage/rootManage.vue'], resolve),
+                    component: resolve => require(['../components/page/powerManage/powerManage.vue'], resolve),
                      children:[
                         {
                             path: '/stuffManage',
-                            component: resolve => require(['../components/page/rootManage/explorer.vue'], resolve),
+                            component: resolve => require(['../components/page/powerManage/stuffManage.vue'], resolve),
                         },
                         {
                             path: '/roleMeasure',
-                            component: resolve => require(['../components/page/rootManage/qualityMeasure.vue'], resolve)
+                            component: resolve => require(['../components/page/powerManage/roleManage.vue'], resolve)
                         }
                     ]
                 },
