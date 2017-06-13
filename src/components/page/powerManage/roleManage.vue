@@ -32,24 +32,27 @@
 				</el-table-column>
 				<el-table-column type="index" width="100" label="序号">
 				</el-table-column>
-				<el-table-column prop="name" label="姓名" width="120" sortable>
+				<el-table-column prop="name" label="用户名" width="150" sortable>
 				</el-table-column>
-				<el-table-column prop="sex" label="性别" width="120" :formatter="formatSex" sortable>
+				<el-table-column prop="sex" label="角色" width="120" :formatter="formatSex" >
 				</el-table-column>
-				<el-table-column prop="age" label="年龄" width="120" sortable>
+				<el-table-column prop="age" label="电话" width="120" >
 				</el-table-column>
-				<el-table-column prop="birth" label="生日" width="180" sortable>
+				<el-table-column prop="birth" label="邮箱" width="180" >
 				</el-table-column>
-				<el-table-column prop="addr" label="地址" min-width="120" sortable>
+				<el-table-column prop="addr" label="更新时间" min-width="120" sortable>
 				</el-table-column>
-				<el-table-column label="操作" width="180">
+				<el-table-column prop="addr" label="周活跃度" min-width="120" sortable>
+				</el-table-column>
+				<el-table-column prop="addr" label="备注" min-width="120" >
+				</el-table-column>
+				<el-table-column label="周活跃度" width="180"  >
 					<template scope="scope">
-						<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-															<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
+						<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>																								<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
 						<el-icon class="el-icon-edit" @click.native="flag=!flag"></el-icon>
 						<el-icon class="el-icon-delete2" @click.native="handleDel(scope.$index, scope.row)"></el-icon>
 						<el-icon class="el-icon-document" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
-						<el-icon class="el-icon-menu" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
+						<el-icon class="el-icon-message" @click.native="handleAuthorized(scope.$index, scope.row)"></el-icon>
 					</template>
 				</el-table-column>
 			</el-table>
