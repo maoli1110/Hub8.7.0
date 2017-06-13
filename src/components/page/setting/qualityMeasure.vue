@@ -108,7 +108,7 @@
                                             </el-option>-->
                                                 <el-option :value="0">全部</el-option>
                                                 <el-option :value="1">随意</el-option>
-                                        </el-select>
+                                            </el-select>
                                         </td>
                                         <td >
                                             <span v-if="rootInfo.addRolesLine.length<1" style="color:gray">点击右侧角色进行添加</span>
@@ -192,11 +192,10 @@
                         </el-col>
 
                         <el-col :span="14" style="margin:10px 0 10px;padding-bottom:10px;border-bottom:1px solid #ddd;">
-                            <label for="" style="font-size:14px;">表单目录：</label>
-                            <el-select value="请选择" placeholder="请选择">
-                                <el-option value="">请选择</el-option>
-                                <el-option value="">请选择</el-option>
-                                <el-option value="">请选择</el-option>
+                            <label style="font-size:14px;">表单目录：</label>
+                            <el-select  value="全部" placeholder="请选择活动区域" >
+                                <el-option label="区域一" value="shanghai"></el-option>
+                                <el-option label="区域二" value="beijing"></el-option>
                             </el-select>
                         </el-col>
                         <el-col :span="10" style="margin:10px 0 10px;padding-bottom:10px;border-bottom:1px solid #ddd;">
@@ -210,7 +209,7 @@
                     </el-row>
                 </div>
                 <div class="ztree-allCheck ">
-                    <label class="simlue-label"><input type="checkbox"  @click="checkAll"/> <div class="simlue-checkbox"></div>全选
+                    <label class="simlue-label"><input type="checkbox"  @click="checkAll"/> <div class="simlue-checkbox"></div>&nbsp;&nbsp;全选
                         <div  id="checkAllTrue"  v-show="checkTrue"></div>
                         <div  id="checkAllFalse" v-show="!checkTrue"></div>
                     </label>
