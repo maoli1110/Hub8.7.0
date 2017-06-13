@@ -228,6 +228,12 @@
     text-align: center;
     line-height: 15px;
 }
+.proTemplate .proTemplate-edit .handle-icon{
+    margin:15px 10px;
+}
+.proTemplate .proTemplate-edit .handle-icon i{
+    font-size:20px;margin-right:15px;
+}
 /*树结构对应的表单*/
 .project-form .project-form-tit{
     padding-bottom:15px;

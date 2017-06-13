@@ -58,6 +58,13 @@
                             <el-icon class="el-icon-edit"></el-icon>
                         </div>
                     </div>
+                    <div class="handle-icon">
+                        <el-icon class="el-icon-document" id="addLeaf" @click.native="add"></el-icon>
+                        <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
+                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>
+                    </div>
                     <ul class="ztree" id="proZtree"></ul>
                 </el-col>
                 <el-col :span="10" class="project-form">
@@ -94,16 +101,22 @@
     //    import "static/ztree/css/demo.css";
     import "static/js/ztree/js/jquery.ztree.core-3.5.js";
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
+    import "static/js/ztree/js/jquery.ztree.exedit.js";
+
     let level = 1;
     let maxLevel=-1;
+    let newCount = 1;
+
     let type = '';
     let operObj = '';
+    let nodes,treeNode;
     export default{
         data(){
             return {
                 setting : {
                     view: {
                         selectedMulti: false,
+                        showIcon :false,
                     },
                 /*    check: {
                         enable: true
@@ -184,6 +197,11 @@
             $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);
             $("#expandBtn").bind("click",  {type:"expand",operObj:'proZtree'}, this.expandNode);
             $("#collapseBtn").bind("click", {type:"collapse",operObj:'proZtree'}, this.expandNode);
+            $("#edit").bind("click", this.edit);
+            $("#remove").bind("click", this.remove);
+            $("#upMove").bind("click", this.upMove);
+            $("#downMove").bind("click", this.downMove);
+            $("#addLeaf").bind("click", {"isParent":false}, this.add);
         },
         methods: {
             handleSizeChange(){
@@ -236,11 +254,8 @@
                 type = e.data.type;
                 operObj = e.data.operObj;
                 var zTree = $.fn.zTree.getZTreeObj(operObj);
-
                 var treeNodes = zTree.transformToArray(zTree.getNodes());
-
                 var flag=true;
-
                 //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
                 for (var i=0;i<treeNodes.length; i++) {
                     if(treeNodes[i].level==level&&treeNodes[i].isParent){
@@ -278,6 +293,142 @@
                     }
                 }
                 //layer.close(index);
+            },
+            //重命名状态模板名称
+            edit() {
+                var zTree = $.fn.zTree.getZTreeObj("proZtree"),
+                    nodes = zTree.getSelectedNodes(),
+                    treeNode = nodes[0];
+                if (nodes.length == 0) {
+                    alert("请先选择一个节点");
+                    return;
+                }
+                zTree.editName(treeNode);
+            },
+            remove(e) {
+                var zTree = $.fn.zTree.getZTreeObj("proZtree"),
+                    nodes = zTree.getSelectedNodes(),
+                    treeNode = nodes[0];
+                if (nodes.length == 0) {
+                    alert("Please select one node at first...");
+                    return;
+                }
+                var callbackFlag = $("#callbackTrigger").attr("checked");
+                zTree.removeNode(treeNode, callbackFlag);
+            },
+            //上移
+             upMove(){
+                var treeObj = $.fn.zTree.getZTreeObj("proZtree");
+                var nodes = treeObj.getSelectedNodes();
+                if (nodes.length == 0) {
+                    alert("至少选择一个节点");
+                    return;
+                }
+                //移动之前需要判断满足条件才能上移
+                //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许粘贴
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].isParent!=nodes[0].isParent){
+                        return;
+                    }
+                }
+                //判断多选的节点/状态是否是同一层级，如果不是，不允许粘贴
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].level!=nodes[0].level){
+                        return;
+                    }
+                }
+
+                //判断节点/状态是否是第一个，如果是，不能移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].getPreNode()==null){
+                        return;
+                    }
+                }
+                //判断状态前一个节点是否是节点，如果是，不能移动
+                for(var i=0;i<nodes.length; i++){
+                    if(!nodes[i].isParent&&nodes[i].getPreNode().isParent){
+                        return;
+                    }
+                }
+
+                for(var i=0;i<nodes.length; i++){
+                    treeObj.moveNode(nodes[i].getPreNode(),nodes[i],"prev");
+                }
+            },
+
+            //下移
+            downMove(){
+                var treeObj = $.fn.zTree.getZTreeObj("proZtree");
+                var nodes = treeObj.getSelectedNodes();
+                if (nodes.length == 0) {
+                    alert("至少选择一个节点");
+                    return;
+                }
+
+                //移动之前需要判断满足条件才能下移
+                //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].isParent!=nodes[0].isParent){
+                        return;
+                    }
+                }
+                //判断多选的节点/状态是否是同一层级，如果不是，不允许移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].level!=nodes[0].level){
+                        return;
+                    }
+                }
+
+                //判断节点/状态是否是最后一个，如果是，不能移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].getNextNode()==null){
+                        return;
+                    }
+                }
+                //判断节点后一个节点是否是状态，如果是，不能移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].isParent&&!nodes[i].getNextNode().isParent){
+                        return;
+                    }
+                }
+
+                for(var i=nodes.length-1;i>=0; i--){
+                    treeObj.moveNode(nodes[i].getNextNode(),nodes[i],"next");
+                }
+
+            },
+            add(e) {
+                var treeLeafSub = '';
+                let isParent;
+                var zTree = $.fn.zTree.getZTreeObj("proZtree");
+                var sNodes = zTree.getSelectedNodes();
+                if (sNodes.length > 0) {
+                    var levelAdd = sNodes[0].level;
+                    var nodeParent = sNodes[0].getParentNode();
+                    console.info(nodeParent,'dddd')
+                }
+                nodes = zTree.getSelectedNodes();
+                treeNode = nodes[0];
+//                isParent = e.data.isParent;
+                if(levelAdd>2){
+                    treeNode = zTree.addNodes(nodeParent, {id:(100 + newCount), pId:nodeParent.pid, isParent:isParent, name:"new node" + (newCount++)});
+                    zTree.editName(treeNode[0]);
+                }else{
+                    if (treeNode) {
+                        //					debugger;
+                        treeNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, isParent:isParent, name:"new node" + (newCount++)});
+                    } else {
+                        treeNode = zTree.addNodes(null, {id:(100 + newCount), pId:0, isParent:isParent, name:"new node" + (newCount++)});
+                    }
+                    if (treeNode) {
+                        zTree.editName(treeNode[0]);
+                    } else {
+                        alert("叶子节点被锁定，无法增加子节点");
+                    }
+                }
+
+
+
             }
         }
     }
