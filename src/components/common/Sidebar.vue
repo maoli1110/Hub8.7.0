@@ -56,9 +56,10 @@
     .sidebar .sidebar-menu .el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active, .el-menu-item.is-active {
         border-left: 4px solid #78a7ff;
         color:#000;
+        background-color: #f5f8fd;
     }
     .sidebar .sidebar-menu .el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item, .el-menu-item{
         border-left: 4px solid #fff;
         color: #000;
-     }
+    }
 </style>
