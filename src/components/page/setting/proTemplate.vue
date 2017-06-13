@@ -59,13 +59,13 @@
                         </div>
                     </div>
                     <div class="handle-icon">
-                        <el-icon class="el-icon-document" id="addLeaf" @click.native=""></el-icon>
+                        <el-icon class="el-icon-document"  @click.native="showCreateNodes= true"></el-icon>
                         <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
                         <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
                         <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
                         <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>
                     </div>
-                    <div class="createNodes">
+                    <div class="createNodes" v-show="showCreateNodes">
                         <p id="addLeaf" @click="add">添加单个子节点</p>
                         <p @click="textAreaVisible=true">添加多个子节点</p>
                     </div>
@@ -204,7 +204,8 @@
                     label: '北京烤鸭'
                 }],
                 value: '',
-                textAreaVisible:false
+                textAreaVisible:false,
+                showCreateNodes:false
             }
         },
         components:{
