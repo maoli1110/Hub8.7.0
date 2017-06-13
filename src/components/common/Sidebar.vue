@@ -1,13 +1,23 @@
 <template>
     <div class="sidebar">
     <!-- <div>{{prop}}</div> -->
-    <el-row class="tac">
-      <el-col>
-        <el-menu default-active="1" class="el-menu-vertical-demo sidebar-menu">
-            <el-menu-item v-for="item in navMenuProp" :index="item.title">{{item.title}}</el-menu-item>
-        </el-menu>
-      </el-col>
-    </el-row>
+    <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" unique-opened router>
+            <template v-for="item in navMenuProp">
+                <template v-if="item.subs">
+                    <el-submenu :index="item.index">
+                        <!--  <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template> -->
+                        <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template>
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">{{ subItem.title }}
+                        </el-menu-item>
+                    </el-submenu>
+                </template>
+                <template v-else>
+                    <el-menu-item :index="item.index">
+                        <i :class="item.icon"></i>{{ item.title }}-{{item.index}}
+                    </el-menu-item>
+                </template>
+            </template>
+    </el-menu>
     </div>
 </template>
 
@@ -22,6 +32,7 @@
         computed:{
             onRoutes(){
                 return this.$route.path.replace('/','');
+                // return this.navMenuProp.defaultActive;
             }
         }
     }
