@@ -13,7 +13,7 @@
                 </template>
                 <template v-else>
                     <el-menu-item :index="item.index">
-                        <i :class="item.icon"></i>{{ item.title }}-{{item.index}}
+                        <i :class="item.icon"></i>{{ item.title }}
                     </el-menu-item>
                 </template>
             </template>

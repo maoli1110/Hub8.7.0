@@ -8,15 +8,17 @@
             </div>
         </div>
         <div class="user-info">
-            <el-dropdown trigger="click" @command="handleCommand">
+            <el-dropdown trigger="click" @command="handleCommand" >
                 <span class="el-dropdown-link">
                     <img class="user-logo" src="../../../static/img/img.jpg">
-                    {{username}}
                 </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="loginout">退出</el-dropdown-item>
+                <el-dropdown-menu slot="dropdown" menu-align="start">
+                    <el-dropdown-item command="loginout">企业信息</el-dropdown-item>
+                    <el-dropdown-item command="loginout">个人信息</el-dropdown-item>
+                    <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
+            <span class="user-name">{{name}}</span>
         </div>
     </div>
 </template>
@@ -24,7 +26,7 @@
     export default {
         data() {
             return {
-                name: 'linxin'
+                name: '狐妖%%&**……%￥……*'
             }
         },
         computed:{
@@ -66,6 +68,7 @@
         padding-right: 50px;
         font-size: 16px;
         color: #fff;
+        position: relative;
     }
     .user-info .el-dropdown-link{
         position: relative;
@@ -75,13 +78,26 @@
         cursor: pointer;
         vertical-align: middle;
     }
+    .user-info {
+        line-height: 90px;
+        height: 90px;
+        padding-right: 20px;
+    }
     .user-info .user-logo{
-        position: absolute;
         left:0;
         top:15px;
         width:40px;
         height:40px;
         border-radius: 50%;
+    }
+    .user-info .el-dropdown-link > *{
+        vertical-align: middle;
+    }
+    .user-info .el-dropdown-link {
+        padding-right: 70px;
+    }
+    .user-info .user-name {
+        margin-left: -65px;
     }
     .el-dropdown-menu__item{
         text-align: center;
