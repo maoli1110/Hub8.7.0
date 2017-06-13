@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="proTemplate">
         <el-row>
             <el-col :span="24">
                 <el-menu  class="el-menu-demo" mode="horizontal" router >
@@ -7,45 +7,155 @@
                 </el-menu>
             </el-col>
         </el-row>
-        <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
-            <el-table-column width="30" type="selection">
-            </el-table-column>
-            <el-table-column label="序号" width="120" type="index">
-            </el-table-column>
-            <el-table-column prop="name" label="名称" sortable>
-            </el-table-column>
-            <el-table-column prop="date" label="更新时间"  sortable>
-            </el-table-column>
-            <el-table-column prop="name" label="更新人" sortable>
-            </el-table-column>
-            <el-table-column label="操作" width="180" @click.native="addnew">
+        <div v-if="!EditVisible">
+            <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
+                <el-table-column width="30" type="selection">
+                </el-table-column>
+                <el-table-column label="序号" width="120" type="index">
+                </el-table-column>
+                <el-table-column prop="name" label="名称" sortable>
+                </el-table-column>
+                <el-table-column prop="date" label="更新时间"  sortable>
+                </el-table-column>
+                <el-table-column prop="name" label="更新人" sortable>
+                </el-table-column>
+                <el-table-column label="操作" width="180" >
 
-                <template scope="scope">
-                    <!--<el-button @click="dialogVisible = true">del</el-button>-->
-                    <el-icon class="el-icon-edit" @click.native="dialogFormVisible = true"></el-icon>
-                </template>
-            </el-table-column>
-        </el-table>
-        <div class="pagination">
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="cur_page"
-                :page-sizes="[100, 200, 300, 400]"
-                :page-size="100"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="400">
-            </el-pagination>
+                    <template scope="scope">
+                        <!--<el-button @click="dialogVisible = true">del</el-button>-->
+                        <el-icon class="el-icon-edit" @click.native="proTemplateEdit"></el-icon>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination">
+                <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="cur_page"
+                    :page-sizes="[100, 200, 300, 400]"
+                    :page-size="100"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="400">
+                </el-pagination>
+            </div>
+        </div>
+        <!--工程模板编辑页面-->
+        <div class="proTemplate-edit" v-show="EditVisible">
+           <el-row>
+               <el-col  :span="24" class="pro-nav-path">
+                   <span>工程模板</span>&nbsp;&gt;&nbsp;<span>编辑</span>
+               </el-col>
+               <el-col :span="10">模板名称：<el-input placeholder="请输入模板名称"></el-input></el-col>
+           </el-row>
+            <el-row class="pro-ztreeInfo">
+                <el-col :span="14" style="padding-right:20px;">
+                    <p>工程划分：</p>
+                    <div class="pro-sear-area">
+                        <el-input  placeholder="请输入内容" icon="search"></el-input>
+                        <div class="sear-icon">
+                            <span id="expandBtn">+</span>
+                            <span id="collapseBtn">-</span>
+                            <el-icon class="el-icon-edit"></el-icon>
+                        </div>
+                    </div>
+                    <div class="handle-icon">
+                        <el-icon class="el-icon-document" id="addLeaf" @click.native="add"></el-icon>
+                        <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
+                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>
+                    </div>
+                    <ul class="ztree" id="proZtree"></ul>
+                </el-col>
+                <el-col :span="10" class="project-form">
+                    <p class="project-form-tit">包含表单</p>
+                    <el-select v-model="value" placeholder="请选择" >
+                        <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-icon class="el-icon-edit" style="float:right;margin-top:10px;"></el-icon>
+                    <div class="project-form-ele">
+                        <ul>
+                            <li>叶子元素</li>
+                            <li>叶子元素</li>
+                            <li>叶子元素</li>
+                        </ul>
+                    </div>
+                </el-col>
+                <el-col :span="24" class="pro-butons">
+                    <el-button type="primary" @click="proOk">确定</el-button>
+                    <el-button type="primary" @click="proCancel">取消</el-button>
+                </el-col>
+            </el-row>
         </div>
     </div>
+
 </template>
 <script>
-    import "../../../../static/css/setting-explorer.css"
+    import "../../../../static/css/setting-explorer.css";
+    import "static/js/ztree/css/zTreeStyle_new.css";
+    //    import "static/ztree/css/demo.css";
+    import "static/js/ztree/js/jquery.ztree.core-3.5.js";
+    import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
+    import "static/js/ztree/js/jquery.ztree.exedit.js";
+
+    let level = 1;
+    let maxLevel=-1;
+    let newCount = 1;
+
+    let type = '';
+    let operObj = '';
+    let nodes,treeNode;
     export default{
         data(){
             return {
+                setting : {
+                    view: {
+                        selectedMulti: false,
+                        showIcon :false,
+                    },
+                /*    check: {
+                        enable: true
+                    },*/
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    },
+                    callback: {
+                        onCollapse: function (event, treeId, treeNode) {
+                            level=treeNode.level;
+                        },
+                        onExpand: function (event, treeId, treeNode) {
+                            level=treeNode.level;
+                        }
+
+                    }
+                },
+                zNodes :[
+                    { id:1, pId:0, name:"parent node 1", open:true},
+                    { id:11, pId:1, name:"leaf node 1-1"},
+                    { id:12, pId:1, name:"leaf node 1-2"},
+                    { id:121, pId:12, name:"leaf node 12-1"},
+                    { id:122, pId:12, name:"leaf node 12-2"},
+                    { id:123, pId:12, name:"leaf node 12-3"},
+                    { id:124, pId:12, name:"leaf node 12-4"},
+                    { id:13, pId:1, name:"leaf node 1-3"},
+                    { id:2, pId:0, name:"parent node 2", open:true},
+                    { id:21, pId:2, name:"leaf node 2-1"},
+                    { id:22, pId:2, name:"leaf node 2-2"},
+                    { id:23, pId:2, name:"leaf node 2-3"},
+                    { id:3, pId:0, name:"parent node 3", open:true },
+                    { id:31, pId:3, name:"leaf node 3-1"},
+                    { id:32, pId:3, name:"leaf node 3-2"},
+                    { id:33, pId:3, name:"leaf node 3-3"}
+                ],
                 url: '../../../static/vuetable.json',
-                tableData: [],
+//                tableData: [],
                 cur_page: 1,
                 menusData:[{name:"流程设置",routerDump:'qualityMeasure'},{name:'工程模板',routerDump:'proTemplate'},{name:'表单管理',routerDump:'formManage'}],
                 tableData: [{
@@ -57,6 +167,24 @@
                     "name": "文敏",
                     "address": "江西省 萍乡市 芦溪县"
                 }],
+                EditVisible:false,
+                options: [{
+                    value: '选项1',
+                    label: '黄金糕'
+                }, {
+                    value: '选项2',
+                    label: '双皮奶'
+                }, {
+                    value: '选项3',
+                    label: '蚵仔煎'
+                }, {
+                    value: '选项4',
+                    label: '龙须面'
+                }, {
+                    value: '选项5',
+                    label: '北京烤鸭'
+                }],
+                value: ''
             }
         },
         components:{
@@ -64,6 +192,16 @@
         },
         created(){
             this.getData()
+        },
+        mounted(){
+            $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);
+            $("#expandBtn").bind("click",  {type:"expand",operObj:'proZtree'}, this.expandNode);
+            $("#collapseBtn").bind("click", {type:"collapse",operObj:'proZtree'}, this.expandNode);
+            $("#edit").bind("click", this.edit);
+            $("#remove").bind("click", this.remove);
+            $("#upMove").bind("click", this.upMove);
+            $("#downMove").bind("click", this.downMove);
+            $("#addLeaf").bind("click", {"isParent":false}, this.add);
         },
         methods: {
             handleSizeChange(){
@@ -93,6 +231,204 @@
             },
             handleDelete(index, row) {
                 this.$message.error('删除第'+(index+1)+'行');
+            },
+            proTemplateEdit(){
+                this.EditVisible = true;
+            },
+            proOk(){
+                this.EditVisible = false;
+            },
+            proCancel(){
+                this.EditVisible = false;
+            },
+            /*ztree-event*/
+            beforeCheck(){
+
+            },
+            onCheck(){
+
+            },
+            //全部展开和收起
+            expandNode(e) {
+                //var index=layer.load(2);
+                type = e.data.type;
+                operObj = e.data.operObj;
+                var zTree = $.fn.zTree.getZTreeObj(operObj);
+                var treeNodes = zTree.transformToArray(zTree.getNodes());
+                var flag=true;
+                //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
+                for (var i=0;i<treeNodes.length; i++) {
+                    if(treeNodes[i].level==level&&treeNodes[i].isParent){
+                        if (type == "expand"&&!treeNodes[i].open) {
+                            flag=false;
+                            break;
+                        } else if (type == "collapse"&&treeNodes[i].open) {
+                            flag=false;
+                            break;
+                        }
+                    }
+                }
+
+                if(flag){
+                    //说明当前level的节点都为折叠或者展开状态
+                    if(type == "expand"){
+                        level++
+                        if(level<maxLevel-1){
+                            level++;
+                        }
+                    }else if(type == "collapse"){
+                        if(level==0){
+                            return;
+                        }
+                        level--;
+                    }
+                }
+                for (var i=0;i<treeNodes.length; i++) {
+                    if(treeNodes[i].level==level&&treeNodes[i].isParent){
+                        if (type == "expand"&&!treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], true, false, null, true);
+                        } else if (type == "collapse"&&treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], false, false, null, true);
+                        }
+                    }
+                }
+                //layer.close(index);
+            },
+            //重命名状态模板名称
+            edit() {
+                var zTree = $.fn.zTree.getZTreeObj("proZtree"),
+                    nodes = zTree.getSelectedNodes(),
+                    treeNode = nodes[0];
+                if (nodes.length == 0) {
+                    alert("请先选择一个节点");
+                    return;
+                }
+                zTree.editName(treeNode);
+            },
+            remove(e) {
+                var zTree = $.fn.zTree.getZTreeObj("proZtree"),
+                    nodes = zTree.getSelectedNodes(),
+                    treeNode = nodes[0];
+                if (nodes.length == 0) {
+                    alert("Please select one node at first...");
+                    return;
+                }
+                var callbackFlag = $("#callbackTrigger").attr("checked");
+                zTree.removeNode(treeNode, callbackFlag);
+            },
+            //上移
+             upMove(){
+                var treeObj = $.fn.zTree.getZTreeObj("proZtree");
+                var nodes = treeObj.getSelectedNodes();
+                if (nodes.length == 0) {
+                    alert("至少选择一个节点");
+                    return;
+                }
+                //移动之前需要判断满足条件才能上移
+                //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许粘贴
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].isParent!=nodes[0].isParent){
+                        return;
+                    }
+                }
+                //判断多选的节点/状态是否是同一层级，如果不是，不允许粘贴
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].level!=nodes[0].level){
+                        return;
+                    }
+                }
+
+                //判断节点/状态是否是第一个，如果是，不能移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].getPreNode()==null){
+                        return;
+                    }
+                }
+                //判断状态前一个节点是否是节点，如果是，不能移动
+                for(var i=0;i<nodes.length; i++){
+                    if(!nodes[i].isParent&&nodes[i].getPreNode().isParent){
+                        return;
+                    }
+                }
+
+                for(var i=0;i<nodes.length; i++){
+                    treeObj.moveNode(nodes[i].getPreNode(),nodes[i],"prev");
+                }
+            },
+
+            //下移
+            downMove(){
+                var treeObj = $.fn.zTree.getZTreeObj("proZtree");
+                var nodes = treeObj.getSelectedNodes();
+                if (nodes.length == 0) {
+                    alert("至少选择一个节点");
+                    return;
+                }
+
+                //移动之前需要判断满足条件才能下移
+                //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].isParent!=nodes[0].isParent){
+                        return;
+                    }
+                }
+                //判断多选的节点/状态是否是同一层级，如果不是，不允许移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].level!=nodes[0].level){
+                        return;
+                    }
+                }
+
+                //判断节点/状态是否是最后一个，如果是，不能移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].getNextNode()==null){
+                        return;
+                    }
+                }
+                //判断节点后一个节点是否是状态，如果是，不能移动
+                for(var i=0;i<nodes.length; i++){
+                    if(nodes[i].isParent&&!nodes[i].getNextNode().isParent){
+                        return;
+                    }
+                }
+
+                for(var i=nodes.length-1;i>=0; i--){
+                    treeObj.moveNode(nodes[i].getNextNode(),nodes[i],"next");
+                }
+
+            },
+            add(e) {
+                var treeLeafSub = '';
+                let isParent;
+                var zTree = $.fn.zTree.getZTreeObj("proZtree");
+                var sNodes = zTree.getSelectedNodes();
+                if (sNodes.length > 0) {
+                    var levelAdd = sNodes[0].level;
+                    var nodeParent = sNodes[0].getParentNode();
+                    console.info(nodeParent,'dddd')
+                }
+                nodes = zTree.getSelectedNodes();
+                treeNode = nodes[0];
+//                isParent = e.data.isParent;
+                if(levelAdd>2){
+                    treeNode = zTree.addNodes(nodeParent, {id:(100 + newCount), pId:nodeParent.pid, isParent:isParent, name:"new node" + (newCount++)});
+                    zTree.editName(treeNode[0]);
+                }else{
+                    if (treeNode) {
+                        //					debugger;
+                        treeNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, isParent:isParent, name:"new node" + (newCount++)});
+                    } else {
+                        treeNode = zTree.addNodes(null, {id:(100 + newCount), pId:0, isParent:isParent, name:"new node" + (newCount++)});
+                    }
+                    if (treeNode) {
+                        zTree.editName(treeNode[0]);
+                    } else {
+                        alert("叶子节点被锁定，无法增加子节点");
+                    }
+                }
+
+
+
             }
         }
     }

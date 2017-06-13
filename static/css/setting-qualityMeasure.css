@@ -1,3 +1,6 @@
+*{
+    padding:0;margin:0;
+}
 .content p{
     font-size:14px;
 }
@@ -194,7 +197,63 @@
 .link-model .dialog-footer{
     text-align:center;
 }
-/*表单变更*/
+/*工程模板*/
+.proTemplate .proTemplate-edit{
+    padding:10px 20px;font-size:14px;
+}
+.proTemplate .proTemplate-edit .pro-nav-path{
+    padding-bottom:20px;
+}
+/*pro-ztreeInfo*/
+.proTemplate .proTemplate-edit .pro-ztreeInfo{
+    height:500px;margin-top:20px;
+}
+.proTemplate .proTemplate-edit .pro-ztreeInfo .ztree{
+    height:393px;overflow:auto;border:1px solid #ddd;
+}
+.proTemplate .proTemplate-edit  .pro-sear-area{
+    margin:15px 0 ;
+}
+.proTemplate .proTemplate-edit .sear-icon{
+   float:right;margin-top:10px;
+}
+.pro-sear-area .sear-icon >span:first-child{
+    margin-left:20px;
+}
+.pro-sear-area .sear-icon>span{
+    width: 16px;
+    height: 15px;
+    display: inline-block;
+    border: 1px solid #ddd;
+    text-align: center;
+    line-height: 15px;
+}
+.proTemplate .proTemplate-edit .handle-icon{
+    margin:15px 10px;
+}
+.proTemplate .proTemplate-edit .handle-icon i{
+    font-size:20px;margin-right:15px;
+}
+/*树结构对应的表单*/
+.project-form .project-form-tit{
+    padding-bottom:15px;
+}
+.project-form .project-form-ele{
+    height:430px;border:1px solid #ddd;width:100%;margin-top:15px;
+}
+.project-form .project-form-ele ul li{
+    list-style: none;
+    line-height: 40px;
+    padding: 0 0 0 20px;
+}
+.project-form .project-form-ele ul li:hover{
+    background:#ddd;
+}
+.proTemplate-edit .pro-butons{
+    padding:10px 0 ;text-align:center;
+}
+
+    /*表单变更*/
 .form-change .dialog-changeForm{
     height:400px;border:1px solid #ddd;padding:0 10px;
 }

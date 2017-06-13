@@ -18,48 +18,51 @@
 			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 				<el-form :inline="true" :model="filters">
 					<el-form-item>
-						<el-button type="primary" v-on:click="getUsers">添加人员</el-button>
+						<el-button type="primary" @click="flag=false">添加人员</el-button>
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="handleAdd">删除人员</el-button>
 					</el-form-item>
 				</el-form>
 			</el-col>
-
+	
 			<!--列表-->
 			<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 				<el-table-column type="selection" width="100">
 				</el-table-column>
 				<el-table-column type="index" width="100" label="序号">
 				</el-table-column>
-				<el-table-column prop="name" label="姓名" width="120" sortable>
+				<el-table-column prop="name" label="用户名" width="150" sortable>
 				</el-table-column>
-				<el-table-column prop="sex" label="性别" width="120" :formatter="formatSex" sortable>
+				<el-table-column prop="sex" label="角色" width="120" :formatter="formatSex" >
 				</el-table-column>
-				<el-table-column prop="age" label="年龄" width="120" sortable>
+				<el-table-column prop="age" label="电话" width="120" >
 				</el-table-column>
-				<el-table-column prop="birth" label="生日" width="180" sortable>
+				<el-table-column prop="birth" label="邮箱" width="180" >
 				</el-table-column>
-				<el-table-column prop="addr" label="地址" min-width="120" sortable>
+				<el-table-column prop="addr" label="更新时间" min-width="120" sortable>
 				</el-table-column>
-				<el-table-column label="操作" width="180">
+				<el-table-column prop="addr" label="周活跃度" min-width="120" sortable>
+				</el-table-column>
+				<el-table-column prop="addr" label="备注" min-width="120" >
+				</el-table-column>
+				<el-table-column label="周活跃度" width="180"  >
 					<template scope="scope">
-						<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-						<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
-						<el-icon class="el-icon-edit"     @click.native="flag=!flag"></el-icon>
-						<el-icon class="el-icon-delete2"  @click.native="handleDel(scope.$index, scope.row)"></el-icon>
+						<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>																								<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
+						<el-icon class="el-icon-edit" @click.native="flag=!flag"></el-icon>
+						<el-icon class="el-icon-delete2" @click.native="handleDel(scope.$index, scope.row)"></el-icon>
 						<el-icon class="el-icon-document" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
-						<el-icon class="el-icon-menu" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
+						<el-icon class="el-icon-message" @click.native="handleAuthorized(scope.$index, scope.row)"></el-icon>
 					</template>
 				</el-table-column>
 			</el-table>
-
+	
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">
 				<el-pagination style='float:right' @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
 				</el-pagination>
 			</el-col>
-
+	
 			<!--编辑界面-->
 			<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
 				<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
@@ -87,7 +90,7 @@
 					<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
 				</div>
 			</el-dialog>
-
+	
 			<!--新增界面-->
 			<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
 				<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
@@ -116,325 +119,200 @@
 				</div>
 			</el-dialog>
 		</section>
-		<section v-show='!flag'  style="padding:10px">
+		<section v-show='!flag' style="padding:10px">
 			<!--工具条-->
 			<el-row>
 				<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 					<p>用户基本信息</p>
 				</el-col>
 			</el-row>
-
+	
 			<el-row style="margin-top:20px;height:200px;padding:25px 10px;position:relative">
 				<el-row style="height:45%">
 					<el-col :span="6">
-						<el-col :span="4">
-							用户名
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px" >
+							用户名:
 						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
-						</el-col>
-					</el-col>
-					<el-col :span="6">
-						<el-col :span="4">
-							角色名
-						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
-						</el-col>
-					</el-col>
-				</el-row>
-				<el-row style="height:45%">
-					<el-col :span="6">
-						<el-col :span="4">
-							密码
-						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
+						<el-col :span="12" style="font-size:12px;height:36px;line-height:36px">
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 						</el-col>
 					</el-col>
 					<el-col :span="6">
-						<el-col :span="4">
-							确认密码
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							角色名:
 						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
+						<el-col :span="12" style="font-size:12px;height:36px;line-height:36px">
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 						</el-col>
 					</el-col>
 				</el-row>
 				<el-row style="height:45%">
 					<el-col :span="6">
-						<el-col :span="4">
-							电话
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							密码:
 						</el-col>
 						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 						</el-col>
 					</el-col>
 					<el-col :span="6">
-						<el-col :span="4">
-							邮箱
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							确认密码:
 						</el-col>
 						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+					</el-col>
+				</el-row>
+				<el-row style="height:45%">
+					<el-col :span="6">
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							电话:
+						</el-col>
+						<el-col :span="12">
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+					</el-col>
+					<el-col :span="6">
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							邮箱:
+						</el-col>
+						<el-col :span="12">
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 						</el-col>
 					</el-col>
 				</el-row>
 				<!--备注-->
-				<el-row style="position:absolute;right:25%;top:25px;">
-					<el-col :span="4">
-						备注 (150/150)
+				<el-row style="position:absolute;right:23%;top:25px;">
+					<el-col :span="4" style="font-size:12px">
+						备注:<span style="color:skyblue">(150/150)</span>
 					</el-col>
 					<el-col :span="12" style="margin-left:10px">
-						<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:300px">
+						<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:318px;height:148px">
 						</el-input>
 					</el-col>
 				</el-row>
 			</el-row>
-
+	
 			<el-row style="margin-top:40px">
 				<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 					<p>功能节点授权</p>
 				</el-col>
 			</el-row>
 			<!--表格切换-->
-			<el-row style="border-bottom: 1px solid rgb(209, 229, 229)">
+			<el-row>
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="房建" name="first">
-						<el-tabs type="card">
-							<el-tab-pane label="系统客户端">
-								<el-carousel  arrow="always" :interval="5000000" >
-									<el-carousel-item v-for="item in 2" :key="item"  style="padding:0 5%">
-										<div v-for="(o, index) in 8" :key="o" :offset="0" style="width:9%;float:left;margin:35px 0 0 2%">
-											<el-card :body-style="{ padding: '0px' }">
-												<div style="height:20px;color:#00d1b2;padding:10% 5px">
-													<span class="el-icon-star-on" style="float:right;color:">授权</span>
-												</div>
-												<div style="text-align: center;border-bottom: 1px solid rgb(209, 229, 229);">
-													<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:60px;height:60px;margin:0 auto">
-													<span style="margin:14px 0 14px 0;display:inline-block">Luban Explorer</span>
-												</div>
-												<div>
-													<div class="bottom clearfix" style="padding:10px 0 ">
-														<p class="time">全部授权数:
-															<span>100</span>
-														</p>
-														<p class="time">可用授权数:
-															<span>50</span>
-														</p>
-													</div>
-												</div>
-											</el-card>
-										</div>
-									</el-carousel-item>
-								</el-carousel>
-							</el-tab-pane>
-							<el-tab-pane label="算量云功能">
-								<el-carousel  arrow="always">
-									<el-carousel-item v-for="item in 2" :key="item">
-									</el-carousel-item>
-								</el-carousel>
-							</el-tab-pane>
-						</el-tabs>
+						<el-row>
+							<el-col :span="2">
+								<div style="text-align: center">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:80px;height:80px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer</span>
+								</div>
+							</el-col>
+							<el-col :span="2">
+								<div style="text-align: center">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:80px;height:80px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer</span>
+								</div>
+							</el-col>
+							<el-col :span="2">
+								<div style="text-align: center">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:80px;height:80px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer</span>
+								</div>
+							</el-col>
+							<el-col :span="2">
+								<div style="text-align: center">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:80px;height:80px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer</span>
+								</div>
+							</el-col>
+							<el-col :span="2">
+								<div style="text-align: center">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:80px;height:80px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer</span>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row>
+							<el-table :data="tableData" border style="width: 100%">
+								<el-table-column label="全部" width="180">
+									<template scope="scope">
+										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程</el-checkbox>
+									</template>
+								</el-table-column>
+								<el-table-column label="权限列表" header-align='center'>
+									<template scope="scope">
+										<el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+											<el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
+										</el-checkbox-group>
+									</template>
+								</el-table-column>
+							</el-table>
+						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="市政" name="second">
-						<el-tabs type="card">
-							<el-tab-pane label="系统客户端1">用户管理</el-tab-pane>
-							<el-tab-pane label="算量云功能1">配置管理</el-tab-pane>
-						</el-tabs>
+	
 					</el-tab-pane>
 					<el-tab-pane label="精装" name="third">
-						<el-tabs type="card">
-							<el-tab-pane label="系统客户端2">用户管理</el-tab-pane>
-							<el-tab-pane label="算量云功能2">配置管理</el-tab-pane>
-						</el-tabs>
+	
+					</el-tab-pane>
+					<el-tab-pane label="装配式" name="">
+	
+					</el-tab-pane>
+					<el-tab-pane label="CIM" name="">
+	
+					</el-tab-pane>
+					<el-tab-pane label="鲁班通" name="">
+	
+					</el-tab-pane>
+					<el-tab-pane label="管理后台" name="">
+	
 					</el-tab-pane>
 				</el-tabs>
-			</el-row>
-			<!--三栏线-->
-
-			<!--项目授权-->
-			<!--类型1-->
-			<el-row>
-				<el-col :span="12">
-					<div class="grid-content bg-purple">
-						<el-row>
-							<el-col :span="6">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px">项目授权</div>
-							</el-col>
-							<el-col :span="6">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">为用户工程点击许可操作</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-checkbox>已授权</el-checkbox>
-								</div>
-							</el-col>
-						</el-row>
-					</div>
-				</el-col>
-			</el-row>
-			<!--类型2-->
-			<el-row>
-				<el-col :span="12">
-					<div class="grid-content bg-purple">
-						<el-row>
-							<el-col :span="6">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px">项目授权</div>
-							</el-col>
-							<el-col :span="6">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">为用户工程点击许可操作</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info">授权</el-button>
-								</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-									<el-checkbox>全部工程</el-checkbox>
-								</div>
-							</el-col>
-						</el-row>
-					</div>
-				</el-col>
-			</el-row>
-			<!--类型3-->
-			<el-row>
-				<el-col :span="12">
-					<div class="grid-content bg-purple">
-						<el-row>
-							<el-col :span="6">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px">项目授权</div>
-							</el-col>
-							<el-col :span="6">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-									<el-input placeholder="请输入内容"></el-input>
-								</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info">授权</el-button>
-								</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-									<el-checkbox>全部工程</el-checkbox>
-								</div>
-							</el-col>
-						</el-row>
-					</div>
-				</el-col>
-			</el-row>
-			<!--类型4-->
-			<el-row>
-				<el-col :span="12">
-					<div class="grid-content bg-purple">
-						<el-row>
-							<el-col :span="6">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px">项目授权</div>
-							</el-col>
-							<el-col :span="6">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">为用户工程点击许可操作</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info">授权</el-button>
-								</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-									<el-checkbox>全部工程</el-checkbox>
-								</div>
-							</el-col>
-						</el-row>
-					</div>
-				</el-col>
-			</el-row>
-			<!--类型5-->
-			<el-row>
-				<el-col :span="12">
-					<div class="grid-content bg-purple">
-						<el-row>
-							<el-col :span="6">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px">项目授权</div>
-							</el-col>
-							<el-col :span="6">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">为用户工程点击许可操作</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info">授权</el-button>
-								</div>
-							</el-col>
-						</el-row>
-					</div>
-				</el-col>
-			</el-row>
-			<!--类型6-->
-			<el-row>
-				<el-col :span="12">
-					<div class="grid-content bg-purple">
-						<el-row>
-							<el-col :span="6">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px">项目授权</div>
-							</el-col>
-							<el-col :span="6">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-									<el-checkbox>查看和编辑</el-checkbox>
-								</div>
-							</el-col>
-						</el-row>
-					</div>
-				</el-col>
-			</el-row>
-			<el-row style="border-bottom: 1px solid rgb(209, 229, 229)">
-				<el-col :span="12">
-					<div class="grid-content bg-purple">
-						<el-row>
-							<el-col :span="6">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px"></div>
-							</el-col>
-							<el-col :span="6">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-									<el-col :span="8">
-										<el-checkbox>预览</el-checkbox>
-									</el-col>
-									<el-col :span="16">
-										<el-input placeholder="请输入内容"></el-input>
-									</el-col>
-								</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info">授权</el-button>
-								</div>
-							</el-col>
-							<el-col :span="4">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-									<el-checkbox>全部工程</el-checkbox>
-								</div>
-							</el-col>
-						</el-row>
-					</div>
-				</el-col>
 			</el-row>
 			<!--确定取消-->
 			<el-row :gutter="30" style="margin-top:30px">
 				<el-col :span="6" :offset="6">
-					<el-button type="info" style="float:right" @click='back'>确定</el-button>
+					<el-button type="info" style="float:right" @click='flag=true'>确定</el-button>
 				</el-col>
 				<el-col :span="6">
 					<el-button type="info">取消</el-button>
 				</el-col>
 			</el-row>
+			<!--三栏线-->
 		</section>
 	</div>
 </template>
 
 <script>
+const cityOptions = ['上海', '北京', '广州', '深圳'];
 export default {
 	data() {
 		return {
+			//  表格中的多个checkbox
+			checkAll: true,
+			checkedCities: ['上海'],
+			cities: cityOptions,
+			isIndeterminate: true,
+			tableData: [{
+				date: '2016-05-02',
+				name: '王小虎1',
+				address: '上海市普陀区金沙江路 1518 弄'
+			}, {
+				date: '2016-05-04',
+				name: '王小虎2',
+				address: '上海市普陀区金沙江路 1517 弄'
+			}, {
+				date: '2016-05-01',
+				name: '王小虎3',
+				address: '上海市普陀区金沙江路 1519 弄'
+			}, {
+				date: '2016-05-03',
+				name: '王小虎4',
+				address: '上海市普陀区金沙江路 1516 弄'
+			}],
 			filters: {
 				name: ''
 			},
@@ -506,6 +384,17 @@ export default {
 		}
 	},
 	methods: {
+		handleCheckAllChange(event) {
+			this.checkedCities = event.target.checked ? cityOptions : [];
+			this.isIndeterminate = false;
+			// console.log(event.target.checked);
+		},
+		handleCheckedCitiesChange(value) {
+			let checkedCount = value.length;
+			this.checkAll = checkedCount === this.cities.length;
+			this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+			// console.log(value);
+		},
 		//性别显示转换
 		formatSex: function (row, column) {
 			return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
@@ -519,23 +408,19 @@ export default {
 			this.getUsers();
 		},
 		//获取用户列表
-		getUsers() {
-			this.flag = false;
-			// let para = {
-			// 	page: this.page,
-			// 	name: this.filters.name
-			// };
-			// this.listLoading = true;
-			// //NProgress.start();
-			// getUserListPage(para).then((res) => {
-			// 	this.total = res.data.total;
-			// 	// this.users = res.data.users;
-			// 	this.listLoading = false;
-			// 	//NProgress.done();
-			// });
-		},
-		back() {
-			this.flag = true;
+		getUsers() {			
+			let para = {
+				page: this.page,
+				name: this.filters.name
+			};
+			this.listLoading = true;
+			//NProgress.start();
+			getUserListPage(para).then((res) => {
+				this.total = res.data.total;
+				// this.users = res.data.users;
+				this.listLoading = false;
+				//NProgress.done();
+			});
 		},
 		//删除
 		handleDel: function (index, row) {
@@ -657,6 +542,10 @@ export default {
 </script>
 
 <style scoped>
+.inputStyle{
+	width: 304px !important;
+	height: 36px;
+}
 .time {
 	font-size: 13px;
 	color: #999;
@@ -668,24 +557,20 @@ export default {
 .bottom {
 	line-height: 12px;
 }
-
 .button {
 	padding: 0;
 	float: right;
 }
-
 .image {
 	width: 100%;
 	display: block;
 }
-
 .clearfix:before,
 .clearfix:after {
 	display: table;
 	content: "";
 	text-align: center
 }
-
 .clearfix:after {
 	clear: both
 }
