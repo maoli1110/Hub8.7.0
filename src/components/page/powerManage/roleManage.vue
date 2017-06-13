@@ -127,65 +127,65 @@
 			<el-row style="margin-top:20px;height:200px;padding:25px 10px;position:relative">
 				<el-row style="height:45%">
 					<el-col :span="6">
-						<el-col :span="4">
-							用户名
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px" >
+							用户名:
 						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
-						</el-col>
-					</el-col>
-					<el-col :span="6">
-						<el-col :span="4">
-							角色名
-						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
-						</el-col>
-					</el-col>
-				</el-row>
-				<el-row style="height:45%">
-					<el-col :span="6">
-						<el-col :span="4">
-							密码
-						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
+						<el-col :span="12" style="font-size:12px;height:36px;line-height:36px">
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 						</el-col>
 					</el-col>
 					<el-col :span="6">
-						<el-col :span="4">
-							确认密码
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							角色名:
 						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
+						<el-col :span="12" style="font-size:12px;height:36px;line-height:36px">
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 						</el-col>
 					</el-col>
 				</el-row>
 				<el-row style="height:45%">
 					<el-col :span="6">
-						<el-col :span="4">
-							电话
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							密码:
 						</el-col>
 						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 						</el-col>
 					</el-col>
 					<el-col :span="6">
-						<el-col :span="4">
-							邮箱
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							确认密码:
 						</el-col>
 						<el-col :span="12">
-							<el-input placeholder="请输入内容"></el-input>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+					</el-col>
+				</el-row>
+				<el-row style="height:45%">
+					<el-col :span="6">
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							电话:
+						</el-col>
+						<el-col :span="12">
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+					</el-col>
+					<el-col :span="6">
+						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
+							邮箱:
+						</el-col>
+						<el-col :span="12">
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 						</el-col>
 					</el-col>
 				</el-row>
 				<!--备注-->
-				<el-row style="position:absolute;right:25%;top:25px;">
-					<el-col :span="4">
-						备注 (150/150)
+				<el-row style="position:absolute;right:23%;top:25px;">
+					<el-col :span="4" style="font-size:12px">
+						备注:<span style="color:skyblue">(150/150)</span>
 					</el-col>
 					<el-col :span="12" style="margin-left:10px">
-						<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:300px">
+						<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:318px;height:148px">
 						</el-input>
 					</el-col>
 				</el-row>
@@ -539,6 +539,10 @@ export default {
 </script>
 
 <style scoped>
+.inputStyle{
+	width: 304px !important;
+	height: 36px;
+}
 .time {
 	font-size: 13px;
 	color: #999;
@@ -550,24 +554,20 @@ export default {
 .bottom {
 	line-height: 12px;
 }
-
 .button {
 	padding: 0;
 	float: right;
 }
-
 .image {
 	width: 100%;
 	display: block;
 }
-
 .clearfix:before,
 .clearfix:after {
 	display: table;
 	content: "";
 	text-align: center
 }
-
 .clearfix:after {
 	clear: both
 }
