@@ -59,11 +59,15 @@
                         </div>
                     </div>
                     <div class="handle-icon">
-                        <el-icon class="el-icon-document" id="addLeaf" @click.native="add"></el-icon>
+                        <el-icon class="el-icon-document" id="addLeaf" @click.native=""></el-icon>
                         <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
                         <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
                         <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
                         <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>
+                    </div>
+                    <div class="createNodes">
+                        <p id="addLeaf" @click="add">添加单个子节点</p>
+                        <p @click="textAreaVisible=true">添加多个子节点</p>
                     </div>
                     <ul class="ztree" id="proZtree"></ul>
                 </el-col>
@@ -91,6 +95,21 @@
                     <el-button type="primary" @click="proCancel">取消</el-button>
                 </el-col>
             </el-row>
+            <el-dialog title="增加多个节点" :visible.sync="textAreaVisible">
+                <el-input
+                    type="textarea"
+                    :rows="15"
+                    id="multiLeaf"
+                    placeholder="一行视为一个节点，支持多行复制粘贴"
+                    >
+                </el-input>
+
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="textAreaVisible = false">取 消</el-button>
+                    <el-button type="primary" id="proBtnOk" @click="textAreaVisible = false,addMoreNodes">确 定</el-button>
+                </div>
+            </el-dialog>
+
         </div>
     </div>
 
@@ -184,7 +203,8 @@
                     value: '选项5',
                     label: '北京烤鸭'
                 }],
-                value: ''
+                value: '',
+                textAreaVisible:false
             }
         },
         components:{
@@ -202,6 +222,7 @@
             $("#upMove").bind("click", this.upMove);
             $("#downMove").bind("click", this.downMove);
             $("#addLeaf").bind("click", {"isParent":false}, this.add);
+            $('#proBtnOk').bind('click', {"isParent":false},this.addMoreNodes)
         },
         methods: {
             handleSizeChange(){
@@ -415,7 +436,6 @@
                     zTree.editName(treeNode[0]);
                 }else{
                     if (treeNode) {
-                        //					debugger;
                         treeNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, isParent:isParent, name:"new node" + (newCount++)});
                     } else {
                         treeNode = zTree.addNodes(null, {id:(100 + newCount), pId:0, isParent:isParent, name:"new node" + (newCount++)});
@@ -426,9 +446,58 @@
                         alert("叶子节点被锁定，无法增加子节点");
                     }
                 }
+            },
+            addMoreNodes(){
+                var isParent;
+                var contentArray=$("#multiLeaf").find('textarea').val().split("\n");
+                $('textarea').val('');
+                //过滤出空行
+                for(var i=0;i<contentArray.length;i++){
+                    if($.trim(contentArray[i])==""){
+                        contentArray.splice(i,1);
+                        i=-1;
+                        continue;
+                    }
+                }
+                var illegalNodeState=new Array();
+                for(var k=0;k<contentArray.length;k++){
+                    //过滤出名称过长的节点/状态
+                    if(contentArray[k].length>128){
+                        illegalNodeState.push(contentArray[k]);
+                        continue;
+                    }
 
+                    var treeLeafSub = '';
+                    var zTree = $.fn.zTree.getZTreeObj("proZtree");
+                    var sNodes = zTree.getSelectedNodes();
+                    if (sNodes.length > 0) {
+                        var level = sNodes[0].level;
+                        var nodeParent = sNodes[0].getParentNode();
+                    }
+                    nodes = zTree.getSelectedNodes();
+                    treeNode = nodes[0];
+                    console.info(treeNode,'55555')
+                    if(level>2){
+                        treeNode = zTree.addNodes(nodeParent, {id:(100 + newCount), pId:nodeParent.pid, isParent:isParent, name:$.trim(contentArray[k])});
+                        zTree.editName(treeNode[0]);
+                    }else{
+                        if (treeNode) {
+                            if(k>0){
+                                treeNode = zTree.addNodes(nodeParent, {id:(100 + newCount), pId:treeNode.id, isParent:isParent, name:$.trim(contentArray[k])});
+                            }else{
+                                treeNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, isParent:isParent, name:$.trim(contentArray[k])});
+                            }
 
-
+                        } else {
+                            treeNode = zTree.addNodes(null, {id:(100 + newCount), pId:0, isParent:isParent, name:$.trim(contentArray[k])});
+                        }
+                        if (treeNode) {
+                            zTree.editName(treeNode[0]);
+                        } else {
+                            alert("叶子节点被锁定，无法增加子节点");
+                        }
+                    }
+                }
             }
         }
     }
