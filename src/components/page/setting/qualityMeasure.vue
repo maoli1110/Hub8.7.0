@@ -215,7 +215,6 @@
                         <div  id="checkAllFalse" v-show="!checkTrue"></div>
                     </label>
                 </div>
-
                 <ul class="ztree" id="lineTree"></ul>
                 <div class="quality-dialog-footer">
                     <el-button type="primary" @click="linkTree=false">确定</el-button>

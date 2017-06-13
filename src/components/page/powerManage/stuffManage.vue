@@ -24,7 +24,7 @@
 			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 				<el-form :inline="true" :model="filters">
 					<el-form-item>
-						<el-button type="primary" v-on:click="getUsers">添加人员</el-button>
+						<el-button type="primary" v-on:click="flag=false">添加人员</el-button>
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="handleAdd">批量添加</el-button>
@@ -495,7 +495,7 @@
 			<!--确定取消-->
 			<el-row :gutter="30" style="margin-top:30px">
 				<el-col :span="6" :offset="6">
-					<el-button type="info" style="float:right" @click='back'>确定</el-button>
+					<el-button type="info" style="float:right" @click='flag=true'>确定</el-button>
 				</el-col>
 				<el-col :span="6">
 					<el-button type="info">取消</el-button>
@@ -604,21 +604,10 @@
 				</el-row>
 	
 			</el-dialog>
-			<!--编辑govern工作权限-->
+			<!--编辑govern工作权限(树形结构)-->
 			<el-dialog title="编辑govern工作权限" v-model="authority_3" :close-on-click-modal="false">
-				<el-row>
-					<el-col :span="2">
-						<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:60px;height:60px;margin:0 auto">
-					</el-col>
-					<el-col :span="12">
-						<div style="height:25ox;line-height:25px">用户名:
-							<span>尼古拉斯</span>
-						</div>
-						<div style="height:45ox;line-height:45px">添加时间:
-							<span>2017/6/12</span>
-						</div>
-					</el-col>
-				</el-row>
+			<!--为什么ztree在这里显示不出？-->
+               <ul class="ztree" id="lineTree"></ul>  		
 			</el-dialog>
 			<!--可见级别授权-->
 			<el-dialog title="可见级别授权" v-model="authority_4" :close-on-click-modal="false">
@@ -717,17 +706,55 @@
 					</el-col>
 				</el-row>
 			</el-dialog>
+			
 		</section>
 	</div>
 </template>
 
 <script>
+    // 树结构
+    import "static/css/setting-qualityMeasure.css";
+    import "static/js/ztree/css/zTreeStyle_new.css";
+    import "static/js/ztree/js/jquery.ztree.core-3.5.js";
+    import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
 const cityOptions = ['0', '1', '2', '3'];
 export default {
 	data() {
 		return {
 			checkedCities1: ['0'],
 			cities: cityOptions,
+			// 树结构数据
+			 setting : {
+                        view: {
+                            selectedMulti: false,
+                        },
+                        check: {
+                            enable: true
+                        },
+                        data: {
+                            simpleData: {
+                                enable: true
+                            }
+                        },
+                        callback: {
+                            // beforeCheck: this.beforeCheck(),
+                            // onCheck: this.onCheck()
+                        }
+                    },
+			zNodes :[
+                    { id:1, pId:0, name:"随意勾选 1", open:true},
+                    { id:11, pId:1, name:"随意勾选 1-1"},
+                    { id:12, pId:1, name:"随意勾选 1-2", open:true},
+                    { id:121, pId:12, name:"随意勾选 1-2-1"},
+                    { id:122, pId:12, name:"随意勾选 1-2-2"},
+
+                    { id:2, pId:0, name:"禁止勾选 2", open:true},
+                    { id:21, pId:2, name:"禁止勾选 2-1"},
+                    { id:22, pId:2, name:"禁止勾选 2-2"},
+                    { id:221, pId:22, name:"禁止勾选 2-2-1"},
+                    { id:222, pId:22, name:"禁止勾选 2-2-2"},
+                    { id:23, pId:2, name:"禁止勾选 2-3"}
+                ],		
 			options: [{
 				value: '选项1',
 				label: '董事长'
@@ -919,22 +946,18 @@ export default {
 		},
 		//获取用户列表
 		getUsers() {
-			// let para = {
-			// 	page: this.page,
-			// 	name: this.filters.name
-			// };
-			// this.listLoading = true;
-			// //NProgress.start();
-			// getUserListPage(para).then((res) => {
-			// 	this.total = 86;
-			// 	// this.users = res.data.users;
-			// 	this.listLoading = false;
-			// 	//NProgress.done();
-			// });
-			this.flag = false;
-		},
-		back() {
-			this.flag = true;
+			let para = {
+				page: this.page,
+				name: this.filters.name
+			};
+			this.listLoading = true;
+			//NProgress.start();
+			getUserListPage(para).then((res) => {
+				this.total = 86;
+				// this.users = res.data.users;
+				this.listLoading = false;
+				//NProgress.done();
+			});			
 		},
 		//删除
 		handleDel: function (index, row) {
@@ -1069,12 +1092,18 @@ export default {
 		},
 		authority_r: function () {
 			this.authority_6 = true;
-		}
+		},
+		// ztree相关函数
+		 beforeCheck(){
+                },
+                onCheck(){
+                },
 
 	},
 	mounted() {
 		// this.getUsers();
-	}
+		$.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
+	},
 }
 
 </script>
