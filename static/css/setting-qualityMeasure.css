@@ -123,13 +123,14 @@
 .content .quality-dialog{
     width: 625px;
     height: 560px !important;
-    position: absolute;
+    position: fixed;
     left: 50%;
-    margin-left: -428px;
-    margin-top: -598px;
+    top: 50%;
+    margin-left: -312px;
+    margin-top: -332px;
     background: #fff;
     z-index: 9999;
-    border-radius:5px;
+    border-radius: 5px;
 }
 .content .ztree-allCheck{
     cursor:pointer;padding-left:26px;
@@ -148,26 +149,31 @@
     opacity:0;
 }
 .content .simlue-checkbox{
-    width:15px;height:15px;border:1px solid #ccc;display:inline-block;background:#fff; position: absolute;
+    width:19px;height:16px;/*border:1px solid #ccc;*/display:inline-block;/*background:#fff;*/ position: absolute;
     left: 0px;top:2px;
+    background:url('../../static/js/ztree/css/img/zTreeStandard1.png') no-repeat -32px -90px;
 }
 .content .simlue-label input[type=checkbox]:checked+ :after{
 
     content: '';
     display: block;
-    width: 5px;
-    height: 9px;
-    -webkit-transform: rotate(-90deg);
+    width: 19px;
+    height: 16px;
+  /*  -webkit-transform: rotate(-90deg);
     transform: rotate(227deg);
     border-left: 2px solid green;
     border-top: 2px solid green;
-    transform-origin: 6px 4.5px;
+    transform-origin: 6px 4.5px;*/
+    background:url('../../static/js/ztree/css/img/zTreeStandard1.png') no-repeat -32px -90px;
+    background-position: -60px -90px;
 
 }
 .content #checkAllTrue,.content #checkAllFalse{
     display:inline-block;
 }
-
+.el-select-dropdown{
+    z-index:9999 !important;
+}
 /*关联模型link-model*/
 .link-model .el-dialog{
     width:625px;
@@ -207,7 +213,7 @@
 .content .ztree{
     height: 308px;
     overflow: auto;
-    padding:25px 20px 20px;
+    padding:15px 20px 20px;
 }
 .content .quality-dialog-header{
     padding:20px 20px 0;
