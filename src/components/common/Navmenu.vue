@@ -1,9 +1,9 @@
 <template>
     <el-menu theme="" default-active="companyProfile" class="nav-menu" mode="horizontal" router>
-        <el-menu-item index="companyProfile">企业概况</el-menu-item>
-        <el-menu-item index="stuffManage">权限管理</el-menu-item>
-        <el-menu-item index="bimStore">BIM库</el-menu-item>
-        <el-menu-item index="explorer">应用配置</el-menu-item>
+        <el-menu-item index="/companyProfile">企业概况</el-menu-item>
+        <el-menu-item index="/rootManage/stuffManage">权限管理</el-menu-item>
+        <el-menu-item index="/bimStore">BIM库</el-menu-item>
+        <el-menu-item index="/setting/explorer">应用配置</el-menu-item>
     </el-menu>
 </template>
 <script>
