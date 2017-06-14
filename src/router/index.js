@@ -22,11 +22,11 @@ export default new Router({
                     component: resolve => require(['../components/page/powerManage/powerManage.vue'], resolve),
                      children:[
                         {
-                            path: '/stuffManage',
+                            path: 'stuffManage',
                             component: resolve => require(['../components/page/powerManage/stuffManage.vue'], resolve),
                         },
                         {
-                            path: '/roleMeasure',
+                            path: 'roleMeasure',
                             component: resolve => require(['../components/page/powerManage/roleManage.vue'], resolve)
                         }
                     ]
@@ -40,19 +40,19 @@ export default new Router({
                     component: resolve => require(['../components/page/setting/setting.vue'], resolve),
                     children:[
                         {
-                            path: '/explorer',
+                            path: 'explorer',
                             component: resolve => require(['../components/page/setting/explorer.vue'], resolve),
                         },
                         {
-                            path: '/qualityMeasure',
+                            path: 'qualityMeasure',
                             component: resolve => require(['../components/page/setting/qualityMeasure.vue'], resolve)
                         },
                         {
-                            path: '/proTemplate',
+                            path: 'proTemplate',
                             component: resolve => require(['../components/page/setting/proTemplate.vue'], resolve)
                         },
                         {
-                            path: '/formManage',
+                            path: 'formManage',
                             component: resolve => require(['../components/page/setting/formManage.vue'], resolve)
                         }
                     ]
