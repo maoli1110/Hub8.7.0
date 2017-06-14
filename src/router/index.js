@@ -10,7 +10,7 @@ export default new Router({
             redirect: '/login'
         },
         {
-            path: '/companyProfile',
+            path: '/home',
             component: resolve => require(['../components/common/Home.vue'], resolve),
             children:[
                 {
