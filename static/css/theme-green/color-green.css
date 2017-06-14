@@ -8,20 +8,20 @@
     background: #f2f2f2;
 }
 .plugins-tips a{
-    color: #00d1b2;
+    color: #6595f2;
 }
 .el-upload--text em {
-    color: #00d1b2;
+    color: #6595f2;
 }
 .pure-button{
-    background: #00d1b2;
+    background: #6595f2;
 }
 .vue-datasource .btn-primary {
     color: #fff;
-    background-color: #00d1b2 !important;
-    border-color: #00d1b2 !important;
+    background-color: #6595f2 !important;
+    border-color: #6595f2 !important;
 }
 .pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus, .pagination > .active > span, .pagination > .active > span:hover, .pagination > .active > span:focus {
-    background-color: #00d1b2 !important;
-    border-color: #00d1b2 !important;
+    background-color: #6595f2 !important;
+    border-color: #6595f2 !important;
 }

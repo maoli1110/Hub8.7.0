@@ -67,7 +67,7 @@
     width:100%;height:auto;border:1px solid rgb(238, 246, 250)
 }*/
 .content .root-name div:nth-child(1)>p{
-    height:40px;line-height:40px;background:rgb(238, 246, 246);text-align:center;
+    height:40px;line-height:40px;background:#fff;text-align:center;
 }
 .content .substr{
     white-space: nowrap;
@@ -86,7 +86,7 @@
     width: 107px;
 }
 .content .root-el:hover{
-    background:rgb(238, 246, 246)
+    background:#fff
 }
 .content .BMP-process .addRoot{
     padding: 0px 17px;
