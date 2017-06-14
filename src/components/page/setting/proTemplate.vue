@@ -127,7 +127,7 @@
             </div>
             <div class="formEdit-body">
                 <div class="ztree-struc">
-                    <el-input icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:93%" ></el-input>
+                    <el-input id="searchMessage" icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:93%" :on-icon-click="searchTree" ></el-input>
                      <ul class="ztree" id="editTree"></ul>
                 </div>
                 <div class="formLine">
@@ -214,8 +214,8 @@
                         },
                         onExpand: function (event, treeId, treeNode) {
                             level=treeNode.level;
-                        }
-
+                        },
+                        onDblClick:this.onEditDbClick
                     }
                 },
                 zNodes :[
@@ -568,11 +568,24 @@
                     }
                 }
             },
+            searchTree(event){
+                let searchVal = $('#searchMessage').find('input').val();
+                let treeObj = $.fn.zTree.getZtreeObj();
+                let nodes = treeObj.getNodesByParam('isHidden',true)
+            },
             //tab选项卡菜单
             tabClick(tab, event){
                 console.info(tab,'tab')
+            },
+            beforeClick(treeNode){
+                console.log(treeNode,'treeNode')
+            },
+            onEditDbClick(event, treeId, treeNode){
+                console.info(treeNode)
+                if(event.currentTarget.id=='editTree' && !treeNode.isParent){
+                    this.options.push({"label":treeNode.name})
+                }
             }
-
         }
     }
 </script>
