@@ -128,7 +128,8 @@
             <div class="formEdit-body">
                 <div class="ztree-struc">
                     <el-input id="searchMessage" icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:93%" :on-icon-click="searchTree" ></el-input>
-                     <ul class="ztree" id="editTree"></ul>
+                    <div @click="searchTree">搜索</div>
+                    <ul class="ztree" id="editTree"></ul>
                 </div>
                 <div class="formLine">
                     <template>
@@ -184,7 +185,7 @@
     import "static/js/ztree/js/jquery.ztree.core-3.5.js";
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
     import "static/js/ztree/js/jquery.ztree.exedit.js";
-
+    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js"
     let level = 1;
     let maxLevel=-1;
     let newCount = 1;
@@ -208,6 +209,9 @@
                             enable: true
                         }
                     },
+                /*    key: {
+                        children: "nodes"
+                    },*/
                     callback: {
                         onCollapse: function (event, treeId, treeNode) {
                             level=treeNode.level;
@@ -568,10 +572,57 @@
                     }
                 }
             },
-            searchTree(event){
-                let searchVal = $('#searchMessage').find('input').val();
-                let treeObj = $.fn.zTree.getZtreeObj();
-                let nodes = treeObj.getNodesByParam('isHidden',true)
+            //树结构的搜索功能
+            getZtreeParentNode(ztreeNode, nodes) {
+                var pNode = ztreeNode.getParentNode();
+                /*console.log(pNode);*/
+                if (pNode != null) {
+                    if (nodes.indexOf(pNode) < 0) {
+                        nodes.push(pNode);
+                    }
+                    this.getZtreeParentNode(pNode, nodes);
+                }
+            },
+            getZtreeChildNode(ztreeNode, nodes) {
+                if (!ztreeNode.isParent) {
+                    return;
+                }
+                var children = ztreeNode.children;
+                /* console.log(children);*/
+                if (children.length > 0) {
+                    for (var i = 0; i < children.length; i++) {
+                        var child = children[i];
+                        if (nodes.indexOf(child) < 0) {
+                            nodes.push(child);
+                        }
+                        this.getZtreeChildNode(child, nodes);
+                    }
+                }
+            },
+            searchTree(){
+                debugger;
+                var treeObj = $.fn.zTree.getZTreeObj("editTree");
+                var nodes1 = treeObj.getNodesByParam("isHidden", true);
+                var searchVal = $('#searchMessage').find('input').val();
+                /* 将之前隐藏的展示*/
+                if (nodes1.length > 0) {
+                    treeObj.showNodes(nodes1);
+                }
+                var treeNodes = treeObj.transformToArray(treeObj.getNodes());
+                var otherNeedShowNodes = [];
+                // 隐藏不符合搜索条件的节点
+                for (var i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].name.indexOf(searchVal) < 0) {
+                        treeObj.hideNode(treeNodes[i]);
+                    } else {
+                        /*符合条件的父级*/
+                        this.getZtreeChildNode(treeNodes[i], otherNeedShowNodes);
+                        this.getZtreeParentNode(treeNodes[i], otherNeedShowNodes);
+                    }
+                }
+                if (otherNeedShowNodes.length > 0) {
+                    treeObj.showNodes(otherNeedShowNodes);
+                }
             },
             //tab选项卡菜单
             tabClick(tab, event){
