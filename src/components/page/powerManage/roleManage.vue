@@ -2,8 +2,8 @@
 	<div>
 		<section style='margin-top:20px' v-show='flag'>
 			<!--工具条-->
-			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-				<el-form :inline="true" :model="filters">
+			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;height:60px;background:#ffffff;padding:10px 0;border-bottom:1px solid #e6e6e6">
+				<el-form :inline="true" :model="filters" style="padding-left:20px">
 					<el-form-item>
 						<el-input v-model="filters.name" placeholder="姓名" icon="search" style="width: 212px;height: 36px"></el-input>
 					</el-form-item>
@@ -13,22 +13,20 @@
 					<!--<el-form-item>-->
 						<!--<el-button type="primary" @click="handleAdd">新增</el-button>-->
 					<!--</el-form-item>-->
-					
+
 				</el-form>
 			</el-col>
-			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-				<el-form :inline="true" :model="filters">
-					<el-form-item>
+			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px">
+				<el-form :inline="true" :model="filters" style="height:70px">
+					<el-form-item style="padding: 20px 0;">
 						<el-button type="primary" @click="flag=false" style="width: 100px;height: 40px;"><span class="el-icon-plus"></span> 添加人员</el-button>
 					</el-form-item>
-					<el-form-item>
+					<el-form-item style="padding: 20px 0;">
 						<el-button type="primary" @click="handleAdd" style="width: 100px;height: 40px;"><span class="el-icon-delete"></span> 删除人员</el-button>
 					</el-form-item>
 				</el-form>
-			</el-col>
-
-			<!--列表-->
-			<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+				<!--列表-->
+			<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;margin-top:10px;">
 				<el-table-column type="selection" width="100">
 				</el-table-column>
 				<el-table-column type="index" width="100" label="序号">
@@ -57,6 +55,9 @@
 					</template>
 				</el-table-column>
 			</el-table>
+			</el-col>
+
+
 
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">
@@ -120,26 +121,26 @@
 				</div>
 			</el-dialog>
 		</section>
-		<section v-show='!flag' style="padding:10px">
+		<section v-show='!flag'>
 			<!--工具条-->
 			<el-row>
 				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;">
-					<p style="font-size: 18px;font-weight: 700;line-height: 50px" >用户基本信息</p>
+					<p style="font-size: 18px;font-weight: 700;line-height: 60px" >用户基本信息</p>
 				</el-col>
 			</el-row>
 
 			<el-row style="height:200px;padding:25px 10px;position:relative;background-color: #fff;">
 				<el-row style="height:45%">
 					<el-col :span="6">
-						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px" >
+						<el-col :span="4" style="font-size:14px;height:36px;line-height:36px" >
 							用户名:
 						</el-col>
-						<el-col :span="12" style="font-size:12px;height:36px;line-height:36px">
+						<el-col :span="12" style="font-size:14px;height:36px;line-height:36px">
 							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 						</el-col>
 					</el-col>
 					<el-col :span="6">
-                        <el-col :span="4" style="font-size:12px">
+                        <el-col :span="4" style="font-size:14px">
                             备注:
                             <span style="color:skyblue">(150/150)</span>
                         </el-col>
@@ -151,16 +152,16 @@
                 </el-row>
 			</el-row>
 
-			<el-row style="margin-top:20px">
+			<el-row style="margin-top:20px;">
                 <el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;">
-                    <p style="font-size: 18px;font-weight: 700;line-height: 50px" >功能节点授权</p>
+                    <p style="font-size: 18px;font-weight: 700;line-height: 60px" >功能节点授权</p>
                 </el-col>
 			</el-row>
 			<!--表格切换-->
-			<el-row style="background-color: #fff;" >
+			<el-row style="background-color:#fff;" >
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="房建" name="first">
-						<el-row style="background-color: #fff;">
+						<el-row style="background-color:#fff;padding-left:20px">
 							<el-col :span="2" v-for='(item,index) in 5'>
 								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
 									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
@@ -168,10 +169,10 @@
 								</div>
 							</el-col>
 						</el-row>
-						<el-row style="margin-top:20px;">
-
+						<el-row style="margin-top:20px;padding-left:20px">
+                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
 							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
-								<el-table-column label="全部" width="180">
+								<el-table-column label="    全部" width="120" header-align='center'>
 									<template scope="scope">
 										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
 									</template>
@@ -188,177 +189,177 @@
 						</el-row>
 					</el-tab-pane >
 					<el-tab-pane label="市政" name="second">
-                        <el-row>
-                            <el-col :span="2" v-for='(item,index) in 5'>
-                                <div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
-                                    <img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
-                                    <span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:20px">
+                    	<el-row style="background-color: #fff;padding-left:20px">
+							<el-col :span="2" v-for='(item,index) in 5'>
+								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row style="margin-top:20px;padding-left:20px">
+                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+								<el-table-column label="    全部" width="120" header-align='center'>
+									<template scope="scope">
+										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
+									</template>
+								</el-table-column>
+								<el-table-column label="权限列表" header-align='center'>
+									<template scope="scope">
+										<el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+											<el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
+										</el-checkbox-group>
+									</template>
+								</el-table-column>
+							</el-table>
 
-                            <el-table :data="tableData" border style="width: 100%"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
-                                <el-table-column label="全部" width="180">
-                                    <template scope="scope">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="权限列表" header-align='center'>
-                                    <template scope="scope">
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
-                                        </el-checkbox-group>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-
-                        </el-row>
+						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="精装" name="third">
-                        <el-row>
-                            <el-col :span="2" v-for='(item,index) in 5'>
-                                <div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
-                                    <img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
-                                    <span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:20px">
+                       	<el-row style="background-color: #fff;padding-left:20px">
+							<el-col :span="2" v-for='(item,index) in 5'>
+								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row style="margin-top:20px;padding-left:20px">
+                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+								<el-table-column label="    全部" width="120" header-align='center'>
+									<template scope="scope">
+										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
+									</template>
+								</el-table-column>
+								<el-table-column label="权限列表" header-align='center'>
+									<template scope="scope">
+										<el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+											<el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
+										</el-checkbox-group>
+									</template>
+								</el-table-column>
+							</el-table>
 
-                            <el-table :data="tableData" border style="width: 100%"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
-                                <el-table-column label="全部" width="180">
-                                    <template scope="scope">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="权限列表" header-align='center'>
-                                    <template scope="scope">
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
-                                        </el-checkbox-group>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-
-                        </el-row>
+						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="装配式" name="">
-                        <el-row>
-                            <el-col :span="2" v-for='(item,index) in 5'>
-                                <div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
-                                    <img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
-                                    <span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:20px">
+                       	<el-row style="background-color: #fff;padding-left:20px">
+							<el-col :span="2" v-for='(item,index) in 5'>
+								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row style="margin-top:20px;padding-left:20px">
+                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+								<el-table-column label="    全部" width="120" header-align='center'>
+									<template scope="scope">
+										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
+									</template>
+								</el-table-column>
+								<el-table-column label="权限列表" header-align='center'>
+									<template scope="scope">
+										<el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+											<el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
+										</el-checkbox-group>
+									</template>
+								</el-table-column>
+							</el-table>
 
-                            <el-table :data="tableData" border style="width: 100%"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
-                                <el-table-column label="全部" width="180">
-                                    <template scope="scope">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="权限列表" header-align='center'>
-                                    <template scope="scope">
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
-                                        </el-checkbox-group>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-
-                        </el-row>
+						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="CIM" name="">
-                        <el-row>
-                            <el-col :span="2" v-for='(item,index) in 5'>
-                                <div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
-                                    <img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
-                                    <span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:20px">
+                     	<el-row style="background-color: #fff;padding-left:20px">
+							<el-col :span="2" v-for='(item,index) in 5'>
+								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row style="margin-top:20px;padding-left:20px">
+                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+								<el-table-column label="    全部" width="120" header-align='center'>
+									<template scope="scope">
+										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
+									</template>
+								</el-table-column>
+								<el-table-column label="权限列表" header-align='center'>
+									<template scope="scope">
+										<el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+											<el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
+										</el-checkbox-group>
+									</template>
+								</el-table-column>
+							</el-table>
 
-                            <el-table :data="tableData" border style="width: 100%"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
-                                <el-table-column label="全部" width="180">
-                                    <template scope="scope">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="权限列表" header-align='center'>
-                                    <template scope="scope">
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
-                                        </el-checkbox-group>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-
-                        </el-row>
+						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="鲁班通" name="">
-                        <el-row>
-                            <el-col :span="2" v-for='(item,index) in 5'>
-                                <div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
-                                    <img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
-                                    <span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:20px">
+                      	<el-row style="background-color: #fff;padding-left:20px">
+							<el-col :span="2" v-for='(item,index) in 5'>
+								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row style="margin-top:20px;padding-left:20px">
+                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+								<el-table-column label="    全部" width="120" header-align='center'>
+									<template scope="scope">
+										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
+									</template>
+								</el-table-column>
+								<el-table-column label="权限列表" header-align='center'>
+									<template scope="scope">
+										<el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+											<el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
+										</el-checkbox-group>
+									</template>
+								</el-table-column>
+							</el-table>
 
-                            <el-table :data="tableData" border style="width: 100%"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
-                                <el-table-column label="全部" width="180">
-                                    <template scope="scope">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="权限列表" header-align='center'>
-                                    <template scope="scope">
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
-                                        </el-checkbox-group>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-
-                        </el-row>
+						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="管理后台" name="">
-                        <el-row>
-                            <el-col :span="2" v-for='(item,index) in 5'>
-                                <div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
-                                    <img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
-                                    <span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:20px">
+                       	<el-row style="background-color: #fff;padding-left:20px">
+							<el-col :span="2" v-for='(item,index) in 5'>
+								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
+									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
+									<span style="margin:14px 0 14px 0;display:inline-block;font-size:8px">Explorer{{index}}</span>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row style="margin-top:20px;padding-left:20px">
+                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+								<el-table-column label="    全部" width="120" header-align='center'>
+									<template scope="scope">
+										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
+									</template>
+								</el-table-column>
+								<el-table-column label="权限列表" header-align='center'>
+									<template scope="scope">
+										<el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+											<el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
+										</el-checkbox-group>
+									</template>
+								</el-table-column>
+							</el-table>
 
-                            <el-table :data="tableData" border style="width: 100%"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
-                                <el-table-column label="全部" width="180">
-                                    <template scope="scope">
-                                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="权限列表" header-align='center'>
-                                    <template scope="scope">
-                                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                            <el-checkbox v-for="city in cities" :label="city" :key="city" style="margin-left:50px">{{city}}</el-checkbox>
-                                        </el-checkbox-group>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-
-                        </el-row>
+						</el-row>
 					</el-tab-pane>
 				</el-tabs>
 			</el-row>
 			<!--确定取消-->
-			<el-row :gutter="30" style="margin-top:30px">
+			<el-row :gutter="30" style="background-color:#fff;padding:40px 0">
 				<el-col :span="6" :offset="6">
 					<el-button type="info" style="float:right" @click='flag=true'>确定</el-button>
 				</el-col>
@@ -472,15 +473,15 @@ export default {
 	},
 	methods: {
 		handleCheckAllChange(event) {
+			console.log(event.target.checked);
 			this.checkedCities = event.target.checked ? cityOptions : [];
 			this.isIndeterminate = false;
-			// console.log(event.target.checked);
 		},
 		handleCheckedCitiesChange(value) {
+			console.log(value);
 			let checkedCount = value.length;
 			this.checkAll = checkedCount === this.cities.length;
 			this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-			// console.log(value);
 		},
 		//性别显示转换
 		formatSex: function (row, column) {
@@ -630,7 +631,7 @@ export default {
 
 <style scoped>
 .check{
-	background-color: #e2e2e2;
+	background-color: #f5f8fd;
 }
 .inputStyle{
 	width: 304px !important;
@@ -664,4 +665,5 @@ export default {
 .clearfix:after {
 	clear: both
 }
+.el-tabs__item{padding:0 16px;height:60px;width: 170px;box-sizing:border-box;line-height:60px;display:inline-block;list-style:none;font-size:14px;color:#444444;position:relative;text-align: center}
 </style>

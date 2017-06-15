@@ -1,9 +1,9 @@
 <template>
     <div>
         <v-sidebar v-bind:navMenuProp="navMenuData"></v-sidebar>
-        <div class="content">
-            <el-menu     default-active='stuffManage' class="el-menu-demo" mode="horizontal" router >
-                <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump"  >{{menusdata.name}} </el-menu-item>
+        <div class="content_" >
+            <el-menu     default-active='stuffManage' class="el-menu-demo" mode="horizontal" router style="height:57px" >
+                <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump" style="font-size:16px;font-weight:700;line-height:57px"  >{{menusdata.name}} </el-menu-item>
             </el-menu>
             <router-view></router-view>
         </div>
@@ -39,3 +39,18 @@
         }
     }
 </script>
+<style>
+.content_{
+    background: none repeat scroll 0 0 #f5f8fd;
+    position: absolute;
+    left: 305px;
+    right: 0;
+    top: 150px;
+    bottom:0;
+    width: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+</style>
+

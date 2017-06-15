@@ -1,10 +1,9 @@
 <template>
 	<div>
 		<section style='margin-top:20px' v-show='flag'>
-			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-	
-				<el-form :inline="true" :model="filters">
-					<span style="display:inline-block;font-size:12px;height:36px;line-height:36px">角色:</span>
+			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;height:60px;background:#ffffff;padding:10px 0;border-bottom:1px solid #e6e6e6">	
+				<el-form :inline="true" :model="filters" style="padding-left:20px">
+					<span style="display:inline-block;font-size:14px;height:36px;line-height:36px">角色: </span>
 					<el-form-item>
 						<el-select v-model="value" placeholder="请选择">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
@@ -21,25 +20,23 @@
 					</el-form-item>
 				</el-form>
 			</el-col>
-			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-				<el-form :inline="true" :model="filters">
-					<el-form-item>
+			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px" >
+				<el-form :inline="true" :model="filters"  style="height:70px">
+					<el-form-item style="padding: 20px 0;">
 						<el-button type="primary" v-on:click="flag=false" style="width: 100px;height: 40px;">
 							<span class="el-icon-plus"></span> 添加人员</el-button>
 					</el-form-item>
-					<el-form-item>
+					<el-form-item style="padding: 20px 0;">
 						<el-button type="primary" @click="handleAdd" style="width: 100px;height: 40px;">
 							<span class="el-icon-plus"></span> 批量添加</el-button>
 					</el-form-item>
-					<el-form-item>
+					<el-form-item style="padding: 20px 0;">
 						<el-button type="primary" @click="handleAdd" style="width: 100px;height: 40px;">
 							<span class="el-icon-delete"></span> 删除人员</el-button>
 					</el-form-item>
 				</el-form>
-			</el-col>
-	
-			<!--列表-->
-			<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+				<!--列表-->
+			<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;margin-top:10px;">
 				<el-table-column type="selection" width="100">
 				</el-table-column>
 				<el-table-column type="index" width="100" label="序号">
@@ -50,7 +47,7 @@
 				</el-table-column>
 				<el-table-column prop="age" label="电话" width="120">
 				</el-table-column>
-				<el-table-column prop="birth" label="邮箱" width="180">
+				<el-table-column prop="birth" label="邮箱" width="160">
 				</el-table-column>
 				<el-table-column prop="addr" label="更新时间" min-width="120" sortable>
 				</el-table-column>
@@ -68,6 +65,9 @@
 					</template>
 				</el-table-column>
 			</el-table>
+			</el-col>
+	
+			
 	
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">
@@ -148,15 +148,15 @@
 			</el-dialog>
 	
 		</section>
-		<section v-show="!flag" style="padding:10px">
+		<section v-show="!flag" >
 			<el-row>
-				<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-					<p>用户基本信息</p>
+				<el-col :span="24" class="toolbar"  style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;">
+					<p style="font-size: 18px;font-weight: 700;line-height: 60px" >用户基本信息</p>
 				</el-col>
 			</el-row>
 	
-			<el-row style="margin-top:20px;height:200px;padding:25px 10px;position:relative">
-				<el-row style="height:45%">
+			<el-row style="margin-top:20px;padding:30px 10px;position:relative;background-color: #fff;">
+				<el-row style="">
 					<el-col :span="6">
 						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
 							用户名:
@@ -174,7 +174,7 @@
 						</el-col>
 					</el-col>
 				</el-row>
-				<el-row style="height:45%">
+				<el-row style="margin-top:20px">
 					<el-col :span="6">
 						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
 							密码:
@@ -192,7 +192,7 @@
 						</el-col>
 					</el-col>
 				</el-row>
-				<el-row style="height:45%">
+				<el-row style="margin-top:20px">
 					<el-col :span="6">
 						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
 							电话:
@@ -223,13 +223,13 @@
 				</el-row>
 			</el-row>
 	
-			<el-row style="margin-top:40px">
-				<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-					<p>功能节点授权</p>
-				</el-col>
+			<el-row style="margin-top:20px;">
+                <el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;">
+                    <p style="font-size: 18px;font-weight: 700;line-height: 60px" >功能节点授权</p>
+                </el-col>
 			</el-row>
 			<!--表格切换-->
-			<el-row style="border-bottom: 1px solid rgb(209, 229, 229)">
+			<el-row  style="background-color:#fff;">
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="房建" name="first">
 						<el-tabs type="card">
@@ -285,6 +285,8 @@
 					</el-tab-pane>
 				</el-tabs>
 			</el-row>
+
+			<el-row  style="background-color:#fff;padding-left:20px;border-bottom: 1px solid #e6e6e6">
 			<!--项目授权-->
 			<el-row>
 				<el-col :span="24">
@@ -356,7 +358,7 @@
 							</el-col>
 							<el-col :span="2">
 								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info" @click="authority_m" v-if='!checked'>授权</el-button>
+									<el-button type="info" @click="authority_n" v-if='!checked'>授权</el-button>
 									<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 								</div>
 							</el-col>
@@ -386,7 +388,7 @@
 							</el-col>
 							<el-col :span="2">
 								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info" @click="authority_m" v-if='!checked'>授权</el-button>
+									<el-button type="info" @click="authority_o" v-if='!checked'>授权</el-button>
 									<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 								</div>
 							</el-col>
@@ -416,7 +418,7 @@
 							</el-col>
 							<el-col :span="2">
 								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info" @click="authority_m" v-if='!checked'>授权</el-button>
+									<el-button type="info" @click="authority_p" v-if='!checked'>授权</el-button>
 									<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 								</div>
 							</el-col>
@@ -446,7 +448,7 @@
 							</el-col>
 							<el-col :span="2">
 								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info" @click="authority_m" v-if='!checked'>授权</el-button>
+									<el-button type="info" @click="authority_q" v-if='!checked'>授权</el-button>
 									<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 								</div>
 							</el-col>
@@ -506,7 +508,7 @@
 					</div>
 				</el-col>
 			</el-row>
-			<el-row style="border-bottom: 1px solid rgb(209, 229, 229)">
+			<el-row >
 				<el-col :span="24">
 					<div class="grid-content bg-purple">
 						<el-row>
@@ -524,7 +526,7 @@
 							</el-col>
 							<el-col :span="2">
 								<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
-									<el-button type="info" @click="authority_m" v-if='!checked'>授权</el-button>
+									<el-button type="info" @click="authority_r" v-if='!checked'>授权</el-button>
 									<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 								</div>
 							</el-col>
@@ -537,8 +539,10 @@
 					</div>
 				</el-col>
 			</el-row>
+
+            </el-row>
 			<!--确定取消-->
-			<el-row :gutter="30" style="margin-top:30px">
+			<el-row :gutter="30" style="background-color:#fff;padding:40px 0">
 				<el-col :span="6" :offset="6">
 					<el-button type="info" style="float:right" @click='flag=true'>确定</el-button>
 				</el-col>
@@ -704,22 +708,32 @@
 				</el-row>
 	
 				<!--表格-->
+				<div style="position:absolute;right:64px;top:135px;z-index:10">
+					<el-radio-group v-model="radio2">
+						<el-radio :label="0" style="">默认</el-radio>
+						<el-radio :label="1" style="">I级</el-radio>
+						<el-radio :label="2" style="">II级</el-radio>
+						<el-radio :label="3" style="">III级</el-radio>
+					</el-radio-group>
+				</div>
 				<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;margin-top:20px">
 					<el-table-column type="index" width="180" label="单位工程名称">
 					</el-table-column>
-					<el-table-column prop="name" label="专业" width="120">
+					<el-table-column prop="name" label="专业" width="100">
 					</el-table-column>
 					<el-table-column prop="sex" label="工程类型" width="150" :formatter="formatSex">
 					</el-table-column>
-					<el-table-column prop="age" label="所属项目部" width="180">
+					<el-table-column prop="age" label="所属项目部" width="120">
 					</el-table-column>
-					<el-table-column label="级别" width="280">
+					<el-table-column label="级别" width="360">
 						<template scope="scope">
-							<div style="padding-left:30px">
-								<el-checkbox></el-checkbox>
-								<el-checkbox></el-checkbox>
-								<el-checkbox></el-checkbox>
-								<el-checkbox></el-checkbox>
+							<div style="padding-left:70px">
+								<el-radio-group v-model="radio2">
+									<el-radio :label="0" style="color:#ffff">默认</el-radio>
+									<el-radio :label="1" style="color:#ffff">I级</el-radio>
+									<el-radio :label="2" style="color:#ffff">II级</el-radio>
+									<el-radio :label="3" style="color:#ffff">III级</el-radio>
+								</el-radio-group>
 							</div>
 						</template>
 					</el-table-column>
@@ -874,8 +888,9 @@ const cityOptions = ['0', '1', '2', '3'];
 export default {
 	data() {
 		return {
+			radio2: 3,
 			checked: true,
-			powerProduct: [1, 1, 1, 1, 1, 1, 1],
+			powerProduct: [1, 0, 1, 1, 1, 1, 1,0],
 			checkedCities1: ['0'],
 			currentIndex: '',
 			cities: cityOptions,
@@ -1287,6 +1302,10 @@ export default {
 	font-size: 14px;
 	color: grey;
 }
+
+
+
+
 
 
 
