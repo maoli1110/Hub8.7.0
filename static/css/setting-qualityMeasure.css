@@ -212,27 +212,40 @@
     height:393px;overflow:auto;border:1px solid #ddd;
 }
 .proTemplate .proTemplate-edit  .pro-sear-area{
-    margin:15px 0 ;
+    padding:10px 0 ;border-left:1px solid #ddd;border-right:1px solid #ddd;
+}
+.proTemplate .proTemplate-edit  .pro-sear-area .el-input{
+    width:94% !important;margin-left:12px;
 }
 .proTemplate .proTemplate-edit .sear-icon{
    float:right;margin-top:10px;
 }
-.pro-sear-area .sear-icon >span:first-child{
-    margin-left:20px;
+.sear-icon .el-icon-search{
+    font-size:16px;
 }
-.pro-sear-area .sear-icon>span{
-    width: 16px;
-    height: 15px;
-    display: inline-block;
-    border: 1px solid #ddd;
+
+.proTemplate-edit .sear-icon>span{
+    width: 18px;
+    height: 18px;
+    float:left;
     text-align: center;
-    line-height: 15px;
+    line-height: 18px;
+    background:#4778C7;color:#fff;font-weight:bold;margin:0 5px;
+}
+.proTemplate-edit .sear-icon>span:last-child{
+    margin-right:10px !important;
 }
 .proTemplate .proTemplate-edit .handle-icon{
-    margin:15px 10px;
+    float:left;
+}
+.proTemplate .proTemplate-edit .handle-icon i:first-child{
+    border-left:1px solid #ddd;
 }
 .proTemplate .proTemplate-edit .handle-icon i{
-    font-size:20px;margin-right:15px;
+    font-size:16px;width:35px;height:35px;float:left;border:1px solid #ddd;border-left:none;text-align:center;line-height:35px;
+}
+.proTemplate .proTemplate-edit .handle-icon i:hover{
+    background:#648fd4;color:#fff;
 }
 .proTemplate .proTemplate-edit .createNodes{
     display: inline-block;
@@ -241,7 +254,7 @@
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    top:113px;
+    top:69px;
 }
 /*树结构对应的表单*/
 .project-form .project-form-tit{

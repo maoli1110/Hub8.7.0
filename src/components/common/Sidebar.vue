@@ -31,7 +31,7 @@
         props:['navMenuProp'],
         computed:{
             onRoutes(){
-                return this.$route.path.replace('/','');
+                return this.$route.path;
                 // return this.navMenuProp.defaultActive;
             }
         }
@@ -46,6 +46,7 @@
         left: 0;
         top: 150px;
         bottom:0;
+        padding-top: 20px;
     }
     .sidebar > ul {
         height:100%;
