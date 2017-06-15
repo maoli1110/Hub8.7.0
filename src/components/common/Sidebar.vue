@@ -46,6 +46,7 @@
         left: 0;
         top: 150px;
         bottom:0;
+        padding-top: 20px;
     }
     .sidebar > ul {
         height:100%;
