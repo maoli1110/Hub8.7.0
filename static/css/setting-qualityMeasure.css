@@ -298,7 +298,7 @@
 }
 .project-form .project-form-ele .project-sultable{
     height: 58px;
-    background: #ccc;
+    background: #f5f5f5;
     padding: 0 10px;
     line-height: 58px;
     text-align: center;
@@ -309,7 +309,7 @@
     padding: 0 0 0 20px;
 }
 .project-form .project-form-ele ul li:hover{
-    background:#ddd;
+    background:#f5f5f5;
 }
 .proTemplate-edit .pro-butons{
     padding:10px 0 ;text-align:center;
@@ -420,4 +420,11 @@
 }
 .content .quality-dialog-footer{
     text-align:center;
+}
+.ztree li a.curSelectedNode{
+    background:transparent !important;
+    border-color:transparent !important;
+}
+.ztree ul>li:hover{
+    background:#f5f5f5;
 }
