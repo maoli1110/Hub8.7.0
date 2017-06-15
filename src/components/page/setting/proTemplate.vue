@@ -1,13 +1,14 @@
 <template>
     <div class="proTemplate">
-        <el-row>
-            <el-col :span="24">
-                <el-menu  class="el-menu-demo" mode="horizontal" router >
-                    <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-                </el-menu>
-            </el-col>
-        </el-row>
+
         <div v-if="!EditVisible">
+            <el-row>
+                <el-col :span="24">
+                    <el-menu  class="el-menu-demo" mode="horizontal" router >
+                        <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+                    </el-menu>
+                </el-col>
+            </el-row>
             <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
                 <el-table-column width="30" type="selection">
                 </el-table-column>
@@ -42,57 +43,76 @@
         <!--工程模板编辑页面-->
         <div class="proTemplate-edit" v-show="EditVisible">
            <el-row>
-               <el-col  :span="24" class="pro-nav-path">
-                   <span>工程模板</span>&nbsp;&gt;&nbsp;<span>编辑</span>
-               </el-col>
-               <el-col :span="10">模板名称：<el-input placeholder="请输入模板名称"></el-input></el-col>
+               <!--<el-col  :span="24" class="pro-nav-path">-->
+                   <!--<span>工程模板</span>&nbsp;&gt;&nbsp;<span>编辑</span>-->
+               <!--</el-col>-->
+               <div class="template-name clearfix">
+                    <el-col :span="10" >模板名称：<el-input placeholder="请输入模板名称"></el-input></el-col>
+               </div>
            </el-row>
-            <el-row class="pro-ztreeInfo">
-                <el-col :span="10" style="padding-right:20px;">
-                    <p>工程划分：</p>
-                    <div style="padding:10px;border:1px solid #ddd;" class="clearfix">
-                        <div class="handle-icon clearfix" >
-                            <el-icon class="el-icon-document"  @click.native="showCreateNodes= true"></el-icon>
+            <el-row class="pro-ztreeInfo clearfix">
+                <el-col :span="10" style="padding:0 15px;">
+                    <p class="title-name">工程划分：</p>
+                    <div style="padding:10px;border:1px solid #ddd;border-bottom:none;" class="clearfix">
+                        <div class="handle-icon clearfix" style="float:left;">
+                            <div @mouseover="showCreateNodes= true" class="clearfix" style="float:left;position:relative;">
+                                <el-icon class="el-icon-document"  > </el-icon>
+                                <div class="createNodes" v-show="showCreateNodes" @mouseout="showCreateNodes= false">
+                                    <p id="addLeaf" @click="add">添加单个子节点</p>
+                                    <p @click="textAreaVisible=true">添加多个子节点</p>
+                                </div>
+                            </div>
                             <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
                             <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
                             <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
                             <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>
                         </div>
                         <div class="sear-icon">
+                            <el-input  placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree"></el-input>
                             <span id="expandBtn">+</span>
                             <span id="collapseBtn">-</span>
-                            <el-icon class="el-icon-search" @click.native="searchBtnsShow"></el-icon>
+                        <!--    <p style="display:inline-block" @click="searchBtnsShow" class="searchDiv">
+                                <el-icon class="el-icon-search"></el-icon>
+                            </p>-->
                         </div>
                     </div>
-                    <div class="pro-sear-area" v-show="proSearchBtns">
+                <!--    <div class="pro-sear-area" v-show="proSearchBtns">
                         <el-input  placeholder="请输入内容" icon="search" :on-icon-click="searchProTree"></el-input>
-                    </div>
-                    <div class="createNodes" v-show="showCreateNodes">
-                        <p id="addLeaf" @click="add">添加单个子节点</p>
-                        <p @click="textAreaVisible=true">添加多个子节点</p>
-                    </div>
+                    </div>-->
+
                     <ul class="ztree" id="proZtree"></ul>
                 </el-col>
                 <el-col :span="14" class="project-form">
                     <p class="project-form-tit">包含表单</p>
-                    <el-select v-model="value" placeholder="请选择" >
-                        <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <el-icon class="el-icon-edit" style="float:right;margin-top:10px;" @click.native="formEditVisible = true"></el-icon>
+                    <div class="project-form-list">
+                        <el-select v-model="value" placeholder="请选择"  @change="selectTestAval">
+                            <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+
+                            >
+                            </el-option>
+                        </el-select>
+                        <el-icon class="el-icon-edit" style="float:right;margin-top:10px;" @click.native="formEditVisible = true"></el-icon>
+                    </div>
                     <div class="project-form-ele">
                         <ul>
+                            <p class="project-sultable">工序检验</p>
+                            <li>叶子元素</li>
+                            <li>叶子元素</li>
+                            <li>叶子元素</li>
+                        </ul>
+                        <ul v-show="testAval">
+                            <p class="project-sultable">工序检验</p>
                             <li>叶子元素</li>
                             <li>叶子元素</li>
                             <li>叶子元素</li>
                         </ul>
                     </div>
                 </el-col>
-                <el-col :span="24" class="pro-butons">
+                <el-col :span="24" class="pro-butons clearfix">
                     <el-button type="primary" @click="proOk">确定</el-button>
                     <el-button type="primary" @click="proCancel">取消</el-button>
                 </el-col>
@@ -140,6 +160,7 @@
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value"
+                                @change="selectTestAval"
                             >
                             </el-option>
                         </el-select>
@@ -195,6 +216,7 @@
     let type = '';
     let operObj = '';
     let nodes,treeNode;
+    let searchBtnCount = 1;
     export default{
         data(){
             return {
@@ -221,7 +243,8 @@
                         onExpand: function (event, treeId, treeNode) {
                             level=treeNode.level;
                         },
-                        onDblClick:this.onEditDbClick
+                        onDblClick:this.onEditDbClick,
+                        beforeRename:this.zTreeBeforName,
                     }
                 },
                 zNodes :[
@@ -280,6 +303,7 @@
                 activeName2:'first',
                 maxFlag:false,
                 proSearchBtns:false,
+                testAval:false,
                 formInfo2:{"progress":"路基工程","subProgress":"路基土石方工程","subType":"土方工程"}
             }
         },
@@ -301,7 +325,10 @@
             $("#addLeaf").bind("click", {"isParent":false}, this.add);
             $('#proBtnOk').bind('click', {"isParent":false},this.addMoreNodes);
             $('#searchMessage>input').bind('keydown', this.searchTree)//搜索事件绑定到元素
-            $('body').not('.el-icon-search').bind('click',this.hideSearBtn)
+            $('.sear-icon input').bind('keydown',this.searchProTree)
+          /*  $('.searchDiv').bind('click',this.searchBtnsShow);
+            $('.pro-sear-area').bind('click',this.searchBtnsShow)
+            $('body').bind('click',this.hideSearBtn)*/
         },
         methods: {
             handleSizeChange(){
@@ -637,10 +664,9 @@
                 }
             },
             searchProTree(event){
-                console.log(event);
                 var treeObj = $.fn.zTree.getZTreeObj('proZtree');
                 var nodes1 = treeObj.getNodesByParam("isHidden", true);
-                var searchVal = $('#searchMessage').find('input').val();
+                var searchVal = $('.sear-icon').find('input').val();
                 /* 将之前隐藏的展示*/
                 if (nodes1.length > 0) {
                     treeObj.showNodes(nodes1);
@@ -663,15 +689,15 @@
                     }
                 }
             },
-            searchBtnsShow(){//设置搜索框显示
-//                this.proSearchBtns = true;
-                this.proSearchBtns = ! this.proSearchBtns;
-            },
-            hideSearBtn(event){//设置搜索框显示
-                this.proSearchBtns = false;
-                console.info('123')
-                event.stopPropagation()
-
+            zTreeBeforName(treeId, treeNode, newName, isCancel){//重命名之前的操作
+                var treeObj = $.fn.zTree.getZTreeObj('proZtree');
+                var nodes = treeObj.transformToArray(treeObj.getNodes());
+                for(var i = 0;i<nodes.length;i++){
+                    if(nodes[i].name==newName){
+                        treeObj.cancelEditName();
+                        return false
+                    }
+                }
             },
             //tab选项卡菜单
             tabClick(tab, event){
@@ -688,6 +714,16 @@
                 console.info(treeNode)
                 if(event.currentTarget.id=='editTree' && !treeNode.isParent){
                     this.options.push({"label":treeNode.name})
+                }
+            },
+            selectTestAval(){//检验评定
+                console.log(this.value);
+                if(this.value=='选项2'){
+                    this.testAval = true;
+                    this.maxFlag = true;
+                }else{
+                    this.testAval = false;
+                    this.maxFlag = false;
                 }
             }
         }

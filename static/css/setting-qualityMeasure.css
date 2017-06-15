@@ -204,12 +204,22 @@
 .proTemplate .proTemplate-edit .pro-nav-path{
     padding-bottom:20px;
 }
+.proTemplate .proTemplate-edit .template-name{
+    margin:10px 0 ;background:#fff;padding:10px;margin-bottom:0;
+    -webkit-box-shadow: 1px 0 6px #cccaca;
+    -moz-box-shadow: 1px 0 6px  #cccaca;
+    box-shadow: 1px 0 6px  #cccaca;
+}
 /*pro-ztreeInfo*/
 .proTemplate .proTemplate-edit .pro-ztreeInfo{
-    height:500px;margin-top:20px;
+    margin-top:20px;
+    -webkit-box-shadow: 1px 0px 6px #cccaca;
+    -moz-box-shadow: 1px 0px 6px #cccaca;
+    box-shadow: 1px 0px 6px #cccaca;
+    background:#fff;
 }
 .proTemplate .proTemplate-edit .pro-ztreeInfo .ztree{
-    height:393px;overflow:auto;border:1px solid #ddd;
+    height:414px;overflow:auto;border:1px solid #ddd;
 }
 .proTemplate .proTemplate-edit  .pro-sear-area{
     padding:10px 0 ;border-left:1px solid #ddd;border-right:1px solid #ddd;
@@ -218,19 +228,24 @@
     width:94% !important;margin-left:12px;
 }
 .proTemplate .proTemplate-edit .sear-icon{
-   float:right;margin-top:10px;
+   float:right;
+}
+.sear-icon  .el-input{
+    width:74% !important;display:inline-block;
 }
 .sear-icon .el-icon-search{
     font-size:16px;
 }
-
+.proTemplate-edit .title-name{
+    font-size:14px;font-weight:bold;margin:15px 0px;
+}
 .proTemplate-edit .sear-icon>span{
     width: 18px;
     height: 18px;
-    float:left;
+    float:right;
     text-align: center;
     line-height: 18px;
-    background:#4778C7;color:#fff;font-weight:bold;margin:0 5px;
+    background:#4778C7;color:#fff;font-weight:bold;margin:0 5px;margin-top:8px;
 }
 .proTemplate-edit .sear-icon>span:last-child{
     margin-right:10px !important;
@@ -251,17 +266,42 @@
     display: inline-block;
     position: absolute;
     background: #fff;
-    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    top:69px;
+    top:40px;
+    left:0px;
+    width:120px;
+}
+.proTemplate .proTemplate-edit .createNodes p{
+    line-height:32px;
+    height:32px;
+    padding:0 10px;
+}
+.proTemplate .proTemplate-edit .createNodes p:hover{
+    background:#ccc;
 }
 /*树结构对应的表单*/
+.project-form{
+    padding:15px;padding-left:0;
+}
 .project-form .project-form-tit{
-    padding-bottom:15px;
+    padding-bottom:15px;font-weight:bold;
+}
+.project-form .project-form-list{
+    border:1px solid #ddd;padding:10px;
+}
+.project-form .project-form-list .el-input{
+    width:100% !important;
 }
 .project-form .project-form-ele{
-    height:430px;border:1px solid #ddd;width:100%;margin-top:15px;
+    height:450px;border:1px solid #ddd;width:100%;border-top:none;overflow:auto;
+}
+.project-form .project-form-ele .project-sultable{
+    height: 58px;
+    background: #ccc;
+    padding: 0 10px;
+    line-height: 58px;
+    text-align: center;
 }
 .project-form .project-form-ele ul li{
     list-style: none;
@@ -322,7 +362,7 @@
     width:106% !important;
 }
  .form-table{
-    height: 246px;
+    max-height: 246px;
     overflow: auto;
 }
 .checked-title{
