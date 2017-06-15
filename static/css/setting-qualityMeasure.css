@@ -67,7 +67,7 @@
     width:100%;height:auto;border:1px solid rgb(238, 246, 250)
 }*/
 .content .root-name div:nth-child(1)>p{
-    height:40px;line-height:40px;background:rgb(238, 246, 246);text-align:center;
+    height:40px;line-height:40px;background:#fff;text-align:center;
 }
 .content .substr{
     white-space: nowrap;
@@ -86,7 +86,7 @@
     width: 107px;
 }
 .content .root-el:hover{
-    background:rgb(238, 246, 246)
+    background:#fff
 }
 .content .BMP-process .addRoot{
     padding: 0px 17px;
@@ -277,6 +277,85 @@
 }
 .form-change .dialog-changeForm>.priview-le:last-child{
     border:none;
+}
+/*表单编辑*/
+.formEdit{
+    position:fixed;left:50%;top:50%;z-index:3000;width:700px;background:#fff;height:600px;margin-left:-350px;margin-top:-350px;padding:20px;
+}
+.proTemplate .formEidt-title{
+    margin-bottom:10px;
+}
+.proTemplate .formEidt-title span{
+    font-size:18px;
+}
+.proTemplate .formEidt-title i{
+    float:right;
+}
+/*添加树结构*/
+.formEdit-body .ztree-struc{
+    width:48%;height:416px;display:inline-block;border:1px solid #ddd;vertical-align: top;
+}
+.formEdit-body .ztree-struc .ztree{
+    /*height:367px !important;*/
+}
+.formEdit-body .ztree-struc input{
+    padding:10px !important;width:100% !important;
+}
+/*添加的表格*/
+.formEdit-body .formLine{
+    display:inline-block;border:1px solid #ddd;width:48%;height:416px;vertical-align: top;float:right;
+}
+.formEdit-body .formLine .el-input{
+    width:106% !important;
+}
+ .form-table{
+    height: 246px;
+    overflow: auto;
+}
+.checked-title{
+    height:35px;line-height:35px;margin:10px 10px;border:1px solid #ddd;border-radius:5px;padding-left:10px;
+}
+.formLine .form-dropDown{
+    position:relative;
+}
+.formLine .el-tabs__item {
+    height: 29px !important;
+    box-sizing: border-box;
+    line-height: 31px!important;
+    position: relative;
+    background: #ccc;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin-left: 10px;
+    color:deepskyblue;
+}
+.formLine .is-active{
+    background:#fff !important;
+    color:#000;
+}
+.formLine .form-table li{
+    list-style:none;line-height:40px;height:40px;padding-left:10px;border-bottom:1px solid #ddd;
+}
+.formLine .form-table li:hover{
+    background:#ddd;
+}
+.formLine .form-total{
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    border-bottom: 1px solid #ddd;text-align:right
+}
+/*form-btns*/
+ .formBtn{
+    text-align: center;
+    margin-top: 36px;
+}
+.formParams {
+    display:inline-block !important;font-weight:bold;height: 53px;width:32%;
+    line-height: 49px;
+}
+ .formParams>span{
+    font-weight:normal;
 }
 .content .ztree{
     height: 308px;

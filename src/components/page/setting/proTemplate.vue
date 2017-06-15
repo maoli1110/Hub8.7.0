@@ -81,7 +81,7 @@
                             :value="item.value">
                         </el-option>
                     </el-select>
-                    <el-icon class="el-icon-edit" style="float:right;margin-top:10px;"></el-icon>
+                    <el-icon class="el-icon-edit" style="float:right;margin-top:10px;" @click.native="formEditVisible = true"></el-icon>
                     <div class="project-form-ele">
                         <ul>
                             <li>叶子元素</li>
@@ -95,6 +95,7 @@
                     <el-button type="primary" @click="proCancel">取消</el-button>
                 </el-col>
             </el-row>
+            <!--增加多个节点弹框-->
             <el-dialog title="增加多个节点" :visible.sync="textAreaVisible">
                 <el-input
                     type="textarea"
@@ -109,10 +110,73 @@
                     <el-button type="primary" id="proBtnOk" @click="textAreaVisible = false,addMoreNodes">确 定</el-button>
                 </div>
             </el-dialog>
+            <!--表单编辑-->
+            <el-dialog title="添加" :visible.sync="formEditVisible" style="width:10%;position:fixed;left:50%;opacity:0;"></el-dialog>
+
 
         </div>
-    </div>
+        <div class="formEdit" v-show="formEditVisible">
+            <div class="formEidt-title">
+                <span>添加</span>
+                <el-icon class="el-icon-close" @click.native="formEditVisible=false"></el-icon>
+            </div>
+            <div :form-info="formInfo2" style="border-top:1px solid #ddd;" class="">
+                <div  class="formParams"><span>单位工程：</span>{{formInfo2.progress}}</div>
+                <div class="formParams"><span>分部项目：</span>{{formInfo2.subProgress}}</div>
+                <div class="formParams"><span>分项工程：</span>{{formInfo2.subType}}</div>
+            </div>
+            <div class="formEdit-body">
+                <div class="ztree-struc">
+                    <el-input id="searchMessage" icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:93%" :on-icon-click="searchTree" ></el-input>
+                    <div @click="searchTree">搜索</div>
+                    <ul class="ztree" id="editTree"></ul>
+                </div>
+                <div class="formLine">
+                    <template>
+                        <el-select v-model="value" placeholder="请选择" style="padding:10px;width:88%">
+                            <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </template>
+                    <template>
+                        <el-tabs v-model="activeName2" type="card" @tab-click="tabClick" >
+                            <el-tab-pane label="工程检验" name="first">
+                                <ul class="form-table">
+                                    <li v-for="optionList in options">{{optionList.label}}
+                                        <div style="float:right;">
+                                            <el-icon class="el-icon-picture"></el-icon>
+                                            <el-icon class="el-icon-delete"></el-icon>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <p class="form-total">已选表单{{options.length-1}}</p>
+                            </el-tab-pane>
+                            <el-tab-pane label="交工评定" name="second">
+                                <ul class="form-table">
+                                    <li v-for="optionList in options">{{optionList.label}}
+                                        <div style="float:right;">
+                                            <el-icon class="el-icon-picture"></el-icon>
+                                            <el-icon class="el-icon-delete"></el-icon>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <p class="form-total">已选表单{{options.length}}</p>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </template>
 
+                </div>
+            </div>
+            <div class="formBtn">
+                <el-button type="primary">确定</el-button>
+                <el-button type="primary">取消</el-button>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
     import "../../../../static/css/setting-explorer.css";
@@ -121,7 +185,7 @@
     import "static/js/ztree/js/jquery.ztree.core-3.5.js";
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
     import "static/js/ztree/js/jquery.ztree.exedit.js";
-
+    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js"
     let level = 1;
     let maxLevel=-1;
     let newCount = 1;
@@ -145,14 +209,17 @@
                             enable: true
                         }
                     },
+                /*    key: {
+                        children: "nodes"
+                    },*/
                     callback: {
                         onCollapse: function (event, treeId, treeNode) {
                             level=treeNode.level;
                         },
                         onExpand: function (event, treeId, treeNode) {
                             level=treeNode.level;
-                        }
-
+                        },
+                        onDblClick:this.onEditDbClick
                     }
                 },
                 zNodes :[
@@ -189,33 +256,38 @@
                 EditVisible:false,
                 options: [{
                     value: '选项1',
-                    label: '黄金糕'
+                    label: '元素1'
                 }, {
                     value: '选项2',
-                    label: '双皮奶'
+                    label: '元素2'
                 }, {
                     value: '选项3',
-                    label: '蚵仔煎'
+                    label: '元素3'
                 }, {
                     value: '选项4',
-                    label: '龙须面'
+                    label: '元素4'
                 }, {
                     value: '选项5',
-                    label: '北京烤鸭'
+                    label: '元素5'
                 }],
                 value: '',
-                textAreaVisible:false,
-                showCreateNodes:false
+                textAreaVisible:false,//文本域
+                showCreateNodes:false,//创建节点
+                formEditVisible:false,//表单编辑
+                dropMenus:false,
+                activeName2:'first',
+                formInfo2:{"progress":"路基工程","subProgress":"路基土石方工程","subType":"土方工程"}
             }
         },
         components:{
-
+            props: ['formInfo'],
         },
         created(){
             this.getData()
         },
         mounted(){
             $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);
+            $.fn.zTree.init($("#editTree"), this.setting, this.zNodes);
             $("#expandBtn").bind("click",  {type:"expand",operObj:'proZtree'}, this.expandNode);
             $("#collapseBtn").bind("click", {type:"collapse",operObj:'proZtree'}, this.expandNode);
             $("#edit").bind("click", this.edit);
@@ -498,6 +570,71 @@
                             alert("叶子节点被锁定，无法增加子节点");
                         }
                     }
+                }
+            },
+            //树结构的搜索功能
+            getZtreeParentNode(ztreeNode, nodes) {
+                var pNode = ztreeNode.getParentNode();
+                /*console.log(pNode);*/
+                if (pNode != null) {
+                    if (nodes.indexOf(pNode) < 0) {
+                        nodes.push(pNode);
+                    }
+                    this.getZtreeParentNode(pNode, nodes);
+                }
+            },
+            getZtreeChildNode(ztreeNode, nodes) {
+                if (!ztreeNode.isParent) {
+                    return;
+                }
+                var children = ztreeNode.children;
+                /* console.log(children);*/
+                if (children.length > 0) {
+                    for (var i = 0; i < children.length; i++) {
+                        var child = children[i];
+                        if (nodes.indexOf(child) < 0) {
+                            nodes.push(child);
+                        }
+                        this.getZtreeChildNode(child, nodes);
+                    }
+                }
+            },
+            searchTree(){
+                debugger;
+                var treeObj = $.fn.zTree.getZTreeObj("editTree");
+                var nodes1 = treeObj.getNodesByParam("isHidden", true);
+                var searchVal = $('#searchMessage').find('input').val();
+                /* 将之前隐藏的展示*/
+                if (nodes1.length > 0) {
+                    treeObj.showNodes(nodes1);
+                }
+                var treeNodes = treeObj.transformToArray(treeObj.getNodes());
+                var otherNeedShowNodes = [];
+                // 隐藏不符合搜索条件的节点
+                for (var i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].name.indexOf(searchVal) < 0) {
+                        treeObj.hideNode(treeNodes[i]);
+                    } else {
+                        /*符合条件的父级*/
+                        this.getZtreeChildNode(treeNodes[i], otherNeedShowNodes);
+                        this.getZtreeParentNode(treeNodes[i], otherNeedShowNodes);
+                    }
+                }
+                if (otherNeedShowNodes.length > 0) {
+                    treeObj.showNodes(otherNeedShowNodes);
+                }
+            },
+            //tab选项卡菜单
+            tabClick(tab, event){
+                console.info(tab,'tab')
+            },
+            beforeClick(treeNode){
+                console.log(treeNode,'treeNode')
+            },
+            onEditDbClick(event, treeId, treeNode){
+                console.info(treeNode)
+                if(event.currentTarget.id=='editTree' && !treeNode.isParent){
+                    this.options.push({"label":treeNode.name})
                 }
             }
         }
