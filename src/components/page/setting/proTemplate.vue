@@ -224,6 +224,8 @@
                     view: {
                         selectedMulti: false,
                         showIcon :false,
+                        /*addHoverDom: this.addHoverDom,
+                        removeHoverDom: this.removeHoverDom,*/
                     },
                 /*    check: {
                         enable: true
@@ -245,6 +247,7 @@
                         },
                         onDblClick:this.onEditDbClick,
                         beforeRename:this.zTreeBeforName,
+                        onRename:this.ztreeOnRename
                     }
                 },
                 zNodes :[
@@ -692,12 +695,52 @@
             zTreeBeforName(treeId, treeNode, newName, isCancel){//重命名之前的操作
                 var treeObj = $.fn.zTree.getZTreeObj('proZtree');
                 var nodes = treeObj.transformToArray(treeObj.getNodes());
+                var sObj = $("#" + treeNode.tId + "_span");
+                //if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+                var addStr = "<span class='affirm' title='add node' onfocus='this.blur();'></span><span class='cancel'  title='add node 'onfocus='this.blur();'></span>";
+                sObj.after(addStr);
+                var btn = $("#addBtn_"+treeNode.tId);
+                if (btn) btn.bind("click", function(){
+                    var zTree = $.fn.zTree.getZTreeObj("proZtree");
+                    zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
+                    return false;
+                });
                 for(var i = 0;i<nodes.length;i++){
                     if(nodes[i].name==newName){
                         treeObj.cancelEditName();
                         return false
                     }
                 }
+            },
+
+         /*   addHoverDom(treeId, treeNode) {
+                debugger;
+                var sObj = $("#" + treeNode.tId + "_span");
+                if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+                var addStr = "<span class='button rename' id='addBtn_" + treeNode.tId
+                    + "' title='add node' onfocus='this.blur();'></span>";
+                sObj.after(addStr);
+                var btn = $("#addBtn_"+treeNode.tId);
+                if (btn) btn.bind("click", function(){
+                    var zTree = $.fn.zTree.getZTreeObj("proZtree");
+                    zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
+                    return false;
+                });
+            },
+            removeHoverDom(treeId, treeNode) {
+                $("#addBtn_"+treeNode.tId).unbind().remove();
+            },*/
+            ztreeOnRename(event, treeId, treeNode, isCancel){
+                /*var sObj = $("#" + treeNode.tId + "_span");
+                //if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+                var addStr = "<span class='affirm' title='add node' onfocus='this.blur();'></span><span class='cancel'  title='add node 'onfocus='this.blur();'></span>";
+                sObj.after(addStr);
+                var btn = $("#addBtn_"+treeNode.tId);
+                if (btn) btn.bind("click", function(){
+                    var zTree = $.fn.zTree.getZTreeObj("proZtree");
+                    zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
+                    return false;
+                });*/
             },
             //tab选项卡菜单
             tabClick(tab, event){

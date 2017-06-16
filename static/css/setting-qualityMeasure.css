@@ -280,6 +280,12 @@
 .proTemplate .proTemplate-edit .createNodes p:hover{
     background:#ccc;
 }
+.affirm{
+    background:url('../../static/img/icon-cancel.png') no-repeat 0 0;width:15px;height:15px;display:inline-block;
+}
+.cancel{
+    background:url('../../static/img/icon-cancel.png') no-repeat -19px 0;width:15px;height:15px;display:inline-block;
+}
 /*树结构对应的表单*/
 .project-form{
     padding:15px;padding-left:0;
