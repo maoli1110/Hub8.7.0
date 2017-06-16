@@ -10,7 +10,7 @@
         <div class="user-info">
             <el-dropdown trigger="click" @command="handleCommand" >
                 <span class="el-dropdown-link">
-                    <img class="user-logo" src="../../../static/img/img.jpg">
+                    <img class="user-logo" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80">
                 </span>
                 <el-dropdown-menu slot="dropdown" menu-align="start">
                     <el-dropdown-item command="loginout">企业信息</el-dropdown-item>
@@ -26,7 +26,7 @@
     export default {
         data() {
             return {
-                name: '狐妖%%&**……%￥……*'
+                name: '欲与鱼语'
             }
         },
         computed:{
