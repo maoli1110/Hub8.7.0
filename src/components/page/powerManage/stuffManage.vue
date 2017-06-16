@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<section style='margin-top:20px' v-show='flag'>
-			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;height:60px;background:#ffffff;padding:10px 0;border-bottom:1px solid #e6e6e6">
+		<section style='margin-top:20px;' v-show='flag'>
+			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;height:60px;background:#ffffff;padding:10px 0;border-bottom:1px solid #e6e6e6;box-shadow: 1px 0 6px #cccaca;">
 				<el-form :inline="true" :model="filters" style="padding-left:20px">
 					<span style="display:inline-block;font-size:14px;height:36px;line-height:36px">角色: </span>
 					<el-form-item>
@@ -20,7 +20,7 @@
 					</el-form-item>
 				</el-form>
 			</el-col>
-			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px">
+			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px;box-shadow: 1px 0 6px #cccaca;">
 				<el-form :inline="true" :model="filters" style="height:70px">
 					<el-form-item style="padding: 20px 0;">
 						<el-button type="primary" v-on:click="flag=false" style="width: 100px;height: 40px;">
@@ -75,7 +75,7 @@
 	
 			<!--编辑界面-->
 			<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
-
+	
 				<el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple style="margin-left:30%">
 					<i class="el-icon-upload"></i>
 					<div class="el-upload__text">将文件拖到此处，或
@@ -83,7 +83,7 @@
 					</div>
 					<div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
 				</el-upload>
-
+	
 			</el-dialog>
 	
 			<!--新增界面-->
@@ -137,7 +137,7 @@
 	
 				<el-row :gutter="20">
 					<el-col :span="12" :offset="5">
-						<el-input placeholder="请选择日期" icon="search" >
+						<el-input placeholder="请选择日期" icon="search">
 						</el-input>
 					</el-col>
 					<el-col :span="6">
@@ -163,12 +163,12 @@
 		</section>
 		<section v-show="!flag">
 			<el-row>
-				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;">
+				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
 					<p style="font-size: 18px;font-weight: 700;line-height: 60px">用户基本信息</p>
 				</el-col>
 			</el-row>
 	
-			<el-row style="margin-top:20px;padding:30px 10px;position:relative;background-color: #fff;">
+			<el-row style="margin-top:20px;padding:30px 10px;position:relative;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
 				<el-row style="">
 					<el-col :span="6">
 						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
@@ -236,13 +236,13 @@
 				</el-row>
 			</el-row>
 	
-			<el-row style="margin-top:20px;">
+			<el-row style="margin-top:20px;box-shadow: 1px 0 6px #cccaca;">
 				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;">
 					<p style="font-size: 18px;font-weight: 700;line-height: 60px">功能节点授权</p>
 				</el-col>
 			</el-row>
 			<!--表格切换-->
-			<el-row style="background-color:#fff;">
+			<el-row style="background-color:#fff;box-shadow: 1px 0 6px #cccaca;">
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="房建" name="first">
 						<el-tabs type="card">
@@ -552,16 +552,15 @@
 						</div>
 					</el-col>
 				</el-row>
-	
-			</el-row>
-			<!--确定取消-->
-			<el-row :gutter="30" style="background-color:#fff;padding:40px 0">
-				<el-col :span="6" :offset="6">
-					<el-button type="info" style="float:right" @click='flag=true'>确定</el-button>
-				</el-col>
-				<el-col :span="6">
-					<el-button type="info">取消</el-button>
-				</el-col>
+				<!--确定取消-->
+				<el-row :gutter="30" style="background-color:#fff;padding:40px 0;">
+					<el-col :span="6" :offset="6">
+						<el-button type="info" style="float:right" @click='flag=true'>确定</el-button>
+					</el-col>
+					<el-col :span="6">
+						<el-button type="info">取消</el-button>
+					</el-col>
+				</el-row>
 			</el-row>
 	
 			<!--dialog弹框-->
@@ -1324,6 +1323,7 @@ export default {
 	font-size: 14px;
 	color: grey;
 }
+
 
 
 

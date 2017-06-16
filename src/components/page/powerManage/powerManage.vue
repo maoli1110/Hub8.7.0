@@ -2,8 +2,8 @@
     <div>
         <v-sidebar v-bind:navMenuProp="navMenuData"></v-sidebar>
         <div class="content_" >
-            <el-menu     default-active='stuffManage' class="el-menu-demo" mode="horizontal" router style="height:57px" >
-                <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump" style="font-size:16px;font-weight:700;line-height:57px"  >{{menusdata.name}} </el-menu-item>
+            <el-menu     default-active='stuffManage' class="el-menu-demo" mode="horizontal" router style="height:57px;box-shadow: 1px 0 6px #cccaca;" >
+                <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump" style="font-size:16px;font-weight:700;line-height:57px;"  >{{menusdata.name}} </el-menu-item>
             </el-menu>
             <router-view></router-view>
         </div>

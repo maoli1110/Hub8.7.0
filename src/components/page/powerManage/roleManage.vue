@@ -2,7 +2,7 @@
 	<div>
 		<section style='margin-top:20px' v-show='flag'>
 			<!--工具条-->
-			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;height:60px;background:#ffffff;padding:10px 0;border-bottom:1px solid #e6e6e6">
+			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;height:60px;background:#ffffff;padding:10px 0;border-bottom:1px solid #e6e6e6;box-shadow: 1px 0 6px #cccaca;">
 				<el-form :inline="true" :model="filters" style="padding-left:20px">
 					<el-form-item>
 						<el-input v-model="filters.name" placeholder="姓名" icon="search" style="width: 212px;height: 36px"></el-input>
@@ -16,7 +16,7 @@
 
 				</el-form>
 			</el-col>
-			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px">
+			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px;box-shadow: 1px 0 6px #cccaca;">
 				<el-form :inline="true" :model="filters" style="height:70px">
 					<el-form-item style="padding: 20px 0;">
 						<el-button type="primary" @click="flag=false" style="width: 100px;height: 40px;"><span class="el-icon-plus"></span> 添加人员</el-button>
@@ -124,12 +124,12 @@
 		<section v-show='!flag'>
 			<!--工具条-->
 			<el-row>
-				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;">
+				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
 					<p style="font-size: 18px;font-weight: 700;line-height: 60px" >用户基本信息</p>
 				</el-col>
 			</el-row>
 
-			<el-row style="height:200px;padding:25px 10px;position:relative;background-color: #fff;">
+			<el-row style="height:200px;padding:25px 10px;position:relative;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
 				<el-row style="height:45%">
 					<el-col :span="6">
 						<el-col :span="4" style="font-size:14px;height:36px;line-height:36px" >
@@ -153,12 +153,12 @@
 			</el-row>
 
 			<el-row style="margin-top:20px;">
-                <el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;">
+                <el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
                     <p style="font-size: 18px;font-weight: 700;line-height: 60px" >功能节点授权</p>
                 </el-col>
 			</el-row>
 			<!--表格切换-->
-			<el-row style="background-color:#fff;" >
+			<el-row style="background-color:#fff;box-shadow: 1px 0 6px #cccaca;" >
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="房建" name="first">
 						<el-row style="background-color:#fff;padding-left:20px">
@@ -359,7 +359,7 @@
 				</el-tabs>
 			</el-row>
 			<!--确定取消-->
-			<el-row :gutter="30" style="background-color:#fff;padding:40px 0">
+			<el-row :gutter="30" style="background-color:#fff;padding:40px 0;margin:0 0">
 				<el-col :span="6" :offset="6">
 					<el-button type="info" style="float:right" @click='flag=true'>确定</el-button>
 				</el-col>
