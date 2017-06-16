@@ -224,6 +224,8 @@
                     view: {
                         selectedMulti: false,
                         showIcon :false,
+                        /*addHoverDom: this.addHoverDom,
+                        removeHoverDom: this.removeHoverDom,*/
                     },
                 /*    check: {
                         enable: true
@@ -245,6 +247,11 @@
                         },
                         onDblClick:this.onEditDbClick,
                         beforeRename:this.zTreeBeforName,
+                        onRename:this.ztreeOnRename,
+                        onClick:function(event, treeId, treeNode, clickFlag){
+                            $('.cancel').remove();
+                            $('.affirm').remove();
+                        }
                     }
                 },
                 zNodes :[
@@ -318,7 +325,7 @@
             $.fn.zTree.init($("#editTree"), this.setting, this.zNodes);
             $("#expandBtn").bind("click",  {type:"expand",operObj:'proZtree'}, this.expandNode);
             $("#collapseBtn").bind("click", {type:"collapse",operObj:'proZtree'}, this.expandNode);
-            $("#edit").bind("click", this.edit);
+            //$("#edit").bind("click", this.edit);
             $("#remove").bind("click", this.remove);
             $("#upMove").bind("click", this.upMove);
             $("#downMove").bind("click", this.downMove);
@@ -423,14 +430,36 @@
             },
             //重命名状态模板名称
             edit() {
-                var zTree = $.fn.zTree.getZTreeObj("proZtree"),
+//                debugger;
+                var zTree = $.fn.zTree.getZTreeObj("proZtree");
                     nodes = zTree.getSelectedNodes(),
                     treeNode = nodes[0];
                 if (nodes.length == 0) {
                     alert("请先选择一个节点");
                     return;
                 }
+                var sObj = $("#" + treeNode.tId + "_span");
+                //if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+                var addStr = "<span class='affirm' title='add node' onfocus='this.blur();'></span><span class='cancel'  title='add node 'onfocus='this.blur();'></span>";
+                sObj.after(addStr);
+               /* var btn = $("#addBtn_"+treeNode.tId);
+                if (btn) btn.bind("click", function(){
+                    var zTree = $.fn.zTree.getZTreeObj("proZtree");
+                    zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
+                    return false;
+                });*/
                 zTree.editName(treeNode);
+                $('.affirm').bind('click',function(){//确定编辑
+                    this.ztreeOnRename();
+                    $(this).remove();
+                    $('.cancel').remove();
+                });
+                $('.cancel').bind('click',function(){//取消编辑
+                    zTree.cancelEditName();
+                    $(this).remove();
+                    $('.affirm').remove();
+                });
+
             },
             remove(e) {
                 var zTree = $.fn.zTree.getZTreeObj("proZtree"),
@@ -698,6 +727,13 @@
                         return false
                     }
                 }
+                debugger;
+                $(".affirm").unbind('click').remove();
+                $(".cancel").unbind('click').remove();
+            },
+            ztreeOnRename(event, treeId, treeNode, isCancel){
+                $(".affirm").unbind('click').remove();
+                $(".cancel").unbind('click').remove();
             },
             //tab选项卡菜单
             tabClick(tab, event){
