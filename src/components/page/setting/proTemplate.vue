@@ -2,7 +2,11 @@
     <div class="proTemplate">
 
         <div v-if="!EditVisible">
+
             <el-row>
+                <el-menu  class="el-menu-demo" mode="horizontal" router>
+                    <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+                </el-menu>
                 <el-col :span="24">
                     <el-menu  class="el-menu-demo" mode="horizontal" router >
                         <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
@@ -249,8 +253,7 @@
                         beforeRename:this.zTreeBeforName,
                         onRename:this.ztreeOnRename,
                         onClick:function(event, treeId, treeNode, clickFlag){
-                            $('.cancel').remove();
-                            $('.affirm').remove();
+//
                         }
                     }
                 },
@@ -275,6 +278,8 @@
                 url: '../../../static/vuetable.json',
 //                tableData: [],
                 cur_page: 1,
+                menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
+
                 menusData:[{name:"流程设置",routerDump:'qualityMeasure'},{name:'工程模板',routerDump:'proTemplate'},{name:'表单管理',routerDump:'formManage'}],
                 tableData: [{
                     "date": "1997-11-11",
@@ -438,27 +443,23 @@
                     alert("请先选择一个节点");
                     return;
                 }
-                var sObj = $("#" + treeNode.tId + "_span");
+         /*       var sObj = $("#" + treeNode.tId + "_span");
                 //if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-                var addStr = "<span class='affirm' title='add node' onfocus='this.blur();'></span><span class='cancel'  title='add node 'onfocus='this.blur();'></span>";
+                var addStr = "<span class='affirm' title='add node'></span><span class='cancel'  title='add node '></span>";
                 sObj.after(addStr);
-               /* var btn = $("#addBtn_"+treeNode.tId);
-                if (btn) btn.bind("click", function(){
-                    var zTree = $.fn.zTree.getZTreeObj("proZtree");
-                    zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
-                    return false;
-                });*/
                 zTree.editName(treeNode);
-                $('.affirm').bind('click',function(){//确定编辑
-                    this.ztreeOnRename();
+                $('.affirm').bind('click',function(event){//确定编辑
+                    console.info('确认操作');
                     $(this).remove();
                     $('.cancel').remove();
+                    event.stopPropagation()
                 });
-                $('.cancel').bind('click',function(){//取消编辑
+                $('.cancel').bind('click',function(event){//取消编辑
                     zTree.cancelEditName();
                     $(this).remove();
                     $('.affirm').remove();
-                });
+                    event.stopPropagation()
+                });*/
 
             },
             remove(e) {
@@ -520,7 +521,6 @@
                     alert("至少选择一个节点");
                     return;
                 }
-
                 //移动之前需要判断满足条件才能下移
                 //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许移动
                 for(var i=0;i<nodes.length; i++){
@@ -727,13 +727,10 @@
                         return false
                     }
                 }
-                debugger;
-                $(".affirm").unbind('click').remove();
-                $(".cancel").unbind('click').remove();
+
             },
             ztreeOnRename(event, treeId, treeNode, isCancel){
-                $(".affirm").unbind('click').remove();
-                $(".cancel").unbind('click').remove();
+
             },
             //tab选项卡菜单
             tabClick(tab, event){

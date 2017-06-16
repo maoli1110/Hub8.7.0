@@ -1,5 +1,8 @@
 <template>
     <div>
+        <el-menu  class="el-menu-demo" mode="horizontal" router>
+            <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+        </el-menu>
         <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
             <el-table-column width="35" type="selection">
             </el-table-column>
@@ -39,6 +42,7 @@
                 url: '../../../static/vuetable.json',
                 tableData: [],
                 cur_page: 1,
+                menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
                 menusData:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
 
             }

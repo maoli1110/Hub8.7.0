@@ -1,25 +1,29 @@
 <template>
     <div v-loading="qualityloading" class="quality-page">
-        <div class="search-area">
-            <el-row>
-                <el-col :span="24">
-                    <el-menu class="el-menu-demo" mode="horizontal" router>
-                        <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-                    </el-menu>
-                </el-col>
-            </el-row>
-            <el-row class="quality-search" v-if="!isBMP">
-                <el-col :span="8">
-                    <el-button @click="addBPM">添加</el-button>
-                    <el-button>删除</el-button>
-                </el-col>
-                <el-col :span="16" style="text-align:right">
-                    <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%"></el-input>
-                    <el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>
-                </el-col>
-            </el-row>
-        </div>
+
         <div class="" v-if="!isBMP">
+            <div class="search-area">
+                <el-row>
+                    <el-menu  class="el-menu-demo" mode="horizontal" router>
+                        <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+                    </el-menu>
+                    <el-col :span="24">
+                        <el-menu class="el-menu-demo" mode="horizontal" router>
+                            <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+                        </el-menu>
+                    </el-col>
+                </el-row>
+                <el-row class="quality-search" v-if="!isBMP">
+                    <el-col :span="8">
+                        <el-button @click="addBPM">添加</el-button>
+                        <el-button>删除</el-button>
+                    </el-col>
+                    <el-col :span="16" style="text-align:right">
+                        <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%"></el-input>
+                        <el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>
+                    </el-col>
+                </el-row>
+            </div>
             <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}">
                 <el-table-column width="30" type="selection">
                 </el-table-column>
@@ -34,7 +38,7 @@
                 <el-table-column prop="adress" label="备注" :formatter="formatter" sortable>
                 </el-table-column>
                 <el-table-column label="操作" width="180" @click.native="addnew">
-    
+
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                         <el-icon class="el-icon-edit" @click.native="dialogFormVisible = true"></el-icon>
@@ -50,16 +54,16 @@
         </div>
         <div v-if="isBMP" class="BMP-process">
             <el-row class="BMP-info">
-                <el-col :span="24">
-                    <p class="BMP-text">流程管理>流程设置</p>
+                <el-col :span="24" class="pro-title">
+                    工程名称
                 </el-col>
-                <el-col :span="10">
+                <el-col :span="6">
                     <span class="BMP-text">流程名称：</span>
                     <el-input placeholder="请输入内容" v-model="flowName" style="width:40%;height:100px;"></el-input>
                 </el-col>
-                <el-col :span="14">
+                <el-col :span="18">
                     <span class="BMP-text" style="display:inline-block;vertical-align: top">备注：</span>
-                    <el-input style="width:50%;height:100px;" type="textarea" :rows="4" placeholder="请输入内容">
+                    <el-input style="width:60%;height:100px;" type="textarea" :rows="4" placeholder="请输入内容">
                     </el-input>
                 </el-col>
                 <el-col :span="24" class="BMP-serif"></el-col>
@@ -67,70 +71,72 @@
             <!--流程设置-->
             <el-row class="process-set">
                 <el-col class="BMP-text" :span="24">
-                    <span>流程设置：</span>
+                    <span>管理模块授权：</span>
                 </el-col>
-                <el-col :span="14">
-                    <div style="padding:0 10px;">
-                        <table border="0" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <td width="50">序号</td>
-                                    <td width="120">步骤名称</td>
-                                    <td width="120">审批条件</td>
-                                    <td>审批角色</td>
-                                    <!--<td>操作</td>-->
-                                </tr>
-                            </thead>
-                        </table>
-                        <div class="table-step">
-                            <table border="0" cellspacing="0">
-                                <tbody id="bj-style">
-                                    <tr v-for="(rootInfo,index) in rootInfo" @click="processSetEdit($event,index)">
-                                        <td width="50">{{index+1}}</td>
-                                        <td width="120">
-                                            <el-input class="flowTitle" placeholder="请输入内容"></el-input>
-                                        </td>
-                                        <td width="120">
-                                            <el-select value="全部" placeholder="请选择" :disabled="!rootInfo.isStepDisable">
-                                                <!--     <el-option
-                                                    v-for="item in options"
-                                                    :key="item.value"
-                                                    :label="item.label"
-                                                    :value="item.value">
-                                                </el-option>-->
-                                                <el-option :value="0">全部</el-option>
-                                                <el-option :value="1">随意</el-option>
-                                            </el-select>
-                                        </td>
-                                        <td>
-                                            <span v-if="rootInfo.addRolesLine.length<1" style="color:gray">点击右侧角色进行添加</span>
-                                            <span class="addRoot substr" v-for="(lines,index) in rootInfo.addRolesLine" :title="lines">{{lines}}&nbsp;&nbsp;
-                                                <el-icon class="el-icon-close delete-blank" @click.native="closeSelf(index)"></el-icon>
-                                            </span>
-                                            <!--<span class="addRoot">董事长&nbsp;&nbsp;<el-icon class="el-icon-close"></el-icon></span>-->
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <el-icon class="el-icon-delete handle-delete" @click.native="deleteHandle(index)"></el-icon>
-                                            </div>
-                                        </td>
+
+                    <el-col :span="14" class="root-table">
+                        <div style="padding:0 10px;">
+                            <table border="0" cellspacing="0" class="table-head">
+                                <thead>
+                                    <tr>
+                                        <td width="50">序号</td>
+                                        <td width="200">步骤名称</td>
+                                        <td width="120">审批条件</td>
+                                        <td>审批角色</td>
+                                        <!--<td>操作</td>-->
                                     </tr>
-                                </tbody>
+                                </thead>
                             </table>
+                            <div class="table-step">
+                                <table border="0" cellspacing="0">
+                                    <tbody id="bj-style">
+                                        <tr v-for="(rootInfo,index) in rootInfo" @click="processSetEdit($event,index)">
+                                            <td width="50">{{index+1}}</td>
+                                            <td width="200">
+                                                <el-input class="flowTitle" placeholder="请输入内容"></el-input>
+                                            </td>
+                                            <td width="120">
+                                                <el-select value="全部" placeholder="请选择" :disabled="!rootInfo.isStepDisable">
+                                                    <!--     <el-option
+                                                        v-for="item in options"
+                                                        :key="item.value"
+                                                        :label="item.label"
+                                                        :value="item.value">
+                                                    </el-option>-->
+                                                    <el-option :value="0">全部</el-option>
+                                                    <el-option :value="1">随意</el-option>
+                                                </el-select>
+                                            </td>
+                                            <td>
+                                                <span v-if="rootInfo.addRolesLine.length<1" style="color:gray">点击右侧角色进行添加</span>
+                                                <span class="addRoot substr" v-for="(lines,index) in rootInfo.addRolesLine" :title="lines">{{lines}}&nbsp;&nbsp;
+                                                    <el-icon class="el-icon-close delete-blank" @click.native="closeSelf(index)"></el-icon>
+                                                </span>
+                                                <!--<span class="addRoot">董事长&nbsp;&nbsp;<el-icon class="el-icon-close"></el-icon></span>-->
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <el-icon class="el-icon-delete handle-delete" @click.native="deleteHandle(index)"></el-icon>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <p class="addStep" @click="addStep">
+                                <el-icon class="el-icon-circle-close" style="transform:rotate(136deg);margin-right:10px;font-size:18px;"></el-icon>添加步骤</p>
                         </div>
-    
-                        <p class="addStep" @click="addStep">
-                            <el-icon class="el-icon-circle-close" style="transform:rotate(136deg);margin-right:10px;font-size:18px;"></el-icon>添加步骤</p>
-                    </div>
-                </el-col>
-                <el-col :span="10" class="root-name">
-                    <div>
-                        <p>审核角色</p>
-                        <div class="rules-box">
-                            <div class="root-el" v-for="(item,index) in rootList" v-text="item" @click="addRoles(index)"></div>
+                    </el-col>
+                    <el-col :span="10" class="root-name">
+                        <div>
+                            <p>审核角色</p>
+                            <div class="rules-box">
+                                <div class="root-el" v-for="(item,index) in rootList" v-text="item" @click="addRoles(index)"></div>
+                            </div>
                         </div>
-                    </div>
-                </el-col>
+                    </el-col>
+
                 <el-col class="BMP-btns">
                     <el-button type="primary" @click="BMPok">确定</el-button>
                     <el-button @click="BMPcancel">取消</el-button>
@@ -184,7 +190,7 @@
                         <span style="font-weight:bolder">表单关联</span>
                         <el-icon class="el-icon-close" style="float:right" @click.native="linkTree=false"></el-icon>
                     </el-col>
-    
+
                     <el-col :span="14" style="margin:10px 0 10px;padding-bottom:10px;border-bottom:1px solid #ddd;">
                         <label style="font-size:14px;">表单目录：</label>
                         <el-select value="全部" placeholder="请选择活动区域">
@@ -196,7 +202,7 @@
                         <el-input placeholder="请选择日期" icon="search">
                         </el-input>
                     </el-col>
-    
+
                 </el-row>
             </div>
             <div class="ztree-allCheck ">
@@ -292,6 +298,7 @@ export default {
                 "address": "海外 海外 -"
             }],
             cur_page: 1,
+            menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
 
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
             rootInfo: [
@@ -392,7 +399,7 @@ export default {
             for (let i = 0; i < objTr.length; i++) {
                 objTr[i].style.background = "#fff ";
             }
-            event.currentTarget.style.background = "#E9F2F7"
+            event.currentTarget.style.background = "#f5f5f5"
         },
         addBPM() {
             this.isBMP = true;

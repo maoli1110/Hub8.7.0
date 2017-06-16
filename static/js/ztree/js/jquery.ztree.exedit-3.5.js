@@ -92,6 +92,7 @@
 		var o = setting.treeObj;
 		var c = consts.event;
 		o.bind(c.RENAME, function (event, treeId, treeNode, isCancel) {
+
 			tools.apply(setting.callback.onRename, [event, treeId, treeNode, isCancel]);
 		});
 

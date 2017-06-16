@@ -31,21 +31,25 @@
     float:right;min-width:388px;
 }
 /*BMP(流程设置)*/
+.BMP-process .el-input{
+    border-radius:0 !important;
+}
 .BMP-process table{
     width:100%;
 }
-.BMP-process table thead{
-    background:rgb(238, 246, 250);height:40px;line-height:40px;
+.BMP-process table.table-head tr td{
+    background:#f0f0f0;height:54px;line-height:54px;
 }
+
 
 .BMP-process table th,.BMP-process table td{
     font-size:14px;text-align:center;height:40px;line-height:40px;border-bottom:1px solid #ddd;
 }
 .BMP-process table td:last-child{
-    text-align:left;
+    /*text-align:left;*/
 }
 .BMP-process .table-step{
-    height:calc(100vh - 637px);overflow:auto;border:1px solid #ddd;border-top:none
+    height:calc(100vh - 704px);overflow:auto;border:1px solid #ddd;border-top:none
 }
 .BMP-process .table-step table td{
     height:40px;line-height:40px;
@@ -53,21 +57,44 @@
 .BMP-process .table-step table input{
     height:30px;
 }
+.content .BMP-info{
+    background:#fff;
+}
+.content .BMP-info .el-input{
+    width:65% !important;
+}
 .content .BMP-info .BMP-serif{
-    border-bottom:1px solid #ddd;margin-top:20px;
+    margin-top:20px;
 }
 .content .BMP-info,.content .process-set{
-    padding:10px;
+    padding:10px;background:#fff;
+}
+.content .process-set{
+    margin-top:20px;
+}
+.process-set .BMP-text{
+    font-weight:bold;padding:10px;padding-bottom:10px !important;border-bottom:1px solid #ddd;margin-bottom:20px;
 }
 .content .BMP-info .BMP-text,.content .process-set .BMP-text{
     font-size:14px;padding-bottom:30px;
 }
-
+.BMP-info .pro-title{
+    padding: 10px 0;padding-top:0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;font-weight:bold;
+}
 /*.content .root-name div:nth-child(1){
     width:100%;height:auto;border:1px solid rgb(238, 246, 250)
 }*/
+.content .root-name{
+    padding-left:10px;padding-bottom:30px;border-bottom:1px solid #ddd;
+}
+.content .root-table{
+    padding-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+}
 .content .root-name div:nth-child(1)>p{
-    height:40px;line-height:40px;background:#fff;text-align:center;
+    height:56px;line-height:56px;background:#f0f0f0;text-align:center;
 }
 .content .substr{
     white-space: nowrap;
@@ -88,6 +115,9 @@
 .content .root-el:hover{
     background:#fff
 }
+.content .BMP-process{
+    padding:20px;
+}
 .content .BMP-process .addRoot{
     padding: 0px 17px;
     line-height:30px;border-radius:3px;height:30px;
@@ -107,15 +137,21 @@
     background: #fff;
 }
 .content .addStep{
-    line-height:30px;height:30px;border:1px dashed #ccc;text-align:center;
+    line-height:50px;height:50px;border:1px dashed #ccc;text-align:center;
+}
+.content .addStep{
+    color:#4778C7;font-weight:bold;
 }
 .content .BMP-process .rules-box{
-    height: 344px;
+    height: 296px;
     overflow: auto;border:1px solid #ddd;
 }
 .content .BMP-process .BMP-btns{
-    padding: 10px 10px;
+    padding: 31px 10px 16px 10px;
     text-align: center;
+}
+.el-button{
+    width:116px;
 }
 .content  .quality-searchTool .quality-searInput{
     width:30% !important;
@@ -433,4 +469,7 @@
 }
 .ztree ul>li:hover{
     background:#f5f5f5;
+}
+.el-button--primary:focus, .el-button--primary:hover{
+    background:#4778C7 !important;color:#fff;border-color:#4778C7 !important;
 }
