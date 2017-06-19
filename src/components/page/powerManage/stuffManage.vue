@@ -23,7 +23,7 @@
 			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px;box-shadow: 1px 0 6px #cccaca;">
 				<el-form :inline="true" :model="filters" style="height:70px">
 					<el-form-item style="padding: 20px 0;">
-						<el-button type="primary" v-on:click="flag=false" style="width: 100px;height: 40px;">
+						<el-button type="primary" v-on:click="flag=false;sendRouterTitle()" style="width: 100px;height: 40px;">
 							<span class="el-icon-plus"></span> 添加人员</el-button>
 					</el-form-item>
 					<el-form-item style="padding: 20px 0;">
@@ -58,10 +58,10 @@
 					<el-table-column label="周活跃度" width="180">
 						<template scope="scope">
 							<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>																								<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
-							<el-icon class="el-icon-edit" @click.native="flag=!flag"></el-icon>
-							<el-icon class="el-icon-delete2" @click.native="handleDel(scope.$index, scope.row)"></el-icon>
-							<el-icon class="el-icon-document" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
+							<el-icon class="el-icon-edit" @click.native="flag=!flag;sendRouterTitle()"></el-icon>
 							<el-icon class="el-icon-message" @click.native="handleAuthorized(scope.$index, scope.row)"></el-icon>
+							<el-icon class="el-icon-upload2" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
+							<el-icon class="el-icon-document" @click.native="handleDetail(scope.$index, scope.row)"></el-icon>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -74,14 +74,15 @@
 			</el-col>
 	
 			<!--编辑界面-->
-			<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+			<el-dialog title="设置电子签名" v-model="editFormVisible" :close-on-click-modal="false" size='tiny'>
 	
-				<el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple style="margin-left:30%">
-					<i class="el-icon-upload"></i>
-					<div class="el-upload__text">将文件拖到此处，或
+				<el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple style="width:359px;margin:0 auto">
+	
+					<div class="el-upload__text">
+						<i class="el-icon-upload"></i>将文件拖到此处,或
 						<em>点击上传</em>
 					</div>
-					<div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+					<div class="el-upload__tip" slot="tip" style="color:red">只能上传jpg/png文件，且不超过500kb</div>
 				</el-upload>
 	
 			</el-dialog>
@@ -115,19 +116,19 @@
 			</el-dialog>
 			<!-- 授权资料目录-->
 			<el-dialog v-model="authorizedVisible" :close-on-click-modal="false" style="width:0">
-	
 			</el-dialog>
-			<div class="quality-dialog" v-show="authorizedVisible" style="padding:30px">
+			<div class="quality-dialog" v-show="authorizedVisible" style="padding:0px 30px 30px 30px;width:465px;">
 				<div class="quality-dialog-header">
 					<el-row>
-						<el-col :span="24" style="padding:0px 0 20px;border-bottom:1px solid #ddd;">
+						<el-col :span="24" style="padding:20px 0px;border-bottom:1px solid #ddd;">
 							<span style="font-weight:bolder">授权资料目录</span>
 							<el-icon class="el-icon-close" style="float:right" @click.native="authorizedVisible=false"></el-icon>
 						</el-col>
 					</el-row>
 				</div>
+	
 				<el-row :gutter="30" style="padding:20px 0;">
-					<el-col :span="6" :offset="7">
+					<el-col :span="6">
 						<el-radio class="radio" v-model="radio" label="1">手动分配</el-radio>
 					</el-col>
 					<el-col :span="6">
@@ -135,35 +136,45 @@
 					</el-col>
 				</el-row>
 	
-				<el-row :gutter="20">
-					<el-col :span="12" :offset="5">
+				<el-row>
+					<el-col :span="24">
 						<el-input placeholder="请选择日期" icon="search">
 						</el-input>
 					</el-col>
-					<el-col :span="6">
-						<el-button type="primary">搜索</el-button>
-					</el-col>
+	
 				</el-row>
-				<div style="overflow-y:scroll;height:400px;margin:0 auto;width:400px">
-					<ul class="ztree" id="authorizedTree" style=""></ul>
+				<div style="overflow-y:scroll;height:450px;margin-top:20px">
+					<ul class="ztree" id="authorizedTree" style="margin-left:-9px"></ul>
 				</div>
 	
-				<el-row :gutter="30">
-					<el-col :span="6" :offset="6">
-						<el-button type="info" style="float:right" @click='authorizedVisible=false'>确定</el-button>
-					</el-col>
-					<el-col :span="6">
-						<el-button type="info">取消</el-button>
-					</el-col>
-				</el-row>
+				<div slot="footer" class="dialog-footer" style="text-align: center;">
+					<el-button @click.native="authorizedVisible=false">确定</el-button>
+					<el-button type="primary">取消</el-button>
+				</div>
 	
 				<!--<ul class="ztree" id="lineTree"></ul>-->
 			</div>
 	
+			<!--服务详情-->
+			<el-dialog title="查看服务详情" v-model="detailVisible" :close-on-click-modal="false">
+				<div style="height:40px;line-height:40px;border-top:1px solid #e6e6e6">当前人员<span style="color:#6595f2">李俊珅</span>已分配以下服务</div>
+				<el-table :data="tableData" style="width: 100%">
+					<el-table-column prop="date" label="套餐服务" >
+					</el-table-column>
+					<el-table-column prop="name" label="服务内容" >
+					</el-table-column>
+					<el-table-column prop="address" label="服务到期时间">
+					</el-table-column>
+				</el-table>
+				<div slot="footer" class="dialog-footer" style="text-align: center;">
+					<el-button type="primary" @click.native="detailVisible = false">确定</el-button>
+				</div>
+			</el-dialog>
+	
 		</section>
 		<section v-show="!flag">
 			<el-row>
-				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
+				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
 					<p style="font-size: 18px;font-weight: 700;line-height: 60px">用户基本信息</p>
 				</el-col>
 			</el-row>
@@ -316,7 +327,7 @@
 									</div>
 								</el-col>
 								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
+									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
 										<el-button type="info" @click="authority_m">授权</el-button>
 									</div>
 								</el-col>
@@ -340,12 +351,12 @@
 									</div>
 								</el-col>
 								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
+									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
 										<el-button type="info" @click="authority_m" v-if='!checked'>授权</el-button>
 										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 									</div>
 								</el-col>
-								<el-col :span="2">
+								<el-col :span="2" :offset='1'>
 									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
 										<el-checkbox v-model="checked">全部工程</el-checkbox>
 									</div>
@@ -370,12 +381,12 @@
 									</div>
 								</el-col>
 								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
+									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
 										<el-button type="info" @click="authority_n" v-if='!checked'>授权</el-button>
 										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 									</div>
 								</el-col>
-								<el-col :span="2">
+								<el-col :span="2" :offset='1'>
 									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
 										<el-checkbox v-model="checked">全部工程</el-checkbox>
 									</div>
@@ -400,12 +411,12 @@
 									</div>
 								</el-col>
 								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
+									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
 										<el-button type="info" @click="authority_o" v-if='!checked'>授权</el-button>
 										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 									</div>
 								</el-col>
-								<el-col :span="2">
+								<el-col :span="2" :offset='1'>
 									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
 										<el-checkbox v-model="checked">全部工程</el-checkbox>
 									</div>
@@ -430,12 +441,12 @@
 									</div>
 								</el-col>
 								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
+									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
 										<el-button type="info" @click="authority_p" v-if='!checked'>授权</el-button>
 										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 									</div>
 								</el-col>
-								<el-col :span="2">
+								<el-col :span="2" :offset='1'>
 									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
 										<el-checkbox v-model="checked">全部工程</el-checkbox>
 									</div>
@@ -460,12 +471,12 @@
 									</div>
 								</el-col>
 								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
+									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
 										<el-button type="info" @click="authority_q" v-if='!checked'>授权</el-button>
 										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 									</div>
 								</el-col>
-								<el-col :span="2">
+								<el-col :span="2" :offset='1'>
 									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
 										<el-checkbox v-model="checked">全部工程</el-checkbox>
 									</div>
@@ -490,7 +501,7 @@
 									</div>
 								</el-col>
 								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
+									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
 										<el-button type="info">授权</el-button>
 									</div>
 								</el-col>
@@ -538,12 +549,12 @@
 									</div>
 								</el-col>
 								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:20px">
+									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
 										<el-button type="info" @click="authority_r" v-if='!checked'>授权</el-button>
 										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
 									</div>
 								</el-col>
-								<el-col :span="2">
+								<el-col :span="2" :offset='1'>
 									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
 										<el-checkbox v-model="checked">全部工程</el-checkbox>
 									</div>
@@ -555,7 +566,7 @@
 				<!--确定取消-->
 				<el-row :gutter="30" style="background-color:#fff;padding:40px 0;">
 					<el-col :span="6" :offset="6">
-						<el-button type="info" style="float:right" @click='flag=true'>确定</el-button>
+						<el-button type="info" style="float:right" @click='flag=true;sendRouterTitle()'>确定</el-button>
 					</el-col>
 					<el-col :span="6">
 						<el-button type="info">取消</el-button>
@@ -568,27 +579,27 @@
 			<!--授权工程-->
 			<el-dialog title="授权工程" v-model="authority_1" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="8">
+					<el-col :span="6">
 						<span>工程专业:</span>
-						<el-select v-model="value" placeholder="请选择">
+						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="6">
 						<span>BIM属性:</span>
-						<el-select v-model="value" placeholder="请选择">
+						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="8" :offset='3'>
 						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search">
+							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
 							</el-input>
 						</el-col>
 						<el-col :span="6">
-							<el-button type="info" style="margin-left:10px">重置</el-button>
+							<el-button type="info">重置</el-button>
 						</el-col>
 					</el-col>
 				</el-row>
@@ -627,13 +638,13 @@
 			<!--授权工作集-->
 			<el-dialog title="授权工作集" v-model="authority_2" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="8" :offset='16'>
+					<el-col :span="8" :offset='15'>
 						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search">
+							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
 							</el-input>
 						</el-col>
 						<el-col :span="2">
-							<el-button type="info" style="margin-left:10px">重置</el-button>
+							<el-button type="info">重置</el-button>
 						</el-col>
 					</el-col>
 				</el-row>
@@ -700,27 +711,27 @@
 			<!--可见级别授权-->
 			<el-dialog title="可见级别授权" v-model="authority_4" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="8">
+					<el-col :span="6">
 						<span>工程专业:</span>
-						<el-select v-model="value" placeholder="请选择">
+						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="6">
 						<span>BIM属性:</span>
-						<el-select v-model="value" placeholder="请选择">
+						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="8" :offset='3'>
 						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search">
+							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
 							</el-input>
 						</el-col>
 						<el-col :span="6">
-							<el-button type="info" style="margin-left:10px">重置</el-button>
+							<el-button type="info">重置</el-button>
 						</el-col>
 					</el-col>
 				</el-row>
@@ -776,27 +787,27 @@
 			<!--授权IBM可上传工程-->
 			<el-dialog title="授权IBM可上传工程" v-model="authority_5" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="8">
+					<el-col :span="6">
 						<span>工程专业:</span>
-						<el-select v-model="value" placeholder="请选择">
+						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="6">
 						<span>BIM属性:</span>
-						<el-select v-model="value" placeholder="请选择">
+						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="8" :offset='3'>
 						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search">
+							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
 							</el-input>
 						</el-col>
 						<el-col :span="6">
-							<el-button type="info" style="margin-left:10px">重置</el-button>
+							<el-button type="info">重置</el-button>
 						</el-col>
 					</el-col>
 				</el-row>
@@ -835,27 +846,27 @@
 			<!--授权监控-->
 			<el-dialog title="授权监控" v-model="authority_6" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="8">
+					<el-col :span="6">
 						<span>工程专业:</span>
-						<el-select v-model="value" placeholder="请选择">
+						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="6">
 						<span>BIM属性:</span>
-						<el-select v-model="value" placeholder="请选择">
+						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="8" :offset='3'>
 						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search">
+							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
 							</el-input>
 						</el-col>
 						<el-col :span="6">
-							<el-button type="info" style="margin-left:10px">重置</el-button>
+							<el-button type="info">重置</el-button>
 						</el-col>
 					</el-col>
 				</el-row>
@@ -1082,7 +1093,7 @@ export default {
 				birth: '',
 				addr: ''
 			},
-
+			detailVisible: false,
 			addFormVisible: false,//新增界面是否显示
 			addLoading: false,
 			addFormRules: {
@@ -1116,6 +1127,11 @@ export default {
 		}
 	},
 	methods: {
+
+		// 触发父级的路由标题是否隐藏
+		sendRouterTitle() {
+			this.$emit('connect');
+		},
 		// 设置授权
 		setAuthoried(index) {
 			this.$set(this.powerProduct, index, 0);
@@ -1203,6 +1219,9 @@ export default {
 		// 显示已授权页面
 		handleAuthorized: function () {
 			this.authorizedVisible = true;
+		},
+		handleDetail: function () {
+			this.detailVisible = true;
 		},
 		//编辑
 		editSubmit: function () {
@@ -1333,6 +1352,7 @@ export default {
 
 
 
+
 /*.el-button {
 	width: 90px;
 	height: 36px;
@@ -1372,8 +1392,7 @@ export default {
 }
 
 .quality-dialog {
-	width: 625px;
-	height: 560px !important;
+	height: 668px;
 	position: fixed;
 	left: 50%;
 	top: 50%;

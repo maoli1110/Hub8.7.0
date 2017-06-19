@@ -19,7 +19,7 @@
 			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px;box-shadow: 1px 0 6px #cccaca;">
 				<el-form :inline="true" :model="filters" style="height:70px">
 					<el-form-item style="padding: 20px 0;">
-						<el-button type="primary" @click="flag=false" style="width: 100px;height: 40px;"><span class="el-icon-plus"></span> 添加人员</el-button>
+						<el-button type="primary" @click="flag=false;sendRouterTitle()" style="width: 100px;height: 40px;"><span class="el-icon-plus"></span> 添加人员</el-button>
 					</el-form-item>
 					<el-form-item style="padding: 20px 0;">
 						<el-button type="primary" @click="handleAdd" style="width: 100px;height: 40px;"><span class="el-icon-delete"></span> 删除人员</el-button>
@@ -48,7 +48,7 @@
 				<el-table-column label="周活跃度" width="180"  >
 					<template scope="scope">
 						<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>																								<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
-						<el-icon class="el-icon-edit" @click.native="flag=!flag"></el-icon>
+						<el-icon class="el-icon-edit" @click.native="flag=!flag;sendRouterTitle()"></el-icon>
 						<el-icon class="el-icon-delete2" @click.native="handleDel(scope.$index, scope.row)"></el-icon>
 						<el-icon class="el-icon-document" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
 						<el-icon class="el-icon-message" @click.native="handleAuthorized(scope.$index, scope.row)"></el-icon>
@@ -361,7 +361,7 @@
 			<!--确定取消-->
 			<el-row :gutter="30" style="background-color:#fff;padding:40px 0;margin:0 0">
 				<el-col :span="6" :offset="6">
-					<el-button type="info" style="float:right" @click='flag=true'>确定</el-button>
+					<el-button type="info" style="float:right" @click='flag=true;sendRouterTitle()'>确定</el-button>
 				</el-col>
 				<el-col :span="6">
 					<el-button type="info">取消</el-button>
@@ -472,6 +472,10 @@ export default {
 		}
 	},
 	methods: {
+		 // 触发父级的路由标题是否隐藏
+		sendRouterTitle(){
+            this.$emit('connect');
+        },
 		handleCheckAllChange(event) {
 			console.log(event.target.checked);
 			this.checkedCities = event.target.checked ? cityOptions : [];
