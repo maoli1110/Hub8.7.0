@@ -49,45 +49,36 @@
             </el-pagination>
         </div>
         <!--模态框项目变更表格-->
-        <div>
-            <el-dialog title="九绵高速项目变更表格" :visible.sync="changeFormVisible"  class="formManage-dialog">
-                <el-row>
-                    <el-col :span="24" style="padding-bottom:20px;">
-                        <el-input style="width:100%"
-                            placeholder="请输入搜索内容"
-                            icon="search"
-                            >
-                        </el-input>
-                    </el-col>
-                    <el-col :span="24">
-                        <div class="dialog-changeForm" >
-                            <div class="priview-le" v-for="item in 6">
-                                <div>设计变更审批表格</div>
-                                <el-icon class="el-icon-search" @click.native="formPriview"></el-icon>
-                            </div>
-                        </div>
-                    </el-col>
-
-                </el-row>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="changeFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="changeFormVisible = false">确 定</el-button>
+        <div class="dialog-form">
+            <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" >
+            </el-dialog>
+            <div class="single-stump form-ztree-dialog" v-show="istable2">
+                <div class="form-dialog-title">
+                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="istable2 = false"></el-icon></p>
+                    <el-input icon="search" ></el-input>
                 </div>
-            </el-dialog>
-            <el-dialog :visible.sync="istable">
-
-            </el-dialog>
+                <div class="form-dialog-body" >
+                    <div class="priview-le" v-for="item in 8">
+                        <div>设计变更审批表格</div>
+                        <el-icon class="el-icon-search" @click.native="formPriview"></el-icon>
+                    </div>
+                </div>
+                <div class="form-dialog-footer">
+                    <el-button @click="istable2=false" >取 消</el-button>
+                    <el-button type="primary" @click="istable2=false">确 定</el-button>
+                </div>
+            </div>
             <div class="form-ztree-dialog" v-show="istable">
                 <div class="form-dialog-title">
-                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="istable = false"></el-icon></p>
+                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="istable = false,changeFormVisible =false"></el-icon></p>
                     <el-input icon="search" :on-icon-click="searchformTree"></el-input>
                 </div>
                 <div class="form-dialog-body">
                     <ul id="formTree" class="ztree"></ul>
                 </div>
                 <div class="form-dialog-footer">
-                    <el-button @click="istable=false" >取 消</el-button>
-                    <el-button type="primary" @click="istable=false">确 定</el-button>
+                    <el-button @click="istable=false,changeFormVisible = false" >取 消</el-button>
+                    <el-button type="primary" @click="istable=false,changeFormVisible= false">确 定</el-button>
                 </div>
             </div>
         </div>
@@ -158,6 +149,7 @@
                 }],
                 changeFormVisible:false,
                 istable:false,
+                istable2:false,
             }
         },
         components:{
@@ -220,8 +212,12 @@
                 }
             },
             showTreeDialog(){
-                this.changeFormVisible = true;
+//                this.changeFormVisible = true;
+
                 this.istable = !this.istable;
+                if(this.istable){
+                    this.istable2 = true;
+                }
             },
             //树结构的搜索功能
             getZtreeParentNode(ztreeNode, nodes) {

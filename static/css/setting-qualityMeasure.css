@@ -380,6 +380,9 @@
     width:450px !important;
 
 }
+.form-change .single-stump .form-dialog-body{
+    height:320px;overflow:auto;margin-bottom:20px;
+}
 /*form-ztree-dialog(表单结构树结构另外一套)*/
 .form-ztree-dialog{
     width: 450px;
@@ -393,10 +396,19 @@
     z-index: 3001;
     padding: 0 20px 20px;
 }
+.form-change .priview-le{
+    height:40px;line-height:40px;
+}
+.form-change .priview-le>div{
+    display:inline-block;
+}
+.form-change .priview-le>.el-icon-search{
+    float:right;margin-top:16px;
+}
 .form-change .form-ztree-dialog .form-dialog-title>p{
     padding: 15px 15px 15px 0;
     margin-bottom: 15px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;font-size:16px;font-weight:bold;
 }
 .form-change .form-ztree-dialog .form-dialog-title .el-input{
     width:100% !important;
