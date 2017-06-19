@@ -157,11 +157,12 @@
 	
 			<!--服务详情-->
 			<el-dialog title="查看服务详情" v-model="detailVisible" :close-on-click-modal="false">
-				<div style="height:40px;line-height:40px;border-top:1px solid #e6e6e6">当前人员<span style="color:#6595f2">李俊珅</span>已分配以下服务</div>
+				<div style="height:40px;line-height:40px;border-top:1px solid #e6e6e6">当前人员
+					<span style="color:#6595f2">李俊珅</span>已分配以下服务</div>
 				<el-table :data="tableData" style="width: 100%">
-					<el-table-column prop="date" label="套餐服务" >
+					<el-table-column prop="date" label="套餐服务">
 					</el-table-column>
-					<el-table-column prop="name" label="服务内容" >
+					<el-table-column prop="name" label="服务内容">
 					</el-table-column>
 					<el-table-column prop="address" label="服务到期时间">
 					</el-table-column>
@@ -235,13 +236,12 @@
 					</el-col>
 				</el-row>
 				<!--备注-->
-				<el-row style="position:absolute;right:23%;top:25px;">
-					<el-col :span="4" style="font-size:12px">
-						备注:
-						<span style="color:skyblue">(150/150)</span>
+				<el-row style="position:absolute;right:300px;top:25px;">
+					<el-col :span="4" style="font-size:12px">					
+						<span style="color:skyblue">备注:({{remainLength}}/150)</span>
 					</el-col>
-					<el-col :span="12" style="margin-left:10px">
-						<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:318px;height:148px">
+					<el-col :span="12">
+						<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:318px;height:148px" @change='change' v-model="textarea" :disabled='disabled'>
 						</el-input>
 					</el-col>
 				</el-row>
@@ -924,6 +924,9 @@ export default {
 			checkedCities1: ['0'],
 			currentIndex: '',
 			cities: cityOptions,
+			textarea:'',
+			remainLength:'150',
+			disabled:false,
 			// 树结构数据
 			setting: {
 				view: {
@@ -1131,6 +1134,12 @@ export default {
 		// 触发父级的路由标题是否隐藏
 		sendRouterTitle() {
 			this.$emit('connect');
+		},
+		change() {
+			console.log('something change');
+			var txtVal = this.textarea.length;
+			this.remainLength = 150 - txtVal;
+			this.remainLength==0?this.disabled=true:this.disabled=false;
 		},
 		// 设置授权
 		setAuthoried(index) {
@@ -1342,6 +1351,7 @@ export default {
 	font-size: 14px;
 	color: grey;
 }
+
 
 
 
