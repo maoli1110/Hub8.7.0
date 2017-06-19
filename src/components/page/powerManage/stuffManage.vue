@@ -181,70 +181,52 @@
 			</el-row>
 	
 			<el-row style="margin-top:20px;padding:30px 10px;position:relative;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
+				<el-col :span="16">
 				<el-row style="">
-					<el-col :span="6">
-						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
-							用户名:
-						</el-col>
-						<el-col :span="12" style="font-size:12px;height:36px;line-height:36px">
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
-						</el-col>
+					<el-col :span="10">
+							<span style="margin-right:9px;font-size:12px">用户名:</span>						
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
 					</el-col>
-					<el-col :span="6">
-						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
-							角色名:
-						</el-col>
-						<el-col :span="12" style="font-size:12px;height:36px;line-height:36px">
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
-						</el-col>
+					<el-col :span="10">						
+							<span style="margin-right:21px;font-size:12px">角色名:</span>						
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
 					</el-col>
 				</el-row>
 				<el-row style="margin-top:20px">
-					<el-col :span="6">
-						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
-							密码:
-						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
-						</el-col>
+					<el-col :span="10">
+							<span style="margin-right:20px;font-size:12px">密码:</span>					
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
 					</el-col>
-					<el-col :span="6">
-						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
-							确认密码:
-						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
-						</el-col>
+					<el-col :span="10">						
+							<span style="margin-right:9px;font-size:12px">确认密码:</span>					
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
 					</el-col>
 				</el-row>
 				<el-row style="margin-top:20px">
-					<el-col :span="6">
-						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
-							电话:
-						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
-						</el-col>
+					<el-col :span="10">
+							<span style="margin-right:20px;font-size:12px">电话:</span>					
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
 					</el-col>
-					<el-col :span="6">
-						<el-col :span="4" style="font-size:12px;height:36px;line-height:36px">
-							邮箱:
-						</el-col>
-						<el-col :span="12">
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
-						</el-col>
+					<el-col :span="10">						
+							<span style="margin-right:33px;font-size:12px">邮箱:</span>						
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
 					</el-col>
 				</el-row>
+                </el-col>
 				<!--备注-->
-				<el-row style="position:absolute;right:300px;top:25px;">
-					<el-col :span="4" style="font-size:12px">					
-						<span style="color:skyblue">备注:({{remainLength}}/150)</span>
+				<el-col :span="6">
+				<el-row >
+					<el-col :span="2" style="font-size:12px">备注:											
 					</el-col>
 					<el-col :span="12">
-						<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:318px;height:148px" @change='change' v-model="textarea" :disabled='disabled'>
-						</el-input>
-					</el-col>
+						<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:166%;height:148px" @change='change' v-model="textarea" :maxlength='150'>
+						</el-input>						
+					</el-col>					
 				</el-row>
+				    <el-col>
+				    <span style="color:#6595f2;float:right;position:relative;top:-6px;left:-11%">({{remainLength}}/150)</span>
+					</el-col>
+				 </el-col>
 			</el-row>
 	
 			<el-row style="margin-top:20px;box-shadow: 1px 0 6px #cccaca;">
@@ -1136,10 +1118,8 @@ export default {
 			this.$emit('connect');
 		},
 		change() {
-			console.log('something change');
-			var txtVal = this.textarea.length;
-			this.remainLength = 150 - txtVal;
-			this.remainLength==0?this.disabled=true:this.disabled=false;
+			let txtVal = this.textarea.length;
+			this.remainLength = 150 - txtVal;			
 		},
 		// 设置授权
 		setAuthoried(index) {

@@ -63,8 +63,9 @@
                 </el-col>
                 <el-col :span="18">
                     <span class="BMP-text" style="display:inline-block;vertical-align: top">备注：</span>
-                    <el-input style="width:60%;height:100px;" type="textarea" :rows="4" placeholder="请输入内容">
-                    </el-input>
+                    <el-input style="width:60%;height:97px;" type="textarea" :rows="4" placeholder="请输入内容" :maxlength='150' @change='change' v-model="textarea" >                       
+                    </el-input>  
+                    <span style="margin-left:-74px;color:#6595f2">({{remainLength}}/150)</span>
                 </el-col>
                 <el-col :span="24" class="BMP-serif"></el-col>
             </el-row>
@@ -298,6 +299,8 @@ export default {
                 "address": "海外 海外 -"
             }],
             cur_page: 1,
+            remainLength:150,
+            textarea:'',
             menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
 
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
@@ -334,6 +337,10 @@ export default {
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
     },
     methods: {
+        change() {
+			var txtVal = this.textarea.length;
+			this.remainLength = 150 - txtVal;			
+		},
         handleCurrentChange(val) {
             console.info(val, '当前是多少页')
             this.cur_page = val;
