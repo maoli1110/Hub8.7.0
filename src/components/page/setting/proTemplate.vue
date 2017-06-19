@@ -207,7 +207,7 @@
 </template>
 <script>
     import "../../../../static/css/setting-explorer.css";
-    import "static/js/ztree/css/zTreeStyle_new.css";
+//    import "static/js/ztree/css/zTreeStyle_new.css";
     //    import "static/ztree/css/demo.css";
     import "static/js/ztree/js/jquery.ztree.core-3.5.js";
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
@@ -338,9 +338,6 @@
             $('#proBtnOk').bind('click', {"isParent":false},this.addMoreNodes);
             $('#searchMessage>input').bind('keydown', this.searchTree)//搜索事件绑定到元素
             $('.sear-icon input').bind('keydown',this.searchProTree)
-          /*  $('.searchDiv').bind('click',this.searchBtnsShow);
-            $('.pro-sear-area').bind('click',this.searchBtnsShow)
-            $('body').bind('click',this.hideSearBtn)*/
         },
         methods: {
             handleSizeChange(){

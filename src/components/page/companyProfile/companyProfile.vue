@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import "static/js/ztree/css/zTreeStyle_new.css";
+//import "static/js/ztree/css/zTreeStyle_new.css";
 //    import "static/ztree/css/demo.css";
     import "static/js/ztree/js/jquery.ztree.core-3.5.js";
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
@@ -49,10 +49,10 @@ import "static/js/ztree/css/zTreeStyle_new.css";
             this.getData();
             var host = window.location.host;
             console.log(host)
-           
+
         },
         mounted(){
-           
+
         },
         methods: {
             handleCurrentChange(val){
