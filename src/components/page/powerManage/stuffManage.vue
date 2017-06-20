@@ -34,6 +34,10 @@
 						<el-button type="primary" @click="handleAdd" style="width: 100px;height: 40px;">
 							<span class="el-icon-delete"></span> 删除人员</el-button>
 					</el-form-item>
+					<el-form-item style="padding: 20px 0;">
+						<el-button type="primary" @click="handlMemember" style="width: 100px;height: 40px;">
+							<span class="el-icon-loading"></span> 成员管理</el-button>
+					</el-form-item>
 				</el-form>
 				<!--列表-->
 				<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;margin-top:10px;">
@@ -114,6 +118,27 @@
 					<el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
 				</div>
 			</el-dialog>
+			<!--成员管理-->
+			<el-dialog title="查看服务详情" v-model="memberVisible" :close-on-click-modal="false" size='tiny'>
+				<div style="height:20px;line-height:20px;border-top:1px solid #e6e6e6;text-align:center">设置
+					<span style="color:#6595f2">“海南铺前大桥项目”
+					</span>
+				</div>
+				<div style="height:40px;line-height:40px;text-align:center">项目成员职责
+				</div>
+				<el-row :gutter="30">
+					<el-col :span="6" :offset='7'>
+						<el-radio class="radio" v-model="radio" label="1">仅查看</el-radio>
+					</el-col>
+					<el-col :span="5">
+						<el-radio class="radio" v-model="radio" label="2">管理</el-radio>
+					</el-col>
+				</el-row>
+				<div slot="footer" class="dialog-footer" style="text-align: center;padding-bottom:40px">
+					<el-button type="primary" @click.native="memberVisible = false">确定</el-button>
+					<el-button type="primary">取消</el-button>
+				</div>
+			</el-dialog>
 			<!-- 授权资料目录-->
 			<el-dialog v-model="authorizedVisible" :close-on-click-modal="false" style="width:0">
 			</el-dialog>
@@ -143,7 +168,7 @@
 					</el-col>
 	
 				</el-row>
-				<div style="overflow-y:scroll;height:450px;margin-top:20px">
+				<div style="overflow-y:auto;height:450px;margin-top:20px">
 					<ul class="ztree" id="authorizedTree" style="margin-left:-9px"></ul>
 				</div>
 	
@@ -182,51 +207,52 @@
 	
 			<el-row style="margin-top:20px;padding:30px 10px;position:relative;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
 				<el-col :span="16">
-				<el-row style="">
-					<el-col :span="10">
-							<span style="margin-right:9px;font-size:12px">用户名:</span>						
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
-					</el-col>
-					<el-col :span="10">						
-							<span style="margin-right:21px;font-size:12px">角色名:</span>						
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
-					</el-col>
-				</el-row>
-				<el-row style="margin-top:20px">
-					<el-col :span="10">
-							<span style="margin-right:20px;font-size:12px">密码:</span>					
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
-					</el-col>
-					<el-col :span="10">						
-							<span style="margin-right:9px;font-size:12px">确认密码:</span>					
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
-					</el-col>
-				</el-row>
-				<el-row style="margin-top:20px">
-					<el-col :span="10">
-							<span style="margin-right:20px;font-size:12px">电话:</span>					
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
-					</el-col>
-					<el-col :span="10">						
-							<span style="margin-right:33px;font-size:12px">邮箱:</span>						
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>						
-					</el-col>
-				</el-row>
-                </el-col>
+					<el-row style="">
+						<el-col :span="10">
+							<span style="margin-right:9px;font-size:12px">用户名:</span>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+						<el-col :span="10">
+							<span style="margin-right:21px;font-size:12px">角色名:</span>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+					</el-row>
+					<el-row style="margin-top:20px">
+						<el-col :span="10">
+							<span style="margin-right:20px;font-size:12px">密码:</span>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+						<el-col :span="10">
+							<span style="margin-right:9px;font-size:12px">确认密码:</span>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+					</el-row>
+					<el-row style="margin-top:20px">
+						<el-col :span="10">
+							<span style="margin-right:20px;font-size:12px">电话:</span>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+						<el-col :span="10">
+							<span style="margin-right:33px;font-size:12px">邮箱:</span>
+							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
+						</el-col>
+					</el-row>
+				</el-col>
 				<!--备注-->
 				<el-col :span="6">
-				<el-row >
-					<el-col :span="2" style="font-size:12px">备注:											
+					<el-row>
+						<el-col :span="2" style="font-size:12px">备注:
+						</el-col>
+						<el-col :span="12">
+							<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:166%;height:148px" @change='change' v-model="textarea" :maxlength='150'>
+							</el-input>
+						</el-col>
+					</el-row>
+					<el-col>
+						<span style="float:right;position:relative;top:-6px;left:-11%;font-size:12px">(
+							<span style="color:#6595f2;">{{remainLength}}</span>/150)</span>
 					</el-col>
-					<el-col :span="12">
-						<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7}" placeholder="请输入内容" style="width:166%;height:148px" @change='change' v-model="textarea" :maxlength='150'>
-						</el-input>						
-					</el-col>					
-				</el-row>
-				    <el-col>
-				    <span style="color:#6595f2;float:right;position:relative;top:-6px;left:-11%">({{remainLength}}/150)</span>
-					</el-col>
-				 </el-col>
+				</el-col>
 			</el-row>
 	
 			<el-row style="margin-top:20px;box-shadow: 1px 0 6px #cccaca;">
@@ -238,322 +264,388 @@
 			<el-row style="background-color:#fff;box-shadow: 1px 0 6px #cccaca;">
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="房建" name="first">
-						<el-tabs type="card">
-							<el-tab-pane label="系统客户端">
-								<el-carousel arrow="always" :interval="5000000">
-									<el-carousel-item v-for="item in 1" :key="item" style="padding:0 5%">
-										<div v-for="(o, index) in powerProduct" :key="o" :offset="0" style="width:9%;float:left;margin:35px 0 0 2%">
-											<el-card :body-style="{ padding: '0px' }">
-												<div style="height:20px;padding:2% 8px 23px 0 ">
-													<el-button type="text" style="float:right">
-														<span class="el-icon-star-on" style="float:right;color:#7fc977;" @click='setAuthoried(index)' v-show='o==1'> 已授权</span>
-														<span class="el-icon-star-on" style="float:right;color:#d78387;" @click='setUnauthoried(index)' v-show='o==0'> 未授权</span>
-													</el-button>
-												</div>
-												<div style="text-align: center;border-bottom: 1px solid rgb(209, 229, 229);">
-													<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:64px;height:64px;margin:0 auto">
-													<span style="margin:14px 0 14px 0;display:inline-block">Luban Explorer</span>
-												</div>
-												<div>
-													<div class="bottom clearfix" style="padding:10px 0 ">
-														<p class="time">全部授权数:
-															<span>100</span>
-														</p>
-														<p class="time">可用授权数:
-															<span>50</span>
-														</p>
-													</div>
-												</div>
-											</el-card>
-										</div>
-									</el-carousel-item>
-								</el-carousel>
-							</el-tab-pane>
-							<el-tab-pane label="算量云功能">
-								<el-carousel arrow="always">
-									<el-carousel-item v-for="item in 2" :key="item">
-									</el-carousel-item>
-								</el-carousel>
-							</el-tab-pane>
-						</el-tabs>
-					</el-tab-pane>
-					<el-tab-pane label="市政" name="second">
-						<el-tabs type="card">
-							<el-tab-pane label="系统客户端1">用户管理</el-tab-pane>
-							<el-tab-pane label="算量云功能1">配置管理</el-tab-pane>
-						</el-tabs>
-					</el-tab-pane>
-					<el-tab-pane label="精装" name="third">
-						<el-tabs type="card">
-							<el-tab-pane label="系统客户端2">用户管理</el-tab-pane>
-							<el-tab-pane label="算量云功能2">配置管理</el-tab-pane>
-						</el-tabs>
-					</el-tab-pane>
-				</el-tabs>
-			</el-row>
-	
-			<el-row style="background-color:#fff;padding-left:20px;border-bottom: 1px solid #e6e6e6">
-				<!--项目授权-->
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-row>
-								<el-col :span="4">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;">项目授权</div>
-								</el-col>
-								<el-col :span="4">
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										共
-										<span style="color:#6595f2">123</span>个工程,已授权
-										<span style="color:#6595f2">31</span>个工程
-									</div>
-								</el-col>
-								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
-										<el-button type="info" @click="authority_m">授权</el-button>
-									</div>
-								</el-col>
-							</el-row>
-						</div>
-					</el-col>
-				</el-row>
-				<!--工程授权-->
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-row>
-								<el-col :span="4">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px">工程授权</div>
-								</el-col>
-								<el-col :span="4">
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										共
-										<span style="color:#6595f2">123</span>个工程,已授权
-										<span style="color:#6595f2">31</span>个工程
-									</div>
-								</el-col>
-								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
-										<el-button type="info" @click="authority_m" v-if='!checked'>授权</el-button>
-										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
-									</div>
-								</el-col>
-								<el-col :span="2" :offset='1'>
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										<el-checkbox v-model="checked">全部工程</el-checkbox>
-									</div>
-								</el-col>
-							</el-row>
-						</div>
-					</el-col>
-				</el-row>
-				<!--工作集授权-->
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-row>
-								<el-col :span="4">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px">工作集授权</div>
-								</el-col>
-								<el-col :span="4">
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										共
-										<span style="color:#6595f2">123</span>个工程,已授权
-										<span style="color:#6595f2">31</span>个工程
-									</div>
-								</el-col>
-								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
-										<el-button type="info" @click="authority_n" v-if='!checked'>授权</el-button>
-										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
-									</div>
-								</el-col>
-								<el-col :span="2" :offset='1'>
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										<el-checkbox v-model="checked">全部工程</el-checkbox>
-									</div>
-								</el-col>
-							</el-row>
-						</div>
-					</el-col>
-				</el-row>
-				<!--Govern组织结构授权-->
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-row>
-								<el-col :span="4">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px">Govern组织结构授权</div>
-								</el-col>
-								<el-col :span="4">
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										共
-										<span style="color:#6595f2">123</span>个工程,已授权
-										<span style="color:#6595f2">31</span>个工程
-									</div>
-								</el-col>
-								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
-										<el-button type="info" @click="authority_o" v-if='!checked'>授权</el-button>
-										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
-									</div>
-								</el-col>
-								<el-col :span="2" :offset='1'>
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										<el-checkbox v-model="checked">全部工程</el-checkbox>
-									</div>
-								</el-col>
-							</el-row>
-						</div>
-					</el-col>
-				</el-row>
-				<!--Luban Explorer可见级别-->
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-row>
-								<el-col :span="4">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px">Luban Explorer可见级别</div>
-								</el-col>
-								<el-col :span="4">
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										共
-										<span style="color:#6595f2">123</span>个工程,已授权
-										<span style="color:#6595f2">31</span>个工程
-									</div>
-								</el-col>
-								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
-										<el-button type="info" @click="authority_p" v-if='!checked'>授权</el-button>
-										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
-									</div>
-								</el-col>
-								<el-col :span="2" :offset='1'>
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										<el-checkbox v-model="checked">全部工程</el-checkbox>
-									</div>
-								</el-col>
-							</el-row>
-						</div>
-					</el-col>
-				</el-row>
-				<!--iBan可上传工程-->
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-row>
-								<el-col :span="4">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px">iBan可上传工程</div>
-								</el-col>
-								<el-col :span="4">
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										共
-										<span style="color:#6595f2">123</span>个工程,已授权
-										<span style="color:#6595f2">31</span>个工程
-									</div>
-								</el-col>
-								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
-										<el-button type="info" @click="authority_q" v-if='!checked'>授权</el-button>
-										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
-									</div>
-								</el-col>
-								<el-col :span="2" :offset='1'>
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										<el-checkbox v-model="checked">全部工程</el-checkbox>
-									</div>
-								</el-col>
-							</el-row>
-						</div>
-					</el-col>
-				</el-row>
-				<!--原BW-->
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-row>
-								<el-col :span="4">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px">原BW</div>
-								</el-col>
-								<el-col :span="4">
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										共
-										<span style="color:#6595f2">123</span>个工程,已授权
-										<span style="color:#6595f2">31</span>个工程
-									</div>
-								</el-col>
-								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
-										<el-button type="info">授权</el-button>
-									</div>
-								</el-col>
-							</el-row>
-						</div>
-					</el-col>
-				</el-row>
-				<!--视频监控-->
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-row>
-								<el-col :span="4">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px">视频监控</div>
-								</el-col>
-							</el-row>
-						</div>
-					</el-col>
-				</el-row>
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-col :span="4">
-								<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-									<el-checkbox>查看和编辑</el-checkbox>
+						<el-row style="background-color:#fff;padding-left:20px">
+							<el-col :span="2" v-for='(item,index) in 5'>
+								<div style="text-align: center;width:132px;height:40;line-height:40px" :class="{'check':index==currentIndex}" @click="currentIndex=index">
+									<span style="font-size:16px">系统客户端</span>
 								</div>
 							</el-col>
-						</div>
-					</el-col>
-				</el-row>
-				<el-row>
-					<el-col :span="24">
-						<div class="grid-content bg-purple">
-							<el-row>
-								<el-col :span="4">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px">
-										<el-checkbox>预览</el-checkbox>
+						</el-row>
+						<el-row style="margin-top:20px;padding-left:20px">
+							<el-carousel arrow="always" :interval="5000000" v-for='(item,index) in 5' v-if="index==currentIndex">
+								<el-carousel-item style="padding:0 5%">
+									<div v-for="(o, index) in powerProduct" :key="o" :offset="0" style="width:9%;float:left;margin:35px 0 0 2%">
+										<el-card :body-style="{ padding: '0px' }">
+											<div style="height:20px;padding:2% 8px 23px 0 ">
+												<el-button type="text" style="float:right">
+													<span class="el-icon-star-on" style="float:right;color:#7fc977;" @click='setAuthoried(index)' v-show='o==1'> 已授权</span>
+													<span class="el-icon-star-on" style="float:right;color:#d78387;" @click='setUnauthoried(index)' v-show='o==0'> 未授权</span>
+												</el-button>
+											</div>
+											<div style="text-align: center;border-bottom: 1px solid rgb(209, 229, 229);">
+												<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:64px;height:64px;margin:0 auto">
+												<span style="margin:14px 0 14px 0;display:inline-block">Luban Explorer</span>
+											</div>
+											<div>
+												<div class="bottom clearfix" style="padding:10px 0 ">
+													<p class="time">全部授权数:
+														<span>{{index}}</span>
+													</p>
+													<p class="time">可用授权数:
+														<span>50</span>
+													</p>
+												</div>
+											</div>
+										</el-card>
 									</div>
-								</el-col>
+									<span>{{currentIndex}}</span>
+								</el-carousel-item>
+							</el-carousel>
+						</el-row>
+					</el-tab-pane>
+					<el-tab-pane label="市政" name="second">
+						<el-row style="background-color:#fff;padding-left:20px">
+							<el-col :span="2" v-for='(item,index) in 5'>
+								<div style="text-align: center;width:132px;height:40;line-height:40px" :class="{'check':index==currentIndex}" @click="currentIndex=index">
+									<span style="font-size:16px">系统客户端</span>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row style="margin-top:20px;padding-left:20px">
+							<el-carousel arrow="always" :interval="5000000" v-for='(item,index) in 5' v-show="index==currentIndex">
+								<el-carousel-item style="padding:0 5%">
+									<div v-for="(o, index) in powerProduct" :key="o" :offset="0" style="width:9%;float:left;margin:35px 0 0 2%">
+										<el-card :body-style="{ padding: '0px' }">
+											<div style="height:20px;padding:2% 8px 23px 0 ">
+												<el-button type="text" style="float:right">
+													<span class="el-icon-star-on" style="float:right;color:#7fc977;" @click='setAuthoried(index)' v-show='o==1'> 已授权</span>
+													<span class="el-icon-star-on" style="float:right;color:#d78387;" @click='setUnauthoried(index)' v-show='o==0'> 未授权</span>
+												</el-button>
+											</div>
+											<div style="text-align: center;border-bottom: 1px solid rgb(209, 229, 229);">
+												<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:64px;height:64px;margin:0 auto">
+												<span style="margin:14px 0 14px 0;display:inline-block">Luban Explorer</span>
+											</div>
+											<div>
+												<div class="bottom clearfix" style="padding:10px 0 ">
+													<p class="time">全部授权数:
+														<span>{{index}}</span>
+													</p>
+													<p class="time">可用授权数:
+														<span>50</span>
+													</p>
+												</div>
+											</div>
+										</el-card>
+									</div>
+									<span>{{currentIndex}}</span>
+								</el-carousel-item>
+							</el-carousel>
+						</el-row>
+					</el-tab-pane>
+					<el-tab-pane label="精装" name="third">
+						<el-row style="background-color:#fff;padding-left:20px">
+							<el-col :span="2" v-for='(item,index) in 5'>
+								<div style="text-align: center;width:132px;height:40;line-height:40px" :class="{'check':index==currentIndex}" @click="currentIndex=index">
+									<span style="font-size:16px">系统客户端</span>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row style="margin-top:20px;padding-left:20px">
+							<el-carousel arrow="always" :interval="5000000" v-for='(item,index) in 5' v-show="index==currentIndex">
+								<el-carousel-item style="padding:0 5%">
+									<div v-for="(o, index) in powerProduct" :key="o" :offset="0" style="width:9%;float:left;margin:35px 0 0 2%">
+										<el-card :body-style="{ padding: '0px' }">
+											<div style="height:20px;padding:2% 8px 23px 0 ">
+												<el-button type="text" style="float:right">
+													<span class="el-icon-star-on" style="float:right;color:#7fc977;" @click='setAuthoried(index)' v-show='o==1'> 已授权</span>
+													<span class="el-icon-star-on" style="float:right;color:#d78387;" @click='setUnauthoried(index)' v-show='o==0'> 未授权</span>
+												</el-button>
+											</div>
+											<div style="text-align: center;border-bottom: 1px solid rgb(209, 229, 229);">
+												<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:64px;height:64px;margin:0 auto">
+												<span style="margin:14px 0 14px 0;display:inline-block">Luban Explorer</span>
+											</div>
+											<div>
+												<div class="bottom clearfix" style="padding:10px 0 ">
+													<p class="time">全部授权数:
+														<span>{{index}}</span>
+													</p>
+													<p class="time">可用授权数:
+														<span>50</span>
+													</p>
+												</div>
+											</div>
+										</el-card>
+									</div>
+									<span>{{currentIndex}}</span>
+								</el-carousel-item>
+							</el-carousel>
+						</el-row>
+					</el-tab-pane>
+				</el-tabs>
+				<el-row style="background-color:#fff;padding:20px 0 38px 20px;border-top: 1px solid #e6e6e6;">
+					<!--项目授权-->
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
+								<el-row>
+									<el-col :span="4">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;font-weight:bold">项目授权</div>
+									</el-col>
+									<el-col :span="4">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
+											共
+											<span style="color:#6595f2">123</span>个工程,已授权
+											<span style="color:#6595f2">31</span>个工程
+										</div>
+									</el-col>
+									<el-col :span="2">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
+											<el-button type="info" @click="authority_m" class="button_size">授权</el-button>
+										</div>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+					</el-row>
+					<!--工程授权-->
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
+								<el-row>
+									<el-col :span="4">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;font-weight:bold">工程授权</div>
+									</el-col>
+									<el-col :span="4">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
+											共
+											<span style="color:#6595f2">123</span>个工程,已授权
+											<span style="color:#6595f2">31</span>个工程
+										</div>
+									</el-col>
+									<el-col :span="2">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
+											<el-button type="info" @click="authority_m" v-if='!checked' class="button_size">授权</el-button>
+											<el-button type="primary" :disabled="true" v-else='checked' class="button_size">授权</el-button>
+										</div>
+									</el-col>
+									<el-col :span="1">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px;padding-left:20px">
+											<el-checkbox v-model="checked">全部工程</el-checkbox>
+										</div>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+					</el-row>
+					<!--工作集授权-->
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
+								<el-row>
+									<el-col :span="4">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;font-weight:bold">工作集授权</div>
+									</el-col>
+									<el-col :span="4">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
+											共
+											<span style="color:#6595f2">123</span>个工程,已授权
+											<span style="color:#6595f2">31</span>个工程
+										</div>
+									</el-col>
+									<el-col :span="2">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
+											<el-button type="info" @click="authority_n" v-if='!checked' class="button_size">授权</el-button>
+											<el-button type="primary" :disabled="true" v-else='checked' class="button_size">授权</el-button>
+										</div>
+									</el-col>
+									<el-col :span="1">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px;padding-left:20px">
+											<el-checkbox v-model="checked">全部工程</el-checkbox>
+										</div>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+					</el-row>
+					<!--Govern组织结构授权-->
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
+								<el-row>
+									<el-col :span="4">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;font-weight:bold">Govern组织结构授权</div>
+									</el-col>
+									<el-col :span="4">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
+											共
+											<span style="color:#6595f2">123</span>个工程,已授权
+											<span style="color:#6595f2">31</span>个工程
+										</div>
+									</el-col>
+									<el-col :span="2">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
+											<el-button type="info" @click="authority_o" v-if='!checked' class="button_size">授权</el-button>
+											<el-button type="primary" :disabled="true" v-else='checked' class="button_size">授权</el-button>
+										</div>
+									</el-col>
+									<el-col :span="1">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px;padding-left:20px">
+											<el-checkbox v-model="checked">全部工程</el-checkbox>
+										</div>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+					</el-row>
+					<!--Luban Explorer可见级别-->
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
+								<el-row>
+									<el-col :span="4">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;font-weight:bold">Luban Explorer可见级别</div>
+									</el-col>
+									<el-col :span="4">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
+											共
+											<span style="color:#6595f2">123</span>个工程,已授权
+											<span style="color:#6595f2">31</span>个工程
+										</div>
+									</el-col>
+									<el-col :span="2">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
+											<el-button type="info" @click="authority_p" v-if='!checked' class="button_size">授权</el-button>
+											<el-button type="primary" :disabled="true" v-else='checked' class="button_size">授权</el-button>
+										</div>
+									</el-col>
+									<el-col :span="1">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px;padding-left:20px">
+											<el-checkbox v-model="checked">全部工程</el-checkbox>
+										</div>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+					</el-row>
+					<!--iBan可上传工程-->
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
+								<el-row>
+									<el-col :span="4">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;font-weight:bold">iBan可上传工程</div>
+									</el-col>
+									<el-col :span="4">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
+											共
+											<span style="color:#6595f2">123</span>个工程,已授权
+											<span style="color:#6595f2">31</span>个工程
+										</div>
+									</el-col>
+									<el-col :span="2">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
+											<el-button type="info" @click="authority_q" v-if='!checked' class="button_size">授权</el-button>
+											<el-button type="primary" :disabled="true" v-else='checked' class="button_size">授权</el-button>
+										</div>
+									</el-col>
+									<el-col :span="1">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px;padding-left:20px">
+											<el-checkbox v-model="checked">全部工程</el-checkbox>
+										</div>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+					</el-row>
+					<!--原BW-->
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
+								<el-row>
+									<el-col :span="4">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;font-weight:bold">原BW</div>
+									</el-col>
+									<el-col :span="4">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
+											共
+											<span style="color:#6595f2">123</span>个工程,已授权
+											<span style="color:#6595f2">31</span>个工程
+										</div>
+									</el-col>
+									<el-col :span="2">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
+											<el-button type="info" class="button_size">授权</el-button>
+										</div>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+					</el-row>
+					<!--视频监控-->
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
+								<el-row>
+									<el-col :span="4">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;font-weight:bold">视频监控</div>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+					</el-row>
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
 								<el-col :span="4">
 									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										共
-										<span style="color:#6595f2">123</span>个工程，已授权
-										<span style="color:#6595f2">31</span>个工程
+										<el-checkbox>查看和编辑</el-checkbox>
 									</div>
 								</el-col>
-								<el-col :span="2">
-									<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
-										<el-button type="info" @click="authority_r" v-if='!checked'>授权</el-button>
-										<el-button type="primary" :disabled="true" v-else='checked'>授权</el-button>
-									</div>
-								</el-col>
-								<el-col :span="2" :offset='1'>
-									<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
-										<el-checkbox v-model="checked">全部工程</el-checkbox>
-									</div>
-								</el-col>
-							</el-row>
-						</div>
-					</el-col>
+							</div>
+						</el-col>
+					</el-row>
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content bg-purple">
+								<el-row>
+									<el-col :span="4">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px">
+											<el-checkbox>预览</el-checkbox>
+										</div>
+									</el-col>
+									<el-col :span="4">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px">
+											共
+											<span style="color:#6595f2">123</span>个工程，已授权
+											<span style="color:#6595f2">31</span>个工程
+										</div>
+									</el-col>
+									<el-col :span="2">
+										<div class="grid-content bg-purple" style="height:45px;line-height:45px;padding-left:30px">
+											<el-button type="info" @click="authority_r" v-if='!checked' class="button_size">授权</el-button>
+											<el-button type="primary" :disabled="true" v-else='checked' class="button_size">授权</el-button>
+										</div>
+									</el-col>
+									<el-col :span="1">
+										<div class="grid-content bg-purple-light" style="height:45px;line-height:45px;padding-left:20px">
+											<el-checkbox v-model="checked">全部工程</el-checkbox>
+										</div>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+					</el-row>
+					<!--确定取消-->
 				</el-row>
-				<!--确定取消-->
-				<el-row :gutter="30" style="background-color:#fff;padding:40px 0;">
-					<el-col :span="6" :offset="6">
-						<el-button type="info" style="float:right" @click='flag=true;sendRouterTitle()'>确定</el-button>
-					</el-col>
-					<el-col :span="6">
+				<el-row style="background-color:#fff;padding:40px 0;border-top: 1px solid #e6e6e6;maigin-top:20px">
+					<el-col :span="24" style="text-align:center">
+						<el-button type="info" @click='flag=true;sendRouterTitle()'>确定</el-button>
 						<el-button type="info">取消</el-button>
 					</el-col>
 				</el-row>
+	
 			</el-row>
 	
 			<!--dialog弹框-->
@@ -561,23 +653,23 @@
 			<!--授权工程-->
 			<el-dialog title="授权工程" v-model="authority_1" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="6">
+					<el-col :span="5">
 						<span>工程专业:</span>
 						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="5">
 						<span>BIM属性:</span>
 						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8" :offset='3'>
-						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
+					<el-col :span="12">
+						<el-col :span="12">
+							<el-input placeholder="请选择日期" icon="search" style="width:93%;">
 							</el-input>
 						</el-col>
 						<el-col :span="6">
@@ -620,12 +712,12 @@
 			<!--授权工作集-->
 			<el-dialog title="授权工作集" v-model="authority_2" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="8" :offset='15'>
-						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
+					<el-col :span="24">
+						<el-col :span="6">
+							<el-input placeholder="请选择日期" icon="search" style="width:93%;">
 							</el-input>
 						</el-col>
-						<el-col :span="2">
+						<el-col :span="6">
 							<el-button type="info">重置</el-button>
 						</el-col>
 					</el-col>
@@ -663,7 +755,7 @@
 			<el-dialog v-model="authority_3" :close-on-click-modal="false" style="width:0%" top='18%'>
 	
 			</el-dialog>
-			<div class="quality-dialog" v-show="authority_3" style="padding:20px">
+			<div class="quality-dialog" v-show="authority_3" style="padding:20px;width:485px;height:658px">
 				<div class="quality-dialog-header">
 					<el-row>
 						<el-col :span="24" style="padding:0px 0 20px;border-bottom:1px solid #ddd;">
@@ -672,44 +764,41 @@
 						</el-col>
 					</el-row>
 				</div>
-				<ul class="ztree" id="lineTree"></ul>
-				<el-row style="margin:30px 0 0 28px">
+				<div style="overflow-y:auto;height:450px;margin-top:20px">
+					<ul class="ztree" id="lineTree" style="margin-left:-9px"></ul>
+				</div>
+				<el-row style="margin:30px 0 40px 0px">
 					<el-col :span="24">
 						<el-checkbox>已授权节点新上传工程时,自动授权</el-checkbox>
 					</el-col>
 				</el-row>
-	
-				<el-row :gutter="30" style="background-color:#fff;margin-top:140px">
-					<el-col :span="6" :offset="6">
-						<el-button type="info" style="float:right" @click='authority_3=false'>确定</el-button>
-					</el-col>
-					<el-col :span="6">
-						<el-button type="info">取消</el-button>
-					</el-col>
-				</el-row>
+				<div slot="footer" class="dialog-footer" style="text-align: center;">
+					<el-button type="primary" @click.native="authority_3=false">确定</el-button>
+					<el-button type="primary">取消</el-button>
+				</div>
 	
 				<!--<ul class="ztree" id="lineTree"></ul>-->
 			</div>
 			<!--可见级别授权-->
 			<el-dialog title="可见级别授权" v-model="authority_4" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="6">
+					<el-col :span="5">
 						<span>工程专业:</span>
 						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="5">
 						<span>BIM属性:</span>
 						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8" :offset='3'>
-						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
+					<el-col :span="12">
+						<el-col :span="12">
+							<el-input placeholder="请选择日期" icon="search" style="width:93%;">
 							</el-input>
 						</el-col>
 						<el-col :span="6">
@@ -717,16 +806,14 @@
 						</el-col>
 					</el-col>
 				</el-row>
-	
-				<!--表格-->
-				<div style="position:absolute;right:64px;top:135px;z-index:10">
-					<el-radio-group v-model="radio2">
-						<el-radio :label="0" style="">默认</el-radio>
-						<el-radio :label="1" style="">I级</el-radio>
-						<el-radio :label="2" style="">II级</el-radio>
-						<el-radio :label="3" style="">III级</el-radio>
-					</el-radio-group>
-				</div>
+				<!--<div style="position:absolute;right:64px;top:135px;z-index:10">
+													<el-radio-group v-model="radio2">
+														<el-radio :label="0" style="">默认</el-radio>
+														<el-radio :label="1" style="">I级</el-radio>
+														<el-radio :label="2" style="">II级</el-radio>
+														<el-radio :label="3" style="">III级</el-radio>
+													</el-radio-group>
+												</div>-->
 				<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;margin-top:20px">
 					<el-table-column type="index" width="180" label="单位工程名称">
 					</el-table-column>
@@ -740,10 +827,10 @@
 						<template scope="scope">
 							<div style="padding-left:70px">
 								<el-radio-group v-model="radio2">
-									<el-radio :label="0" style="color:#ffff">默认</el-radio>
-									<el-radio :label="1" style="color:#ffff">I级</el-radio>
-									<el-radio :label="2" style="color:#ffff">II级</el-radio>
-									<el-radio :label="3" style="color:#ffff">III级</el-radio>
+									<el-radio :label="0" style="color:#fff">默认</el-radio>
+									<el-radio :label="1" style="color:#fff">I级</el-radio>
+									<el-radio :label="2" style="color:#fff">II级</el-radio>
+									<el-radio :label="3" style="color:#fff">III级</el-radio>
 								</el-radio-group>
 							</div>
 						</template>
@@ -769,23 +856,23 @@
 			<!--授权IBM可上传工程-->
 			<el-dialog title="授权IBM可上传工程" v-model="authority_5" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="6">
+					<el-col :span="5">
 						<span>工程专业:</span>
 						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="5">
 						<span>BIM属性:</span>
 						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8" :offset='3'>
-						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
+					<el-col :span="12">
+						<el-col :span="12">
+							<el-input placeholder="请选择日期" icon="search" style="width:93%;">
 							</el-input>
 						</el-col>
 						<el-col :span="6">
@@ -828,23 +915,23 @@
 			<!--授权监控-->
 			<el-dialog title="授权监控" v-model="authority_6" :close-on-click-modal="false">
 				<el-row>
-					<el-col :span="6">
+					<el-col :span="5">
 						<span>工程专业:</span>
 						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="5">
 						<span>BIM属性:</span>
 						<el-select v-model="value" placeholder="请选择" style="width:94px;height:20px">
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="8" :offset='3'>
-						<el-col :span="18">
-							<el-input placeholder="请选择日期" icon="search" style="width:212px;">
+					<el-col :span="12">
+						<el-col :span="12">
+							<el-input placeholder="请选择日期" icon="search" style="width:93%;">
 							</el-input>
 						</el-col>
 						<el-col :span="6">
@@ -904,11 +991,11 @@ export default {
 			checked: true,
 			powerProduct: [1, 0, 1, 1, 1, 1, 1, 0],
 			checkedCities1: ['0'],
-			currentIndex: '',
+			currentIndex: 0,
 			cities: cityOptions,
-			textarea:'',
-			remainLength:'150',
-			disabled:false,
+			textarea: '',
+			remainLength: '150',
+			disabled: false,
 			// 树结构数据
 			setting: {
 				view: {
@@ -1079,6 +1166,7 @@ export default {
 				addr: ''
 			},
 			detailVisible: false,
+			memberVisible: false,
 			addFormVisible: false,//新增界面是否显示
 			addLoading: false,
 			addFormRules: {
@@ -1119,7 +1207,7 @@ export default {
 		},
 		change() {
 			let txtVal = this.textarea.length;
-			this.remainLength = 150 - txtVal;			
+			this.remainLength = 150 - txtVal;
 		},
 		// 设置授权
 		setAuthoried(index) {
@@ -1209,8 +1297,12 @@ export default {
 		handleAuthorized: function () {
 			this.authorizedVisible = true;
 		},
+		// 显示授权资料目录
 		handleDetail: function () {
 			this.detailVisible = true;
+		},
+		handlMemember: function () {
+			this.memberVisible = true;
 		},
 		//编辑
 		editSubmit: function () {
@@ -1323,7 +1415,8 @@ export default {
 
 <style scoped>
 .inputStyle {
-	width: 304px !important;
+	width: 71%;
+	min-width: 163px;
 	height: 36px;
 }
 
@@ -1331,22 +1424,6 @@ export default {
 	font-size: 14px;
 	color: grey;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/*.el-button {
-	width: 90px;
-	height: 36px;
-}*/
 
 .time {
 	font-size: 13px;
@@ -1391,5 +1468,17 @@ export default {
 	background: #fff;
 	z-index: 9999;
 	border-radius: 5px;
+}
+
+.check {
+	background-color: #6595f2;
+	border-radius: 4px;
+	color: #fff;
+	font-weight: 700;
+}
+
+.button_size {
+	width: 90px;
+	height: 36px;
 }
 </style>

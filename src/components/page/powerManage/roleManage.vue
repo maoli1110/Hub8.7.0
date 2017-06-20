@@ -11,60 +11,60 @@
 						<el-button type="primary" v-on:click="getUsers" style="width: 82px;height: 36px;">重置</el-button>
 					</el-form-item>
 					<!--<el-form-item>-->
-						<!--<el-button type="primary" @click="handleAdd">新增</el-button>-->
+					<!--<el-button type="primary" @click="handleAdd">新增</el-button>-->
 					<!--</el-form-item>-->
-
+	
 				</el-form>
 			</el-col>
 			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px;box-shadow: 1px 0 6px #cccaca;">
 				<el-form :inline="true" :model="filters" style="height:70px">
 					<el-form-item style="padding: 20px 0;">
-						<el-button type="primary" @click="flag=false;sendRouterTitle()" style="width: 100px;height: 40px;"><span class="el-icon-plus"></span> 添加人员</el-button>
+						<el-button type="primary" @click="flag=false;sendRouterTitle()" style="width: 100px;height: 40px;">
+							<span class="el-icon-plus"></span> 添加人员</el-button>
 					</el-form-item>
 					<el-form-item style="padding: 20px 0;">
-						<el-button type="primary" @click="handleAdd" style="width: 100px;height: 40px;"><span class="el-icon-delete"></span> 删除人员</el-button>
+						<el-button type="primary" @click="handleAdd" style="width: 100px;height: 40px;">
+							<span class="el-icon-delete"></span> 删除人员</el-button>
 					</el-form-item>
 				</el-form>
 				<!--列表-->
-			<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;margin-top:10px;">
-				<el-table-column type="selection" width="100">
-				</el-table-column>
-				<el-table-column type="index" width="100" label="序号">
-				</el-table-column>
-				<el-table-column prop="name" label="用户名" width="150" sortable>
-				</el-table-column>
-				<el-table-column prop="sex" label="角色" width="120" :formatter="formatSex" >
-				</el-table-column>
-				<el-table-column prop="age" label="电话" width="120" >
-				</el-table-column>
-				<el-table-column prop="birth" label="邮箱" width="180" >
-				</el-table-column>
-				<el-table-column prop="addr" label="更新时间" min-width="120" sortable>
-				</el-table-column>
-				<el-table-column prop="addr" label="周活跃度" min-width="120" sortable>
-				</el-table-column>
-				<el-table-column prop="addr" label="备注" min-width="120" >
-				</el-table-column>
-				<el-table-column label="周活跃度" width="180"  >
-					<template scope="scope">
-						<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>																								<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
-						<el-icon class="el-icon-edit" @click.native="flag=!flag;sendRouterTitle()"></el-icon>
-						<el-icon class="el-icon-delete2" @click.native="handleDel(scope.$index, scope.row)"></el-icon>
-						<el-icon class="el-icon-document" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
-						<el-icon class="el-icon-message" @click.native="handleAuthorized(scope.$index, scope.row)"></el-icon>
-					</template>
-				</el-table-column>
-			</el-table>
+				<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;margin-top:10px;">
+					<el-table-column type="selection" width="100">
+					</el-table-column>
+					<el-table-column type="index" width="100" label="序号">
+					</el-table-column>
+					<el-table-column prop="name" label="用户名" width="150" sortable>
+					</el-table-column>
+					<el-table-column prop="sex" label="角色" width="120" :formatter="formatSex">
+					</el-table-column>
+					<el-table-column prop="age" label="电话" width="120">
+					</el-table-column>
+					<el-table-column prop="birth" label="邮箱" width="180">
+					</el-table-column>
+					<el-table-column prop="addr" label="更新时间" min-width="120" sortable>
+					</el-table-column>
+					<el-table-column prop="addr" label="周活跃度" min-width="120" sortable>
+					</el-table-column>
+					<el-table-column prop="addr" label="备注" min-width="120">
+					</el-table-column>
+					<el-table-column label="周活跃度" width="180">
+						<template scope="scope">
+							<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>																								<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
+							<el-icon class="el-icon-edit" @click.native="flag=!flag;sendRouterTitle()"></el-icon>
+							<el-icon class="el-icon-delete2" @click.native="handleDel(scope.$index, scope.row)"></el-icon>
+							<el-icon class="el-icon-document" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
+							<el-icon class="el-icon-message" @click.native="handleAuthorized(scope.$index, scope.row)"></el-icon>
+						</template>
+					</el-table-column>
+				</el-table>
 			</el-col>
-
-
-
+	
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">
 				<el-pagination style='float:right' @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
 				</el-pagination>
 			</el-col>
-
+	
 			<!--编辑界面-->
 			<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
 				<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
@@ -92,7 +92,7 @@
 					<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
 				</div>
 			</el-dialog>
-
+	
 			<!--新增界面-->
 			<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
 				<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
@@ -125,40 +125,41 @@
 			<!--工具条-->
 			<el-row>
 				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
-					<p style="font-size: 18px;font-weight: 700;line-height: 60px" >用户基本信息</p>
+					<p style="font-size: 18px;font-weight: 700;line-height: 60px">用户基本信息</p>
 				</el-col>
 			</el-row>
-
+	
 			<el-row style="height:200px;padding:25px 10px;position:relative;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
 				<el-row style="height:45%">
-					<el-col :span="6">
-						<el-col :span="4" style="font-size:14px;height:36px;line-height:36px" >
-							用户名:
-						</el-col>
-						<el-col :span="12" style="font-size:14px;height:36px;line-height:36px">
-							<el-input placeholder="请输入内容" class='inputStyle'></el-input>
-						</el-col>
+					<el-col :span="6" style="font-size:12px;height:36px;line-height:36px">
+						用户名:
+						<el-input placeholder="请输入内容" class='inputStyle'></el-input>
 					</el-col>
-					<el-col :span="6">
-                        <el-col :span="4" style="font-size:14px">
-                            备注:
-                            <span style="color:skyblue">(150/150)</span>
-                        </el-col>
-                        <el-col :span="12" style="margin-left:10px">
-                            <el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7, }" placeholder="请输入内容" style="width:573px;height:90px">
-                            </el-input>
-                        </el-col>
+					<el-col :span="18">
+						<el-col :span="1" style="font-size:12px;height:36px;line-height:36px">
+							备注:
+						</el-col>
+						<el-col :span="12" style="margin-left:10px">
+							<el-input type="textarea" :autosize="{ minRows: 7, maxRows: 7, }" placeholder="请输入内容" style="width:80%;height:90px" @change='change' v-model="textarea" :maxlength='150'>
+							</el-input>
+						</el-col>
+						<el-col>
+						<span style="float:right;position:relative;top:55px;left:-56%;font-size:12px">(
+							<span style="color:#6595f2;">{{remainLength}}</span>/150)</span>
 					</el-col>
-                </el-row>
+	
+					</el-col>
+				</el-row>
+				
 			</el-row>
-
+	
 			<el-row style="margin-top:20px;">
-                <el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
-                    <p style="font-size: 18px;font-weight: 700;line-height: 60px" >功能节点授权</p>
-                </el-col>
+				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;box-shadow: 1px 0 6px #cccaca;">
+					<p style="font-size: 18px;font-weight: 700;line-height: 60px">功能节点授权</p>
+				</el-col>
 			</el-row>
 			<!--表格切换-->
-			<el-row style="background-color:#fff;box-shadow: 1px 0 6px #cccaca;" >
+			<el-row style="background-color:#fff;box-shadow: 1px 0 6px #cccaca;">
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="房建" name="first">
 						<el-row style="background-color:#fff;padding-left:20px">
@@ -170,8 +171,8 @@
 							</el-col>
 						</el-row>
 						<el-row style="margin-top:20px;padding-left:20px">
-                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
-							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+							<el-checkbox :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;" v-for='(item,index) in 5' v-show="index==currentIndex" v-cloak>
 								<el-table-column label="    全部" width="120" header-align='center'>
 									<template scope="scope">
 										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
@@ -185,11 +186,11 @@
 									</template>
 								</el-table-column>
 							</el-table>
-
+	
 						</el-row>
-					</el-tab-pane >
+					</el-tab-pane>
 					<el-tab-pane label="市政" name="second">
-                    	<el-row style="background-color: #fff;padding-left:20px">
+						<el-row style="background-color: #fff;padding-left:20px">
 							<el-col :span="2" v-for='(item,index) in 5'>
 								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
 									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
@@ -198,8 +199,8 @@
 							</el-col>
 						</el-row>
 						<el-row style="margin-top:20px;padding-left:20px">
-                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
-							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+							<el-checkbox :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;" v-for='(item,index) in 5' v-show="index==currentIndex" v-cloak>
 								<el-table-column label="    全部" width="120" header-align='center'>
 									<template scope="scope">
 										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
@@ -213,11 +214,10 @@
 									</template>
 								</el-table-column>
 							</el-table>
-
 						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="精装" name="third">
-                       	<el-row style="background-color: #fff;padding-left:20px">
+						<el-row style="background-color: #fff;padding-left:20px">
 							<el-col :span="2" v-for='(item,index) in 5'>
 								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
 									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
@@ -226,8 +226,8 @@
 							</el-col>
 						</el-row>
 						<el-row style="margin-top:20px;padding-left:20px">
-                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
-							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+							<el-checkbox :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;" v-for='(item,index) in 5' v-show="index==currentIndex" v-cloak>
 								<el-table-column label="    全部" width="120" header-align='center'>
 									<template scope="scope">
 										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
@@ -241,11 +241,11 @@
 									</template>
 								</el-table-column>
 							</el-table>
-
+	
 						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="装配式" name="">
-                       	<el-row style="background-color: #fff;padding-left:20px">
+						<el-row style="background-color: #fff;padding-left:20px">
 							<el-col :span="2" v-for='(item,index) in 5'>
 								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
 									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
@@ -254,8 +254,8 @@
 							</el-col>
 						</el-row>
 						<el-row style="margin-top:20px;padding-left:20px">
-                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
-							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+							<el-checkbox :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;" v-for='(item,index) in 5' v-show="index==currentIndex" v-cloak>
 								<el-table-column label="    全部" width="120" header-align='center'>
 									<template scope="scope">
 										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
@@ -269,11 +269,11 @@
 									</template>
 								</el-table-column>
 							</el-table>
-
+	
 						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="CIM" name="">
-                     	<el-row style="background-color: #fff;padding-left:20px">
+						<el-row style="background-color: #fff;padding-left:20px">
 							<el-col :span="2" v-for='(item,index) in 5'>
 								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
 									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
@@ -282,8 +282,8 @@
 							</el-col>
 						</el-row>
 						<el-row style="margin-top:20px;padding-left:20px">
-                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
-							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+							<el-checkbox :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;" v-for='(item,index) in 5' v-show="index==currentIndex" v-cloak>
 								<el-table-column label="    全部" width="120" header-align='center'>
 									<template scope="scope">
 										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
@@ -297,11 +297,11 @@
 									</template>
 								</el-table-column>
 							</el-table>
-
+	
 						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="鲁班通" name="">
-                      	<el-row style="background-color: #fff;padding-left:20px">
+						<el-row style="background-color: #fff;padding-left:20px">
 							<el-col :span="2" v-for='(item,index) in 5'>
 								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
 									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
@@ -310,8 +310,8 @@
 							</el-col>
 						</el-row>
 						<el-row style="margin-top:20px;padding-left:20px">
-                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
-							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+							<el-checkbox :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;" v-for='(item,index) in 5' v-show="index==currentIndex" v-cloak>
 								<el-table-column label="    全部" width="120" header-align='center'>
 									<template scope="scope">
 										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
@@ -325,11 +325,11 @@
 									</template>
 								</el-table-column>
 							</el-table>
-
+	
 						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="管理后台" name="">
-                       	<el-row style="background-color: #fff;padding-left:20px">
+						<el-row style="background-color: #fff;padding-left:20px">
 							<el-col :span="2" v-for='(item,index) in 5'>
 								<div style="text-align: center;width:132px;height:103px;padding:20px 0 0 0" :class="{'check':index==currentIndex}" @click="currentIndex=index">
 									<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:70px;height:70px;margin:0 auto">
@@ -338,8 +338,8 @@
 							</el-col>
 						</el-row>
 						<el-row style="margin-top:20px;padding-left:20px">
-                            <el-checkbox  :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
-							<el-table :data="tableData" border style="width: 100%;background-color: #fff;"  v-for='(item,index) in 5'  v-show="index==currentIndex" v-cloak>
+							<el-checkbox :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-table :data="tableData" border style="width: 100%;background-color: #fff;" v-for='(item,index) in 5' v-show="index==currentIndex" v-cloak>
 								<el-table-column label="    全部" width="120" header-align='center'>
 									<template scope="scope">
 										<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">工程{{index}}</el-checkbox>
@@ -353,7 +353,7 @@
 									</template>
 								</el-table-column>
 							</el-table>
-
+	
 						</el-row>
 					</el-tab-pane>
 				</el-tabs>
@@ -368,7 +368,7 @@
 				</el-col>
 			</el-row>
 			<!--三栏线-->
-
+	
 		</section>
 	</div>
 </template>
@@ -379,7 +379,9 @@ export default {
 	data() {
 		return {
 			//  表格中的多个checkbox
-			currentIndex:0,
+			textarea: '',
+			remainLength: '150',
+			currentIndex: 0,
 			checkAll: true,
 			checkedCities: ['上海'],
 			cities: cityOptions,
@@ -472,10 +474,14 @@ export default {
 		}
 	},
 	methods: {
-		 // 触发父级的路由标题是否隐藏
-		sendRouterTitle(){
-            this.$emit('connect');
-        },
+		// 触发父级的路由标题是否隐藏
+		sendRouterTitle() {
+			this.$emit('connect');
+		},
+		change() {
+			let txtVal = this.textarea.length;
+			this.remainLength = 150 - txtVal;
+		},
 		handleCheckAllChange(event) {
 			console.log(event.target.checked);
 			this.checkedCities = event.target.checked ? cityOptions : [];
@@ -634,13 +640,15 @@ export default {
 </script>
 
 <style scoped>
-.check{
+.check {
 	background-color: #f5f8fd;
 }
-.inputStyle{
-	width: 304px !important;
+
+.inputStyle {
+	width: 70%;
 	height: 36px;
 }
+
 .time {
 	font-size: 13px;
 	color: #999;
@@ -652,22 +660,25 @@ export default {
 .bottom {
 	line-height: 12px;
 }
+
 .button {
 	padding: 0;
 	float: right;
 }
+
 .image {
 	width: 100%;
 	display: block;
 }
+
 .clearfix:before,
 .clearfix:after {
 	display: table;
 	content: "";
 	text-align: center
 }
+
 .clearfix:after {
 	clear: both
 }
-.el-tabs__item{padding:0 16px;height:60px;width: 170px;box-sizing:border-box;line-height:60px;display:inline-block;list-style:none;font-size:14px;color:#444444;position:relative;text-align: center}
 </style>
