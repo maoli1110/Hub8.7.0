@@ -171,7 +171,7 @@
 							</el-col>
 						</el-row>
 						<el-row style="margin-top:20px;padding-left:20px">
-							<el-checkbox :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:10px"></el-checkbox>
+							<el-checkbox :indeterminate="isIndeterminate" @change="handleCheckAllChange" style="position:absolute;left:45px;top:21px"></el-checkbox>
 							<el-table :data="tableData" border style="width: 100%;background-color: #fff;" v-for='(item,index) in 5' v-show="index==currentIndex" v-cloak>
 								<el-table-column label="    全部" width="120" header-align='center'>
 									<template scope="scope">
@@ -643,12 +643,10 @@ export default {
 .check {
 	background-color: #f5f8fd;
 }
-
 .inputStyle {
 	width: 70%;
 	height: 36px;
 }
-
 .time {
 	font-size: 13px;
 	color: #999;
@@ -656,28 +654,23 @@ export default {
 	line-height: 20px;
 	padding: 0 20px;
 }
-
 .bottom {
 	line-height: 12px;
 }
-
 .button {
 	padding: 0;
 	float: right;
 }
-
 .image {
 	width: 100%;
 	display: block;
 }
-
 .clearfix:before,
 .clearfix:after {
 	display: table;
 	content: "";
 	text-align: center
 }
-
 .clearfix:after {
 	clear: both
 }

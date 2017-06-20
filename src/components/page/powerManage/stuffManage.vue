@@ -41,11 +41,11 @@
 				</el-form>
 				<!--列表-->
 				<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;margin-top:10px;">
-					<el-table-column type="selection" width="100">
+					<el-table-column type="selection" width="80">
 					</el-table-column>
 					<el-table-column type="index" width="100" label="序号">
 					</el-table-column>
-					<el-table-column prop="name" label="用户名" width="150" sortable>
+					<el-table-column prop="name" label="用户名" width="100" >
 					</el-table-column>
 					<el-table-column prop="sex" label="角色" width="120" :formatter="formatSex">
 					</el-table-column>
@@ -59,7 +59,7 @@
 					</el-table-column>
 					<el-table-column prop="addr" label="备注" min-width="120">
 					</el-table-column>
-					<el-table-column label="周活跃度" width="180">
+					<el-table-column label="操作" width="180">
 						<template scope="scope">
 							<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>																								<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
 							<el-icon class="el-icon-edit" @click.native="flag=!flag;sendRouterTitle()"></el-icon>
@@ -1419,12 +1419,10 @@ export default {
 	min-width: 163px;
 	height: 36px;
 }
-
 .bg-purple-light {
 	font-size: 14px;
 	color: grey;
 }
-
 .time {
 	font-size: 13px;
 	color: #999;
@@ -1432,32 +1430,26 @@ export default {
 	line-height: 20px;
 	padding: 0 20px;
 }
-
 .bottom {
 	line-height: 12px;
 }
-
 .button {
 	padding: 0;
 	float: right;
 }
-
 .image {
 	width: 100%;
 	display: block;
 }
-
 .clearfix:before,
 .clearfix:after {
 	display: table;
 	content: "";
 	text-align: center
 }
-
 .clearfix:after {
 	clear: both
 }
-
 .quality-dialog {
 	height: 668px;
 	position: fixed;
@@ -1469,14 +1461,12 @@ export default {
 	z-index: 9999;
 	border-radius: 5px;
 }
-
 .check {
 	background-color: #6595f2;
 	border-radius: 4px;
 	color: #fff;
 	font-weight: 700;
 }
-
 .button_size {
 	width: 90px;
 	height: 36px;
