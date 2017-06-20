@@ -17,8 +17,6 @@
             </el-col>
         </el-row>
         <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}"  class="form-table">
-            <el-table-column width="30" type="selection">
-            </el-table-column>
             <el-table-column label="序号" width="80" type="index">
             </el-table-column>
             <el-table-column prop="name" label="表单类型" sortable>

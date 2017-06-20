@@ -10,6 +10,9 @@
 .content .quality-search{
     margin:10px;position:relative;
 }
+.BMP-info>div:nth-child(2),.BMP-info>div:nth-child(3){
+    padding:20px 20px 0;
+}
 .quality-search .el-icon-circle-cross{
     position: absolute;
     right: 29px;
@@ -35,6 +38,35 @@
 .content .quality-searchTool{
     float:right;min-width:388px;
 }
+.quality-page .quality-table{
+    height:calc( 100vh - 400px)
+}
+.quality-page .quality-table .el-table-column--selection .cell{
+    padding:0;
+}
+.quality-page .quality-table.el-table thead tr th{
+    height:60px;line-height:60px;background:#f0f0f0;border-right:1px solid #ddd;text-align:center;
+}
+.quality-page .quality-table.el-table tbody tr td{
+    height:45px;line-height:45px;text-align:center;border-right:1px solid #ddd;
+}
+.quality-page .quality-table.el-table tbody tr td:nth-child(3),.quality-page .quality-table.el-table tbody tr td:nth-child(4),.quality-page .quality-table.el-table tbody tr td:nth-child(6){
+    text-align:left;
+}
+.quality-page .quality-table.el-table thead .cell{
+    background:transparent;
+}
+.quality-page .quality-table.el-table tbody td i{
+    padding:4px;background:#EBEFF8;font-size:12px;border-radius:2px;margin-right:4px;
+}
+.quality-page .quality-table.el-table tbody td i:nth-child(3){
+    margin:0;
+}
+.quality-page .trends-byte{
+    position: absolute;
+    right: 27.5%;
+    bottom: 51px;margin-left:-74px;color:#6595f2;font-size:12px;
+}
 /*BMP(流程设置)*/
 .BMP-process .el-input{
     border-radius:0 !important;
@@ -43,7 +75,7 @@
     width:100%;
 }
 .BMP-process table.table-head tr td{
-    background:#f0f0f0;height:54px;line-height:54px;
+    background:#f0f0f0;height:54px;line-height:54px;border-right:1px solid #ddd;
 }
 
 
@@ -56,11 +88,17 @@
 .BMP-process .table-step{
     height:calc(100vh - 704px);overflow:auto;border:1px solid #ddd;border-top:none
 }
+.BMP-process .table-step table tr:last-child td{
+    border-bottom:none;
+}
 .BMP-process .table-step table td{
-    height:40px;line-height:40px;
+    height:40px;line-height:40px;border-right:1px solid #ddd;text-align:center;
+}
+.BMP-process .table-step table td:last-child{
+    border-right:none;
 }
 .BMP-process .table-step table input{
-    height:30px;
+    height:30px;border-radius:0;
 }
 .content .BMP-info{
     background:#fff;
@@ -71,22 +109,25 @@
 .content .BMP-info .BMP-serif{
     margin-top:20px;
 }
-.content .BMP-info,.content .process-set{
-    padding:10px;background:#fff;
+.content .process-set{
+    background:#fff;
 }
 .content .process-set{
     margin-top:20px;
 }
 .process-set .BMP-text{
-    font-weight:bold;padding:10px;padding-bottom:10px !important;border-bottom:1px solid #ddd;margin-bottom:20px;
+    font-weight:bold;padding:14px 20px;border-bottom:1px solid #ddd;margin-bottom:20px;
 }
-.content .BMP-info .BMP-text,.content .process-set .BMP-text{
+.content .BMP-info .BMP-text{
     font-size:14px;padding-bottom:30px;
 }
+.content .process-set .BMP-text{
+    font-size:16px;
+}
 .BMP-info .pro-title{
-    padding: 10px 0;padding-top:0;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 20px;font-weight:bold;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e6e6e6;
+    font-weight:bold;
 }
 /*.content .root-name div:nth-child(1){
     width:100%;height:auto;border:1px solid rgb(238, 246, 250)
@@ -110,7 +151,6 @@
 .content .root-el{
     display: inline-block;
     font-size: 14px;
-    border-bottom: 1px solid #ddd;
     height: 30px;
     line-height: 30px;
     padding:5px 10px;
@@ -118,7 +158,7 @@
     width: 107px;
 }
 .content .root-el:hover{
-    background:#fff
+    background:#6595f2;color:#fff;border-radius:5px;text-align:center;
 }
 .content .BMP-process{
     padding:20px;
@@ -131,9 +171,9 @@
    position:relative;margin:5px 5px 5px 0;
 }
 .content .BMP-process  .handle-delete{
-    float: right;
+    /*float: right;
     line-height: 40px;
-    margin-right: 10px;
+    margin-right: 10px;*/
 }
 .content .BMP-process .delete-blank{
     position: absolute;
@@ -145,14 +185,14 @@
     line-height:50px;height:50px;border:1px dashed #ccc;text-align:center;
 }
 .content .addStep{
-    color:#4778C7;font-weight:bold;
+    color:#6596f2;font-weight:bold;
 }
 .content .BMP-process .rules-box{
-    height: 296px;
-    overflow: auto;border:1px solid #ddd;
+    height: 276px;
+    overflow: auto;border:1px solid #ddd;padding:20px 30px 0;
 }
 .content .BMP-process .BMP-btns{
-    padding: 31px 10px 16px 10px;
+    padding: 27px 10px 30px 10px;
     text-align: center;
 }
 .el-button{
@@ -439,12 +479,18 @@
     height:54px;line-height:54px;
 }
 .form-change .form-table .el-table__header-wrapper thead tr th{
-    background:#f0f0f0;
+    background:#f0f0f0;border-right:1px solid #ddd;
 }
 .form-change .el-table th>.cell{
     background:transparent;text-align:center;
 }
-.form-change .el-table th:nth-child(2) >.cell,.form-change .el-table th:nth-child(7) >.cell,.form-change .el-table th:nth-child(4) >.cell{
+.form-change .form-table tbody tr:nth-child(1) td{
+    border-top:1px solid #ddd;
+}
+.form-change .form-table tbody tr td{
+    height:45px;line-height:45px;border-right:1px solid #ddd;text-align:center;
+}
+.form-change .form-table tbody tr td:nth-child(2),.form-change .form-table tbody tr td:nth-child(5),.form-change .form-table tbody tr td:nth-child(3){
     text-align:left;
 }
 .form-change .dialog-changeForm>.priview-le{
@@ -464,15 +510,15 @@
 
 }
 .form-change .single-stump .form-dialog-body{
-    height:328px;overflow:auto;padding:30px;
+    height:388px;overflow:auto;padding:30px 40px;
 }
 .form-change .single-stump .form-dialog-body >.form-content{
-    padding:0px 20px 0px 20px;border:1px solid #ddd;height:320px;overflow:auto;
+    padding:0px 20px 0px 20px;border:1px solid #ddd;height:374px;overflow:auto;
 }
 /*form-ztree-dialog(表单结构树结构另外一套)*/
 .form-ztree-dialog{
-    width: 500px;
-    height: 560px;
+    width: 535px;
+    height: 630px;
     background: #fff;
     position: fixed;
     top: 0;
@@ -483,7 +529,7 @@
     /*padding: 0 32px 14px;*/
 }
 .form-change .priview-le{
-    height:40px;line-height:40px;border-bottom:1px solid #ddd;padding:0 10px;
+    height:44px;line-height:44px;border-bottom:1px solid #ddd;padding:0 10px;
 }
 .form-change .priview-le:last-child{
     border-bottom:none;
@@ -495,12 +541,12 @@
     float:right;margin-top:12px;opacity:0.5;
 }
 .form-change .form-ztree-dialog .form-dialog-title>p{
-    padding: 16px 32px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #ddd;font-size:16px;font-weight:bold;
+    padding: 20px 40px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;font-size:18px;font-weight:bold;
 }
 .form-change .form-ztree-dialog .form-dialog-title .el-input{
-    width:88% !important;margin-left:30px;
+    width:85% !important;margin-left:40px;
 }
 .form-change .form-ztree-dialog .form-dialog-title>p .el-icon-close{
     float:right;font-size:14px; margin-top: 5px;
@@ -512,7 +558,7 @@
     width:15px;height:15px;display:inline-block;background:url('../img/icon-eye.png') no-repeat -5px 0;float:right;margin-top:5px;
 }
 .form-change .ztree{
-    height:328px !important;overflow:auto;padding:28px !important;
+    height:374px !important;overflow:auto;padding:20px 40px 40px !important;
 }
 /*表单编辑*/
 .formEdit{

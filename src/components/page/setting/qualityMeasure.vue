@@ -15,31 +15,31 @@
                 </el-row>
                 <el-row class="quality-search" v-if="!isBMP">
                     <el-col :span="8">
-                        <el-button @click="addBPM">添加</el-button>
-                        <el-button>删除</el-button>
+                        <el-button type="primary" icon="plus" @click="addBPM">添加</el-button>
+                        <el-button type="primary" icon="delete">删除</el-button>
                     </el-col>
                     <el-col :span="16" style="text-align:right">
-                        <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%"></el-input>
-                        <el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>
+                        <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search"></el-input>
+                        <!--<el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>-->
                     </el-col>
                 </el-row>
             </div>
-            <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}">
-                <el-table-column width="30" type="selection">
+            <el-table class="quality-table" :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" >
+                <el-table-column width="50" type="selection">
                 </el-table-column>
-                <el-table-column label="序号" width="120" type="index">
+                <el-table-column label="序号" width="80" type="index">
                 </el-table-column>
-                <el-table-column prop="name" label="流程名称" sortable>
+                <el-table-column prop="name" width="" label="流程名称" sortable>
                 </el-table-column>
-                <el-table-column prop="name" label="更新人" sortable>
+                <el-table-column prop="name" width="120" label="更新人" sortable>
                 </el-table-column>
-                <el-table-column prop="date" label="更新时间" sortable>
+                <el-table-column prop="date" width="160" label="更新时间" sortable>
                 </el-table-column>
                 <el-table-column prop="adress" label="备注" :formatter="formatter" sortable>
                 </el-table-column>
-                <el-table-column label="操作" width="180" @click.native="addnew">
+                <el-table-column label="操作" width="135" @click.native="addnew" class="quality-page-tableIcon">
 
-                    <template scope="scope">
+                    <template scope="scope" >
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                         <el-icon class="el-icon-edit" @click.native="dialogFormVisible = true"></el-icon>
                         <el-icon class="el-icon-delete2" @click.native="open2(scope.$index,scope.row)"></el-icon>
@@ -63,9 +63,9 @@
                 </el-col>
                 <el-col :span="18">
                     <span class="BMP-text" style="display:inline-block;vertical-align: top">备注：</span>
-                    <el-input style="width:60%;height:97px;" type="textarea" :rows="4" placeholder="请输入内容" :maxlength='150' @change='change' v-model="textarea" >                       
-                    </el-input>  
-                    <span style="margin-left:-74px;color:#6595f2">({{remainLength}}/150)</span>
+                    <el-input style="width:60%;height:97px;" type="textarea" :rows="4" placeholder="请输入内容" :maxlength='150' @change='change' v-model="textarea" >
+                    </el-input>
+                    <span class="trends-byte" >({{remainLength}}/150)</span>
                 </el-col>
                 <el-col :span="24" class="BMP-serif"></el-col>
             </el-row>
@@ -76,14 +76,15 @@
                 </el-col>
 
                     <el-col :span="14" class="root-table">
-                        <div style="padding:0 10px;">
+                        <div style="padding:0 20px;">
                             <table border="0" cellspacing="0" class="table-head">
                                 <thead>
                                     <tr>
                                         <td width="50">序号</td>
-                                        <td width="200">步骤名称</td>
+                                        <td width="210">步骤名称</td>
                                         <td width="120">审批条件</td>
                                         <td>审批角色</td>
+                                        <td width="60">操作</td>
                                         <!--<td>操作</td>-->
                                     </tr>
                                 </thead>
@@ -93,7 +94,7 @@
                                     <tbody id="bj-style">
                                         <tr v-for="(rootInfo,index) in rootInfo" @click="processSetEdit($event,index)">
                                             <td width="50">{{index+1}}</td>
-                                            <td width="200">
+                                            <td width="210">
                                                 <el-input class="flowTitle" placeholder="请输入内容"></el-input>
                                             </td>
                                             <td width="120">
@@ -115,7 +116,7 @@
                                                 </span>
                                                 <!--<span class="addRoot">董事长&nbsp;&nbsp;<el-icon class="el-icon-close"></el-icon></span>-->
                                             </td>
-                                            <td>
+                                            <td width="60">
                                                 <div>
                                                     <el-icon class="el-icon-delete handle-delete" @click.native="deleteHandle(index)"></el-icon>
                                                 </div>
@@ -130,7 +131,7 @@
                         </div>
                     </el-col>
                     <el-col :span="10" class="root-name">
-                        <div>
+                        <div style="padding-right:20px;">
                             <p>审核角色</p>
                             <div class="rules-box">
                                 <div class="root-el" v-for="(item,index) in rootList" v-text="item" @click="addRoles(index)"></div>
@@ -299,7 +300,7 @@ export default {
                 "address": "海外 海外 -"
             }],
             cur_page: 1,
-            remainLength:150,
+            remainLength:0,
             textarea:'',
             menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
 
@@ -339,7 +340,7 @@ export default {
     methods: {
         change() {
 			var txtVal = this.textarea.length;
-			this.remainLength = 150 - txtVal;			
+			this.remainLength =txtVal;
 		},
         handleCurrentChange(val) {
             console.info(val, '当前是多少页')
