@@ -8,7 +8,14 @@
     resize:none;
 }
 .content .quality-search{
-    margin:10px;
+    margin:10px;position:relative;
+}
+.quality-search .el-icon-circle-cross{
+    position: absolute;
+    right: 29px;
+    font-size: 10px;
+    top: 12px;
+    color: #ccc;
 }
 .content .el-pagination__total{
     float:left;
@@ -324,7 +331,7 @@
 }
 /*树结构对应的表单*/
 .project-form{
-    padding:15px;padding-left:0;
+    padding:15px 0 0 0;padding-left:0;margin-bottom:30px;
 }
 .project-form .project-form-tit{
     padding-bottom:15px;font-weight:bold;
@@ -354,7 +361,7 @@
     background:#f5f5f5;
 }
 .proTemplate-edit .pro-butons{
-    padding:10px 0 ;text-align:center;
+    padding:34px 0 ;text-align:center;border-top:1px solid #ddd;
 }
 
     /*表单变更*/
@@ -363,6 +370,25 @@
     border: 1px solid #ddd;
     padding: 0 10px;
     overflow: auto;
+}
+/*.form-table*/
+.form-change .form-table{
+    min-height:calc(100vh  - 400px );overflow:auto;
+}
+.form-change .form-table .table{
+
+}
+.form-change .form-table .el-table__header-wrapper{
+    height:54px;line-height:54px;
+}
+.form-change .form-table .el-table__header-wrapper thead tr th{
+    background:#f0f0f0;
+}
+.form-change .el-table th>.cell{
+    background:transparent;text-align:center;
+}
+.form-change .el-table th:nth-child(2) >.cell,.form-change .el-table th:nth-child(7) >.cell,.form-change .el-table th:nth-child(4) >.cell{
+    text-align:left;
 }
 .form-change .dialog-changeForm>.priview-le{
     line-height:40px;border-bottom:1px solid #ddd;position:relative
@@ -381,12 +407,15 @@
 
 }
 .form-change .single-stump .form-dialog-body{
-    height:320px;overflow:auto;margin-bottom:20px;
+    height:328px;overflow:auto;padding:30px;
+}
+.form-change .single-stump .form-dialog-body >.form-content{
+    padding:0px 20px 0px 20px;border:1px solid #ddd;height:320px;overflow:auto;
 }
 /*form-ztree-dialog(表单结构树结构另外一套)*/
 .form-ztree-dialog{
-    width: 450px;
-    height: 500px;
+    width: 500px;
+    height: 560px;
     background: #fff;
     position: fixed;
     top: 0;
@@ -394,33 +423,39 @@
     margin-left:-225px;
     margin-top:100px;
     z-index: 3001;
-    padding: 0 20px 20px;
+    /*padding: 0 32px 14px;*/
 }
 .form-change .priview-le{
-    height:40px;line-height:40px;
+    height:40px;line-height:40px;border-bottom:1px solid #ddd;padding:0 10px;
+}
+.form-change .priview-le:last-child{
+    border-bottom:none;
 }
 .form-change .priview-le>div{
-    display:inline-block;
+    display:inline-block;font-size:13px;
 }
 .form-change .priview-le>.el-icon-search{
-    float:right;margin-top:16px;
+    float:right;margin-top:12px;opacity:0.5;
 }
 .form-change .form-ztree-dialog .form-dialog-title>p{
-    padding: 15px 15px 15px 0;
+    padding: 16px 32px;
     margin-bottom: 15px;
     border-bottom: 1px solid #ddd;font-size:16px;font-weight:bold;
 }
 .form-change .form-ztree-dialog .form-dialog-title .el-input{
-    width:100% !important;
+    width:88% !important;margin-left:30px;
 }
 .form-change .form-ztree-dialog .form-dialog-title>p .el-icon-close{
-    float:right;
+    float:right;font-size:14px; margin-top: 5px;
 }
 .form-change .form-ztree-dialog .form-dialog-footer{
     text-align:center;
 }
 .form-change .form-ztree-dialog .icon-eyes{
     width:15px;height:15px;display:inline-block;background:url('../img/icon-eye.png') no-repeat -5px 0;float:right;margin-top:5px;
+}
+.form-change .ztree{
+    height:328px !important;overflow:auto;padding:28px !important;
 }
 /*表单编辑*/
 .formEdit{
@@ -435,7 +470,20 @@
 .proTemplate .formEidt-title i{
     float:right;
 }
-/*添加树结构*/
+/*工程模板表格*/
+.proTemplate .proTemplate-table{
+    height:calc(100vh - 350px)
+}
+.proTemplate .proTemplate-table .el-table__header-wrapper{
+    height:54px;line-height:54px;
+}
+.proTemplate .proTemplate-table .el-table__header-wrapper thead tr th{
+    background:#f0f0f0;
+}
+.proTemplate .el-table th>.cell{
+    background:transparent;
+}
+    /*添加树结构*/
 .formEdit-body .ztree-struc{
     width:48%;height:416px;display:inline-block;border:1px solid #ddd;vertical-align: top;
 }
@@ -521,4 +569,8 @@
 }
 .el-button--primary:focus, .el-button--primary:hover{
     background:#4778C7 !important;color:#fff;border-color:#4778C7 !important;
+}
+/*遮罩层*/
+.mask{
+    width:100%;height:100%;background:#000;opacity:0.5;position:absolute;top:0;left:0;z-index:2000
 }

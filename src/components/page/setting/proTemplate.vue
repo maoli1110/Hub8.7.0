@@ -13,18 +13,18 @@
                     </el-menu>
                 </el-col>
             </el-row>
-            <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
+            <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" class="proTemplate-table">
                 <el-table-column width="30" type="selection">
                 </el-table-column>
                 <el-table-column label="序号" width="120" type="index">
                 </el-table-column>
                 <el-table-column prop="name" label="名称" sortable>
                 </el-table-column>
-                <el-table-column prop="date" label="更新时间"  sortable>
+                <el-table-column prop="date"  width="150" label="更新时间"  sortable>
                 </el-table-column>
-                <el-table-column prop="name" label="更新人" sortable>
+                <el-table-column prop="name"  width="120" label="更新人" sortable>
                 </el-table-column>
-                <el-table-column label="操作" width="180" >
+                <el-table-column label="操作" width="80" >
 
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
