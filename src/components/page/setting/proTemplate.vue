@@ -13,18 +13,17 @@
                     </el-menu>
                 </el-col>
             </el-row>
-            <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
-                <el-table-column width="30" type="selection">
-                </el-table-column>
-                <el-table-column label="序号" width="120" type="index">
+            <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" class="proTemplate-table">
+                <el-table-column label="序号" width="70" type="index">
                 </el-table-column>
                 <el-table-column prop="name" label="名称" sortable>
                 </el-table-column>
-                <el-table-column prop="date" label="更新时间"  sortable>
+                <el-table-column prop="name"  width="150" label="更新人" sortable>
                 </el-table-column>
-                <el-table-column prop="name" label="更新人" sortable>
+                <el-table-column prop="date"  width="150" label="更新时间"  sortable>
                 </el-table-column>
-                <el-table-column label="操作" width="180" >
+
+                <el-table-column label="操作" width="150" >
 
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
@@ -55,9 +54,9 @@
                </div>
            </el-row>
             <el-row class="pro-ztreeInfo clearfix">
-                <el-col :span="10" style="padding:0 15px;">
+                <el-col :span="10" style="padding:0 20px;">
                     <p class="title-name">工程划分：</p>
-                    <div style="padding:10px;border:1px solid #ddd;border-bottom:none;" class="clearfix">
+                    <div style="padding:11px 10px 10px 20px;border:1px solid #ddd;border-bottom:none;" class="clearfix">
                         <div class="handle-icon clearfix" style="float:left;">
                             <div @mouseover="showCreateNodes= true" class="clearfix" style="float:left;position:relative;">
                                 <el-icon class="el-icon-document"  > </el-icon>
@@ -73,47 +72,43 @@
                         </div>
                         <div class="sear-icon">
                             <el-input  placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree"></el-input>
-                            <span id="expandBtn">+</span>
                             <span id="collapseBtn">-</span>
-                        <!--    <p style="display:inline-block" @click="searchBtnsShow" class="searchDiv">
-                                <el-icon class="el-icon-search"></el-icon>
-                            </p>-->
+                            <span id="expandBtn">+</span>
                         </div>
                     </div>
-                <!--    <div class="pro-sear-area" v-show="proSearchBtns">
-                        <el-input  placeholder="请输入内容" icon="search" :on-icon-click="searchProTree"></el-input>
-                    </div>-->
-
                     <ul class="ztree" id="proZtree"></ul>
                 </el-col>
                 <el-col :span="14" class="project-form">
                     <p class="project-form-tit">包含表单</p>
-                    <div class="project-form-list">
-                        <el-select v-model="value" placeholder="请选择"  @change="selectTestAval">
-                            <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
 
-                            >
-                            </el-option>
-                        </el-select>
-                        <el-icon class="el-icon-edit" style="float:right;margin-top:10px;" @click.native="formEditVisible = true"></el-icon>
-                    </div>
-                    <div class="project-form-ele">
-                        <ul>
-                            <p class="project-sultable">工序检验</p>
-                            <li>叶子元素</li>
-                            <li>叶子元素</li>
-                            <li>叶子元素</li>
-                        </ul>
-                        <ul v-show="testAval">
-                            <p class="project-sultable">工序检验</p>
-                            <li>叶子元素</li>
-                            <li>叶子元素</li>
-                            <li>叶子元素</li>
-                        </ul>
+                    <div style="border:1px solid #ddd;">
+                        <div class="project-form-list">
+                            <el-select v-model="value" placeholder="请选择"  @change="selectTestAval">
+                                <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+
+                                >
+                                </el-option>
+                            </el-select>
+                            <el-icon class="el-icon-edit"  @click.native="formEditVisible = true"></el-icon>
+                        </div>
+                        <div class="project-form-ele">
+                            <ul>
+                                <p class="project-sultable">工序检验</p>
+                                <li>叶子元素</li>
+                                <li>叶子元素</li>
+                                <li>叶子元素</li>
+                            </ul>
+                            <ul v-show="testAval">
+                                <p class="project-sultable">工序检验</p>
+                                <li>叶子元素</li>
+                                <li>叶子元素</li>
+                                <li>叶子元素</li>
+                            </ul>
+                        </div>
                     </div>
                 </el-col>
                 <el-col :span="24" class="pro-butons clearfix">
@@ -122,10 +117,10 @@
                 </el-col>
             </el-row>
             <!--增加多个节点弹框-->
-            <el-dialog title="增加多个节点" :visible.sync="textAreaVisible">
+            <el-dialog title="增加多个节点" :visible.sync="textAreaVisible" class="multi-textarea">
                 <el-input
                     type="textarea"
-                    :rows="15"
+                    :rows="10"
                     id="multiLeaf"
                     placeholder="一行视为一个节点，支持多行复制粘贴"
                     >
@@ -146,13 +141,24 @@
                 <span>添加</span>
                 <el-icon class="el-icon-close" @click.native="formEditVisible=false"></el-icon>
             </div>
-            <div :form-info="formInfo2" style="border-top:1px solid #ddd;" class="">
-                <div  class="formParams"><span>单位工程：</span>{{formInfo2.progress}}</div>
-                <div class="formParams"><span>分部项目：</span>{{formInfo2.subProgress}}</div>
-                <div class="formParams"><span>分项工程：</span>{{formInfo2.subType}}</div>
+            <div :form-info="formInfo2" class="form-edit-info">
+                <div  class="formParams"><span>单位工程：</span><span>{{formInfo2.progress}}</span></div>
+                <div class="formParams"><span>分部项目：</span><span>{{formInfo2.subProgress}}</span></div>
+                <div class="formParams"><span>分项工程：</span><span>{{formInfo2.subType}}</span></div>
             </div>
             <div class="formEdit-body">
+                <el-icon class="el-icon-arrow-right"></el-icon>
                 <div class="ztree-struc">
+                    <el-select v-model="value" placeholder="请选择" style="padding:10px 10px 0;width:88%;margin-left:1px;">
+                        <el-option
+                            v-for="(item,index) in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                            @change="selectTestAval"
+                        >
+                        </el-option>
+                    </el-select>
                     <el-input id="searchMessage" icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:93%" :on-icon-click="editSearchTree"></el-input>
                     <ul class="ztree" id="editTree"></ul>
                 </div>
@@ -174,7 +180,7 @@
                             <el-tab-pane label="工程检验" name="first" v-if="maxFlag">
                                 <ul class="form-table">
                                     <li v-for="optionList in options" >{{optionList.label}}
-                                        <div style="float:right;">
+                                        <div class="tabs-icon">
                                             <el-icon class="el-icon-picture"></el-icon>
                                             <el-icon class="el-icon-delete"></el-icon>
                                         </div>
@@ -185,7 +191,7 @@
                             <el-tab-pane label="交工评定" name="second" v-show="!maxFlag">
                                 <ul class="form-table">
                                     <li v-for="optionList in options">{{optionList.label}}
-                                        <div style="float:right;">
+                                        <div class="tabs-icon">
                                             <el-icon class="el-icon-picture"></el-icon>
                                             <el-icon class="el-icon-delete"></el-icon>
                                         </div>
@@ -221,6 +227,7 @@
     let operObj = '';
     let nodes,treeNode;
     let searchBtnCount = 1;
+    let repeat;
     export default{
         data(){
             return {
@@ -743,6 +750,11 @@
             onEditDbClick(event, treeId, treeNode){
                 console.info(treeNode)
                 if(event.currentTarget.id=='editTree' && !treeNode.isParent){
+                    for(var i = 0;i<this.options.length;i++){
+                        if(this.options[i].label ==treeNode.name){
+                            return false
+                        }
+                    }
                     this.options.push({"label":treeNode.name})
                 }
             },

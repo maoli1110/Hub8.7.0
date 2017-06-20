@@ -11,26 +11,25 @@
             </el-col>
         </el-row>
         <el-row class="quality-search" >
-            <el-col :span="8" >&nbsp;</el-col>
-            <el-col :span="16" style="text-align:right">
-                <el-input  placeholder="请输入内容" class="quality-searInput" style="width:30%"></el-input>
-                <el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>
+            <el-col :span="16" style="text-align:left">
+                <el-input  placeholder="请输入内容" icon="search" class="quality-searInput" style="width:30%" v-model="formVal"></el-input>
+                <el-icon class="el-icon-circle-cross" v-show="formVal.length>0" @click.native="clearFormSearval"></el-icon>
             </el-col>
         </el-row>
-        <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
+        <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}"  class="form-table">
             <el-table-column width="30" type="selection">
             </el-table-column>
-            <el-table-column label="序号" width="120" type="index">
+            <el-table-column label="序号" width="80" type="index">
             </el-table-column>
             <el-table-column prop="name" label="表单类型" sortable>
             </el-table-column>
-            <el-table-column prop="name" label="更新人" sortable>
+            <el-table-column prop="name" width="120" label="更新人" sortable>
             </el-table-column>
-            <el-table-column prop="date" label="更新时间"  sortable>
+            <el-table-column prop="date"  width="130" label="更新时间"  sortable>
             </el-table-column>
             <el-table-column prop="adress" label="备注" :formatter="formatter" sortable>
             </el-table-column>
-            <el-table-column label="操作" width="180" @click.native="addnew">
+            <el-table-column label="操作" width="100" @click.native="addnew">
                 <template scope="scope">
                     <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
                     <el-icon class="el-icon-picture" @click.native="showTreeDialog"></el-icon>
@@ -50,24 +49,29 @@
         </div>
         <!--模态框项目变更表格-->
         <div class="dialog-form">
-            <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" >
+            <!--模拟遮罩层-->
+            <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" style="opacity:0;" >
             </el-dialog>
+            <!--单层树结构模板-->
             <div class="single-stump form-ztree-dialog" v-show="istable2">
                 <div class="form-dialog-title">
-                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="istable2 = false"></el-icon></p>
+                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="istable2 = false,changeFormVisible=false"></el-icon></p>
                     <el-input icon="search" ></el-input>
                 </div>
                 <div class="form-dialog-body" >
-                    <div class="priview-le" v-for="item in 8">
-                        <div>设计变更审批表格</div>
-                        <el-icon class="el-icon-search" @click.native="formPriview"></el-icon>
+                    <div class="form-content">
+                        <div class="priview-le" v-for="item in 8">
+                            <div>设计变更审批表格</div>
+                            <el-icon class="el-icon-search" @click.native="formPriview"></el-icon>
+                        </div>
                     </div>
                 </div>
                 <div class="form-dialog-footer">
-                    <el-button @click="istable2=false" >取 消</el-button>
-                    <el-button type="primary" @click="istable2=false">确 定</el-button>
+                    <el-button @click="istable2=false,changeFormVisible=false" >取 消</el-button>
+                    <el-button type="primary" @click="istable2=false,changeFormVisible=false">确 定</el-button>
                 </div>
             </div>
+            <!--多层树结构模板-->
             <div class="form-ztree-dialog" v-show="istable">
                 <div class="form-dialog-title">
                     <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="istable = false,changeFormVisible =false"></el-icon></p>
@@ -78,7 +82,7 @@
                 </div>
                 <div class="form-dialog-footer">
                     <el-button @click="istable=false,changeFormVisible = false" >取 消</el-button>
-                    <el-button type="primary" @click="istable=false,changeFormVisible= false">确 定</el-button>
+                    <el-button type="primary" @click="istable=false,changeFormVisible = false">确 定</el-button>
                 </div>
             </div>
         </div>
@@ -99,13 +103,15 @@
     let operObj = '';
     let nodes,treeNode;
     let searchBtnCount = 1;
+    let templateCount = 1;
     export default{
         data(){
             return {
                 setting: {
                     view: {
                         selectedMulti: false,
-                        addDiyDom: this.addDiyDom
+                        addDiyDom: this.addDiyDom,
+                        showIcon :false,
                     },
                     data: {
                         simpleData: {
@@ -150,6 +156,7 @@
                 changeFormVisible:false,
                 istable:false,
                 istable2:false,
+                formVal:''
             }
         },
         components:{
@@ -212,12 +219,15 @@
                 }
             },
             showTreeDialog(){
-//                this.changeFormVisible = true;
-
-                this.istable = !this.istable;
-                if(this.istable){
-                    this.istable2 = true;
+                templateCount++;
+                this.changeFormVisible = true;
+                if(templateCount % 2 ==0){
+                    this.istable2= true;
+                }else{
+                    this.istable= true;
                 }
+
+
             },
             //树结构的搜索功能
             getZtreeParentNode(ztreeNode, nodes) {
@@ -272,6 +282,10 @@
                     }
                 }
             },
+            //清除表单值
+            clearFormSearval(){
+                this.formVal = '';
+            }
         }
     }
 </script>
