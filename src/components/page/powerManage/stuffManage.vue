@@ -45,27 +45,27 @@
 					</el-table-column>
 					<el-table-column type="index" width="100" label="序号">
 					</el-table-column>
-					<el-table-column prop="name" label="用户名" width="100" >
+					<el-table-column prop="updateUser" label="用户名" width="100">
 					</el-table-column>
-					<el-table-column prop="sex" label="角色" width="120" :formatter="formatSex">
+					<el-table-column prop="sex" label="角色" width="120">
 					</el-table-column>
-					<el-table-column prop="age" label="电话" width="120">
+					<el-table-column prop="processId" label="电话" width="120">
 					</el-table-column>
 					<el-table-column prop="birth" label="邮箱" width="160">
 					</el-table-column>
-					<el-table-column prop="addr" label="更新时间" min-width="120" sortable>
+					<el-table-column prop="updateTime" label="更新时间" min-width="120" sortable :formatter="formatTime">
 					</el-table-column>
-					<el-table-column prop="addr" label="周活跃度" min-width="120" sortable>
+					<el-table-column prop="remark" label="周活跃度" min-width="120" sortable>
 					</el-table-column>
-					<el-table-column prop="addr" label="备注" min-width="120">
+					<el-table-column prop="processName" label="备注" min-width="120">
 					</el-table-column>
 					<el-table-column label="操作" width="180">
 						<template scope="scope">
 							<!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>																								<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
-							<el-icon class="el-icon-edit" @click.native="flag=!flag;sendRouterTitle()"></el-icon>
-							<el-icon class="el-icon-message" @click.native="handleAuthorized(scope.$index, scope.row)"></el-icon>
-							<el-icon class="el-icon-upload2" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
-							<el-icon class="el-icon-document" @click.native="handleDetail(scope.$index, scope.row)"></el-icon>
+							<el-icon class="el-icon-edit" style="color:#6595f2" @click.native="flag=!flag;sendRouterTitle()"></el-icon>
+							<el-icon class="el-icon-message" style="color:#6595f2" @click.native="handleAuthorized(scope.$index, scope.row)"></el-icon>
+							<el-icon class="el-icon-upload2" style="color:#6595f2" @click.native="handleEdit(scope.$index, scope.row)"></el-icon>
+							<el-icon class="el-icon-document" style="color:#6595f2" @click.native="handleDetail(scope.$index, scope.row)"></el-icon>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -73,7 +73,7 @@
 	
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">
-				<el-pagination style='float:right' @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+				<el-pagination style='float:right' @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-sizes="[25, 50, 100, 150]" :page-size="25" layout="total, sizes, prev, pager, next, jumper" :total="total">
 				</el-pagination>
 			</el-col>
 	
@@ -89,6 +89,10 @@
 					<div class="el-upload__tip" slot="tip" style="color:red">只能上传jpg/png文件，且不超过500kb</div>
 				</el-upload>
 	
+				<div slot="footer" class="dialog-footer" style="text-align: center;">
+					<el-button type="primary" @click.native="editFormVisible = false">确定</el-button>
+					<el-button type="primary">取消</el-button>
+				</div>
 			</el-dialog>
 	
 			<!--新增界面-->
@@ -184,7 +188,7 @@
 			<el-dialog title="查看服务详情" v-model="detailVisible" :close-on-click-modal="false">
 				<div style="height:40px;line-height:40px;border-top:1px solid #e6e6e6">当前人员
 					<span style="color:#6595f2">李俊珅</span>已分配以下服务</div>
-				<el-table :data="tableData" style="width: 100%">
+				<el-table style="width: 100%">
 					<el-table-column prop="date" label="套餐服务">
 					</el-table-column>
 					<el-table-column prop="name" label="服务内容">
@@ -807,19 +811,19 @@
 					</el-col>
 				</el-row>
 				<!--<div style="position:absolute;right:64px;top:135px;z-index:10">
-													<el-radio-group v-model="radio2">
-														<el-radio :label="0" style="">默认</el-radio>
-														<el-radio :label="1" style="">I级</el-radio>
-														<el-radio :label="2" style="">II级</el-radio>
-														<el-radio :label="3" style="">III级</el-radio>
-													</el-radio-group>
-												</div>-->
+																<el-radio-group v-model="radio2">
+																	<el-radio :label="0" style="">默认</el-radio>
+																	<el-radio :label="1" style="">I级</el-radio>
+																	<el-radio :label="2" style="">II级</el-radio>
+																	<el-radio :label="3" style="">III级</el-radio>
+																</el-radio-group>
+															</div>-->
 				<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;margin-top:20px">
 					<el-table-column type="index" width="180" label="单位工程名称">
 					</el-table-column>
 					<el-table-column prop="name" label="专业" width="100">
 					</el-table-column>
-					<el-table-column prop="sex" label="工程类型" width="150" :formatter="formatSex">
+					<el-table-column prop="sex" label="工程类型" width="150">
 					</el-table-column>
 					<el-table-column prop="age" label="所属项目部" width="120">
 					</el-table-column>
@@ -982,7 +986,7 @@ import "static/css/setting-qualityMeasure.css";
 import "static/js/ztree/css/zTreeStyle_new.css";
 import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-import { getUserListPage} from '../../../api/getData.js';
+import { getUserListPage } from '../../../api/getData.js';
 const cityOptions = ['0', '1', '2', '3'];
 export default {
 	data() {
@@ -1050,102 +1054,10 @@ export default {
 				name: ''
 			},
 			activeName: 'first',
-			users: [{
-				addr: "吉林省 白山市 临江市",
-				age: 42,
-				birth: "1979-120-22",
-				id: "76CB27d3-547F-6E6D-270E-32B7ED396b32",
-				name: "姜敏1",
-				sex: 0
-			},
-			{
-				addr: "吉林省 白山市 临江市",
-				age: 43,
-				birth: "1979-120-22",
-				id: "76CB27d3-547F-6E6D-270E-32B7ED396b32",
-				name: "姜敏2",
-				sex: 0
-			},
-			{
-				addr: "吉林省 白山市 临江市",
-				age: 44,
-				birth: "1979-110-22",
-				id: "76CB27d3-547F-6E6D-270E-32B7ED396b32",
-				name: "姜敏3",
-				sex: 0
-			},
-			{
-				addr: "吉林省 白山市 临江市",
-				age: 42,
-				birth: "1979-120-22",
-				id: "76CB27d3-547F-6E6D-270E-32B7ED396b32",
-				name: "姜敏1",
-				sex: 0
-			},
-			{
-				addr: "吉林省 白山市 临江市",
-				age: 43,
-				birth: "1979-120-22",
-				id: "76CB27d3-547F-6E6D-270E-32B7ED396b32",
-				name: "姜敏2",
-				sex: 0
-			},
-			{
-				addr: "吉林省 白山市 临江市",
-				age: 44,
-				birth: "1979-110-22",
-				id: "76CB27d3-547F-6E6D-270E-32B7ED396b32",
-				name: "姜敏3",
-				sex: 0
-			},
-			{
-				addr: "吉林省 白山市 临江市",
-				age: 42,
-				birth: "1979-120-22",
-				id: "76CB27d3-547F-6E6D-270E-32B7ED396b32",
-				name: "姜敏1",
-				sex: 0
-			},
-			{
-				addr: "吉林省 白山市 临江市",
-				age: 43,
-				birth: "1979-120-22",
-				id: "76CB27d3-547F-6E6D-270E-32B7ED396b32",
-				name: "姜敏2",
-				sex: 0
-			},
-			{
-				addr: "吉林省 白山市 临江市",
-				age: 44,
-				birth: "1979-110-22",
-				id: "76CB27d3-547F-6E6D-270E-32B7ED396b32",
-				name: "姜敏3",
-				sex: 0
-			}
-			],
-			tableData: [{
-				date: '2016-05-02',
-				name: '王小虎',
-				address: '上海市普陀区金沙江路 1518 弄',
-				tag: '家'
-			}, {
-				date: '2016-05-04',
-				name: '王小虎',
-				address: '上海市普陀区金沙江路 1517 弄',
-				tag: '公司'
-			}, {
-				date: '2016-05-01',
-				name: '王小虎',
-				address: '上海市普陀区金沙江路 1519 弄',
-				tag: '家'
-			}, {
-				date: '2016-05-03',
-				name: '王小虎',
-				address: '上海市普陀区金沙江路 1516 弄',
-				tag: '公司'
-			}],
+			users: [],
 			total: 0,
 			page: 1,
+			pageSize: 0,
 			flag: true,
 			listLoading: false,
 			sels: [],//列表选中列
@@ -1226,12 +1138,19 @@ export default {
 		filterTag(value, row) {
 			return row.tag === value;
 		},
-		//性别显示转换;
-		formatSex: function (row, column) {
-			return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
+		//时间戳转换;
+		formatTime: function (row, column) {
+			const now = new Date(row.updateTime),
+				year = now.getFullYear(),
+				month = now.getMonth() + 1 > 10 ? now.getMonth() + 1 : '0' + (now.getMonth() + 1),
+				date = now.getDate(),
+				hour = now.getHours(),
+				minute = now.getMinutes() > 10 ? now.getMinutes() : '0' + now.getMinutes();
+			return year + "-" + month + "-" + date + " " + hour + ":" + minute
 		},
 		handleCurrentChange(val) {
 			this.page = val;
+			console.log(this.page);
 			this.getUsers();
 		},
 		handleSizeChange(val) {
@@ -1244,18 +1163,21 @@ export default {
 		//获取用户列表
 		getUsers() {
 			let para = {
-				// page: this.page,
+				page: this.page,
 				// name: this.filters.name
 			};
 			this.listLoading = true;
 			//NProgress.start();
 			getUserListPage(para).then((res) => {
-				// this.total = 86;
-				// this.users = res.data.users;
-				// this.listLoading = false;
+				// this.total = 86;				
+				this.listLoading = false;
 				//NProgress.done();
-				console.log(res)
-			});
+				console.log(res);
+				this.users = res.result;
+				this.total = res.pageInfo.totalNumber;
+				this.pageSize = res.pageInfo.pageSize;
+
+			})
 		},
 		//删除
 		handleDel: function (index, row) {
@@ -1296,8 +1218,11 @@ export default {
 			};
 		},
 		// 显示已授权页面
-		handleAuthorized: function () {
+		handleAuthorized: function (index, row) {
 			this.authorizedVisible = true;
+			console.log(row.remark);
+
+
 		},
 		// 显示授权资料目录
 		handleDetail: function () {
@@ -1406,7 +1331,7 @@ export default {
 
 	},
 	mounted() {
-		// this.getUsers();
+		this.getUsers();
 
 		$.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
 		$.fn.zTree.init($("#authorizedTree"), this.setting, this.zNodes);
@@ -1421,10 +1346,12 @@ export default {
 	min-width: 163px;
 	height: 36px;
 }
+
 .bg-purple-light {
 	font-size: 14px;
 	color: grey;
 }
+
 .time {
 	font-size: 13px;
 	color: #263047;
@@ -1432,26 +1359,32 @@ export default {
 	line-height: 20px;
 	padding: 0 20px;
 }
+
 .bottom {
 	line-height: 12px;
 }
+
 .button {
 	padding: 0;
 	float: right;
 }
+
 .image {
 	width: 100%;
 	display: block;
 }
+
 .clearfix:before,
 .clearfix:after {
 	display: table;
 	content: "";
 	text-align: center
 }
+
 .clearfix:after {
 	clear: both
 }
+
 .quality-dialog {
 	height: 668px;
 	position: fixed;
@@ -1463,12 +1396,14 @@ export default {
 	z-index: 9999;
 	border-radius: 5px;
 }
+
 .check {
 	background-color: #e6e6e6;
 	border-radius: 4px;
 	color: #6595f2;
 	font-weight: 700;
 }
+
 .button_size {
 	width: 90px;
 	height: 36px;
