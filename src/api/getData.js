@@ -28,5 +28,8 @@ export const getUserListPage = params => { return axios.post(`${base}/enterprise
 /*
 * 流程设置列表
 * */
-export const getProcessList = (context,currentPage) =>context.$axios.post('eds_szs/rs/lbconfig/process/getProcessList',currentPage);
-
+export const getProcessList = (context,currentPage) =>context.$axios.post(`${base}/enterprise/rs/lbconfig/process/getProcessList`,currentPage);
+/**
+*123
+*/
+export const getFormModelList = (context) =>context.$axios.get(`${base}/enterprise/rs/lbconfig/form/getFormModelList`);

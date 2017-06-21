@@ -39,7 +39,7 @@
     float:right;min-width:388px;
 }
 .quality-page .quality-table{
-    height:calc( 100vh - 400px)
+    height:calc( 100vh - 400px);overflow:auto;
 }
 .quality-page .quality-table .el-table-column--selection .cell{
     padding:0;
