@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<section style='margin-top:20px;' v-show='flag'>
-			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;height:60px;background:#ffffff;padding:10px 0;border-bottom:1px solid #e6e6e6;box-shadow: 1px 0 6px #cccaca;">
+			<el-col :span="24" class="toolbar" style="padding-bottom: 0px;height:60px;background:#ffffff;padding:10px 0;border-bottom:1px solid #e6e6e6;">
 				<el-form :inline="true" :model="filters" style="padding-left:20px">
 					<span style="display:inline-block;font-size:14px;height:36px;line-height:36px">角色: </span>
 					<el-form-item>
@@ -20,7 +20,7 @@
 					</el-form-item>
 				</el-form>
 			</el-col>
-			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px;box-shadow: 1px 0 6px #cccaca;">
+			<el-col :span="24" class="toolbar" style="background:#ffffff;padding-left:20px;">
 				<el-form :inline="true" :model="filters" style="height:70px">
 					<el-form-item style="padding: 20px 0;">
 						<el-button type="primary" v-on:click="flag=false;sendRouterTitle()" style="width: 100px;height: 40px;">
@@ -120,7 +120,7 @@
 			</el-dialog>
 			<!--成员管理-->
 			<el-dialog title="查看服务详情" v-model="memberVisible" :close-on-click-modal="false" size='tiny'>
-				<div style="height:20px;line-height:20px;border-top:1px solid #e6e6e6;text-align:center">设置
+				<div style="height:20px;line-height:20px;border-top:1px solid #e6e6e6;text-align:center;padding-top:40px">设置
 					<span style="color:#6595f2">“海南铺前大桥项目”
 					</span>
 				</div>
@@ -255,13 +255,13 @@
 				</el-col>
 			</el-row>
 	
-			<el-row style="margin-top:20px;box-shadow: 1px 0 6px #cccaca;">
+			<el-row style="margin-top:20px;">
 				<el-col :span="24" class="toolbar" style="padding-left: 10px;height: 60px;border-bottom:1px solid #e6e6e6;background-color: #fff;">
 					<p style="font-size: 18px;font-weight: 700;line-height: 60px">功能节点授权</p>
 				</el-col>
 			</el-row>
 			<!--表格切换-->
-			<el-row style="background-color:#fff;box-shadow: 1px 0 6px #cccaca;">
+			<el-row style="background-color:#fff;">
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="房建" name="first">
 						<el-row style="background-color:#fff;padding-left:20px">
@@ -282,7 +282,7 @@
 													<span class="el-icon-star-on" style="float:right;color:#d78387;" @click='setUnauthoried(index)' v-show='o==0'> 未授权</span>
 												</el-button>
 											</div>
-											<div style="text-align: center;border-bottom: 1px solid rgb(209, 229, 229);">
+											<div style="text-align: center;border-bottom: 1px solid #c8c8c8;">
 												<img src="http://element.eleme.io/static/hamburger.50e4091.png" class="image" style="width:64px;height:64px;margin:0 auto">
 												<span style="margin:14px 0 14px 0;display:inline-block">Luban Explorer</span>
 											</div>
@@ -982,6 +982,7 @@ import "static/css/setting-qualityMeasure.css";
 import "static/js/ztree/css/zTreeStyle_new.css";
 import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
+import { getUserListPage} from '../../../api/getData.js';
 const cityOptions = ['0', '1', '2', '3'];
 export default {
 	data() {
@@ -1243,16 +1244,17 @@ export default {
 		//获取用户列表
 		getUsers() {
 			let para = {
-				page: this.page,
-				name: this.filters.name
+				// page: this.page,
+				// name: this.filters.name
 			};
 			this.listLoading = true;
 			//NProgress.start();
 			getUserListPage(para).then((res) => {
-				this.total = 86;
+				// this.total = 86;
 				// this.users = res.data.users;
-				this.listLoading = false;
+				// this.listLoading = false;
 				//NProgress.done();
+				console.log(res)
 			});
 		},
 		//删除
@@ -1425,7 +1427,7 @@ export default {
 }
 .time {
 	font-size: 13px;
-	color: #999;
+	color: #263047;
 	height: 20px;
 	line-height: 20px;
 	padding: 0 20px;
@@ -1462,9 +1464,9 @@ export default {
 	border-radius: 5px;
 }
 .check {
-	background-color: #6595f2;
+	background-color: #e6e6e6;
 	border-radius: 4px;
-	color: #fff;
+	color: #6595f2;
 	font-weight: 700;
 }
 .button_size {

@@ -2,7 +2,8 @@
  *  create by kylee 2017.6.9
  *  获取后端数据
  */
-
+import axios from 'axios';
+let base = 'http://192.168.13.215:8080';
 /**
  * get接口测试案例
  */
@@ -23,7 +24,9 @@ export const getNavMenu = (context) => context.$axios.get('eds_sz/navMenu/list')
  */
 export const getZtreeNode = (context) => context.$axios.get('eds_sz/ztree/list')
 
+export const getUserListPage = params => { return axios.post(`${base}/enterprise/rs/lbconfig/process/getProcessList`, params).then(res => res.data); };
 /*
 * 流程设置列表
 * */
-export const getProcessList = (context,currentPage) =>context.$axios.post('http://192.168.13.215:8080/enterprise/rs/lbconfig/process/getProcessList',currentPage);
+export const getProcessList = (context,currentPage) =>context.$axios.post('eds_szs/rs/lbconfig/process/getProcessList',currentPage);
+
