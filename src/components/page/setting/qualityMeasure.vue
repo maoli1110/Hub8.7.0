@@ -233,6 +233,7 @@ import "static/css/setting-qualityMeasure.css";
 //    import "static/ztree/css/demo.css";
 import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
+import { getNavMenu, getZtreeNode, getTestApi, postTestApi,getProcessList} from 'src/api/getData.js'
 export default {
     data() {
         return {
@@ -338,6 +339,12 @@ export default {
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
     },
     methods: {
+        getData(){
+            let self = this;
+            getProcessList(self,{searchKey:"",page:1,pageSize:25,sortField:"",sortType:"asc"}).then((res)=>{
+                console.info(res,'2222')
+            })
+        },
         change() {
 			var txtVal = this.textarea.length;
 			this.remainLength =txtVal;
