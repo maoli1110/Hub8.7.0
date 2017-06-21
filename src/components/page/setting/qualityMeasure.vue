@@ -24,10 +24,10 @@
                     </el-col>
                 </el-row>
             </div>
-            <el-table class="quality-table" :data="tableData.result" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" >
+            <el-table class="quality-table" :data="tableData.result" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)" >
                 <el-table-column width="50" type="selection" id="processId">
                 </el-table-column>
-                <el-table-column label="序号" width="80" type="index">
+                <el-table-column label="序号" width="80" type="index" >
                 </el-table-column>
                 <el-table-column prop="processName" width="" label="流程名称" sortable>
                 </el-table-column>
@@ -48,7 +48,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[25, 50, 100, 200]" :page-size="25" layout="total, sizes, prev, pager, next, jumper" :total="tableData.pageInfo.totalNumber">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[25, 50, 100, 200]" :page-size="25" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                 </el-pagination>
             </div>
         </div>
@@ -162,7 +162,7 @@
                     </el-col>
                 </el-col>
                 <el-col :span="24" class="link-table">
-                    <el-table :data="tableData.result" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}">
+                    <el-table :data="6" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}">
                         <el-table-column width="30" type="selection">
                         </el-table-column>
                         <el-table-column label="序号" width="120" type="index">
@@ -276,6 +276,7 @@ export default {
             remainLength:0,
             textarea:'',
             menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
+            totalNumber:0,
 
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
             rootInfo: [
@@ -316,7 +317,8 @@ export default {
             let self = this;
             getProcessList(self,{searchKey:"",page:curretPage,pageSize:25,sortField:"",sortType:"asc"}).then((res)=>{
                 //console.info(res.data.result,'我是流程列表数据')
-                this.tableData = res.data
+                this.tableData = res.data;
+                this.totalNumber = res.data.pageInfo.totalNumber;
             })
         },
         change() {
