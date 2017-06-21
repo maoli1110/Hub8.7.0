@@ -47,6 +47,9 @@
 .quality-page .quality-table.el-table thead tr th{
     height:60px;line-height:60px;background:#f0f0f0;border-right:1px solid #ddd;text-align:center;
 }
+.quality-page .quality-table.el-table thead tr th:last-child{
+    border-right:none !important;
+}
 .quality-page .quality-table.el-table tbody tr td{
     height:45px;line-height:45px;text-align:center;border-right:1px solid #ddd;
 }

@@ -137,14 +137,14 @@ a{text-decoration: none}
     float: right;
 }
 /*清除浮动*/
-.clearfix { 
-  *zoom: 1; 
-} 
-.clearfix:before, .clearfix:after { 
-  display: table; 
-  line-height: 0; 
-  content: ""; 
-} 
-.clearfix:after { 
-  clear: both; 
-} 
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before, .clearfix:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
