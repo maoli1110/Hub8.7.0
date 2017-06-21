@@ -26,4 +26,4 @@ export const getZtreeNode = (context) => context.$axios.get('eds_sz/ztree/list')
 /*
 * 流程设置列表
 * */
-export const getProcessList = (context,currentPage) =>context.$axios.post('eds_szs/rs/lbconfig/process/getProcessList',currentPage);
+export const getProcessList = (context,currentPage) =>context.$axios.post('http://192.168.13.215:8080/enterprise/rs/lbconfig/process/getProcessList',currentPage);

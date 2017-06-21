@@ -40,10 +40,10 @@ module.exports = {
                 target: 'https://www.easy-mock.com/mock/593a038691470c0ac114af74',
                 changeOrigin: true
             },
-            '/eds_szs':{
+          /*  '/eds_szs':{
                 target: 'http://192.168.13.215:8080/enterprise',
                 changeOrigin: true
-            }
+            }*/
         },
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README
