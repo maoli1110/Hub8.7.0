@@ -16,16 +16,16 @@
                 <el-icon class="el-icon-circle-cross" v-show="formVal.length>0" @click.native="clearFormSearval"></el-icon>
             </el-col>
         </el-row>
-        <el-table :data="tableData"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}"  class="form-table">
+        <el-table :data="formDataList"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}"  class="form-table">
             <el-table-column label="序号" width="80" type="index">
             </el-table-column>
-            <el-table-column prop="name" label="表单类型" sortable>
+            <el-table-column prop="modelName" label="表单类型" sortable>
             </el-table-column>
-            <el-table-column prop="name" width="120" label="更新人" sortable>
+            <el-table-column prop="updateUser" width="120" label="更新人" sortable>
             </el-table-column>
-            <el-table-column prop="date"  width="130" label="更新时间"  sortable>
+            <el-table-column prop="updateTime"  width="130" label="更新时间"  sortable>
             </el-table-column>
-            <el-table-column prop="adress" label="备注" :formatter="formatter" sortable>
+            <el-table-column prop="remark" label="备注"  sortable>
             </el-table-column>
             <el-table-column label="操作" width="100" @click.native="addnew">
                 <template scope="scope">
@@ -93,6 +93,7 @@
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
     import "static/js/ztree/js/jquery.ztree.exedit.js";
     import "static/js/ztree/js/jquery.ztree.exhide-3.5.js"
+    import { getFormModelList} from 'src/api/getData.js'
     let level = 1;
     let maxLevel=-1;
     let newCount = 1;
@@ -142,15 +143,7 @@
                 cur_page: 1,
                 menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
                 menusData:[{name:"流程设置",routerDump:'qualityMeasure'},{name:'工程模板',routerDump:'proTemplate'},{name:'表单管理',routerDump:'formManage'}],
-                tableData: [{
-                    "date": "1997-11-11",
-                    "name": "林丽",
-                    "address": "吉林省 辽源市 龙山区"
-                }, {
-                    "date": "1987-09-24",
-                    "name": "文敏",
-                    "address": "江西省 萍乡市 芦溪县"
-                }],
+                formDataList: [],
                 changeFormVisible:false,
                 istable:false,
                 istable2:false,
@@ -181,13 +174,11 @@
                 this.getData();
             },
             getData(){
-                /* let self = this;
-                 if(process.env.NODE_ENV === 'development'){
-                 self.url = '/ms/table/list';
-                 };
-                 self.$axios.post(self.url, {page:self.cur_page}).then((res) => {
-                 self.tableData = res.data.list;
-                 })*/
+                let self = this
+
+                getFormModelList(self).then((res) => {
+                    this.formDataList = res.data
+                })
             },
             formatter(row, column) {
                 return row.address;

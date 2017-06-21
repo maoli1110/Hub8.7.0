@@ -24,18 +24,18 @@
                     </el-col>
                 </el-row>
             </div>
-            <el-table class="quality-table" :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" >
-                <el-table-column width="50" type="selection">
+            <el-table class="quality-table" :data="tableData.result" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" >
+                <el-table-column width="50" type="selection" id="processId">
                 </el-table-column>
                 <el-table-column label="序号" width="80" type="index">
                 </el-table-column>
-                <el-table-column prop="name" width="" label="流程名称" sortable>
+                <el-table-column prop="processName" width="" label="流程名称" sortable>
                 </el-table-column>
-                <el-table-column prop="name" width="120" label="更新人" sortable>
+                <el-table-column prop="updateUser" width="120" label="更新人" sortable>
                 </el-table-column>
-                <el-table-column prop="date" width="160" label="更新时间" sortable>
+                <el-table-column prop="updateTime" width="160" label="更新时间" sortable>
                 </el-table-column>
-                <el-table-column prop="adress" label="备注" :formatter="formatter" sortable>
+                <el-table-column prop="remark" label="备注"  sortable>
                 </el-table-column>
                 <el-table-column label="操作" width="135" @click.native="addnew" class="quality-page-tableIcon">
 
@@ -48,7 +48,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[25, 50, 100, 200]" :page-size="25" layout="total, sizes, prev, pager, next, jumper" :total="tableData.pageInfo.totalNumber">
                 </el-pagination>
             </div>
         </div>
@@ -162,7 +162,7 @@
                     </el-col>
                 </el-col>
                 <el-col :span="24" class="link-table">
-                    <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}">
+                    <el-table :data="tableData.result" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}">
                         <el-table-column width="30" type="selection">
                         </el-table-column>
                         <el-table-column label="序号" width="120" type="index">
@@ -228,6 +228,7 @@
 let indexTable = 0;
 let isChange = false;
 let key;
+let curretPage;
 import "static/css/setting-qualityMeasure.css";
 //import "static/js/ztree/css/zTreeStyle_new.css";
 //    import "static/ztree/css/demo.css";
@@ -270,36 +271,7 @@ export default {
                 { id: 23, pId: 2, name: "禁止勾选 2-3" }
             ],
             url: 'static/vuetable.json',
-            //                tableData: [],
-            tableData: [{
-                "date": "1997-11-11",
-                "name": "林丽",
-                "address": "吉林省 辽源市 龙山区"
-            }, {
-                "date": "1987-09-24",
-                "name": "文敏",
-                "address": "江西省 萍乡市 芦溪县"
-            }, {
-                "date": "1996-08-08",
-                "name": "杨秀兰",
-                "address": "黑龙江省 黑河市 五大连池市"
-            }, {
-                "date": "1978-06-18",
-                "name": "魏强",
-                "address": "广东省 韶关市 始兴县"
-            }, {
-                "date": "1977-07-09",
-                "name": "石秀兰",
-                "address": "江苏省 宿迁市 宿豫区"
-            }, {
-                "date": "1994-09-20",
-                "name": "朱洋",
-                "address": "海外 海外 -"
-            }, {
-                "date": "1980-01-22",
-                "name": "傅敏",
-                "address": "海外 海外 -"
-            }],
+            tableData: [],//流程列表
             cur_page: 1,
             remainLength:0,
             textarea:'',
@@ -331,7 +303,8 @@ export default {
         }
     },
     created() {
-        this.getData();
+        curretPage = curretPage?1:curretPage;
+        this.getData(curretPage);
     },
     mounted() {
         $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
@@ -339,10 +312,11 @@ export default {
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
     },
     methods: {
-        getData(){
+        getData(curretPage){//默认数据
             let self = this;
-            getProcessList(self,{searchKey:"",page:1,pageSize:25,sortField:"",sortType:"asc"}).then((res)=>{
-                console.info(res,'2222')
+            getProcessList(self,{searchKey:"",page:curretPage,pageSize:25,sortField:"",sortType:"asc"}).then((res)=>{
+                //console.info(res.data.result,'我是流程列表数据')
+                this.tableData = res.data
             })
         },
         change() {
@@ -352,19 +326,11 @@ export default {
         handleCurrentChange(val) {
             console.info(val, '当前是多少页')
             this.cur_page = val;
-            this.getData();
+            curretPage= this.cur_page;
+            this.getData(curretPage);
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
-        },
-        getData() {
-            let self = this;
-            /*  if(process.env.NODE_ENV === 'development'){
-                  self.url = '/ms/table/list';
-              };
-              self.$axios.post(self.url, {page:self.cur_page}).then((res) => {
-                  self.tableData = res.data.list;
-              })*/
         },
         formatter(row, column) {
             return row.address;
@@ -379,7 +345,8 @@ export default {
             this.$message.error('删除第' + (index + 1) + '行');
         },
         //新增页面
-        open2(index) {
+        open2(index,row) {
+            console.info(row.remark)
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -405,10 +372,8 @@ export default {
         },
         //流程管理文件
         processSetEdit(event, index) {
-            //                console.info(event.currentTarget)
             indexTable = index;
             isChange = true;
-            /*   event.style.background="";*/
             let obj = document.getElementById('bj-style')
             let objTr = obj.getElementsByTagName('tr');
             for (let i = 0; i < objTr.length; i++) {

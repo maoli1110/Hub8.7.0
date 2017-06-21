@@ -24,8 +24,14 @@ export const getNavMenu = (context) => context.$axios.get('eds_sz/navMenu/list')
  */
 export const getZtreeNode = (context) => context.$axios.get('eds_sz/ztree/list')
 
-// pan
+
 export const getUserListPage = params => { return axios.post(`${base}/enterprise/rs/lbconfig/process/getProcessList`, params).then(res => res.data); };
 /*
 * 流程设置列表
 * */
+export const getProcessList = (context,currentPage) =>context.$axios.post(`${base}/enterprise/rs/lbconfig/process/getProcessList`,currentPage);
+/**
+*123
+*/
+export const getFormModelList = (context) =>context.$axios.get(`${base}/enterprise/rs/lbconfig/form/getFormModelList`);
+
