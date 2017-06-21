@@ -331,6 +331,7 @@ export default {
         }
     },
     created() {
+        debugger;
         this.getData();
     },
     mounted() {
@@ -357,15 +358,15 @@ export default {
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
         },
-        getData() {
+  /*      getData() {
             let self = this;
-            /*  if(process.env.NODE_ENV === 'development'){
+            /!*  if(process.env.NODE_ENV === 'development'){
                   self.url = '/ms/table/list';
               };
               self.$axios.post(self.url, {page:self.cur_page}).then((res) => {
                   self.tableData = res.data.list;
-              })*/
-        },
+              })*!/
+        },*/
         formatter(row, column) {
             return row.address;
         },
