@@ -73,7 +73,7 @@
                 })
                 //post接口测试案例
                 postTestApi(self,{page:1}).then((res) => {
-                   console.log(res.data)
+                   console.log(res.data,'2131313')
                 })
             }
         },
