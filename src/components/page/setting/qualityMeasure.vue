@@ -151,23 +151,23 @@
                 <!--link-model-header-->
                 <el-col :span="24" style="padding:20px 0 ;">
                     <el-col :span="14">
-                        <el-button type="primary" @click="BMPAddLink">
-                            <el-icon></el-icon>添加关联</el-button>
-                        <el-button type="primary" @click="BMPDeleteLink">
-                            <el-icon></el-icon>删除关联</el-button>
+                        <el-button type="primary" icon="plus" @click="BMPAddLink">
+                            添加关联</el-button>
+                        <el-button type="primary" icon="delete" @click="BMPDeleteLink">
+                            删除关联</el-button>
                     </el-col>
                     <el-col :span="10" style="text-align:right;padding:0;">
-                        <el-input placeholder="请选择日期" icon="search">
+                        <el-input placeholder="请选择日期" icon="search" style="width:100%">
                         </el-input>
                     </el-col>
                 </el-col>
                 <el-col :span="24" class="link-table">
-                    <el-table :data="6" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}">
-                        <el-table-column width="30" type="selection">
+                    <el-table :data="rootInfo" style="width: 100%" :default-sort="{prop: '', order: 'descending'}"  class="link-modal-table">
+                        <el-table-column width="50" type="selection">
                         </el-table-column>
-                        <el-table-column label="序号" width="120" type="index">
+                        <el-table-column label="序号" width="80" type="index">
                         </el-table-column>
-                        <el-table-column label="表单名称" prop="address">
+                        <el-table-column label="表单名称" prop="">
                         </el-table-column>
                         <el-table-column label="操作" width="80" @click.native="addnew">
                             <template scope="scope">
@@ -188,23 +188,23 @@
         <div class="quality-dialog" v-show="linkTree">
             <div class="quality-dialog-header">
                 <el-row>
-                    <el-col :span="24" style="padding:0px 0 20px;border-bottom:1px solid #ddd;">
+                    <el-col :span="24" style="padding:0px 30px 20px;border-bottom:1px solid #ddd;">
                         <span style="font-weight:bolder">表单关联</span>
                         <el-icon class="el-icon-close" style="float:right" @click.native="linkTree=false"></el-icon>
                     </el-col>
-
-                    <el-col :span="14" style="margin:10px 0 10px;padding-bottom:10px;border-bottom:1px solid #ddd;">
-                        <label style="font-size:14px;">表单目录：</label>
-                        <el-select value="全部" placeholder="请选择活动区域">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
+                    <el-col :span="24" style="padding:20px 40px;">
+                        <el-col :span="15" >
+                            <label style="font-size:14px;">表单目录：</label>
+                            <el-select value="全部" placeholder="请选择活动区域" style="width:200px;">
+                                <el-option label="区域一" value="shanghai"></el-option>
+                                <el-option label="区域二" value="beijing"></el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="9" >
+                            <el-input placeholder="请选择日期" icon="search" style="width:100%">
+                            </el-input>
+                        </el-col>
                     </el-col>
-                    <el-col :span="10" style="margin:10px 0 10px;padding-bottom:10px;border-bottom:1px solid #ddd;">
-                        <el-input placeholder="请选择日期" icon="search">
-                        </el-input>
-                    </el-col>
-
                 </el-row>
             </div>
             <div class="ztree-allCheck ">
@@ -277,7 +277,6 @@ export default {
             textarea:'',
             menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
             totalNumber:0,
-
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
             rootInfo: [
                 { addRolesLine: [], isStepDisable: false },
@@ -300,7 +299,7 @@ export default {
             linkTree: false,
             flowName: "",//流程名称
             checkTrue: false,
-            //                isStepDisable:false
+            // isStepDisable:false
         }
     },
     created() {

@@ -68,7 +68,7 @@
 .quality-page .trends-byte{
     position: absolute;
     right: 27.5%;
-    bottom: 51px;margin-left:-74px;color:#6595f2;font-size:12px;
+    bottom: 31px;margin-left:-74px;color:#6595f2;font-size:12px;
 }
 /*BMP(流程设置)*/
 .BMP-process .el-input{
@@ -208,8 +208,8 @@
     right: 0px;
 }
 .content .quality-dialog{
-    width: 625px;
-    height: 560px !important;
+    width: 536px;
+    height: 638px !important;
     position: fixed;
     left: 50%;
     top: 50%;
@@ -219,14 +219,20 @@
     z-index: 9999;
     border-radius: 5px;
 }
+.quality-dialog .ztree{
+    padding:15px 40px 15px !important;height:374px !important;overflow:auto;
+}
 .content .ztree-allCheck{
-    cursor:pointer;padding-left:26px;
+    cursor:pointer;padding-left:40px;font-size:14px;
 }
 .content .ztree-allCheck>div{
     position: absolute;
     font-size: 14px;
     margin-left:35px;
 
+}
+.quality-dialog .ztree li a{
+    font-size:14px;
 }
 /*simlue-checkbox模拟复选框样式*/
 .content .simlue-label{
@@ -263,20 +269,35 @@
 }
 /*关联模型link-model*/
 .link-model .el-dialog{
-    width:625px;
-    height:560px;
+    width:734px;
+    height:615px;
 }
  .link-model .el-dialog__header{
-   padding:20px !important;
+   padding:20px 30px !important;border:1px solid #ddd;
+}
+.link-model .el-dialog__header>span{
+    font-size:18px;
 }
  .link-model .el-dialog__body{
-     padding-top:0 !important;
+     padding:10px 40px !important;
  }
  .link-model  .link-model-body>div:nth-child(1){
-     border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:10px 0 !important;
+    padding:10px 0 !important;
  }
 .link-model .link-table{
-    margin-top:20px;
+    margin-top:10px;height: 404px;overflow: auto;
+}
+.link-table .el-table th>.cell{
+    text-align:center !important;padding:0;
+}
+.link-table .el-table tbody tr td .cell{
+    text-align:center;padding:0;
+}
+.link-table .el-table tbody tr td:nth-child(3){
+    text-align:left;
+}
+.link-table .el-table tbody tr td:nth-child(4) i{
+    margin-right:6px;
 }
 .link-model .dialog-footer{
     text-align:center;
@@ -708,7 +729,7 @@
     padding:15px 20px 20px;
 }
 .content .quality-dialog-header{
-    padding:20px 20px 0;
+    padding:20px 0px 0;
 }
 .content .quality-dialog-footer{
     text-align:center;
