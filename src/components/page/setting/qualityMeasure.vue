@@ -33,7 +33,7 @@
                 </el-table-column>
                 <el-table-column prop="updateUser" width="120" label="更新人" sortable>
                 </el-table-column>
-                <el-table-column prop="updateTime" width="160" label="更新时间" sortable>
+                <el-table-column prop="updateTime" width="160" label="更新时间" sortable :formatter="formatTime">
                 </el-table-column>
                 <el-table-column prop="remark" label="备注"  sortable>
                 </el-table-column>
@@ -234,7 +234,7 @@ import "static/css/setting-qualityMeasure.css";
 //    import "static/ztree/css/demo.css";
 import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-import { getNavMenu, getZtreeNode, getTestApi, postTestApi,getProcessList} from 'src/api/getData.js'
+import {getProcessList} from 'src/api/getData.js'
 export default {
     data() {
         return {
@@ -313,9 +313,8 @@ export default {
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
     },
     methods: {
-        getData(curretPage){//默认数据
-            let self = this;
-            getProcessList(self,{searchKey:"",page:curretPage,pageSize:25,sortField:"",sortType:"asc"}).then((res)=>{
+        getData(curretPage){//默认数据            
+            getProcessList({searchKey:"",page:curretPage,pageSize:25,sortField:"",sortType:"asc"}).then((res)=>{
                 //console.info(res.data.result,'我是流程列表数据')
                 this.tableData = res.data;
                 this.totalNumber = res.data.pageInfo.totalNumber;
@@ -340,6 +339,16 @@ export default {
         filterTag(value, row) {
             return row.tag === value;
         },
+        //时间戳转换;
+		formatTime: function (row, column) {
+			const now = new Date(row.updateTime),
+				year = now.getFullYear(),
+				month = now.getMonth() + 1 > 10 ? now.getMonth() + 1 : '0' + (now.getMonth() + 1),
+				date = now.getDate(),
+				hour = now.getHours(),
+				minute = now.getMinutes() > 10 ? now.getMinutes() : '0' + now.getMinutes();
+			return year + "-" + month + "-" + date + " " + hour + ":" + minute
+		},
         handleEdit(index, row) {
             this.$message('编辑第' + (index + 1) + '行');
         },

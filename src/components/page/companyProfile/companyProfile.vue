@@ -15,7 +15,7 @@
     import "static/js/ztree/js/jquery.ztree.core-3.5.js";
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
     import vSidebar from 'components/common/Sidebar.vue';
-    import { getNavMenu, getZtreeNode, getTestApi, postTestApi} from 'src/api/getData.js'
+    
     export default {
         data() {
             return {

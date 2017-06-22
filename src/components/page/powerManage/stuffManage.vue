@@ -9,6 +9,7 @@
 							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
+											    
 					</el-form-item>
 					<el-form-item>
 						<!--<el-input v-model="filters.name" placeholder="姓名"></el-input>-->
@@ -1168,14 +1169,11 @@ export default {
 			};
 			this.listLoading = true;
 			//NProgress.start();
-			getUserListPage(para).then((res) => {
-				// this.total = 86;				
+			getUserListPage(para).then((res) => {				
 				this.listLoading = false;
-				//NProgress.done();
-				console.log(res);
-				this.users = res.result;
-				this.total = res.pageInfo.totalNumber;
-				this.pageSize = res.pageInfo.pageSize;
+				this.users = res.data.result;
+				this.total = res.data.pageInfo.totalNumber;
+				this.pageSize = res.data.pageInfo.pageSize;
 
 			})
 		},

@@ -5,13 +5,14 @@
             <el-menu     default-active='stuffManage' class="el-menu-demo" mode="horizontal" router style="height:57px;box-shadow: 1px 0 6px #cccaca;" v-show='flag' >
                 <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump" style="font-size:16px;font-weight:700;line-height:57px;"  >{{menusdata.name}} </el-menu-item>
             </el-menu>
-            <router-view @connect="routerTitle"></router-view>
+            <keep-alive><router-view @connect="routerTitle"></router-view></keep-alive>          
+            
         </div>
     </div>
 </template>
 <script>
     import vSidebar from 'components/common/Sidebar.vue';
-    import { getNavMenu } from 'src/api/getData.js'
+    // import { getNavMenu } from 'src/api/getData.js'
 
     // import vPowersidebar from './powerSidebar.vue';
     export default{
@@ -25,15 +26,15 @@
             }
         },
         created(){
-            this.getData();
+            // this.getData();
         },
         methods: {
             getData(){
-                let self = this;
-                //获取左侧导航数据
-                getNavMenu(self).then((res) => {
-                    self.navMenuData = res.data.root;
-                })
+                // let self = this;
+                // //获取左侧导航数据
+                // getNavMenu(self).then((res) => {
+                //     self.navMenuData = res.data.root;
+                // })
             },
             routerTitle(){
             console.log(`监听到了事件connect的触发`);

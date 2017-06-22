@@ -14,7 +14,6 @@
     import "static/css/setting-qualityMeasure.css"
     import "static/css/setting-explorer.css"
     import vSidebar from 'components/common/Sidebar.vue';
-    import { getNavMenu } from 'src/api/getData.js'
     export default {
         data () {
             return {

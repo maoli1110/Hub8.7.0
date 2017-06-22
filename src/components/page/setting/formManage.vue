@@ -173,10 +173,8 @@
                 this.cur_page = val;
                 this.getData();
             },
-            getData(){
-                let self = this
-
-                getFormModelList(self).then((res) => {
+            getData(){               
+                getFormModelList().then((res) => {
                     this.formDataList = res.data
                 })
             },
