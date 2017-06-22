@@ -362,6 +362,12 @@
 }
 
 /*工程模板*/
+.proTemplate-table .icon-compile{
+    width:20px;height:20px;display:inline-block;background: url(../../static/img/hubicon.png) no-repeat -203px -105px;margin-top:10px;
+}
+.proTemplate-table .icon-compile:hover{
+    background-color:#ECF1F8;
+}
 .proTemplate .proTemplate-edit{
     padding:10px 20px;font-size:14px;
 }
@@ -420,12 +426,19 @@
     font-size:16px;font-weight:bold;padding:15px 0px;
 }
 .proTemplate-edit .sear-icon>span{
-    width: 18px;
-    height: 18px;
-    float:right;
+    width: 22px;
+    height: 22px;
+    display:inline-block;
+ /*   float:right;
     text-align: center;
     line-height: 18px;
-    background:#6595f2;color:#fff;font-weight:bold;margin:0 5px;margin-top:8px;border-radius:2px;
+    background:#6595f2;color:#fff;font-weight:bold;margin:0 5px;margin-top:8px;border-radius:2px;*/
+}
+.sear-icon .icon-cut{
+    background: url('../../static/img/hubtree.png') no-repeat -95px -6px;;
+}
+.sear-icon .icon-plus{
+    background: url('../../static/img/hubtree.png') no-repeat -64px -6px;;
 }
 .proTemplate-edit .sear-icon>span#collapseBtn{
     margin-right:15px !important;
@@ -433,7 +446,7 @@
 .proTemplate .proTemplate-edit .handle-icon{
     float:left;
 }
-.proTemplate .proTemplate-edit .handle-icon i:first-child{
+/*.proTemplate .proTemplate-edit .handle-icon i:first-child{
     border-left:1px solid #ddd;
 }
 .proTemplate .proTemplate-edit .handle-icon i{
@@ -441,6 +454,33 @@
 }
 .proTemplate .proTemplate-edit .handle-icon i:hover{
     background:#648fd4;color:#fff;
+}*/
+.handle-icon .tool-btns{
+    width:30px;height:30px;border:1px solid #ddd;float:left;text-align:center;line-height:40px;border-right:none;
+}
+.handle-icon .tool-btns>span{
+    background: url('../../static/img/hubtree.png') no-repeat 0 0;width:20px;height:20px;display:inline-block;
+}
+.handle-icon .tool-btns:nth-child(1){
+    background-color:#6595f2;
+}
+.handle-icon .tool-btns:nth-child(1)>span{
+    background-position: -64px -36px;border:none;
+}
+.handle-icon .tool-btns:nth-child(2)>span{
+    background-position:-83px -36px;
+}
+.handle-icon .tool-btns:nth-child(3)>span{
+    background-position:-99px -36px;
+}
+.handle-icon .tool-btns:nth-child(4)>span{
+    background-position:-115px -36px;
+}
+.handle-icon .tool-btns:nth-child(5){
+    border-right:1px solid #ddd;
+}
+.handle-icon .tool-btns:nth-child(5)>span{
+    background-position:-132px -36px;
 }
 .proTemplate .proTemplate-edit .createNodes{
     display: inline-block;
@@ -474,6 +514,7 @@
 .proTemplate .el-table tbody td{
     height:45px;line-height:45px;border-right: 1px solid #ddd;text-align:center;
 }
+
 .proTemplate .el-table tbody tr td:nth-child(3),.proTemplate .el-table tbody tr td:nth-child(5){
     text-align:left;
 }
@@ -517,6 +558,10 @@
     border-radius: 2px;
     font-size: 12px;
 }
+.project-form .project-form-list .icon-edit-dialog{
+    width:25px;height:25px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -42px -103px;float:right;
+}
+
 .project-form .project-form-list .el-input{
     width:100% !important;
 }
@@ -712,6 +757,12 @@
  .form-table{
     max-height: 246px;
     overflow: auto;
+}
+ .form-table .icon-tabs-eyes{
+     width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -82px -31px;
+ }
+.form-table .icon-tabs-del{
+    width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -45px -31px;
 }
 .checked-title{
     height:35px;line-height:35px;margin:10px 10px;border:1px solid #ddd;border-radius:5px;padding-left:10px;

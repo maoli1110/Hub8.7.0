@@ -27,7 +27,7 @@
 
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
-                        <el-icon class="el-icon-edit" @click.native="proTemplateEdit"></el-icon>
+                        <span class="icon-compile"  @click="proTemplateEdit"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -59,21 +59,26 @@
                     <div style="padding:11px 10px 10px 20px;border:1px solid #ddd;border-bottom:none;" class="clearfix">
                         <div class="handle-icon clearfix" style="float:left;">
                             <div @mouseover="showCreateNodes= true" class="clearfix" style="float:left;position:relative;">
-                                <el-icon class="el-icon-document"  > </el-icon>
+                                <!--<el-icon class="el-icon-document"  > </el-icon>-->
+                                <div class="tool-btns" ><span class="tool-btns" style="margin:5px 0 0 4px"></span></div>
                                 <div class="createNodes" v-show="showCreateNodes" @mouseout="showCreateNodes= false">
                                     <p id="addLeaf" @click="add">添加单个子节点</p>
                                     <p @click="textAreaVisible=true">添加多个子节点</p>
                                 </div>
                             </div>
-                            <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
+                        <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
                             <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
                             <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                            <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>
+                            <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                            <div class="tool-btns"><span id="edit"  @click="edit"></span></div>
+                            <div class="tool-btns"><span id="upMove"  @click="upMove"></span></div>
+                            <div class="tool-btns"><span id="downMove"  @click="downMove"></span></div>
+                            <div class="tool-btns"><span id="remove"  @click="remove"></span></div>
                         </div>
                         <div class="sear-icon">
                             <el-input  placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree"></el-input>
-                            <span id="collapseBtn">-</span>
-                            <span id="expandBtn">+</span>
+                            <span id="collapseBtn " class="icon-cut"></span>
+                            <span id="expandBtn" class="icon-plus"></span>
                         </div>
                     </div>
                     <ul class="ztree" id="proZtree"></ul>
@@ -93,7 +98,8 @@
                                 >
                                 </el-option>
                             </el-select>
-                            <el-icon class="el-icon-edit"  @click.native="formEditVisible = true"></el-icon>
+                            <!--<el-icon class="el-icon-edit"  @click.native="formEditVisible = true"></el-icon>-->
+                            <span class="icon-edit-dialog" @click="formEditVisible = true"></span>
                         </div>
                         <div class="project-form-ele">
                             <ul>
@@ -191,9 +197,11 @@
                             <el-tab-pane label="交工评定" name="second" v-show="!maxFlag">
                                 <ul class="form-table">
                                     <li v-for="optionList in options">{{optionList.label}}
-                                        <div class="tabs-icon">
-                                            <el-icon class="el-icon-picture"></el-icon>
-                                            <el-icon class="el-icon-delete"></el-icon>
+                                        <div class="tabs-icon clearfix">
+                                           <!-- <el-icon class="el-icon-picture"></el-icon>
+                                            <el-icon class="el-icon-delete"></el-icon>-->
+                                            <span class="icon-tabs-eyes"></span>
+                                            <span class="icon-tabs-del"></span>
                                         </div>
                                     </li>
                                 </ul>
@@ -337,7 +345,7 @@
             $.fn.zTree.init($("#editTree"), this.setting, this.zNodes);
             $("#expandBtn").bind("click",  {type:"expand",operObj:'proZtree'}, this.expandNode);
             $("#collapseBtn").bind("click", {type:"collapse",operObj:'proZtree'}, this.expandNode);
-            //$("#edit").bind("click", this.edit);
+            $("#edit").bind("click", this.edit);
             $("#remove").bind("click", this.remove);
             $("#upMove").bind("click", this.upMove);
             $("#downMove").bind("click", this.downMove);
@@ -464,7 +472,7 @@
                     $('.affirm').remove();
                     event.stopPropagation()
                 });*/
-
+                zTree.editName(treeNode);
             },
             remove(e) {
                 var zTree = $.fn.zTree.getZTreeObj("proZtree"),
