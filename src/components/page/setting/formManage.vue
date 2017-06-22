@@ -16,7 +16,8 @@
                 <el-icon class="el-icon-circle-cross" v-show="formVal.length>0" @click.native="clearFormSearval"></el-icon>
             </el-col>
         </el-row>
-        <el-table :data="formDataList"  style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}"  class="form-table"  height="calc(100vh - 380px)" >
+        <!--:default-sort = "{prop: 'date', order: 'descending'}" -->
+        <el-table :data="formDataList"  style="width: 100%"  class="form-table"  height="calc(100vh - 380px)" >
             <el-table-column label="序号" width="80" type="index">
             </el-table-column>
             <el-table-column prop="modelName" label="表单类型" sortable>
