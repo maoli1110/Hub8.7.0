@@ -16,7 +16,7 @@
                 <el-row class="quality-search" v-if="!isBMP">
                     <el-col :span="8">
                         <el-button type="primary" icon="plus" @click="addBPM">添加</el-button>
-                        <el-button type="primary" icon="delete">删除</el-button>
+                        <el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>
                     </el-col>
                     <el-col :span="16" style="text-align:right">
                         <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search"></el-input>
@@ -33,7 +33,7 @@
                 </el-table-column>
                 <el-table-column prop="updateUser" width="120" label="更新人" sortable>
                 </el-table-column>
-                <el-table-column prop="updateTime" width="160" label="更新时间" sortable :formatter="formatTime">
+                <el-table-column prop="updateTime" width="165" label="更新时间" sortable :formatter="formatTime">
                 </el-table-column>
                 <el-table-column prop="remark" label="备注"  sortable>
                 </el-table-column>
@@ -41,9 +41,12 @@
 
                     <template scope="scope" >
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
-                        <el-icon class="el-icon-edit" @click.native="dialogFormVisible = true"></el-icon>
-                        <el-icon class="el-icon-delete2" @click.native="open2(scope.$index,scope.row)"></el-icon>
-                        <el-icon class="el-icon-document" @click.native="addBPM"></el-icon>
+                   <!--     <el-icon class="icon-edit" @click.native="dialogFormVisible = true"></el-icon>
+                        <el-icon class="icon-delete2" @click.native="open2(scope.$index,scope.row)"></el-icon>
+                        <el-icon class="icon-document" @click.native="addBPM"></el-icon>-->
+                        <span class="quality-icon icon" @click="dialogFormVisible = true"></span>
+                        <span class="quality-icon icon" @click="open2(scope.$index,scope.row)"></span>
+                        <span class="quality-icon icon"  @click.native="addBPM"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -118,7 +121,7 @@
                                             </td>
                                             <td width="60">
                                                 <div>
-                                                    <el-icon class="el-icon-delete handle-delete" @click.native="deleteHandle(index)"></el-icon>
+                                                    <span class="quality-del-icon" style="position:static;background-position:-62px -29px;height:19px" @click="deleteHandle(index)"></span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -127,7 +130,8 @@
                             </div>
 
                             <p class="addStep" @click="addStep">
-                                <el-icon class="el-icon-circle-close" style="transform:rotate(136deg);margin-right:10px;font-size:18px;"></el-icon>添加步骤</p>
+                                <span style="width:90px;text-align:center;display:inline-block;"><span class="icon-add"></span>添加步骤</span>
+                            </p>
                         </div>
                     </el-col>
                     <el-col :span="10" class="root-name">
@@ -147,21 +151,28 @@
         </div>
         <!--模态框(关联模型)-->
         <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model">
+            <el-col :span="24" style="padding:10px 30px ;border-bottom:1px solid #ddd;">
+                <el-col :span="14">
+                    <label for="">表单目录：</label>
+                    <el-select value="全部" placeholder="请选择活动区域" style="width:80%;">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="10" style="text-align:right;padding:0;">
+                    <el-input placeholder="请选择日期" icon="search" style="width:100%">
+                    </el-input>
+                </el-col>
+            </el-col>
             <el-row class="link-model-body">
                 <!--link-model-header-->
-                <el-col :span="24" style="padding:20px 0 ;">
-                    <el-col :span="14">
-                        <el-button type="primary" icon="plus" @click="BMPAddLink">
-                            添加关联</el-button>
-                        <el-button type="primary" icon="delete" @click="BMPDeleteLink">
-                            删除关联</el-button>
-                    </el-col>
-                    <el-col :span="10" style="text-align:right;padding:0;">
-                        <el-input placeholder="请选择日期" icon="search" style="width:100%">
-                        </el-input>
-                    </el-col>
+                <el-col :span="24">
+                    <el-button type="primary" icon="plus" @click="BMPAddLink">
+                        添加关联</el-button>
+                    <el-button type="primary" style="position:relative" @click="BMPDeleteLink">
+                       <span class="quality-del-icon" style="left:15px;"></span> <span style="margin-left:15px;">删除关联</span></el-button>
                 </el-col>
-                <el-col :span="24" class="link-table">
+                <el-col :span="24" class="link-table" style="padding:0 40px;">
                     <el-table :data="rootInfo" style="width: 100%" :default-sort="{prop: '', order: 'descending'}"  class="link-modal-table">
                         <el-table-column width="50" type="selection">
                         </el-table-column>
@@ -171,8 +182,8 @@
                         </el-table-column>
                         <el-table-column label="操作" width="80" @click.native="addnew">
                             <template scope="scope">
-                                <el-icon class="el-icon-picture" @click.native="dialogFormVisible = true"></el-icon>
-                                <el-icon class="el-icon-delete2" @click.native="linkDelete(scope.$index)"></el-icon>
+                                <span class="icon-eyes" @click="dialogFormVisible = true"></span>
+                                <span class="quality-del-icon" style="position:static;background-position:-27px -30px;" @click="linkDelete(scope.$index)"></span>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -213,7 +224,9 @@
                     <div class="simlue-checkbox"></div>&nbsp;&nbsp;全选
                     <div id="checkAllTrue" v-show="checkTrue"></div>
                     <div id="checkAllFalse" v-show="!checkTrue"></div>
+
                 </label>
+                <div class="quality-collage"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
             </div>
             <ul class="ztree" id="lineTree"></ul>
             <div class="quality-dialog-footer">
@@ -228,7 +241,11 @@
 let indexTable = 0;
 let isChange = false;
 let key;
+let type = '';
+let operObj = '';
+let level=""
 let curretPage;
+let maxLevel;//树结构的最大展开层
 import "static/css/setting-qualityMeasure.css";
 //import "static/js/ztree/css/zTreeStyle_new.css";
 //    import "static/ztree/css/demo.css";
@@ -241,6 +258,8 @@ export default {
             setting: {
                 view: {
                     selectedMulti: false,
+                    showIcon:false,
+                    addDiyDom: this.addDiyDom,
                 },
                 check: {
                     enable: true
@@ -308,6 +327,8 @@ export default {
         $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
         $("#checkAllTrue").bind("click", { type: "checkAllTrue" }, this.checkNode);
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
+        $("#expandBtn").bind("click",  {type:"expand",operObj:'lineTree'}, this.expandNode);
+        $("#collapseBtn").bind("click", {type:"collapse",operObj:'lineTree'}, this.expandNode);
     },
     methods: {
         getData(curretPage){//默认数据
@@ -504,6 +525,52 @@ export default {
         onCheck() {
 
         },
+        //全部展开和收起
+        expandNode(e) {
+            //var index=layer.load(2);
+            type = e.data.type;
+            operObj = e.data.operObj;
+            var zTree = $.fn.zTree.getZTreeObj(operObj);
+            var treeNodes = zTree.transformToArray(zTree.getNodes());
+            var flag=true;
+            //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
+            for (var i=0;i<treeNodes.length; i++) {
+                if(treeNodes[i].level==level&&treeNodes[i].isParent){
+                    if (type == "expand"&&!treeNodes[i].open) {
+                        flag=false;
+                        break;
+                    } else if (type == "collapse"&&treeNodes[i].open) {
+                        flag=false;
+                        break;
+                    }
+                }
+            }
+
+            if(flag){
+                //说明当前level的节点都为折叠或者展开状态
+                if(type == "expand"){
+                    level++
+                    if(level<maxLevel-1){
+                        level++;
+                    }
+                }else if(type == "collapse"){
+                    if(level==0){
+                        return;
+                    }
+                    level--;
+                }
+            }
+            for (var i=0;i<treeNodes.length; i++) {
+                if(treeNodes[i].level==level&&treeNodes[i].isParent){
+                    if (type == "expand"&&!treeNodes[i].open) {
+                        zTree.expandNode(treeNodes[i], true, false, null, true);
+                    } else if (type == "collapse"&&treeNodes[i].open) {
+                        zTree.expandNode(treeNodes[i], false, false, null, true);
+                    }
+                }
+            }
+            //layer.close(index);
+        },
         checkNode(e) {
             var zTree = $.fn.zTree.getZTreeObj("lineTree"),
                 type = e.data.type,
@@ -533,6 +600,15 @@ export default {
                          zTree.checkNode(nodes[i], null, true, callbackFlag);
                      }
                  }*/
+            }
+        },
+        //增加预览图标
+        addDiyDom(treeId, treeNode) {
+            var aObj = $("#" + treeNode.tId );
+            if ($("#diyBtn_"+treeNode.id).length>0) return;
+            var editStr = "<span id='diyBtn_space_" +treeNode.id+ "' class='icon-eyes' > </span>";
+            if(!treeNode.isParent){
+                aObj.append(editStr);
             }
         },
         checkAll() {

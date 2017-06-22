@@ -56,19 +56,64 @@
 .quality-page .quality-table.el-table tbody tr td:nth-child(3),.quality-page .quality-table.el-table tbody tr td:nth-child(4),.quality-page .quality-table.el-table tbody tr td:nth-child(6){
     text-align:left;
 }
+.quality-page .quality-table.el-table tbody tr td.cell:last-child{
+    padding:0 !important;
+}
 .quality-page .quality-table.el-table thead .cell{
     background:transparent;
 }
-.quality-page .quality-table.el-table tbody td i{
-    padding:4px;background:#EBEFF8;font-size:12px;border-radius:2px;margin-right:4px;
+.quality-page .quality-table.el-table tbody td{
+    line-height:45px;
 }
-.quality-page .quality-table.el-table tbody td i:nth-child(3){
-    margin:0;
+.quality-page .quality-table.el-table tbody td span.quality-icon{
+   width:19px;height:19px;display:inline-block; background: url(../../static/img/hubicon.png) no-repeat 0px 0px;font-size:12px;border-radius:2px;margin-right:4px;text-align:center;margin-top:10px !important;
+}
+
+.quality-page .quality-table.el-table tbody td span.icon:nth-child(1){
+    background-position: -202px -106px;
+}
+.quality-page .quality-table.el-table tbody td span.icon:nth-child(2){
+    background-position:-182px -78px;
+}
+.quality-page .quality-table.el-table tbody td span.icon:nth-child(3){
+    background-position:-28px -30px;
+}
+.quality-page .quality-table.el-table tbody td span.quality-icon:nth-child(3){
+    margin:0;vertical-align: top;
+}
+.quality-page .quality-table.el-table tbody td span.quality-icon:hover{
+    background-color:#ECF1F8;
 }
 .quality-page .trends-byte{
     position: absolute;
     right: 27.5%;
     bottom: 31px;margin-left:-74px;color:#6595f2;font-size:12px;
+}
+/*quality-del-icon-btns*/
+.quality-page .quality-del-icon{
+    width: 20px;
+    height: 20px;
+    background: url(../../static/img/hubicon.png) no-repeat -6px -28px;
+    display: inline-block;
+    position: absolute;
+    left: 30px;
+    top: 5px;
+}
+.quality-page .icon-eyes{
+    width: 20px;
+    height: 20px;
+    background: url(../../static/img/hubicon.png) no-repeat  -82px -31px;
+    display: inline-block;float:right;
+}
+/*icon-add*/
+.quality-page .icon-add{
+    background: #6595f2 url(../../static/img/hubicon.png) no-repeat -5px -8px;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    border-radius: 50%;
+    float:left;
+    margin-top: 11px;
 }
 /*BMP(流程设置)*/
 .BMP-process .el-input{
@@ -229,8 +274,19 @@
 .content .ztree-allCheck>div{
     position: absolute;
     font-size: 14px;
-    margin-left:35px;
 
+}
+.ztree-allCheck .quality-collage{
+  width:auto;height:20px;display:inline-block;
+}
+.ztree-allCheck .quality-collage .icon-plus{
+    background: url(../../static/img/hubtree.png) no-repeat -95px -6px;
+    width: 23px;
+    height: 23px;
+    display: inline-block;margin-left:10px;
+}
+.ztree-allCheck .quality-collage .icon-plus.icon-cut{
+    background-position: -63px -6px;
 }
 .quality-dialog .ztree li a{
     font-size:14px;
@@ -243,23 +299,18 @@
     opacity:0;
 }
 .content .simlue-checkbox{
-    width:19px;height:16px;/*border:1px solid #ccc;*/display:inline-block;/*background:#fff;*/ position: absolute;
-    left: 0px;top:2px;
-    background:url('../../static/js/ztree/css/img/zTreeStandard1.png') no-repeat -32px -90px;
+    width:22px;height:22px;/*border:1px solid #ccc;*/display:inline-block;/*background:#fff;*/ position: absolute;
+    left: 0px;top:-2px;
+    background:url('../../static/js/ztree/css/img/zTreeStandard1.png') no-repeat -32px -86px;
 }
 .content .simlue-label input[type=checkbox]:checked+ :after{
 
     content: '';
     display: block;
-    width: 19px;
-    height: 16px;
-  /*  -webkit-transform: rotate(-90deg);
-    transform: rotate(227deg);
-    border-left: 2px solid green;
-    border-top: 2px solid green;
-    transform-origin: 6px 4.5px;*/
+    width: 22px;
+    height: 22px;
     background:url('../../static/js/ztree/css/img/zTreeStandard1.png') no-repeat -32px -90px;
-    background-position: -60px -90px;
+    background-position: -57px -89px;
 
 }
 .content #checkAllTrue,.content #checkAllFalse{
@@ -279,14 +330,17 @@
 .link-model .el-dialog__header>span{
     font-size:18px;
 }
- .link-model .el-dialog__body{
+/* .link-model .el-dialog__body{
      padding:10px 40px !important;
- }
+ }*/
+.link-model .el-dialog__body{
+    padding:0;
+}
  .link-model  .link-model-body>div:nth-child(1){
-    padding:10px 0 !important;
+    padding:20px 30px 10px !important;
  }
 .link-model .link-table{
-    margin-top:10px;height: 404px;overflow: auto;
+    margin-top:10px;height: 356px;overflow: auto;
 }
 .link-table .el-table th>.cell{
     text-align:center !important;padding:0;
@@ -300,9 +354,13 @@
 .link-table .el-table tbody tr td:nth-child(4) i{
     margin-right:6px;
 }
+.link-table .el-table tbody tr td:last-child .cell{
+    margin-top:10px;
+}
 .link-model .dialog-footer{
     text-align:center;
 }
+
 /*工程模板*/
 .proTemplate .proTemplate-edit{
     padding:10px 20px;font-size:14px;
