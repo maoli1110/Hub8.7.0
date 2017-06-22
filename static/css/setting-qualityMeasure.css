@@ -158,7 +158,8 @@
     line-height: 30px;
     padding:5px 10px;
     margin-right: 10px;
-    width: 107px;
+    width:107px;
+    max-width: 124px !important;
 }
 .content .root-el:hover{
     background:#6595f2;color:#fff;border-radius:5px;text-align:center;

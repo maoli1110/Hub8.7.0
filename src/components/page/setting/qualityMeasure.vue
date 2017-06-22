@@ -134,7 +134,7 @@
                         <div style="padding-right:20px;">
                             <p>审核角色</p>
                             <div class="rules-box">
-                                <div class="root-el" v-for="(item,index) in rootList" v-text="item" @click="addRoles(index)"></div>
+                                <div class="root-el substr" v-for="(item,index) in rootList" v-text="item.roleName" :title="item.roleName" roleId="item.roleId" @click="addRoles(index)"></div>
                             </div>
                         </div>
                     </el-col>
@@ -234,7 +234,7 @@ import "static/css/setting-qualityMeasure.css";
 //    import "static/ztree/css/demo.css";
 import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-import {getProcessList} from 'src/api/getData.js'
+import {getProcessList,getRoleInfo} from 'src/api/getData.js'
 export default {
     data() {
         return {
@@ -286,10 +286,8 @@ export default {
                 { addRolesLine: [], isStepDisable: false },
                 { addRolesLine: [], isStepDisable: false }
             ],
-            rootList: [
-                "子公司董事长", "分公司经理", "分公司技术主管", "项目经理", " 项目技术主管", " 总工", "施工员", "经营科", " 项目管理科", "办公室",
-                " 集团BIM中心", "子公司BIM中心", "分公司BIM中心", "项目BIM技术员", "安全员", "安全科", " 保卫科", " 资料员", " 项目预算员", " 项目生产经理",
-                " 商务经理", "总经济师", "信息部", "项目技术主管", "总工", "施工员"],
+            rootList: [],
+
             addRolesLine: [],
             dialogFormVisible: false,
             dialogLinkVisible: false,//授权管理模块
@@ -312,11 +310,14 @@ export default {
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
     },
     methods: {
-        getData(curretPage){//默认数据            
+        getData(curretPage){//默认数据
             getProcessList({searchKey:"",page:curretPage,pageSize:25,sortField:"",sortType:"asc"}).then((res)=>{
                 //console.info(res.data.result,'我是流程列表数据')
                 this.tableData = res.data;
                 this.totalNumber = res.data.pageInfo.totalNumber;
+            })
+            getRoleInfo().then((res)=>{
+                this.rootList = res.data;
             })
         },
         change() {
