@@ -10,7 +10,17 @@ export const getUserListPage = params => axios.post(`${base}/enterprise/rs/lbcon
 * */
 export const getProcessList = params => axios.post(`${base}/enterprise/rs/lbconfig/process/getProcessList`, params);
 
-export const getFormModelList = params => axios.get(`${base}/enterprise/rs/lbconfig/form/getFormModelList`, { params: params });
+/**
+ *
+ * 流程设置添加角色管理
+ */
+export const getRoleInfo = params =>axios.get(`${base}/enterprise/rs/lbconfig/process/getRoleInfo`,{params:params});
+/**
+*表单管理
+*/
+export const getFormModelList =params  => axios.get(`${base}/enterprise/rs/lbconfig/form/getFormModelList`,{ params: params });
+
+
 
 /**
  * 工程模板接口
