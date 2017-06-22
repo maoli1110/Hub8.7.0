@@ -23,15 +23,15 @@
             }
         },
         created(){
-            this.getData();
+            // this.getData();
         },
         methods: {
             getData(){
                 let self = this;
                 //获取左侧导航数据
-                getNavMenu(self).then((res) => {
-                    self.navMenuData = res.data.settings;
-                })
+                // getNavMenu(self).then((res) => {
+                //     self.navMenuData = res.data.settings;
+                // })
             }
         },
         components: {
