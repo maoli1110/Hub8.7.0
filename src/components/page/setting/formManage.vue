@@ -31,8 +31,9 @@
             <el-table-column label="操作" width="100" @click.native="addnew">
                 <template scope="scope">
                     <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
-                    <el-icon class="el-icon-picture" @click.native="showTreeDialog"></el-icon>
+                    <span class="icon-look" @click="showTreeDialog"></span>
                 </template>
+
             </el-table-column>
         </el-table>
         <div class="pagination">
@@ -61,7 +62,7 @@
                     <div class="form-content">
                         <div class="priview-le" v-for="item in 8">
                             <div>设计变更审批表格</div>
-                            <el-icon class="el-icon-search" @click.native="formPriview"></el-icon>
+                            <span class="icon-eyes" @click="formPriview" style="margin-top:12px;"></span>
                         </div>
                     </div>
                 </div>
@@ -174,7 +175,7 @@
                 this.cur_page = val;
                 this.getData();
             },
-            getData(){               
+            getData(){
                 getFormModelList().then((res) => {
                     this.formDataList = res.data
                 })

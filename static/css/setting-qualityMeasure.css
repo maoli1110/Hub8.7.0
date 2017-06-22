@@ -545,6 +545,12 @@
     font-size:14px;
 }
     /*表单变更*/
+.form-change .icon-look{
+    background:  url(../../static/img/hubicon.png) no-repeat  -221px -106px;width:20px;height:20px;display:inline-block;margin-top:10px;
+}
+.form-change .icon-look:hover{
+    background-color:#ECF1F8;
+}
 .form-change .dialog-changeForm{
     height: 340px;
     border: 1px solid #ddd;
@@ -638,7 +644,7 @@
     text-align:center;
 }
 .form-change .form-ztree-dialog .icon-eyes{
-    width:15px;height:15px;display:inline-block;background:url('../img/icon-eye.png') no-repeat -5px 0;float:right;margin-top:5px;
+    width:15px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -153px -38px;float:right;margin-top:5px;
 }
 .form-change .ztree{
     height:374px !important;overflow:auto;padding:20px 40px 40px !important;

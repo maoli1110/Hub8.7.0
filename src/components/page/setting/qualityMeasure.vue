@@ -121,7 +121,7 @@
                                             </td>
                                             <td width="60">
                                                 <div>
-                                                    <span class="quality-del-icon" style="position:static;background-position:-62px -29px;height:19px" @click="deleteHandle(index)"></span>
+                                                    <span class="quality-del-icon" style="position:static;background-position:-45px -29px;height:19px" @click="deleteHandle(index)"></span>
                                                 </div>
                                             </td>
                                         </tr>
