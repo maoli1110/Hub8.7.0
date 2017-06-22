@@ -62,19 +62,19 @@
             getData(){
                 let self = this;
                 //获取左侧导航数据
-                getNavMenu(self).then((res) => {
-                    self.navMenuData = res.data.company;
-                })
+                // getNavMenu(self).then((res) => {
+                //     self.navMenuData = res.data.company;
+                // })
                 //获取树节点
-                getZtreeNode(self).then((res) => {
-                    self.zNodes = res.data;
-                    //页面渲染树结构
-                    $.fn.zTree.init($(".ztree"), this.setting, this.zNodes)
-                })
+                // getZtreeNode(self).then((res) => {
+                //     self.zNodes = res.data;
+                //     //页面渲染树结构
+                //     $.fn.zTree.init($(".ztree"), this.setting, this.zNodes)
+                // })
                 //post接口测试案例
-                postTestApi(self,{page:1}).then((res) => {
-                   console.log(res.data,'2131313')
-                })
+                // postTestApi(self,{page:1}).then((res) => {
+                //    console.log(res.data,'2131313')
+                // })
             }
         },
         components:{
