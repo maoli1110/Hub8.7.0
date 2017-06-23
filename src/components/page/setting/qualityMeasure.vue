@@ -423,14 +423,12 @@ export default {
         processSetEdit(event, index) {
             indexTable = index;
             isChange = true;
-            let obj = document.getElementById('bj-style')
+            let obj = document.getElementById('bj-style');
             let objTr = obj.getElementsByTagName('tr');
             for (let i = 0; i < objTr.length; i++) {
                 objTr[i].style.background = "#fff ";
             }
             event.currentTarget.style.background = "#f5f5f5";
-            listParams.roleIds = this.rootInfo[indexTable].listRolesId;
-            console.info(listParams,'listParams')
         },
         addBPM() {
             this.isBMP = true;
@@ -528,29 +526,28 @@ export default {
             if (!this.flowName.length) {
                 this.flowNameAlert();
             }
+            let rolesId = this.rootInfo;
 
             $('.table-step tbody tr').map(function (i,val) {
+                listParams = {};
                 if ($(this).find('input').val() && $(this).find('.addRoot').length == 0) {
                     tootipsAlert();
                 } else if (!($(this).find('input').val()) && $(this).find('.addRoot').length != 0) {
                     tootipsAlert();
                 } else if ($(this).find('input').val() && $(this).find('.addRoot').length != 0) {
-                    // debugger;
-//                    console.info($(this).find('input').val());
-//                  listParams.rolesId = this.rootInfo[indexTable].listRolesId;
+                    listParams.rolesId = rolesId[i].listRolesId;
                     listParams.stepName = $(this).find('input').val();
-
                     if($(this).find('input[icon=caret-top]').val()=='全部'){
                         listParams.isAll = true;
                     }else{
                         listParams.isAll = false;
                     }
-                    list.steps.push(listParams)
+                    list.steps.push(listParams);
+
                 }
 
             })
-
-            //console.info(list)
+            console.info(list,'listd2313')
             addProcessInfo(list).then((res)=>{//添加流程
                 console.info(res)
             },function(error){

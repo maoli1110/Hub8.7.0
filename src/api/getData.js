@@ -14,7 +14,10 @@ export const getProcessList = params => axios.post(`${base}/enterprise/rs/lbconf
 //流程设置添加角色管理
 export const getRoleInfo = params =>axios.get(`${base}/enterprise/rs/lbconfig/process/getRoleInfo`,{params:params});
 //添加流程
-export const addProcessInfo = params => axios.post(`${base}/enterprise/rs/lbconfig/process/addProcessInfo`, params);
+export const getProcessInfo = params => axios.post(`${base}/enterprise/rs/lbconfig/process/getProcessInfo`, params);
+//获取流程
+export const updateProcessInfo = params => axios.post(`${base}/enterprise/rs/lbconfig/process/updateProcessInfo`, params);
+//更新流程
 //
 /**
 *表单管理
