@@ -3,18 +3,21 @@
  *  获取后端数据
  */
 import axios from 'axios';
+
 let base = 'http://172.16.21.240:8080';
+
+
 export const getUserListPage = params => axios.post(`${base}/enterprise/rs/lbconfig/process/getProcessList`, params);
 /*
 * 流程设置列表
 * */
 export const getProcessList = params => axios.post(`${base}/enterprise/rs/lbconfig/process/getProcessList`, params);
 
-/**
- *
- * 流程设置添加角色管理
- */
+//流程设置添加角色管理
 export const getRoleInfo = params =>axios.get(`${base}/enterprise/rs/lbconfig/process/getRoleInfo`,{params:params});
+//添加流程
+export const addProcessInfo = params => axios.post(`${base}/enterprise/rs/lbconfig/process/addProcessInfo`, params);
+//
 /**
 *表单管理
 */
