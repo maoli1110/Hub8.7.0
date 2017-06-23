@@ -1,10 +1,11 @@
 <template>
-    <el-menu theme="" default-active="companyProfile" class="nav-menu" mode="horizontal" router>
-        <el-menu-item index="/companyProfile">企业概况</el-menu-item>
-        <el-menu-item index="/rootManage/stuffManage">权限管理</el-menu-item>
-        <el-menu-item index="/bimStore">BIM库</el-menu-item>
-        <el-menu-item index="/setting/explorer">应用配置</el-menu-item>
+    <el-menu theme="" default-active="/setting/explorer" class="nav-menu" mode="horizontal" router>
+        <el-menu-item index=""><a href="http://192.168.13.215:8080/enterprise/showMenuPDS.htm?m=pds" >企业概况</a></el-menu-item>
+        <el-menu-item index=""><a href="http://192.168.13.215:8080/enterprise/showMenuPDS.htm?m=pds">权限管理</a></el-menu-item>
+        <el-menu-item index=""><a href="http://192.168.13.215:8080/enterprise/showMenuPDS.htm?m=pds">BIM库</a></el-menu-item>
+        <el-menu-item index="/setting/explorer">质检计量</el-menu-item>
     </el-menu>
+    
 </template>
 <script>
     export default {

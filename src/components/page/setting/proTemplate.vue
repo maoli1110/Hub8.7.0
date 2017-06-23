@@ -221,12 +221,11 @@
 </template>
 <script>
     import "../../../../static/css/setting-explorer.css";
-//    import "static/js/ztree/css/zTreeStyle_new.css";
-    //    import "static/ztree/css/demo.css";
     import "static/js/ztree/js/jquery.ztree.core-3.5.js";
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
     import "static/js/ztree/js/jquery.ztree.exedit.js";
-    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js"
+    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js";
+    import {getLDProjModelList} from 'src/api/getData.js'
     let level = 1;
     let maxLevel=-1;
     let newCount = 1;
@@ -363,13 +362,10 @@
                 this.getData();
             },
             getData(){
-               /* let self = this;
-                if(process.env.NODE_ENV === 'development'){
-                    self.url = '/ms/table/list';
-                };
-                self.$axios.post(self.url, {page:self.cur_page}).then((res) => {
-                    self.tableData = res.data.list;
-                 })*/
+              getLDProjModelList().then((res)=>{
+               console.log(res)
+            })
+              
             },
             formatter(row, column) {
                 return row.address;
