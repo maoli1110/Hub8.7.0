@@ -313,12 +313,12 @@ export default {
             totalNumber:0,
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
             rootInfo: [
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}] ,listVal:""},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"" },
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"" }
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[]},
+                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[]},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}] ,listVal:"",listRolesId:[]},
+                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[]},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[] },
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"" ,listRolesId:[]}
             ],
             rootList: [],
 //            listIsAll:'',
@@ -428,7 +428,9 @@ export default {
             for (let i = 0; i < objTr.length; i++) {
                 objTr[i].style.background = "#fff ";
             }
-            event.currentTarget.style.background = "#f5f5f5"
+            event.currentTarget.style.background = "#f5f5f5";
+            listParams.roleIds = this.rootInfo[indexTable].listRolesId;
+            console.info(listParams,'listParams')
         },
         addBPM() {
             this.isBMP = true;
@@ -450,12 +452,15 @@ export default {
             }
             if (this.rootInfo[indexTable].addRolesLine.indexOf(this.rootList[index].roleName) == -1 && this.rootInfo[indexTable].addRolesLine.length < 15 && isChange) {
                 this.rootInfo[indexTable].addRolesLine.push(this.rootList[index].roleName);
-                listParams.roleIds.push(this.rootList[index].roleId);
+//                listParams.roleIds.push(this.rootList[index].roleId);
+                this.rootInfo[indexTable].listRolesId.push(this.rootList[index].roleId);
+                console.info(this.rootInfo[indexTable].listRolesId)
             }
         },
         //关闭标签
         closeSelf(index) {
             this.rootInfo[indexTable].addRolesLine.splice(index, 1)
+            this.rootInfo[indexTable].listRolesId.splice(index, 1)
             listParams.roleIds.splice(index,1);
         },
         //添加步骤
@@ -523,14 +528,18 @@ export default {
             if (!this.flowName.length) {
                 this.flowNameAlert();
             }
-            $('.table-step tbody tr').map(function () {
+
+            $('.table-step tbody tr').map(function (i,val) {
                 if ($(this).find('input').val() && $(this).find('.addRoot').length == 0) {
                     tootipsAlert();
                 } else if (!($(this).find('input').val()) && $(this).find('.addRoot').length != 0) {
                     tootipsAlert();
                 } else if ($(this).find('input').val() && $(this).find('.addRoot').length != 0) {
                     // debugger;
+//                    console.info($(this).find('input').val());
+//                  listParams.rolesId = this.rootInfo[indexTable].listRolesId;
                     listParams.stepName = $(this).find('input').val();
+
                     if($(this).find('input[icon=caret-top]').val()=='全部'){
                         listParams.isAll = true;
                     }else{
@@ -538,7 +547,9 @@ export default {
                     }
                     list.steps.push(listParams)
                 }
+
             })
+
             //console.info(list)
             addProcessInfo(list).then((res)=>{//添加流程
                 console.info(res)
