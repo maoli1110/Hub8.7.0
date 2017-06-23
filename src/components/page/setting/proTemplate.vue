@@ -362,8 +362,11 @@
                 this.getData();
             },
             getData(){
-              getLDProjModelList().then((res)=>{
-               console.log(res)
+              getLDProjModelList({}).then((res)=>{
+               console.log(res);
+               if(res.status==200&&res.statusText=='ok'){
+                   
+               }
             })
               
             },
