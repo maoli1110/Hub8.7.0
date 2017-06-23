@@ -3,8 +3,10 @@
  *  获取后端数据
  */
 import axios from 'axios';
-let base = 'http://192.168.13.215:8080';
-//let base = 'http://172.16.21.240:8080';
+
+let base = 'http://172.16.21.240:8080';
+
+
 export const getUserListPage = params => axios.post(`${base}/enterprise/rs/lbconfig/process/getProcessList`, params);
 /*
 * 流程设置列表
