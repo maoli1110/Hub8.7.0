@@ -1,7 +1,7 @@
 <template>
     <div v-loading="qualityloading" class="quality-page">
 
-        <div class="" v-if="!isBMP">
+        <div class="" v-if="isQuality">
             <div class="search-area">
                 <el-row>
                     <el-menu  class="el-menu-demo" mode="horizontal" router>
@@ -46,7 +46,7 @@
                         <el-icon class="icon-document" @click.native="addBPM"></el-icon>-->
                         <span class="quality-icon icon" @click="dialogFormVisible = true"></span>
                         <span class="quality-icon icon" @click="open2(scope.$index,scope.row)"></span>
-                        <span class="quality-icon icon"  @click="addBPM"></span>
+                        <span class="quality-icon icon"  @click="isBMPEditShow(scope.$index,scope.row)"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -149,6 +149,99 @@
                             </div>
                         </div>
                     </el-col>
+
+                <el-col class="BMP-btns">
+                    <el-button type="primary" @click="BMPok">确定</el-button>
+                    <el-button @click="BMPcancel">取消</el-button>
+                </el-col>
+            </el-row>
+        </div>
+        <div v-show="isBMPedit" class="BMP-process">
+            <el-row class="BMP-info">
+                <el-col :span="24" class="pro-title">
+                    工程名称
+                </el-col>
+                <el-col :span="6">
+                    <span class="BMP-text">流程名称：</span>
+                    <el-input placeholder="请输入内容" v-model="flowNameEdit" style="width:40%;height:100px;"></el-input>
+                </el-col>
+                <el-col :span="18">
+                    <span class="BMP-text"  style="display:inline-block;vertical-align: top">备注：</span>
+                    <el-input style="width:60%;height:97px;" type="textarea" :rows="4" placeholder="请输入内容" v-model="flowRemarkEdit" :maxlength='150'  @change='change' >
+                    </el-input>
+                    <span class="trends-byte" >({{remainLength}}/150)</span>
+                </el-col>
+                <el-col :span="24" class="BMP-serif"></el-col>
+            </el-row>
+            <!--流程设置-->
+            <el-row class="process-set">
+                <el-col class="BMP-text" :span="24">
+                    <span>管理模块授权：</span>
+                </el-col>
+
+                <el-col :span="14" class="root-table">
+                    <div style="padding:0 20px;">
+                        <table border="0" cellspacing="0" class="table-head">
+                            <thead>
+                            <tr>
+                                <td width="50">序号</td>
+                                <td width="210">步骤名称</td>
+                                <td width="120">审批条件</td>
+                                <td>审批角色</td>
+                                <td width="60">操作</td>
+                                <!--<td>操作</td>-->
+                            </tr>
+                            </thead>
+                        </table>
+                        <div class="table-step">
+                            <table border="0" cellspacing="0">
+                                <tbody id="bj-style">
+                                <tr v-for="(rootInfo,index) in rootInfoEdit.steps" @click="processSetEdit($event,index)">
+                                    <td width="50">{{index+1}}</td>
+                                    <td width="210">
+                                        <el-input class="flowTitle" v-model="rootInfo.stepName" placeholder="请输入内容"></el-input>
+                                    </td>
+                                    <td width="120" style="position:relative" class="list-isAll" >
+                                        <!--:disabled="!rootInfo.isStepDisable"-->
+                              <!--     <el-select value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
+                                            &lt;!&ndash;option&ndash;&gt;
+                                            <el-option
+                                                v-for="item in rootInfo.option"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                            </el-option>
+                                        </el-select>-->
+                                    </td>
+                                    <td>
+                                        <span v-if="rootInfo.roleIds.length<1" style="color:gray">点击右侧角色进行添加</span>
+                                        <span class="addRoot substr" v-for="(lines,index) in rootInfo.roleIds" :title="lines" >{{lines}}&nbsp;&nbsp;
+                                            <el-icon class="el-icon-close delete-blank" @click.native="closeSelf(index)"></el-icon>
+                                        </span>
+                                    </td>
+                                    <td width="60">
+                                        <div>
+                                            <span class="quality-del-icon" style="position:static;background-position:-45px -29px;height:19px" @click="deleteHandle(index)"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p class="addStep" @click="addStep">
+                            <span style="width:90px;text-align:center;display:inline-block;"><span class="icon-add"></span>添加步骤</span>
+                        </p>
+                    </div>
+                </el-col>
+                <el-col :span="10" class="root-name">
+                    <div style="padding-right:20px;">
+                        <p>审核角色</p>
+                        <div class="rules-box">
+                            <div class="root-el substr" v-for="(item,index) in rootList" v-text="item.roleName" :title="item.roleName" roleId="item.roleId" @click="addRoles(index)"></div>
+                        </div>
+                    </div>
+                </el-col>
 
                 <el-col class="BMP-btns">
                     <el-button type="primary" @click="BMPok">确定</el-button>
@@ -266,7 +359,7 @@ import "static/css/setting-qualityMeasure.css";
 //    import "static/ztree/css/demo.css";
 import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-import {getProcessList,getRoleInfo,addProcessInfo} from 'src/api/getData.js'
+import {getProcessList,getRoleInfo,addProcessInfo,getProcessInfo} from 'src/api/getData.js'
 export default {
     data() {
         return {
@@ -308,7 +401,6 @@ export default {
             tableData: [],//流程列表
             cur_page: 1,
             remainLength:0,
-            textarea:'',
             menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
             totalNumber:0,
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
@@ -320,6 +412,9 @@ export default {
                 { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[] },
                 { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"" ,listRolesId:[]}
             ],
+            flowNameEdit:"",
+            flowRemarkEdit:"",
+            rootInfoEdit:[],
             rootList: [],
 //            listIsAll:'',
 //            addRolesLine: [],
@@ -327,6 +422,8 @@ export default {
             dialogLinkVisible: false,//授权管理模块
             qualityloading: false,
             isBMP: false,
+            isBMPedit:false,
+            isQuality:true,
             elementIndex: '',
             linkTree: false,
             flowName: "",//流程名称
@@ -356,7 +453,8 @@ export default {
             })
             getRoleInfo().then((res)=>{
                 this.rootList = res.data;
-            })
+            });
+
         },
         change() {
 			var txtVal = this.textarea.length;
@@ -432,6 +530,8 @@ export default {
         },
         addBPM() {
             this.isBMP = true;
+            this.isQuality = false
+
         },
         //删除行
         deleteHandle(index) {
@@ -469,10 +569,42 @@ export default {
         },
         BMPcancel() {
             this.isBMP = false;
+            this.isQuality = true
             for (let i = 0; i < this.rootInfo.length; i++) {
                 this.rootInfo[i].addRolesLine = [];
             }
             this.rootInfo.splice(6, this.rootInfo.length - 1)
+        },
+        isBMPEditShow(index,row){
+            this.isBMPedit = true;
+            this.isBMP = false;
+            this.isQuality = false;
+             getProcessInfo({processId:row.processId}).then((res)=>{
+//                 console.info(res.data,'ddd')
+                this.rootInfoEdit = res.data;
+                this.flowNameEdit = res.data.processName;
+                this.flowRemarkEdit = res.data.remark;
+//                let rootEditArr = [];
+                for (var i = 0;i<this.rootList.length;i++){
+                    for (var j = 0;j<this.rootInfoEdit.steps.length;j++){
+                        for(var l= 0;l<this.rootInfoEdit.steps[j].roleIds.length;l++){
+
+                            if(this.rootList[i].roleId == this.rootInfoEdit.steps[j].roleIds[l]) {
+                                this.rootInfoEdit.steps[j].rootEditArr = [];
+//                                console.info(this.rootList[i].roleName)
+                                this.rootInfoEdit.steps[j].rootEditArr.push(this.rootList[i].roleName);
+                                console.info(this.rootInfoEdit.steps[j].rootEditArr,'1234')
+                            }
+                        }
+                    }
+                }
+//            rootEditArr
+            console.info(this.rootInfoEdit);
+            /*   this.rootInfoEdit.steps[j].roleNameArr = [];
+             this.rootInfoEdit.steps[j].roleNameArr.push(this.rootList[i].roleName)*/
+
+//                console.info(this.rootInfoEdit,'小明同学')
+             })
         },
         flowNameAlert() {//流程名称弹窗
             this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
@@ -549,7 +681,7 @@ export default {
             })
             console.info(list,'listd2313')
             addProcessInfo(list).then((res)=>{//添加流程
-                console.info(res)
+//                console.info(res)
             },function(error){
                 alert(error.message)
             })
