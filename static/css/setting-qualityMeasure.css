@@ -148,6 +148,28 @@
 .BMP-process .table-step table input{
     height:30px;border-radius:0;
 }
+.down-box{
+    position:relative;
+}
+.down-box p{
+    border:1px solid #ddd;height:30px;line-height:30px;width:90%;
+}
+.down-box-el{
+    border: 1px solid #ddd;
+    position: absolute;
+    width:110px;
+    top: 39px;
+    background: #fff;
+    z-index:100;
+    display:none
+}
+.down-box-el li{
+    list-style:none;
+    line-height:30px;height:30px;
+}
+.down-box-el li:hover{
+    background:#f0f0f0;cursor:pointer;
+}
 .content .BMP-info{
     background:#fff;
 }
