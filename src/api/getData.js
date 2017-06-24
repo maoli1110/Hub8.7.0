@@ -6,8 +6,6 @@ import axios from 'axios';
 
 
 let base = 'http://192.168.13.215:8082/enterprise';
-
-
 export const getUserListPage = params => axios.post(`${base}/rs/lbconfig/process/getProcessList`, params);
 
 
@@ -37,13 +35,13 @@ export const getFormModelList =params  => axios.get(`${base}/rs/lbconfig/form/ge
  */
 /*查询工程模板列表 */
 
-export const getLDProjModelList = params => axios.post(`${base}/rs/lbconfig/projmodel/getLDProjModelList`, { params: params });
+export const getLDProjModelList = params => axios.get(`${base}/rs/lbconfig/projmodel/getLDProjModelList`, { params: params });
 /*获取工程模板展示明细*/
-export const getProjModelDetail = params => axios.post(`${base}/rs/lbconfig/projmodel/getProjModelDetail`, { params: params });
+export const getProjModelDetail = params => axios.get(`${base}/rs/lbconfig/projmodel/getProjModelDetail/${params}`);
 /*获取工程模板下某个节点关联的表单*/
-export const getProjModelNodeForms = params => axios.post(`${base}/rs/lbconfig/projmodel/getFormInfos`, { params: params });
+export const getProjModelNodeForms = params => axios.get(`${base}/rs/lbconfig/projmodel/getProjModelNodeForms/${params.projmodelId}/${params.nodeId}`);
 /*更新工程模板的表单*/
-export const updateProjModel = params => axios.get(`${base}/rs/lbconfig/projmodel/updateProjModel`, params);
+export const updateProjModel = params => axios.post(`${base}/rs/lbconfig/projmodel/updateProjModel`, params);
 
 
 

@@ -254,7 +254,7 @@
             <el-col :span="24" style="padding:10px 30px ;border-bottom:1px solid #ddd;">
                 <el-col :span="14">
                     <label >表单目录：</label>
-                    <el-select value="全部" placeholder="请选择活动区域" style="width:80%;">
+                    <el-select value="全部" placeholder="请选择活动区域" style="width:80%;" v-model="value">
                         <el-option label="区域一" value="shanghai"></el-option>
                         <el-option label="区域二" value="beijing"></el-option>
                     </el-select>
