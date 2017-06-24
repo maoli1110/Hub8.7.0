@@ -111,13 +111,6 @@
                                                         :value="item.value">
                                                     </el-option>
                                                 </el-select>
-                                             <!--   <div class="down-box">
-                                                    <p class="down-box-value" @click="downValue($event)">全部</p>
-                                                </div>
-                                                <ul class="down-box-el" >
-                                                    <li @click="downText($event)">全部</li>
-                                                    <li @click="downText($event)">随意</li>
-                                                </ul>-->
                                             </td>
                                             <td>
                                                 <span v-if="rootInfo.addRolesLine.length<1" style="color:gray">点击右侧角色进行添加</span>
@@ -195,33 +188,33 @@
                         </table>
                         <div class="table-step">
                             <table border="0" cellspacing="0">
-                                <tbody id="bj-style">
-                                <tr v-for="(rootInfo,index) in rootInfoEdit.steps" @click="processSetEdit($event,index)">
+                                <tbody id="eidtBj-style">
+                                <tr v-for="(rootInfo,index) in rootInfoEdit.steps" @click="eidtProcessSetEdit($event,index)">
                                     <td width="50">{{index+1}}</td>
                                     <td width="210">
                                         <el-input class="flowTitle" v-model="rootInfo.stepName" placeholder="请输入内容"></el-input>
                                     </td>
                                     <td width="120" style="position:relative" class="list-isAll" >
                                         <!--:disabled="!rootInfo.isStepDisable"-->
-                              <!--     <el-select value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
-                                            &lt;!&ndash;option&ndash;&gt;
+                                        <el-select value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择"  >
+                                            <!--option-->
                                             <el-option
                                                 v-for="item in rootInfo.option"
                                                 :key="item.value"
                                                 :label="item.label"
                                                 :value="item.value">
                                             </el-option>
-                                        </el-select>-->
+                                        </el-select>
                                     </td>
                                     <td>
                                         <span v-if="rootInfo.roleIds.length<1" style="color:gray">点击右侧角色进行添加</span>
-                                        <span class="addRoot substr" v-for="(lines,index) in rootInfo.roleIds" :title="lines" >{{lines}}&nbsp;&nbsp;
-                                            <el-icon class="el-icon-close delete-blank" @click.native="closeSelf(index)"></el-icon>
+                                        <span class="addRoot substr" v-for="(lines,index) in rootInfo.rootEditArr" :title="lines" >{{lines}}&nbsp;&nbsp;
+                                            <el-icon class="el-icon-close delete-blank" @click.native="eidtCloseSelf(index)"></el-icon>
                                         </span>
                                     </td>
                                     <td width="60">
                                         <div>
-                                            <span class="quality-del-icon" style="position:static;background-position:-45px -29px;height:19px" @click="deleteHandle(index)"></span>
+                                            <span class="quality-del-icon" style="position:static;background-position:-45px -29px;height:19px" @click="editDeleteHandle(index)"></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -229,7 +222,7 @@
                             </table>
                         </div>
 
-                        <p class="addStep" @click="addStep">
+                        <p class="addStep" @click="addStepEdit">
                             <span style="width:90px;text-align:center;display:inline-block;"><span class="icon-add"></span>添加步骤</span>
                         </p>
                     </div>
@@ -238,14 +231,14 @@
                     <div style="padding-right:20px;">
                         <p>审核角色</p>
                         <div class="rules-box">
-                            <div class="root-el substr" v-for="(item,index) in rootList" v-text="item.roleName" :title="item.roleName" roleId="item.roleId" @click="addRoles(index)"></div>
+                            <div class="root-el substr" v-for="(item,index) in rootList" v-text="item.roleName" :title="item.roleName" roleId="item.roleId" @click="eidtAddRoles(index)"></div>
                         </div>
                     </div>
                 </el-col>
 
                 <el-col class="BMP-btns">
-                    <el-button type="primary" @click="BMPok">确定</el-button>
-                    <el-button @click="BMPcancel">取消</el-button>
+                    <el-button type="primary" @click="eidtBMPok">确定</el-button>
+                    <el-button @click="eidtBMPcancel">取消</el-button>
                 </el-col>
             </el-row>
         </div>
@@ -339,7 +332,9 @@
 </template>
 <script>
 let indexTable = 0;
+let editIndexTable = 0;
 let isChange = false;
+let editIsChange = false;
 let key;
 let type = '';
 let operObj = '';
@@ -416,8 +411,6 @@ export default {
             flowRemarkEdit:"",
             rootInfoEdit:[],
             rootList: [],
-//            listIsAll:'',
-//            addRolesLine: [],
             dialogFormVisible: false,
             dialogLinkVisible: false,//授权管理模块
             qualityloading: false,
@@ -528,6 +521,17 @@ export default {
             }
             event.currentTarget.style.background = "#f5f5f5";
         },
+        //流程管理文件
+        eidtProcessSetEdit(event, index) {
+            editIndexTable = index;
+            editIsChange = true;
+            let obj = document.getElementById('eidtBj-style');
+            let objTr = obj.getElementsByTagName('tr');
+            for (let i = 0; i < objTr.length; i++) {
+                objTr[i].style.background = "#fff ";
+            }
+            event.currentTarget.style.background = "#f5f5f5";
+        },
         addBPM() {
             this.isBMP = true;
             this.isQuality = false
@@ -537,6 +541,11 @@ export default {
         deleteHandle(index) {
             if (this.rootInfo.length > 1) {
                 this.rootInfo.splice(index, 1)
+            }
+        },
+        editDeleteHandle(index){//编辑工程删除功能
+            if(this.rootInfoEdit.steps.length>1){
+                this.rootInfoEdit.steps.splice(index, 1)
             }
         },
         //添加角色
@@ -555,16 +564,39 @@ export default {
                 console.info(this.rootInfo[indexTable].listRolesId)
             }
         },
+        //编辑添加角色
+        eidtAddRoles(index){
+//            console.info(this.rootInfoEdit)
+            if (this.rootInfoEdit.steps[editIndexTable].roleIds.indexOf(this.rootList[index].roleId) == -1 && this.rootInfoEdit.steps[editIndexTable].roleIds.length < 15 && editIsChange) {
+                this.rootInfoEdit.steps[editIndexTable].roleIds.push(this.rootList[index].roleId);
+                this.rootInfoEdit.steps[editIndexTable].rootEditArr.push(this.rootList[index].roleName);
+                console.info(this.rootInfoEdit.steps[editIndexTable].rootEditArr)
+                console.info(this.rootInfoEdit.steps[editIndexTable].roleIds)
+            }
+        },
         //关闭标签
         closeSelf(index) {
             this.rootInfo[indexTable].addRolesLine.splice(index, 1)
             this.rootInfo[indexTable].listRolesId.splice(index, 1)
             listParams.roleIds.splice(index,1);
         },
+        //编辑关闭标签
+        eidtCloseSelf(index){
+            this.rootInfoEdit.steps[editIndexTable].roleIds.splice(index, 1)
+            this.rootInfoEdit.steps[editIndexTable].rootEditArr.splice(index, 1)
+        },
         //添加步骤
         addStep() {
             if (this.rootInfo.length < 15) {
                 this.rootInfo.push({ addRolesLine: [] })
+            }
+        },
+        addStepEdit(){
+            console.info(this.rootInfoEdit)
+            if (this.rootInfoEdit.steps.length < 15){
+                console.info(this.rootInfoEdit.steps);
+                this.rootInfoEdit.steps.push({isAll:"",rootEditArr:[],roleIds:[],stepName:""})
+                console.info( this.rootInfoEdit)
             }
         },
         BMPcancel() {
@@ -574,6 +606,16 @@ export default {
                 this.rootInfo[i].addRolesLine = [];
             }
             this.rootInfo.splice(6, this.rootInfo.length - 1)
+        },
+        eidtBMPok(){
+            this.isBMP = false;
+            this.isQuality = true;
+            this.isBMPedit = false;
+        },
+        eidtBMPcancel(){
+            this.isBMP = false;
+            this.isQuality = true;
+            this.isBMPedit = false;
         },
         isBMPEditShow(index,row){
             this.isBMPedit = true;
@@ -585,25 +627,19 @@ export default {
                 this.flowNameEdit = res.data.processName;
                 this.flowRemarkEdit = res.data.remark;
 //                let rootEditArr = [];
-                for (var i = 0;i<this.rootList.length;i++){
-                    for (var j = 0;j<this.rootInfoEdit.steps.length;j++){
-                        for(var l= 0;l<this.rootInfoEdit.steps[j].roleIds.length;l++){
 
+                for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
+                    this.rootInfoEdit.steps[j].rootEditArr = [];
+                }
+                for (let i = 0;i<this.rootList.length;i++){
+                    for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
+                        for(let l= 0;l<this.rootInfoEdit.steps[j].roleIds.length;l++){
                             if(this.rootList[i].roleId == this.rootInfoEdit.steps[j].roleIds[l]) {
-                                this.rootInfoEdit.steps[j].rootEditArr = [];
-//                                console.info(this.rootList[i].roleName)
                                 this.rootInfoEdit.steps[j].rootEditArr.push(this.rootList[i].roleName);
-                                console.info(this.rootInfoEdit.steps[j].rootEditArr,'1234')
                             }
                         }
                     }
                 }
-//            rootEditArr
-            console.info(this.rootInfoEdit);
-            /*   this.rootInfoEdit.steps[j].roleNameArr = [];
-             this.rootInfoEdit.steps[j].roleNameArr.push(this.rootList[i].roleName)*/
-
-//                console.info(this.rootInfoEdit,'小明同学')
              })
         },
         flowNameAlert() {//流程名称弹窗
