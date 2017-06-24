@@ -19,12 +19,22 @@ export const getProcessList = params => axios.post(`${base}/rs/lbconfig/process/
 //流程设置添加角色管理
 export const getRoleInfo = params =>axios.get(`${base}/rs/lbconfig/process/getRoleInfo`,{params:params});
 //添加流程
-export const addProcessInfo = params => axios.post(`${base}/rs/lbconfig/process/addProcessInfo`, params)
-export const getProcessInfo = params => axios.get(`${base}/rs/lbconfig/process/getProcessInfo`+"/"+params.processId);
-//获取流程
-export const updateProcessInfo = params => axios.post(`${base}/rs/lbconfig/process/updateProcessInfo`, params);
+export const addProcessInfo = params => axios.post(`${base}/rs/lbconfig/process/addProcessInfo`, params);
+//获取流程列表
+export const getProcessInfo = params => axios.get(`${base}/rs/lbconfig/process/getProcessInfo/${params.processId}`);
+
+//验证流程是否被使用
+export const isUsedProcess = params => axios.get(`${base}/rs/lbconfig/process/isUsedProcess/${params.processId}`);
+//获取表单模板列表
+export const getProcessRelFormList = params => axios.post(`${base}/rs/lbconfig/process/getProcessRelFormList`, params);
+//关联表单数据
+export const getFormModelTypeList  = params =>axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList/${params.belong}`);
 //更新流程
-//
+export const updateProcessInfo = params => axios.post(`${base}/rs/lbconfig/process/updateProcessInfo/${params.processId}`, params.ProcessAddParam);
+//删除流程
+export const removeProcessInfo = params => axios.get(`${base}/rs/lbconfig/process/removeProcessInfo/${params.processId}`);
+//更新流程关联表单（添加和取消）
+export const updateProcessRelForm = params => axios.post(`${base}/rs/lbconfig/process/updateProcessRelForm`, params);
 /**
 *表单管理
 */

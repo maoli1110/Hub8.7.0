@@ -88,7 +88,6 @@
                                         <td width="120">审批条件</td>
                                         <td>审批角色</td>
                                         <td width="60">操作</td>
-                                        <!--<td>操作</td>-->
                                     </tr>
                                 </thead>
                             </table>
@@ -101,9 +100,7 @@
                                                 <el-input class="flowTitle" placeholder="请输入内容"></el-input>
                                             </td>
                                             <td width="120" style="position:relative" class="list-isAll" >
-                                                <!--:disabled="!rootInfo.isStepDisable"-->
                                                 <el-select value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
-                                                    <!--option-->
                                                     <el-option
                                                         v-for="item in rootInfo.option"
                                                         :key="item.value"
@@ -149,7 +146,7 @@
                 </el-col>
             </el-row>
         </div>
-        <div v-show="isBMPedit" class="BMP-process">
+        <div v-show="isBMPedit" class="BMP-process editPage">
             <el-row class="BMP-info">
                 <el-col :span="24" class="pro-title">
                     工程名称
@@ -182,7 +179,6 @@
                                 <td width="120">审批条件</td>
                                 <td>审批角色</td>
                                 <td width="60">操作</td>
-                                <!--<td>操作</td>-->
                             </tr>
                             </thead>
                         </table>
@@ -195,7 +191,6 @@
                                         <el-input class="flowTitle" v-model="rootInfo.stepName" placeholder="请输入内容"></el-input>
                                     </td>
                                     <td width="120" style="position:relative" class="list-isAll" >
-                                        <!--:disabled="!rootInfo.isStepDisable"-->
                                         <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
                                             <el-option
                                                 v-for="item in rootInfo.option"
@@ -243,12 +238,17 @@
         </div>
         <!--模态框(关联模型)-->
         <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model">
-            <el-col :span="24" style="padding:10px 30px ;border-bottom:1px solid #ddd;">
+            <el-row>
+                <el-col :span="24" style="padding:10px 30px ;border-bottom:1px solid #ddd;">
                 <el-col :span="14">
                     <label >表单目录：</label>
-                    <el-select value="全部" placeholder="请选择活动区域" style="width:80%;">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                    <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"  >
+                        <el-option
+                            v-for="item in rootInfo.option"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="10" style="text-align:right;padding:0;">
@@ -256,6 +256,7 @@
                     </el-input>
                 </el-col>
             </el-col>
+            </el-row>
             <el-row class="link-model-body">
                 <!--link-model-header-->
                 <el-col :span="24">
@@ -340,6 +341,7 @@ let operObj = '';
 let level=""
 let curretPage;
 let maxLevel;//树结构的最大展开层
+let updateProcessId;
 //添加工程参数
 let list = {
     processName:"",
@@ -357,7 +359,7 @@ import "static/css/setting-qualityMeasure.css";
 //    import "static/ztree/css/demo.css";
 import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-import {getProcessList,getRoleInfo,addProcessInfo,getProcessInfo} from 'src/api/getData.js'
+import {getProcessList,getRoleInfo,addProcessInfo,getProcessInfo,updateProcessInfo,getFormModelTypeList,getProcessRelFormList,isUsedProcess,removeProcessInfo,updateProcessRelForm} from 'src/api/getData.js'
 export default {
     data() {
         return {
@@ -425,6 +427,7 @@ export default {
             flowName: "",//流程名称
             flowRemark:"",//备注名称
             checkTrue: false,
+            modelList:"",
             // isStepDisable:false
         }
     },
@@ -442,15 +445,42 @@ export default {
     },
     methods: {
         getData(curretPage){//默认数据
+            //表单列表
             getProcessList({searchKey:"",page:curretPage,pageSize:25,sortField:"",sortType:"asc"}).then((res)=>{
                 //console.info(res.data.result,'我是流程列表数据')
                 this.tableData = res.data;
                 this.totalNumber = res.data.pageInfo.totalNumber;
             })
+            //获取角色名称
             getRoleInfo().then((res)=>{
                 this.rootList = res.data;
             });
-
+            //表单类型
+            getFormModelTypeList({belong:0}).then((res)=>{
+                console.info(res.data,'模板列表');
+            });
+            //关联表单数据
+            getProcessRelFormList({	"pageSize":"10",
+                "page":"1",
+                "sortField":"",
+                "searchKey":"",
+                "processId":"40",
+                "modelId":"2-2"
+            }).then((res)=>{
+                console.info(res.data,'关联表单');
+            });
+            //流程是否被关联
+            isUsedProcess({processId:48}).then((res)=>{
+                console.info(res.data)
+            });
+            //删除流程
+            removeProcessInfo({processId:49}).then((res)=>{
+                console.info(res.data)
+            });
+            //更新的模板列表
+            updateProcessRelForm({addFormIds:["LBBG0004","LBBG0005"],delFormIds:["LBBG0004","LBBG0005"],modelId:"2-2",processId:40}).then((res)=>{
+                console.info(res.data,'更新模板列表')
+            })
         },
         change() {
 			var txtVal = this.flowRemark.length;
@@ -570,7 +600,7 @@ export default {
         //编辑添加角色
         eidtAddRoles(index){
             for (let i = 0; i <this.rootInfoEdit.steps.length; i++) {
-                if (this.rootInfoEdit.steps[i].rootEditArr.length < 1) {
+                if (this.rootInfoEdit.steps[i].roleIds.length <=1) {
                     this.rootInfoEdit.steps[i].isStepDisable = false;
                 } else {
                     this.rootInfoEdit.steps[i].isStepDisable = true;
@@ -586,11 +616,27 @@ export default {
             this.rootInfo[indexTable].addRolesLine.splice(index, 1)
             this.rootInfo[indexTable].listRolesId.splice(index, 1)
             listParams.roleIds.splice(index,1);
+            for (let i = 0; i < this.rootInfo.length; i++) {
+                if (this.rootInfo[i].addRolesLine.length < 1) {
+                    this.rootInfo[i].isStepDisable = false;
+                } else {
+                    this.rootInfo[i].isStepDisable = true;
+                }
+            }
         },
         //编辑关闭标签
         eidtCloseSelf(index){
+            console.info(this.rootInfoEdit.steps.length)
+
             this.rootInfoEdit.steps[editIndexTable].roleIds.splice(index, 1)
-            this.rootInfoEdit.steps[editIndexTable].rootEditArr.splice(index, 1)
+            this.rootInfoEdit.steps[editIndexTable].rootEditArr.splice(index, 1);
+             for (let i = 0; i <this.rootInfoEdit.steps.length; i++) {
+                 if (this.rootInfoEdit.steps[i].roleIds.length <=1) {
+                     this.rootInfoEdit.steps[i].isStepDisable = false;
+                 } else {
+                     this.rootInfoEdit.steps[i].isStepDisable = true;
+                 }
+             }
         },
         //添加步骤
         addStep() {
@@ -600,7 +646,7 @@ export default {
         },
         addStepEdit(){
             if (this.rootInfoEdit.steps.length < 15){
-                this.rootInfoEdit.steps.push({isAll:"",rootEditArr:[],roleIds:[],stepName:"",isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""})
+                this.rootInfoEdit.steps.push({stepName:"",isAll:"",rootEditArr:[],roleIds:[],isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""})
             }
         },
         BMPcancel() {
@@ -615,6 +661,34 @@ export default {
             this.isBMP = false;
             this.isQuality = true;
             this.isBMPedit = false;
+            this.flowNameEdit = !this.flowNameEdit?"":this.flowNameEdit;
+            this.flowRemarkEdit = !this.flowRemarkEdit?"":this.flowRemarkEdit;
+            let updateArr = {
+                processName:this.flowNameEdit,
+                remark:this.flowRemarkEdit,
+                steps:[]
+            };
+            for(let m = 0;m<this.rootInfoEdit.steps.length;m++){//清理多余的步骤字段
+                delete this.rootInfoEdit.steps[m].rootEditArr;
+                delete this.rootInfoEdit.steps[m].option;
+                delete this.rootInfoEdit.steps[m].isStepDisable;
+                delete this.rootInfoEdit.steps[m].listVal;
+
+                let that = this;
+                $('.editPage tbody tr').map(function (i,val) {
+                    if($(this).find('input[icon=caret-top]').val()=='全部'){
+                        that.rootInfoEdit.steps[m].isAll = true;
+                    }else{
+                        that.rootInfoEdit.steps[m].isAll  = false;
+                    }
+                })
+            }
+//            console.info(updateProcessId,'updateProcessId')
+            updateProcessInfo({processId:updateProcessId,ProcessAddParam:this.rootInfoEdit}).then((res)=>{
+                console.info(res.data)
+            },function(error){
+                console.info(error)
+            })
         },
         eidtBMPcancel(){
             this.isBMP = false;
@@ -625,14 +699,19 @@ export default {
             this.isBMPedit = true;
             this.isBMP = false;
             this.isQuality = false;
+            updateProcessId = row.processId;
              getProcessInfo({processId:row.processId}).then((res)=>{
                 this.rootInfoEdit = res.data;
                 this.flowNameEdit = res.data.processName;
                 this.flowRemarkEdit = res.data.remark;
                 for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
+                    if (this.rootInfoEdit.steps[j].roleIds.length <=1) {
+                        this.rootInfoEdit.steps[j].isStepDisable = false;
+                        console.info(this.rootInfoEdit.steps[j].roleIds.length)
+                    } else if(this.rootInfoEdit.steps[j].roleIds.length >1){
+                        this.rootInfoEdit.steps[j].isStepDisable = true;
+                    }
                     this.rootInfoEdit.steps[j].rootEditArr = [];
-//                    {isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""}
-                    this.rootInfoEdit.steps[j].isStepDisable =false;
                     this.rootInfoEdit.steps[j].option = [{value:0,label:'全部'},{value:1,label:'随便'}];
                     this.rootInfoEdit.steps[j].listVal = "";
                 }
@@ -645,14 +724,7 @@ export default {
                         }
                     }
                 }
-
-                for (let i = 0; i < this.rootInfoEdit.steps.length; i++) {
-                    if (this.rootInfoEdit.steps[i].rootEditArr.length < 1) {
-                        this.rootInfoEdit.steps[i].isStepDisable = false;
-                    } else {
-                        this.rootInfoEdit.steps[i].isStepDisable = true;
-                    }
-                }
+                console.info(this.rootInfoEdit.steps,'什么什么')
              })
             console.info(this.rootInfoEdit)
         },
