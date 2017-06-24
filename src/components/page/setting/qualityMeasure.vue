@@ -196,8 +196,7 @@
                                     </td>
                                     <td width="120" style="position:relative" class="list-isAll" >
                                         <!--:disabled="!rootInfo.isStepDisable"-->
-                                        <el-select value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择"  >
-                                            <!--option-->
+                                        <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
                                             <el-option
                                                 v-for="item in rootInfo.option"
                                                 :key="item.value"
@@ -342,8 +341,12 @@ let level=""
 let curretPage;
 let maxLevel;//树结构的最大展开层
 //添加工程参数
-let list = {};
-list.steps = [];
+let list = {
+    processName:"",
+    remark:"",
+    steps:[]
+};
+//list.steps = [];
 let listParams = {
     isAll:"",
     roleIds:[],
@@ -450,7 +453,7 @@ export default {
 
         },
         change() {
-			var txtVal = this.textarea.length;
+			var txtVal = this.flowRemark.length;
 			this.remainLength =txtVal;
 		},
         handleCurrentChange(val) {
@@ -566,12 +569,16 @@ export default {
         },
         //编辑添加角色
         eidtAddRoles(index){
-//            console.info(this.rootInfoEdit)
+            for (let i = 0; i <this.rootInfoEdit.steps.length; i++) {
+                if (this.rootInfoEdit.steps[i].rootEditArr.length < 1) {
+                    this.rootInfoEdit.steps[i].isStepDisable = false;
+                } else {
+                    this.rootInfoEdit.steps[i].isStepDisable = true;
+                }
+            }
             if (this.rootInfoEdit.steps[editIndexTable].roleIds.indexOf(this.rootList[index].roleId) == -1 && this.rootInfoEdit.steps[editIndexTable].roleIds.length < 15 && editIsChange) {
                 this.rootInfoEdit.steps[editIndexTable].roleIds.push(this.rootList[index].roleId);
                 this.rootInfoEdit.steps[editIndexTable].rootEditArr.push(this.rootList[index].roleName);
-                console.info(this.rootInfoEdit.steps[editIndexTable].rootEditArr)
-                console.info(this.rootInfoEdit.steps[editIndexTable].roleIds)
             }
         },
         //关闭标签
@@ -592,11 +599,8 @@ export default {
             }
         },
         addStepEdit(){
-            console.info(this.rootInfoEdit)
             if (this.rootInfoEdit.steps.length < 15){
-                console.info(this.rootInfoEdit.steps);
-                this.rootInfoEdit.steps.push({isAll:"",rootEditArr:[],roleIds:[],stepName:""})
-                console.info( this.rootInfoEdit)
+                this.rootInfoEdit.steps.push({isAll:"",rootEditArr:[],roleIds:[],stepName:"",isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""})
             }
         },
         BMPcancel() {
@@ -622,14 +626,15 @@ export default {
             this.isBMP = false;
             this.isQuality = false;
              getProcessInfo({processId:row.processId}).then((res)=>{
-//                 console.info(res.data,'ddd')
                 this.rootInfoEdit = res.data;
                 this.flowNameEdit = res.data.processName;
                 this.flowRemarkEdit = res.data.remark;
-//                let rootEditArr = [];
-
                 for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
                     this.rootInfoEdit.steps[j].rootEditArr = [];
+//                    {isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""}
+                    this.rootInfoEdit.steps[j].isStepDisable =false;
+                    this.rootInfoEdit.steps[j].option = [{value:0,label:'全部'},{value:1,label:'随便'}];
+                    this.rootInfoEdit.steps[j].listVal = "";
                 }
                 for (let i = 0;i<this.rootList.length;i++){
                     for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
@@ -640,7 +645,16 @@ export default {
                         }
                     }
                 }
+
+                for (let i = 0; i < this.rootInfoEdit.steps.length; i++) {
+                    if (this.rootInfoEdit.steps[i].rootEditArr.length < 1) {
+                        this.rootInfoEdit.steps[i].isStepDisable = false;
+                    } else {
+                        this.rootInfoEdit.steps[i].isStepDisable = true;
+                    }
+                }
              })
+            console.info(this.rootInfoEdit)
         },
         flowNameAlert() {//流程名称弹窗
             this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
@@ -695,32 +709,36 @@ export default {
                 this.flowNameAlert();
             }
             let rolesId = this.rootInfo;
-
+            list.steps =[];//清空步骤  避免重复
             $('.table-step tbody tr').map(function (i,val) {
                 listParams = {};
+
                 if ($(this).find('input').val() && $(this).find('.addRoot').length == 0) {
                     tootipsAlert();
                 } else if (!($(this).find('input').val()) && $(this).find('.addRoot').length != 0) {
                     tootipsAlert();
                 } else if ($(this).find('input').val() && $(this).find('.addRoot').length != 0) {
-                    listParams.rolesId = rolesId[i].listRolesId;
+                    listParams.roleIds = rolesId[i].listRolesId;
                     listParams.stepName = $(this).find('input').val();
                     if($(this).find('input[icon=caret-top]').val()=='全部'){
                         listParams.isAll = true;
                     }else{
                         listParams.isAll = false;
                     }
-                    list.steps.push(listParams);
-
+                    if(list.steps.indexOf(listParams)){
+                        list.steps.push(listParams);
+                    }
                 }
 
             })
-            console.info(list,'listd2313')
+
             addProcessInfo(list).then((res)=>{//添加流程
 //                console.info(res)
             },function(error){
                 alert(error.message)
-            })
+            });
+            this.isBMP = false;
+            this.isQuality = true;
         },
         //添加关联
         BMPAddLink() {
