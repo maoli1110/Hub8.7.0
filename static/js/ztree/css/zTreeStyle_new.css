@@ -150,7 +150,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.chk.checkbox_false_disable {
-	background-position: 0 -56px
+    background-position: -34px -139px;
 }
 
 .ztree li span.button.chk.checkbox_true_full {
@@ -170,7 +170,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.chk.checkbox_true_disable {
-	background-position: -14px -56px
+    background-position: -34px -140px;
 }
 
 .ztree li span.button.chk.radio_false_full {

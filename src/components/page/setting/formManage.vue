@@ -95,7 +95,7 @@
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
     import "static/js/ztree/js/jquery.ztree.exedit.js";
     import "static/js/ztree/js/jquery.ztree.exhide-3.5.js"
-    import { getFormModelList} from 'src/api/getData.js'
+    import { getFormModelTypeList} from 'src/api/getData.js'
     let level = 1;
     let maxLevel=-1;
     let newCount = 1;
@@ -176,7 +176,7 @@
                 this.getData();
             },
             getData(){
-                getFormModelList().then((res) => {
+                getFormModelTypeList({belong:0}).then((res) => {
                     this.formDataList = res.data
                 })
             },
