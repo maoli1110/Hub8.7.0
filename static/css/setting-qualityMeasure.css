@@ -99,6 +99,9 @@
     left: 30px;
     top: 5px;
 }
+.quality-page .link-table .icon-eyes{
+    float:none;
+}
 .quality-page .icon-eyes{
     width: 20px;
     height: 20px;
@@ -203,11 +206,10 @@
     width:100%;height:auto;border:1px solid rgb(238, 246, 250)
 }*/
 .content .root-name{
-    padding-left:10px;padding-bottom:30px;border-bottom:1px solid #ddd;
+    padding-left:10px;padding-bottom:30px;
 }
 .content .root-table{
     padding-bottom: 30px;
-    border-bottom: 1px solid #ddd;
 }
 .content .root-name div:nth-child(1)>p{
     height:56px;line-height:56px;background:#f0f0f0;text-align:center;
@@ -264,7 +266,7 @@
 }
 .content .BMP-process .BMP-btns{
     padding: 27px 10px 30px 10px;
-    text-align: center;
+    text-align: center;border-top:1px solid #ddd;
 }
 .el-button{
     width:116px;
