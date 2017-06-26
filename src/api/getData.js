@@ -35,12 +35,13 @@ export const updateProcessRelForm = params => axios.post(`${base}/rs/lbconfig/pr
 /**
 *表单管理
 */
-export const getFormModelList =params  => axios.get(`${base}/rs/lbconfig/form/getFormModelList`,{ params: params });
+//export const getFormModelList =params  => axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList`);
 //表单预览获取uuid
 export const getFormPreview =params  => axios.get(`${base}/rs/lbconfig/form/getFormPreview/${params.modelId}/${params.formId}`);
 //关联表单数据
 export const getFormModelTypeList  = params =>axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList/${params.belong}`);
-
+//获取表单列表-->树结构
+export const getFormInfosForProcess = params=>axios.get(`${base}/rs/lbconfig/form/getFormInfosForProcess/${params.modelId}/${params.processId}`);
 
 /**
  * 工程模板接口
