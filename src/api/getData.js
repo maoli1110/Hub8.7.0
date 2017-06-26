@@ -52,6 +52,9 @@ export const getProjModelDetail = params => axios.get(`${base}/rs/lbconfig/projm
 export const getProjModelNodeForms = params => axios.get(`${base}/rs/lbconfig/projmodel/getProjModelNodeForms/${params.projmodelId}/${params.nodeId}`);
 /*更新工程模板的表单*/
 export const updateProjModel = params => axios.post(`${base}/rs/lbconfig/projmodel/updateProjModel`, params);
+/*添加界面的下拉框选项*/
+/*添加界面树结构*/
+export const getFormInfos = params => axios.get(`${base}/rs/lbconfig/form/getFormInfos/${params}`);
 
 
 
