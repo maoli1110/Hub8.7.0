@@ -23,7 +23,7 @@
     <favorites_list name="eds_sz" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.23445733">
+    <splitter split-orientation="horizontal" split-proportion="0.11228255">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="explorer.vue" pinned="false" current-in-tab="false">
@@ -138,7 +138,64 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="-2.3586957">
                   <caret line="229" column="17" selection-start-line="229" selection-start-column="17" selection-end-line="229" selection-end-column="17" />
-                  <folding />
+                  <folding>
+                    <marker date="1498568340203" expanded="true" signature="41119:41218" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="41119:48174" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="41243:43567" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="41467:41658" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="41520:41644" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="41765:43557" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="41849:41958" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="42156:42288" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="42455:42680" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="42686:43543" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="42722:43164" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="42759:42948" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="42954:43141" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="43170:43335" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="43370:43446" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="43452:43525" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="43633:43938" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="43698:43721" placeholder="/*...*/" />
+                    <marker date="1498568340203" expanded="true" signature="43753:43928" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="43801:43859" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="43984:44510" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="44023:44062" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="44122:44149" placeholder="/*...*/" />
+                    <marker date="1498568340203" expanded="true" signature="44187:44500" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="44247:44486" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="44344:44410" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="44537:44595" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="44623:45866" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="44637:44687" placeholder="//..." />
+                    <marker date="1498568340203" expanded="true" signature="44899:44912" placeholder="/*...*/" />
+                    <marker date="1498568340203" expanded="true" signature="44948:45006" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="45212:45856" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="45313:45712" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="45385:45464" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="45470:45694" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="45496:45507" placeholder="/*...*/" />
+                    <marker date="1498568340203" expanded="true" signature="45764:45842" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="45897:47029" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="46106:46119" placeholder="/*...*/" />
+                    <marker date="1498568340203" expanded="true" signature="46155:46213" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="46419:47019" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="46480:46875" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="46548:46627" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="46633:46857" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="46659:46670" placeholder="/*...*/" />
+                    <marker date="1498568340203" expanded="true" signature="46927:47005" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="47091:47457" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="47286:47446" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="47334:47432" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="47516:47528" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="47557:47622" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="47654:47711" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="47760:48167" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="47873:48157" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="47937:48081" placeholder="{...}" />
+                    <marker date="1498568340203" expanded="true" signature="48003:48063" placeholder="{...}" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -153,10 +210,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="formManage.vue" pinned="false" current-in-tab="true">
+          <file leaf-file-name="formManage.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.750934">
+                <state vertical-scroll-proportion="-6.554348">
                   <caret line="219" column="71" selection-start-line="219" selection-start-column="71" selection-end-line="219" selection-end-column="71" />
                   <folding>
                     <element signature="n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="false" />
@@ -201,11 +258,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="false">
+          <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-5.347826">
-                  <caret line="444" column="35" selection-start-line="444" selection-start-column="35" selection-end-line="444" selection-end-column="35" />
+                <state vertical-scroll-proportion="0.3325031">
+                  <caret line="582" column="30" selection-start-line="582" selection-start-column="27" selection-end-line="582" selection-end-column="30" />
                   <folding>
                     <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -240,7 +297,6 @@
                     <element signature="n#style#0;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#1;n#template#0;n#el-table-column#3;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#div#3;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -306,8 +362,8 @@
         <option value="$PROJECT_DIR$/src/components/page/setting/proTemplate.vue" />
         <option value="$PROJECT_DIR$/static/css/setting-qualityMeasure.css" />
         <option value="$PROJECT_DIR$/src/api/getData.js" />
-        <option value="$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue" />
         <option value="$PROJECT_DIR$/src/components/page/setting/formManage.vue" />
+        <option value="$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue" />
       </list>
     </option>
   </component>
@@ -696,7 +752,6 @@
             <element signature="n#style#0;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#template#0;n#el-table-column#3;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#div#3;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1006,10 +1061,91 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/proTemplate.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.3586957">
+          <caret line="229" column="17" selection-start-line="229" selection-start-column="17" selection-end-line="229" selection-end-column="17" />
+          <folding>
+            <marker date="1498568340203" expanded="true" signature="41119:41218" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="41119:48174" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="41243:43567" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="41467:41658" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="41520:41644" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="41765:43557" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="41849:41958" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="42156:42288" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="42455:42680" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="42686:43543" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="42722:43164" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="42759:42948" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="42954:43141" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="43170:43335" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="43370:43446" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="43452:43525" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="43633:43938" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="43698:43721" placeholder="/*...*/" />
+            <marker date="1498568340203" expanded="true" signature="43753:43928" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="43801:43859" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="43984:44510" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="44023:44062" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="44122:44149" placeholder="/*...*/" />
+            <marker date="1498568340203" expanded="true" signature="44187:44500" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="44247:44486" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="44344:44410" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="44537:44595" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="44623:45866" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="44637:44687" placeholder="//..." />
+            <marker date="1498568340203" expanded="true" signature="44899:44912" placeholder="/*...*/" />
+            <marker date="1498568340203" expanded="true" signature="44948:45006" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="45212:45856" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="45313:45712" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="45385:45464" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="45470:45694" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="45496:45507" placeholder="/*...*/" />
+            <marker date="1498568340203" expanded="true" signature="45764:45842" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="45897:47029" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="46106:46119" placeholder="/*...*/" />
+            <marker date="1498568340203" expanded="true" signature="46155:46213" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="46419:47019" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="46480:46875" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="46548:46627" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="46633:46857" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="46659:46670" placeholder="/*...*/" />
+            <marker date="1498568340203" expanded="true" signature="46927:47005" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="47091:47457" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="47286:47446" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="47334:47432" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="47516:47528" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="47557:47622" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="47654:47711" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="47760:48167" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="47873:48157" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="47937:48081" placeholder="{...}" />
+            <marker date="1498568340203" expanded="true" signature="48003:48063" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.554348">
+          <caret line="219" column="71" selection-start-line="219" selection-start-column="71" selection-end-line="219" selection-end-column="71" />
+          <folding>
+            <element signature="n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#el-col#0;n#el-row#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-input#0;n#el-col#0;n#el-row#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#el-dialog#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.347826">
-          <caret line="444" column="35" selection-start-line="444" selection-start-column="35" selection-end-line="444" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.3325031">
+          <caret line="582" column="30" selection-start-line="582" selection-start-column="27" selection-end-line="582" selection-end-column="30" />
           <folding>
             <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1044,37 +1180,12 @@
             <element signature="n#style#0;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#template#0;n#el-table-column#3;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#div#3;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/proTemplate.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.3586957">
-          <caret line="229" column="17" selection-start-line="229" selection-start-column="17" selection-end-line="229" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.750934">
-          <caret line="219" column="71" selection-start-line="219" selection-start-column="71" selection-end-line="219" selection-end-column="71" />
-          <folding>
-            <element signature="n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#el-col#0;n#el-row#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-input#0;n#el-col#0;n#el-row#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#el-dialog#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

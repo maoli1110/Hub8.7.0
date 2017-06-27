@@ -100,7 +100,7 @@
                                                 <el-input class="flowTitle" placeholder="请输入内容"></el-input>
                                             </td>
                                             <td width="120" style="position:relative" class="list-isAll" >
-                                                <el-select value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
+                                                <el-select :value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
                                                     <el-option
                                                         v-for="item in rootInfo.option"
                                                         :key="item.value"
@@ -886,7 +886,8 @@ export default {
                         console.info(this.rootInfoEdit.steps[j].roleIds.length)
                     } else if(this.rootInfoEdit.steps[j].roleIds.length >1){
                         this.rootInfoEdit.steps[j].isStepDisable = true;
-                    }
+                    };
+
                     this.rootInfoEdit.steps[j].rootEditArr = [];
                     this.rootInfoEdit.steps[j].option = [{value:0,label:'全部'},{value:1,label:'随便'}];
               /*      if(this.rootInfoEdit.steps[j].isAll){
@@ -897,6 +898,7 @@ export default {
                     this.rootInfoEdit.steps[j].listVal ="";
 
                 }
+                console.log( this.rootInfoEdit.steps);
                 for (let i = 0;i<this.rootList.length;i++){
                     for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
                         for(let l= 0;l<this.rootInfoEdit.steps[j].roleIds.length;l++){
