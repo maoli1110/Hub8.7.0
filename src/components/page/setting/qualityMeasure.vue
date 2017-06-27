@@ -51,7 +51,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[1, 50, 100, 200]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 200]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                 </el-pagination>
             </div>
         </div>
@@ -191,12 +191,13 @@
                                         <el-input class="flowTitle" v-model="rootInfo.stepName" placeholder="请输入内容"></el-input>
                                     </td>
                                     <td width="120" style="position:relative" class="list-isAll" >
-                                        <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
+                                        <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable" @change="changeEdit">
                                             <el-option
                                                 v-for="item in rootInfo.option"
                                                 :key="item.value"
                                                 :label="item.label"
-                                                :value="item.value">
+                                                :value="item.value"
+                                            >
                                             </el-option>
                                         </el-select>
                                     </td>
@@ -275,7 +276,7 @@
                         </el-table-column>
                         <el-table-column label="操作" width="80" @click.native="addnew">
                             <template scope="scope">
-                                <span class="icon-eyes" @click="dialogFormVisible = true"></span>
+                                <span class="icon-eyes" @click="formModelPriview(scope.$index,scope.row)"></span>
                                 <span class="quality-del-icon" style="position:static;background-position:-27px -30px;" @click="linkDelete(scope.$index,scope.row)"></span>
                             </template>
                         </el-table-column>
@@ -290,6 +291,7 @@
             </div>
         </el-dialog>
         <!--模态框（收起算管理模块）-->
+        <el-dialog :visible.sync="linkTree" style="width:0px;"></el-dialog>
         <div class="quality-dialog" v-show="linkTree">
             <div class="quality-dialog-header">
                 <el-row>
@@ -308,7 +310,7 @@
                             </el-select>
                         </el-col>
                         <el-col :span="9" >
-                            <el-input placeholder="请选择日期" icon="search" style="width:100%">
+                            <el-input placeholder="请选择日期" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
                             </el-input>
                         </el-col>
                     </el-col>
@@ -331,6 +333,9 @@
             </div>
             <!--<ul class="ztree" id="lineTree"></ul>-->
         </div>
+        <el-dialog :visible.sync="dialogLinkPriview" class="dialogPriview">
+            <iframe :src="priviewUrl"  scrolling="no" frameborder="0"></iframe>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -388,6 +393,10 @@ let getFormProcessParams = {
     modelId:'',
     processId:""
 };
+let getFormPreviewParams ={
+    modelId:"",
+    formId:"",
+}
 let  isChecked = 0;
 let nodes;
 let checkedCount = 0;
@@ -396,6 +405,8 @@ import "static/css/setting-qualityMeasure.css";
 //    import "static/ztree/css/demo.css";
 import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
+import "static/js/ztree/js/jquery.ztree.exedit.js";
+import "static/js/ztree/js/jquery.ztree.exhide-3.5.js";
 import {//数据引用
          getProcessList,//获取流程列表
          getRoleInfo,//获取角色名称
@@ -477,6 +488,7 @@ export default {
             rootList: [],
             dialogFormVisible: false,
             dialogLinkVisible: false,//授权管理模块
+            dialogLinkPriview:false,
             qualityloading: false,
             isBMP: false,
             isBMPedit:false,
@@ -494,13 +506,15 @@ export default {
             modelTotalNum:1,
             modelcur_page:1,
             formModelVal:"",
-            modelTypeTreeVal:""//表单模型树model
+            modelTypeTreeVal:"",//表单模型树model
+//            priviewUrl:"http://192.168.13.215:8081/pdsdoc/viewDispatcher/W3sidGltZXN0YW1wIjoxNDk4NTUwODM2MDQ3LCJmaWxlTmFtZSI6IsnovMax5Lj8yfPF-x-rHtIiwidXVpZCI6ImU1NjMzYzUwOTU1OTQ3NDg5MjhmN2Y0NTZmYTE5MzczIn1d/KkXDP0CUtlf8VKwo-x-TK3oDb8HN0uN61JTa5JX3iQg-x-fUhhY-x-nDOgmCSvWQYTel70A3AcZE0OYeZ-WgL4arQnmA",
             // isStepDisable:false
+            priviewUrl:""
         }
     },
     created() {
         curretPage = !curretPage?1:curretPage;
-        pageSize = !pageSize?1:pageSize;
+        pageSize = !pageSize?10:pageSize;
         sortField = !sortField?"":sortField;
         sortType = !sortType?"asc":sortType;
         tableParams.page= curretPage;
@@ -516,9 +530,13 @@ export default {
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
         $("#expandBtn").bind("click",  {type:"expand",operObj:'lineTree'}, this.expandNode);
         $("#collapseBtn").bind("click", {type:"collapse",operObj:'lineTree'}, this.expandNode);
+        $('.qualityTree input').bind('keydown',this.qualitySearchTree);
 
     },
     methods: {
+        changeEdit(value){
+            console.info(value)
+        },
         getData(tableParam){//默认数据
             //表单列表
             getProcessList(tableParam).then((res)=>{
@@ -534,10 +552,7 @@ export default {
             updateProcessRelForm({addFormIds:["LBBG0004","LBBG0005"],delFormIds:["LBBG0004","LBBG0005"],modelId:"2-2",processId:40}).then((res)=>{
                 console.info(res.data,'更新模板列表')
             });*/
-            //获取表单预览地址
-            getFormPreview({modelId:"2-2",formId:"LBJL0005"}).then((res)=>{
-                console.info(res.data)
-            });
+
 
         },
         change() {//文本框输入数据限制
@@ -695,6 +710,20 @@ export default {
             this.zTreeFiledProcess(getFormProcessParams);
 
         },
+        formModelPriview(idnex,row){
+            //获取表单预览地址
+            this.dialogLinkPriview = true;
+            getFormPreviewParams.modelId = formModelParams.modelId;
+            getFormPreviewParams.formId = row.formId;
+            getFormPreview(getFormPreviewParams).then((res)=>{
+                this.priviewUrl = res.data;
+                console.info( this.priviewUrl)
+            }).catch(function (error) {
+                alert(error.message);
+            });;
+
+            console.log(row.formId,'formId');
+        },
         //流程管理文件
         processSetEdit(event, index) {
             indexTable = index;
@@ -752,7 +781,7 @@ export default {
         //编辑添加角色
         eidtAddRoles(index){
             for (let i = 0; i <this.rootInfoEdit.steps.length; i++) {
-                if (this.rootInfoEdit.steps[i].roleIds.length <=1) {
+                if (this.rootInfoEdit.steps[i].roleIds.length <1) {
                     this.rootInfoEdit.steps[i].isStepDisable = false;
                 } else {
                     this.rootInfoEdit.steps[i].isStepDisable = true;
@@ -834,8 +863,6 @@ export default {
             console.log(this.rootInfoEdit,'传值问题');
             updateProcessInfo({processId:updateProcessId,ProcessAddParam:this.rootInfoEdit}).then((res)=>{
                 console.info(res.data)
-            },function(error){
-                console.info(error)
             })
         },
         eidtBMPcancel(){
@@ -844,6 +871,7 @@ export default {
             this.isBMPedit = false;
         },
         isBMPEditShow(index,row){
+
             this.isBMPedit = true;
             this.isBMP = false;
             this.isQuality = false;
@@ -861,7 +889,13 @@ export default {
                     }
                     this.rootInfoEdit.steps[j].rootEditArr = [];
                     this.rootInfoEdit.steps[j].option = [{value:0,label:'全部'},{value:1,label:'随便'}];
-                    this.rootInfoEdit.steps[j].listVal = "";
+              /*      if(this.rootInfoEdit.steps[j].isAll){
+                        this.rootInfoEdit.steps[j].listVal = "全部";
+                    }else{
+                        this.rootInfoEdit.steps[j].listVal = "随意";
+                    }*/
+                    this.rootInfoEdit.steps[j].listVal ="";
+
                 }
                 for (let i = 0;i<this.rootList.length;i++){
                     for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
@@ -872,8 +906,8 @@ export default {
                         }
                     }
                 }
+                console.info(this.rootInfoEdit,'整体结构');
              })
-//            console.info(this.rootInfoEdit)
         },
         flowNameAlert() {//流程名称弹窗
             this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
@@ -969,8 +1003,24 @@ export default {
         zTreeFiledProcess(getFormProcessParams){
             getFormInfosForProcess(getFormProcessParams).then((res)=>{
                 checkedCount = 0;
-//                console.info(res.data,'树结构数据')
+                //console.info(res.data,'树结构数据')
                 this.zNodes = res.data.splice(1,20);
+                for(var i= 0;i<this.zNodes.length;i++){
+                    //debugger;
+                    if(!(this.zNodes[i].checked) && this.zNodes[i].isForm){
+                        checkedCount++;
+                    }
+                }
+                if(checkedCount>0){
+                    this.checkTrue = false;
+                    $('.ztree-allCheck').removeClass('ztree-allActive');
+                    $('.simlue-label input[type=checkbox]').attr('checked',false);
+                }else{
+                    this.checkTrue = true;
+                    console.log(this.checkTrue,'checked')
+                    $('.ztree-allCheck').addClass('ztree-allActive');
+                    $('.simlue-label input[type=checkbox]').attr('checked',true);
+                }
                 for(let k =0;k<this.zNodes.length;k++){//字段处理
                     this.zNodes[k].nocheck = this.zNodes[k].isForm;
                     this.zNodes[k].chkDisabled =  this.zNodes[k].permit;
@@ -990,19 +1040,7 @@ export default {
 //                console.info(this.zNodes)
                  $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
 
-                for(var i= 0;i<this.zNodes.length;i++){
-                    debugger;
-                    if(!(this.zNodes[i].checked) && !this.zNodes[i].nocheck){
-                        this.checkTrue = false;
-                    }else if(this.zNodes[i].checked && !this.zNodes[i].nocheck){
-                        checkedCount++;
-                    }
-                }
-//                console.info(checkedCount==this.zNodes.length)
-//                debugger;
-                if(checkedCount==this.zNodes.length){
-                    this.checkTrue = true;
-                }
+
             })
         },
         //添加关联
@@ -1049,7 +1087,23 @@ export default {
             updateProcessRelFormParams.modelId = formModelParams.modelId;
             updateProcessRelFormParams.processId = processId;
             //console.info(updateProcessRelFormParams);
-            console.log(treeNode)
+            checkedCount = 0;
+            var zTree = $.fn.zTree.getZTreeObj('lineTree');
+            var treeNodes = zTree.transformToArray(zTree.getNodes());
+            for(var i= 0;i<treeNodes.length;i++){//全选的样式更改
+                if(!(treeNodes[i].checked) && !(treeNodes[i].nocheck)){
+                    checkedCount++;
+                }
+            }
+            if(checkedCount>0){
+                this.checkTrue = false;
+                $('.ztree-allCheck').removeClass('ztree-allActive');
+                $('.simlue-label input[type=checkbox]').attr('checked',false);
+            }else{
+                this.checkTrue = true;
+                $('.ztree-allCheck').addClass('ztree-allActive');
+                $('.simlue-label input[type=checkbox]').attr('checked',true);
+            }
         },
         formModelLinkOk(){
             this.linkTree = false;
@@ -1061,7 +1115,7 @@ export default {
             if(isChecked==1){
                 updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
                     getProcessRelFormList(formModelParams).then((res)=>{
-                            // console.info(res.data,'关联表单');
+                       // console.info(res.data,'关联表单');
                         this.formModelData = res.data;
                         this.modelTotalNum = res.data.pageInfo.totalNumber;
                         console.info(this.modelTotalNum)
@@ -1182,12 +1236,34 @@ export default {
         addDiyDom(treeId, treeNode) {
             var aObj = $("#" + treeNode.tId );
             if ($("#diyBtn_"+treeNode.id).length>0) return;
-            var editStr = "<span id='diyBtn_space_" +treeNode.id+ "' class='icon-eyes' > </span>";
+            var editStr = "<span id='diyBtn_space-" +treeNode.formId+ "' class='icon-eyes' > </span>";
             if(!treeNode.isParent && !(treeNode.nocheck)){
                 aObj.append(editStr);
             }
+            console.log(treeNode.formId);
+            let self =this;
+            $('.icon-eyes').map(function(){
+                $(this).unbind('click');
+               $(this).bind('click',function(){
+                   let  linkFormId = $(this).attr("id");
+                   if(linkFormId){
+                       linkFormId =  linkFormId.split('-')[1]
+                   }
+                    console.info(linkFormId,'linkFormId')
+                   self.dialogLinkPriview = true;
+                   getFormPreviewParams.modelId = formModelParams.modelId;
+                   getFormPreviewParams.formId = linkFormId;
+                   getFormPreview(getFormPreviewParams).then((res)=>{
+                       self.priviewUrl = res.data;
+                       console.info( self.priviewUrl)
+                   }).catch(function (error) {
+                           alert(error.message);
+                       });;
+                   })
+            })
         },
         checkAll() {
+           // debugger;
             $('.ztree-allCheck').toggleClass('ztree-allActive');
             if ($('.ztree-allCheck').hasClass('ztree-allActive')) {
                 this.checkTrue = true;
@@ -1211,7 +1287,62 @@ export default {
              updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
                  this.formModelData.result.splice(index,1)
              });
-        }
+        },
+        //树结构的搜索功能
+        getZtreeParentNode(ztreeNode, nodes) {
+            var pNode = ztreeNode.getParentNode();
+            /*console.log(pNode);*/
+            if (pNode != null) {
+                if (nodes.indexOf(pNode) < 0) {
+                    nodes.push(pNode);
+                }
+                this.getZtreeParentNode(pNode, nodes);
+            }
+        },
+        getZtreeChildNode(ztreeNode, nodes) {
+            if (!ztreeNode.isParent) {
+                return;
+            }
+            var children = ztreeNode.children;
+            /* console.log(children);*/
+            if (children.length > 0) {
+                for (var i = 0; i < children.length; i++) {
+                    var child = children[i];
+                    if (nodes.indexOf(child) < 0) {
+                        nodes.push(child);
+                    }
+                    this.getZtreeChildNode(child, nodes);
+                }
+            }
+        },
+        qualitySearchTree(event) {
+            var treeObj = $.fn.zTree.getZTreeObj('lineTree');
+            var nodes1 = treeObj.getNodesByParam("isHidden", true);
+            var searchVal = $('.qualityTree').find('input').val();
+            console.info(searchVal,'searchVal')
+            /* 将之前隐藏的展示*/
+            if (nodes1.length > 0) {
+                treeObj.showNodes(nodes1);
+            }
+            var treeNodes = treeObj.transformToArray(treeObj.getNodes());
+            var otherNeedShowNodes = [];
+            // 隐藏不符合搜索条件的节点
+            if (event.type == 'click' || event.keyCode == 13) {
+                console.log(searchVal);
+                for (var i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].formName.indexOf(searchVal) < 0) {
+                        treeObj.hideNode(treeNodes[i]);
+                    } else {
+                        /*符合条件的父级*/
+                        this.getZtreeChildNode(treeNodes[i], otherNeedShowNodes);
+                        this.getZtreeParentNode(treeNodes[i], otherNeedShowNodes);
+                    }
+                }
+                if (otherNeedShowNodes.length > 0) {
+                    treeObj.showNodes(otherNeedShowNodes);
+                }
+            }
+        },
     }
 }
 
