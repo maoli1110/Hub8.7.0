@@ -390,6 +390,7 @@ let getFormProcessParams = {
 };
 let  isChecked = 0;
 let nodes;
+let checkedCount = 0;
 import "static/css/setting-qualityMeasure.css";
 //import "static/js/ztree/css/zTreeStyle_new.css";
 //    import "static/ztree/css/demo.css";
@@ -420,7 +421,7 @@ export default {
                 },
                 check: {
                     enable: true,
-                    nocheckInherit: true,
+                    nocheckInherit: false,//是否继承父元素
                 },
                 data: {
                     simpleData: {
@@ -428,13 +429,10 @@ export default {
                         idKey: "formId",
                         pIdKey: "pid",
                         rootPId: 0,
-//                        chkDisabled:"permit"
-                        nocheck:"isForm",
                     },
                     key: {
                         name: "formName",
-                        nocheck:"isForm",
-//                        chkDisabled:"permit"
+//                        nocheck:"isForm",
                     }
                 },
                 callback: {
@@ -970,8 +968,9 @@ export default {
         //树结构字段处理
         zTreeFiledProcess(getFormProcessParams){
             getFormInfosForProcess(getFormProcessParams).then((res)=>{
+                checkedCount = 0;
 //                console.info(res.data,'树结构数据')
-                this.zNodes = res.data;
+                this.zNodes = res.data.splice(1,20);
                 for(let k =0;k<this.zNodes.length;k++){//字段处理
                     this.zNodes[k].nocheck = this.zNodes[k].isForm;
                     this.zNodes[k].chkDisabled =  this.zNodes[k].permit;
@@ -988,8 +987,22 @@ export default {
                     delete this.zNodes[k].isForm;
                     delete this.zNodes[k].permit;
                 }
-                //console.info(this.zNodes)
+//                console.info(this.zNodes)
                  $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
+
+                for(var i= 0;i<this.zNodes.length;i++){
+                    debugger;
+                    if(!(this.zNodes[i].checked) && !this.zNodes[i].nocheck){
+                        this.checkTrue = false;
+                    }else if(this.zNodes[i].checked && !this.zNodes[i].nocheck){
+                        checkedCount++;
+                    }
+                }
+//                console.info(checkedCount==this.zNodes.length)
+//                debugger;
+                if(checkedCount==this.zNodes.length){
+                    this.checkTrue = true;
+                }
             })
         },
         //添加关联
@@ -1120,7 +1133,7 @@ export default {
             var zTree = $.fn.zTree.getZTreeObj("lineTree");
                 type = e.data.type;
 //                nodes = zTree.getSelectedNodes();
-                nodes = zTree.transformTozTreeNodes(this.zNodes);
+                nodes =  zTree.transformToArray(zTree.getNodes());
 
             if (type.indexOf("All") < 0 && nodes.length == 0) {
                 alert("请先选择一个节点");
@@ -1130,17 +1143,22 @@ export default {
                 zTree.checkAllNodes(true);
                 updateProcessRelFormParams.delFormIds = [];
                 for (let i = 0;i<nodes.length;i++){
-                    updateProcessRelFormParams.addFormIds.push(nodes[i].formId)
+                    if(!nodes[i].nocheck && nodes[i].checked && updateProcessRelFormParams.addFormIds.indexOf(nodes[i].formId)){
+                        updateProcessRelFormParams.addFormIds.push(nodes[i].formId)
+                    }
                 }
-                console.info(updateProcessRelFormParams)
-                console.info(nodes,'选中的数据')
+             //console.info(updateProcessRelFormParams,'选中的')
+            //console.info(nodes,'选中的数据')
             } else if (type == "checkAllFalse") {
+                zTree.checkAllNodes(false);
                 updateProcessRelFormParams.addFormIds = [];
                 for (let i = 0;i<nodes.length;i++){
-                    updateProcessRelFormParams.delFormIds.push(nodes[i].formId)
+                    if(!nodes[i].nocheck && !(nodes[i].checked) && updateProcessRelFormParams.delFormIds.indexOf(nodes[i].formId) ){
+                        updateProcessRelFormParams.delFormIds.push(nodes[i].formId)
+                    }
                 }
-                console.info(updateProcessRelFormParams)
-                zTree.checkAllNodes(false);
+                //console.info(updateProcessRelFormParams,'非选中的')
+
             } else {
                 /* var callbackFlag = $("#callbackTrigger").attr("checked");
                  for (var i=0, l=nodes.length; i<l; i++) {
@@ -1165,7 +1183,7 @@ export default {
             var aObj = $("#" + treeNode.tId );
             if ($("#diyBtn_"+treeNode.id).length>0) return;
             var editStr = "<span id='diyBtn_space_" +treeNode.id+ "' class='icon-eyes' > </span>";
-            if(!treeNode.isParent){
+            if(!treeNode.isParent && !(treeNode.nocheck)){
                 aObj.append(editStr);
             }
         },

@@ -137,9 +137,15 @@
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/proTemplate.vue">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="243" column="19" selection-start-line="243" selection-start-column="19" selection-end-line="251" selection-end-column="21" />
+                  <caret line="288" column="19" selection-start-line="288" selection-start-column="19" selection-end-line="288" selection-end-column="19" />
                   <folding>
-                    <element signature="n#style#0;n#el-select#0;n#div#0;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <marker date="1498525280233" expanded="true" signature="43095:43739" placeholder="{...}" />
+                    <marker date="1498525280233" expanded="true" signature="43122:43187" placeholder="{...}" />
+                    <marker date="1498525280233" expanded="true" signature="43219:43276" placeholder="{...}" />
+                    <marker date="1498525280233" expanded="true" signature="43325:43732" placeholder="{...}" />
+                    <marker date="1498525280233" expanded="true" signature="43438:43722" placeholder="{...}" />
+                    <marker date="1498525280233" expanded="true" signature="43502:43646" placeholder="{...}" />
+                    <marker date="1498525280233" expanded="true" signature="43568:43628" placeholder="{...}" />
                   </folding>
                 </state>
               </provider>
@@ -155,11 +161,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="formManage.vue" pinned="false" current-in-tab="true">
+          <file leaf-file-name="formManage.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6794718">
-                  <caret line="178" column="45" selection-start-line="178" selection-start-column="45" selection-end-line="178" selection-end-column="45" />
+                <state vertical-scroll-proportion="4.0434785">
+                  <caret line="160" column="25" selection-start-line="160" selection-start-column="16" selection-end-line="160" selection-end-column="25" />
                   <folding>
                     <element signature="n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#style#0;n#el-col#0;n#el-row#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -198,9 +204,17 @@
             <entry file="file://$PROJECT_DIR$/src/api/getData.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="41" column="33" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="33" />
+                  <caret line="44" column="0" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="33" />
                   <folding>
-                    <element signature="n#!!doc" expanded="true" />
+                    <marker date="1498525280233" expanded="true" signature="0:47" placeholder="/**  create by kylee 2017.6.9 ...*/" />
+                    <marker date="1498525280233" expanded="true" signature="239:255" placeholder="/*...*/" />
+                    <marker date="1498525280233" expanded="true" signature="1401:1413" placeholder="/**表单管理 ...*/" />
+                    <marker date="1498525280233" expanded="true" signature="1414:1530" placeholder="//..." />
+                    <marker date="1498525280233" expanded="true" signature="1954:1971" placeholder="/** 工程模板接口 ...*/" />
+                    <marker date="1498525280233" expanded="true" signature="1972:1985" placeholder="/*...*/" />
+                    <marker date="1498525280233" expanded="true" signature="2114:2128" placeholder="/*...*/" />
+                    <marker date="1498525280233" expanded="true" signature="2246:2266" placeholder="/*...*/" />
+                    <marker date="1498525280233" expanded="true" signature="2419:2432" placeholder="/*...*/" />
                   </folding>
                 </state>
               </provider>
@@ -216,11 +230,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="false">
+          <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="1058" column="10" selection-start-line="1058" selection-start-column="10" selection-end-line="1058" selection-end-column="10" />
+                <state vertical-scroll-proportion="0.42590287">
+                  <caret line="1187" column="13" selection-start-line="1187" selection-start-column="13" selection-end-line="1187" selection-end-column="13" />
                   <folding>
                     <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -308,9 +322,9 @@
         <option value="$PROJECT_DIR$/src/components/page/setting/proTemplate.vue" />
         <option value="$PROJECT_DIR$/static/css/setting-qualityMeasure.css" />
         <option value="$PROJECT_DIR$/static/js/ztree/css/zTreeStyle_new.css" />
-        <option value="$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue" />
         <option value="$PROJECT_DIR$/src/api/getData.js" />
         <option value="$PROJECT_DIR$/src/components/page/setting/formManage.vue" />
+        <option value="$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue" />
       </list>
     </option>
   </component>
@@ -586,13 +600,13 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15753424" sideWeight="0.495671" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982087" sideWeight="0.504329" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="找到" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -978,9 +992,15 @@
     <entry file="file://$PROJECT_DIR$/src/components/page/setting/proTemplate.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="243" column="19" selection-start-line="243" selection-start-column="19" selection-end-line="251" selection-end-column="21" />
+          <caret line="288" column="19" selection-start-line="288" selection-start-column="19" selection-end-line="288" selection-end-column="19" />
           <folding>
-            <element signature="n#style#0;n#el-select#0;n#div#0;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <marker date="1498525280233" expanded="true" signature="43095:43739" placeholder="{...}" />
+            <marker date="1498525280233" expanded="true" signature="43122:43187" placeholder="{...}" />
+            <marker date="1498525280233" expanded="true" signature="43219:43276" placeholder="{...}" />
+            <marker date="1498525280233" expanded="true" signature="43325:43732" placeholder="{...}" />
+            <marker date="1498525280233" expanded="true" signature="43438:43722" placeholder="{...}" />
+            <marker date="1498525280233" expanded="true" signature="43502:43646" placeholder="{...}" />
+            <marker date="1498525280233" expanded="true" signature="43568:43628" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1001,10 +1021,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
+    <entry file="file://$PROJECT_DIR$/src/api/getData.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="1058" column="10" selection-start-line="1058" selection-start-column="10" selection-end-line="1058" selection-end-column="10" />
+          <caret line="44" column="0" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="33" />
+          <folding>
+            <marker date="1498525280233" expanded="true" signature="0:47" placeholder="/**  create by kylee 2017.6.9 ...*/" />
+            <marker date="1498525280233" expanded="true" signature="239:255" placeholder="/*...*/" />
+            <marker date="1498525280233" expanded="true" signature="1401:1413" placeholder="/**表单管理 ...*/" />
+            <marker date="1498525280233" expanded="true" signature="1414:1530" placeholder="//..." />
+            <marker date="1498525280233" expanded="true" signature="1954:1971" placeholder="/** 工程模板接口 ...*/" />
+            <marker date="1498525280233" expanded="true" signature="1972:1985" placeholder="/*...*/" />
+            <marker date="1498525280233" expanded="true" signature="2114:2128" placeholder="/*...*/" />
+            <marker date="1498525280233" expanded="true" signature="2246:2266" placeholder="/*...*/" />
+            <marker date="1498525280233" expanded="true" signature="2419:2432" placeholder="/*...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/companyProfile/companyProfile.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="64" column="48" selection-start-line="64" selection-start-column="48" selection-end-line="64" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="4.0434785">
+          <caret line="160" column="25" selection-start-line="160" selection-start-column="16" selection-end-line="160" selection-end-column="25" />
+          <folding>
+            <element signature="n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#el-col#0;n#el-row#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-input#0;n#el-col#0;n#el-row#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#el-dialog#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#10356#11590#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42590287">
+          <caret line="1187" column="13" selection-start-line="1187" selection-start-column="13" selection-end-line="1187" selection-end-column="13" />
           <folding>
             <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1044,41 +1107,6 @@
             <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/getData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="33" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="33" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/companyProfile/companyProfile.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="64" column="48" selection-start-line="64" selection-start-column="48" selection-end-line="64" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6794718">
-          <caret line="178" column="45" selection-start-line="178" selection-start-column="45" selection-end-line="178" selection-end-column="45" />
-          <folding>
-            <element signature="n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#el-col#0;n#el-row#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-input#0;n#el-col#0;n#el-row#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#el-dialog#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#10356#11590#0" expanded="false" />
           </folding>
         </state>
       </provider>
