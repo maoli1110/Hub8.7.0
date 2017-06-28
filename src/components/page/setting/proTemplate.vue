@@ -1,8 +1,8 @@
 <template>
     <div class="proTemplate">
-
+    
         <div v-if="!EditVisible">
-
+    
             <el-row>
                 <el-menu class="el-menu-demo" mode="horizontal" router>
                     <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
@@ -22,9 +22,9 @@
                 </el-table-column>
                 <el-table-column prop="updateTime" width="150" label="更新时间" sortable>
                 </el-table-column>
-
+    
                 <el-table-column label="操作" width="150">
-
+    
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                         <span class="icon-compile" @click="proTemplateEdit(scope.$index,scope.row)"></span>
@@ -64,9 +64,9 @@
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                                                            <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                                                            <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                                                            <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                                                <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
                                 <span id="edit" @click="edit"></span>
                             </div>
@@ -90,7 +90,7 @@
                 </el-col>
                 <el-col :span="14" class="project-form">
                     <p class="project-form-tit">包含表单</p>
-
+    
                     <div style="border:1px solid #ddd;">
                         <div class="project-form-list">
                             <el-select v-model="value" placeholder="请选择" @change="selectTestAval">
@@ -117,7 +117,7 @@
             <el-dialog title="增加多个节点" :visible.sync="textAreaVisible" class="multi-textarea">
                 <el-input type="textarea" :rows="10" id="multiLeaf" placeholder="一行视为一个节点，支持多行复制粘贴">
                 </el-input>
-
+    
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="textAreaVisible = false">取 消</el-button>
                     <el-button type="primary" id="proBtnOk" @click="textAreaVisible = false,addMoreNodes">确 定</el-button>
@@ -125,7 +125,7 @@
             </el-dialog>
             <!--表单编辑-->
             <el-dialog title="添加" :visible.sync="formEditVisible" style="width:10%;position:fixed;left:50%;opacity:0;"></el-dialog>
-
+    
         </div>
         <div class="formEdit" v-show="formEditVisible">
             <div class="formEidt-title">
@@ -133,17 +133,14 @@
                 <el-icon class="el-icon-close" @click.native="formEditVisible=false;addcancle()"></el-icon>
             </div>
             <div :form-info="formInfo2" class="form-edit-info">
-                <div class="formParams">
-                    <span>单位工程：</span>
-                    <span>{{editTitle[0]}}</span>
+                <div class="formParams">                  
+                    <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">单位工程：<span style="color:#6595f2;font-weight:bold">{{editTitle[0]}}</span></span>
                 </div>
-                <div class="formParams">
-                    <span>分部项目：</span>
-                    <span>{{editTitle[1]}}</span>
+                <div class="formParams">        
+                    <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">分部项目：<span style="color:#6595f2;font-weight:bold">{{editTitle[1]}}</span></span>
                 </div>
-                <div class="formParams">
-                    <span>分项工程：</span>
-                    <span>{{editTitle[2]}}</span>
+                <div class="formParams">                   
+                    <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">分项工程：<span style="color:#6595f2;font-weight:bold">{{editTitle[2]}}</span></span>
                 </div>
             </div>
             <div class="formEdit-body">
@@ -167,23 +164,23 @@
                     </template>
                     <template>
                         <el-tabs v-model="activeName2" type="card" @tab-click="tabClick" v-for='(item,index) in typeList' v-show='index==value'>
-
+    
                             <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
                                 <ul class="form-table">
                                     <li v-for='(childitemName,index) in childitem.childs'>{{childitemName.formName}}
                                         <div class="tabs-icon">
-                                            <el-icon class="el-icon-picture"></el-icon>
+                                            <el-icon class="el-icon-picture"@click.native="itemView(value_,childitemName.formId)"></el-icon>
                                             <el-icon class="el-icon-delete" @click.native="itemDelete(item.typeName,childitem.typeName,childitemName,index)"></el-icon>
                                         </div>
                                     </li>
-
+    
                                 </ul>
-
+    
                             </el-tab-pane>
                             <p class="form-total">已选表单{{options.length-1}}</p>
                         </el-tabs>
                     </template>
-
+    
                 </div>
             </div>
             <div class="formBtn">
@@ -216,12 +213,7 @@ export default {
                 view: {
                     selectedMulti: false,
                     showIcon: false,
-                    /*addHoverDom: this.addHoverDom,
-                    removeHoverDom: this.removeHoverDom,*/
                 },
-                /*    check: {
-                        enable: true
-                    },*/
                 data: {
                     simpleData: {
                         enable: true,
@@ -233,9 +225,6 @@ export default {
                         name: "nodeName"
                     }
                 },
-                /*    key: {
-                        children: "nodes"
-                    },*/
                 callback: {
                     onCollapse: function (event, treeId, treeNode) {
                         level = treeNode.level;
@@ -253,12 +242,7 @@ export default {
                 view: {
                     selectedMulti: false,
                     showIcon: false,
-                    /*addHoverDom: this.addHoverDom,
-                    removeHoverDom: this.removeHoverDom,*/
                 },
-                /*    check: {
-                        enable: true
-                    },*/
                 data: {
                     simpleData: {
                         enable: true,
@@ -270,9 +254,6 @@ export default {
                         name: "formName"
                     }
                 },
-                /*    key: {
-                        children: "nodes"
-                    },*/
                 callback: {
                     onCollapse: function (event, treeId, treeNode) {
                         level = treeNode.level;
@@ -296,8 +277,6 @@ export default {
             // 下拉框数据
             typeList: [],
             typeName: '',
-
-
             // 编辑页面的三级标题
             // 单位工程
             //  分部项目
@@ -305,10 +284,7 @@ export default {
             // 变动的表单
             formList: [],
             nodeForms: [],
-
-
             newtypeList: [],
-
             editTitle: [],
             addFlag: false,
             addFormOption: [],
@@ -358,7 +334,7 @@ export default {
             console.log(this.addFormOption);
             getFormInfos(this.value_).then((res) => {
                 this.editZNodes = res.data;
-                $.fn.zTree.init($("#editTree"), this.settingEdit, this.editZNodes);                
+                $.fn.zTree.init($("#editTree"), this.settingEdit, this.editZNodes);
                 // this.addFormOption.push({value})
             }).catch(() => {
             });
@@ -393,14 +369,14 @@ export default {
         handleDelete(index, row) {
             this.$message.error('删除第' + (index + 1) + '行');
         },
-         // 更新所有信息
+        // 更新所有信息
         updatePromodel() {
             let treeObj = $.fn.zTree.getZTreeObj("proZtree");
             let nodes = treeObj.transformToArray(treeObj.getNodes());
             let nodeTrees = [];
             let formList = [];
             this.nodeForms = [];
-            this.nodeTrees = [];            
+            this.nodeTrees = [];
             // 拼接向后台发送的参数
             // console.log(this.nodeId, this.projModelId, this.projModelName);
             this.typeList.forEach((el, index1) => {
@@ -421,12 +397,11 @@ export default {
             // console.log(nodes);
             nodes.forEach((el, index) => {
                 // 去掉全部
-                if(index==0){
+                if (index == 0) {
                     return;
                 }
                 nodeTrees.push({ nodeId: el.nodeId, pid: el.pid, nodeName: el.nodeName });
-            })           
-
+            })
             let para = {
                 projModelId: this.projModelId,
                 projModelName: this.projModelName,
@@ -449,9 +424,9 @@ export default {
                 this.zNodes = res.data.nodeInfos;
                 // 给树结构添加全部选项
                 console.log(this.zNodes);
-                this.zNodes.unshift({ nodeId: '0001', nodeName: '全部', pid: '' });
+                this.zNodes.unshift({ nodeId: '0001', nodeName: '全部', pid: '' });                
                 this.zNodes.forEach((el, index) => {
-                    if (index == 1) {
+                    if (el.pid=='') {
                         el.pid = '0001';
                     }
                 })
@@ -486,7 +461,7 @@ export default {
         // 编辑
         proTemplateEdit(index, row) {
             this.EditVisible = true;
-            this.projModelId = row.projModelId;           
+            this.projModelId = row.projModelId;
             this.getprojmodelDetail();
         },
         // 点击
@@ -500,13 +475,12 @@ export default {
             console.log(treeNode)
             this.editTitle = [];
             this.nodeId = treeNode.nodeId;
-            if (treeNode.isParent) {
-                console.log('父节点')
-                return false;
-            } else {
+            if (treeNode.level==3) {
                 this.addFlag = true;
-                // this.editTitle.push(treeNode.getParentNode().getParentNode().nodeName, treeNode.getParentNode().nodeName, treeNode.nodeName);
+                this.editTitle.push(treeNode.getParentNode().getParentNode().nodeName, treeNode.getParentNode().nodeName, treeNode.nodeName);
                 this.getprojmodelNodeForms();
+            } else {
+                alert('请选择子节点')
             }
         },
         // 表单添加
@@ -527,7 +501,6 @@ export default {
                         // console.log(el)
                         this.addFormOption.push({ value_: el.modelId, label: el.modelName })
                     })
-                    // this.addFormOption.push({value})
                 }).catch(() => {
                 });
             }
@@ -559,9 +532,7 @@ export default {
                                     }
                                 })
                             }
-
                         });
-
                     } else if (this.activeName2 == 1) {
                         //    交工评定
                         return;
@@ -575,10 +546,6 @@ export default {
                             if (index1 == 1) {
                                 el.childs.forEach((el, index2) => {
                                     if (index2 == 0) {
-                                        // console.log(el.childs);
-                                        // console.log(this);
-                                        // this.$set(el, 'childs', elForm.formName);
-                                        // console.log(this.typeList);
                                         if (el.childs == null) {
                                             el.childs = [];
                                         }
@@ -590,11 +557,9 @@ export default {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         }
                                     }
-
                                 })
                             }
                         });
-
                     } else if (this.activeName2 == 1) {
                         //    交工评定
                         this.typeList.forEach((el, index1) => {
@@ -617,11 +582,9 @@ export default {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         }
                                     }
-
                                 })
                             }
                         });
-
                     }
                 } else if (this.value == 2) {
                     //    检验评定（监理）
@@ -646,13 +609,10 @@ export default {
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         }
-
                                     }
-
                                 })
                             }
                         });
-
                     } else if (this.activeName2 == 1) {
                         //    交工评定
                         this.typeList.forEach((el, index1) => {
@@ -675,11 +635,9 @@ export default {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         }
                                     }
-
                                 })
                             }
                         });
-
                     }
                 }
             }
@@ -694,15 +652,18 @@ export default {
                         if (el.typeName == childitemtypeName) {
                             el.childs.splice(index, 1)
                         }
-
                     })
                 }
             });
         },
+        // 预览选项
+        itemView(modelId,typeId){
+           console.log(modelId,typeId)
+        },
         addConfirm() {
             this.formEditVisible = false;
             this.updatePromodel();
-        },      
+        },
         addcancle() {
             this.formEditVisible = false;
             this.typeList.forEach((el, index1) => {
@@ -732,7 +693,7 @@ export default {
         },
         proCancel() {
             // this.EditVisible = false;           
-               getProjModelDetail(this.projModelId).then(res => {
+            getProjModelDetail(this.projModelId).then(res => {
                 console.log(res);
                 this.projModelName = res.data.projModelName;
                 this.zNodes = res.data.nodeInfos;
@@ -744,9 +705,9 @@ export default {
                         el.pid = '0001';
                     }
                 })
-                $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);               
+                $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);
             }).catch(() => {
-            });          
+            });
         },
         /*ztree-event*/
         //全部展开和收起
@@ -991,7 +952,7 @@ export default {
                 treeNode = nodes[0];
                 console.info(treeNode, '55555')
                 if (level > 2) {
-                    treeNode = zTree.addNodes(nodeParent, { nodeId:this.generateID(), pid: nodeParent.pid, isParent: isParent, nodeName: $.trim(contentArray[k]) });
+                    treeNode = zTree.addNodes(nodeParent, { nodeId: this.generateID(), pid: nodeParent.pid, isParent: isParent, nodeName: $.trim(contentArray[k]) });
                     zTree.editName(treeNode[0]);
                 } else {
                     if (treeNode) {
