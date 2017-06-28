@@ -180,7 +180,7 @@
         },
         mounted(){
             $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
-            $('.basicSearch input').bind('keyup',this.basicSearch)
+            $('.basicSearch input').bind('keyup',this.basicSearch);
             $('.form-dialog-title input').bind('keydown',this.searchformTree)
           /*  $('.icon-eyes').map(function(){
                 $(this).bind('click',function(){

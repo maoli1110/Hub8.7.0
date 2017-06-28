@@ -255,7 +255,7 @@
                     </el-select>
                 </el-col>
                 <el-col :span="10" style="text-align:right;padding:0;">
-                    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" style="width:100%">
+                    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
                     </el-input>
                 </el-col>
             </el-col>
@@ -293,13 +293,13 @@
             </div>
         </el-dialog>
         <!--模态框（收起算管理模块）-->
-        <!--<el-dialog :visible.sync="linkTree" style="width:0;opacity:0;left:50%" :close-on-click-modal="false"></el-dialog>-->
+        <el-dialog :visible.sync="linkTree" style="width:0;height:0;opacity:0;left:50%" :close-on-click-modal="false"></el-dialog>
         <div class="quality-dialog" v-show="linkTree">
             <div class="quality-dialog-header">
                 <el-row>
                     <el-col :span="24" style="padding:0px 30px 20px;border-bottom:1px solid #ddd;">
                         <span style="font-weight:bolder">表单关联</span>
-                        <el-icon class="el-icon-close" style="float:right" @click.native="linkTree=false"></el-icon>
+                        <el-icon class="el-icon-close" style="float:right" @click.native="linkTree=false,dialogFormVisible=true"></el-icon>
                     </el-col>
                     <el-col :span="24" style="padding:20px 40px;">
                         <el-col :span="15" >
@@ -331,7 +331,7 @@
             <ul class="ztree" id="lineTree"></ul>
             <div class="quality-dialog-footer">
                 <el-button type="primary" @click="formModelLinkOk">确定</el-button>
-                <el-button type="primary" @click="linkTree=false">取消</el-button>
+                <el-button type="primary" @click="linkTree=false,dialogFormVisible=true">取消</el-button>
             </div>
             <!--<ul class="ztree" id="lineTree"></ul>-->
         </div>
@@ -522,7 +522,9 @@ export default {
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
         $("#expandBtn").bind("click",  {type:"expand",operObj:'lineTree'}, this.expandNode);
         $("#collapseBtn").bind("click", {type:"collapse",operObj:'lineTree'}, this.expandNode);
-        $('.qualityTree input').bind('keydown',this.qualitySearchTree);
+        $('.qualityTree input').bind('keyup',this.qualitySearchTree);
+        $('.formModelTable input').bind('keyup',this.formModelSearch);
+        $('.quality-searInput input').bind('keyup',this.tableSearch)
 
     },
     methods: {
@@ -561,9 +563,13 @@ export default {
 			var txtVal = this.flowRemark.length;
 			this.remainLength =txtVal;
 		},
-        tableSearch(){//搜索功能
-            tableParams.searchKey = this.tableSearchKey;
-            this.getData(tableParams);
+        tableSearch(event){//搜索功能
+            console.log(event.type);
+            if(event.type=='click' || event.keyCode==13){
+                tableParams.searchKey = this.tableSearchKey;
+                this.getData(tableParams);
+            }
+
         },
         handleCurrentChange(val) {//显示第几页
             this.cur_page = val;
@@ -682,8 +688,14 @@ export default {
             console.info(val,'显示的是第几页信息')
         },
         //表单查询
-        formModelSearch(){
-            formModelParams.searchKey = this.formModelVal;
+        formModelSearch(event){
+            console.info(event.keyCode)
+            if(event.type=='click' ||event.keyCode == 13){
+                formModelParams.searchKey = this.formModelVal;
+            }else{
+                return false
+            }
+
             this.formModelType(formModelParams);
         },
         //关联表单删除
@@ -734,7 +746,7 @@ export default {
                     this.dialogLinkPriview = true;
                     this.priviewUrl = res.data;
                 }else{
-                    self.messageBox('暂时不知处预览')
+                    this.messageBox('暂时不知处预览')
                 }
             }).catch(function(error){
                 this.messageBox(error.response.data.message);
@@ -986,11 +998,17 @@ export default {
                     this.$message({
                         message: '删除关联成功',
                         type: 'success'
-                    }).catch(function(error){
-                         this.messageBox(error.response.data.message);
                     });
-                    this.formModelData.result.splice(0,updateProcessRelFormParams.delFormIds.length);
-                });
+                     getProcessRelFormList(formModelParams).then((res)=>{//重新刷新关联表单数据列表
+                        this.formModelData = res.data;
+                        this.modelTotalNum = res.data.pageInfo.totalNumber;
+                        console.info(this.modelTotalNum)
+                    }).catch(function(error){
+                            this.messageBox(error.response.data.message);
+                    });
+                }).catch(function(error){
+                    this.messageBox(error.response.data.message);
+                 });
             })
         },
         selectIsAll(){
@@ -1104,6 +1122,7 @@ export default {
         //添加关联
         BMPAddLink() {
             this.linkTree = true;
+            this.dialogFormVisible = false;
             //树结构
             getFormProcessParams.modelId =formModelParams.modelId;
             getFormProcessParams.processId = processId;
@@ -1164,16 +1183,13 @@ export default {
             }
         },
         formModelLinkOk(){
+            this.dialogFormVisible = true;
             this.linkTree = false;
             updateProcessRelFormParams.processId = processId;
             updateProcessRelFormParams.modelId = formModelParams.modelId;
             //console.info(formModelParams,'表单模板');
             var zTree = $.fn.zTree.getZTreeObj("lineTree");
             var selectNodes= zTree.getCheckedNodes(true);//当前选中的节点
-/*                for(var i =0;i<updateProcessRelFormParams.addFormIds.length;i++){
-
-                }*/
-
                 updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
                     getProcessRelFormList(formModelParams).then((res)=>{
                        // console.info(res.data,'关联表单');

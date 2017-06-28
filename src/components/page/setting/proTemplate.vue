@@ -1,8 +1,8 @@
 <template>
     <div class="proTemplate">
-    
+
         <div v-if="!EditVisible">
-    
+
             <el-row>
                 <el-menu class="el-menu-demo" mode="horizontal" router>
                     <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
@@ -22,9 +22,9 @@
                 </el-table-column>
                 <el-table-column prop="updateTime" width="150" label="更新时间" sortable>
                 </el-table-column>
-    
+
                 <el-table-column label="操作" width="150">
-    
+
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                         <span class="icon-compile" @click="proTemplateEdit(scope.$index,scope.row)"></span>
@@ -90,7 +90,7 @@
                 </el-col>
                 <el-col :span="14" class="project-form">
                     <p class="project-form-tit">包含表单</p>
-    
+
                     <div style="border:1px solid #ddd;">
                         <div class="project-form-list">
                             <el-select v-model="value" placeholder="请选择" @change="selectTestAval">
@@ -117,7 +117,7 @@
             <el-dialog title="增加多个节点" :visible.sync="textAreaVisible" class="multi-textarea">
                 <el-input type="textarea" :rows="10" id="multiLeaf" placeholder="一行视为一个节点，支持多行复制粘贴">
                 </el-input>
-    
+
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="textAreaVisible = false">取 消</el-button>
                     <el-button type="primary" id="proBtnOk" @click="textAreaVisible = false,addMoreNodes">确 定</el-button>
@@ -125,7 +125,7 @@
             </el-dialog>
             <!--表单编辑-->
             <el-dialog title="添加" :visible.sync="formEditVisible" style="width:0%;position:fixed;left:50%;opacity:0;"></el-dialog>
-    
+
         </div>
         <div class="formEdit" v-show="formEditVisible">
             <div class="formEidt-title">
@@ -170,7 +170,7 @@
                     </template>
                     <template>
                         <el-tabs v-model="activeName2" type="card" @tab-click="tabClick" v-for='(item,index) in typeList' v-show='index==value'>
-    
+
                             <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
                                 <ul class="form-table">
                                     <li v-for='(childitemName,index) in childitem.childs'>{{childitemName.formName}}
@@ -179,14 +179,14 @@
                                             <el-icon class="el-icon-delete" @click.native="itemDelete(item.typeName,childitem.typeName,childitemName,index)"></el-icon>
                                         </div>
                                     </li>
-    
+
                                 </ul>
-    
+
                             </el-tab-pane>
                             <p class="form-total">已选表单{{options.length-1}}</p>
                         </el-tabs>
                     </template>
-    
+
                 </div>
             </div>
             <div class="formBtn">
@@ -194,7 +194,7 @@
                 <el-button type="primary" @click.native='addcancle'>取消</el-button>
             </div>
         </div>
-        <div class="el-dialog__wrapper dialogPriview" style="z-index: 3000;" v-show='dialogFormPriview'> 
+        <div class="el-dialog__wrapper dialogPriview" style="z-index: 2017;" v-show='dialogFormPriview'>
             <div class="el-dialog el-dialog--small" style="top: 14%;">
                 <div class="el-dialog__header">
                     <span class="el-dialog__title"></span>
@@ -735,7 +735,7 @@ export default {
             this.updatePromodel();            // alert('123');
         },
         proCancel() {
-            // this.EditVisible = false;           
+            // this.EditVisible = false;
             getProjModelDetail(this.projModelId).then(res => {
                 console.log(res);
                 this.projModelName = res.data.projModelName;

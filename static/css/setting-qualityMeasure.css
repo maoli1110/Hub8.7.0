@@ -286,7 +286,7 @@
     margin-left: -312px;
     margin-top: -332px;
     background: #fff;
-    z-index: 3500;
+    z-index: 2005;
     border-radius: 5px;
 }
 .quality-dialog .ztree{
@@ -384,7 +384,7 @@
 .link-model .dialog-footer{
     text-align:center;
 }
-.link-modal-table .el-table .el-table__empty-block{
+.quality-page .el-table__empty-block{
     border-bottom:1px solid #ddd;
 }
 /*工程模板*/
