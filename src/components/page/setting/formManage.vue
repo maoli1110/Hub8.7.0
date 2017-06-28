@@ -53,39 +53,52 @@
             <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" style="opacity:0;" >
             </el-dialog>
             <!--单层树结构模板-->
-            <div class="single-stump form-ztree-dialog" v-show="istable2">
+            <div class="single-stump form-ztree-dialog" v-show="isSingForm">
                 <div class="form-dialog-title">
-                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="istable2 = false,changeFormVisible=false"></el-icon></p>
+                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
                     <el-input icon="search" ></el-input>
                 </div>
                 <div class="form-dialog-body" >
                     <div class="form-content">
-                        <div class="priview-le" v-for="item in 8">
-                            <div>设计变更审批表格</div>
+                        <el-table :data="zNodes"   :border="false" :show-header="false" class="ztreeSingData">
+                            <el-table-column prop="formName"></el-table-column>
+                            <el-table-column width="100">
+                                <template scope="scope"  v-show="zNodes.isForm">
+                                    <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
+                                    <span class="icon-eyes" @click="formPriview(scope.$index,scope.row)" style="margin-top:12px;"></span>
+                                </template>
+
+                            </el-table-column>
+                        </el-table>
+                       <!-- <div class="priview-le" v-for="item in zNodes">
+                            <div>{{item.formName}}</div>
                             <span class="icon-eyes" @click="formPriview" style="margin-top:12px;"></span>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
                 <div class="form-dialog-footer">
-                    <el-button @click="istable2=false,changeFormVisible=false" >取 消</el-button>
-                    <el-button type="primary" @click="istable2=false,changeFormVisible=false">确 定</el-button>
+                    <el-button @click="isSingForm=false,changeFormVisible=false" >取 消</el-button>
+                    <el-button type="primary" @click="isSingForm=false,changeFormVisible=false">确 定</el-button>
                 </div>
             </div>
             <!--多层树结构模板-->
-            <div class="form-ztree-dialog" v-show="istable">
+            <div class="form-ztree-dialog" v-show="isDoubForm">
                 <div class="form-dialog-title">
-                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="istable = false,changeFormVisible =false"></el-icon></p>
+                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
                     <el-input icon="search" :on-icon-click="searchformTree"></el-input>
                 </div>
                 <div class="form-dialog-body">
                     <ul id="formTree" class="ztree"></ul>
                 </div>
                 <div class="form-dialog-footer">
-                    <el-button @click="istable=false,changeFormVisible = false" >取 消</el-button>
-                    <el-button type="primary" @click="istable=false,changeFormVisible = false">确 定</el-button>
+                    <el-button @click="isDoubForm=false,changeFormVisible = false" >取 消</el-button>
+                    <el-button type="primary" @click="isDoubForm=false,changeFormVisible = false">确 定</el-button>
                 </div>
             </div>
         </div>
+        <el-dialog :visible.sync="dialogFormPriview" class="dialogPriview">
+            <iframe :src="formPriviewUrl"  scrolling="no" frameborder="0"></iframe>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -95,7 +108,7 @@
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
     import "static/js/ztree/js/jquery.ztree.exedit.js";
     import "static/js/ztree/js/jquery.ztree.exhide-3.5.js"
-    import { getFormModelTypeList,getFormInfosForm} from 'src/api/getData.js'
+    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from 'src/api/getData.js'
     let level = 1;
     let maxLevel=-1;
     let newCount = 1;
@@ -107,7 +120,13 @@
     let templateCount = 1;
     let getFormInfosParams = {
         modelId:""
+    };
+    let isSingForm = false;
+    let formPriviewParams = {
+        formId:'',
+        modelId:""
     }
+
     export default{
         data(){
             return {
@@ -143,7 +162,11 @@
                 changeFormVisible:false,
                 istable:false,
                 istable2:false,
-                formVal:''
+                formVal:'',
+                isSingForm:false,
+                isDoubForm:false,
+                dialogFormPriview:false,
+                formPriviewUrl:""
             }
         },
         components:{
@@ -190,8 +213,16 @@
                 this.$message.error('删除第'+(index+1)+'行');
             },
             //表单的预览功能
-            formPriview(){
-                console.info('我是表单的圆蓝功能')
+            formPriview(index,row){
+                this.dialogFormPriview = true;
+                formPriviewParams.modelId = getFormInfosParams.modelId;
+                formPriviewParams.formId = row.formId;
+                console.info(row.formId,'');
+                getFormPreview(formPriviewParams).then((res) =>{
+                    this.formPriviewUrl = res.data;
+                })
+
+
             },
             zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
                 alert(msg);
@@ -199,25 +230,48 @@
             addDiyDom(treeId, treeNode) {
                 var aObj = $("#" + treeNode.tId );
                 if ($("#diyBtn_"+treeNode.id).length>0) return;
-                var editStr = "<span id='diyBtn_space_" +treeNode.id+ "' class='icon-eyes' > </span>";
-                if(!treeNode.isParent){
+                var editStr = "<span id='diyBtn_space-" +treeNode.formId+ "' class='icon-eyes' > </span>";
+                if(!treeNode.isParent && treeNode.isForm){
                     aObj.append(editStr);
                 }
+                let self =this;
+                $('.icon-eyes').map(function(){
+                    $(this).unbind('click');
+                    $(this).bind('click',function(){
+                        let  linkFormId = $(this).attr("id");
+
+                        if(linkFormId){
+                            linkFormId =  linkFormId.split('-')[1]
+                        }
+                        console.info(linkFormId,'linkFormId')
+                        self.dialogFormPriview = true;
+                        formPriviewParams.modelId = getFormInfosParams.modelId;
+                        formPriviewParams.formId = linkFormId;
+                        console.info(formPriviewParams)
+                        getFormPreview(formPriviewParams).then((res)=>{
+                            self.formPriviewUrl = res.data;
+                        console.info( self.priviewUrl)
+                        }).catch(function (error) {
+                                alert(error.message);
+                            })
+                        })
+                    })
             },
             showTreeDialog(index,row){
-       /*         templateCount++;
                 this.changeFormVisible = true;
-                if(templateCount % 2 ==0){
-                    this.istable2= true;
-                }else{
-                    this.istable= true;
-                }*/
-                this.istable= true;
+//                this.istable= true;
                 getFormInfosParams.modelId = row.modelId;
                 getFormInfosForm(getFormInfosParams).then((res)=>{
                      this.zNodes = res.data;
                      for(var i = 0;i<this.zNodes.length;i++){
                          this.zNodes[i].name = this.zNodes[i].formName;
+                         if(this.zNodes[i].pid){
+                             this.isDoubForm = true;
+                             this.isSingForm = false;
+                         }else{
+                             this.isSingForm = true;
+                             this.isDoubForm = false;
+                         }
                      }
                      $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
                  })

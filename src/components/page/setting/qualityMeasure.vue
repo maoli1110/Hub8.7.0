@@ -1245,7 +1245,7 @@ export default {
             console.log(treeNode.formId);
             let self =this;
             $('.icon-eyes').map(function(){
-                $(this).unbind('click');
+               $(this).unbind('click');
                $(this).bind('click',function(){
                    let  linkFormId = $(this).attr("id");
                    if(linkFormId){
