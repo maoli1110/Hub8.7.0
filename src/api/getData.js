@@ -42,7 +42,8 @@ export const getFormPreview =params  => axios.get(`${base}/rs/lbconfig/form/getF
 export const getFormModelTypeList  = params =>axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList/${params.belong}`);
 //获取表单列表-->树结构
 export const getFormInfosForProcess = params=>axios.get(`${base}/rs/lbconfig/form/getFormInfosForProcess/${params.modelId}/${params.processId}`);
-
+//查询表单列表
+export const getFormInfosForm = params=>axios.get(`${base}/rs/lbconfig/form/getFormInfos/${params.modelId}`);
 /**
  * 工程模板接口
  */

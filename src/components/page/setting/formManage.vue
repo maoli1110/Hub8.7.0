@@ -12,7 +12,7 @@
         </el-row>
         <el-row class="quality-search" >
             <el-col :span="16" style="text-align:left">
-                <el-input  placeholder="请输入内容" icon="search" class="quality-searInput" style="width:30%" v-model="formVal"></el-input>
+                <el-input  placeholder="请输入内容" icon="search" class="quality-searInput" style="width:30%" v-model="formVal" ></el-input>
                 <el-icon class="el-icon-circle-cross" v-show="formVal.length>0" @click.native="clearFormSearval"></el-icon>
             </el-col>
         </el-row>
@@ -31,7 +31,7 @@
             <el-table-column label="操作" width="100" @click.native="addnew">
                 <template scope="scope">
                     <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
-                    <span class="icon-look" @click="showTreeDialog"></span>
+                    <span class="icon-look" @click="showTreeDialog(scope.$index,scope.row)"></span>
                 </template>
 
             </el-table-column>
@@ -95,7 +95,7 @@
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
     import "static/js/ztree/js/jquery.ztree.exedit.js";
     import "static/js/ztree/js/jquery.ztree.exhide-3.5.js"
-    import { getFormModelTypeList} from 'src/api/getData.js'
+    import { getFormModelTypeList,getFormInfosForm} from 'src/api/getData.js'
     let level = 1;
     let maxLevel=-1;
     let newCount = 1;
@@ -105,41 +105,35 @@
     let nodes,treeNode;
     let searchBtnCount = 1;
     let templateCount = 1;
+    let getFormInfosParams = {
+        modelId:""
+    }
     export default{
         data(){
             return {
                 setting: {
                     view: {
-                        selectedMulti: false,
+//                        selectedMulti: false,
                         addDiyDom: this.addDiyDom,
                         showIcon :false,
                     },
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
+                    simpleData: {
+                        enable: true,
+                        idKey: "formId",
+                        pIdKey: "pid",
+                        rootPId: 0
+                    },
+                    key: {
+                        name: "formName"
                     },
                     callback: {
-                       /* beforeCheck: this.beforeCheck(),
-                        onCheck: this.onCheck()*/
+//                        beforeCheck: this.beforeCheck(),
+                        onClick: this.onCheck,
                         onAsyncSuccess:this.zTreeOnAsyncSuccess
                     }
                 },
 
-                zNodes: [
-                    { id: 1, pId: 0, name: "随意勾选 1", open: true },
-                    { id: 11, pId: 1, name: "随意勾选 1-1" },
-                    { id: 12, pId: 1, name: "随意勾选 1-2", open: true },
-                    { id: 121, pId: 12, name: "随意勾选 1-2-1" },
-                    { id: 122, pId: 12, name: "随意勾选 1-2-2" },
-
-                    { id: 2, pId: 0, name: "禁止勾选 2", open: true },
-                    { id: 21, pId: 2, name: "禁止勾选 2-1" },
-                    { id: 22, pId: 2, name: "禁止勾选 2-2" },
-                    { id: 221, pId: 22, name: "禁止勾选 2-2-1" },
-                    { id: 222, pId: 22, name: "禁止勾选 2-2-2" },
-                    { id: 23, pId: 2, name: "禁止勾选 2-3" }
-                ],
+                zNodes: [],
                 url: '../../../static/vuetable.json',
                 tableData: [],
                 cur_page: 1,
@@ -158,16 +152,19 @@
         mounted(){
             $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
             $('.form-dialog-title input').bind('keydown',this.searchformTree)
-            $('.icon-eyes').map(function(){
+          /*  $('.icon-eyes').map(function(){
                 $(this).bind('click',function(){
                     console.info('预览界面')
                 })
-            })
+            })*/
         },
         created(){
             this.getData()
         },
         methods: {
+            onCheck(event, treeId, treeNode){
+                console.log(treeNode);
+            },
             handleSizeChange(){
 
             },
@@ -207,15 +204,23 @@
                     aObj.append(editStr);
                 }
             },
-            showTreeDialog(){
-                templateCount++;
+            showTreeDialog(index,row){
+       /*         templateCount++;
                 this.changeFormVisible = true;
                 if(templateCount % 2 ==0){
                     this.istable2= true;
                 }else{
                     this.istable= true;
-                }
-
+                }*/
+                this.istable= true;
+                getFormInfosParams.modelId = row.modelId;
+                getFormInfosForm(getFormInfosParams).then((res)=>{
+                     this.zNodes = res.data;
+                     for(var i = 0;i<this.zNodes.length;i++){
+                         this.zNodes[i].name = this.zNodes[i].formName;
+                     }
+                     $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
+                 })
 
             },
             //树结构的搜索功能
@@ -274,7 +279,12 @@
             //清除表单值
             clearFormSearval(){
                 this.formVal = '';
-            }
+            },
+       /*     formSearch(){
+                getFormInfos({modelId:'1-1'}).then((res)=>{
+                    this.zNodes = res.data;
+                })
+            },*/
         }
     }
 </script>
