@@ -104,11 +104,6 @@
                             <ul v-for='childitem in item.childs'>
                                 <p class="project-sultable">{{childitem.typeName}}</p>
                                 <li v-for='childitemName in childitem.childs'>{{childitemName.formName}}</li>
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 2d55945afc0e6079fe4a78567e9ddacd8c1e96de
                             </ul>
                         </div>
                     </div>
@@ -175,21 +170,6 @@
 
                             <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
                                 <ul class="form-table">
-<<<<<<< HEAD
-=======
-                                    <li>111111
-                                        <div class="tabs-icon">
-                                            <el-icon class="el-icon-picture"></el-icon>
-                                            <el-icon class="el-icon-delete"></el-icon>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="tabs-icon">
-                                            <el-icon class="el-icon-picture"></el-icon>
-                                            <el-icon class="el-icon-delete"></el-icon>
-                                        </div>
-                                    </li>
->>>>>>> 2d55945afc0e6079fe4a78567e9ddacd8c1e96de
                                     <li v-for='(childitemName,index) in childitem.childs'>{{childitemName.formName}}
                                         <div class="tabs-icon">
                                             <el-icon class="el-icon-picture"></el-icon>
