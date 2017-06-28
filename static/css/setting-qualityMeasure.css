@@ -896,7 +896,7 @@
     width: 752px;
     background:#494949;
     position:absolute;
-    z-index:2200;
+    z-index:4000;
   /*  height: 722px;*/
 }
 .dialogPriview .el-dialog__body{
