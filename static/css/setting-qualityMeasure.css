@@ -668,7 +668,7 @@
 
 }
 .form-change .single-stump .form-dialog-body{
-    height:388px;overflow:auto;padding:30px 40px;
+    height:388px;overflow:auto;padding:30px 40px 0;
 }
 .form-change .single-stump .form-dialog-body >.form-content{
     padding:0px 20px 0px 20px;border:1px solid #ddd;height:374px;overflow:auto;
@@ -710,7 +710,7 @@
     float:right;font-size:14px; margin-top: 5px;
 }
 .form-change .form-ztree-dialog .form-dialog-footer{
-    text-align:center;
+    text-align:center;padding-top:15px;
 }
 .form-change .form-ztree-dialog .icon-eyes{
     width:15px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -153px -38px;float:right;margin-top:5px;
@@ -914,6 +914,10 @@
     height:0;background:transparent;
 }
 .form-change .dialogPriview .el-dialog{
-    position:absolute;z-index:2004;
+
     width: 752px !important;top:5% !important;
+}
+
+.form-change .el-table::after, .el-table::before{
+    background:transparent !important;
 }
