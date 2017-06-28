@@ -50,67 +50,62 @@
         <!--模态框项目变更表格-->
         <div class="dialog-form">
             <!--模拟遮罩层-->
-            <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" style="opacity:0;" >
+            <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" style="width:0;position:absolute;">
             </el-dialog>
             <!--单层树结构模板-->
-            <div class="single-stump form-ztree-dialog" v-show="isSingForm">
-                <div class="form-dialog-title">
-                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
-                    <el-input icon="search" ></el-input>
-                </div>
-                <div class="form-dialog-body" >
-                    <div class="form-content">
-                        <el-table :data="zNodes"   :border="false" :show-header="false" class="ztreeSingData">
-                            <el-table-column prop="formName"></el-table-column>
-                            <el-table-column width="100">
-                                <template scope="scope"  v-show="zNodes.isForm">
-                                    <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
-                                    <span class="icon-eyes" @click="formPriview(scope.$index,scope.row)" style="margin-top:12px;"></span>
-                                </template>
+                <div class="single-stump form-ztree-dialog" v-show="isSingForm">
+                    <div class="form-dialog-title" style="padding-bottom:15px;">
+                        <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
+                        <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch"></el-input>
+                    </div>
+                    <div class="form-dialog-body" >
+                        <div class="form-content">
+                            <el-table :data="zNodes"   :border="false" :show-header="false" class="ztreeSingData">
+                                <el-table-column prop="formName"></el-table-column>
+                                <el-table-column width="100">
+                                    <template scope="scope"  v-show="zNodes.isForm">
+                                        <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
+                                        <span class="icon-eyes" @click="formPriview(scope.$index,scope.row)" style="margin-top:12px;"></span>
+                                    </template>
 
-                            </el-table-column>
-                        </el-table>
-                       <!-- <div class="priview-le" v-for="item in zNodes">
-                            <div>{{item.formName}}</div>
-                            <span class="icon-eyes" @click="formPriview" style="margin-top:12px;"></span>
-                        </div>-->
+                                </el-table-column>
+                            </el-table>
+                           <!-- <div class="priview-le" v-for="item in zNodes">
+                                <div>{{item.formName}}</div>
+                                <span class="icon-eyes" @click="formPriview" style="margin-top:12px;"></span>
+                            </div>-->
+                        </div>
+                    </div>
+                    <div class="form-dialog-footer" >
+                        <el-button @click="isSingForm=false,changeFormVisible=false" >取 消</el-button>
+                        <el-button type="primary" @click="isSingForm=false,changeFormVisible=false">确 定</el-button>
                     </div>
                 </div>
-                <div class="form-dialog-footer">
-                    <el-button @click="isSingForm=false,changeFormVisible=false" >取 消</el-button>
-                    <el-button type="primary" @click="isSingForm=false,changeFormVisible=false">确 定</el-button>
-                </div>
-            </div>
             <!--多层树结构模板-->
-            <div class="form-ztree-dialog" v-show="isDoubForm">
-                <div class="form-dialog-title">
-                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
-                    <el-input icon="search" :on-icon-click="searchformTree"></el-input>
-                </div>
-                <div class="form-dialog-body">
-                    <ul id="formTree" class="ztree"></ul>
-                </div>
-                <div class="form-dialog-footer">
-                    <el-button @click="isDoubForm=false,changeFormVisible = false" >取 消</el-button>
-                    <el-button type="primary" @click="isDoubForm=false,changeFormVisible = false">确 定</el-button>
+                <div class="form-ztree-dialog" v-show="isDoubForm">
+                    <div class="form-dialog-title">
+                        <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
+                        <el-input icon="search" class="searchVal" :on-icon-click="searchformTree"></el-input>
+                    </div>
+                    <div class="form-dialog-body">
+                        <ul class="ztree" id="formTree" ></ul>
+                    </div>
+                    <div class="form-dialog-footer">
+                        <el-button @click="isDoubForm=false,changeFormVisible = false" >取 消</el-button>
+                        <el-button type="primary" @click="isDoubForm=false,changeFormVisible = false">确 定</el-button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <el-dialog :visible.sync="dialogFormPriview" class="dialogPriview">
+
+        <el-dialog :visible.sync="dialogFormPriview" class="dialogPriview" :close-on-click-modal="false">
             <iframe :src="formPriviewUrl"  scrolling="no" frameborder="0"></iframe>
         </el-dialog>
     </div>
 </template>
 <script>
-    import "../../../../static/css/setting-explorer.css";
-//    import "static/js/ztree/css/zTreeStyle_new.css";
-    import "static/js/ztree/js/jquery.ztree.core-3.5.js";
-    import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-    import "static/js/ztree/js/jquery.ztree.exedit.js";
-    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js"
-    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from 'src/api/getData.js'
-    let level = 1;
-    let maxLevel=-1;
+
+    let level = "";
+    let maxLevel="";
     let newCount = 1;
 
     let type = '';
@@ -125,34 +120,44 @@
     let formPriviewParams = {
         formId:'',
         modelId:""
-    }
-
+    };
+    let cachezNodes = [];
+    import "static/css/setting-qualityMeasure.css";
+    import "static/js/ztree/js/jquery.ztree.core-3.5.js";
+    import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
+    import "static/js/ztree/js/jquery.ztree.exedit.js";
+    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js";
+    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from 'src/api/getData.js'
     export default{
         data(){
             return {
                 setting: {
                     view: {
-//                        selectedMulti: false,
+                        selectedMulti: false,
+                        showIcon:false,
                         addDiyDom: this.addDiyDom,
-                        showIcon :false,
                     },
-                    simpleData: {
-                        enable: true,
-                        idKey: "formId",
-                        pIdKey: "pid",
-                        rootPId: 0
-                    },
-                    key: {
-                        name: "formName"
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            idKey: "formId",
+                            pIdKey: "pid",
+                            rootPId: 0,
+                        },
+                        key: {
+                            name: "formName",
+//                        nocheck:"isForm",
+                        }
                     },
                     callback: {
-//                        beforeCheck: this.beforeCheck(),
-                        onClick: this.onCheck,
-                        onAsyncSuccess:this.zTreeOnAsyncSuccess
+                      /*  beforeCheck: this.beforeCheck,
+                        onCheck: this.onZtreeFormModelCheck*/
                     }
                 },
 
-                zNodes: [],
+                zNodes: [
+
+                ],
                 url: '../../../static/vuetable.json',
                 tableData: [],
                 cur_page: 1,
@@ -166,7 +171,8 @@
                 isSingForm:false,
                 isDoubForm:false,
                 dialogFormPriview:false,
-                formPriviewUrl:""
+                formPriviewUrl:"",
+                searchParam:""
             }
         },
         components:{
@@ -174,6 +180,7 @@
         },
         mounted(){
             $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
+            $('.basicSearch input').bind('keyup',this.basicSearch)
             $('.form-dialog-title input').bind('keydown',this.searchformTree)
           /*  $('.icon-eyes').map(function(){
                 $(this).bind('click',function(){
@@ -199,6 +206,10 @@
                 getFormModelTypeList({belong:0}).then((res) => {
                     this.formDataList = res.data
                 })
+             /*   getFormInfosForm({modelId:"3-6000"}).then((res)=>{
+                    this.zNodes = res.data;
+                     $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
+                })*/
             },
             formatter(row, column) {
                 return row.address;
@@ -212,18 +223,34 @@
             handleDelete(index, row) {
                 this.$message.error('删除第'+(index+1)+'行');
             },
+            notify(message){//地址为空的时候
+                this.$alert(message, {
+                    confirmButtonText: '确定'
+                })
+
+            },
             //表单的预览功能
             formPriview(index,row){
                 this.dialogFormPriview = true;
                 formPriviewParams.modelId = getFormInfosParams.modelId;
                 formPriviewParams.formId = row.formId;
-                console.info(row.formId,'');
                 getFormPreview(formPriviewParams).then((res) =>{
                     this.formPriviewUrl = res.data;
+                }).catch(function(error){
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        this.notify(error.response.data.message);
+                    } else if (error.request) {
+//                        console.log(error.request);
+                    } else {
+//                        console.log('Error', error.message);
+                    }
                 })
 
 
             },
+
             zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
                 alert(msg);
             },
@@ -244,27 +271,37 @@
                             linkFormId =  linkFormId.split('-')[1]
                         }
                         console.info(linkFormId,'linkFormId')
-                        self.dialogFormPriview = true;
+
                         formPriviewParams.modelId = getFormInfosParams.modelId;
                         formPriviewParams.formId = linkFormId;
                         console.info(formPriviewParams)
                         getFormPreview(formPriviewParams).then((res)=>{
-                            self.formPriviewUrl = res.data;
-                        console.info( self.priviewUrl)
+                            console.info(res.data,'res.data')
+                            if(res.data){
+                                self.dialogFormPriview = true;
+                                self.formPriviewUrl = res.data;
+                            }else{
+                                self.notify('暂不支持预览');
+                            }
                         }).catch(function (error) {
-                                alert(error.message);
-                            })
+                            console.info(error.message);
                         })
                     })
+                })
             },
             showTreeDialog(index,row){
+//                self = this;
+                this.isDoubForm = true;
                 this.changeFormVisible = true;
 //                this.istable= true;
                 getFormInfosParams.modelId = row.modelId;
                 getFormInfosForm(getFormInfosParams).then((res)=>{
                      this.zNodes = res.data;
+                     cachezNodes =res.data;
                      for(var i = 0;i<this.zNodes.length;i++){
                          this.zNodes[i].name = this.zNodes[i].formName;
+                      /*   this.zNodes[i].id = this.zNodes[i].formId;
+                         this.zNodes[i].pid = this.zNodes[i].pid;*/
                          if(this.zNodes[i].pid){
                              this.isDoubForm = true;
                              this.isSingForm = false;
@@ -305,9 +342,11 @@
                 }
             },
             searchformTree(event){
+
                 var treeObj = $.fn.zTree.getZTreeObj('formTree');
                 var nodes1 = treeObj.getNodesByParam("isHidden", true);
-                var searchVal = $('.form-dialog-title').find('input').val();
+                var searchVal = $('.searchVal').find('input').val();
+                console.info(searchVal)
                 /* 将之前隐藏的展示*/
                 if (nodes1.length > 0) {
                     treeObj.showNodes(nodes1);
@@ -330,6 +369,25 @@
                     }
                 }
             },
+            basicSearch(event){//基础搜索功能
+                var arr = [];
+                var keyWord = this.searchParam;
+                console.info(this.searchParam)
+                var reg = new RegExp(keyWord);
+                for(var i=0;i<this.zNodes.length;i++){
+                    //如果字符串中不包含目标字符会返回-1
+                    if(this.zNodes[i].formName.indexOf(this.searchParam)!=-1){
+                        arr.push(this.zNodes[i]);
+                    }
+                }
+                if(event.type=='click' ||event.keyCode == 13){
+                    if(this.searchParam){
+                        this.zNodes =arr;
+                    }else{
+                        this.zNodes = cachezNodes;
+                    }
+                }
+             },
             //清除表单值
             clearFormSearval(){
                 this.formVal = '';

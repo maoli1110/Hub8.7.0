@@ -1,8 +1,8 @@
 <template>
     <div class="proTemplate">
-    
+
         <div v-if="!EditVisible">
-    
+
             <el-row>
                 <el-menu class="el-menu-demo" mode="horizontal" router>
                     <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
@@ -22,9 +22,9 @@
                 </el-table-column>
                 <el-table-column prop="updateTime" width="150" label="更新时间" sortable>
                 </el-table-column>
-    
+
                 <el-table-column label="操作" width="150">
-    
+
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                         <span class="icon-compile" @click="proTemplateEdit(scope.$index,scope.row)"></span>
@@ -90,7 +90,7 @@
                 </el-col>
                 <el-col :span="14" class="project-form">
                     <p class="project-form-tit">包含表单</p>
-    
+
                     <div style="border:1px solid #ddd;">
                         <div class="project-form-list">
                             <el-select v-model="value" placeholder="请选择" @change="selectTestAval">
@@ -104,7 +104,7 @@
                             <ul v-for='childitem in item.childs'>
                                 <p class="project-sultable">{{childitem.typeName}}</p>
                                 <li v-for='childitemName in childitem.childs'>{{childitemName.formName}}</li>
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
             <el-dialog title="增加多个节点" :visible.sync="textAreaVisible" class="multi-textarea">
                 <el-input type="textarea" :rows="10" id="multiLeaf" placeholder="一行视为一个节点，支持多行复制粘贴">
                 </el-input>
-    
+
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="textAreaVisible = false">取 消</el-button>
                     <el-button type="primary" id="proBtnOk" @click="textAreaVisible = false,addMoreNodes">确 定</el-button>
@@ -126,7 +126,7 @@
             </el-dialog>
             <!--表单编辑-->
             <el-dialog title="添加" :visible.sync="formEditVisible" style="width:10%;position:fixed;left:50%;opacity:0;"></el-dialog>
-    
+
         </div>
         <div class="formEdit" v-show="formEditVisible">
             <div class="formEidt-title">
@@ -168,7 +168,7 @@
                     </template>
                     <template>
                         <el-tabs v-model="activeName2" type="card" @tab-click="tabClick" v-for='(item,index) in typeList' v-show='index==value'>
-    
+
                             <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
                                 <ul class="form-table">
                                     <li>111111
@@ -177,7 +177,7 @@
                                             <el-icon class="el-icon-delete"></el-icon>
                                         </div>
                                     </li>
-                                    <li>111111
+                                    <li>
                                         <div class="tabs-icon">
                                             <el-icon class="el-icon-picture"></el-icon>
                                             <el-icon class="el-icon-delete"></el-icon>
@@ -189,14 +189,14 @@
                                             <el-icon class="el-icon-delete" @click.native="itemDelete(item.typeName,childitem.typeName,childitemName,index)"></el-icon>
                                         </div>
                                     </li>
-    
+
                                 </ul>
-    
+
                             </el-tab-pane>
                             <p class="form-total">已选表单{{options.length-1}}</p>
                         </el-tabs>
                     </template>
-    
+
                 </div>
             </div>
             <div class="formBtn">
@@ -313,7 +313,7 @@ export default {
 
             // 编辑页面的三级标题
             // 单位工程
-            //  分部项目          
+            //  分部项目
             // 分项工程
             // 变动的表单
             formList: [],
@@ -468,7 +468,7 @@ export default {
                                     el.childs = [];
                                     el.childs.push({ typeId: elForm.typeId, modelId: elForm.modelId, formId: elForm.formId, formName: elForm.formName });
                                     // console.log(this);
-                                    // this.$set(el, 'childs', elForm.formName);                               
+                                    // this.$set(el, 'childs', elForm.formName);
                                     // console.log(this.typeList);
                                 }
 
@@ -511,7 +511,7 @@ export default {
             if (treeNode.isForm) {
                 console.log(123);
                 if (this.value == 0) {
-                    //    开工报告                   
+                    //    开工报告
                     if (this.activeName2 == 0) {
                         //    工序质检
                         this.typeList.forEach((el, index1) => {
@@ -550,7 +550,7 @@ export default {
                                     if (index2 == 0) {
                                         // console.log(el.childs);
                                         // console.log(this);
-                                        // this.$set(el, 'childs', elForm.formName);                               
+                                        // this.$set(el, 'childs', elForm.formName);
                                         // console.log(this.typeList);
                                         if (el.childs == null) {
                                             el.childs = [];
@@ -577,7 +577,7 @@ export default {
                                     if (index2 == 1) {
                                         // console.log(el.childs);
                                         // console.log(this);
-                                        // this.$set(el, 'childs', elForm.formName);                               
+                                        // this.$set(el, 'childs', elForm.formName);
                                         // console.log(this.typeList);
                                         if (el.childs == null) {
                                             el.childs = [];
@@ -607,7 +607,7 @@ export default {
                                     if (index2 == 0) {
                                         console.log(el.childs);
                                         // console.log(this);
-                                        // this.$set(el, 'childs', elForm.formName);                               
+                                        // this.$set(el, 'childs', elForm.formName);
                                         console.log(this.typeList);
                                         if (el.childs == null) {
                                             el.childs = [];
@@ -635,7 +635,7 @@ export default {
                                     if (index2 == 1) {
                                         console.log(el.childs);
                                         // console.log(this);
-                                        // this.$set(el, 'childs', elForm.formName);                               
+                                        // this.$set(el, 'childs', elForm.formName);
                                         console.log(this.typeList);
                                         if (el.childs == null) {
                                             el.childs = [];

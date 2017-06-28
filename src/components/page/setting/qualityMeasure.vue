@@ -146,7 +146,9 @@
                 </el-col>
             </el-row>
         </div>
-        <div v-show="isBMPedit" class="BMP-process editPage">
+        <el-dialog :visible.sync="isBMPedit">
+            <!--v-show="isBMPedit"-->
+            <div  class="BMP-process editPage">
             <el-row class="BMP-info">
                 <el-col :span="24" class="pro-title">
                     工程名称
@@ -237,6 +239,7 @@
                 </el-col>
             </el-row>
         </div>
+        </el-dialog>
         <!--模态框(关联模型)-->
         <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model">
             <el-row>
