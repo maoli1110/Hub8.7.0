@@ -64,9 +64,9 @@
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
                                 <span id="edit" @click="edit"></span>
                             </div>
@@ -104,9 +104,7 @@
                             <ul v-for='childitem in item.childs'>
                                 <p class="project-sultable">{{childitem.typeName}}</p>
                                 <li v-for='childitemName in childitem.childs'>{{childitemName.formName}}</li>
-                                <li>1</li>
-                                <li>2</li>
-                                <li>3</li>
+                                
                             </ul>
                         </div>
                     </div>
@@ -133,7 +131,7 @@
         <div class="formEdit" v-show="formEditVisible">
             <div class="formEidt-title">
                 <span>添加</span>
-                <el-icon class="el-icon-close" @click.native="formEditVisible=false"></el-icon>
+                <el-icon class="el-icon-close" @click.native="formEditVisible=false;addcancle()"></el-icon>
             </div>
             <div :form-info="formInfo2" class="form-edit-info">
                 <div class="formParams">
@@ -214,7 +212,7 @@ import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
 import "static/js/ztree/js/jquery.ztree.exedit.js";
 import "static/js/ztree/js/jquery.ztree.exhide-3.5.js";
-import { getLDProjModelList, getProjModelDetail, getProjModelNodeForms, getFormModelTypeList, getFormInfos } from 'src/api/getData.js'
+import { getLDProjModelList, getProjModelDetail, getProjModelNodeForms, getFormModelTypeList, getFormInfos, updateProjModel } from 'src/api/getData.js'
 let level = 1;
 let maxLevel = -1;
 let newCount = 1;
@@ -343,7 +341,6 @@ export default {
             activeName2: '0',
             maxFlag: false,
             proSearchBtns: false,
-
             testAval: false,
             formInfo2: { "progress": "路基工程", "subProgress": "路基土石方工程", "subType": "土方工程" }
         }
@@ -435,13 +432,23 @@ export default {
         },
         // 点击
         zTreeOnClick(event, treeId, treeNode) {
-            // console.log(treeNode)
+            // 清空上一次的残留
+            this.typeList.forEach((el, index1) => {
+                // console.log(el.childs);
+                el.childs.forEach((el, index2) => {
+                    el.childs = [];
+                })
+            });
+            this.formList=[],
+            console.log(treeNode)
             this.editTitle = [];
             this.nodeId = treeNode.nodeId;
             if (treeNode.isParent) {
                 console.log('父节点')
                 return false;
             } else {
+
+
                 this.addFlag = true;
                 // this.editTitle.push(treeNode.getParentNode().getParentNode().nodeName, treeNode.getParentNode().nodeName, treeNode.nodeName);
                 getProjModelNodeForms({
@@ -688,7 +695,48 @@ export default {
             });
             console.log(this.formList);
             this.nodeForms.push({ nodeId: this.nodeId, formList: this.formList });
-            console.log(this.nodeForms);
+            // console.log(this.nodeForms);
+            let treeObj = $.fn.zTree.getZTreeObj("proZtree");
+            let nodes = treeObj.transformToArray(treeObj.getNodes());
+            let nodeTrees = [];
+            console.log(nodes);
+            nodes.forEach((el, index) => {
+                nodeTrees.push({ nodeId: el.nodeId, pid: el.pid, nodeName: el.nodeName });
+            })
+            console.log(nodeTrees);
+            let para = {
+                projModelId: this.projModelId,
+                projModelName: this.projModelName,
+                nodeTrees: nodeTrees,
+                nodeForms: this.nodeForms,
+            }
+            console.log(para);
+            updateProjModel(para).then(res => {
+                // getProjModelNodeForms({
+                //     projmodelId: this.projModelId,
+                //     nodeId: treeNode.nodeId
+                // }).then((res) => {
+                //     let selectOption = res.data;
+                //     selectOption.forEach((el, index) => {
+                //         if (index == 0) {
+                //             this.value_ = el.modelId;
+                //         }
+                //         // console.log(el)
+                //         this.addFormOption.push({ value_: el.modelId, label: el.modelName })
+                //     })
+                // })
+
+            }).catch((err) => {
+                console.log(err);
+            });
+
+
+
+
+
+
+
+
         },
         addcancle() {
             this.formEditVisible = false;
@@ -906,13 +954,13 @@ export default {
             treeNode = nodes[0];
             //                isParent = e.data.isParent;
             if (levelAdd > 2) {
-                treeNode = zTree.addNodes(nodeParent, { id: (100 + newCount), pId: nodeParent.pid, isParent: isParent, name: "new node" + (newCount++) });
+                treeNode = zTree.addNodes(nodeParent, { nodeId: (100 + newCount), pid: nodeParent.pid, isParent: isParent, name: "new node" + (newCount++) });
                 zTree.editName(treeNode[0]);
             } else {
                 if (treeNode) {
-                    treeNode = zTree.addNodes(treeNode, { id: (100 + newCount), pId: treeNode.id, isParent: isParent, name: "new node" + (newCount++) });
+                    treeNode = zTree.addNodes(treeNode, { nodeId: (100 + newCount), pid: treeNode.id, isParent: isParent, name: "new node" + (newCount++) });
                 } else {
-                    treeNode = zTree.addNodes(null, { id: (100 + newCount), pId: 0, isParent: isParent, name: "new node" + (newCount++) });
+                    treeNode = zTree.addNodes(null, { nodeId: (100 + newCount), pId: 0, isParent: isParent, name: "new node" + (newCount++) });
                 }
                 if (treeNode) {
                     zTree.editName(treeNode[0]);
