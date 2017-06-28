@@ -64,9 +64,9 @@
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                                            <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                                            <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                                            <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
                                 <span id="edit" @click="edit"></span>
                             </div>
@@ -104,14 +104,14 @@
                             <ul v-for='childitem in item.childs'>
                                 <p class="project-sultable">{{childitem.typeName}}</p>
                                 <li v-for='childitemName in childitem.childs'>{{childitemName.formName}}</li>
-                                
+    
                             </ul>
                         </div>
                     </div>
                 </el-col>
                 <el-col :span="24" class="pro-butons clearfix">
-                    <el-button type="primary" @click="proOk">确定</el-button>
-                    <el-button type="primary" @click="proCancel">取消</el-button>
+                    <el-button type="primary" @click.native="proOk">确定</el-button>
+                    <el-button type="primary" @click.native="proCancel">取消</el-button>
                 </el-col>
             </el-row>
             <!--增加多个节点弹框-->
@@ -171,18 +171,6 @@
     
                             <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
                                 <ul class="form-table">
-                                    <li>111111
-                                        <div class="tabs-icon">
-                                            <el-icon class="el-icon-picture"></el-icon>
-                                            <el-icon class="el-icon-delete"></el-icon>
-                                        </div>
-                                    </li>
-                                    <li>111111
-                                        <div class="tabs-icon">
-                                            <el-icon class="el-icon-picture"></el-icon>
-                                            <el-icon class="el-icon-delete"></el-icon>
-                                        </div>
-                                    </li>
                                     <li v-for='(childitemName,index) in childitem.childs'>{{childitemName.formName}}
                                         <div class="tabs-icon">
                                             <el-icon class="el-icon-picture"></el-icon>
@@ -371,7 +359,7 @@ export default {
             console.log(this.addFormOption);
             getFormInfos(this.value_).then((res) => {
                 this.editZNodes = res.data;
-                $.fn.zTree.init($("#editTree"), this.settingEdit, this.editZNodes);
+                $.fn.zTree.init($("#editTree"), this.settingEdit, this.editZNodes);                
                 // this.addFormOption.push({value})
             }).catch(() => {
             });
@@ -406,40 +394,110 @@ export default {
         handleDelete(index, row) {
             this.$message.error('删除第' + (index + 1) + '行');
         },
-        // 编辑
-        proTemplateEdit(index, row) {
-            this.EditVisible = true;
-            this.projModelId = row.projModelId;
+         // 更新所有信息
+        updatePromodel() {
+            let treeObj = $.fn.zTree.getZTreeObj("proZtree");
+            let nodes = treeObj.transformToArray(treeObj.getNodes());
+            let nodeTrees = [];
+            let formList = [];
+            this.nodeForms = [];
+            this.nodeTrees = [];            
+            // 拼接向后台发送的参数
+            // console.log(this.nodeId, this.projModelId, this.projModelName);
+            this.typeList.forEach((el, index1) => {
+                // console.log(el.childs);
+                el.childs.forEach((el, index2) => {
+                    console.log(el.childs)
+                    if (el.childs) {
+                        el.childs.forEach((el, index3) => {
+                            formList.push(el);
+                        })
+                    }
+
+                })
+            });
+            // console.log(this.formList);
+            this.nodeForms.push({ nodeId: this.nodeId, formList: formList });
+            // console.log(this.nodeForms);
+            // console.log(nodes);
+            nodes.forEach((el, index) => {
+                // 去掉全部
+                if(index==0){
+                    return;
+                }
+                nodeTrees.push({ nodeId: el.nodeId, pid: el.pid, nodeName: el.nodeName });
+            })           
+
+            let para = {
+                projModelId: this.projModelId,
+                projModelName: this.projModelName,
+                nodeTrees: nodeTrees,
+                nodeForms: this.nodeForms,
+            }
+            console.log(para);
+            updateProjModel(para).then(res => {
+            }).catch((err) => {
+                console.log(err);
+            });
+        },
+        // 更新工程划分树
+        getprojmodelDetail() {
+            // 每次进入清空工程划分树右侧下拉框内容
             this.options = [];
-            getProjModelDetail(row.projModelId).then(res => {
+            getProjModelDetail(this.projModelId).then(res => {
                 console.log(res);
                 this.projModelName = res.data.projModelName;
                 this.zNodes = res.data.nodeInfos;
+                // 给树结构添加全部选项
+                console.log(this.zNodes);
+                this.zNodes.unshift({ nodeId: '0001', nodeName: '全部', pid: '' });
+                this.zNodes.forEach((el, index) => {
+                    if (index == 1) {
+                        el.pid = '0001';
+                    }
+                })
                 $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);
                 this.typeList = res.data.typeList;
-                // 克隆数组
-                // this.newtypeList = this.typeList.slice(0);
-                // this.newtypeList = jQuery.extend(true, this.newtypeList, this.typeList);
-                // 设置包含表单下拉框
+                // 设置包含表单下拉框内容
                 this.typeList.forEach((el, index) => {
                     this.options.push({ value: index, label: el.typeName })
                 });
-
             }).catch(() => {
-
             });
-
+        },
+        // 获取树节点对应的表内容
+        getprojmodelNodeForms() {
+            getProjModelNodeForms({
+                projmodelId: this.projModelId,
+                nodeId: this.nodeId
+            }).then(res => {
+                console.log(res);
+                res.data.forEach((elForm, index) => {
+                    this.typeList.forEach((el, index1) => {
+                        el.childs.forEach((el, index2) => {
+                            if (elForm.typeId == el.typeId) {
+                                el.childs.push({ typeId: elForm.typeId, modelId: elForm.modelId, formId: elForm.formId, formName: elForm.formName });
+                            }
+                        })
+                    });
+                })
+                // this.typeList = this.newtypeList;
+            })
+        },
+        // 编辑
+        proTemplateEdit(index, row) {
+            this.EditVisible = true;
+            this.projModelId = row.projModelId;           
+            this.getprojmodelDetail();
         },
         // 点击
         zTreeOnClick(event, treeId, treeNode) {
             // 清空上一次的残留
             this.typeList.forEach((el, index1) => {
-                // console.log(el.childs);
                 el.childs.forEach((el, index2) => {
                     el.childs = [];
                 })
             });
-            this.formList=[],
             console.log(treeNode)
             this.editTitle = [];
             this.nodeId = treeNode.nodeId;
@@ -447,39 +505,10 @@ export default {
                 console.log('父节点')
                 return false;
             } else {
-
-
                 this.addFlag = true;
                 // this.editTitle.push(treeNode.getParentNode().getParentNode().nodeName, treeNode.getParentNode().nodeName, treeNode.nodeName);
-                getProjModelNodeForms({
-                    projmodelId: this.projModelId,
-                    nodeId: treeNode.nodeId
-                }).then(res => {
-                    // console.log(res);
-                    res.data.forEach((elForm, index) => {
-                        // console.log(elForm.typeId);
-                        this.typeList.forEach((el, index1) => {
-                            // console.log(el.childs);
-                            el.childs.forEach((el, index2) => {
-                                // console.log(el_2.typeId);
-                                // console.log(el_2);
-                                if (elForm.typeId == el.typeId) {
-                                    // console.log(elForm.formName);
-                                    el.childs = [];
-                                    el.childs.push({ typeId: elForm.typeId, modelId: elForm.modelId, formId: elForm.formId, formName: elForm.formName });
-                                    // console.log(this);
-                                    // this.$set(el, 'childs', elForm.formName);                               
-                                    // console.log(this.typeList);
-                                }
-
-                            })
-
-                        });
-                    })
-                })
+                this.getprojmodelNodeForms();
             }
-
-
         },
         // 表单添加
         formAdd() {
@@ -503,7 +532,6 @@ export default {
                 }).catch(() => {
                 });
             }
-
         },
         // 添加页面树点击事件
         editzTreeOnClick(event, treeId, treeNode) {
@@ -670,86 +698,20 @@ export default {
 
                     })
                 }
-
-
-
             });
-
         },
         addConfirm() {
             this.formEditVisible = false;
-            // 拼接向后台发送的参数
-            console.log(this.nodeId, this.projModelId, this.projModelName);
-
-            this.typeList.forEach((el, index1) => {
-                // console.log(el.childs);
-                el.childs.forEach((el, index2) => {
-                    console.log(el.childs)
-                    if (el.childs) {
-                        el.childs.forEach((el, index3) => {
-                            this.formList.push(el);
-                        })
-                    }
-
-                })
-            });
-            console.log(this.formList);
-            this.nodeForms.push({ nodeId: this.nodeId, formList: this.formList });
-            // console.log(this.nodeForms);
-            let treeObj = $.fn.zTree.getZTreeObj("proZtree");
-            let nodes = treeObj.transformToArray(treeObj.getNodes());
-            let nodeTrees = [];
-            console.log(nodes);
-            nodes.forEach((el, index) => {
-                nodeTrees.push({ nodeId: el.nodeId, pid: el.pid, nodeName: el.nodeName });
-            })
-            console.log(nodeTrees);
-            let para = {
-                projModelId: this.projModelId,
-                projModelName: this.projModelName,
-                nodeTrees: nodeTrees,
-                nodeForms: this.nodeForms,
-            }
-            console.log(para);
-            updateProjModel(para).then(res => {
-                // getProjModelNodeForms({
-                //     projmodelId: this.projModelId,
-                //     nodeId: treeNode.nodeId
-                // }).then((res) => {
-                //     let selectOption = res.data;
-                //     selectOption.forEach((el, index) => {
-                //         if (index == 0) {
-                //             this.value_ = el.modelId;
-                //         }
-                //         // console.log(el)
-                //         this.addFormOption.push({ value_: el.modelId, label: el.modelName })
-                //     })
-                // })
-
-            }).catch((err) => {
-                console.log(err);
-            });
-
-
-
-
-
-
-
-
-        },
+            this.updatePromodel();
+        },      
         addcancle() {
             this.formEditVisible = false;
             this.typeList.forEach((el, index1) => {
-                // console.log(el.childs);
                 el.childs.forEach((el, index2) => {
-                    // console.log(el_2.typeId);
-                    // console.log(el_2);
-                    el.childs = null;
+                    el.childs = [];
                 })
-
             });
-
+            this.getprojmodelNodeForms();
         },
         //tab选项卡菜单
         tabClick(targetName) {
@@ -767,10 +729,25 @@ export default {
         },
         proOk() {
             this.EditVisible = false;
-            alert('123');
+            this.updatePromodel();            // alert('123');
         },
         proCancel() {
-            this.EditVisible = false;
+            // this.EditVisible = false;           
+               getProjModelDetail(this.projModelId).then(res => {
+                console.log(res);
+                this.projModelName = res.data.projModelName;
+                this.zNodes = res.data.nodeInfos;
+                // 给树结构添加全部选项
+                console.log(this.zNodes);
+                this.zNodes.unshift({ nodeId: '0001', nodeName: '全部', pid: '' });
+                this.zNodes.forEach((el, index) => {
+                    if (index == 1) {
+                        el.pid = '0001';
+                    }
+                })
+                $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);               
+            }).catch(() => {
+            });          
         },
         /*ztree-event*/
         //全部展开和收起
@@ -939,6 +916,16 @@ export default {
             }
 
         },
+        // 生成节点唯一ID
+        generateID() {
+            let d = new Date().getTime();
+            let uuid = 'xxxxxxxxxxxyxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uuid;
+        },
         add(e) {
             console.log(123);
             var treeLeafSub = '';
@@ -954,13 +941,13 @@ export default {
             treeNode = nodes[0];
             //                isParent = e.data.isParent;
             if (levelAdd > 2) {
-                treeNode = zTree.addNodes(nodeParent, { nodeId: (100 + newCount), pid: nodeParent.pid, isParent: isParent, name: "new node" + (newCount++) });
+                treeNode = zTree.addNodes(nodeParent, { nodeId: this.generateID(), pid: nodeParent.pid, isParent: isParent, name: "new node" + (newCount++) });
                 zTree.editName(treeNode[0]);
             } else {
                 if (treeNode) {
-                    treeNode = zTree.addNodes(treeNode, { nodeId: (100 + newCount), pid: treeNode.id, isParent: isParent, name: "new node" + (newCount++) });
+                    treeNode = zTree.addNodes(treeNode, { nodeId: this.generateID(), pid: treeNode.id, isParent: isParent, name: "new node" + (newCount++) });
                 } else {
-                    treeNode = zTree.addNodes(null, { nodeId: (100 + newCount), pId: 0, isParent: isParent, name: "new node" + (newCount++) });
+                    treeNode = zTree.addNodes(null, { nodeId: this.generateID(), pid: 0, isParent: isParent, name: "new node" + (newCount++) });
                 }
                 if (treeNode) {
                     zTree.editName(treeNode[0]);
@@ -1005,18 +992,18 @@ export default {
                 treeNode = nodes[0];
                 console.info(treeNode, '55555')
                 if (level > 2) {
-                    treeNode = zTree.addNodes(nodeParent, { id: (100 + newCount), pId: nodeParent.pid, isParent: isParent, name: $.trim(contentArray[k]) });
+                    treeNode = zTree.addNodes(nodeParent, { nodeId:this.generateID(), pid: nodeParent.pid, isParent: isParent, nodeName: $.trim(contentArray[k]) });
                     zTree.editName(treeNode[0]);
                 } else {
                     if (treeNode) {
                         if (k > 0) {
-                            treeNode = zTree.addNodes(nodeParent, { id: (100 + newCount), pId: treeNode.id, isParent: isParent, name: $.trim(contentArray[k]) });
+                            treeNode = zTree.addNodes(nodeParent, { nodeId: this.generateID(), pid: treeNode.id, isParent: isParent, nodeName: $.trim(contentArray[k]) });
                         } else {
-                            treeNode = zTree.addNodes(treeNode, { id: (100 + newCount), pId: treeNode.id, isParent: isParent, name: $.trim(contentArray[k]) });
+                            treeNode = zTree.addNodes(treeNode, { nodeId: this.generateID(), pid: treeNode.id, isParent: isParent, nodeName: $.trim(contentArray[k]) });
                         }
 
                     } else {
-                        treeNode = zTree.addNodes(null, { id: (100 + newCount), pId: 0, isParent: isParent, name: $.trim(contentArray[k]) });
+                        treeNode = zTree.addNodes(null, { nodeId: this.generateID(), pid: 0, isParent: isParent, nodeName: $.trim(contentArray[k]) });
                     }
                     if (treeNode) {
                         zTree.editName(treeNode[0]);
@@ -1098,7 +1085,7 @@ export default {
             // 隐藏不符合搜索条件的节点
             if (event.type == 'click' || event.keyCode == 13) {
                 for (var i = 0; i < treeNodes.length; i++) {
-                    if (treeNodes[i].name.indexOf(searchVal) < 0) {
+                    if (treeNodes[i].nodeName.indexOf(searchVal) < 0) {
                         treeObj.hideNode(treeNodes[i]);
                     } else {
                         /*符合条件的父级*/
