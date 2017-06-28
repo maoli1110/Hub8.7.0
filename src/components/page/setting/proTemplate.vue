@@ -64,9 +64,9 @@
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                                                                <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                                                    <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                                                    <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                                                    <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
                                 <span id="edit" @click="edit"></span>
                             </div>
@@ -124,7 +124,7 @@
                 </div>
             </el-dialog>
             <!--表单编辑-->
-            <el-dialog title="添加" :visible.sync="formEditVisible" style="width:10%;position:fixed;left:50%;opacity:0;"></el-dialog>
+            <el-dialog title="添加" :visible.sync="formEditVisible" style="width:0%;position:fixed;left:50%;opacity:0;"></el-dialog>
     
         </div>
         <div class="formEdit" v-show="formEditVisible">
@@ -133,14 +133,20 @@
                 <el-icon class="el-icon-close" @click.native="formEditVisible=false;addcancle()"></el-icon>
             </div>
             <div :form-info="formInfo2" class="form-edit-info">
-                <div class="formParams">                  
-                    <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">单位工程：<span style="color:#6595f2;font-weight:bold">{{editTitle[0]}}</span></span>
+                <div class="formParams">
+                    <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">单位工程：
+                        <span style="color:#6595f2;font-weight:bold">{{editTitle[0]}}</span>
+                    </span>
                 </div>
-                <div class="formParams">        
-                    <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">分部项目：<span style="color:#6595f2;font-weight:bold">{{editTitle[1]}}</span></span>
+                <div class="formParams">
+                    <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">分部项目：
+                        <span style="color:#6595f2;font-weight:bold">{{editTitle[1]}}</span>
+                    </span>
                 </div>
-                <div class="formParams">                   
-                    <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">分项工程：<span style="color:#6595f2;font-weight:bold">{{editTitle[2]}}</span></span>
+                <div class="formParams">
+                    <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">分项工程：
+                        <span style="color:#6595f2;font-weight:bold">{{editTitle[2]}}</span>
+                    </span>
                 </div>
             </div>
             <div class="formEdit-body">
@@ -169,7 +175,7 @@
                                 <ul class="form-table">
                                     <li v-for='(childitemName,index) in childitem.childs'>{{childitemName.formName}}
                                         <div class="tabs-icon">
-                                            <el-icon class="el-icon-picture"@click.native="itemView(value_,childitemName.formId)"></el-icon>
+                                            <el-icon class="el-icon-picture" @click.native="itemView(value_,childitemName.formId)"></el-icon>
                                             <el-icon class="el-icon-delete" @click.native="itemDelete(item.typeName,childitem.typeName,childitemName,index)"></el-icon>
                                         </div>
                                     </li>
@@ -188,6 +194,23 @@
                 <el-button type="primary" @click.native='addcancle'>取消</el-button>
             </div>
         </div>
+        <div class="el-dialog__wrapper dialogPriview" style="z-index: 3000;" v-show='dialogFormPriview'> 
+            <div class="el-dialog el-dialog--small" style="top: 14%;">
+                <div class="el-dialog__header">
+                    <span class="el-dialog__title"></span>
+                    <div class="el-dialog__headerbtn" @click="dialogForm()">
+                        <i class="el-dialog__close el-icon el-icon-close" ></i>
+                    </div>
+                </div>
+                <div class="el-dialog__body">
+                    <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
+                </div>
+                <!---->
+            </div>
+        </div>
+        <!--<el-dialog :visible.sync="dialogFormPriview" class="dialogPriview" :close-on-click-modal="false" style="z-index:5000">
+            <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
+        </el-dialog>-->
     </div>
 </template>
 <script>
@@ -196,7 +219,7 @@ import "static/js/ztree/js/jquery.ztree.core-3.5.js";
 import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
 import "static/js/ztree/js/jquery.ztree.exedit.js";
 import "static/js/ztree/js/jquery.ztree.exhide-3.5.js";
-import { getLDProjModelList, getProjModelDetail, getProjModelNodeForms, getFormModelTypeList, getFormInfos, updateProjModel } from 'src/api/getData.js'
+import { getLDProjModelList, getProjModelDetail, getProjModelNodeForms, getFormModelTypeList, getFormInfos, updateProjModel, getFormPreview } from 'src/api/getData.js'
 let level = 1;
 let maxLevel = -1;
 let newCount = 1;
@@ -300,6 +323,10 @@ export default {
             textAreaVisible: false,//文本域
             showCreateNodes: false,//创建节点
             formEditVisible: false,//表单编辑
+            // 预览遮罩
+            dialogFormPriview: false,
+            // 预览的URL
+            formPriviewUrl: '',
             dropMenus: false,
             activeName2: '0',
             maxFlag: false,
@@ -424,9 +451,9 @@ export default {
                 this.zNodes = res.data.nodeInfos;
                 // 给树结构添加全部选项
                 console.log(this.zNodes);
-                this.zNodes.unshift({ nodeId: '0001', nodeName: '全部', pid: '' });                
+                this.zNodes.unshift({ nodeId: '0001', nodeName: '全部', pid: '' });
                 this.zNodes.forEach((el, index) => {
-                    if (el.pid=='') {
+                    if (el.pid == '') {
                         el.pid = '0001';
                     }
                 })
@@ -475,7 +502,7 @@ export default {
             console.log(treeNode)
             this.editTitle = [];
             this.nodeId = treeNode.nodeId;
-            if (treeNode.level==3) {
+            if (treeNode.level == 3) {
                 this.addFlag = true;
                 this.editTitle.push(treeNode.getParentNode().getParentNode().nodeName, treeNode.getParentNode().nodeName, treeNode.nodeName);
                 this.getprojmodelNodeForms();
@@ -657,8 +684,24 @@ export default {
             });
         },
         // 预览选项
-        itemView(modelId,typeId){
-           console.log(modelId,typeId)
+        itemView(modelId, formId) {
+            //    console.log(modelId,typeId);
+            this.dialogFormPriview = true;
+            // formPriviewParams.modelId = getFormInfosParams.modelId;
+            // formPriviewParams.formId = row.formId;
+            getFormPreview({ modelId: '1-1', formId: 'LBBG0001' }).then((res) => {
+                this.formPriviewUrl = res.data;
+            }).catch(function (error) {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    this.notify(error.response.data.message);
+                } else if (error.request) {
+                    //                        console.log(error.request);
+                } else {
+                    //                        console.log('Error', error.message);
+                }
+            })
         },
         addConfirm() {
             this.formEditVisible = false;
@@ -1090,8 +1133,22 @@ export default {
                 }
                 this.options.push({ "label": treeNode.name })
             }
+        },
+        dialogForm(){
+            this.dialogFormPriview=false;
         }
 
     }
 }
 </script>
+<style scoped>
+.dialogPriview .el-dialog {
+    top: 15%;
+    width: 752px;
+    background: #494949;
+    position: absolute;
+    z-index: 4000;
+    /*  height: 722px;*/
+}
+</style>
+
