@@ -286,7 +286,7 @@
     margin-left: -312px;
     margin-top: -332px;
     background: #fff;
-    z-index: 2003;
+    z-index: 3500;
     border-radius: 5px;
 }
 .quality-dialog .ztree{
@@ -384,7 +384,9 @@
 .link-model .dialog-footer{
     text-align:center;
 }
-
+.link-modal-table .el-table .el-table__empty-block{
+    border-bottom:1px solid #ddd;
+}
 /*工程模板*/
 .proTemplate-table .icon-compile{
     width:20px;height:20px;display:inline-block;background: url(../../static/img/hubicon.png) no-repeat -203px -105px;margin-top:10px;
@@ -628,7 +630,7 @@
 }
 /*.form-table*/
 .form-change .form-table{
-    min-height:calc(100vh  - 400px );overflow:auto;
+    min-height:calc(100vh  - 270px );overflow:auto;
 }
 .form-change .form-table .table{
 

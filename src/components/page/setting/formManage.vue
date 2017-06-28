@@ -10,14 +10,14 @@
                 </el-menu>
             </el-col>
         </el-row>
-        <el-row class="quality-search" >
+   <!--     <el-row class="quality-search" >
             <el-col :span="16" style="text-align:left">
                 <el-input  placeholder="请输入内容" icon="search" class="quality-searInput" style="width:30%" v-model="formVal" ></el-input>
                 <el-icon class="el-icon-circle-cross" v-show="formVal.length>0" @click.native="clearFormSearval"></el-icon>
             </el-col>
-        </el-row>
+        </el-row>-->
         <!--:default-sort = "{prop: 'date', order: 'descending'}" -->
-        <el-table :data="formDataList"  style="width: 100%"  class="form-table"  height="calc(100vh - 380px)" >
+        <el-table :data="formDataList"  style="width: 100%"  class="form-table"  height="calc(100vh - 300px)" >
             <el-table-column label="序号" width="80" type="index">
             </el-table-column>
             <el-table-column prop="modelName" label="表单类型" sortable>
@@ -36,7 +36,7 @@
 
             </el-table-column>
         </el-table>
-        <div class="pagination">
+       <!-- <div class="pagination">
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -46,7 +46,7 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="400">
             </el-pagination>
-        </div>
+        </div>-->
         <!--模态框项目变更表格-->
         <div class="dialog-form">
             <!--模拟遮罩层-->
@@ -193,7 +193,7 @@
         },
         methods: {
             onCheck(event, treeId, treeNode){
-                console.log(treeNode);
+//                console.log(treeNode);
             },
             handleSizeChange(){
 
@@ -204,7 +204,11 @@
             },
             getData(){
                 getFormModelTypeList({belong:0}).then((res) => {
-                    this.formDataList = res.data
+                    this.formDataList = res.data;
+                    for(var i = 0;i<this.formDataList.length;i++){
+                        this.formDataList[i].updateTime = (new Date(this.formDataList[i].updateTime )).toLocaleDateString();
+                    }
+
                 })
              /*   getFormInfosForm({modelId:"3-6000"}).then((res)=>{
                     this.zNodes = res.data;
@@ -231,11 +235,17 @@
             },
             //表单的预览功能
             formPriview(index,row){
-                this.dialogFormPriview = true;
+
                 formPriviewParams.modelId = getFormInfosParams.modelId;
                 formPriviewParams.formId = row.formId;
                 getFormPreview(formPriviewParams).then((res) =>{
-                    this.formPriviewUrl = res.data;
+                   if(res.data){
+                        this.dialogFormPriview = true;
+                        this.formPriviewUrl = res.data;
+                    }else{
+                        this.notify('暂不知处预览');
+                    }
+
                 }).catch(function(error){
                     if (error.response) {
                         // The request was made and the server responded with a status code
@@ -262,21 +272,18 @@
                     aObj.append(editStr);
                 }
                 let self =this;
-                $('.icon-eyes').map(function(){
+                $('#formTree .icon-eyes').map(function(){
                     $(this).unbind('click');
                     $(this).bind('click',function(){
                         let  linkFormId = $(this).attr("id");
-
                         if(linkFormId){
                             linkFormId =  linkFormId.split('-')[1]
                         }
-                        console.info(linkFormId,'linkFormId')
-
                         formPriviewParams.modelId = getFormInfosParams.modelId;
                         formPriviewParams.formId = linkFormId;
-                        console.info(formPriviewParams)
+//                        console.info(formPriviewParams)
                         getFormPreview(formPriviewParams).then((res)=>{
-                            console.info(res.data,'res.data')
+//                            console.info(res.data,'res.data')
                             if(res.data){
                                 self.dialogFormPriview = true;
                                 self.formPriviewUrl = res.data;
@@ -284,7 +291,7 @@
                                 self.notify('暂不支持预览');
                             }
                         }).catch(function (error) {
-                            console.info(error.message);
+//                            console.info(error.message);
                         })
                     })
                 })
@@ -317,7 +324,6 @@
             //树结构的搜索功能
             getZtreeParentNode(ztreeNode, nodes) {
                 var pNode = ztreeNode.getParentNode();
-                /*console.log(pNode);*/
                 if (pNode != null) {
                     if (nodes.indexOf(pNode) < 0) {
                         nodes.push(pNode);
@@ -330,7 +336,6 @@
                     return;
                 }
                 var children = ztreeNode.children;
-                /* console.log(children);*/
                 if (children.length > 0) {
                     for (var i = 0; i < children.length; i++) {
                         var child = children[i];
@@ -346,7 +351,6 @@
                 var treeObj = $.fn.zTree.getZTreeObj('formTree');
                 var nodes1 = treeObj.getNodesByParam("isHidden", true);
                 var searchVal = $('.searchVal').find('input').val();
-                console.info(searchVal)
                 /* 将之前隐藏的展示*/
                 if (nodes1.length > 0) {
                     treeObj.showNodes(nodes1);
@@ -372,7 +376,6 @@
             basicSearch(event){//基础搜索功能
                 var arr = [];
                 var keyWord = this.searchParam;
-                console.info(this.searchParam)
                 var reg = new RegExp(keyWord);
                 for(var i=0;i<this.zNodes.length;i++){
                     //如果字符串中不包含目标字符会返回-1

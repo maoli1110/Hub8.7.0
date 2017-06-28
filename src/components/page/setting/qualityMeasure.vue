@@ -46,7 +46,7 @@
                         <el-icon class="icon-document" @click.native="addBPM"></el-icon>-->
                         <span class="quality-icon icon" @click="formModelList(scope.$index,scope.row)"></span>
                         <span class="quality-icon icon"  @click="isBMPEditShow(scope.$index,scope.row)"></span>
-                        <span class="quality-icon icon" @click="open2(scope.$index,scope.row)"></span>
+                        <span class="quality-icon icon" @click="deleteProcess(scope.$index,scope.row)"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -141,14 +141,13 @@
                     </el-col>
 
                 <el-col class="BMP-btns">
-                    <el-button type="primary" @click="BMPok">确定</el-button>
+                    <el-button type="primary" @click="BMPok" class="BMP-editOk">确定</el-button>
                     <el-button @click="BMPcancel">取消</el-button>
                 </el-col>
             </el-row>
         </div>
-        <el-dialog :visible.sync="isBMPedit">
             <!--v-show="isBMPedit"-->
-            <div  class="BMP-process editPage">
+        <div  class="BMP-process editPage" v-show="isBMPedit">
             <el-row class="BMP-info">
                 <el-col :span="24" class="pro-title">
                     工程名称
@@ -234,14 +233,14 @@
                 </el-col>
 
                 <el-col class="BMP-btns">
-                    <el-button type="primary" @click="eidtBMPok">确定</el-button>
+                    <el-button v-show="isLinkResult" type="primary" :disabled="true">确定</el-button>
+                    <el-button v-show="!isLinkResult" type="primary" @click="eidtBMPok">确定</el-button>
                     <el-button @click="eidtBMPcancel">取消</el-button>
                 </el-col>
             </el-row>
         </div>
-        </el-dialog>
         <!--模态框(关联模型)-->
-        <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model">
+        <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model" :close-on-click-modal="false">
             <el-row>
                 <el-col :span="24" style="padding:10px 30px ;border-bottom:1px solid #ddd;">
                 <el-col :span="14">
@@ -294,7 +293,7 @@
             </div>
         </el-dialog>
         <!--模态框（收起算管理模块）-->
-        <el-dialog :visible.sync="linkTree" style="width:0px;"></el-dialog>
+        <!--<el-dialog :visible.sync="linkTree" style="width:0;opacity:0;left:50%" :close-on-click-modal="false"></el-dialog>-->
         <div class="quality-dialog" v-show="linkTree">
             <div class="quality-dialog-header">
                 <el-row>
@@ -336,6 +335,8 @@
             </div>
             <!--<ul class="ztree" id="lineTree"></ul>-->
         </div>
+
+
         <el-dialog :visible.sync="dialogLinkPriview" class="dialogPriview">
             <iframe :src="priviewUrl"  scrolling="no" frameborder="0"></iframe>
         </el-dialog>
@@ -455,20 +456,7 @@ export default {
                 }
             },
 
-            zNodes: [
-                /*{ id: 1, pId: 0, name: "随意勾选 1", open: true },
-                { id: 11, pId: 1, name: "随意勾选 1-1" },
-                { id: 12, pId: 1, name: "随意勾选 1-2", open: true },
-                { id: 121, pId: 12, name: "随意勾选 1-2-1" },
-                { id: 122, pId: 12, name: "随意勾选 1-2-2" },
-
-                { id: 2, pId: 0, name: "禁止勾选 2", open: true },
-                { id: 21, pId: 2, name: "禁止勾选 2-1" },
-                { id: 22, pId: 2, name: "禁止勾选 2-2" },
-                { id: 221, pId: 22, name: "禁止勾选 2-2-1" },
-                { id: 222, pId: 22, name: "禁止勾选 2-2-2" },
-                { id: 23, pId: 2, name: "禁止勾选 2-3" }*/
-            ],
+            zNodes: [],
             url: 'static/vuetable.json',
             tableData: [],//流程列表
             cur_page: 1,
@@ -512,7 +500,8 @@ export default {
             modelTypeTreeVal:"",//表单模型树model
 //            priviewUrl:"http://192.168.13.215:8081/pdsdoc/viewDispatcher/W3sidGltZXN0YW1wIjoxNDk4NTUwODM2MDQ3LCJmaWxlTmFtZSI6IsnovMax5Lj8yfPF-x-rHtIiwidXVpZCI6ImU1NjMzYzUwOTU1OTQ3NDg5MjhmN2Y0NTZmYTE5MzczIn1d/KkXDP0CUtlf8VKwo-x-TK3oDb8HN0uN61JTa5JX3iQg-x-fUhhY-x-nDOgmCSvWQYTel70A3AcZE0OYeZ-WgL4arQnmA",
             // isStepDisable:false
-            priviewUrl:""
+            priviewUrl:"",
+            isLinkResult:"",//是否被关联
         }
     },
     created() {
@@ -540,16 +529,26 @@ export default {
         changeEdit(value){
             console.info(value)
         },
+        //提示框
+        messageBox(message){
+            this.$alert(message, {
+                confirmButtonText: '确定',
+            });
+        },
         getData(tableParam){//默认数据
             //表单列表
             getProcessList(tableParam).then((res)=>{
                 //console.info(res.data.result,'我是流程列表数据')
                 this.tableData = res.data;
                 this.totalNumber = res.data.pageInfo.totalNumber;
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
             })
             //获取角色名称
             getRoleInfo().then((res)=>{
                 this.rootList = res.data;
+            }).catch(function(error){
+                self.messageBox(error.response.data.message);
             });
           /*  //更新的模板列表
             updateProcessRelForm({addFormIds:["LBBG0004","LBBG0005"],delFormIds:["LBBG0004","LBBG0005"],modelId:"2-2",processId:40}).then((res)=>{
@@ -602,25 +601,37 @@ export default {
             this.$message.error('删除第' + (index + 1) + '行');
         },
         //新增页面
-        open2(index,row) {
-            console.info(row.remark)
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                //删除流程
-                removeProcessInfo({processId:row.processId}).then((res)=>{
-                    this.$message({
-                        message: '删除成功',
-                        type: 'success'
+        deleteProcess(index,row) {
+            isUsedProcess({processId:row.processId}).then((res)=>{
+                this.isLinkResult = res.data
+                if(this.isLinkResult){
+                    this.messageBox("相关表单正在使用，暂时不可更改流程");
+                    return false
+                }else{
+                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        //删除流程
+                    removeProcessInfo({processId:row.processId}).then((res)=>{
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                        this.tableData.result.splice(index,1);
                     });
-                    this.tableData.result.splice(index,1);
-                });
-            }).catch(() => {
+                }).catch(() => {
 
-            });
-        },
+                });
+            }
+        }).catch(function(error){
+                this.messageBox(error.response.data.message);
+        });
+            console.info(row.remark)
+
+    },
+
         //模态框
         handleClose(done) {
             this.$confirm('确认关闭？')
@@ -636,17 +647,15 @@ export default {
                 this.formModelData = res.data;
                 this.modelTotalNum = res.data.pageInfo.totalNumber;
                 console.info(this.modelTotalNum)
-             });
+             }).catch(function(error){
+                this.messageBox(error.response.data.message);
+            });
         },
         //编辑表单
         formModelList(index,row){
             processId = row.processId;
             this.dialogFormVisible = true;
-            //流程是否被关联
-            isUsedProcess({processId:processId}).then((res)=>{
-//                console.info(res.data);
 
-            });
             //表单类型   formModelParams
             getFormModelTypeList({belong:0}).then((res)=>{
                 this.getformModelType = res.data;
@@ -655,6 +664,8 @@ export default {
                 formModelParams.modelId = this.getformModelType[0].modelId;
                 formModelParams.page =  !formModelParams.page?1:formModelParams.page;
                 this.formModelType(formModelParams)
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
             });
         },
         //表单模板数据变更
@@ -715,15 +726,19 @@ export default {
         },
         formModelPriview(idnex,row){
             //获取表单预览地址
-            this.dialogLinkPriview = true;
+
             getFormPreviewParams.modelId = formModelParams.modelId;
             getFormPreviewParams.formId = row.formId;
             getFormPreview(getFormPreviewParams).then((res)=>{
-                this.priviewUrl = res.data;
-                console.info( this.priviewUrl)
-            }).catch(function (error) {
-                alert(error.message);
-            });;
+                if(res.data){
+                    this.dialogLinkPriview = true;
+                    this.priviewUrl = res.data;
+                }else{
+                    self.messageBox('暂时不知处预览')
+                }
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
+            });
 
             console.log(row.formId,'formId');
         },
@@ -840,9 +855,8 @@ export default {
             this.rootInfo.splice(6, this.rootInfo.length - 1)
         },
         eidtBMPok(){
-            this.isBMP = false;
-            this.isQuality = true;
-            this.isBMPedit = false;
+            let self =this;
+
             this.flowNameEdit = !this.flowNameEdit?"":this.flowNameEdit;
             this.flowRemarkEdit = !this.flowRemarkEdit?"":this.flowRemarkEdit;
             //console.log(this.flowNameEdit)
@@ -863,22 +877,39 @@ export default {
                     }
                 })
             }
-            console.log(this.rootInfoEdit,'传值问题');
             updateProcessInfo({processId:updateProcessId,ProcessAddParam:this.rootInfoEdit}).then((res)=>{
-                console.info(res.data)
+                this.isBMP = false;
+                this.isQuality = true;
+                this.isBMPedit = false;
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
             })
+            console.info(updateProcessId,'能拿到数据吗')
         },
         eidtBMPcancel(){
             this.isBMP = false;
             this.isQuality = true;
             this.isBMPedit = false;
         },
+        incidenceRel(processId){
+            isUsedProcess({processId:processId}).then((res)=>{
+                    console.info(res.data,'redData')
+                this.isLinkResult = res.data;
+                this.isLinkResult = res.data
+                if(this.isLinkResult){
+                    this.messageBox("相关表单正在使用，暂时不可更改流程");
+                }
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
+            });
+        },
         isBMPEditShow(index,row){
-
             this.isBMPedit = true;
             this.isBMP = false;
             this.isQuality = false;
             updateProcessId = row.processId;
+            //流程是否被关联
+             this.incidenceRel(updateProcessId);//判断流程设置的关联关系
              getProcessInfo({processId:row.processId}).then((res)=>{
                 this.rootInfoEdit = res.data;
                 this.flowNameEdit = res.data.processName;
@@ -912,7 +943,9 @@ export default {
                     }
                 }
                 console.info(this.rootInfoEdit,'整体结构');
-             })
+             }).catch(function(error){
+                this.messageBox(error.response.data.message);
+            })
         },
         flowNameAlert() {//流程名称弹窗
             this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
@@ -953,16 +986,18 @@ export default {
                     this.$message({
                         message: '删除关联成功',
                         type: 'success'
+                    }).catch(function(error){
+                         this.messageBox(error.response.data.message);
                     });
                     this.formModelData.result.splice(0,updateProcessRelFormParams.delFormIds.length);
                 });
-            }).catch(() => {
-            });
+            })
         },
         selectIsAll(){
             console.info(this.value)
         },
         BMPok() {
+            let self = this;
             this.flowName = !this.flowName?'':this.flowName;
             this.flowRemark = !this.flowRemark?'':this.flowRemark;
             list.remark = this.flowRemark;
@@ -995,14 +1030,30 @@ export default {
                 }
 
             })
-
-            addProcessInfo(list).then((res)=>{//添加流程
-//                console.info(res)
-            },function(error){
-                alert(error.message)
-            });
-            this.isBMP = false;
-            this.isQuality = true;
+            if(list.steps.length){
+                addProcessInfo(list).then((res)=>{//添加流程
+                    this.isBMP = false;
+                    this.isQuality = true;
+                    this.isBMPedit = false;
+                    this.flowName ="";
+                    this.flowRemark="";
+                    for(let key in this.rootInfo){
+                        this.rootInfo[key].addRolesLine =[];
+                        this.rootInfo[key].listVal ="";
+                    }
+                    getProcessList(tableParams).then((res)=>{
+                        //console.info(res.data.result,'我是流程列表数据')
+                        this.tableData = res.data;
+                        this.totalNumber = res.data.pageInfo.totalNumber;
+                     }).catch(function(error){
+                        this.messageBox(error.response.data.message);
+                     })
+                }).catch(function(error){
+                    self.messageBox(error.response.data.message)
+                });
+            }else{
+                self.messageBox('请填写有效的信息')
+            }
         },
         //树结构字段处理
         zTreeFiledProcess(getFormProcessParams){
@@ -1046,6 +1097,8 @@ export default {
                  $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
 
 
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
             })
         },
         //添加关联
@@ -1117,16 +1170,21 @@ export default {
             //console.info(formModelParams,'表单模板');
             var zTree = $.fn.zTree.getZTreeObj("lineTree");
             var selectNodes= zTree.getCheckedNodes(true);//当前选中的节点
-            if(isChecked==1){
+/*                for(var i =0;i<updateProcessRelFormParams.addFormIds.length;i++){
+
+                }*/
+
                 updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
                     getProcessRelFormList(formModelParams).then((res)=>{
                        // console.info(res.data,'关联表单');
                         this.formModelData = res.data;
                         this.modelTotalNum = res.data.pageInfo.totalNumber;
                         console.info(this.modelTotalNum)
-                    });
+                    })
+                }).catch(function(error){
+                    this.messageBox(error.response.data.message);
                 });
-            }
+
 //            console.info(updateProcessRelFormParams,'不知道不明了')
         },
         nocheckNode(e) {
@@ -1245,9 +1303,8 @@ export default {
             if(!treeNode.isParent && !(treeNode.nocheck)){
                 aObj.append(editStr);
             }
-            console.log(treeNode.formId);
             let self =this;
-            $('.icon-eyes').map(function(){
+            $('#lineTree .icon-eyes').map(function(){
                $(this).unbind('click');
                $(this).bind('click',function(){
                    let  linkFormId = $(this).attr("id");
@@ -1255,16 +1312,22 @@ export default {
                        linkFormId =  linkFormId.split('-')[1]
                    }
                     console.info(linkFormId,'linkFormId')
-                   self.dialogLinkPriview = true;
+
                    getFormPreviewParams.modelId = formModelParams.modelId;
                    getFormPreviewParams.formId = linkFormId;
                    getFormPreview(getFormPreviewParams).then((res)=>{
-                       self.priviewUrl = res.data;
+                       if(res.data){
+                            self.dialogLinkPriview = true;
+                            self.priviewUrl = res.data;
+                       }else{
+                            self.messageBox('暂时不知处预览')
+                       }
+
                        console.info( self.priviewUrl)
                    }).catch(function (error) {
-                           alert(error.message);
-                       });;
-                   })
+                       self.messageBox(error.response.data.message);
+                   });
+               })
             })
         },
         checkAll() {
@@ -1287,11 +1350,12 @@ export default {
             updateProcessRelFormParams.processId = processId;
             updateProcessRelFormParams.modelId = formModelParams.modelId;
             updateProcessRelFormParams.delFormIds.push(row.formId);
-            console.info(row,'删除列里面都包含什么')
               //更新的模板列表
              updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
                  this.formModelData.result.splice(index,1)
-             });
+             }).catch(function(error){
+                this.messageBox(error.response.data.message);
+            });
         },
         //树结构的搜索功能
         getZtreeParentNode(ztreeNode, nodes) {
