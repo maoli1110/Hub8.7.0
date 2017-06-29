@@ -60,13 +60,13 @@
                                 </div>
                                 <div class="createNodes" v-show="showCreateNodes" @mouseout="showCreateNodes= false">
                                     <p id="addLeaf" @click="add">添加单个子节点</p>
-                                    <p @click="textAreaVisible=true">添加多个子节点</p>
+                                    <p @click="textAreaVisible_()">添加多个子节点</p>
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                                                                                                                    <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                                                                                                                    <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                                                                                                                    <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
                                 <span id="edit" @click="edit" title='编辑节点'></span>
                             </div>
@@ -83,7 +83,7 @@
                         <div class="sear-icon">
                             <el-input placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree"></el-input>
                             <span id="collapseBtn " class="icon-cut" title="折叠" @click="expandNode('collapse','proZtree')"></span>
-                            <span id="expandBtn" class="icon-plus" title="展开"   @click="expandNode('expand','proZtree')"></span>
+                            <span id="expandBtn" class="icon-plus" title="展开" @click="expandNode('expand','proZtree')"></span>
                         </div>
                     </div>
                     <ul class="ztree" id="proZtree"></ul>
@@ -178,7 +178,7 @@
                                     <li v-for='(childitemName,index) in childitem.childs'>{{childitemName.formName}}
                                         <div class="tabs-icon clearfix">
                                             <!--<el-icon class="el-icon-picture" @click.native="itemView(value_,childitemName.formId)"></el-icon>
-                                                                    <el-icon class="el-icon-delete" @click.native="itemDelete(item.typeName,childitem.typeName,childitemName,index)"></el-icon>-->
+                                                                        <el-icon class="el-icon-delete" @click.native="itemDelete(item.typeName,childitem.typeName,childitemName,index)"></el-icon>-->
                                             <span class="icon-tabs-eyes" @click="itemView(value_,childitemName.formId)" title="预览"></span>
                                             <span class="icon-tabs-del" @click="itemDelete(item.typeName,childitem.typeName,childitemName,index)" title="删除"></span>
                                         </div>
@@ -213,8 +213,8 @@
             </div>
         </div>
         <!--<el-dialog :visible.sync="dialogFormPriview" class="dialogPriview" :close-on-click-modal="false" style="z-index:5000">
-                                                            <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
-                                                        </el-dialog>-->
+                                                                <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
+                                                            </el-dialog>-->
     </div>
 </template>
 <script>
@@ -718,7 +718,7 @@ export default {
                 }
 
             }).catch(function (error) {
-              
+
             })
         },
         addConfirm() {
@@ -772,7 +772,7 @@ export default {
         },
         /*ztree-event*/
         //全部展开和收起
-        expandNode(type,operObj) {
+        expandNode(type, operObj) {
             //var index=layer.load(2);
             // type = e.data.type;
             // operObj = e.data.operObj;
@@ -1011,7 +1011,18 @@ export default {
             var nodes = treeObj.transformToArray(nodes);
             console.log(nodes);
         },
+        textAreaVisible_() {
+            if (this.nodeId == '') {
+                this.$alert('请选择一个节点添加', '提示', {
+                    confirmButtonText: '确定',
+                });
+                return;
+            }else{
+                this.textAreaVisible=true;
+            }
+        },
         addMoreNodes() {
+
             var isParent;
             var contentArray = $("#multiLeaf").find('textarea').val().split("\n");
             $('textarea').val('');
@@ -1185,15 +1196,15 @@ export default {
             this.dialogFormPriview = false;
         },
         //时间戳转换;
-		formatTime: function (row, column) {
-			const now = new Date(row.updateTime),
-				year = now.getFullYear(),
-				month = now.getMonth() + 1 > 10 ? now.getMonth() + 1 : '0' + (now.getMonth() + 1),
-				date = now.getDate(),
-				hour = now.getHours(),
-				minute = now.getMinutes() > 10 ? now.getMinutes() : '0' + now.getMinutes();
-			return year + "-" + month + "-" + date + " " + hour + ":" + minute
-		}
+        formatTime: function (row, column) {
+            const now = new Date(row.updateTime),
+                year = now.getFullYear(),
+                month = now.getMonth() + 1 > 10 ? now.getMonth() + 1 : '0' + (now.getMonth() + 1),
+                date = now.getDate(),
+                hour = now.getHours(),
+                minute = now.getMinutes() > 10 ? now.getMinutes() : '0' + now.getMinutes();
+            return year + "-" + month + "-" + date + " " + hour + ":" + minute
+        }
 
     }
 }
