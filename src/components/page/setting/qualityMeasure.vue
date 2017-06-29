@@ -19,6 +19,7 @@
                         <el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>
                     </el-col>
                     <el-col :span="16" style="text-align:right">
+                        <el-input></el-input>
                         <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey"></el-input>
                         <!--<el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>-->
                     </el-col>
