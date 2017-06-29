@@ -62,7 +62,7 @@
                 </el-col>
                 <el-col :span="6">
                     <span class="BMP-text">流程名称：</span>
-                    <el-input placeholder="请输入内容" v-model="flowName" style="width:40%;height:100px;"></el-input>
+                    <el-input placeholder="请输入内容" v-model="flowName" style="width:40%;height:100px;"   :maxlength="10"></el-input>
                 </el-col>
                 <el-col :span="18">
                     <span class="BMP-text"  style="display:inline-block;vertical-align: top">备注：</span>
@@ -97,10 +97,10 @@
                                         <tr v-for="(rootInfo,index) in rootInfo" @click="processSetEdit($event,index)">
                                             <td width="50">{{index+1}}</td>
                                             <td width="210">
-                                                <el-input class="flowTitle" placeholder="请输入内容"></el-input>
+                                                <el-input class="flowTitle" placeholder="请输入内容" :maxlength=10></el-input>
                                             </td>
                                             <td width="120" style="position:relative" class="list-isAll" >
-                                                <el-select :value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
+                                                <el-select :value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择">
                                                     <el-option
                                                         v-for="item in rootInfo.option"
                                                         :key="item.value"
@@ -154,7 +154,7 @@
                 </el-col>
                 <el-col :span="6">
                     <span class="BMP-text">流程名称：</span>
-                    <el-input placeholder="请输入内容" v-model="flowNameEdit" style="width:40%;height:100px;"></el-input>
+                    <el-input placeholder="请输入内容" v-model="flowNameEdit" style="width:40%;height:100px;" :maxlength=10></el-input>
                 </el-col>
                 <el-col :span="18">
                     <span class="BMP-text"  style="display:inline-block;vertical-align: top">备注：</span>
@@ -189,10 +189,10 @@
                                 <tr v-for="(rootInfo,index) in rootInfoEdit.steps" @click="eidtProcessSetEdit($event,index)">
                                     <td width="50">{{index+1}}</td>
                                     <td width="210">
-                                        <el-input class="flowTitle" v-model="rootInfo.stepName" placeholder="请输入内容"></el-input>
+                                        <el-input class="flowTitle" v-model="rootInfo.stepName" :maxlength=10 placeholder="请输入内容"></el-input>
                                     </td>
                                     <td width="120" style="position:relative" class="list-isAll" >
-                                        <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable" @change="changeEdit">
+                                        <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"   @change="changeEdit">
                                             <el-option
                                                 v-for="item in rootInfo.option"
                                                 :key="item.value"
@@ -466,12 +466,12 @@ export default {
             totalNumber:0,
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
             rootInfo: [
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}] ,listVal:"",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[] },
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"" ,listRolesId:[]}
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[]},
+                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[]},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}] ,listVal:"全部",listRolesId:[]},
+                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[]},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] },
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部" ,listRolesId:[]}
             ],
             flowNameEdit:"",
             flowRemarkEdit:"",
@@ -541,6 +541,17 @@ export default {
             this.$alert(message, {
                 confirmButtonText: '确定',
             });
+        },
+        messageTips(message) {
+            if(message.length>10){
+                this.$message({
+                    message: '请输入10个字符以内，超出部分不生效',
+                    type: 'warning'
+                });
+                console.log(this.flowName);
+                this.flowName = this.flowName.substr(0,10);
+            }
+
         },
         getData(tableParam){//默认数据
             //表单列表
@@ -804,13 +815,7 @@ export default {
         },
         //添加角色
         addRoles(index) {
-            for (let i = 0; i < this.rootInfo.length; i++) {
-                if (this.rootInfo[i].addRolesLine.length < 1) {
-                    this.rootInfo[i].isStepDisable = false;
-                } else {
-                    this.rootInfo[i].isStepDisable = true;
-                }
-            }
+
             if (this.rootInfo[indexTable].addRolesLine.indexOf(this.rootList[index].roleName) == -1 && this.rootInfo[indexTable].addRolesLine.length < 15 && isChange) {
                 this.rootInfo[indexTable].addRolesLine.push(this.rootList[index].roleName);
 //                listParams.roleIds.push(this.rootList[index].roleId);
@@ -820,13 +825,7 @@ export default {
         },
         //编辑添加角色
         eidtAddRoles(index){
-            for (let i = 0; i <this.rootInfoEdit.steps.length; i++) {
-                if (this.rootInfoEdit.steps[i].roleIds.length <1) {
-                    this.rootInfoEdit.steps[i].isStepDisable = false;
-                } else {
-                    this.rootInfoEdit.steps[i].isStepDisable = true;
-                }
-            }
+
             if (this.rootInfoEdit.steps[editIndexTable].roleIds.indexOf(this.rootList[index].roleId) == -1 && this.rootInfoEdit.steps[editIndexTable].roleIds.length < 15 && editIsChange) {
                 this.rootInfoEdit.steps[editIndexTable].roleIds.push(this.rootList[index].roleId);
                 this.rootInfoEdit.steps[editIndexTable].rootEditArr.push(this.rootList[index].roleName);
@@ -837,35 +836,29 @@ export default {
             this.rootInfo[indexTable].addRolesLine.splice(index, 1)
             this.rootInfo[indexTable].listRolesId.splice(index, 1)
             listParams.roleIds.splice(index,1);
-            for (let i = 0; i < this.rootInfo.length; i++) {
-                if (this.rootInfo[i].addRolesLine.length < 1) {
-                    this.rootInfo[i].isStepDisable = false;
-                } else {
-                    this.rootInfo[i].isStepDisable = true;
-                }
-            }
+
         },
         //编辑关闭标签
         eidtCloseSelf(index){
             this.rootInfoEdit.steps[editIndexTable].roleIds.splice(index, 1)
             this.rootInfoEdit.steps[editIndexTable].rootEditArr.splice(index, 1);
-             for (let i = 0; i <this.rootInfoEdit.steps.length; i++) {
+            /* for (let i = 0; i <this.rootInfoEdit.steps.length; i++) {
                  if (this.rootInfoEdit.steps[i].roleIds.length <=1) {
                      this.rootInfoEdit.steps[i].isStepDisable = false;
                  } else {
                      this.rootInfoEdit.steps[i].isStepDisable = true;
                  }
-             }
+             }*/
         },
         //添加步骤
         addStep() {
             if (this.rootInfo.length < 15) {
-                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[] })
+                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"",listRolesId:[] })
             }
         },
         addStepEdit(){
             if (this.rootInfoEdit.steps.length < 15){
-                this.rootInfoEdit.steps.push({stepName:"",isAll:"",rootEditArr:[],roleIds:[],isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""})
+                this.rootInfoEdit.steps.push({stepName:"",isAll:"",rootEditArr:[],roleIds:[],isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:""})
             }
         },
         BMPcancel() {
@@ -938,7 +931,7 @@ export default {
                 this.flowNameEdit = res.data.processName;
                 this.flowRemarkEdit = res.data.remark;
                 for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
-                    this.$set(this.rootInfoEdit.steps[j],'option',[{value:0,label:'全部'},{value:1,label:'随便'}]);
+                    this.$set(this.rootInfoEdit.steps[j],'option',[{value:0,label:'全部'},{value:1,label:'任意'}]);
                    this.$set(this.rootInfoEdit.steps[j],'listVal',"");
                     this.$set(this.rootInfoEdit.steps[j],'rootEditArr',[]);
                     this.$set(this.rootInfoEdit.steps[j],'isStepDisable',false);
@@ -953,11 +946,9 @@ export default {
                     if(this.rootInfoEdit.steps[j].isAll){
                        this.rootInfoEdit.steps[j].listVal="全部";
                     }else{
-                        this.rootInfoEdit.steps[j].listVal="随便";
+                        this.rootInfoEdit.steps[j].listVal="任意";
                     }
                 }
-                console.log(this.rootInfoEdit,'数据组好了没有');
-                console.log( this.rootInfoEdit.steps);
                 for (let i = 0;i<this.rootList.length;i++){
                     for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
                         for(let l= 0;l<this.rootInfoEdit.steps[j].roleIds.length;l++){
@@ -967,10 +958,9 @@ export default {
                         }
                     }
                 }
-                console.info(this.rootInfoEdit,'整体结构');
              }).catch(function(error){
                 console.info(error)
-//                self.messageBox(error.response.data.message);
+                self.messageBox(error.response.data.message);
             })
         },
         flowNameAlert() {//流程名称弹窗

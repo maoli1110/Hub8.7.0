@@ -243,6 +243,9 @@
     width:60px;float: left;
    position:relative;margin:5px 5px 5px 0;
 }
+.content .BMP-process .addRoot:first-child{
+    margin-left:5px;
+}
 .content .BMP-process  .handle-delete{
     /*float: right;
     line-height: 40px;
