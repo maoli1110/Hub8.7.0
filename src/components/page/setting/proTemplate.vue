@@ -82,8 +82,8 @@
                         </div>
                         <div class="sear-icon">
                             <el-input placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree"></el-input>
-                            <span id="collapseBtn " class="icon-cut" title="折叠"></span>
-                            <span id="expandBtn" class="icon-plus" title="展开"></span>
+                            <span id="collapseBtn " class="icon-cut" title="折叠" @click="expandNode('collapse','proZtree')"></span>
+                            <span id="expandBtn" class="icon-plus" title="展开"   @click="expandNode('expand','proZtree')"></span>
                         </div>
                     </div>
                     <ul class="ztree" id="proZtree"></ul>
@@ -349,8 +349,8 @@ export default {
     mounted() {
         $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);
         $.fn.zTree.init($("#editTree"), this.settingEdit, this.editZNodes);
-        $("#expandBtn").bind("click", { type: "expand", operObj: 'proZtree' }, this.expandNode);
-        $("#collapseBtn").bind("click", { type: "collapse", operObj: 'proZtree' }, this.expandNode);
+        // $("#expandBtn").bind("click", { type: "expand", operObj: 'proZtree' }, this.expandNode);
+        // $("#collapseBtn").bind("click", { type: "collapse", operObj: 'proZtree' }, this.expandNode);
         $("#edit").bind("click", this.edit);
         // $("#remove").bind("click", this.remove);
         // $("#upMove").bind("click", this.upMove);
@@ -772,10 +772,10 @@ export default {
         },
         /*ztree-event*/
         //全部展开和收起
-        expandNode(e) {
+        expandNode(type,operObj) {
             //var index=layer.load(2);
-            type = e.data.type;
-            operObj = e.data.operObj;
+            // type = e.data.type;
+            // operObj = e.data.operObj;
             var zTree = $.fn.zTree.getZTreeObj(operObj);
             var treeNodes = zTree.transformToArray(zTree.getNodes());
             var flag = true;
