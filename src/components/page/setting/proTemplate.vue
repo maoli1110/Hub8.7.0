@@ -353,8 +353,8 @@ export default {
         $("#collapseBtn").bind("click", { type: "collapse", operObj: 'proZtree' }, this.expandNode);
         $("#edit").bind("click", this.edit);
         // $("#remove").bind("click", this.remove);
-        $("#upMove").bind("click", this.upMove);
-        $("#downMove").bind("click", this.downMove);
+        // $("#upMove").bind("click", this.upMove);
+        // $("#downMove").bind("click", this.downMove);
         // $("#addLeaf").bind("click", { "isParent": false }, this.add);
         $('#proBtnOk').bind('click', { "isParent": false }, this.addMoreNodes);
         $('#searchMessage>input').bind('keydown', this.searchTree)//搜索事件绑定到元素
@@ -753,7 +753,7 @@ export default {
             this.updatePromodel();            // alert('123');
         },
         proCancel() {
-            // this.EditVisible = false;
+            this.EditVisible = false;
             getProjModelDetail(this.projModelId).then(res => {
                 console.log(res);
                 this.projModelName = res.data.projModelName;
