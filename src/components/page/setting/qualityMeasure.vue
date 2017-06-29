@@ -19,7 +19,7 @@
                         <el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>
                     </el-col>
                     <el-col :span="16" style="text-align:right">
-                        <el-input></el-input>
+
                         <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey"></el-input>
                         <!--<el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>-->
                     </el-col>
@@ -1173,16 +1173,18 @@ export default {
             }
         },
         onZtreeFormModelCheck(event, treeId, treeNode) {//表单模板树结构的选择状态
+            console.info(treeNode)
             isChecked =1;
-            if(treeNode.status){//勾选树结构的表单
+            if(treeNode.checked){//勾选树结构的表单
                 if(updateProcessRelFormParams.addFormIds.indexOf(treeNode.formId)==-1) {
                     updateProcessRelFormParams.addFormIds.push(treeNode.formId);
-                    this.onLinkModelFormaterParms(updateProcessRelFormParams.delFormIds,treeNode);
+//                    this.onLinkModelFormaterParms(updateProcessRelFormParams.delFormIds,treeNode);
                 }
-            }else if(!treeNode.status){//取消勾选树结构的表单
+                console.info(treeNode.formId,'formId')
+            }else if(!treeNode.checked){//取消勾选树结构的表单
                 if(updateProcessRelFormParams.delFormIds.indexOf(treeNode.formId)==-1){
                     updateProcessRelFormParams.delFormIds.push(treeNode.formId);
-                    this.onLinkModelFormaterParms(updateProcessRelFormParams.addFormIds,treeNode);
+//                    this.onLinkModelFormaterParms(updateProcessRelFormParams.addFormIds,treeNode);
                 }
             }
             updateProcessRelFormParams.modelId = formModelParams.modelId;
