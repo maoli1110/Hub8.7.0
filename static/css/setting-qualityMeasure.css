@@ -788,10 +788,11 @@
     overflow: auto;
 }
  .form-table .icon-tabs-eyes{
-     width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -82px -31px;
+     width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -82px -27px;
  }
 .form-table .icon-tabs-del{
-    width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -45px -31px;
+    width:20px;height:16px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -45px -31px;
+    vertical-align:baseline
 }
 .checked-title{
     height:35px;line-height:35px;margin:10px 10px;border:1px solid #ddd;border-radius:5px;padding-left:10px;
@@ -883,9 +884,9 @@
     background:transparent !important;
     border-color:transparent !important;
 }
-.ztree ul>li:hover{
+/*.ztree ul>li:hover{
     background:#f5f5f5;
-}
+}*/
 .el-button--primary:focus, .el-button--primary:hover{
     background:#4778C7 !important;color:#fff;border-color:#4778C7 !important;
 }

@@ -1,8 +1,8 @@
 <template>
     <div class="proTemplate">
-
+    
         <div v-if="!EditVisible">
-
+    
             <el-row>
                 <el-menu class="el-menu-demo" mode="horizontal" router>
                     <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
@@ -20,11 +20,11 @@
                 </el-table-column>
                 <el-table-column prop="updateUser" width="150" label="更新人" sortable>
                 </el-table-column>
-                <el-table-column prop="updateTime" width="150" label="更新时间" sortable>
+                <el-table-column prop="updateTime" width="150" label="更新时间" sortable :formatter="formatTime">
                 </el-table-column>
-
+    
                 <el-table-column label="操作" width="150">
-
+    
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                         <span class="icon-compile" @click="proTemplateEdit(scope.$index,scope.row)"></span>
@@ -64,33 +64,33 @@
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                                                                    <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                                                                    <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                                                                    <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                                                                                                    <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                                                                                                    <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                                                                                                    <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
-                                <span id="edit" @click="edit"></span>
+                                <span id="edit" @click="edit" title='编辑节点'></span>
                             </div>
                             <div class="tool-btns">
-                                <span id="upMove" @click="upMove"></span>
+                                <span id="upMove" @click="upMove" title='上移节点'></span>
                             </div>
                             <div class="tool-btns">
-                                <span id="downMove" @click="downMove"></span>
+                                <span id="downMove" @click="downMove" title='下移节点'></span>
                             </div>
                             <div class="tool-btns">
-                                <span id="remove" @click="remove"></span>
+                                <span id="remove" @click="remove" title='删除节点'></span>
                             </div>
                         </div>
                         <div class="sear-icon">
                             <el-input placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree"></el-input>
-                            <span id="collapseBtn " class="icon-cut"></span>
-                            <span id="expandBtn" class="icon-plus"></span>
+                            <span id="collapseBtn " class="icon-cut" title="折叠"></span>
+                            <span id="expandBtn" class="icon-plus" title="展开"></span>
                         </div>
                     </div>
                     <ul class="ztree" id="proZtree"></ul>
                 </el-col>
                 <el-col :span="14" class="project-form">
                     <p class="project-form-tit">包含表单</p>
-
+    
                     <div style="border:1px solid #ddd;">
                         <div class="project-form-list">
                             <el-select v-model="value" placeholder="请选择" @change="selectTestAval">
@@ -98,11 +98,12 @@
                                 </el-option>
                             </el-select>
                             <!--<el-icon class="el-icon-edit"  @click.native="formEditVisible = true"></el-icon>-->
-                            <span class="icon-edit-dialog" @click="formAdd()"></span>
+                            <span class="icon-edit-dialog" @click="formAdd()" title='关联表单'></span>
                         </div>
                         <div class="project-form-ele" v-for='(item,index) in typeList' v-show='index==value'>
                             <ul v-for='childitem in item.childs'>
                                 <p class="project-sultable">{{childitem.typeName}}</p>
+                                <!--<li style="text-align:center;color:#e6e6e6">没数据我才显示{{childitem.childs}}</li>-->
                                 <li v-for='childitemName in childitem.childs'>{{childitemName.formName}}</li>
                             </ul>
                         </div>
@@ -115,9 +116,9 @@
             </el-row>
             <!--增加多个节点弹框-->
             <el-dialog title="增加多个节点" :visible.sync="textAreaVisible" class="multi-textarea">
-                <el-input type="textarea" :rows="10" id="multiLeaf" placeholder="一行视为一个节点，支持多行复制粘贴">
+                <el-input type="textarea" :rows="10" id="multiLeaf" placeholder="一行视为一个节点，支持多行复制粘贴" :maxlength='297'>
                 </el-input>
-
+    
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="textAreaVisible = false">取 消</el-button>
                     <el-button type="primary" id="proBtnOk" @click="textAreaVisible = false,addMoreNodes">确 定</el-button>
@@ -125,7 +126,7 @@
             </el-dialog>
             <!--表单编辑-->
             <el-dialog title="添加" :visible.sync="formEditVisible" style="width:0%;position:fixed;left:50%;opacity:0;"></el-dialog>
-
+    
         </div>
         <div class="formEdit" v-show="formEditVisible">
             <div class="formEidt-title">
@@ -170,23 +171,26 @@
                     </template>
                     <template>
                         <el-tabs v-model="activeName2" type="card" @tab-click="tabClick" v-for='(item,index) in typeList' v-show='index==value'>
-
+    
                             <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
                                 <ul class="form-table">
+                                    <!--<li v-show='childitem.childs.length==0' style="text-align:center;color:#e6e6e6">没数据我才显示</li>-->
                                     <li v-for='(childitemName,index) in childitem.childs'>{{childitemName.formName}}
-                                        <div class="tabs-icon">
-                                            <el-icon class="el-icon-picture" @click.native="itemView(value_,childitemName.formId)"></el-icon>
-                                            <el-icon class="el-icon-delete" @click.native="itemDelete(item.typeName,childitem.typeName,childitemName,index)"></el-icon>
+                                        <div class="tabs-icon clearfix">
+                                            <!--<el-icon class="el-icon-picture" @click.native="itemView(value_,childitemName.formId)"></el-icon>
+                                                                    <el-icon class="el-icon-delete" @click.native="itemDelete(item.typeName,childitem.typeName,childitemName,index)"></el-icon>-->
+                                            <span class="icon-tabs-eyes" @click="itemView(value_,childitemName.formId)" title="预览"></span>
+                                            <span class="icon-tabs-del" @click="itemDelete(item.typeName,childitem.typeName,childitemName,index)" title="删除"></span>
                                         </div>
                                     </li>
-
+    
                                 </ul>
-
+    
                             </el-tab-pane>
                             <p class="form-total">已选表单{{options.length-1}}</p>
                         </el-tabs>
                     </template>
-
+    
                 </div>
             </div>
             <div class="formBtn">
@@ -194,12 +198,12 @@
                 <el-button type="primary" @click.native='addcancle'>取消</el-button>
             </div>
         </div>
-        <div class="el-dialog__wrapper dialogPriview" style="z-index: 2017;" v-show='dialogFormPriview'>
-            <div class="el-dialog el-dialog--small" style="top: 14%;">
+        <div class="el-dialog__wrapper dialogPriview" style="z-index: 9000;" v-show='dialogFormPriview'>
+            <div class="el-dialog el-dialog--small" style="top: 12%;width:828px">
                 <div class="el-dialog__header">
                     <span class="el-dialog__title"></span>
                     <div class="el-dialog__headerbtn" @click="dialogForm()">
-                        <i class="el-dialog__close el-icon el-icon-close" ></i>
+                        <i class="el-dialog__close el-icon el-icon-close"></i>
                     </div>
                 </div>
                 <div class="el-dialog__body">
@@ -209,8 +213,8 @@
             </div>
         </div>
         <!--<el-dialog :visible.sync="dialogFormPriview" class="dialogPriview" :close-on-click-modal="false" style="z-index:5000">
-            <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
-        </el-dialog>-->
+                                                            <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
+                                                        </el-dialog>-->
     </div>
 </template>
 <script>
@@ -258,7 +262,8 @@ export default {
                     onDblClick: this.onEditDbClick,
                     beforeRename: this.zTreeBeforName,
                     onRename: this.ztreeOnRename,
-                    onClick: this.zTreeOnClick
+                    onClick: this.zTreeOnClick,
+                    beforeRename: this.zTreeBeforeRename
                 }
             },
             settingEdit: {
@@ -309,7 +314,7 @@ export default {
             nodeForms: [],
             newtypeList: [],
             editTitle: [],
-            addFlag: false,
+            addFlag: '',
             addFormOption: [],
             value_: '',
             editZNodes: [],
@@ -347,7 +352,7 @@ export default {
         $("#expandBtn").bind("click", { type: "expand", operObj: 'proZtree' }, this.expandNode);
         $("#collapseBtn").bind("click", { type: "collapse", operObj: 'proZtree' }, this.expandNode);
         $("#edit").bind("click", this.edit);
-        $("#remove").bind("click", this.remove);
+        // $("#remove").bind("click", this.remove);
         $("#upMove").bind("click", this.upMove);
         $("#downMove").bind("click", this.downMove);
         // $("#addLeaf").bind("click", { "isParent": false }, this.add);
@@ -502,22 +507,22 @@ export default {
             console.log(treeNode)
             this.editTitle = [];
             this.nodeId = treeNode.nodeId;
+            this.addFlag = treeNode.level;
             if (treeNode.level == 3) {
-                this.addFlag = true;
+                console.log(treeNode.level)
                 this.editTitle.push(treeNode.getParentNode().getParentNode().nodeName, treeNode.getParentNode().nodeName, treeNode.nodeName);
                 this.getprojmodelNodeForms();
             } else {
-                alert('请选择子节点')
+                // this.$alert('请选择子节点关联相关表单', '这不是开玩笑', {
+                //     confirmButtonText: '确定',
+                // });
             }
         },
         // 表单添加
         formAdd() {
             this.addFormOption = [];
-            if (!this.addFlag) {
-                this.$message('请先选择一个节点', '提示', {
-                    type: 'warning'
-                })
-            } else {
+            console.log(this.addFlag);
+            if (this.addFlag == 3) {
                 this.formEditVisible = true;
                 getFormModelTypeList({ belong: 3 }).then((res) => {
                     let selectOption = res.data;
@@ -530,6 +535,11 @@ export default {
                     })
                 }).catch(() => {
                 });
+            } else {
+                this.$alert('说了多少遍？请选择三级子节点', '这不是开玩笑', {
+                    confirmButtonText: '确定',
+                });
+                return;
             }
         },
         // 添加页面树点击事件
@@ -551,9 +561,9 @@ export default {
                                     let childs = el.childs;
                                     let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                     if (child) {
-                                        this.$message('已经添加过了', '提示', {
-                                            type: 'warning'
-                                        })
+                                        this.$alert('已经添加了', '', {
+                                            confirmButtonText: '确定',
+                                        });
                                     } else {
                                         childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                     }
@@ -579,7 +589,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            console.log('已经添加了')
+                                            this.$alert('已经添加了', '', {
+                                                confirmButtonText: '确定',
+                                            });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         }
@@ -604,7 +616,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            console.log('已经添加了')
+                                            this.$alert('已经添加了', '', {
+                                                confirmButtonText: '确定',
+                                            });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         }
@@ -632,7 +646,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            console.log('已经添加了')
+                                            this.$alert('已经添加了', '', {
+                                                confirmButtonText: '确定',
+                                            });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         }
@@ -657,7 +673,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            console.log('已经添加了')
+                                            this.$alert('已经添加了', '', {
+                                                confirmButtonText: '确定',
+                                            });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         }
@@ -686,21 +704,21 @@ export default {
         // 预览选项
         itemView(modelId, formId) {
             //    console.log(modelId,typeId);
-            this.dialogFormPriview = true;
+
             // formPriviewParams.modelId = getFormInfosParams.modelId;
             // formPriviewParams.formId = row.formId;
-            getFormPreview({ modelId: '1-1', formId: 'LBBG0001' }).then((res) => {
-                this.formPriviewUrl = res.data;
-            }).catch(function (error) {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    this.notify(error.response.data.message);
-                } else if (error.request) {
-                    //                        console.log(error.request);
+            getFormPreview({ modelId: modelId, formId: formId }).then((res) => {
+                if (res.data) {
+                    this.formPriviewUrl = res.data;
+                    this.dialogFormPriview = true;
                 } else {
-                    //                        console.log('Error', error.message);
+                    this.$alert('暂时不支持预览', '这不是开玩笑', {
+                        confirmButtonText: '确定',
+                    });
                 }
+
+            }).catch(function (error) {
+              
             })
         },
         addConfirm() {
@@ -828,16 +846,37 @@ export default {
                    });*/
             zTree.editName(treeNode);
         },
+        zTreeBeforeRename(treeId, treeNode, newName, isCancel) {
+            //   alert('想改名字？');
+            console.log(treeId, treeNode, newName, isCancel);
+            console.log(newName.length);
+            //   if(newName.length>100){
+            //       console.log('名字太长了')
+            //       isCancel=true;
+
+            //   }
+            //   return false;
+
+        },
         remove(e) {
-            var zTree = $.fn.zTree.getZTreeObj("proZtree"),
-                nodes = zTree.getSelectedNodes(),
-                treeNode = nodes[0];
-            if (nodes.length == 0) {
-                alert("Please select one node at first...");
-                return;
+            // var zTree = $.fn.zTree.getZTreeObj("proZtree"),
+            //     nodes = zTree.getSelectedNodes(),
+            //     treeNode = nodes[0];
+            // if (nodes.length == 0) {
+            //     alert("Please select one node at first...");
+            //     return;
+            // }
+            // var callbackFlag = $("#callbackTrigger").attr("checked");
+            // zTree.removeNode(treeNode, callbackFlag);
+
+            this.$alert('确定删除吗', '提示', {
+                confirmButtonText: '确定',
+            });
+            var treeObj = $.fn.zTree.getZTreeObj("proZtree");
+            var nodes = treeObj.getSelectedNodes();
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                treeObj.removeNode(nodes[i]);
             }
-            var callbackFlag = $("#callbackTrigger").attr("checked");
-            zTree.removeNode(treeNode, callbackFlag);
         },
         //上移
         upMove() {
@@ -930,7 +969,15 @@ export default {
             return uuid;
         },
         add(e) {
-            console.log(123);
+
+            console.log(this.nodeId, '111111111');
+            if (this.nodeId == '') {
+                this.$alert('请选择一个节点添加', '提示', {
+                    confirmButtonText: '确定',
+                });
+                return;
+            }
+
             var treeLeafSub = '';
             let isParent;
             var zTree = $.fn.zTree.getZTreeObj("proZtree");
@@ -1134,9 +1181,19 @@ export default {
                 this.options.push({ "label": treeNode.name })
             }
         },
-        dialogForm(){
-            this.dialogFormPriview=false;
-        }
+        dialogForm() {
+            this.dialogFormPriview = false;
+        },
+        //时间戳转换;
+		formatTime: function (row, column) {
+			const now = new Date(row.updateTime),
+				year = now.getFullYear(),
+				month = now.getMonth() + 1 > 10 ? now.getMonth() + 1 : '0' + (now.getMonth() + 1),
+				date = now.getDate(),
+				hour = now.getHours(),
+				minute = now.getMinutes() > 10 ? now.getMinutes() : '0' + now.getMinutes();
+			return year + "-" + month + "-" + date + " " + hour + ":" + minute
+		}
 
     }
 }

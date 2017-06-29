@@ -55,13 +55,13 @@ website:	http://code.google.com/p/jquerytree/
     text-overflow: ellipsis;
 }
 
-.ztree li a:hover {
+/*.ztree li a:hover {
 	text-decoration: none
-}
+}*/
 
 .ztree li a.curSelectedNode {
 	padding-top: 0px;
-	background-color: #FFE6B0;
+	background-color:#ddd !important;
 	color: black;
 	height: 28px;
 	border: 1px #FFB951 solid;
@@ -267,7 +267,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.bottom_open {
-	background-position: -88px 1px
+	background-position: -88px -4px
 }
 
 .ztree li span.button.bottom_open_hover {
@@ -275,7 +275,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.bottom_close {
-	background-position: -60px 1px
+	background-position: -60px -4px
 }
 
 .ztree li span.button.bottom_close_hover {
