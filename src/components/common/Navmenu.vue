@@ -1,22 +1,22 @@
 <template>
     <el-menu theme="" default-active="/setting/explorer" class="nav-menu" mode="horizontal" router>
         <el-menu-item index="">
-            <a href="http://192.168.13.215:8080/enterprise/showMenuPDS.htm?m=pds">组织结构</a>
+            <a href="/showMenuPDS.htm?m=pds">组织结构</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="http://192.168.13.215:8080/enterprise/showMenuPDS.htm?m=projectmanage">工程管理</a>
+            <a href="/showMenuPDS.htm?m=projectmanage">工程管理</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="http://192.168.13.215:8080/enterprise/showMenuPDS.htm?m=be">Explore</a>
+            <a href="/showMenuPDS.htm?m=be">Explore</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="http://192.168.13.215:8080/enterprise/showMenuPDS.htm?m=mc">Govern</a>
+            <a href="/enterprise/showMenuPDS.htm?m=mc">Govern</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="http://192.168.13.215:8080/enterprise/showMenuPDS.htm?m=bviban">BIM-CO/iBan/Boss</a>
+            <a href="/enterprise/showMenuPDS.htm?m=bviban">BIM-CO/iBan/Boss</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="http://192.168.13.215:8080/enterprise/showMenuPDS.htm?m=plan">Plan</a>
+            <a href="/enterprise/showMenuPDS.htm?m=plan">Plan</a>
         </el-menu-item>
         <el-menu-item index="/setting/explorer">质检计量</el-menu-item>
     </el-menu>

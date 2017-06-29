@@ -77,8 +77,9 @@
                         </div>
                     </div>
                     <div class="form-dialog-footer" >
-                        <el-button @click="isSingForm=false,changeFormVisible=false" >取 消</el-button>
+
                         <el-button type="primary" @click="isSingForm=false,changeFormVisible=false">确 定</el-button>
+                        <el-button @click="isSingForm=false,changeFormVisible=false" >取 消</el-button>
                     </div>
                 </div>
             <!--多层树结构模板-->
@@ -91,8 +92,9 @@
                         <ul class="ztree" id="formTree" ></ul>
                     </div>
                     <div class="form-dialog-footer">
-                        <el-button @click="isDoubForm=false,changeFormVisible = false" >取 消</el-button>
+
                         <el-button type="primary" @click="isDoubForm=false,changeFormVisible = false">确 定</el-button>
+                        <el-button @click="isDoubForm=false,changeFormVisible = false" >取 消</el-button>
                     </div>
                 </div>
             </div>

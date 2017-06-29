@@ -19,14 +19,15 @@
                         <el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>
                     </el-col>
                     <el-col :span="16" style="text-align:right">
+                        <el-input></el-input>
                         <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey"></el-input>
                         <!--<el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>-->
                     </el-col>
                 </el-row>
             </div>
             <el-table class="quality-table" :data="tableData.result" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)" >
-                <el-table-column width="50" type="selection" id="processId">
-                </el-table-column>
+               <!-- <el-table-column width="50" type="selection" id="processId">
+                </el-table-column>-->
                 <el-table-column label="序号" width="80" type="index" >
                 </el-table-column>
                 <el-table-column prop="processName" width="" label="流程名称" sortable>
@@ -62,7 +63,7 @@
                 </el-col>
                 <el-col :span="6">
                     <span class="BMP-text">流程名称：</span>
-                    <el-input placeholder="请输入内容" v-model="flowName" style="width:40%;height:100px;"   :maxlength="10"></el-input>
+                    <el-input placeholder="请输入内容" v-model="flowName" style="width:40%;height:100px;" @blur="messageValTips"></el-input>
                 </el-col>
                 <el-col :span="18">
                     <span class="BMP-text"  style="display:inline-block;vertical-align: top">备注：</span>
@@ -235,7 +236,7 @@
                 <el-col class="BMP-btns">
                     <el-button v-show="isLinkResult" type="primary" :disabled="true">确定</el-button>
                     <el-button v-show="!isLinkResult" type="primary" @click="eidtBMPok">确定</el-button>
-                    <el-button @click="eidtBMPcancel">取消</el-button>
+                    <el-button type="default" @click="eidtBMPcancel">取消</el-button>
                 </el-col>
             </el-row>
         </div>
@@ -331,7 +332,7 @@
             <ul class="ztree" id="lineTree"></ul>
             <div class="quality-dialog-footer">
                 <el-button type="primary" @click="formModelLinkOk">确定</el-button>
-                <el-button type="primary" @click="linkTree=false,dialogFormVisible=true">取消</el-button>
+                <el-button type="default" @click="linkTree=false,dialogFormVisible=true">取消</el-button>
             </div>
             <!--<ul class="ztree" id="lineTree"></ul>-->
         </div>
@@ -404,6 +405,7 @@ let getFormPreviewParams ={
 let  isChecked = 0;
 let nodes;
 let checkedCount = 0;
+let errorMessage = false;
 import "static/css/setting-qualityMeasure.css";
 //import "static/js/ztree/css/zTreeStyle_new.css";
 //    import "static/ztree/css/demo.css";
@@ -488,6 +490,7 @@ export default {
             linkTree: false,
             flowName: "",//流程名称
             flowRemark:"",//备注名称
+            stepNameEdit:"",
             checkTrue: false,
             modelList:"",
             //关联表单模板
@@ -542,16 +545,21 @@ export default {
                 confirmButtonText: '确定',
             });
         },
-        messageTips(message) {
-            if(message.length>10){
-                this.$message({
-                    message: '请输入10个字符以内，超出部分不生效',
-                    type: 'warning'
-                });
-                console.log(this.flowName);
-                this.flowName = this.flowName.substr(0,10);
+        messageTips() {
+            this.$message({
+                message: '请输入10个字符以内，超出部分不生效',
+                type: 'warning'
+            });
+        },
+        messageValTips(){
+            if(this.flowName.length>10){
+                this.messageTips();
+                this.flowName =this.flowName.substr(0,10);
             }
-
+            if(this.flowNameEdit.length>10){
+                this.messageTips();
+                this.flowNameEdit =this.flowNameEdit.substr(0,10);
+            }
         },
         getData(tableParam){//默认数据
             //表单列表
@@ -964,6 +972,7 @@ export default {
             })
         },
         flowNameAlert() {//流程名称弹窗
+            errorMessage = true;
             this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -975,6 +984,7 @@ export default {
             });
         },
         addRulesRoot() {//流程步骤弹窗
+            errorMessage = true;
             this.$confirm('未设置流程步骤,请返回流程步骤?', '保存提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -1025,34 +1035,38 @@ export default {
             list.remark = this.flowRemark;
             list.processName = this.flowName;
 
-            let tootipsAlert = this.flowNameAlert;
-            if (!this.flowName.length) {
-                this.flowNameAlert();
-            }
+            let tootipsAlert = this.addRulesRoot;
             let rolesId = this.rootInfo;
             list.steps =[];//清空步骤  避免重复
-            $('.table-step tbody tr').map(function (i,val) {
-                listParams = {};
+            if (!this.flowName.length) {
+                this.flowNameAlert();
+            }else{
+                $('.table-step tbody tr').map(function (i,val) {
+                    listParams = {};
 
-                if ($(this).find('input').val() && $(this).find('.addRoot').length == 0) {
-                    tootipsAlert();
-                } else if (!($(this).find('input').val()) && $(this).find('.addRoot').length != 0) {
-                    tootipsAlert();
-                } else if ($(this).find('input').val() && $(this).find('.addRoot').length != 0) {
-                    listParams.roleIds = rolesId[i].listRolesId;
-                    listParams.stepName = $(this).find('input').val();
-                    if($(this).find('input[icon=caret-top]').val()=='全部'){
-                        listParams.isAll = true;
+                    if ($(this).find('input').val() && $(this).find('.addRoot').length == 0) {
+                        tootipsAlert();
+                    } else if (!($(this).find('input').val()) && $(this).find('.addRoot').length != 0) {
+                        tootipsAlert();
+                    } else if ($(this).find('input').val() && $(this).find('.addRoot').length != 0) {
+                        listParams.roleIds = rolesId[i].listRolesId;
+                        listParams.stepName = $(this).find('input').val();
+                        if($(this).find('input[icon=caret-top]').val()=='全部'){
+                            listParams.isAll = true;
+                        }else{
+                            listParams.isAll = false;
+                        }
+                        if(list.steps.indexOf(listParams)){
+                            list.steps.push(listParams);
+                        }
+                        errorMessage = false;
                     }else{
-                        listParams.isAll = false;
+                        self.messageBox('请填写至少一条步骤信息')
                     }
-                    if(list.steps.indexOf(listParams)){
-                        list.steps.push(listParams);
-                    }
-                }
 
-            });
-            if(list.steps.length>0){
+                });
+            }
+            if(!errorMessage){
                 addProcessInfo(list).then((res)=>{//添加流程
 
                     this.flowName ="";
@@ -1066,7 +1080,7 @@ export default {
                         this.messageBox(error.response.data.message);
                      })
                     for(var key in this.rootInfo){//清除原始数据
-                        console.info(this.rootInfo,'添加工程最终数据')
+//                        console.info(this.rootInfo,'添加工程最终数据')
                         this.rootInfo[key].addRolesLine =[ ];
                         this.rootInfo[key].listVal ="";
                         this.rootInfo[key].isStepDisable = false;
@@ -1079,18 +1093,18 @@ export default {
                     self.messageBox(error.response.data.message)
                 });
 
-            }else{
-                self.messageBox('请填写有效的信息')
             }
+          /*  else{
+                self.messageBox('请填写有效的信息')
+            }*/
         },
         //树结构字段处理
         zTreeFiledProcess(getFormProcessParams){
             getFormInfosForProcess(getFormProcessParams).then((res)=>{
                 checkedCount = 0;
                 //console.info(res.data,'树结构数据')
-                this.zNodes = res.data.splice(1,20);
+                this.zNodes = res.data;
                 for(var i= 0;i<this.zNodes.length;i++){
-                    //debugger;
                     if(!(this.zNodes[i].checked) && this.zNodes[i].isForm){
                         checkedCount++;
                     }
