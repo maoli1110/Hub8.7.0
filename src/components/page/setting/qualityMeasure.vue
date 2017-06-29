@@ -529,7 +529,12 @@ export default {
     },
     methods: {
         changeEdit(value){
-            console.info(value)
+            if(value==0){
+                this.rootInfoEdit.steps[editIndexTable].isAll = true;
+            }else{
+                this.rootInfoEdit.steps[editIndexTable].isAll = false;
+            }
+            console.info(value,'value')
         },
         //提示框
         messageBox(message){
@@ -542,8 +547,11 @@ export default {
             getProcessList(tableParam).then((res)=>{
                 //console.info(res.data.result,'我是流程列表数据')
                 this.tableData = res.data;
+
                 this.totalNumber = res.data.pageInfo.totalNumber;
+                console.info(this.tableData,'hahahah ')
             }).catch(function(error){
+                console.info(error)
                 this.messageBox(error.response.data.message);
             })
             //获取角色名称
@@ -764,6 +772,7 @@ export default {
                 objTr[i].style.background = "#fff ";
             }
             event.currentTarget.style.background = "#f5f5f5";
+            console.info(indexTable,this.rootInfo)
         },
         //流程管理文件
         eidtProcessSetEdit(event, index) {
@@ -775,6 +784,7 @@ export default {
                 objTr[i].style.background = "#fff ";
             }
             event.currentTarget.style.background = "#f5f5f5";
+
         },
         addBPM() {
             this.isBMP = true;
@@ -850,7 +860,7 @@ export default {
         //添加步骤
         addStep() {
             if (this.rootInfo.length < 15) {
-                this.rootInfo.push({ addRolesLine: [] })
+                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[] })
             }
         },
         addStepEdit(){
@@ -862,7 +872,7 @@ export default {
             this.isBMP = false;
             this.isQuality = true
             for (let i = 0; i < this.rootInfo.length; i++) {
-                this.rootInfo[i].addRolesLine = [];
+               /* this.rootInfo[i].addRolesLine = [];*/
             }
             this.rootInfo.splice(6, this.rootInfo.length - 1)
         },
@@ -894,7 +904,7 @@ export default {
                 this.isQuality = true;
                 this.isBMPedit = false;
             }).catch(function(error){
-                this.messageBox(error.response.data.message);
+                self.messageBox(error.response.data.message);
             })
             console.info(updateProcessId,'能拿到数据吗')
         },
@@ -919,6 +929,7 @@ export default {
             this.isBMPedit = true;
             this.isBMP = false;
             this.isQuality = false;
+            let self =this;
             updateProcessId = row.processId;
             //流程是否被关联
              this.incidenceRel(updateProcessId);//判断流程设置的关联关系
@@ -927,6 +938,11 @@ export default {
                 this.flowNameEdit = res.data.processName;
                 this.flowRemarkEdit = res.data.remark;
                 for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
+                    this.$set(this.rootInfoEdit.steps[j],'option',[{value:0,label:'全部'},{value:1,label:'随便'}]);
+                   this.$set(this.rootInfoEdit.steps[j],'listVal',"");
+                    this.$set(this.rootInfoEdit.steps[j],'rootEditArr',[]);
+                    this.$set(this.rootInfoEdit.steps[j],'isStepDisable',false);
+
                     if (this.rootInfoEdit.steps[j].roleIds.length <=1) {
                         this.rootInfoEdit.steps[j].isStepDisable = false;
                         console.info(this.rootInfoEdit.steps[j].roleIds.length)
@@ -934,16 +950,13 @@ export default {
                         this.rootInfoEdit.steps[j].isStepDisable = true;
                     };
 
-                    this.rootInfoEdit.steps[j].rootEditArr = [];
-                    this.rootInfoEdit.steps[j].option = [{value:0,label:'全部'},{value:1,label:'随便'}];
-              /*      if(this.rootInfoEdit.steps[j].isAll){
-                        this.rootInfoEdit.steps[j].listVal = "全部";
+                    if(this.rootInfoEdit.steps[j].isAll){
+                       this.rootInfoEdit.steps[j].listVal="全部";
                     }else{
-                        this.rootInfoEdit.steps[j].listVal = "随意";
-                    }*/
-                    this.rootInfoEdit.steps[j].listVal ="";
-
+                        this.rootInfoEdit.steps[j].listVal="随便";
+                    }
                 }
+                console.log(this.rootInfoEdit,'数据组好了没有');
                 console.log( this.rootInfoEdit.steps);
                 for (let i = 0;i<this.rootList.length;i++){
                     for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
@@ -956,7 +969,8 @@ export default {
                 }
                 console.info(this.rootInfoEdit,'整体结构');
              }).catch(function(error){
-                this.messageBox(error.response.data.message);
+                console.info(error)
+//                self.messageBox(error.response.data.message);
             })
         },
         flowNameAlert() {//流程名称弹窗
@@ -1047,18 +1061,13 @@ export default {
                     }
                 }
 
-            })
-            if(list.steps.length){
+            });
+            if(list.steps.length>0){
                 addProcessInfo(list).then((res)=>{//添加流程
-                    this.isBMP = false;
-                    this.isQuality = true;
-                    this.isBMPedit = false;
+
                     this.flowName ="";
                     this.flowRemark="";
-                    for(let key in this.rootInfo){
-                        this.rootInfo[key].addRolesLine =[];
-                        this.rootInfo[key].listVal ="";
-                    }
+
                     getProcessList(tableParams).then((res)=>{
                         //console.info(res.data.result,'我是流程列表数据')
                         this.tableData = res.data;
@@ -1066,9 +1075,20 @@ export default {
                      }).catch(function(error){
                         this.messageBox(error.response.data.message);
                      })
+                    for(var key in this.rootInfo){//清除原始数据
+                        console.info(this.rootInfo,'添加工程最终数据')
+                        this.rootInfo[key].addRolesLine =[ ];
+                        this.rootInfo[key].listVal ="";
+                        this.rootInfo[key].isStepDisable = false;
+                        this.rootInfo[key].listRolesId = [];
+                    }
+                    this.isBMP = false;
+                    this.isQuality = true;
+                    this.isBMPedit = false;
                 }).catch(function(error){
                     self.messageBox(error.response.data.message)
                 });
+
             }else{
                 self.messageBox('请填写有效的信息')
             }
