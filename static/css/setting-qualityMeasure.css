@@ -70,7 +70,7 @@
 }
 
 .quality-page .quality-table.el-table tbody td span.icon:nth-child(1){
-    background-position: -202px -106px;
+    background-position: -203px -103px;
 }
 .quality-page .quality-table.el-table tbody td span.icon:nth-child(2){
     background-position:-182px -78px;
@@ -337,7 +337,7 @@
     width: 22px;
     height: 22px;
     background:url('../../static/js/ztree/css/img/zTreeStandard1.png') no-repeat -32px -90px;
-    background-position: -57px -89px;
+    background-position: -58px -89px;
 
 }
 .content #checkAllTrue,.content #checkAllFalse{
