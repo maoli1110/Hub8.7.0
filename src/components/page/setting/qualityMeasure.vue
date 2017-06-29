@@ -1336,7 +1336,7 @@ export default {
                             self.dialogLinkPriview = true;
                             self.priviewUrl = res.data;
                        }else{
-                            self.messageBox('暂时不知处预览')
+                            self.messageBox('暂时不支持预览')
                        }
 
                        console.info( self.priviewUrl)
