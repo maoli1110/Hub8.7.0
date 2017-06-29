@@ -1178,13 +1178,13 @@ export default {
             if(treeNode.checked){//勾选树结构的表单
                 if(updateProcessRelFormParams.addFormIds.indexOf(treeNode.formId)==-1) {
                     updateProcessRelFormParams.addFormIds.push(treeNode.formId);
-//                    this.onLinkModelFormaterParms(updateProcessRelFormParams.delFormIds,treeNode);
+                    this.onLinkModelFormaterParms(updateProcessRelFormParams.delFormIds,treeNode);
                 }
                 console.info(treeNode.formId,'formId')
             }else if(!treeNode.checked){//取消勾选树结构的表单
                 if(updateProcessRelFormParams.delFormIds.indexOf(treeNode.formId)==-1){
                     updateProcessRelFormParams.delFormIds.push(treeNode.formId);
-//                    this.onLinkModelFormaterParms(updateProcessRelFormParams.addFormIds,treeNode);
+                    this.onLinkModelFormaterParms(updateProcessRelFormParams.addFormIds,treeNode);
                 }
             }
             updateProcessRelFormParams.modelId = formModelParams.modelId;
