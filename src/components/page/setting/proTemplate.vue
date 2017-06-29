@@ -187,7 +187,7 @@
                                 </ul>
     
                             </el-tab-pane>
-                            <p class="form-total">已选表单{{options.length-1}}</p>
+                            <p class="form-total">已选表单</p>
                         </el-tabs>
                     </template>
     
@@ -305,6 +305,7 @@ export default {
             // 下拉框数据
             typeList: [],
             typeName: '',
+            selectLength:'',
             // 编辑页面的三级标题
             // 单位工程
             //  分部项目
@@ -370,7 +371,7 @@ export default {
                 // this.addFormOption.push({value})
             }).catch(() => {
             });
-        },
+        },       
     },
     computed: {
 
@@ -483,6 +484,7 @@ export default {
                         el.childs.forEach((el, index2) => {
                             if (elForm.typeId == el.typeId) {
                                 el.childs.push({ typeId: elForm.typeId, modelId: elForm.modelId, formId: elForm.formId, formName: elForm.formName });
+                                this.selectLength==el.childs.length;
                             }
                         })
                     });
@@ -566,6 +568,7 @@ export default {
                                         });
                                     } else {
                                         childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
+                                        this.selectLength==childs.length;
                                     }
                                 })
                             }
@@ -594,6 +597,7 @@ export default {
                                             });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
+                                            this.selectLength==childs.length;
                                         }
                                     }
                                 })
@@ -621,6 +625,7 @@ export default {
                                             });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
+                                            this.selectLength==childs.length;
                                         }
                                     }
                                 })
@@ -651,6 +656,7 @@ export default {
                                             });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
+                                            this.selectLength==childs.length;
                                         }
                                     }
                                 })
@@ -678,6 +684,7 @@ export default {
                                             });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
+                                            this.selectLength==childs.length;
                                         }
                                     }
                                 })
@@ -695,7 +702,8 @@ export default {
                 if (el.typeName == itemtypeName) {
                     el.childs.forEach((el, index2) => {
                         if (el.typeName == childitemtypeName) {
-                            el.childs.splice(index, 1)
+                            el.childs.splice(index, 1);
+                            this.selectLength=el.childs.length;
                         }
                     })
                 }
