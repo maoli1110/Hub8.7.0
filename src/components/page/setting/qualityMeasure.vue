@@ -16,11 +16,11 @@
                 <el-row class="quality-search" v-if="!isBMP">
                     <el-col :span="8">
                         <el-button type="primary" icon="plus" @click="addBPM">添加</el-button>
-                        <el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>
+                        <!--<el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>-->
                     </el-col>
                     <el-col :span="16" style="text-align:right;position:relative">
 
-                        <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey" ></el-input>
+                        <el-input placeholder="请输入流程名称搜索" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey" ></el-input>
                         <!--<el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>-->
                         <el-icon class="el-icon-circle-cross" style="position:absolute"  v-show="tableSearchKey.length>0" @click.native="clearEvent"></el-icon>
                     </el-col>
@@ -53,7 +53,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 200]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                 </el-pagination>
             </div>
         </div>
@@ -99,7 +99,7 @@
                                         <tr v-for="(rootInfo,index) in rootInfo" @click="processSetEdit($event,index)">
                                             <td width="50">{{index+1}}</td>
                                             <td width="210">
-                                                <el-input class="flowTitle" placeholder="请输入内容" :maxlength=10></el-input>
+                                                <el-input class="flowTitle" placeholder="请输入内容" :maxlength=10 v-model="rootInfo.stepName"></el-input>
                                             </td>
                                             <td width="120" style="position:relative" class="list-isAll" >
                                                 <el-select :value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择">
@@ -242,58 +242,67 @@
             </el-row>
         </div>
         <!--模态框(关联模型)-->
-        <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model" :close-on-click-modal="false">
-            <el-row>
-                <el-col :span="24" style="padding:10px 30px ;border-bottom:1px solid #ddd;">
-                <el-col :span="14">
-                    <label >表单目录：</label>
-                    <el-select  class="rootText" value="modelTypeVal" v-model="modelTypeVal" placeholder="请选择"  @change="formModelChange($event)">
-                        <el-option
-                            v-for="item in getformModelType"
-                            :key="item.modelId"
-                            :label="item.modelName"
-                            :value="item.modelId">
-                        </el-option>
-                    </el-select>
-                </el-col>
-                <el-col :span="10" style="text-align:right;padding:0;">
-                    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
-                    </el-input>
-                </el-col>
-            </el-col>
-            </el-row>
-            <el-row class="link-model-body">
-                <!--link-model-header-->
-                <el-col :span="24">
-                    <el-button type="primary" icon="plus" @click="BMPAddLink">
-                        添加关联</el-button>
-                    <el-button type="primary" style="position:relative" @click="BMPDeleteLink">
-                       <span class="quality-del-icon" style="left:15px;"></span> <span style="margin-left:15px;">删除关联</span></el-button>
-                </el-col>
-                <el-col :span="24" class="link-table" style="padding:0 40px;">
-                    <el-table :data="formModelData.result" style="width: 100%" :default-sort="{prop: '', order: 'descending'}"  class="link-modal-table" @select-all="modelSelectAll" @select="modelSelectRow" >
-                        <el-table-column width="50" type="selection">
-                        </el-table-column>
-                        <el-table-column label="序号" width="80" type="index">
-                        </el-table-column>
-                        <el-table-column label="表单名称" prop="formName">
-                        </el-table-column>
-                        <el-table-column label="操作" width="80" @click.native="addnew">
-                            <template scope="scope">
-                                <span class="icon-eyes" @click="formModelPriview(scope.$index,scope.row)"></span>
-                                <span class="quality-del-icon" style="position:static;background-position:-27px -30px;" @click="linkDelete(scope.$index,scope.row)"></span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-col>
-                <el-col :span="24"></el-col>
-            </el-row>
-            <div slot="footer" class="dialog-footer">
-                <el-pagination layout="prev, pager, next,jumper,total" :total="modelTotalNum" :page-size="7" @size-change="formModelSizeChange" @current-change="formModelSizeChange" :current-page="modelcur_page">
-                </el-pagination>
 
+        <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model" :close-on-click-modal="false" style="width:0;height:0;"></el-dialog>
+            <div v-show="dialogFormVisible" class="link-model">
+                <el-row>
+                    <el-col :span="24" style="padding:20px 30px 20px;border-bottom:1px solid #ddd;">
+                        <span style="font-weight:bolder">表单关联</span>
+                        <el-icon class="el-icon-close" style="float:right" @click.native="dialogFormVisible=false"></el-icon>
+                    </el-col>
+                    <el-col :span="24" style="padding:15px 30px;border-bottom:1px solid #ddd;">
+                        <el-col :span="14">
+                            <label >表单目录：</label>
+                            <el-select  class="rootText" value="modelTypeVal" v-model="modelTypeVal" placeholder="请选择"  @change="formModelChange($event)">
+                                <el-option
+                                    v-for="item in getformModelType"
+                                    :key="item.modelId"
+                                    :label="item.modelName"
+                                    :value="item.modelId">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="10" style="text-align:right;padding:0;position:relative">
+                            <el-input placeholder="请输入搜索表单" class="formModelTable" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch"  style="width:100%" >
+                            </el-input>
+                            <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="position:absolute;top:10px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                        </el-col>
+                    </el-col>
+                </el-row>
+                <el-row class="link-model-body">
+                    <!--link-model-header-->
+                    <el-col :span="24">
+                        <el-button type="primary" icon="plus" @click="BMPAddLink">
+                            添加关联</el-button>
+                        <el-button type="primary" style="position:relative" @click="BMPDeleteLink">
+                           <span class="quality-del-icon" style="left:15px;"></span> <span style="margin-left:15px;">删除关联</span></el-button>
+                    </el-col>
+                    <el-col :span="24" class="link-table" style="padding:0 40px;">
+                        <el-table :data="formModelData.result" style="width: 100%" :default-sort="{prop: '', order: 'descending'}"  class="link-modal-table" @select-all="modelSelectAll" @select="modelSelectRow" >
+                            <el-table-column width="50" type="selection">
+                            </el-table-column>
+                            <el-table-column label="序号" width="80" type="index">
+                            </el-table-column>
+                            <el-table-column label="表单名称" prop="formName">
+                            </el-table-column>
+                            <el-table-column label="操作" width="80" @click.native="addnew">
+                                <template scope="scope">
+                                    <span class="icon-eyes" @click="formModelPriview(scope.$index,scope.row)"></span>
+                                    <span class="quality-del-icon" style="position:static;background-position:-27px -30px;" @click="linkDelete(scope.$index,scope.row)"></span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-col>
+                    <el-col :span="24"></el-col>
+                </el-row>
+                <div slot="footer" class="dialog-footer">
+                    <el-pagination layout="prev, pager, next,jumper,total" :total="modelTotalNum" :page-size="7" @size-change="formModelSizeChange" @current-change="formModelSizeChange" :current-page="modelcur_page">
+                    </el-pagination>
+
+                </div>
             </div>
-        </el-dialog>
+
+
         <!--模态框（收起算管理模块）-->
         <el-dialog :visible.sync="linkTree" style="width:0;height:0;opacity:0;left:50%" :close-on-click-modal="false"></el-dialog>
         <div class="quality-dialog" v-show="linkTree">
@@ -306,7 +315,7 @@
                     <el-col :span="24" style="padding:20px 40px;">
                         <el-col :span="15" >
                             <label style="font-size:14px;">表单目录：</label>
-                            <el-select value="modelTypeVal" v-model="modelTypeTreeVal" placeholder="请选择"  @change="formModelTreeChange($event)">
+                            <el-select value="modelTypeTreeVal" v-model="modelTypeTreeVal" placeholder="请选择"  @change="formModelTreeChange($event)">
                                 <el-option  v-for="item in getformModelType"
                                             :key="item.modelId"
                                             :label="item.modelName"
@@ -314,8 +323,11 @@
                             </el-select>
                         </el-col>
                         <el-col :span="9" >
-                            <el-input placeholder="请选择日期" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
-                            </el-input>
+                            <div style="position:relative">
+                                <el-input placeholder="请输入要搜索的关联表单" v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
+                                </el-input>
+                                <el-icon class="el-icon-circle-close" v-show="ztreeSearch.length>0" style="position:absolute;top:10px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                            </div>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -326,7 +338,6 @@
                     <div class="simlue-checkbox"></div>&nbsp;&nbsp;全选
                     <div id="checkAllTrue" v-show="checkTrue"></div>
                     <div id="checkAllFalse" v-show="!checkTrue"></div>
-
                 </label>
                 <div class="quality-collage"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
             </div>
@@ -469,12 +480,12 @@ export default {
             totalNumber:0,
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
             rootInfo: [
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}] ,listVal:"全部",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] },
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部" ,listRolesId:[]}
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[],stepName:""},
+                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[],stepName:""},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}] ,listVal:"全部",listRolesId:[],stepName:""},
+                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[],stepName:""},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] ,stepName:""},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部" ,listRolesId:[],stepName:""}
             ],
             flowNameEdit:"",
             flowRemarkEdit:"",
@@ -507,19 +518,22 @@ export default {
             priviewUrl:"",
             isLinkResult:"",//是否被关联
             clearKey:false,//清除关键字
+            totalPage:10,
+            ztreeSearch:""
         }
     },
     created() {
         curretPage = !curretPage?1:curretPage;
         pageSize = !pageSize?10:pageSize;
         sortField = !sortField?"":sortField;
-        sortType = !sortType?"asc":sortType;
+        sortType = !sortType?"desc":sortType;
         tableParams.page= curretPage;
         tableParams.searchKey = this.tableSearchKey;
         tableParams.pageSize = pageSize;
         tableParams.sortType = sortType;
         tableParams.sortField = sortField;
         this.getData(tableParams);
+//        this.beforeRouteEnter();
     },
     mounted() {
         $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
@@ -527,15 +541,20 @@ export default {
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
         $("#expandBtn").bind("click",  {type:"expand",operObj:'lineTree'}, this.expandNode);
         $("#collapseBtn").bind("click", {type:"collapse",operObj:'lineTree'}, this.expandNode);
-        $('.qualityTree input').bind('keyup',this.qualitySearchTree);
-        $('.formModelTable input').bind('keyup',this.formModelSearch);
-        $('.quality-searInput input').bind('keyup',this.tableSearch)
+        $('.qualityTree input').bind('keydown',this.qualitySearchTree);
+        $('.formModelTable input').bind('keydown',this.formModelSearch);
+        $('.quality-searInput input').bind('keydown',this.tableSearch)
 
     },
     methods: {
-
         clearEvent(){//清除表格元素
-            this.tableSearchKey = "";
+            if(this.formModelVal){
+                this.formModelVal ='';
+            }else if(this.tableSearchKey){
+                this.tableSearchKey = "";
+            }else if(this.ztreeSearch){
+                this.ztreeSearch =""
+            }
         },
         changeEdit(value){
             if(value==0){
@@ -567,15 +586,20 @@ export default {
                 this.flowNameEdit =this.flowNameEdit.substr(0,10);
             }
         },
+        beforeRouteEnter () {
+//            next(vm => vm.from = from);
+            console.info(this.$route.name,'from')
+        },
         getData(tableParam){//默认数据
             //表单列表
+            console.log(tableParam);
+//            this.tableData =[];
             getProcessList(tableParam).then((res)=>{
                 //console.info(res.data.result,'我是流程列表数据')
                 this.tableData = res.data;
-
                 this.totalNumber = res.data.pageInfo.totalNumber;
-                console.info(this.tableData,'hahahah ')
-            }).catch(function(error){
+                this.totalPage = res.data.pageInfo.pageSize;
+        }).catch(function(error){
                 console.info(error)
                 this.messageBox(error.response.data.message);
             })
@@ -608,13 +632,13 @@ export default {
             this.cur_page = val;
             curretPage= this.cur_page;
             tableParams.page = curretPage;
-
+            console.info(tableParams.pageSize)
             this.getData(tableParams);
         },
         handleSizeChange(val) {//每页显示多少条
-//            console.log(`每页 ${val} 条`);
+//            debugger;
+            console.log(`每页 ${val} 条`);
             tableParams.pageSize = val;
-
             this.getData(tableParams);
         },
         formatter(row, column) {
@@ -697,8 +721,9 @@ export default {
 
             //表单类型   formModelParams
             getFormModelTypeList({belong:0}).then((res)=>{
+                this.modelTypeVal = res.data[0].modelId;
                 this.getformModelType = res.data;
-//                this.modelTypeVal = res.data[0].modelName;
+
                 //console.info(res.data,'模板列表');
                 formModelParams.processId = processId;
                 formModelParams.modelId = this.getformModelType[0].modelId;
@@ -723,14 +748,11 @@ export default {
         },
         //表单查询
         formModelSearch(event){
-            console.info(event.keyCode)
-            if(event.type=='click' ||event.keyCode == 13){
+//            console.info(this.formModelVal,'不能执行删除')
+            if(event.type=='click' || event.keyCode == 13){
                 formModelParams.searchKey = this.formModelVal;
-            }else{
-                return false
+                this.formModelType(formModelParams);
             }
-
-            this.formModelType(formModelParams);
         },
         //关联表单删除
         modelSelectAll(selection){
@@ -819,6 +841,7 @@ export default {
         },
         //删除行
         deleteHandle(index) {
+            console.info(index,'index')
             if (this.rootInfo.length > 1) {
                 this.rootInfo.splice(index, 1)
             }
@@ -868,12 +891,12 @@ export default {
         //添加步骤
         addStep() {
             if (this.rootInfo.length < 15) {
-                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"",listRolesId:[] })
+                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] ,stepName:""})
             }
         },
         addStepEdit(){
             if (this.rootInfoEdit.steps.length < 15){
-                this.rootInfoEdit.steps.push({stepName:"",isAll:"",rootEditArr:[],roleIds:[],isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:""})
+                this.rootInfoEdit.steps.push({stepName:"",isAll:"",rootEditArr:[],roleIds:[],isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部"})
             }
         },
         BMPcancel() {
@@ -982,7 +1005,6 @@ export default {
             errorMessage = true;
             this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
                 confirmButtonText: '确定',
-                cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                 this.isBMP = true
@@ -994,7 +1016,6 @@ export default {
             errorMessage = true;
             this.$confirm('未设置流程步骤,请返回流程步骤?', '保存提示', {
                 confirmButtonText: '确定',
-                cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                 this.isBMP = true
@@ -1068,7 +1089,7 @@ export default {
                         }
                         errorMessage = false;
                     }else{
-                        self.messageBox('请填写至少一条步骤信息')
+//                        self.messageBox('请填写至少一条步骤信息')
                     }
 
                 });
@@ -1155,6 +1176,7 @@ export default {
             this.linkTree = true;
             this.dialogFormVisible = false;
             //树结构
+            this.modelTypeTreeVal = formModelParams.modelId
             getFormProcessParams.modelId =formModelParams.modelId;
             getFormProcessParams.processId = processId;
             this.zTreeFiledProcess(getFormProcessParams);
@@ -1407,11 +1429,17 @@ export default {
             updateProcessRelFormParams.modelId = formModelParams.modelId;
             updateProcessRelFormParams.delFormIds.push(row.formId);
               //更新的模板列表
-             updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
-                 this.formModelData.result.splice(index,1)
-             }).catch(function(error){
-                this.messageBox(error.response.data.message);
-            });
+            this.$confirm('所选表单将解除关联，是否确认?', '删除表单关联', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                 updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
+                     this.formModelData.result.splice(index,1)
+                 }).catch(function(error){
+                    this.messageBox(error.response.data.message);
+                });
+             })
         },
         //树结构的搜索功能
         getZtreeParentNode(ztreeNode, nodes) {

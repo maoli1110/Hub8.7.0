@@ -17,7 +17,7 @@
             </el-col>
         </el-row>-->
         <!--:default-sort = "{prop: 'date', order: 'descending'}" -->
-        <el-table :data="formDataList"  style="width: 100%"  class="form-table"  height="calc(100vh - 300px)" >
+        <el-table :data="formDataList"  style="width: 100%"  class="form-table"  >
             <el-table-column label="序号" width="80" type="index">
             </el-table-column>
             <el-table-column prop="modelName" label="表单类型" sortable>
@@ -56,7 +56,10 @@
                 <div class="single-stump form-ztree-dialog" v-show="isSingForm">
                     <div class="form-dialog-title" style="padding-bottom:15px;">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
-                        <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch"></el-input>
+                        <div style="position:relative">
+                            <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch"></el-input>
+                            <el-icon class="el-icon-circle-cross" style="position:absolute;top:10px;right:74px;color:#ccc;"  v-show="searchParam.length>0" @click.native="clearEvent"></el-icon>
+                        </div>
                     </div>
                     <div class="form-dialog-body" >
                         <div class="form-content">
@@ -86,8 +89,13 @@
                 <div class="form-ztree-dialog" v-show="isDoubForm">
                     <div class="form-dialog-title">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
-                        <el-input icon="search" class="searchVal" :on-icon-click="searchformTree"></el-input>
-                    </div>
+                            <div style="position:relative">
+                                 <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%"></el-input>
+                                 <el-icon class="el-icon-circle-cross" style="position:absolute;top:10px;right:127px;color:#ccc;"  v-show="formTreeSearch.length>0" @click.native="clearEvent"></el-icon>
+
+                            <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
+                            </div>
+                        </div>
                     <div class="form-dialog-body">
                         <ul class="ztree" id="formTree" ></ul>
                     </div>
@@ -174,7 +182,8 @@
                 isDoubForm:false,
                 dialogFormPriview:false,
                 formPriviewUrl:"",
-                searchParam:""
+                searchParam:"",
+                formTreeSearch:""
             }
         },
         components:{
@@ -183,7 +192,9 @@
         mounted(){
             $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
             $('.basicSearch input').bind('keyup',this.basicSearch);
-            $('.form-dialog-title input').bind('keydown',this.searchformTree)
+            $('.form-dialog-title input').bind('keydown',this.searchformTree);
+            $("#expandBtn").bind("click",  {type:"expand",operObj:'formTree'}, this.expandNode);
+            $("#collapseBtn").bind("click", {type:"collapse",operObj:'formTree'}, this.expandNode);
           /*  $('.icon-eyes').map(function(){
                 $(this).bind('click',function(){
                     console.info('预览界面')
@@ -194,6 +205,13 @@
             this.getData()
         },
         methods: {
+            clearEvent(){//清除表格元素
+                if(this.searchParam) {
+                    this.searchParam = '';
+                }else if(this.formTreeSearch){
+                    this.formTreeSearch=""
+                }
+            },
             onCheck(event, treeId, treeNode){
 //                console.log(treeNode);
             },
@@ -402,6 +420,52 @@
                     this.zNodes = res.data;
                 })
             },*/
+            //全部展开和收起
+            expandNode(e) {
+                //var index=layer.load(2);
+                type = e.data.type;
+                operObj = e.data.operObj;
+                var zTree = $.fn.zTree.getZTreeObj(operObj);
+                var treeNodes = zTree.transformToArray(zTree.getNodes());
+                var flag=true;
+                //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
+                for (var i=0;i<treeNodes.length; i++) {
+                    if(treeNodes[i].level==level&&treeNodes[i].isParent){
+                        if (type == "expand"&&!treeNodes[i].open) {
+                            flag=false;
+                            break;
+                        } else if (type == "collapse"&&treeNodes[i].open) {
+                            flag=false;
+                            break;
+                        }
+                    }
+                }
+
+                if(flag){
+                    //说明当前level的节点都为折叠或者展开状态
+                    if(type == "expand"){
+                        level++
+                        if(level<maxLevel-1){
+                            level++;
+                        }
+                    }else if(type == "collapse"){
+                        if(level==0){
+                            return;
+                        }
+                        level--;
+                    }
+                }
+                for (var i=0;i<treeNodes.length; i++) {
+                    if(treeNodes[i].level==level&&treeNodes[i].isParent){
+                        if (type == "expand"&&!treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], true, false, null, true);
+                        } else if (type == "collapse"&&treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], false, false, null, true);
+                        }
+                    }
+                }
+                //layer.close(index);
+            }
         }
     }
 </script>
