@@ -77,7 +77,7 @@
                                 <span id="downMove" @click="downMove" title='下移节点'></span>
                             </div>
                             <div class="tool-btns">
-                                <span id="remove" @click="remove" title='删除节点'></span>
+                                <span id="remove" @click="remove" title='删除节点' ></span>
                             </div>
                         </div>
                         <div class="sear-icon">
@@ -111,7 +111,7 @@
                 </el-col>
                 <el-col :span="24" class="pro-butons clearfix">
                     <el-button type="primary" @click.native="proOk">确定</el-button>
-                    <el-button type="primary" @click.native="proCancel">取消</el-button>
+                    <el-button type="default" @click.native="proCancel">取消</el-button>
                 </el-col>
             </el-row>
             <!--增加多个节点弹框-->
@@ -195,7 +195,7 @@
             </div>
             <div class="formBtn">
                 <el-button type="primary" @click.native='addConfirm'>确定</el-button>
-                <el-button type="primary" @click.native='addcancle'>取消</el-button>
+                <el-button type="default" @click.native='addcancle'>取消</el-button>
             </div>
         </div>
         <div class="el-dialog__wrapper dialogPriview" style="z-index: 9000;" v-show='dialogFormPriview'>
@@ -494,9 +494,17 @@ export default {
         },
         // 编辑
         proTemplateEdit(index, row) {
+            this.nodeId='',
+             // 清空上一次的残留
+            this.typeList.forEach((el, index1) => {
+                el.childs.forEach((el, index2) => {
+                    el.childs = [];
+                })
+            });
             this.EditVisible = true;
             this.projModelId = row.projModelId;
             this.getprojmodelDetail();
+
         },
         // 点击
         zTreeOnClick(event, treeId, treeNode) {
@@ -538,7 +546,7 @@ export default {
                 }).catch(() => {
                 });
             } else {
-                this.$alert('说了多少遍？请选择三级子节点', '这不是开玩笑', {
+                this.$alert('请选择三级子节点', '提示', {
                     confirmButtonText: '确定',
                 });
                 return;
@@ -563,7 +571,7 @@ export default {
                                     let childs = el.childs;
                                     let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                     if (child) {
-                                        this.$alert('已经添加了', '', {
+                                        this.$alert('请勿重复添加', '', {
                                             confirmButtonText: '确定',
                                         });
                                     } else {
@@ -592,7 +600,7 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('已经添加了', '', {
+                                            this.$alert('请勿重复添加', '', {
                                                 confirmButtonText: '确定',
                                             });
                                         } else {
@@ -620,7 +628,7 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('已经添加了', '', {
+                                            this.$alert('请勿重复添加', '', {
                                                 confirmButtonText: '确定',
                                             });
                                         } else {
@@ -651,7 +659,7 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('已经添加了', '', {
+                                            this.$alert('请勿重复添加', '', {
                                                 confirmButtonText: '确定',
                                             });
                                         } else {
@@ -679,7 +687,7 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('已经添加了', '', {
+                                            this.$alert('请勿重复添加', '', {
                                                 confirmButtonText: '确定',
                                             });
                                         } else {
@@ -720,7 +728,7 @@ export default {
                     this.formPriviewUrl = res.data;
                     this.dialogFormPriview = true;
                 } else {
-                    this.$alert('暂时不支持预览', '这不是开玩笑', {
+                    this.$alert('暂时不支持预览', '提示', {
                         confirmButtonText: '确定',
                     });
                 }
@@ -832,7 +840,7 @@ export default {
             nodes = zTree.getSelectedNodes(),
                 treeNode = nodes[0];
             if (nodes.length == 0) {
-                this.$alert('请选一个节点啊', '这不是开玩笑', {
+                this.$alert('请选择一个节点', '提示', {
                     confirmButtonText: '确定',
                 });
                 return;
@@ -873,9 +881,9 @@ export default {
                     for (var i = 0; i < childNodes.length; i++) {
                         if ((childNodes[i].isParent == treeNode.isParent) && (childNodes[i].nodeName == newName) && (childNodes[i].tId != treeNode.tId)) {
                             if (treeNode.isParent) {
-                                message = "为什么要取一样的名字？为什么？";
+                                message = "名称不能重复";
                             } else {
-                                message = "为什么要取一样的名字？为什么？";
+                                message = "名称不能重复";
                             }
                             this.$alert(message, '提示', {
                                 confirmButtonText: '确定',

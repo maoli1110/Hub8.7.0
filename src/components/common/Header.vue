@@ -13,9 +13,9 @@
                     <img class="user-logo" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80">
                 </span>
                 <el-dropdown-menu slot="dropdown" menu-align="start">
-                    <el-dropdown-item command="loginout">企业信息</el-dropdown-item>
-                    <el-dropdown-item command="loginout">个人信息</el-dropdown-item>
-                    <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
+                    <el-dropdown-item >企业信息</el-dropdown-item>
+                    <el-dropdown-item >个人信息</el-dropdown-item>
+                    <el-dropdown-item ><a href="/enterprise/loginOutPDS.htm">安全退出</a></el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
             <span class="user-name">{{name}}</span>
