@@ -16,11 +16,11 @@
                 <el-row class="quality-search" v-if="!isBMP">
                     <el-col :span="8">
                         <el-button type="primary" icon="plus" @click="addBPM">添加</el-button>
-                        <el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>
+                        <!--<el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>-->
                     </el-col>
                     <el-col :span="16" style="text-align:right;position:relative">
 
-                        <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey" ></el-input>
+                        <el-input placeholder="请输入流程名称搜索" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey" ></el-input>
                         <!--<el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>-->
                         <el-icon class="el-icon-circle-cross" style="position:absolute"  v-show="tableSearchKey.length>0" @click.native="clearEvent"></el-icon>
                     </el-col>
@@ -53,7 +53,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 200]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                 </el-pagination>
             </div>
         </div>
@@ -242,7 +242,14 @@
             </el-row>
         </div>
         <!--模态框(关联模型)-->
+
+    <!--    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
+        </el-input>-->
+        <div>
+            <el-input class="formModelTable"></el-input>
+        </div>
         <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model" :close-on-click-modal="false">
+
             <el-row>
                 <el-col :span="24" style="padding:10px 30px ;border-bottom:1px solid #ddd;">
                 <el-col :span="14">
@@ -256,9 +263,11 @@
                         </el-option>
                     </el-select>
                 </el-col>
-                <el-col :span="10" style="text-align:right;padding:0;">
-                    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
-                    </el-input>
+                <el-col :span="10" style="text-align:right;padding:0;position:relative">
+                    <el-input class="formModelTable"></el-input>
+                  <!--  <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
+                    </el-input>-->
+                    <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="position:absolute;top:10px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
                 </el-col>
             </el-col>
             </el-row>
@@ -507,19 +516,21 @@ export default {
             priviewUrl:"",
             isLinkResult:"",//是否被关联
             clearKey:false,//清除关键字
+            totalPage:10
         }
     },
     created() {
         curretPage = !curretPage?1:curretPage;
         pageSize = !pageSize?10:pageSize;
         sortField = !sortField?"":sortField;
-        sortType = !sortType?"asc":sortType;
+        sortType = !sortType?"desc":sortType;
         tableParams.page= curretPage;
         tableParams.searchKey = this.tableSearchKey;
         tableParams.pageSize = pageSize;
         tableParams.sortType = sortType;
         tableParams.sortField = sortField;
         this.getData(tableParams);
+//        this.beforeRouteEnter();
     },
     mounted() {
         $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
@@ -527,15 +538,18 @@ export default {
         $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, this.checkNode);
         $("#expandBtn").bind("click",  {type:"expand",operObj:'lineTree'}, this.expandNode);
         $("#collapseBtn").bind("click", {type:"collapse",operObj:'lineTree'}, this.expandNode);
-        $('.qualityTree input').bind('keyup',this.qualitySearchTree);
-        $('.formModelTable input').bind('keyup',this.formModelSearch);
-        $('.quality-searInput input').bind('keyup',this.tableSearch)
+        $('.qualityTree input').bind('keydown',this.qualitySearchTree);
+        $('.formModelTable input').bind('keydown',this.formModelSearch);
+        $('.quality-searInput input').bind('keydown',this.tableSearch)
 
     },
     methods: {
-
         clearEvent(){//清除表格元素
-            this.tableSearchKey = "";
+            if(this.formModelVal){
+                this.formModelVal ='';
+            }else if(this.tableSearchKey){
+                this.tableSearchKey = "";
+            }
         },
         changeEdit(value){
             if(value==0){
@@ -567,15 +581,20 @@ export default {
                 this.flowNameEdit =this.flowNameEdit.substr(0,10);
             }
         },
+        beforeRouteEnter () {
+//            next(vm => vm.from = from);
+            console.info(this.$route.name,'from')
+        },
         getData(tableParam){//默认数据
             //表单列表
+            console.log(tableParam);
+//            this.tableData =[];
             getProcessList(tableParam).then((res)=>{
                 //console.info(res.data.result,'我是流程列表数据')
                 this.tableData = res.data;
-
                 this.totalNumber = res.data.pageInfo.totalNumber;
-                console.info(this.tableData,'hahahah ')
-            }).catch(function(error){
+                this.totalPage = res.data.pageInfo.pageSize;
+        }).catch(function(error){
                 console.info(error)
                 this.messageBox(error.response.data.message);
             })
@@ -608,13 +627,13 @@ export default {
             this.cur_page = val;
             curretPage= this.cur_page;
             tableParams.page = curretPage;
-
+            console.info(tableParams.pageSize)
             this.getData(tableParams);
         },
         handleSizeChange(val) {//每页显示多少条
-//            console.log(`每页 ${val} 条`);
+//            debugger;
+            console.log(`每页 ${val} 条`);
             tableParams.pageSize = val;
-
             this.getData(tableParams);
         },
         formatter(row, column) {
@@ -723,7 +742,7 @@ export default {
         },
         //表单查询
         formModelSearch(event){
-            console.info(event.keyCode)
+            console.info(event.keyCode,'不能执行删除')
             if(event.type=='click' ||event.keyCode == 13){
                 formModelParams.searchKey = this.formModelVal;
             }else{
@@ -868,12 +887,12 @@ export default {
         //添加步骤
         addStep() {
             if (this.rootInfo.length < 15) {
-                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"",listRolesId:[] })
+                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] })
             }
         },
         addStepEdit(){
             if (this.rootInfoEdit.steps.length < 15){
-                this.rootInfoEdit.steps.push({stepName:"",isAll:"",rootEditArr:[],roleIds:[],isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:""})
+                this.rootInfoEdit.steps.push({stepName:"",isAll:"",rootEditArr:[],roleIds:[],isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部"})
             }
         },
         BMPcancel() {
@@ -982,7 +1001,6 @@ export default {
             errorMessage = true;
             this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
                 confirmButtonText: '确定',
-                cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                 this.isBMP = true
@@ -994,7 +1012,6 @@ export default {
             errorMessage = true;
             this.$confirm('未设置流程步骤,请返回流程步骤?', '保存提示', {
                 confirmButtonText: '确定',
-                cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                 this.isBMP = true
@@ -1068,7 +1085,7 @@ export default {
                         }
                         errorMessage = false;
                     }else{
-                        self.messageBox('请填写至少一条步骤信息')
+//                        self.messageBox('请填写至少一条步骤信息')
                     }
 
                 });

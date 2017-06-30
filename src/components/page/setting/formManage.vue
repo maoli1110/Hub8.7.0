@@ -17,7 +17,7 @@
             </el-col>
         </el-row>-->
         <!--:default-sort = "{prop: 'date', order: 'descending'}" -->
-        <el-table :data="formDataList"  style="width: 100%"  class="form-table"  height="calc(100vh - 300px)" >
+        <el-table :data="formDataList"  style="width: 100%"  class="form-table"  >
             <el-table-column label="序号" width="80" type="index">
             </el-table-column>
             <el-table-column prop="modelName" label="表单类型" sortable>
@@ -57,6 +57,7 @@
                     <div class="form-dialog-title" style="padding-bottom:15px;">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
                         <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch"></el-input>
+
                     </div>
                     <div class="form-dialog-body" >
                         <div class="form-content">

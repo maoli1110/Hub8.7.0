@@ -20,6 +20,9 @@
             <el-menu-item index="/setting/qualityMeasure">
                 公路
             </el-menu-item>
+        <el-menu-item index="/rootManage/stuffManage">
+            曲线管理
+        </el-menu-item>
     </el-menu>
     </div>
 </template>
