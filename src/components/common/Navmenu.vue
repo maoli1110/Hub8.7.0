@@ -1,13 +1,13 @@
 <template>
     <el-menu theme="" default-active="/setting/explorer" class="nav-menu" mode="horizontal" router>
         <el-menu-item index="">
-            <a href="/showMenuPDS.htm?m=pds">组织结构</a>
+            <a href="/enterprise/showMenuPDS.htm?m=pds">组织结构</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="/showMenuPDS.htm?m=projectmanage">工程管理</a>
+            <a href="/enterprise/showMenuPDS.htm?m=projectmanage">工程管理</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="/showMenuPDS.htm?m=be">Explore</a>
+            <a href="/enterprise/showMenuPDS.htm?m=be">Explore</a>
         </el-menu-item>
         <el-menu-item index="">
             <a href="/enterprise/showMenuPDS.htm?m=mc">Govern</a>
