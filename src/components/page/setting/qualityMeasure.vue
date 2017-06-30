@@ -18,10 +18,11 @@
                         <el-button type="primary" icon="plus" @click="addBPM">添加</el-button>
                         <el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>
                     </el-col>
-                    <el-col :span="16" style="text-align:right">
+                    <el-col :span="16" style="text-align:right;position:relative">
 
-                        <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey"></el-input>
+                        <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey" ></el-input>
                         <!--<el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>-->
+                        <el-icon class="el-icon-circle-cross" style="position:absolute"  v-show="tableSearchKey.length>0" @click.native="clearEvent"></el-icon>
                     </el-col>
                 </el-row>
             </div>
@@ -505,6 +506,7 @@ export default {
             // isStepDisable:false
             priviewUrl:"",
             isLinkResult:"",//是否被关联
+            clearKey:false,//清除关键字
         }
     },
     created() {
@@ -531,6 +533,10 @@ export default {
 
     },
     methods: {
+
+        clearEvent(){//清除表格元素
+            this.tableSearchKey = "";
+        },
         changeEdit(value){
             if(value==0){
                 this.rootInfoEdit.steps[editIndexTable].isAll = true;
@@ -692,6 +698,7 @@ export default {
             //表单类型   formModelParams
             getFormModelTypeList({belong:0}).then((res)=>{
                 this.getformModelType = res.data;
+//                this.modelTypeVal = res.data[0].modelName;
                 //console.info(res.data,'模板列表');
                 formModelParams.processId = processId;
                 formModelParams.modelId = this.getformModelType[0].modelId;
@@ -1155,7 +1162,12 @@ export default {
 
         //删除关联模型
         BMPDeleteLink() {
-            this.deleteLinkModal();
+            if(this.formModelData.result.length){
+                this.deleteLinkModal();
+            }else{
+                this.messageBox('没有可以删除的数据')
+            }
+
         },
         //关联模型模态框
         addDialogLink() {
