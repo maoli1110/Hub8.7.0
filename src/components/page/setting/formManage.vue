@@ -1,15 +1,15 @@
 <template>
     <div class="form-change">
-        <el-row>
-            <el-menu  class="el-menu-demo" mode="horizontal" router>
+     <!--   <el-row>
+        &lt;!&ndash;    <el-menu  class="el-menu-demo" mode="horizontal" router>
                 <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-            </el-menu>
-            <el-col :span="24">
-                <el-menu  class="el-menu-demo" mode="horizontal" router >
+            </el-menu>&ndash;&gt;
+            <el-col :span="24" class="sub-menus-style">
+                <el-menu  class="el-menu-demo sub-menus" mode="horizontal" router >
                     <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                 </el-menu>
             </el-col>
-        </el-row>
+        </el-row>-->
    <!--     <el-row class="quality-search" >
             <el-col :span="16" style="text-align:left">
                 <el-input  placeholder="请输入内容" icon="search" class="quality-searInput" style="width:30%" v-model="formVal" ></el-input>

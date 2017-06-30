@@ -151,3 +151,28 @@ a{text-decoration: none}
 .el-message-box{
     border:1px solid #ddd;
 }
+.sidebar{
+    padding:0 !important;
+}
+.sub-menus-style{
+    background:#fff;
+    height:60px;
+}
+.sub-menus .is-active{
+    background: #d8e6ff;
+    height: 38px !important;
+    line-height: 38px !important;
+    margin-top: 15px;
+    /*border-radius: 5px;*/
+}
+.sub-menus{
+    margin-top:14px !important;
+}
+.sub-menus li{
+    height:38px !important;
+    line-height:38px !important;
+    margin-top:20px;
+}
+.sub-menus li:first-child{
+    margin-left:15px;
+}
