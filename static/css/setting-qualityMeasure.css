@@ -430,6 +430,8 @@
     width:94% !important;margin-left:12px;
 }
 .proTemplate .proTemplate-edit .sear-icon{
+   height:28px;
+   line-height: 28px;
    float:right;
 }
 .proTemplate .multi-textarea .el-dialog__header{
@@ -463,11 +465,17 @@
     line-height: 18px;
     background:#6595f2;color:#fff;font-weight:bold;margin:0 5px;margin-top:8px;border-radius:2px;*/
 }
-.sear-icon .icon-cut{
+.icon-cut{
+    width: 22px;
+    height: 22px;
+    display:inline-block;
     background: url('../../static/img/hubtree.png') no-repeat -95px -6px;;
 }
-.sear-icon .icon-plus{
-    background: url('../../static/img/hubtree.png') no-repeat -64px -6px;;
+.icon-plus{
+    width: 22px;
+    height: 22px;
+    display:inline-block;
+    background: url('../../static/img/hubtree.png') no-repeat -63px -6px;
 }
 .proTemplate-edit .sear-icon>span#collapseBtn{
     margin-right:15px !important;
@@ -494,7 +502,7 @@
     background-color:#6595f2;
 }
 .handle-icon .tool-btns:nth-child(1)>span{
-    background-position: -64px -36px;border:none;
+    background-position: -62px -36px;border:none;
 }
 .handle-icon .tool-btns:nth-child(2)>span{
     background-position:-83px -36px;

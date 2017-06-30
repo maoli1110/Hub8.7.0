@@ -1,24 +1,24 @@
 <template>
     <el-menu theme="" default-active="/setting/explorer" class="nav-menu" mode="horizontal" router>
         <el-menu-item index="">
-            <a href="/enterprise/showMenuPDS.htm?m=pds">组织结构</a>
+            <a href="/enterprise/showMenuPDS.htm?m=pds" class="aHeightW">组织结构</a>
+        </el-menu-item>
+        <el-menu-item index="" >
+            <a href="/enterprise/showMenuPDS.htm?m=projectmanage"  class="aHeightW">工程管理</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="/enterprise/showMenuPDS.htm?m=projectmanage">工程管理</a>
+            <a href="/enterprise/showMenuPDS.htm?m=be"  class="aHeightW">Explore</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="/enterprise/showMenuPDS.htm?m=be">Explore</a>
+            <a href="/enterprise/showMenuPDS.htm?m=mc"  class="aHeightW">Govern</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="/enterprise/showMenuPDS.htm?m=mc">Govern</a>
+            <a href="/enterprise/showMenuPDS.htm?m=bviban" class="aHeightW">BIM-CO/iBan/Boss</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="/enterprise/showMenuPDS.htm?m=bviban">BIM-CO/iBan/Boss</a>
+            <a href="/enterprise/showMenuPDS.htm?m=plan" class="aHeightW">Plan</a>
         </el-menu-item>
-        <el-menu-item index="">
-            <a href="/enterprise/showMenuPDS.htm?m=plan">Plan</a>
-        </el-menu-item>
-        <el-menu-item index="/setting/qualityMeasure">质检计量</el-menu-item>
+        <el-menu-item index="/setting/qualityMeasure"  class="aHeightW">质检计量</el-menu-item>
     </el-menu>
 </template>
 <script>
@@ -54,5 +54,8 @@ export default {
 .el-menu--horizontal>.el-submenu.is-active .el-submenu__title,
 .el-menu--horizontal>.el-submenu:hover .el-submenu__title {
     border-bottom: 0px solid transparent;
+}
+.aHeightW{
+    width:135%;height:60px;display:inline-block
 }
 </style>

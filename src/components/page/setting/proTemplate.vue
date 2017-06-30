@@ -1,17 +1,17 @@
 <template>
     <div class="proTemplate">
-
+    
         <div v-if="!EditVisible">
-
+    
             <el-row>
-               <!-- <el-menu class="el-menu-demo" mode="horizontal" router>
-                    <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-                </el-menu>-->
-              <!--  <el-col :span="24" class="sub-menus-style">
-                    <el-menu class="el-menu-demo sub-menus" mode="horizontal"  router >
-                        <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" >{{menusdata.name}}</el-menu-item>
-                    </el-menu>
-                </el-col>-->
+                <!-- <el-menu class="el-menu-demo" mode="horizontal" router>
+                            <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+                        </el-menu>-->
+                <!--  <el-col :span="24" class="sub-menus-style">
+                            <el-menu class="el-menu-demo sub-menus" mode="horizontal"  router >
+                                <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" >{{menusdata.name}}</el-menu-item>
+                            </el-menu>
+                        </el-col>-->
             </el-row>
             <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" class="proTemplate-table">
                 <el-table-column label="序号" width="70" type="index">
@@ -22,9 +22,9 @@
                 </el-table-column>
                 <el-table-column prop="updateTime" width="150" label="更新时间" sortable :formatter="formatTime">
                 </el-table-column>
-
+    
                 <el-table-column label="操作" width="150">
-
+    
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                         <span class="icon-compile" @click="proTemplateEdit(scope.$index,scope.row)"></span>
@@ -58,15 +58,15 @@
                                 <div class="tool-btns">
                                     <span class="tool-btns" style="margin:5px 0 0 4px"></span>
                                 </div>
-                                <div class="createNodes" v-show="showCreateNodes" @mouseout="showCreateNodes= false">
+                                <div class="createNodes" v-show="showCreateNodes" @mouseout="showCreateNodes= false" style="z-index:2000">
                                     <p id="addLeaf" @click="add">添加单个子节点</p>
                                     <p @click="textAreaVisible_()">添加多个子节点</p>
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                                                                                                                                                <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
                                 <span id="edit" @click="edit" title='编辑节点'></span>
                             </div>
@@ -77,20 +77,23 @@
                                 <span id="downMove" @click="downMove" title='下移节点'></span>
                             </div>
                             <div class="tool-btns">
-                                <span id="remove" @click="remove" title='删除节点' ></span>
+                                <span id="remove" @click="remove" title='删除节点'></span>
                             </div>
                         </div>
                         <div class="sear-icon">
                             <el-input placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree"></el-input>
-                            <span id="collapseBtn " class="icon-cut" title="折叠" @click="expandNode('collapse','proZtree')"></span>
-                            <span id="expandBtn" class="icon-plus" title="展开" @click="expandNode('expand','proZtree')"></span>
+                            <div style="float:right;margin-top:6px">
+                                <span id="expandBtn" class="icon-plus" title="展开" @click="expandNode('expand','proZtree')"></span>
+                                <span id="collapseBtn " class="icon-cut" title="折叠" @click="expandNode('collapse','proZtree')"></span>
+                            </div>
+    
                         </div>
                     </div>
                     <ul class="ztree" id="proZtree"></ul>
                 </el-col>
                 <el-col :span="14" class="project-form">
                     <p class="project-form-tit">包含表单</p>
-
+    
                     <div style="border:1px solid #ddd;">
                         <div class="project-form-list">
                             <el-select v-model="value" placeholder="请选择" @change="selectTestAval">
@@ -118,15 +121,15 @@
             <el-dialog title="增加多个节点" :visible.sync="textAreaVisible" class="multi-textarea">
                 <el-input type="textarea" :rows="10" id="multiLeaf" placeholder="一行视为一个节点，支持多行复制粘贴" :maxlength='297'>
                 </el-input>
-
+    
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="textAreaVisible = false">取 消</el-button>
                     <el-button type="primary" id="proBtnOk" @click="textAreaVisible = false,addMoreNodes">确 定</el-button>
+                    <el-button @click="textAreaVisible = false">取 消</el-button>
                 </div>
             </el-dialog>
             <!--表单编辑-->
             <el-dialog title="添加" :visible.sync="formEditVisible" style="width:0%;position:fixed;left:50%;opacity:0;"></el-dialog>
-
+    
         </div>
         <div class="formEdit" v-show="formEditVisible">
             <div class="formEidt-title">
@@ -141,7 +144,7 @@
                 </div>
                 <div class="formParams">
                     <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">分部项目：
-                        <span style="color:#6595f2;font-weight:bold" :title="editTitle[1]"  >{{editTitle[1]}}</span>
+                        <span style="color:#6595f2;font-weight:bold" :title="editTitle[1]">{{editTitle[1]}}</span>
                     </span>
                 </div>
                 <div class="formParams">
@@ -159,7 +162,11 @@
                             </el-option>
                         </el-select>
                     </template>
-                    <el-input id="searchMessage" icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:93%" :on-icon-click="editSearchTree"></el-input>
+                    <el-input id="searchMessage" icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:80%" :on-icon-click="editSearchTree"></el-input>
+                    <div style="float:right;margin-top:16px">
+                        <span id="expandBtn1" class="icon-plus" title="展开" @click="expandNode('expand','editTree')"></span>
+                        <span id="collapseBtn2 " class="icon-cut" title="折叠" @click="expandNode('collapse','editTree')"></span>
+                    </div>
                     <ul class="ztree" id="editTree"></ul>
                 </div>
                 <div class="formLine">
@@ -171,7 +178,7 @@
                     </template>
                     <template>
                         <el-tabs v-model="activeName2" type="card" @tab-click="tabClick" v-for='(item,index) in typeList' v-show='index==value'>
-
+    
                             <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
                                 <div class="project-forme">
                                     <ul class="form-table">
@@ -190,7 +197,7 @@
                         </el-tabs>
                         <p class="form-total">已选表单</p>
                     </template>
-
+    
                 </div>
             </div>
             <div class="formBtn">
@@ -213,8 +220,8 @@
             </div>
         </div>
         <!--<el-dialog :visible.sync="dialogFormPriview" class="dialogPriview" :close-on-click-modal="false" style="z-index:5000">
-                                                                                                <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
-                                                                                            </el-dialog>-->
+                                                                                                        <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
+                                                                                                    </el-dialog>-->
     </div>
 </template>
 <script>
@@ -352,7 +359,7 @@ export default {
         $.fn.zTree.init($("#editTree"), this.settingEdit, this.editZNodes);
         // $("#expandBtn").bind("click", { type: "expand", operObj: 'proZtree' }, this.expandNode);
         // $("#collapseBtn").bind("click", { type: "collapse", operObj: 'proZtree' }, this.expandNode);
-        $("#edit").bind("click", this.edit);
+        // $("#edit").bind("click", this.edit);
         // $("#remove").bind("click", this.remove);
         // $("#upMove").bind("click", this.upMove);
         // $("#downMove").bind("click", this.downMove);
@@ -494,13 +501,13 @@ export default {
         },
         // 编辑
         proTemplateEdit(index, row) {
-            this.nodeId='',
-             // 清空上一次的残留
-            this.typeList.forEach((el, index1) => {
-                el.childs.forEach((el, index2) => {
-                    el.childs = [];
-                })
-            });
+            this.nodeId = '',
+                // 清空上一次的残留
+                this.typeList.forEach((el, index1) => {
+                    el.childs.forEach((el, index2) => {
+                        el.childs = [];
+                    })
+                });
             this.EditVisible = true;
             this.projModelId = row.projModelId;
             this.getprojmodelDetail();
@@ -649,10 +656,10 @@ export default {
                             if (index1 == 2) {
                                 el.childs.forEach((el, index2) => {
                                     if (index2 == 0) {
-                                        console.log(el.childs);
+                                        // console.log(el.childs);
                                         // console.log(this);
                                         // this.$set(el, 'childs', elForm.formName);
-                                        console.log(this.typeList);
+                                        // console.log(this.typeList);
                                         if (el.childs == null) {
                                             el.childs = [];
                                         }
@@ -677,10 +684,10 @@ export default {
                             if (index1 == 2) {
                                 el.childs.forEach((el, index2) => {
                                     if (index2 == 1) {
-                                        console.log(el.childs);
+                                        // console.log(el.childs);
                                         // console.log(this);
                                         // this.$set(el, 'childs', elForm.formName);
-                                        console.log(this.typeList);
+                                        // console.log(this.typeList);
                                         if (el.childs == null) {
                                             el.childs = [];
                                         }
@@ -704,8 +711,8 @@ export default {
         },
         // 删除增加或原有
         itemDelete(itemtypeName, childitemtypeName, childitemName, index) {
-            console.log(itemtypeName, childitemtypeName, childitemName, index);
-            console.log(this.typeList);
+            // console.log(itemtypeName, childitemtypeName, childitemName, index);
+            // console.log(this.typeList);
             this.typeList.forEach((el, index1) => {
                 if (el.typeName == itemtypeName) {
                     el.childs.forEach((el, index2) => {
