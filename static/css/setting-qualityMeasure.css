@@ -927,9 +927,11 @@
 .form-change .el-table::after, .el-table::before{
     background:transparent !important;
 }
+/*
 .el-table__empty-text{
     background: url(../../static/img/hubicon.png) no-repeat 30px -176px;
     width: 252px;
     height: 100px;
     line-height: 58px;
 }
+*/

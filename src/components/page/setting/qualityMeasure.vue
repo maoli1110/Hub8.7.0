@@ -1222,7 +1222,9 @@ export default {
                         this.formModelData = res.data;
                         this.modelTotalNum = res.data.pageInfo.totalNumber;
                         console.info(this.modelTotalNum)
-                    })
+                    }).catch(function(error){
+                        this.messageBox(error.response.data.message);
+                    });
                 }).catch(function(error){
                     this.messageBox(error.response.data.message);
                 });
