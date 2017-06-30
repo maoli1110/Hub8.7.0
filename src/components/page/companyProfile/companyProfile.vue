@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-sidebar v-bind:navMenuProp="navMenuData"></v-sidebar>
+    <!--<v-sidebar v-bind:navMenuProp="navMenuData"></v-sidebar>-->
     <div class="content">
         <div>
              <ul class="ztree" id="lineTree"></ul>
@@ -15,7 +15,7 @@
     import "static/js/ztree/js/jquery.ztree.core-3.5.js";
     import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
     import vSidebar from 'components/common/Sidebar.vue';
-    
+
     export default {
         data() {
             return {

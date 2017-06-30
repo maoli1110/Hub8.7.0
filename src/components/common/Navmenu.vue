@@ -18,7 +18,7 @@
         <el-menu-item index="">
             <a href="/enterprise/showMenuPDS.htm?m=plan">Plan</a>
         </el-menu-item>
-        <el-menu-item index="/setting/explorer">质检计量</el-menu-item>
+        <el-menu-item index="/setting/qualityMeasure">质检计量</el-menu-item>
     </el-menu>
 </template>
 <script>

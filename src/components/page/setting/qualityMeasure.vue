@@ -3,16 +3,16 @@
 
         <div class="" v-if="isQuality">
             <div class="search-area">
-                <el-row>
-                    <el-menu  class="el-menu-demo" mode="horizontal" router>
+          <!--      <el-row>
+                   &lt;!&ndash; <el-menu  class="el-menu-demo" mode="horizontal" router>
                         <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-                    </el-menu>
-                    <el-col :span="24">
-                        <el-menu class="el-menu-demo" mode="horizontal" router>
+                    </el-menu>&ndash;&gt;
+                    <el-col :span="24" class="sub-menus-style">
+                        <el-menu class="el-menu-demo sub-menus" mode="horizontal" router >
                             <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                         </el-menu>
                     </el-col>
-                </el-row>
+                </el-row>-->
                 <el-row class="quality-search" v-if="!isBMP">
                     <el-col :span="8">
                         <el-button type="primary" icon="plus" @click="addBPM">添加</el-button>
@@ -1222,7 +1222,9 @@ export default {
                         this.formModelData = res.data;
                         this.modelTotalNum = res.data.pageInfo.totalNumber;
                         console.info(this.modelTotalNum)
-                    })
+                    }).catch(function(error){
+                        this.messageBox(error.response.data.message);
+                    });
                 }).catch(function(error){
                     this.messageBox(error.response.data.message);
                 });
