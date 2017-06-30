@@ -87,7 +87,8 @@
                 <div class="form-ztree-dialog" v-show="isDoubForm">
                     <div class="form-dialog-title">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
-                        <el-input icon="search" class="searchVal" :on-icon-click="searchformTree"></el-input>
+                        <el-input icon="search" class="searchVal" :on-icon-click="searchformTree" style="width:75%"></el-input>
+                        <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
                     </div>
                     <div class="form-dialog-body">
                         <ul class="ztree" id="formTree" ></ul>
@@ -184,7 +185,9 @@
         mounted(){
             $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
             $('.basicSearch input').bind('keyup',this.basicSearch);
-            $('.form-dialog-title input').bind('keydown',this.searchformTree)
+            $('.form-dialog-title input').bind('keydown',this.searchformTree);
+            $("#expandBtn").bind("click",  {type:"expand",operObj:'formTree'}, this.expandNode);
+            $("#collapseBtn").bind("click", {type:"collapse",operObj:'formTree'}, this.expandNode);
           /*  $('.icon-eyes').map(function(){
                 $(this).bind('click',function(){
                     console.info('预览界面')
@@ -403,6 +406,52 @@
                     this.zNodes = res.data;
                 })
             },*/
+            //全部展开和收起
+            expandNode(e) {
+                //var index=layer.load(2);
+                type = e.data.type;
+                operObj = e.data.operObj;
+                var zTree = $.fn.zTree.getZTreeObj(operObj);
+                var treeNodes = zTree.transformToArray(zTree.getNodes());
+                var flag=true;
+                //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
+                for (var i=0;i<treeNodes.length; i++) {
+                    if(treeNodes[i].level==level&&treeNodes[i].isParent){
+                        if (type == "expand"&&!treeNodes[i].open) {
+                            flag=false;
+                            break;
+                        } else if (type == "collapse"&&treeNodes[i].open) {
+                            flag=false;
+                            break;
+                        }
+                    }
+                }
+
+                if(flag){
+                    //说明当前level的节点都为折叠或者展开状态
+                    if(type == "expand"){
+                        level++
+                        if(level<maxLevel-1){
+                            level++;
+                        }
+                    }else if(type == "collapse"){
+                        if(level==0){
+                            return;
+                        }
+                        level--;
+                    }
+                }
+                for (var i=0;i<treeNodes.length; i++) {
+                    if(treeNodes[i].level==level&&treeNodes[i].isParent){
+                        if (type == "expand"&&!treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], true, false, null, true);
+                        } else if (type == "collapse"&&treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], false, false, null, true);
+                        }
+                    }
+                }
+                //layer.close(index);
+            }
         }
     }
 </script>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/api/getData.js" line="32" />
+    <bookmark url="file://$PROJECT_DIR$/src/api/getData.js" line="30" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cca8079a-7cbf-4675-bb7a-ecd922a4bbc5" name="默认的" comment="" />
@@ -23,7 +23,7 @@
     <favorites_list name="eds_sz" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.11228255">
+    <splitter split-orientation="horizontal" split-proportion="0.17123288">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="explorer.vue" pinned="false" current-in-tab="false">
@@ -62,21 +62,21 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Sidebar.vue" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Sidebar.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/common/Sidebar.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.66026413">
-                  <caret line="22" column="52" selection-start-line="22" selection-start-column="52" selection-end-line="22" selection-end-column="52" />
+                <state vertical-scroll-proportion="-6.451613">
+                  <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="setting-qualityMeasure.css" pinned="false" current-in-tab="false">
+          <file leaf-file-name="setting-qualityMeasure.css" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/static/css/setting-qualityMeasure.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.08695652">
-                  <caret line="356" column="3" selection-start-line="356" selection-start-column="3" selection-end-line="356" selection-end-column="3" />
+                <state vertical-scroll-proportion="0.36363637">
+                  <caret line="719" column="14" selection-start-line="719" selection-start-column="14" selection-end-line="719" selection-end-column="14" />
                   <folding />
                 </state>
               </provider>
@@ -126,10 +126,41 @@
           <file leaf-file-name="proTemplate.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/proTemplate.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-1.0869565">
-                  <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+                <state vertical-scroll-proportion="90.21739">
+                  <caret line="790" column="18" selection-start-line="790" selection-start-column="8" selection-end-line="790" selection-end-column="18" />
                   <folding>
+                    <element signature="n#style#0;n#div#0;n#el-col#1;n#el-row#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-dialog#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#div#0;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#span#0;n#div#0;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#div#1;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#span#0;n#div#1;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#div#2;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#span#0;n#div#2;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-select#0;n#template#0;n#div#0;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-input#0;n#div#0;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-select#0;n#template#0;n#div#1;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#li#0;n#ul#0;n#div#0;n#el-tab-pane#0;n#el-tabs#0;n#template#1;n#div#1;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <marker date="1498808955987" expanded="true" signature="56465:56466" placeholder="{...}" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="formManage.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-21.467392">
+                  <caret line="89" column="111" selection-start-line="89" selection-start-column="111" selection-end-line="89" selection-end-column="111" />
+                  <folding>
+                    <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="e#2137#2562#0" expanded="false" />
+                    <element signature="n#style#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -145,24 +176,14 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="getData.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="getData.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/api/getData.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.29797378">
-                  <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+                <state vertical-scroll-proportion="-5.357143">
+                  <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Navmenu.vue" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/components/common/Navmenu.vue">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-8.064516">
-                  <caret line="20" column="52" selection-start-line="20" selection-start-column="52" selection-end-line="20" selection-end-column="52" />
-                  <folding />
                 </state>
               </provider>
             </entry>
@@ -209,11 +230,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="false">
+          <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-4.804348">
-                  <caret line="894" column="175" selection-start-line="894" selection-start-column="175" selection-end-line="894" selection-end-column="175" />
+                <state vertical-scroll-proportion="0.67496884">
+                  <caret line="321" column="62" selection-start-line="321" selection-start-column="62" selection-end-line="321" selection-end-column="62" />
                   <folding>
                     <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-row#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -237,11 +258,10 @@
                     <element signature="n#style#0;n#span#0;n#div#0;n#td#4;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#el-col#1;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#0;n#p#0;n#div#0;n#el-col#1;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#div#0;n#el-col#2;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#style#0;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#el-icon#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#0;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -249,12 +269,12 @@
                     <element signature="n#style#0;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#1;n#template#0;n#el-table-column#3;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -303,11 +323,11 @@
         <option value="$PROJECT_DIR$/src/components/page/setting/proTemplate.vue" />
         <option value="$PROJECT_DIR$/src/components/page/setting/setting.vue" />
         <option value="$PROJECT_DIR$/static/css/main.css" />
-        <option value="$PROJECT_DIR$/src/components/page/setting/formManage.vue" />
-        <option value="$PROJECT_DIR$/static/css/setting-qualityMeasure.css" />
         <option value="$PROJECT_DIR$/src/components/common/Sidebar.vue" />
-        <option value="$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue" />
         <option value="$PROJECT_DIR$/src/api/getData.js" />
+        <option value="$PROJECT_DIR$/static/css/setting-qualityMeasure.css" />
+        <option value="$PROJECT_DIR$/src/components/page/setting/formManage.vue" />
+        <option value="$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue" />
       </list>
     </option>
   </component>
@@ -932,51 +952,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7173913">
-          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#2137#2562#0" expanded="false" />
-            <element signature="n#style#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/setting-qualityMeasure.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08695652">
-          <caret line="356" column="3" selection-start-line="356" selection-start-column="3" selection-end-line="356" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/common/Navmenu.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.064516">
           <caret line="20" column="52" selection-start-line="20" selection-start-column="52" selection-end-line="20" selection-end-column="52" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.870968">
-          <caret line="22" column="54" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/proTemplate.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.0869565">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding>
-            <marker date="1498808955987" expanded="true" signature="56465:56466" placeholder="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -988,26 +968,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/siderBar.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.2580647">
-          <caret line="18" column="10" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/page/setting/navBar.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/companyProfile/companyProfile.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.2096775">
-          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
           <folding />
         </state>
       </provider>
@@ -1030,18 +994,99 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/getData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.357143">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/companyProfile/companyProfile.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.2096775">
+          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/siderBar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.2580647">
+          <caret line="18" column="10" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/common/Sidebar.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66026413">
-          <caret line="22" column="52" selection-start-line="22" selection-start-column="52" selection-end-line="22" selection-end-column="52" />
+        <state vertical-scroll-proportion="-6.451613">
+          <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/proTemplate.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="90.21739">
+          <caret line="790" column="18" selection-start-line="790" selection-start-column="8" selection-end-line="790" selection-end-column="18" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#el-col#1;n#el-row#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-dialog#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#span#0;n#div#0;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#1;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#span#0;n#div#1;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#2;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#span#0;n#div#2;n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#template#0;n#div#0;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-input#0;n#div#0;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#template#0;n#div#1;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#li#0;n#ul#0;n#div#0;n#el-tab-pane#0;n#el-tabs#0;n#template#1;n#div#1;n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <marker date="1498808955987" expanded="true" signature="56465:56466" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.870968">
+          <caret line="22" column="54" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/setting-qualityMeasure.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36363637">
+          <caret line="719" column="14" selection-start-line="719" selection-start-column="14" selection-end-line="719" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-21.467392">
+          <caret line="89" column="111" selection-start-line="89" selection-start-column="111" selection-end-line="89" selection-end-column="111" />
+          <folding>
+            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2137#2562#0" expanded="false" />
+            <element signature="n#style#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.804348">
-          <caret line="894" column="175" selection-start-line="894" selection-start-column="175" selection-end-line="894" selection-end-column="175" />
+        <state vertical-scroll-proportion="0.67496884">
+          <caret line="321" column="62" selection-start-line="321" selection-start-column="62" selection-end-line="321" selection-end-column="62" />
           <folding>
             <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-row#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1065,11 +1110,10 @@
             <element signature="n#style#0;n#span#0;n#div#0;n#td#4;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#el-col#1;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#p#0;n#div#0;n#el-col#1;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#el-col#2;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-icon#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1077,22 +1121,12 @@
             <element signature="n#style#0;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#template#0;n#el-table-column#3;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/getData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29797378">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

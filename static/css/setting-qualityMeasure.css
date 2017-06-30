@@ -303,16 +303,16 @@
     font-size: 14px;
 
 }
-.ztree-allCheck .quality-collage{
+ .quality-collage{
   width:auto;height:20px;display:inline-block;
 }
-.ztree-allCheck .quality-collage .icon-plus{
+ .quality-collage .icon-plus{
     background: url(../../static/img/hubtree.png) no-repeat -95px -6px;
     width: 23px;
     height: 23px;
     display: inline-block;margin-left:10px;
 }
-.ztree-allCheck .quality-collage .icon-plus.icon-cut{
+.quality-collage .icon-plus.icon-cut{
     background-position: -63px -6px;
 }
 .quality-dialog .ztree li a{
@@ -717,7 +717,7 @@
     border-bottom: 1px solid #ddd;font-size:18px;font-weight:bold;
 }
 .form-change .form-ztree-dialog .form-dialog-title .el-input{
-    width:85% !important;margin-left:40px;
+    width:85% ;margin-left:40px;
 }
 .form-change .form-ztree-dialog .form-dialog-title>p .el-icon-close{
     float:right;font-size:14px; margin-top: 5px;

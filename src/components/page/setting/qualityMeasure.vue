@@ -99,7 +99,7 @@
                                         <tr v-for="(rootInfo,index) in rootInfo" @click="processSetEdit($event,index)">
                                             <td width="50">{{index+1}}</td>
                                             <td width="210">
-                                                <el-input class="flowTitle" placeholder="请输入内容" :maxlength=10></el-input>
+                                                <el-input class="flowTitle" placeholder="请输入内容" :maxlength=10 v-model="rootInfo.stepName"></el-input>
                                             </td>
                                             <td width="120" style="position:relative" class="list-isAll" >
                                                 <el-select :value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择">
@@ -245,9 +245,6 @@
 
     <!--    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
         </el-input>-->
-        <div>
-            <el-input class="formModelTable"></el-input>
-        </div>
         <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model" :close-on-click-modal="false">
 
             <el-row>
@@ -264,9 +261,8 @@
                     </el-select>
                 </el-col>
                 <el-col :span="10" style="text-align:right;padding:0;position:relative">
-                    <el-input class="formModelTable"></el-input>
-                  <!--  <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
-                    </el-input>-->
+                    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
+                    </el-input>
                     <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="position:absolute;top:10px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
                 </el-col>
             </el-col>
@@ -315,7 +311,7 @@
                     <el-col :span="24" style="padding:20px 40px;">
                         <el-col :span="15" >
                             <label style="font-size:14px;">表单目录：</label>
-                            <el-select value="modelTypeVal" v-model="modelTypeTreeVal" placeholder="请选择"  @change="formModelTreeChange($event)">
+                            <el-select value="modelTypeTreeVal" v-model="modelTypeTreeVal" placeholder="请选择"  @change="formModelTreeChange($event)">
                                 <el-option  v-for="item in getformModelType"
                                             :key="item.modelId"
                                             :label="item.modelName"
@@ -323,7 +319,7 @@
                             </el-select>
                         </el-col>
                         <el-col :span="9" >
-                            <el-input placeholder="请选择日期" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
+                            <el-input placeholder="请输入要搜索的关联表单" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
                             </el-input>
                         </el-col>
                     </el-col>
@@ -478,12 +474,12 @@ export default {
             totalNumber:0,
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
             rootInfo: [
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}] ,listVal:"全部",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] },
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部" ,listRolesId:[]}
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[],stepName:""},
+                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[],stepName:""},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}] ,listVal:"全部",listRolesId:[],stepName:""},
+                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[],stepName:""},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] ,stepName:""},
+                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部" ,listRolesId:[],stepName:""}
             ],
             flowNameEdit:"",
             flowRemarkEdit:"",
@@ -716,8 +712,9 @@ export default {
 
             //表单类型   formModelParams
             getFormModelTypeList({belong:0}).then((res)=>{
+                this.modelTypeVal = res.data[0].modelId;
                 this.getformModelType = res.data;
-//                this.modelTypeVal = res.data[0].modelName;
+
                 //console.info(res.data,'模板列表');
                 formModelParams.processId = processId;
                 formModelParams.modelId = this.getformModelType[0].modelId;
@@ -838,6 +835,7 @@ export default {
         },
         //删除行
         deleteHandle(index) {
+            console.info(index,'index')
             if (this.rootInfo.length > 1) {
                 this.rootInfo.splice(index, 1)
             }
@@ -887,7 +885,7 @@ export default {
         //添加步骤
         addStep() {
             if (this.rootInfo.length < 15) {
-                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] })
+                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] ,stepName:""})
             }
         },
         addStepEdit(){
@@ -1172,6 +1170,7 @@ export default {
             this.linkTree = true;
             this.dialogFormVisible = false;
             //树结构
+            this.modelTypeTreeVal = formModelParams.modelId
             getFormProcessParams.modelId =formModelParams.modelId;
             getFormProcessParams.processId = processId;
             this.zTreeFiledProcess(getFormProcessParams);
@@ -1424,11 +1423,17 @@ export default {
             updateProcessRelFormParams.modelId = formModelParams.modelId;
             updateProcessRelFormParams.delFormIds.push(row.formId);
               //更新的模板列表
-             updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
-                 this.formModelData.result.splice(index,1)
-             }).catch(function(error){
-                this.messageBox(error.response.data.message);
-            });
+            this.$confirm('所选表单将解除关联，是否确认?', '删除表单关联', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                 updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
+                     this.formModelData.result.splice(index,1)
+                 }).catch(function(error){
+                    this.messageBox(error.response.data.message);
+                });
+             })
         },
         //树结构的搜索功能
         getZtreeParentNode(ztreeNode, nodes) {
