@@ -56,8 +56,10 @@
                 <div class="single-stump form-ztree-dialog" v-show="isSingForm">
                     <div class="form-dialog-title" style="padding-bottom:15px;">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
-                        <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch"></el-input>
-
+                        <div style="position:relative">
+                            <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch"></el-input>
+                            <el-icon class="el-icon-circle-cross" style="position:absolute;top:10px;right:74px;color:#ccc;"  v-show="searchParam.length>0" @click.native="clearEvent"></el-icon>
+                        </div>
                     </div>
                     <div class="form-dialog-body" >
                         <div class="form-content">
@@ -87,9 +89,13 @@
                 <div class="form-ztree-dialog" v-show="isDoubForm">
                     <div class="form-dialog-title">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
-                        <el-input icon="search" class="searchVal" :on-icon-click="searchformTree" style="width:75%"></el-input>
-                        <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
-                    </div>
+                            <div style="position:relative">
+                                 <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%"></el-input>
+                                 <el-icon class="el-icon-circle-cross" style="position:absolute;top:10px;right:127px;color:#ccc;"  v-show="formTreeSearch.length>0" @click.native="clearEvent"></el-icon>
+
+                            <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
+                            </div>
+                        </div>
                     <div class="form-dialog-body">
                         <ul class="ztree" id="formTree" ></ul>
                     </div>
@@ -176,7 +182,8 @@
                 isDoubForm:false,
                 dialogFormPriview:false,
                 formPriviewUrl:"",
-                searchParam:""
+                searchParam:"",
+                formTreeSearch:""
             }
         },
         components:{
@@ -198,6 +205,13 @@
             this.getData()
         },
         methods: {
+            clearEvent(){//清除表格元素
+                if(this.searchParam) {
+                    this.searchParam = '';
+                }else if(this.formTreeSearch){
+                    this.formTreeSearch=""
+                }
+            },
             onCheck(event, treeId, treeNode){
 //                console.log(treeNode);
             },

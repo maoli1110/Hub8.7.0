@@ -243,62 +243,66 @@
         </div>
         <!--模态框(关联模型)-->
 
-    <!--    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
-        </el-input>-->
-        <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model" :close-on-click-modal="false">
+        <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model" :close-on-click-modal="false" style="width:0;height:0;"></el-dialog>
+            <div v-show="dialogFormVisible" class="link-model">
+                <el-row>
+                    <el-col :span="24" style="padding:20px 30px 20px;border-bottom:1px solid #ddd;">
+                        <span style="font-weight:bolder">表单关联</span>
+                        <el-icon class="el-icon-close" style="float:right" @click.native="dialogFormVisible=false"></el-icon>
+                    </el-col>
+                    <el-col :span="24" style="padding:15px 30px;border-bottom:1px solid #ddd;">
+                        <el-col :span="14">
+                            <label >表单目录：</label>
+                            <el-select  class="rootText" value="modelTypeVal" v-model="modelTypeVal" placeholder="请选择"  @change="formModelChange($event)">
+                                <el-option
+                                    v-for="item in getformModelType"
+                                    :key="item.modelId"
+                                    :label="item.modelName"
+                                    :value="item.modelId">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="10" style="text-align:right;padding:0;position:relative">
+                            <el-input placeholder="请输入搜索表单" class="formModelTable" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch"  style="width:100%" >
+                            </el-input>
+                            <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="position:absolute;top:10px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                        </el-col>
+                    </el-col>
+                </el-row>
+                <el-row class="link-model-body">
+                    <!--link-model-header-->
+                    <el-col :span="24">
+                        <el-button type="primary" icon="plus" @click="BMPAddLink">
+                            添加关联</el-button>
+                        <el-button type="primary" style="position:relative" @click="BMPDeleteLink">
+                           <span class="quality-del-icon" style="left:15px;"></span> <span style="margin-left:15px;">删除关联</span></el-button>
+                    </el-col>
+                    <el-col :span="24" class="link-table" style="padding:0 40px;">
+                        <el-table :data="formModelData.result" style="width: 100%" :default-sort="{prop: '', order: 'descending'}"  class="link-modal-table" @select-all="modelSelectAll" @select="modelSelectRow" >
+                            <el-table-column width="50" type="selection">
+                            </el-table-column>
+                            <el-table-column label="序号" width="80" type="index">
+                            </el-table-column>
+                            <el-table-column label="表单名称" prop="formName">
+                            </el-table-column>
+                            <el-table-column label="操作" width="80" @click.native="addnew">
+                                <template scope="scope">
+                                    <span class="icon-eyes" @click="formModelPriview(scope.$index,scope.row)"></span>
+                                    <span class="quality-del-icon" style="position:static;background-position:-27px -30px;" @click="linkDelete(scope.$index,scope.row)"></span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-col>
+                    <el-col :span="24"></el-col>
+                </el-row>
+                <div slot="footer" class="dialog-footer">
+                    <el-pagination layout="prev, pager, next,jumper,total" :total="modelTotalNum" :page-size="7" @size-change="formModelSizeChange" @current-change="formModelSizeChange" :current-page="modelcur_page">
+                    </el-pagination>
 
-            <el-row>
-                <el-col :span="24" style="padding:10px 30px ;border-bottom:1px solid #ddd;">
-                <el-col :span="14">
-                    <label >表单目录：</label>
-                    <el-select  class="rootText" value="modelTypeVal" v-model="modelTypeVal" placeholder="请选择"  @change="formModelChange($event)">
-                        <el-option
-                            v-for="item in getformModelType"
-                            :key="item.modelId"
-                            :label="item.modelName"
-                            :value="item.modelId">
-                        </el-option>
-                    </el-select>
-                </el-col>
-                <el-col :span="10" style="text-align:right;padding:0;position:relative">
-                    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" class="formModelTable" style="width:100%">
-                    </el-input>
-                    <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="position:absolute;top:10px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
-                </el-col>
-            </el-col>
-            </el-row>
-            <el-row class="link-model-body">
-                <!--link-model-header-->
-                <el-col :span="24">
-                    <el-button type="primary" icon="plus" @click="BMPAddLink">
-                        添加关联</el-button>
-                    <el-button type="primary" style="position:relative" @click="BMPDeleteLink">
-                       <span class="quality-del-icon" style="left:15px;"></span> <span style="margin-left:15px;">删除关联</span></el-button>
-                </el-col>
-                <el-col :span="24" class="link-table" style="padding:0 40px;">
-                    <el-table :data="formModelData.result" style="width: 100%" :default-sort="{prop: '', order: 'descending'}"  class="link-modal-table" @select-all="modelSelectAll" @select="modelSelectRow" >
-                        <el-table-column width="50" type="selection">
-                        </el-table-column>
-                        <el-table-column label="序号" width="80" type="index">
-                        </el-table-column>
-                        <el-table-column label="表单名称" prop="formName">
-                        </el-table-column>
-                        <el-table-column label="操作" width="80" @click.native="addnew">
-                            <template scope="scope">
-                                <span class="icon-eyes" @click="formModelPriview(scope.$index,scope.row)"></span>
-                                <span class="quality-del-icon" style="position:static;background-position:-27px -30px;" @click="linkDelete(scope.$index,scope.row)"></span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-col>
-                <el-col :span="24"></el-col>
-            </el-row>
-            <div slot="footer" class="dialog-footer">
-                <el-pagination layout="prev, pager, next,jumper,total" :total="modelTotalNum" :page-size="7" @size-change="formModelSizeChange" @current-change="formModelSizeChange" :current-page="modelcur_page">
-                </el-pagination>
-
+                </div>
             </div>
-        </el-dialog>
+
+
         <!--模态框（收起算管理模块）-->
         <el-dialog :visible.sync="linkTree" style="width:0;height:0;opacity:0;left:50%" :close-on-click-modal="false"></el-dialog>
         <div class="quality-dialog" v-show="linkTree">
@@ -319,8 +323,11 @@
                             </el-select>
                         </el-col>
                         <el-col :span="9" >
-                            <el-input placeholder="请输入要搜索的关联表单" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
-                            </el-input>
+                            <div style="position:relative">
+                                <el-input placeholder="请输入要搜索的关联表单" v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
+                                </el-input>
+                                <el-icon class="el-icon-circle-close" v-show="ztreeSearch.length>0" style="position:absolute;top:10px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                            </div>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -331,7 +338,6 @@
                     <div class="simlue-checkbox"></div>&nbsp;&nbsp;全选
                     <div id="checkAllTrue" v-show="checkTrue"></div>
                     <div id="checkAllFalse" v-show="!checkTrue"></div>
-
                 </label>
                 <div class="quality-collage"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
             </div>
@@ -512,7 +518,8 @@ export default {
             priviewUrl:"",
             isLinkResult:"",//是否被关联
             clearKey:false,//清除关键字
-            totalPage:10
+            totalPage:10,
+            ztreeSearch:""
         }
     },
     created() {
@@ -545,6 +552,8 @@ export default {
                 this.formModelVal ='';
             }else if(this.tableSearchKey){
                 this.tableSearchKey = "";
+            }else if(this.ztreeSearch){
+                this.ztreeSearch =""
             }
         },
         changeEdit(value){
@@ -739,14 +748,11 @@ export default {
         },
         //表单查询
         formModelSearch(event){
-            console.info(event.keyCode,'不能执行删除')
-            if(event.type=='click' ||event.keyCode == 13){
+//            console.info(this.formModelVal,'不能执行删除')
+            if(event.type=='click' || event.keyCode == 13){
                 formModelParams.searchKey = this.formModelVal;
-            }else{
-                return false
+                this.formModelType(formModelParams);
             }
-
-            this.formModelType(formModelParams);
         },
         //关联表单删除
         modelSelectAll(selection){

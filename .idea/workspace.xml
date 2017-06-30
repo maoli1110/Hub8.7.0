@@ -23,7 +23,7 @@
     <favorites_list name="eds_sz" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.17123288">
+    <splitter split-orientation="horizontal" split-proportion="0.43150684">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="explorer.vue" pinned="false" current-in-tab="false">
@@ -62,21 +62,21 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Sidebar.vue" pinned="false" current-in-tab="false">
+          <file leaf-file-name="Sidebar.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/components/common/Sidebar.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-6.451613">
-                  <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+                <state vertical-scroll-proportion="0.6302521">
+                  <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="setting-qualityMeasure.css" pinned="false" current-in-tab="true">
+          <file leaf-file-name="setting-qualityMeasure.css" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/static/css/setting-qualityMeasure.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.36363637">
-                  <caret line="719" column="14" selection-start-line="719" selection-start-column="14" selection-end-line="719" selection-end-column="14" />
+                <state vertical-scroll-proportion="-6.4347825">
+                  <caret line="362" column="14" selection-start-line="362" selection-start-column="14" selection-end-line="362" selection-end-column="14" />
                   <folding />
                 </state>
               </provider>
@@ -149,18 +149,22 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="formManage.vue" pinned="false" current-in-tab="false">
+          <file leaf-file-name="formManage.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-21.467392">
-                  <caret line="89" column="111" selection-start-line="89" selection-start-column="111" selection-end-line="89" selection-end-column="111" />
+                <state vertical-scroll-proportion="0.36363637">
+                  <caret line="93" column="114" selection-start-line="93" selection-start-column="114" selection-end-line="93" selection-end-column="114" />
                   <folding>
                     <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="e#2137#2562#0" expanded="false" />
                     <element signature="n#style#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-icon#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-input#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -230,11 +234,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="true">
+          <file leaf-file-name="qualityMeasure.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.67496884">
-                  <caret line="321" column="62" selection-start-line="321" selection-start-column="62" selection-end-line="321" selection-end-column="62" />
+                <state vertical-scroll-proportion="-3.173913">
+                  <caret line="549" column="7" selection-start-line="549" selection-start-column="7" selection-end-line="557" selection-end-column="10" />
                   <folding>
                     <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-row#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -258,23 +262,31 @@
                     <element signature="n#style#0;n#span#0;n#div#0;n#td#4;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#el-col#1;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#span#0;n#p#0;n#div#0;n#el-col#1;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#div#0;n#el-col#2;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-icon#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#span#0;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#span#1;n#template#0;n#el-table-column#3;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-icon#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="false" />
+                    <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#el-button#1;n#el-col#0;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-col#1;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-table#0;n#el-col#1;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#1;n#template#0;n#el-table-column#3;n#el-table#0;n#el-col#1;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="false" />
                     <element signature="n#style#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-input#0;n#div#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-icon#0;n#div#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -323,11 +335,11 @@
         <option value="$PROJECT_DIR$/src/components/page/setting/proTemplate.vue" />
         <option value="$PROJECT_DIR$/src/components/page/setting/setting.vue" />
         <option value="$PROJECT_DIR$/static/css/main.css" />
-        <option value="$PROJECT_DIR$/src/components/common/Sidebar.vue" />
         <option value="$PROJECT_DIR$/src/api/getData.js" />
         <option value="$PROJECT_DIR$/static/css/setting-qualityMeasure.css" />
-        <option value="$PROJECT_DIR$/src/components/page/setting/formManage.vue" />
         <option value="$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue" />
+        <option value="$PROJECT_DIR$/src/components/page/setting/formManage.vue" />
+        <option value="$PROJECT_DIR$/src/components/common/Sidebar.vue" />
       </list>
     </option>
   </component>
@@ -1020,14 +1032,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/common/Sidebar.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.451613">
-          <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/page/setting/proTemplate.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="90.21739">
@@ -1062,31 +1066,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/setting-qualityMeasure.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36363637">
-          <caret line="719" column="14" selection-start-line="719" selection-start-column="14" selection-end-line="719" selection-end-column="14" />
+        <state vertical-scroll-proportion="-6.4347825">
+          <caret line="362" column="14" selection-start-line="362" selection-start-column="14" selection-end-line="362" selection-end-column="14" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.467392">
-          <caret line="89" column="111" selection-start-line="89" selection-start-column="111" selection-end-line="89" selection-end-column="111" />
-          <folding>
-            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#2137#2562#0" expanded="false" />
-            <element signature="n#style#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/page/setting/qualityMeasure.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67496884">
-          <caret line="321" column="62" selection-start-line="321" selection-start-column="62" selection-end-line="321" selection-end-column="62" />
+        <state vertical-scroll-proportion="-3.173913">
+          <caret line="549" column="7" selection-start-line="549" selection-start-column="7" selection-end-line="557" selection-end-column="10" />
           <folding>
             <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-row#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1110,24 +1099,59 @@
             <element signature="n#style#0;n#span#0;n#div#0;n#td#4;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#el-col#1;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#p#0;n#div#0;n#el-col#1;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#el-col#2;n#el-row#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-icon#0;n#el-col#1;n#el-col#0;n#el-row#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#template#0;n#el-table-column#3;n#el-table#0;n#el-col#1;n#el-row#1;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-icon#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#el-button#1;n#el-col#0;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#el-button#1;n#el-col#0;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#el-button#1;n#el-col#0;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#1;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#el-col#1;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#template#0;n#el-table-column#3;n#el-table#0;n#el-col#1;n#el-row#1;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-input#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-icon#0;n#el-col#0;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#label#0;n#el-col#0;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-input#0;n#div#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-icon#0;n#div#0;n#el-col#1;n#el-col#1;n#el-row#0;n#div#0;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/setting/formManage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36363637">
+          <caret line="93" column="114" selection-start-line="93" selection-start-column="114" selection-end-line="93" selection-end-column="114" />
+          <folding>
+            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2137#2562#0" expanded="false" />
+            <element signature="n#style#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-icon#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-input#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/common/Sidebar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6302521">
+          <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
