@@ -3,14 +3,14 @@
         <el-menu-item index="">
             <a href="/enterprise/showMenuPDS.htm?m=pds" class="aHeightW">组织结构</a>
         </el-menu-item>
-        <el-menu-item index="" >
-            <a href="/enterprise/showMenuPDS.htm?m=projectmanage"  class="aHeightW">工程管理</a>
+        <el-menu-item index="">
+            <a href="/enterprise/showMenuPDS.htm?m=projectmanage" class="aHeightW">工程管理</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="/enterprise/showMenuPDS.htm?m=be"  class="aHeightW">Explore</a>
+            <a href="/enterprise/showMenuPDS.htm?m=be" class="aHeightW">Explore</a>
         </el-menu-item>
         <el-menu-item index="">
-            <a href="/enterprise/showMenuPDS.htm?m=mc"  class="aHeightW">Govern</a>
+            <a href="/enterprise/showMenuPDS.htm?m=mc" class="aHeightW">Govern</a>
         </el-menu-item>
         <el-menu-item index="">
             <a href="/enterprise/showMenuPDS.htm?m=bviban" class="aHeightW">BIM-CO/iBan/Boss</a>
@@ -18,7 +18,9 @@
         <el-menu-item index="">
             <a href="/enterprise/showMenuPDS.htm?m=plan" class="aHeightW">Plan</a>
         </el-menu-item>
-        <el-menu-item index="/setting/qualityMeasure"  class="aHeightW">质检计量</el-menu-item>
+        <el-menu-item index="/setting/qualityMeasure" >
+            <a  class="aHeightW" style="padding:20px 15px">质检计量</a>
+        </el-menu-item>
     </el-menu>
 </template>
 <script>
@@ -55,7 +57,8 @@ export default {
 .el-menu--horizontal>.el-submenu:hover .el-submenu__title {
     border-bottom: 0px solid transparent;
 }
-.aHeightW{
-    width:135%;height:60px;display:inline-block
+
+.aHeightW {
+    padding: 20px 10px;
 }
 </style>
