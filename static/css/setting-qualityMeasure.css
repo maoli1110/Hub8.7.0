@@ -597,6 +597,9 @@
 .project-form .project-form-ele{
     height:450px;width:100%;border-top:none;overflow:auto;
 }
+.project-forme{
+    height:297px;width:100%;border-top:none;overflow-y:scroll;
+}
 .project-form .project-form-ele .project-sultable{
     height: 58px;
     background: #f5f5f5;
@@ -633,7 +636,8 @@
 }
 /*.form-table*/
 .form-change .form-table{
-    min-height:calc(100vh  - 270px );overflow:auto;
+    /*height:280px;
+    overflow:auto;*/
 }
 .form-change .form-table .table{
 
@@ -784,8 +788,8 @@
     width:106% !important;
 }
  .form-table{
-    max-height: 246px;
-    overflow: auto;
+    /*max-height: 246px;
+    overflow: auto;*/
 }
  .form-table .icon-tabs-eyes{
      width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -82px -27px;

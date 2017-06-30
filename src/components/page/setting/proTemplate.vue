@@ -64,9 +64,9 @@
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
                                 <span id="edit" @click="edit" title='编辑节点'></span>
                             </div>
@@ -136,17 +136,17 @@
             <div :form-info="formInfo2" class="form-edit-info">
                 <div class="formParams">
                     <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">单位工程：
-                        <span style="color:#6595f2;font-weight:bold">{{editTitle[0]}}</span>
+                        <span style="color:#6595f2;font-weight:bold" :title="editTitle[0]">{{editTitle[0]}}</span>
                     </span>
                 </div>
                 <div class="formParams">
                     <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">分部项目：
-                        <span style="color:#6595f2;font-weight:bold">{{editTitle[1]}}</span>
+                        <span style="color:#6595f2;font-weight:bold" :title="editTitle[1]"  >{{editTitle[1]}}</span>
                     </span>
                 </div>
                 <div class="formParams">
                     <span style="display:inline-block;width:217px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">分项工程：
-                        <span style="color:#6595f2;font-weight:bold">{{editTitle[2]}}</span>
+                        <span style="color:#6595f2;font-weight:bold" :title="editTitle[2]">{{editTitle[2]}}</span>
                     </span>
                 </div>
             </div>
@@ -173,22 +173,23 @@
                         <el-tabs v-model="activeName2" type="card" @tab-click="tabClick" v-for='(item,index) in typeList' v-show='index==value'>
     
                             <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
-                                <ul class="form-table">
-                                    <!--<li v-show='childitem.childs.length==0' style="text-align:center;color:#e6e6e6">没数据我才显示</li>-->
-                                    <li v-for='(childitemName,index) in childitem.childs'>{{childitemName.formName}}
-                                        <div class="tabs-icon clearfix">
-                                            <!--<el-icon class="el-icon-picture" @click.native="itemView(value_,childitemName.formId)"></el-icon>
-                                                                        <el-icon class="el-icon-delete" @click.native="itemDelete(item.typeName,childitem.typeName,childitemName,index)"></el-icon>-->
-                                            <span class="icon-tabs-eyes" @click="itemView(value_,childitemName.formId)" title="预览"></span>
-                                            <span class="icon-tabs-del" @click="itemDelete(item.typeName,childitem.typeName,childitemName,index)" title="删除"></span>
-                                        </div>
-                                    </li>
-    
-                                </ul>
+                                <div class="project-forme">
+                                    <ul class="form-table">
+                                        <!--<li v-show='childitem.childs.length==0' style="text-align:center;color:#e6e6e6">没数据我才显示</li>-->
+                                        <li v-for='(childitemName,index) in childitem.childs'>
+                                            <span style="display:inline-block;width:235px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" :title='childitemName.formName'>{{childitemName.formName}}</span>
+                                            <div class="tabs-icon clearfix">
+                                                <span class="icon-tabs-eyes" @click="itemView(value_,childitemName.formId)" title="预览"></span>
+                                                <span class="icon-tabs-del" @click="itemDelete(item.typeName,childitem.typeName,childitemName,index)" title="删除"></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
     
                             </el-tab-pane>
-                            <p class="form-total">已选表单</p>
+    
                         </el-tabs>
+                        <p class="form-total">已选表单</p>
                     </template>
     
                 </div>
@@ -213,8 +214,8 @@
             </div>
         </div>
         <!--<el-dialog :visible.sync="dialogFormPriview" class="dialogPriview" :close-on-click-modal="false" style="z-index:5000">
-                                                                <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
-                                                            </el-dialog>-->
+                                                                                                <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
+                                                                                            </el-dialog>-->
     </div>
 </template>
 <script>
@@ -305,7 +306,7 @@ export default {
             // 下拉框数据
             typeList: [],
             typeName: '',
-            selectLength:'',
+            selectLength: '',
             // 编辑页面的三级标题
             // 单位工程
             //  分部项目
@@ -371,7 +372,7 @@ export default {
                 // this.addFormOption.push({value})
             }).catch(() => {
             });
-        },       
+        },
     },
     computed: {
 
@@ -484,7 +485,7 @@ export default {
                         el.childs.forEach((el, index2) => {
                             if (elForm.typeId == el.typeId) {
                                 el.childs.push({ typeId: elForm.typeId, modelId: elForm.modelId, formId: elForm.formId, formName: elForm.formName });
-                                this.selectLength==el.childs.length;
+                                this.selectLength == el.childs.length;
                             }
                         })
                     });
@@ -568,7 +569,7 @@ export default {
                                         });
                                     } else {
                                         childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
-                                        this.selectLength==childs.length;
+                                        this.selectLength == childs.length;
                                     }
                                 })
                             }
@@ -597,7 +598,7 @@ export default {
                                             });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
-                                            this.selectLength==childs.length;
+                                            this.selectLength == childs.length;
                                         }
                                     }
                                 })
@@ -625,7 +626,7 @@ export default {
                                             });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
-                                            this.selectLength==childs.length;
+                                            this.selectLength == childs.length;
                                         }
                                     }
                                 })
@@ -656,7 +657,7 @@ export default {
                                             });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
-                                            this.selectLength==childs.length;
+                                            this.selectLength == childs.length;
                                         }
                                     }
                                 })
@@ -684,7 +685,7 @@ export default {
                                             });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
-                                            this.selectLength==childs.length;
+                                            this.selectLength == childs.length;
                                         }
                                     }
                                 })
@@ -703,7 +704,7 @@ export default {
                     el.childs.forEach((el, index2) => {
                         if (el.typeName == childitemtypeName) {
                             el.childs.splice(index, 1);
-                            this.selectLength=el.childs.length;
+                            this.selectLength = el.childs.length;
                         }
                     })
                 }
@@ -832,39 +833,61 @@ export default {
             nodes = zTree.getSelectedNodes(),
                 treeNode = nodes[0];
             if (nodes.length == 0) {
-                alert("请先选择一个节点");
+                this.$alert('请选一个节点啊', '这不是开玩笑', {
+                    confirmButtonText: '确定',
+                });
                 return;
             }
-            /*       var sObj = $("#" + treeNode.tId + "_span");
-                   //if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-                   var addStr = "<span class='affirm' title='add node'></span><span class='cancel'  title='add node '></span>";
-                   sObj.after(addStr);
-                   zTree.editName(treeNode);
-                   $('.affirm').bind('click',function(event){//确定编辑
-                       console.info('确认操作');
-                       $(this).remove();
-                       $('.cancel').remove();
-                       event.stopPropagation()
-                   });
-                   $('.cancel').bind('click',function(event){//取消编辑
-                       zTree.cancelEditName();
-                       $(this).remove();
-                       $('.affirm').remove();
-                       event.stopPropagation()
-                   });*/
             zTree.editName(treeNode);
         },
         zTreeBeforeRename(treeId, treeNode, newName, isCancel) {
-            //   alert('想改名字？');
-            console.log(treeId, treeNode, newName, isCancel);
-            console.log(newName.length);
-            //   if(newName.length>100){
-            //       console.log('名字太长了')
-            //       isCancel=true;
-
-            //   }
-            //   return false;
-
+            var zTree = $.fn.zTree.getZTreeObj("proZtree");
+            var message;
+            if (!isCancel) {
+                if ($.trim(newName).length == 0) {
+                    if (treeNode.isParent) {
+                        message = "名称不能为空";
+                    } else {
+                        message = "名称不能为空";
+                    }
+                    this.$alert(message, '提示', {
+                        confirmButtonText: '确定',
+                    });
+                    zTree.cancelEditName();
+                    return false;
+                } else if ($.trim(newName).length > 100) {
+                    if (treeNode.isParent) {
+                        message = "名称不能超过100个字符";
+                    } else {
+                        message = "名称不能超过100个字符";
+                    }
+                    this.$alert(message, '提示', {
+                        confirmButtonText: '确定',
+                    });
+                    zTree.cancelEditName();
+                    return false;
+                } else {
+                    //判断节点/状态是否重名
+                    /*var treeNodes = zTree.transformToArray(zTree.getNodes());*/
+                    var parentNode = treeNode.getParentNode();
+                    var childNodes = parentNode.children;
+                    for (var i = 0; i < childNodes.length; i++) {
+                        if ((childNodes[i].isParent == treeNode.isParent) && (childNodes[i].nodeName == newName) && (childNodes[i].tId != treeNode.tId)) {
+                            if (treeNode.isParent) {
+                                message = "为什么要取一样的名字？为什么？";
+                            } else {
+                                message = "为什么要取一样的名字？为什么？";
+                            }
+                            this.$alert(message, '提示', {
+                                confirmButtonText: '确定',
+                            });
+                            zTree.cancelEditName();
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         },
         remove(e) {
             // var zTree = $.fn.zTree.getZTreeObj("proZtree"),
@@ -891,7 +914,9 @@ export default {
             var treeObj = $.fn.zTree.getZTreeObj("proZtree");
             var nodes = treeObj.getSelectedNodes();
             if (nodes.length == 0) {
-                alert("至少选择一个节点");
+                this.$alert("至少选择一个节点", '提示', {
+                    confirmButtonText: '确定',
+                });
                 return;
             }
             //移动之前需要判断满足条件才能上移
@@ -931,7 +956,9 @@ export default {
             var treeObj = $.fn.zTree.getZTreeObj("proZtree");
             var nodes = treeObj.getSelectedNodes();
             if (nodes.length == 0) {
-                alert("至少选择一个节点");
+                this.$alert("至少选择一个节点", '提示', {
+                    confirmButtonText: '确定',
+                });
                 return;
             }
             //移动之前需要判断满足条件才能下移
@@ -977,8 +1004,7 @@ export default {
             return uuid;
         },
         add(e) {
-
-            console.log(this.nodeId, '111111111');
+            // console.log(this.nodeId, '111111111');
             if (this.nodeId == '') {
                 this.$alert('请选择一个节点添加', '提示', {
                     confirmButtonText: '确定',
@@ -999,13 +1025,13 @@ export default {
             treeNode = nodes[0];
             //                isParent = e.data.isParent;
             if (levelAdd > 2) {
-                treeNode = zTree.addNodes(nodeParent, { nodeId: this.generateID(), pid: nodeParent.pid, isParent: isParent, name: "new node" + (newCount++) });
+                treeNode = zTree.addNodes(nodeParent, { nodeId: this.generateID(), pid: nodeParent.pid, isParent: isParent, nodeName: "新节点" + (newCount++) });
                 zTree.editName(treeNode[0]);
             } else {
                 if (treeNode) {
-                    treeNode = zTree.addNodes(treeNode, { nodeId: this.generateID(), pid: treeNode.id, isParent: isParent, name: "new node" + (newCount++) });
+                    treeNode = zTree.addNodes(treeNode, { nodeId: this.generateID(), pid: treeNode.id, isParent: isParent, nodeName: "新节点" + (newCount++) });
                 } else {
-                    treeNode = zTree.addNodes(null, { nodeId: this.generateID(), pid: 0, isParent: isParent, name: "new node" + (newCount++) });
+                    treeNode = zTree.addNodes(null, { nodeId: this.generateID(), pid: 0, isParent: isParent, nodeName: "新节点" + (newCount++) });
                 }
                 if (treeNode) {
                     zTree.editName(treeNode[0]);
@@ -1025,8 +1051,8 @@ export default {
                     confirmButtonText: '确定',
                 });
                 return;
-            }else{
-                this.textAreaVisible=true;
+            } else {
+                this.textAreaVisible = true;
             }
         },
         addMoreNodes() {
