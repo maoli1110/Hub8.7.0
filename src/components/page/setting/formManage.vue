@@ -1,15 +1,15 @@
 <template>
     <div class="form-change">
-     <!--   <el-row>
-        &lt;!&ndash;    <el-menu  class="el-menu-demo" mode="horizontal" router>
+        <el-row>
+        <!--    <el-menu  class="el-menu-demo" mode="horizontal" router>
                 <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-            </el-menu>&ndash;&gt;
+            </el-menu>-->
             <el-col :span="24" class="sub-menus-style">
                 <el-menu  class="el-menu-demo sub-menus" mode="horizontal" router >
                     <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                 </el-menu>
             </el-col>
-        </el-row>-->
+        </el-row>
    <!--     <el-row class="quality-search" >
             <el-col :span="16" style="text-align:left">
                 <el-input  placeholder="请输入内容" icon="search" class="quality-searInput" style="width:30%" v-model="formVal" ></el-input>
@@ -57,8 +57,8 @@
                     <div class="form-dialog-title" style="padding-bottom:15px;">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
                         <div style="position:relative">
-                            <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch"></el-input>
-                            <el-icon class="el-icon-circle-cross" style="position:absolute;top:10px;right:74px;color:#ccc;"  v-show="searchParam.length>0" @click.native="clearEvent"></el-icon>
+                            <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch" placeholder="请输入表单名称搜索"></el-input>
+                            <el-icon class="el-icon-circle-cross" style="font-size:14px;position:absolute;top:11px;right:74px;color:#ccc;"  v-show="searchParam.length>0" @click.native="clearEvent"></el-icon>
                         </div>
                     </div>
                     <div class="form-dialog-body" >
@@ -68,7 +68,7 @@
                                 <el-table-column width="100">
                                     <template scope="scope"  v-show="zNodes.isForm">
                                         <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
-                                        <span class="icon-eyes" @click="formPriview(scope.$index,scope.row)" style="margin-top:12px;"></span>
+                                        <span class="icon-eyes" @click="formPriview(scope.$index,scope.row)" ></span>
                                     </template>
 
                                 </el-table-column>
@@ -90,8 +90,8 @@
                     <div class="form-dialog-title">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
                             <div style="position:relative">
-                                 <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%"></el-input>
-                                 <el-icon class="el-icon-circle-cross" style="position:absolute;top:10px;right:127px;color:#ccc;"  v-show="formTreeSearch.length>0" @click.native="clearEvent"></el-icon>
+                                 <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%" placeholder="请输入表单名称搜索"></el-input>
+                                 <el-icon class="el-icon-circle-cross" style="font-size:14px;position:absolute;top:11px;right:127px;color:#ccc;"  v-show="formTreeSearch.length>0" @click.native="clearEvent"></el-icon>
 
                             <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
                             </div>
@@ -195,14 +195,13 @@
             $('.form-dialog-title input').bind('keydown',this.searchformTree);
             $("#expandBtn").bind("click",  {type:"expand",operObj:'formTree'}, this.expandNode);
             $("#collapseBtn").bind("click", {type:"collapse",operObj:'formTree'}, this.expandNode);
-          /*  $('.icon-eyes').map(function(){
-                $(this).bind('click',function(){
-                    console.info('预览界面')
-                })
-            })*/
+            if(this.$route.path=='/setting/formManage'){
+                $('.sub-menus li').removeClass('is-active');
+                $('.sub-menus li').eq(2).addClass('is-active');
+            }
         },
         created(){
-            this.getData()
+            this.getData();
         },
         methods: {
             clearEvent(){//清除表格元素
@@ -255,7 +254,7 @@
             },
             //表单的预览功能
             formPriview(index,row){
-
+                this.formPriviewUrl = "";
                 formPriviewParams.modelId = getFormInfosParams.modelId;
                 formPriviewParams.formId = row.formId;
                 getFormPreview(formPriviewParams).then((res) =>{
@@ -295,6 +294,7 @@
                 $('#formTree .icon-eyes').map(function(){
                     $(this).unbind('click');
                     $(this).bind('click',function(){
+                        self.formPriviewUrl = "";
                         let  linkFormId = $(this).attr("id");
                         if(linkFormId){
                             linkFormId =  linkFormId.split('-')[1]

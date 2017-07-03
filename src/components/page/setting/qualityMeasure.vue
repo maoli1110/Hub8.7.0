@@ -3,16 +3,16 @@
 
         <div class="" v-if="isQuality">
             <div class="search-area">
-          <!--      <el-row>
-                   &lt;!&ndash; <el-menu  class="el-menu-demo" mode="horizontal" router>
+                <el-row>
+                   <!-- <el-menu  class="el-menu-demo" mode="horizontal" router>
                         <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-                    </el-menu>&ndash;&gt;
+                    </el-menu>-->
                     <el-col :span="24" class="sub-menus-style">
                         <el-menu class="el-menu-demo sub-menus" mode="horizontal" router >
                             <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                         </el-menu>
                     </el-col>
-                </el-row>-->
+                </el-row>
                 <el-row class="quality-search" v-if="!isBMP">
                     <el-col :span="8">
                         <el-button type="primary" icon="plus" @click="addBPM">添加</el-button>
@@ -64,7 +64,7 @@
                 </el-col>
                 <el-col :span="6">
                     <span class="BMP-text">流程名称：</span>
-                    <el-input placeholder="请输入内容" v-model="flowName" style="width:40%;height:100px;" @blur="messageValTips"></el-input>
+                    <el-input placeholder="请输入流程名称" v-model="flowName" style="width:40%;height:100px;" @blur="messageValTips"></el-input>
                 </el-col>
                 <el-col :span="18">
                     <span class="BMP-text"  style="display:inline-block;vertical-align: top">备注：</span>
@@ -99,7 +99,7 @@
                                         <tr v-for="(rootInfo,index) in rootInfo" @click="processSetEdit($event,index)">
                                             <td width="50">{{index+1}}</td>
                                             <td width="210">
-                                                <el-input class="flowTitle" placeholder="请输入内容" :maxlength=10 v-model="rootInfo.stepName"></el-input>
+                                                <el-input class="flowTitle" placeholder="请输入步骤名" :maxlength=10 v-model="rootInfo.stepName"></el-input>
                                             </td>
                                             <td width="120" style="position:relative" class="list-isAll" >
                                                 <el-select :value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择">
@@ -156,7 +156,7 @@
                 </el-col>
                 <el-col :span="6">
                     <span class="BMP-text">流程名称：</span>
-                    <el-input placeholder="请输入内容" v-model="flowNameEdit" style="width:40%;height:100px;" :maxlength=10></el-input>
+                    <el-input placeholder="请输入流程名称" v-model="flowNameEdit" style="width:40%;height:100px;" :maxlength=10></el-input>
                 </el-col>
                 <el-col :span="18">
                     <span class="BMP-text"  style="display:inline-block;vertical-align: top">备注：</span>
@@ -191,7 +191,7 @@
                                 <tr v-for="(rootInfo,index) in rootInfoEdit.steps" @click="eidtProcessSetEdit($event,index)">
                                     <td width="50">{{index+1}}</td>
                                     <td width="210">
-                                        <el-input class="flowTitle" v-model="rootInfo.stepName" :maxlength=10 placeholder="请输入内容"></el-input>
+                                        <el-input class="flowTitle" v-model="rootInfo.stepName" :maxlength=10 placeholder="请输入步骤名"></el-input>
                                     </td>
                                     <td width="120" style="position:relative" class="list-isAll" >
                                         <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"   @change="changeEdit">
@@ -265,7 +265,7 @@
                         <el-col :span="10" style="text-align:right;padding:0;position:relative">
                             <el-input placeholder="请输入搜索表单" class="formModelTable" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch"  style="width:100%" >
                             </el-input>
-                            <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="position:absolute;top:10px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                            <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="font-size:14px;position:absolute;top:11px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -324,9 +324,10 @@
                         </el-col>
                         <el-col :span="9" >
                             <div style="position:relative">
-                                <el-input placeholder="请输入要搜索的关联表单" v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
+                                <el-input placeholder="请输入搜索表单
+" v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
                                 </el-input>
-                                <el-icon class="el-icon-circle-close" v-show="ztreeSearch.length>0" style="position:absolute;top:10px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                                <el-icon class="el-icon-circle-close" v-show="ztreeSearch.length>0" style="font-size:14px;position:absolute;top:11px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
                             </div>
                         </el-col>
                     </el-col>
@@ -534,6 +535,7 @@ export default {
         tableParams.sortField = sortField;
         this.getData(tableParams);
 //        this.beforeRouteEnter();
+
     },
     mounted() {
         $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
@@ -544,7 +546,11 @@ export default {
         $('.qualityTree input').bind('keydown',this.qualitySearchTree);
         $('.formModelTable input').bind('keydown',this.formModelSearch);
         $('.quality-searInput input').bind('keydown',this.tableSearch)
-
+        if(this.$route.path=='/setting/qualityMeasure'){
+            $('.sub-menus li').removeClass('is-active');
+            $('.sub-menus li').eq(0).addClass('is-active');
+            console.log(this.$route.path);
+        }
     },
     methods: {
         clearEvent(){//清除表格元素
@@ -842,12 +848,12 @@ export default {
         //删除行
         deleteHandle(index) {
             console.info(index,'index')
-            if (this.rootInfo.length > 1) {
+            if (this.rootInfo.length >0) {
                 this.rootInfo.splice(index, 1)
             }
         },
         editDeleteHandle(index){//编辑工程删除功能
-            if(this.rootInfoEdit.steps.length>1){
+            if(this.rootInfoEdit.steps.length>0){
                 this.rootInfoEdit.steps.splice(index, 1)
             }
         },
@@ -930,13 +936,18 @@ export default {
                     }
                 })
             }
-            updateProcessInfo({processId:updateProcessId,ProcessAddParam:this.rootInfoEdit}).then((res)=>{
-                this.isBMP = false;
-                this.isQuality = true;
-                this.isBMPedit = false;
-            }).catch(function(error){
-                self.messageBox(error.response.data.message);
-            })
+            if($('.editPage tbody tr') !=0){
+                updateProcessInfo({processId:updateProcessId,ProcessAddParam:this.rootInfoEdit}).then((res)=>{
+                    this.isBMP = false;
+                    this.isQuality = true;
+                    this.isBMPedit = false;
+                 }).catch(function(error){
+                    self.messageBox(error.response.data.message);
+                })
+            }else{
+                self.messageBox("请填写至少一条步骤信息");
+            }
+
             console.info(updateProcessId,'能拿到数据吗')
         },
         eidtBMPcancel(){
@@ -1068,6 +1079,8 @@ export default {
             list.steps =[];//清空步骤  避免重复
             if (!this.flowName.length) {
                 this.flowNameAlert();
+            }else if($('.table-step tbody tr').length==0){
+                this.messageBox('请填写至少一条步骤信息')
             }else{
                 $('.table-step tbody tr').map(function (i,val) {
                     listParams = {};
@@ -1088,13 +1101,11 @@ export default {
                             list.steps.push(listParams);
                         }
                         errorMessage = false;
-                    }else{
-//                        self.messageBox('请填写至少一条步骤信息')
                     }
 
                 });
             }
-            if(!errorMessage){
+            if(!errorMessage && $('.table-step tbody tr').length!=0){
                 addProcessInfo(list).then((res)=>{//添加流程
 
                     this.flowName ="";
@@ -1120,11 +1131,7 @@ export default {
                 }).catch(function(error){
                     self.messageBox(error.response.data.message)
                 });
-
             }
-          /*  else{
-                self.messageBox('请填写有效的信息')
-            }*/
         },
         //树结构字段处理
         zTreeFiledProcess(getFormProcessParams){
@@ -1176,7 +1183,7 @@ export default {
             this.linkTree = true;
             this.dialogFormVisible = false;
             //树结构
-            this.modelTypeTreeVal = formModelParams.modelId
+            this.modelTypeTreeVal = formModelParams.modelId;
             getFormProcessParams.modelId =formModelParams.modelId;
             getFormProcessParams.processId = processId;
             this.zTreeFiledProcess(getFormProcessParams);
@@ -1243,6 +1250,8 @@ export default {
             }
         },
         formModelLinkOk(){
+
+            this.modelTypeVal = this.modelTypeTreeVal
             this.dialogFormVisible = true;
             this.linkTree = false;
             updateProcessRelFormParams.processId = processId;

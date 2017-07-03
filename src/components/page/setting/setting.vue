@@ -7,11 +7,7 @@
                 <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
             </el-menu>-->
             <el-row>
-                <el-col :span="24" class="sub-menus-style">
-                    <el-menu class="el-menu-demo sub-menus" mode="horizontal"  router >
-                        <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" >{{menusdata.name}}</el-menu-item>
-                    </el-menu>
-                </el-col>
+
             </el-row>
             <router-view></router-view>
         </div>

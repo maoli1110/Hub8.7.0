@@ -1,17 +1,17 @@
 <template>
     <div class="proTemplate">
-    
+
         <div v-if="!EditVisible">
-    
+
             <el-row>
                 <!-- <el-menu class="el-menu-demo" mode="horizontal" router>
                                     <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                                 </el-menu>-->
-                <!--  <el-col :span="24" class="sub-menus-style">
+                  <el-col :span="24" class="sub-menus-style">
                                     <el-menu class="el-menu-demo sub-menus" mode="horizontal"  router >
                                         <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" >{{menusdata.name}}</el-menu-item>
                                     </el-menu>
-                                </el-col>-->
+                                </el-col>
             </el-row>
             <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" class="proTemplate-table">
                 <el-table-column label="序号" width="70" type="index">
@@ -22,9 +22,9 @@
                 </el-table-column>
                 <el-table-column prop="updateTime" width="150" label="更新时间" sortable :formatter="formatTime">
                 </el-table-column>
-    
+
                 <el-table-column label="操作" width="150">
-    
+
                     <template scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                         <span class="icon-compile" @click="proTemplateEdit(scope.$index,scope.row)"></span>
@@ -81,9 +81,9 @@
                             </div>
                         </div>
                         <div class="sear-icon" style="position:relative">
-    
+
                             <el-input placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree" v-model="tableSearchKey"></el-input>
-    
+
                             <div style="float:right;margin-top:6px">
                                 <span id="expandBtn" class="icon-plus" title="展开" @click="expandNode('expand','proZtree')"></span>
                                 <span id="collapseBtn " class="icon-cut" title="折叠" @click="expandNode('collapse','proZtree')"></span>
@@ -95,7 +95,7 @@
                 </el-col>
                 <el-col :span="14" class="project-form">
                     <p class="project-form-tit">包含表单</p>
-    
+
                     <div style="border:1px solid #ddd;">
                         <div class="project-form-list">
                             <el-select v-model="value" placeholder="请选择" @change="selectTestAval">
@@ -123,7 +123,7 @@
             <el-dialog title="增加多个节点" :visible.sync="textAreaVisible" class="multi-textarea">
                 <el-input type="textarea" :rows="10" id="multiLeaf" placeholder="一行视为一个节点，支持多行复制粘贴" :maxlength='297'>
                 </el-input>
-    
+
                 <div slot="footer" class="dialog-footer">
                     <el-button type="primary" id="proBtnOk" @click="textAreaVisible = false,addMoreNodes">确 定</el-button>
                     <el-button @click="textAreaVisible = false">取 消</el-button>
@@ -131,7 +131,7 @@
             </el-dialog>
             <!--表单编辑-->
             <el-dialog title="添加" :visible.sync="formEditVisible" style="width:0%;position:fixed;left:50%;opacity:0;"></el-dialog>
-    
+
         </div>
         <div class="formEdit" v-show="formEditVisible">
             <div class="formEidt-title">
@@ -181,7 +181,7 @@
                     </template>
                     <template>
                         <el-tabs v-model="activeName2" type="card" @tab-click="tabClick" v-for='(item,index) in typeList' v-show='index==value'>
-    
+
                             <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
                                 <div class="project-forme">
                                     <ul class="form-table">
@@ -196,11 +196,11 @@
                                     </ul>
                                 </div>
                             </el-tab-pane>
-    
+
                         </el-tabs>
                         <p class="form-total">已选表单</p>
                     </template>
-    
+
                 </div>
             </div>
             <div class="formBtn">
@@ -371,7 +371,11 @@ export default {
         // $("#addLeaf").bind("click", { "isParent": false }, this.add);
         $('#proBtnOk').bind('click', { "isParent": false }, this.addMoreNodes);
         $('#searchMessage>input').bind('keydown', this.searchTree)//搜索事件绑定到元素
-        $('.sear-icon input').bind('keydown', this.searchProTree)
+        $('.sear-icon input').bind('keydown', this.searchProTree);
+        if(this.$route.path=='/setting/proTemplate'){
+            $('.sub-menus li').removeClass('is-active');
+            $('.sub-menus li').eq(1).addClass('is-active');
+        }
     },
     // 当下拉框改变重新请求
     watch: {
