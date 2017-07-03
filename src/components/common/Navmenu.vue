@@ -1,23 +1,24 @@
 <template>
     <el-menu theme="" default-active="/setting/explorer" class="nav-menu" mode="horizontal" router>
-        <el-menu-item index="">
+        <el-menu-item index="1">
             <a href="/enterprise/showMenuPDS.htm?m=pds" class="aHeightW">组织结构</a>
         </el-menu-item>
-        <el-menu-item index="">
+        <el-menu-item index="2">
             <a href="/enterprise/showMenuPDS.htm?m=projectmanage" class="aHeightW">工程管理</a>
         </el-menu-item>
-        <el-menu-item index="">
+        <el-menu-item index="3">
             <a href="/enterprise/showMenuPDS.htm?m=be" class="aHeightW">Explore</a>
         </el-menu-item>
-        <el-menu-item index="">
+        <el-menu-item index="4">
             <a href="/enterprise/showMenuPDS.htm?m=mc" class="aHeightW">Govern</a>
         </el-menu-item>
-        <el-menu-item index="">
+        <el-menu-item index="5">
             <a href="/enterprise/showMenuPDS.htm?m=bviban" class="aHeightW">BIM-CO/iBan/Boss</a>
         </el-menu-item>
-        <el-menu-item index="">
+        <el-menu-item index="6">
             <a href="/enterprise/showMenuPDS.htm?m=plan" class="aHeightW">Plan</a>
         </el-menu-item>
+
         <el-menu-item index="/setting/qualityMeasure" >
             <a  class="aHeightW" style="padding:20px 15px">质检计量</a>
         </el-menu-item>
