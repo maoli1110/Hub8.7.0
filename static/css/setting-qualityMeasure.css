@@ -694,15 +694,15 @@
 
 }
 .form-change .single-stump .form-dialog-body{
-    height:388px;overflow:auto;padding:30px 40px 0;
+    height:400px;overflow:auto;padding:5px 40px 0;
 }
 .form-change .single-stump .form-dialog-body >.form-content{
-    padding:0px 20px 0px 20px;border:1px solid #ddd;height:374px;overflow:auto;
+    padding:0px 20px 0px 20px;border:1px solid #ddd;height:398px;overflow:auto;
 }
 /*form-ztree-dialog(表单结构树结构另外一套)*/
 .form-ztree-dialog{
     width: 535px;
-    height: 658px;
+    height: 600px;
     background: #fff;
     position: fixed;
     top: 0;
