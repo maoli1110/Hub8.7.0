@@ -16,7 +16,7 @@
 .quality-search .el-icon-circle-cross{
     position: absolute;
     right: 29px;
-    font-size: 10px;
+    font-size: 14px;
     top: 12px;
     color: #ccc;
 }
@@ -100,7 +100,7 @@
     top: 5px;
 }
 .quality-page .link-table .icon-eyes{
-    float:none;
+    float:none;cursor:pointer;
 }
 .quality-page .icon-eyes{
     width: 20px;
@@ -137,11 +137,9 @@
     /*text-align:left;*/
 }
 .BMP-process .table-step{
-    height:calc(100vh - 704px);overflow:auto;border:1px solid #ddd;border-top:none
+    height:calc(100vh - 704px);overflow:auto;border:1px solid #ddd;border-bottom:none;border-top:none;
 }
-.BMP-process .table-step table tr:last-child td{
-    border-bottom:none;
-}
+
 .BMP-process .table-step table td{
     height:40px;line-height:40px;border-right:1px solid #ddd;text-align:center;
 }
@@ -354,10 +352,10 @@
 .link-model{
     width:734px;
     height:615px;
-    position: absolute;
+    position: fixed;
     z-index: 3000;
     background: #fff;
-    top: 50%;
+    top: 45%;
     left: 50%;
     margin-left:-380px;
     margin-top:-307px;
@@ -676,7 +674,7 @@
 .form-change .form-table tbody tr td{
     height:45px;line-height:45px;border-right:1px solid #ddd;text-align:center;
 }
-.form-change .form-table tbody tr td:nth-child(2),.form-change .form-table tbody tr td:nth-child(5),.form-change .form-table tbody tr td:nth-child(3){
+.form-change .form-table tbody tr td:nth-child(2),.form-change .form-table tbody tr td:nth-child(3),.form-change .form-table tbody tr td:nth-child(5),.form-change .form-table tbody tr td:nth-child(3){
     text-align:left;
 }
 .form-change .dialog-changeForm>.priview-le{
@@ -704,7 +702,7 @@
 /*form-ztree-dialog(表单结构树结构另外一套)*/
 .form-ztree-dialog{
     width: 535px;
-    height: 630px;
+    height: 658px;
     background: #fff;
     position: fixed;
     top: 0;
@@ -726,6 +724,9 @@
 .form-change .priview-le>.el-icon-search{
     float:right;margin-top:12px;opacity:0.5;
 }
+.form-change .form-ztree-dialog .form-dialog-title{
+    padding-bottom:20px;
+}
 .form-change .form-ztree-dialog .form-dialog-title>p{
     padding: 20px 40px;
     margin-bottom: 20px;
@@ -738,13 +739,13 @@
     float:right;font-size:14px; margin-top: 5px;
 }
 .form-change .form-ztree-dialog .form-dialog-footer{
-    text-align:center;padding-top:15px;
+    text-align:center;padding-top:26px;
 }
 .form-change .form-ztree-dialog .icon-eyes{
-    width:15px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -153px -38px;float:right;margin-top:5px;
+    width:16px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -152px -38px;float:none;margin-top:5px;cursor:pointer;position:absolute;right:0;
 }
 .form-change .ztree{
-    height:374px !important;overflow:auto;padding:20px 40px 40px !important;
+    height:352px !important;overflow:auto;padding:20px 40px 40px !important;
 }
 
 /*表单编辑*/
@@ -959,3 +960,11 @@
     line-height: 58px;
 }
 */
+.ztree li {
+   position:relative;
+}
+.quality-page .el-pagination__total{
+    float:none !important;
+    position:absolute;
+    left:0;
+}
