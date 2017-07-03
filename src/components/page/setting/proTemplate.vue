@@ -5,13 +5,14 @@
 
             <el-row>
                 <!-- <el-menu class="el-menu-demo" mode="horizontal" router>
+
                                     <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                                 </el-menu>-->
                   <el-col :span="24" class="sub-menus-style">
-                                    <el-menu class="el-menu-demo sub-menus" mode="horizontal"  router >
-                                        <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" >{{menusdata.name}}</el-menu-item>
-                                    </el-menu>
-                                </el-col>
+                        <el-menu class="el-menu-demo sub-menus" mode="horizontal"  router >
+                            <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" >{{menusdata.name}}</el-menu-item>
+                        </el-menu>
+                   </el-col>
             </el-row>
             <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" class="proTemplate-table">
                 <el-table-column label="序号" width="70" type="index">
@@ -64,9 +65,9 @@
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                                                                                                                                                                <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
                                 <span id="edit" @click="edit" title='编辑节点'></span>
                             </div>
@@ -223,8 +224,8 @@
             </div>
         </div>
         <!--<el-dialog :visible.sync="dialogFormPriview" class="dialogPriview" :close-on-click-modal="false" style="z-index:5000">
-                                                                                                                <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
-                                                                                                            </el-dialog>-->
+                                                                                                                        <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
+                                                                                                                    </el-dialog>-->
     </div>
 </template>
 <script>
@@ -270,7 +271,6 @@ export default {
                         level = treeNode.level;
                     },
                     onDblClick: this.onEditDbClick,
-                    beforeRename: this.zTreeBeforName,
                     onRename: this.ztreeOnRename,
                     onClick: this.zTreeOnClick,
                     beforeRename: this.zTreeBeforeRename
@@ -306,7 +306,7 @@ export default {
                 }
             },
             tableSearchKey: '',
-            ztreeSearch:'',
+            ztreeSearch: '',
             zNodes: [],
             // 模板名称
             projModelName: '',
@@ -864,9 +864,16 @@ export default {
             //                debugger;
             var zTree = $.fn.zTree.getZTreeObj("proZtree");
             nodes = zTree.getSelectedNodes(),
+
                 treeNode = nodes[0];
+            if (nodes == null) {
+                this.$alert('请选择一个节点编辑', '提示', {
+                    confirmButtonText: '确定',
+                });
+                return;
+            }
             if (nodes.length == 0) {
-                this.$alert('请选择一个节点', '提示', {
+                this.$alert('请选择一个节点编辑', '提示', {
                     confirmButtonText: '确定',
                 });
                 return;
@@ -874,7 +881,25 @@ export default {
             zTree.editName(treeNode);
         },
         zTreeBeforeRename(treeId, treeNode, newName, isCancel) {
+
+
             var zTree = $.fn.zTree.getZTreeObj("proZtree");
+            var sNodes = zTree.getSelectedNodes();
+            // console.log(this.nodeId, '111111111');
+            // 没有选择节点的情况
+            if (this.nodeId == '') {
+                this.$alert('请选择一个节点添加', '提示', {
+                    confirmButtonText: '确定',
+                });
+                return;
+            }
+            // 选中删除后的情况
+            if (sNodes.length == 0) {
+                this.$alert('请选择一个节点添加', '提示', {
+                    confirmButtonText: '确定',
+                });
+                return;
+            }
             var message;
             if (!isCancel) {
                 if ($.trim(newName).length == 0) {
@@ -923,21 +948,20 @@ export default {
             return true;
         },
         remove(e) {
-            // var zTree = $.fn.zTree.getZTreeObj("proZtree"),
-            //     nodes = zTree.getSelectedNodes(),
-            //     treeNode = nodes[0];
-            // if (nodes.length == 0) {
-            //     alert("Please select one node at first...");
-            //     return;
-            // }
-            // var callbackFlag = $("#callbackTrigger").attr("checked");
-            // zTree.removeNode(treeNode, callbackFlag);
-
-            this.$alert('确定删除吗', '提示', {
-                confirmButtonText: '确定',
-            });
             var treeObj = $.fn.zTree.getZTreeObj("proZtree");
             var nodes = treeObj.getSelectedNodes();
+            if (this.nodeId == '') {
+                this.$alert('请选择一个节点删除', '提示', {
+                    confirmButtonText: '确定',
+                });
+                return;
+            }
+            if (nodes.length == 0) {
+                this.$alert('请选择一个节点删除', '提示', {
+                    confirmButtonText: '确定',
+                });
+                return;
+            }
             for (var i = 0, l = nodes.length; i < l; i++) {
                 treeObj.removeNode(nodes[i]);
             }
@@ -947,7 +971,7 @@ export default {
             var treeObj = $.fn.zTree.getZTreeObj("proZtree");
             var nodes = treeObj.getSelectedNodes();
             if (nodes.length == 0) {
-                this.$alert("至少选择一个节点", '提示', {
+                this.$alert("请选择一个节点上移", '提示', {
                     confirmButtonText: '确定',
                 });
                 return;
@@ -989,7 +1013,7 @@ export default {
             var treeObj = $.fn.zTree.getZTreeObj("proZtree");
             var nodes = treeObj.getSelectedNodes();
             if (nodes.length == 0) {
-                this.$alert("至少选择一个节点", '提示', {
+                this.$alert("请选择一个节点下移", '提示', {
                     confirmButtonText: '确定',
                 });
                 return;
@@ -1037,22 +1061,33 @@ export default {
             return uuid;
         },
         add(e) {
-            // console.log(this.nodeId, '111111111');
+            var treeLeafSub = '';
+            let isParent;
+            var zTree = $.fn.zTree.getZTreeObj("proZtree");
+            var sNodes = zTree.getSelectedNodes();
             if (this.nodeId == '') {
                 this.$alert('请选择一个节点添加', '提示', {
                     confirmButtonText: '确定',
                 });
                 return;
             }
-
-            var treeLeafSub = '';
-            let isParent;
-            var zTree = $.fn.zTree.getZTreeObj("proZtree");
-            var sNodes = zTree.getSelectedNodes();
+            if (sNodes.length == 0) {
+                this.$alert('请选择一个节点添加', '提示', {
+                    confirmButtonText: '确定',
+                });
+                return;
+            }
             if (sNodes.length > 0) {
                 var levelAdd = sNodes[0].level;
                 var nodeParent = sNodes[0].getParentNode();
-                console.info(nodeParent, 'dddd')
+                if (nodeParent == null) {
+                    this.$alert('请选择全部节点下添加', '提示', {
+                        confirmButtonText: '确定',
+
+                    });
+                    return;
+                }
+
             }
             nodes = zTree.getSelectedNodes();
             treeNode = nodes[0];
@@ -1072,24 +1107,27 @@ export default {
                     alert("叶子节点被锁定，无法增加子节点");
                 }
             }
-            var treeObj = $.fn.zTree.getZTreeObj("proZtree");
-            var nodes = treeObj.getNodes();
-
-            var nodes = treeObj.transformToArray(nodes);
-            console.log(nodes);
         },
         textAreaVisible_() {
+            var zTree = $.fn.zTree.getZTreeObj("proZtree");
+            var sNodes = zTree.getSelectedNodes();
+            if (sNodes.length == 0) {
+                this.$alert('请选择一个节点添加', '提示', {
+                    confirmButtonText: '确定',
+                });
+                return;
+            };
             if (this.nodeId == '') {
                 this.$alert('请选择一个节点添加', '提示', {
                     confirmButtonText: '确定',
                 });
                 return;
-            } else {
+            }
+            else {
                 this.textAreaVisible = true;
             }
         },
         addMoreNodes() {
-
             var isParent;
             var contentArray = $("#multiLeaf").find('textarea').val().split("\n");
             $('textarea').val('');
@@ -1117,6 +1155,7 @@ export default {
                     var nodeParent = sNodes[0].getParentNode();
                 }
                 nodes = zTree.getSelectedNodes();
+
                 treeNode = nodes[0];
                 console.info(treeNode, '55555')
                 if (level > 2) {
@@ -1225,17 +1264,6 @@ export default {
                     treeObj.showNodes(otherNeedShowNodes);
                 }
             }
-        },
-        zTreeBeforName(treeId, treeNode, newName, isCancel) {//重命名之前的操作
-            var treeObj = $.fn.zTree.getZTreeObj('proZtree');
-            var nodes = treeObj.transformToArray(treeObj.getNodes());
-            for (var i = 0; i < nodes.length; i++) {
-                if (nodes[i].name == newName) {
-                    treeObj.cancelEditName();
-                    return false
-                }
-            }
-
         },
         ztreeOnRename(event, treeId, treeNode, isCancel) {
 
