@@ -50,10 +50,10 @@
         <!--模态框项目变更表格-->
         <div class="dialog-form">
             <!--模拟遮罩层-->
-            <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" style="width:0;position:absolute;">
+            <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" style="width:0;position:absolute;" :close-on-click-modal = "false">
             </el-dialog>
             <!--单层树结构模板-->
-                <div class="single-stump form-ztree-dialog" v-show="isSingForm">
+                <div class="single-stump form-ztree-dialog" v-if="isSingForm">
                     <div class="form-dialog-title" style="padding-bottom:15px;">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
                         <div style="position:relative">
@@ -86,7 +86,7 @@
                     </div>
                 </div>
             <!--多层树结构模板-->
-                <div class="form-ztree-dialog" v-show="isDoubForm">
+                <div class="form-ztree-dialog" v-if="isDoubForm">
                     <div class="form-dialog-title">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
                             <div style="position:relative">
