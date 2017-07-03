@@ -5,13 +5,13 @@
     
             <el-row>
                 <!-- <el-menu class="el-menu-demo" mode="horizontal" router>
-                            <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-                        </el-menu>-->
+                                    <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+                                </el-menu>-->
                 <!--  <el-col :span="24" class="sub-menus-style">
-                            <el-menu class="el-menu-demo sub-menus" mode="horizontal"  router >
-                                <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" >{{menusdata.name}}</el-menu-item>
-                            </el-menu>
-                        </el-col>-->
+                                    <el-menu class="el-menu-demo sub-menus" mode="horizontal"  router >
+                                        <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" >{{menusdata.name}}</el-menu-item>
+                                    </el-menu>
+                                </el-col>-->
             </el-row>
             <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" class="proTemplate-table">
                 <el-table-column label="序号" width="70" type="index">
@@ -64,9 +64,9 @@
                                 </div>
                             </div>
                             <!--    <el-icon class="el-icon-edit" id="edit" @click.native="edit"></el-icon>
-                                                                                                                                                                                                                                                                                                                                                <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
-                                                                                                                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
-                                                                                                                                                                                                                                                                                                                                                <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
+                                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-delete" id="remove" @click.native="remove"></el-icon>
+                                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-up" id="upMove" @click.native="upMove"></el-icon>
+                                                                                                                                                                                                                                                                                                                                                        <el-icon class="el-icon-arrow-down" id="downMove" @click.native="downMove"></el-icon>-->
                             <div class="tool-btns">
                                 <span id="edit" @click="edit" title='编辑节点'></span>
                             </div>
@@ -80,13 +80,15 @@
                                 <span id="remove" @click="remove" title='删除节点'></span>
                             </div>
                         </div>
-                        <div class="sear-icon">
-                            <el-input placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree"></el-input>
+                        <div class="sear-icon" style="position:relative">
+    
+                            <el-input placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree" v-model="tableSearchKey"></el-input>
+    
                             <div style="float:right;margin-top:6px">
                                 <span id="expandBtn" class="icon-plus" title="展开" @click="expandNode('expand','proZtree')"></span>
                                 <span id="collapseBtn " class="icon-cut" title="折叠" @click="expandNode('collapse','proZtree')"></span>
                             </div>
-    
+                            <el-icon class="el-icon-circle-cross" style="vertial-align:middle;position:absolute;z-index:3001;color:#ccc;right:100px;top:12px" v-show="tableSearchKey.length>0" @click.native="clearEvent"></el-icon>
                         </div>
                     </div>
                     <ul class="ztree" id="proZtree"></ul>
@@ -155,14 +157,15 @@
             </div>
             <div class="formEdit-body">
                 <el-icon class="el-icon-arrow-right"></el-icon>
-                <div class="ztree-struc">
+                <div class="ztree-struc" style="position:relative">
                     <template>
                         <el-select v-model="value_" placeholder="选择表名称" style="padding:10px 10px 0;width:88%;margin-left:1px;">
                             <el-option v-for="(item,index) in addFormOption" :key="item.value_" :label="item.label" :value="item.value_" @change="selectAdd">
                             </el-option>
                         </el-select>
                     </template>
-                    <el-input id="searchMessage" icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:80%" :on-icon-click="editSearchTree"></el-input>
+                    <el-input id="searchMessage" icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:80%" :on-icon-click="editSearchTree" v-model='ztreeSearch'></el-input>
+                    <el-icon class="el-icon-circle-cross" style="vertial-align:middle;position:absolute;z-index:3001;color:#ccc;left:225px;top:66px" v-show="ztreeSearch.length>0" @click.native="clearEvent"></el-icon>
                     <div style="float:right;margin-top:16px">
                         <span id="expandBtn1" class="icon-plus" title="展开" @click="expandNode('expand','editTree')"></span>
                         <span id="collapseBtn2 " class="icon-cut" title="折叠" @click="expandNode('collapse','editTree')"></span>
@@ -220,8 +223,8 @@
             </div>
         </div>
         <!--<el-dialog :visible.sync="dialogFormPriview" class="dialogPriview" :close-on-click-modal="false" style="z-index:5000">
-                                                                                                        <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
-                                                                                                    </el-dialog>-->
+                                                                                                                <iframe :src="formPriviewUrl" scrolling="no" frameborder="0"></iframe>
+                                                                                                            </el-dialog>-->
     </div>
 </template>
 <script>
@@ -302,6 +305,8 @@ export default {
                     onClick: this.editzTreeOnClick
                 }
             },
+            tableSearchKey: '',
+            ztreeSearch:'',
             zNodes: [],
             // 模板名称
             projModelName: '',
@@ -384,6 +389,16 @@ export default {
 
     },
     methods: {
+        // 清楚搜索内容
+        clearEvent() {//清除表格元素
+            if (this.formModelVal) {
+                this.formModelVal = '';
+            } else if (this.tableSearchKey) {
+                this.tableSearchKey = "";
+            } else if (this.ztreeSearch) {
+                this.ztreeSearch = ""
+            }
+        },
         handleSizeChange() {
 
         },
