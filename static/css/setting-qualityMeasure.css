@@ -355,7 +355,7 @@
     position: fixed;
     z-index: 3000;
     background: #fff;
-    top: 50%;
+    top: 45%;
     left: 50%;
     margin-left:-380px;
     margin-top:-307px;
@@ -742,7 +742,7 @@
     text-align:center;padding-top:26px;
 }
 .form-change .form-ztree-dialog .icon-eyes{
-    width:16px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -152px -38px;float:right;margin-top:5px;cursor:pointer;
+    width:16px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -152px -38px;float:none;margin-top:5px;cursor:pointer;position:absolute;right:0;
 }
 .form-change .ztree{
     height:352px !important;overflow:auto;padding:20px 40px 40px !important;
@@ -960,3 +960,11 @@
     line-height: 58px;
 }
 */
+.ztree li {
+   position:relative;
+}
+.quality-page .el-pagination__total{
+    float:none !important;
+    position:absolute;
+    left:0;
+}

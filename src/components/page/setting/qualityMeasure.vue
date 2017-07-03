@@ -252,7 +252,7 @@
                     </el-col>
                     <el-col :span="24" style="padding:15px 30px;border-bottom:1px solid #ddd;">
                         <el-col :span="14">
-                            <label >表单目录：</label>
+                            <label style="vertical-align: middle;">表单目录：</label>
                             <el-select  class="rootText" value="modelTypeVal" v-model="modelTypeVal" placeholder="请选择"  @change="formModelChange($event)">
                                 <el-option
                                     v-for="item in getformModelType"
@@ -462,6 +462,7 @@ export default {
                     },
                     key: {
                         name: "formName",
+//                        title:"processName"
 //                        nocheck:"isForm",
                     }
                 },
@@ -513,7 +514,7 @@ export default {
             modelTotalNum:1,
             modelcur_page:1,
             formModelVal:"",
-            modelTypeTreeVal:"",//表单模型树model
+            modelTypeTreeVal:this.modelTypeVal,//表单模型树model
 //            priviewUrl:"http://192.168.13.215:8081/pdsdoc/viewDispatcher/W3sidGltZXN0YW1wIjoxNDk4NTUwODM2MDQ3LCJmaWxlTmFtZSI6IsnovMax5Lj8yfPF-x-rHtIiwidXVpZCI6ImU1NjMzYzUwOTU1OTQ3NDg5MjhmN2Y0NTZmYTE5MzczIn1d/KkXDP0CUtlf8VKwo-x-TK3oDb8HN0uN61JTa5JX3iQg-x-fUhhY-x-nDOgmCSvWQYTel70A3AcZE0OYeZ-WgL4arQnmA",
             // isStepDisable:false
             priviewUrl:"",
@@ -741,6 +742,7 @@ export default {
         },
         //表单模板数据变更
         formModelChange(modelId){
+            console.info(modelId,'modelId')
             //关联表单数据
             formModelParams.modelId = modelId;
             formModelParams.pageSize =  !formModelParams.pageSize?7:formModelParams.pageSize;
@@ -796,7 +798,6 @@ export default {
             formModelParams.modelId = modelId;
             getFormProcessParams.modelId = formModelParams.modelId;
             this.zTreeFiledProcess(getFormProcessParams);
-
         },
         formModelPriview(idnex,row){
             //获取表单预览地址
@@ -1143,6 +1144,9 @@ export default {
                     if(!(this.zNodes[i].checked) && this.zNodes[i].isForm){
                         checkedCount++;
                     }
+                    if(this.zNodes[i].processName){
+                        this.zNodes[i].processName = "已关联 : "+this.zNodes[i].processName;
+                    }
                 }
                 if(checkedCount>0){
                     this.checkTrue = false;
@@ -1183,6 +1187,7 @@ export default {
             this.linkTree = true;
             this.dialogFormVisible = false;
             //树结构
+//            this.modelTypeTreeVal =this.modelTypeVal;
             this.modelTypeTreeVal = formModelParams.modelId;
             getFormProcessParams.modelId =formModelParams.modelId;
             getFormProcessParams.processId = processId;
