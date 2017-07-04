@@ -19,7 +19,7 @@
             <a href="/enterprise/showMenuPDS.htm?m=plan" class="aHeightW">Plan</a>
         </el-menu-item>
 
-        <el-menu-item index="/setting/qualityMeasure" >
+        <el-menu-item index="/setting/qualityMeasure"  >
             <a  class="aHeightW" style="padding:20px 15px">质检计量</a>
         </el-menu-item>
     </el-menu>
