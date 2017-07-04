@@ -1,5 +1,5 @@
 <template>
-    <el-menu theme="" default-active="/setting/explorer" class="nav-menu" mode="horizontal" router>
+    <el-menu theme="" default-active="/setting/explorer" class="nav-menu head-menus" mode="horizontal" router>
         <el-menu-item index="1">
             <a href="/enterprise/showMenuPDS.htm?m=pds" class="aHeightW">组织结构</a>
         </el-menu-item>
@@ -60,6 +60,9 @@ export default {
 }
 
 .aHeightW {
-    padding: 20px 10px;
+    padding: 23px 20px;
+}
+.head-menus li{
+    padding: 0 !important;
 }
 </style>
