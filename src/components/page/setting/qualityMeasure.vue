@@ -1179,7 +1179,8 @@ export default {
                         this.zNodes[k].chkDisabled =true;
                     }
                     delete this.zNodes[k].isForm;
-                    delete this.zNodes[k].permit;
+                    delete this.zNodes[k].permit; 
+                                  
                 }
 //                console.info(this.zNodes)
                  $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
@@ -1513,7 +1514,7 @@ export default {
                     }
                 }
                 if (otherNeedShowNodes.length > 0) {
-                    treeObj.showNodes(otherNeedShowNodes);
+                    treeObj.showNodes(otherNeedShowNodes);                    
                 }
                 treeObj.expandAll(true);
             }

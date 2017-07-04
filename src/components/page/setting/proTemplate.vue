@@ -784,6 +784,7 @@ export default {
         tabClick(targetName) {
             console.log(targetName.label);
             console.log(this.activeName2);
+                        
         },
         // 下拉框选择
         selectTestAval() {
@@ -991,6 +992,7 @@ export default {
             for (var i = 0; i < nodes.length; i++) {
                 if (nodes[i].level != nodes[0].level) {
                     return;
+                    
                 }
             }
 
