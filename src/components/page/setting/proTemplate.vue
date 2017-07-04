@@ -376,6 +376,9 @@ export default {
         if(this.$route.path=='/setting/proTemplate'){
             $('.sub-menus li').removeClass('is-active');
             $('.sub-menus li').eq(1).addClass('is-active');
+            $('.nav-menu li:last').addClass('is-active');
+        }else{
+            $('.nav-menu li:last').removeClass('is-active');
         }
     },
     // 当下拉框改变重新请求

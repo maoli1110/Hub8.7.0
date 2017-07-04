@@ -188,6 +188,9 @@
             if(this.$route.path=='/setting/formManage'){
                 $('.sub-menus li').removeClass('is-active');
                 $('.sub-menus li').eq(2).addClass('is-active');
+                $('.nav-menu li:last').addClass('is-active');
+            }else{
+                $('.nav-menu li:last').removeClass('is-active');
             }
         },
         created(){

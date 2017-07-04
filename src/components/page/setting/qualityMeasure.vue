@@ -550,7 +550,10 @@ export default {
         if(this.$route.path=='/setting/qualityMeasure'){
             $('.sub-menus li').removeClass('is-active');
             $('.sub-menus li').eq(0).addClass('is-active');
+            $('.nav-menu li:last').addClass('is-active');
             console.log(this.$route.path);
+        }else{
+            $('.nav-menu li:last').removeClass('is-active');
         }
     },
     methods: {
