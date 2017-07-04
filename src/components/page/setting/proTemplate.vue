@@ -165,7 +165,7 @@
                             </el-option>
                         </el-select>
                     </template>
-                    <el-input id="searchMessage" icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:80%" :on-icon-click="editSearchTree" v-model='ztreeSearch'></el-input>
+                    <el-input id="searchMessage"  icon="search" placeholder="请输入要搜索的内容" style="padding:10px 0px 10px 10px;width:80%" :on-icon-click="editSearchTree" v-model='ztreeSearch'></el-input>
                     <el-icon class="el-icon-circle-cross" style="vertial-align:middle;position:absolute;z-index:3001;color:#ccc;left:225px;top:66px" v-show="ztreeSearch.length>0" @click.native="clearEvent"></el-icon>
                     <div style="float:right;margin-top:16px">
                         <span id="expandBtn1" class="icon-plus" title="展开" @click="expandNode('expand','editTree')"></span>
@@ -265,9 +265,11 @@ export default {
                 },
                 callback: {
                     onCollapse: function (event, treeId, treeNode) {
+                        console.info('折叠')
                         level = treeNode.level;
                     },
                     onExpand: function (event, treeId, treeNode) {
+                        console.info('展开')
                         level = treeNode.level;
                     },
                     onDblClick: this.onEditDbClick,
@@ -295,9 +297,11 @@ export default {
                 },
                 callback: {
                     onCollapse: function (event, treeId, treeNode) {
+                        console.info('折叠')
                         level = treeNode.level;
                     },
                     onExpand: function (event, treeId, treeNode) {
+                        console.info('展开')
                         level = treeNode.level;
                     },
                     onDblClick: this.editonEditDbClick,
@@ -351,6 +355,7 @@ export default {
             maxFlag: false,
             proSearchBtns: false,
             testAval: false,
+            editSearch:"",
             formInfo2: { "progress": "路基工程", "subProgress": "路基土石方工程", "subType": "土方工程" }
         }
     },
@@ -1234,6 +1239,10 @@ export default {
                 }
                 if (otherNeedShowNodes.length > 0) {
                     treeObj.showNodes(otherNeedShowNodes);
+                    treeObj.expandAll(true);
+                }
+                if(!searchVal.length){
+                    treeObj.expandAll(false);
                 }
             }
         },
@@ -1260,9 +1269,10 @@ export default {
                 }
                 if (otherNeedShowNodes.length > 0) {
                     treeObj.showNodes(otherNeedShowNodes);
+                    treeObj.expandAll(true);
                 }
-                treeObj.expandAll(true);
-                if(!this.tableSearchKey){
+
+                if(!searchVal){
                     treeObj.expandAll(false);
                 }
             }

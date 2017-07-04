@@ -325,7 +325,7 @@
                         <el-col :span="9" >
                             <div style="position:relative">
                                 <el-input placeholder="请输入搜索表单
-" v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%" @change="clearSearchCirt">
+" v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%" >
                                 </el-input>
                                 <el-icon class="el-icon-circle-close" v-show="ztreeSearch.length>0" style="font-size:14px;position:absolute;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
                             </div>
@@ -364,9 +364,9 @@ let editIsChange = false;
 let key;
 let type = '';
 let operObj = '';
-let level=""
+let level=1
 
-let maxLevel;//树结构的最大展开层
+let maxLevel =-1;//树结构的最大展开层
 let updateProcessId;
 //表格传参
 let processId;
@@ -447,7 +447,7 @@ export default {
                 view: {
                     selectedMulti: false,
                     showIcon:false,
-                    addDiyDom: this.addDiyDom,
+                    addHoverDom: this.addDiyDom,
                 },
                 check: {
                     enable: true,
@@ -463,17 +463,21 @@ export default {
                     key: {
                         name: "formName",
                         title:"tips"
-//                        nocheck:"isForm",
                     }
                 },
                 callback: {
+                    onCollapse: function (event, treeId, treeNode) {
+                        level = treeNode.level;
+                    },
+                    onExpand: function (event, treeId, treeNode) {
+                        level = treeNode.level;
+                    },
                     beforeCheck: this.beforeCheck,
                     onCheck: this.onZtreeFormModelCheck
                 }
             },
 
             zNodes: [],
-            url: 'static/vuetable.json',
             tableData: [],//流程列表
             cur_page: 1,
             tableSearchKey:"",
@@ -515,8 +519,6 @@ export default {
             modelcur_page:1,
             formModelVal:"",
             modelTypeTreeVal:this.modelTypeVal,//表单模型树model
-//            priviewUrl:"http://192.168.13.215:8081/pdsdoc/viewDispatcher/W3sidGltZXN0YW1wIjoxNDk4NTUwODM2MDQ3LCJmaWxlTmFtZSI6IsnovMax5Lj8yfPF-x-rHtIiwidXVpZCI6ImU1NjMzYzUwOTU1OTQ3NDg5MjhmN2Y0NTZmYTE5MzczIn1d/KkXDP0CUtlf8VKwo-x-TK3oDb8HN0uN61JTa5JX3iQg-x-fUhhY-x-nDOgmCSvWQYTel70A3AcZE0OYeZ-WgL4arQnmA",
-            // isStepDisable:false
             priviewUrl:"",
             isLinkResult:"",//是否被关联
             clearKey:false,//清除关键字
@@ -546,7 +548,7 @@ export default {
         $("#collapseBtn").bind("click", {type:"collapse",operObj:'lineTree'}, this.expandNode);
         $('.qualityTree input').bind('keydown',this.qualitySearchTree);
         $('.formModelTable input').bind('keydown',this.formModelSearch);
-        $('.quality-searInput input').bind('keydown',this.tableSearch)
+        $('.quality-searInput input').bind('keydown',this.tableSearch);
         if(this.$route.path=='/setting/qualityMeasure'){
             $('.sub-menus li').removeClass('is-active');
             $('.sub-menus li').eq(0).addClass('is-active');
@@ -1184,6 +1186,17 @@ export default {
                 }
 //                console.info(this.zNodes)
                  $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
+                var treeNodes = zTree.transformToArray(zTree.getNodes());
+                //获取状态树的深度
+                for (var i=0;i<treeNodes.length; i++) {
+                    if(treeNodes[i].level>=maxLevel){
+                        maxLevel=treeNodes[i].level;
+                    }
+                    /* if(treeNodes[i].level==0&&treeNodes[i].isParent){
+                     //展开"全部"下的子节点
+                     zTree.expandNode(treeNodes[i], true, false, null, true);
+                     }*/
+                }
 
 
             }).catch(function(error){
@@ -1324,7 +1337,6 @@ export default {
             if(flag){
                 //说明当前level的节点都为折叠或者展开状态
                 if(type == "expand"){
-                    level++
                     if(level<maxLevel-1){
                         level++;
                     }
@@ -1400,7 +1412,8 @@ export default {
             var aObj = $("#" + treeNode.tId );
             if ($("#diyBtn_"+treeNode.id).length>0) return;
             var editStr = "<span id='diyBtn_space-" +treeNode.formId+ "' class='icon-eyes' > </span>";
-            if(!treeNode.isParent && !(treeNode.nocheck)){
+            var currentObj = '#diyBtn_space-'+treeNode.formId;
+            if(!treeNode.isParent && !(treeNode.nocheck) && !$(currentObj).length){
                 aObj.append(editStr);
             }
             let self =this;

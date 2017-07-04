@@ -977,6 +977,9 @@
 .ztree li {
    position:relative;
 }
+/*.ztree li a{
+    width:100% !important;
+}*/
 .quality-page .el-pagination__total{
     float:none !important;
     position:absolute;

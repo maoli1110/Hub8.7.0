@@ -85,11 +85,14 @@
                     <div class="form-dialog-title">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
                             <div style="position:relative">
-                                 <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%" placeholder="请输入表单名称搜索" @change="clearSearchCirt"></el-input>
+                                 <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%" placeholder="请输入表单名称搜索" ></el-input>
                                  <el-icon class="el-icon-circle-close" style="font-size:14px;position:absolute;right:127px;color:#ccc;"  v-show="formTreeSearch.length>0" @click.native="clearEvent"></el-icon>
 
-                            <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
+                            <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;">
+                                <span id="expandBtn" class="icon-cut icon-plus" title="展开" @click="expandNode('expand','formTree')"></span>
+                                <span id="collapseBtn" class="icon-plus"  title="折叠" @click="expandNode('collapse','formTree')"></span></div>
                             </div>
+
                         </div>
                     <div class="form-dialog-body">
                         <ul class="ztree" id="formTree" ></ul>
@@ -104,8 +107,8 @@
 </template>
 <script>
 
-    let level = "";
-    let maxLevel="";
+    let level = 1;
+    let maxLevel=-1;
     let newCount = 1;
 
     let type = '';
@@ -135,7 +138,9 @@
                     view: {
                         selectedMulti: false,
                         showIcon:false,
-                        addDiyDom: this.addDiyDom,
+//                        addDiyDom: this.addDiyDom,
+                        addHoverDom: this.addHoverDom,
+                        removeHoverDom: this.removeHoverDom,
                     },
                     data: {
                         simpleData: {
@@ -146,19 +151,21 @@
                         },
                         key: {
                             name: "formName",
-//                        nocheck:"isForm",
                         }
                     },
                     callback: {
-                      /*  beforeCheck: this.beforeCheck,
-                        onCheck: this.onZtreeFormModelCheck*/
+                        onCollapse: function (event, treeId, treeNode) {
+                            console.info('折叠')
+                            level = treeNode.level;
+                        },
+                        onExpand: function (event, treeId, treeNode) {
+                            console.info('展开');
+                            level = treeNode.level;
+                        },
                     }
                 },
 
-                zNodes: [
-
-                ],
-                url: '../../../static/vuetable.json',
+                zNodes: [],
                 tableData: [],
                 cur_page: 1,
                 menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
@@ -183,8 +190,8 @@
             $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
             $('.basicSearch input').bind('keyup',this.basicSearch);
             $('.form-dialog-title input').bind('keydown',this.searchformTree);
-            $("#expandBtn").bind("click",  {type:"expand",operObj:'formTree'}, this.expandNode);
-            $("#collapseBtn").bind("click", {type:"collapse",operObj:'formTree'}, this.expandNode);
+//            $("#expandBtn").bind("click",  {type:"expand",operObj:'formTree'}, this.expandNode);
+//            $("#collapseBtn").bind("click", {type:"collapse",operObj:'formTree'}, this.expandNode);
             if(this.$route.path=='/setting/formManage'){
                 $('.sub-menus li').removeClass('is-active');
                 $('.sub-menus li').eq(2).addClass('is-active');
@@ -276,11 +283,13 @@
             zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
                 alert(msg);
             },
-            addDiyDom(treeId, treeNode) {
+            addHoverDom(treeId, treeNode) {
+//                var aObj = $("#" + treeNode.tId + "_a");
                 var aObj = $("#" + treeNode.tId );
                 if ($("#diyBtn_"+treeNode.id).length>0) return;
                 var editStr = "<span id='diyBtn_space-" +treeNode.formId+ "' class='icon-eyes' > </span>";
-                if(!treeNode.isParent && treeNode.isForm){
+                var currentObj = '#diyBtn_space-'+treeNode.formId;
+                if(!treeNode.isParent && treeNode.isForm && !$(currentObj).length){
                     aObj.append(editStr);
                 }
                 let self =this;
@@ -309,6 +318,10 @@
                     })
                 })
             },
+         /*   removeHoverDom(treeId, treeNode){
+                $("#diyBtn_space-" +treeNode.formId).remove();
+                $('.icon-eyes').unbind().remove();
+            },*/
             showTreeDialog(index,row){
 //                self = this;
 //                this.isDoubForm = true;
@@ -331,7 +344,22 @@
                          }
                      }
                     if(this.isDoubForm){
-                        $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
+                        var zTree = $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
+                      /*  var nodes = zTree.getNodes();
+                        if (nodes.length>0) {
+                            zTree.selectNode(nodes[0]);
+                        }*/
+                        var treeNodes = zTree.transformToArray(zTree.getNodes());
+                        //获取状态树的深度
+                        for (var i=0;i<treeNodes.length; i++) {
+                            if(treeNodes[i].level>=maxLevel){
+                                maxLevel=treeNodes[i].level;
+                            }
+                           /* if(treeNodes[i].level==0&&treeNodes[i].isParent){
+                                //展开"全部"下的子节点
+                                zTree.expandNode(treeNodes[i], true, false, null, true);
+                            }*/
+                        }
                     }
 
                  })
@@ -387,6 +415,9 @@
                         treeObj.showNodes(otherNeedShowNodes);
                     }
                     treeObj.expandAll(true);
+                   if(!this.formTreeSearch){
+                       treeObj.expandAll(false);
+                   }
                 }
             },
             clearSearchCirt(value){
@@ -423,50 +454,56 @@
                 })
             },*/
             //全部展开和收起
-            expandNode(e) {
+            expandNode(type,operObj) {
                 //var index=layer.load(2);
-                type = e.data.type;
-                operObj = e.data.operObj;
+//                debugger;
+//                type = e.data.type;
+//                operObj = e.data.operObj;
                 var zTree = $.fn.zTree.getZTreeObj(operObj);
                 var treeNodes = zTree.transformToArray(zTree.getNodes());
-                var flag=true;
+                var flag = true;
                 //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
-                for (var i=0;i<treeNodes.length; i++) {
-                    if(treeNodes[i].level==level&&treeNodes[i].isParent){
-                        if (type == "expand"&&!treeNodes[i].open) {
-                            flag=false;
+                for (var i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].level == level && treeNodes[i].isParent) {
+                        if (type == "expand" && !treeNodes[i].open) {
+                            flag = false;
                             break;
-                        } else if (type == "collapse"&&treeNodes[i].open) {
-                            flag=false;
+                        } else if (type == "collapse" && treeNodes[i].open) {
+                            flag = false;
                             break;
                         }
                     }
                 }
 
-                if(flag){
+                if (flag) {
                     //说明当前level的节点都为折叠或者展开状态
-                    if(type == "expand"){
-                        level++
-                        if(level<maxLevel-1){
+                    if (type == "expand") {
+//                        level++
+                        console.log(maxLevel,'maxLevel');
+                        if (level < maxLevel - 1) {
                             level++;
+                            console.info(level,'++++level++')
                         }
-                    }else if(type == "collapse"){
-                        if(level==0){
+
+                    } else if (type == "collapse") {
+                        console.info(level,'--level')
+                        if (level != 0) {
+                            level--;
+                        }else{
                             return;
                         }
-                        level--;
+
                     }
                 }
-                for (var i=0;i<treeNodes.length; i++) {
-                    if(treeNodes[i].level==level&&treeNodes[i].isParent){
-                        if (type == "expand"&&!treeNodes[i].open) {
+                for (var i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].level == level && treeNodes[i].isParent) {
+                        if (type == "expand" && !treeNodes[i].open) {
                             zTree.expandNode(treeNodes[i], true, false, null, true);
-                        } else if (type == "collapse"&&treeNodes[i].open) {
+                        } else if (type == "collapse" && treeNodes[i].open) {
                             zTree.expandNode(treeNodes[i], false, false, null, true);
                         }
                     }
                 }
-                //layer.close(index);
             }
         }
     }
