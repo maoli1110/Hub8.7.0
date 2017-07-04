@@ -325,7 +325,7 @@
                         <el-col :span="9" >
                             <div style="position:relative">
                                 <el-input placeholder="请输入搜索表单
-" v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
+" v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%" @change="clearSearchCirt">
                                 </el-input>
                                 <el-icon class="el-icon-circle-close" v-show="ztreeSearch.length>0" style="font-size:14px;position:absolute;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
                             </div>
@@ -1179,8 +1179,8 @@ export default {
                         this.zNodes[k].chkDisabled =true;
                     }
                     delete this.zNodes[k].isForm;
-                    delete this.zNodes[k].permit; 
-                                  
+                    delete this.zNodes[k].permit;
+
                 }
 //                console.info(this.zNodes)
                  $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
@@ -1494,7 +1494,6 @@ export default {
             var treeObj = $.fn.zTree.getZTreeObj('lineTree');
             var nodes1 = treeObj.getNodesByParam("isHidden", true);
             var searchVal = $('.qualityTree').find('input').val();
-            console.info(searchVal,'searchVal')
             /* 将之前隐藏的展示*/
             if (nodes1.length > 0) {
                 treeObj.showNodes(nodes1);
@@ -1514,11 +1513,17 @@ export default {
                     }
                 }
                 if (otherNeedShowNodes.length > 0) {
-                    treeObj.showNodes(otherNeedShowNodes);                    
+                    treeObj.showNodes(otherNeedShowNodes);
                 }
                 treeObj.expandAll(true);
             }
         },
+        clearSearchCirt(value){
+            var treeObj = $.fn.zTree.getZTreeObj('lineTree');
+            if(!value){
+                treeObj.expandAll(false);
+            }
+        }
     }
 }
 

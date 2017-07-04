@@ -753,7 +753,9 @@
 .form-change .ztree{
     height:352px !important;overflow:auto;padding:20px 40px 40px !important;
 }
-
+.form-change .single-stump .icon-eyes{
+    top:11px  !important;
+}
 /*表单编辑*/
 .formEdit{
     position:fixed;left:50%;top:50%;z-index:3000;width:760px;background:#fff;height:650px;margin-left:-350px;margin-top:-350px;
@@ -870,8 +872,14 @@
 .formLine .form-table li:hover{
     background:#e6e6e6;
 }
+.formLine .form-table li .tabs-icon>span{
+    float:left;
+}
 .formLine .form-table li .tabs-icon{
-    float:right!important;margin-right:10px;
+    float:right!important;margin-right:10px;margin-top:11px;
+}
+.formLine .form-table li .tabs-icon >span:last-child{
+    margin-top:5px;
 }
 .formLine .form-table li .tabs-icon>i{
     margin-right:7px;color:#6595f2;
