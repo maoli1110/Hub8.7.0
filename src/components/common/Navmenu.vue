@@ -7,7 +7,7 @@
             <a href="/enterprise/showMenuPDS.htm?m=projectmanage" class="aHeightW">工程管理</a>
         </el-menu-item>
         <el-menu-item index="3">
-            <a href="/enterprise/showMenuPDS.htm?m=be" class="aHeightW">Explore</a>
+            <a href="/enterprise/showMenuPDS.htm?m=be" class="aHeightW">Explorer</a>
         </el-menu-item>
         <el-menu-item index="4">
             <a href="/enterprise/showMenuPDS.htm?m=mc" class="aHeightW">Govern</a>
