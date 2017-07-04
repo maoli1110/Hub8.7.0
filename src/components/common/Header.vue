@@ -13,7 +13,7 @@
                     <img class="user-logo" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80">
                     <a href="/enterprise/loginOutPDS.htm" style="color:#fff;font-weight:bold;height:60px;display:inline-block;line-height:60px">退出</a>
                 </span>
-                
+
                 <!--<el-dropdown-menu slot="dropdown" menu-align="start">
                     <el-dropdown-item >企业信息</el-dropdown-item>
                     <el-dropdown-item >个人信息</el-dropdown-item>
@@ -38,12 +38,12 @@
             }
         },
         methods:{
-            // handleCommand(command) {
-            //     if(command == 'loginout'){
-            //         localStorage.removeItem('ms_username')
-            //         this.$router.push('/enterprise/loginOutPDS.htm');
-            //     }
-            // }
+             handleCommand(command) {
+              /*   if(command == 'loginout'){
+                     localStorage.removeItem('ms_username')
+                     this.$router.push('/enterprise/loginOutPDS.htm');
+                 }*/
+             }
         }
     }
 </script>

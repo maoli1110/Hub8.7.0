@@ -85,7 +85,7 @@
                     <div class="form-dialog-title">
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
                             <div style="position:relative">
-                                 <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%" placeholder="请输入表单名称搜索"></el-input>
+                                 <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%" placeholder="请输入表单名称搜索" @change="clearSearchCirt"></el-input>
                                  <el-icon class="el-icon-circle-close" style="font-size:14px;position:absolute;right:127px;color:#ccc;"  v-show="formTreeSearch.length>0" @click.native="clearEvent"></el-icon>
 
                             <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
@@ -387,6 +387,12 @@
                         treeObj.showNodes(otherNeedShowNodes);
                     }
                     treeObj.expandAll(true);
+                }
+            },
+            clearSearchCirt(value){
+                var treeObj = $.fn.zTree.getZTreeObj('formTree');
+                if(!value){
+                    treeObj.expandAll(false);
                 }
             },
             basicSearch(event){//基础搜索功能
