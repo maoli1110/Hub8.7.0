@@ -58,7 +58,7 @@
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
                         <div style="position:relative">
                             <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch" placeholder="请输入表单名称搜索"></el-input>
-                            <el-icon class="el-icon-circle-cross" style="font-size:14px;position:absolute;top:11px;right:74px;color:#ccc;"  v-show="searchParam.length>0" @click.native="clearEvent"></el-icon>
+                            <el-icon class="el-icon-circle-close" style="font-size:14px;position:absolute;right:74px;color:#ccc;"  v-show="searchParam.length>0" @click.native="clearEvent"></el-icon>
                         </div>
                     </div>
                     <div class="form-dialog-body" >
@@ -86,7 +86,7 @@
                         <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
                             <div style="position:relative">
                                  <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%" placeholder="请输入表单名称搜索"></el-input>
-                                 <el-icon class="el-icon-circle-cross" style="font-size:14px;position:absolute;top:11px;right:127px;color:#ccc;"  v-show="formTreeSearch.length>0" @click.native="clearEvent"></el-icon>
+                                 <el-icon class="el-icon-circle-close" style="font-size:14px;position:absolute;right:127px;color:#ccc;"  v-show="formTreeSearch.length>0" @click.native="clearEvent"></el-icon>
 
                             <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
                             </div>
@@ -363,7 +363,6 @@
                 }
             },
             searchformTree(event){
-
                 var treeObj = $.fn.zTree.getZTreeObj('formTree');
                 var nodes1 = treeObj.getNodesByParam("isHidden", true);
                 var searchVal = $('.searchVal').find('input').val();
@@ -387,6 +386,7 @@
                     if (otherNeedShowNodes.length > 0) {
                         treeObj.showNodes(otherNeedShowNodes);
                     }
+                    treeObj.expandAll(true);
                 }
             },
             basicSearch(event){//基础搜索功能

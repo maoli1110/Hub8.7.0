@@ -22,7 +22,7 @@
 
                         <el-input placeholder="请输入流程名称搜索" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey" ></el-input>
                         <!--<el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>-->
-                        <el-icon class="el-icon-circle-cross" style="position:absolute"  v-show="tableSearchKey.length>0" @click.native="clearEvent"></el-icon>
+                        <el-icon class="el-icon-circle-close" style="position:absolute"  v-show="tableSearchKey.length>0" @click.native="clearEvent"></el-icon>
                     </el-col>
                 </el-row>
             </div>
@@ -265,7 +265,7 @@
                         <el-col :span="10" style="text-align:right;padding:0;position:relative">
                             <el-input placeholder="请输入搜索表单" class="formModelTable" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch"  style="width:100%" >
                             </el-input>
-                            <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="font-size:14px;position:absolute;top:11px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                            <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="font-size:14px;position:absolute;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -327,7 +327,7 @@
                                 <el-input placeholder="请输入搜索表单
 " v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
                                 </el-input>
-                                <el-icon class="el-icon-circle-close" v-show="ztreeSearch.length>0" style="font-size:14px;position:absolute;top:11px;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                                <el-icon class="el-icon-circle-close" v-show="ztreeSearch.length>0" style="font-size:14px;position:absolute;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
                             </div>
                         </el-col>
                     </el-col>
@@ -462,7 +462,7 @@ export default {
                     },
                     key: {
                         name: "formName",
-//                        title:"processName"
+                        title:"tips"
 //                        nocheck:"isForm",
                     }
                 },
@@ -632,9 +632,11 @@ export default {
 		},
         tableSearch(event){//搜索功能
             console.log(event.type);
+
             if(event.type=='click' || event.keyCode==13){
                 tableParams.searchKey = this.tableSearchKey;
                 this.getData(tableParams);
+
             }
 
         },
@@ -1147,8 +1149,10 @@ export default {
                     if(!(this.zNodes[i].checked) && this.zNodes[i].isForm){
                         checkedCount++;
                     }
+                    this.zNodes[i].tips = this.zNodes[i].formName;
                     if(this.zNodes[i].processName){
                         this.zNodes[i].processName = "已关联 : "+this.zNodes[i].processName;
+                        this.zNodes[i].tips = this.zNodes[i].tips+"\n"+ this.zNodes[i].processName;
                     }
                 }
                 if(checkedCount>0){
@@ -1512,6 +1516,7 @@ export default {
                 if (otherNeedShowNodes.length > 0) {
                     treeObj.showNodes(otherNeedShowNodes);                    
                 }
+                treeObj.expandAll(true);
             }
         },
     }
