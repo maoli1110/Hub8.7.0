@@ -1267,6 +1267,7 @@ export default {
                 if (otherNeedShowNodes.length > 0) {
                     treeObj.showNodes(otherNeedShowNodes);
                 }
+                treeObj.expandAll(true);
             }
         },
         ztreeOnRename(event, treeId, treeNode, isCancel) {
