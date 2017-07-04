@@ -83,7 +83,7 @@
                         </div>
                         <div class="sear-icon" style="position:relative">
 
-                            <el-input placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree" v-model="tableSearchKey"></el-input>
+                            <el-input placeholder="请输入内容" class="" icon="search" :on-icon-click="searchProTree" v-model="tableSearchKey" ></el-input>
 
                             <div style="float:right;margin-top:6px">
                                 <span id="expandBtn" class="icon-plus" title="展开" @click="expandNode('expand','proZtree')"></span>
@@ -784,7 +784,7 @@ export default {
         tabClick(targetName) {
             console.log(targetName.label);
             console.log(this.activeName2);
-                        
+
         },
         // 下拉框选择
         selectTestAval() {
@@ -992,7 +992,7 @@ export default {
             for (var i = 0; i < nodes.length; i++) {
                 if (nodes[i].level != nodes[0].level) {
                     return;
-                    
+
                 }
             }
 
@@ -1262,8 +1262,12 @@ export default {
                     treeObj.showNodes(otherNeedShowNodes);
                 }
                 treeObj.expandAll(true);
+                if(!this.tableSearchKey){
+                    treeObj.expandAll(false);
+                }
             }
         },
+
         ztreeOnRename(event, treeId, treeNode, isCancel) {
 
         },
