@@ -1086,14 +1086,6 @@ export default {
             if (sNodes.length > 0) {
                 var levelAdd = sNodes[0].level;
                 var nodeParent = sNodes[0].getParentNode();
-                if (nodeParent == null) {
-                    this.$alert('请选择全部节点下添加', '提示', {
-                        confirmButtonText: '确定',
-
-                    });
-                    return;
-                }
-
             }
             nodes = zTree.getSelectedNodes();
             treeNode = nodes[0];
