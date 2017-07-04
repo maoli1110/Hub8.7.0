@@ -601,9 +601,9 @@ export default {
                                     let childs = el.childs;
                                     let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                     if (child) {
-                                        this.$alert('请勿重复添加', '', {
-                                            confirmButtonText: '确定',
-                                        });
+                                        // this.$alert('请勿重复添加', '', {
+                                        //     confirmButtonText: '确定',
+                                        // });
                                     } else {
                                         childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         this.selectLength == childs.length;
@@ -630,9 +630,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('请勿重复添加', '', {
-                                                confirmButtonText: '确定',
-                                            });
+                                            // this.$alert('请勿重复添加', '', {
+                                            //     confirmButtonText: '确定',
+                                            // });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                             this.selectLength == childs.length;
@@ -658,9 +658,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('请勿重复添加', '', {
-                                                confirmButtonText: '确定',
-                                            });
+                                            // this.$alert('请勿重复添加', '', {
+                                            //     confirmButtonText: '确定',
+                                            // });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                             this.selectLength == childs.length;
@@ -689,9 +689,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('请勿重复添加', '', {
-                                                confirmButtonText: '确定',
-                                            });
+                                            // this.$alert('请勿重复添加', '', {
+                                            //     confirmButtonText: '确定',
+                                            // });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                             this.selectLength == childs.length;
@@ -717,9 +717,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('请勿重复添加', '', {
-                                                confirmButtonText: '确定',
-                                            });
+                                            // this.$alert('请勿重复添加', '', {
+                                            //     confirmButtonText: '确定',
+                                            // });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                             this.selectLength == childs.length;
