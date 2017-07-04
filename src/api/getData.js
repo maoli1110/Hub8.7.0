@@ -4,8 +4,7 @@
  */
 import axios from 'axios';
  let base = 'http://192.168.13.215:8082/enterprise';
-//let base = '/enterprise';
-
+// let base = '/enterprise';
 
 
 export const getUserListPage = params => axios.post(`${base}/rs/lbconfig/process/getProcessList`, params);

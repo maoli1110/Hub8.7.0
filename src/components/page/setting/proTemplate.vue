@@ -59,7 +59,7 @@
                                 <div class="tool-btns">
                                     <span class="tool-btns" style="margin:5px 0 0 4px"></span>
                                 </div>
-                                <div class="createNodes" v-show="showCreateNodes" @mouseout="showCreateNodes= false" style="z-index:2000">
+                                <div class="createNodes" v-show="showCreateNodes" @mouseout="showCreateNodes= false" style="z-index:2000;width:135px">
                                     <p id="addLeaf" @click="add">添加单个子节点</p>
                                     <p @click="textAreaVisible_()">添加多个子节点</p>
                                 </div>
@@ -121,7 +121,7 @@
                 </el-col>
             </el-row>
             <!--增加多个节点弹框-->
-            <el-dialog title="增加多个节点" :visible.sync="textAreaVisible" class="multi-textarea">
+            <el-dialog title="增加多个节点" :visible.sync="textAreaVisible" class="multi-textarea" :close-on-click-modal="false">
                 <el-input type="textarea" :rows="10" id="multiLeaf" placeholder="一行视为一个节点，支持多行复制粘贴" :maxlength='297'>
                 </el-input>
 
@@ -131,7 +131,7 @@
                 </div>
             </el-dialog>
             <!--表单编辑-->
-            <el-dialog title="添加" :visible.sync="formEditVisible" style="width:0%;position:fixed;left:50%;opacity:0;"></el-dialog>
+            <el-dialog title="添加" :visible.sync="formEditVisible" style="width:0%;position:fixed;left:50%;opacity:0;" :close-on-click-modal="false"></el-dialog>
 
         </div>
         <div class="formEdit" v-show="formEditVisible">
@@ -601,9 +601,9 @@ export default {
                                     let childs = el.childs;
                                     let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                     if (child) {
-                                        this.$alert('请勿重复添加', '', {
-                                            confirmButtonText: '确定',
-                                        });
+                                        // this.$alert('请勿重复添加', '', {
+                                        //     confirmButtonText: '确定',
+                                        // });
                                     } else {
                                         childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                         this.selectLength == childs.length;
@@ -630,9 +630,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('请勿重复添加', '', {
-                                                confirmButtonText: '确定',
-                                            });
+                                            // this.$alert('请勿重复添加', '', {
+                                            //     confirmButtonText: '确定',
+                                            // });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                             this.selectLength == childs.length;
@@ -658,9 +658,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('请勿重复添加', '', {
-                                                confirmButtonText: '确定',
-                                            });
+                                            // this.$alert('请勿重复添加', '', {
+                                            //     confirmButtonText: '确定',
+                                            // });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                             this.selectLength == childs.length;
@@ -689,9 +689,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('请勿重复添加', '', {
-                                                confirmButtonText: '确定',
-                                            });
+                                            // this.$alert('请勿重复添加', '', {
+                                            //     confirmButtonText: '确定',
+                                            // });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                             this.selectLength == childs.length;
@@ -717,9 +717,9 @@ export default {
                                         let childs = el.childs;
                                         let child = childs.find(child => child.typeId === el.typeId && child.modelId === this.value_ && child.formId === treeNode.formId && child.formName === treeNode.formName);
                                         if (child) {
-                                            this.$alert('请勿重复添加', '', {
-                                                confirmButtonText: '确定',
-                                            });
+                                            // this.$alert('请勿重复添加', '', {
+                                            //     confirmButtonText: '确定',
+                                            // });
                                         } else {
                                             childs.push({ typeId: el.typeId, modelId: this.value_, formId: treeNode.formId, formName: treeNode.formName });
                                             this.selectLength == childs.length;
