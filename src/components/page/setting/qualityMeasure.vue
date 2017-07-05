@@ -821,7 +821,8 @@ export default {
             publickModelId = modelId;
             console.log(publickModelId,'publickModelId');
             getFormProcessParams.modelId = formModelParams.modelId;
-        /*    if(!updateProcessRelFormParams.addFormIds.length && !updateProcessRelFormParams.delFormIds.length){
+            console.log(updateProcessRelFormParams,'change');
+            /*    if(!updateProcessRelFormParams.addFormIds.length && !updateProcessRelFormParams.delFormIds.length){
                 console.log(getFormProcessParams);
                 this.zTreeFiledProcess(getFormProcessParams);//改变树结构
             }*/
@@ -1571,12 +1572,15 @@ export default {
     },
     watch: {
         modelTypeTreeVal: function (newVal,oldVal) {
-
+            console.log(updateProcessRelFormParams,'watch');
             getFormProcessParams.modelId= this.modelTypeTreeVal;
-            console.log(this.modelTypeTreeVal,'getFormProcessParams');
-            console.log(updateProcessRelFormParams);
-            if((!updateProcessRelFormParams.addFormIds.length || !updateProcessRelFormParams.delFormIds.length) && currentSelectVal){
+//            console.log(this.modelTypeTreeVal,'getFormProcessParams');
+//            console.log(updateProcessRelFormParams);
+            if(!updateProcessRelFormParams.addFormIds.length && !updateProcessRelFormParams.delFormIds.length){
+                console.log(123);
                 this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+            }else{
+                console.log(455);
             }
             if( oldVal != newVal && oldVal && currentSelectVal  && (updateProcessRelFormParams.addFormIds.length || updateProcessRelFormParams.delFormIds.length)){
                 this.$confirm('切换目录后，档期内目录以勾选的表单将取消，是否确认切换目录', '切换目录', {
