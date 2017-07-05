@@ -32,10 +32,10 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <div class="pagination">
+        <!--    <div class="pagination">
                 <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
                 </el-pagination>
-            </div>
+            </div>-->
         </div>
         <!--工程模板编辑页面-->
         <div class="proTemplate-edit" v-show="EditVisible">

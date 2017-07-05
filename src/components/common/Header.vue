@@ -1,10 +1,11 @@
 <template>
     <div class="header">
         <div class="logo">
-            <img src="../../../static/img/logo.png" alt="" class="inline pull-left">
+            <img src="../../../static/img/logo.gif" alt="" class="inline pull-left">
             <div class="pull-left">
-                <div class="enterprise-name">中国公路工程咨询集团有限公司</div>
-                <div class="english-name">CHINA HIGHWAY ENGINEERING CONSULITING CORPORATION</div>
+                <!--<div class="enterprise-name">中国公路工程咨询集团有限公司</div>-->
+                <div class="enterprise-name">四川绵九高速公路有限责任公司</div>
+                <!--<div class="english-name">CHINA HIGHWAY ENGINEERING CONSULITING CORPORATION</div>-->
             </div>
         </div>
         <div class="user-info">
@@ -57,13 +58,19 @@
         /*line-height: 90px;*/
         color: #fff;
     }
-    .header .logo > * {
-        margin: 15px 10px;
+    .header .logo > img {
+        margin: 12px 10px;
+    }
+    .header .logo  .enterprise-name{
+        margin-top:25px ;
     }
     .header .logo{
         float: left;
         /*width:250px;*/
         text-align: center;
+    }
+    .logo img{
+        width:141px;
     }
     .user-info {
         float: right;
