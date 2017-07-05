@@ -802,6 +802,8 @@ export default {
             console.info(modelSelectionChange,'modelSelectionChange')
         },
         formModelTreeChange(modelId){
+            updateProcessRelFormParams.delFormIds = [];
+            updateProcessRelFormParams.addFormIds = [];
             formModelParams.modelId = modelId;
             getFormProcessParams.modelId = formModelParams.modelId;
             this.zTreeFiledProcess(getFormProcessParams);
@@ -1363,17 +1365,19 @@ export default {
                 type = e.data.type;
 //                nodes = zTree.getSelectedNodes();
                 nodes =  zTree.transformToArray(zTree.getNodes());
-
+                console.info(nodes,'nodes')
             if (type.indexOf("All") < 0 && nodes.length == 0) {
                 alert("请先选择一个节点");
             }
-
+            updateProcessRelFormParams.addFormIds =[];
+            updateProcessRelFormParams.delFormIds = [];
             if (type == "checkAllTrue") {
                 zTree.checkAllNodes(true);
                 updateProcessRelFormParams.delFormIds = [];
                 for (let i = 0;i<nodes.length;i++){
-                    if(!nodes[i].nocheck && nodes[i].checked && updateProcessRelFormParams.addFormIds.indexOf(nodes[i].formId)){
-                        updateProcessRelFormParams.addFormIds.push(nodes[i].formId)
+                    if(!nodes[i].nocheck && nodes[i].checked && updateProcessRelFormParams.addFormIds.indexOf(nodes[i].formId) && !nodes[i].chkDisabled){
+                        updateProcessRelFormParams.addFormIds.push(nodes[i].formId);
+
                     }
                 }
              //console.info(updateProcessRelFormParams,'选中的')
@@ -1382,7 +1386,7 @@ export default {
                 zTree.checkAllNodes(false);
                 updateProcessRelFormParams.addFormIds = [];
                 for (let i = 0;i<nodes.length;i++){
-                    if(!nodes[i].nocheck && !(nodes[i].checked) && updateProcessRelFormParams.delFormIds.indexOf(nodes[i].formId) ){
+                    if(!nodes[i].nocheck && !(nodes[i].checked) && updateProcessRelFormParams.delFormIds.indexOf(nodes[i].formId) && !nodes[i].chkDisabled ){
                         updateProcessRelFormParams.delFormIds.push(nodes[i].formId)
                     }
                 }
