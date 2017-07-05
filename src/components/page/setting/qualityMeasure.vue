@@ -315,7 +315,7 @@
                     <el-col :span="24" style="padding:20px 40px;">
                         <el-col :span="15" >
                             <label style="font-size:14px;">表单目录：</label>
-                            <el-select value="modelTypeTreeVal" v-model="modelTypeTreeVal" placeholder="请选择"  @change="formModelTreeChange($event)">
+                            <el-select value="modelTypeTreeValue" v-model="modelTypeTreeVal" placeholder="请选择"  @change="formModelTreeChange($event)" @visible-change="visibleEvent">
                                 <el-option  v-for="item in getformModelType"
                                             :key="item.modelId"
                                             :label="item.modelName"
@@ -425,6 +425,7 @@ let  isChecked = 0;
 let nodes;
 let checkedCount = 0;
 let errorMessage = false;
+let currentSelectVal=""
 import "static/css/setting-qualityMeasure.css";
 //import "static/js/ztree/css/zTreeStyle_new.css";
 //    import "static/ztree/css/demo.css";
@@ -755,11 +756,15 @@ export default {
         },
         //表单模板数据变更
         formModelChange(modelId){
-            console.info(modelId,'modelId')
+            console.info(modelId,'modelId');
+//            切换目录后，档期内目录以勾选的表单将取消，是否确认切换目录
             //关联表单数据
-            formModelParams.modelId = modelId;
-            formModelParams.pageSize =  !formModelParams.pageSize?7:formModelParams.pageSize;
-            this.formModelType(formModelParams);
+
+                formModelParams.modelId = modelId;
+                formModelParams.pageSize =  !formModelParams.pageSize?7:formModelParams.pageSize;
+                this.formModelType(formModelParams);
+
+
         },
         //表单模板分页数据展示
         formModelSizeChange(val){
@@ -812,7 +817,10 @@ export default {
             updateProcessRelFormParams.addFormIds = [];
             formModelParams.modelId = modelId;
             getFormProcessParams.modelId = formModelParams.modelId;
-            this.zTreeFiledProcess(getFormProcessParams);
+
+        },
+        visibleEvent(val){
+            currentSelectVal = val;
         },
         formModelPriview(idnex,row){
             //获取表单预览地址
@@ -1553,7 +1561,29 @@ export default {
                 treeObj.expandAll(false);
             }
         }
-    }
+    },
+    watch: {
+        modelTypeTreeVal: function (newVal,oldVal) {
+            console.log(oldVal,'oldVal');
+            console.log(newVal,'newVal');
+            if( oldVal != newVal && oldVal && currentSelectVal){
+                this.$confirm('切换目录后，档期内目录以勾选的表单将取消，是否确认切换目录', '切换目录', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+                }).catch(()=>{
+                    this.modelTypeTreeVal = oldVal;
+                    oldVal = newVal;
+                    console.log(oldVal);
+                    console.log(newVal);
+                    console.log(this.modelTypeTreeVal);
+                })
+            }
+
+        },
+    },
 }
 
 </script>
