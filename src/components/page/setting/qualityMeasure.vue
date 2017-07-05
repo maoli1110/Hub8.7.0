@@ -1577,10 +1577,7 @@ export default {
 //            console.log(this.modelTypeTreeVal,'getFormProcessParams');
 //            console.log(updateProcessRelFormParams);
             if(!updateProcessRelFormParams.addFormIds.length && !updateProcessRelFormParams.delFormIds.length){
-                console.log(123);
                 this.zTreeFiledProcess(getFormProcessParams);//改变树结构
-            }else{
-                console.log(455);
             }
             if( oldVal != newVal && oldVal && currentSelectVal  && (updateProcessRelFormParams.addFormIds.length || updateProcessRelFormParams.delFormIds.length)){
                 this.$confirm('切换目录后，档期内目录以勾选的表单将取消，是否确认切换目录', '切换目录', {
@@ -1593,8 +1590,7 @@ export default {
 
                 }).catch(()=>{
                     this.modelTypeTreeVal = oldVal;
-                    getFormProcessParams.modelId = oldVal;
-                    this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+//                oldVal = newVal;
                    /* oldVal = newVal;
                     console.log(oldVal);
                     console.log(newVal);
