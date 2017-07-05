@@ -351,9 +351,15 @@
         </div>
 
 
-        <el-dialog :visible.sync="dialogLinkPriview" class="dialogPriview">
+        <div v-show="dialogLinkPriview" class="dialogPriview quality-priveiw" style="">
+            <el-row>
+                <el-col :span="24" style="padding:15px 30px 20px;border-bottom:1px solid #ddd;">
+                    <span style="font-weight:bolder;color:#fff;">表单预览</span>
+                    <el-icon class="el-icon-close" style="float:right;color:#fff;" @click.native="dialogLinkPriview=false"></el-icon>
+                </el-col>
+            </el-row>
             <iframe :src="priviewUrl"  scrolling="no" frameborder="0"></iframe>
-        </el-dialog>
+        </div>
     </div>
 </template>
 <script>
@@ -1049,6 +1055,7 @@ export default {
 //           console.info($(event))
         },
         deleteLinkModal() {//删除关联模型
+            let self =this;
             this.$confirm('所选表单将解除关联，是否确认?', '删除表单关联', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -1067,10 +1074,11 @@ export default {
                         this.modelTotalNum = res.data.pageInfo.totalNumber;
                         console.info(this.modelTotalNum)
                     }).catch(function(error){
-                            this.messageBox(error.response.data.message);
+                            self.messageBox(error.response.data.message);
                     });
                 }).catch(function(error){
-                    this.messageBox(error.response.data.message);
+                console.log(error,'self');
+                self.messageBox(error.response.data.message);
                  });
             })
         },
@@ -1219,10 +1227,13 @@ export default {
 
         //删除关联模型
         BMPDeleteLink() {
-            if(this.formModelData.result.length){
+            if(this.formModelData.result.length && updateProcessRelFormParams.delFormIds.length){
                 this.deleteLinkModal();
-            }else{
-                this.messageBox('没有可以删除的数据')
+            }else if(this.formModelData.result.length && !updateProcessRelFormParams.delFormIds.length){
+                this.messageBox('请选择要删除的表单！')
+            }
+            else{
+                this.messageBox('没有可以删除的数据！')
             }
 
         },
@@ -1278,7 +1289,7 @@ export default {
             }
         },
         formModelLinkOk(){
-
+            let self = this;
             this.modelTypeVal = this.modelTypeTreeVal
             this.dialogFormVisible = true;
             this.linkTree = false;
@@ -1294,10 +1305,11 @@ export default {
                         this.modelTotalNum = res.data.pageInfo.totalNumber;
                         console.info(this.modelTotalNum)
                     }).catch(function(error){
-                        this.messageBox(error.response.data.message);
+                        self.messageBox(error.response.data.message);
                     });
                 }).catch(function(error){
-                    this.messageBox(error.response.data.message);
+                    console.info(error)
+                    self.messageBox(error.response.data.message);
                 });
 
 //            console.info(updateProcessRelFormParams,'不知道不明了')

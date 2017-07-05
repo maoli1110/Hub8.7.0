@@ -940,13 +940,22 @@
     background:#494949;
     position:absolute;
     z-index:4000;
-  /*  height: 722px;*/
+    padding-bottom:20px;
 }
 .dialogPriview .el-dialog__body{
     padding:0 0 20px;
 }
 .dialogPriview iframe{
     width:100%; height: 722px;
+}
+.quality-priveiw{
+    position: fixed;
+    left: 50%;
+    z-index: 4000;
+    width: 752px;
+    background: #4A4A4A;
+    top: 12%;
+    margin-left: -387px;
 }
 .ztreeSingData.el-table{
     border:none !important;
