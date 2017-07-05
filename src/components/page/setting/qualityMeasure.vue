@@ -1185,7 +1185,7 @@ export default {
 
                 }
 //                console.info(this.zNodes)
-                 $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
+                var zTree =  $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
                 var treeNodes = zTree.transformToArray(zTree.getNodes());
                 //获取状态树的深度
                 for (var i=0;i<treeNodes.length; i++) {
