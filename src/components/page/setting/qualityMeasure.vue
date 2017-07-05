@@ -351,11 +351,11 @@
         </div>
 
 
-        <div v-show="dialogLinkPriview" class="dialogPriview quality-priveiw" style="">
+        <div v-show="dialogLinkPriview" class="dialogPriview quality-priveiw" style="padding-bottom:20px">
             <el-row>
-                <el-col :span="24" style="padding:15px 30px 20px;border-bottom:1px solid #ddd;">
-                    <span style="font-weight:bolder;color:#fff;">表单预览</span>
-                    <el-icon class="el-icon-close" style="float:right;color:#fff;" @click.native="dialogLinkPriview=false"></el-icon>
+                <el-col :span="24" style="padding:15px 30px 2px;">
+                    <!--<span style="font-weight:bolder;color:#fff;">表单预览</span>-->
+                    <el-icon class="el-icon-close" style="float:right;color:#e6e6e6;" @click.native="dialogLinkPriview=false"></el-icon>
                 </el-col>
             </el-row>
             <iframe :src="priviewUrl"  scrolling="no" frameborder="0"></iframe>
