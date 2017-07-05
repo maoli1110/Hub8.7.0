@@ -425,7 +425,9 @@ let  isChecked = 0;
 let nodes;
 let checkedCount = 0;
 let errorMessage = false;
-let currentSelectVal=""
+let currentSelectVal="";
+let selectChangeStatus=false;
+let publickModelId = ""
 import "static/css/setting-qualityMeasure.css";
 //import "static/js/ztree/css/zTreeStyle_new.css";
 //    import "static/ztree/css/demo.css";
@@ -816,8 +818,13 @@ export default {
             updateProcessRelFormParams.delFormIds = [];
             updateProcessRelFormParams.addFormIds = [];
             formModelParams.modelId = modelId;
+            publickModelId = modelId;
+            console.log(publickModelId,'publickModelId');
             getFormProcessParams.modelId = formModelParams.modelId;
-
+        /*    if(!updateProcessRelFormParams.addFormIds.length && !updateProcessRelFormParams.delFormIds.length){
+                console.log(getFormProcessParams);
+                this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+            }*/
         },
         visibleEvent(val){
             currentSelectVal = val;
@@ -1564,23 +1571,34 @@ export default {
     },
     watch: {
         modelTypeTreeVal: function (newVal,oldVal) {
-            console.log(oldVal,'oldVal');
-            console.log(newVal,'newVal');
-            if( oldVal != newVal && oldVal && currentSelectVal){
+
+            getFormProcessParams.modelId= this.modelTypeTreeVal;
+            console.log(this.modelTypeTreeVal,'getFormProcessParams');
+            console.log(updateProcessRelFormParams);
+            if((!updateProcessRelFormParams.addFormIds.length || !updateProcessRelFormParams.delFormIds.length) && currentSelectVal){
+                this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+            }
+            if( oldVal != newVal && oldVal && currentSelectVal  && (updateProcessRelFormParams.addFormIds.length || updateProcessRelFormParams.delFormIds.length)){
                 this.$confirm('切换目录后，档期内目录以勾选的表单将取消，是否确认切换目录', '切换目录', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
+                    getFormProcessParams.modelId = newVal;
                     this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+
                 }).catch(()=>{
                     this.modelTypeTreeVal = oldVal;
-                    oldVal = newVal;
+                    getFormProcessParams.modelId = oldVal;
+                    this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+                   /* oldVal = newVal;
                     console.log(oldVal);
                     console.log(newVal);
-                    console.log(this.modelTypeTreeVal);
+                    console.log(this.modelTypeTreeVal);*/
                 })
+
             }
+
 
         },
     },
