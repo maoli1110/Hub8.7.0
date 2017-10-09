@@ -3,12 +3,10 @@
  *  获取后端数据
  */
 import axios from 'axios';
+// let base = 'http://192.168.13.215:8082/enterprise';
+let base = '/enterprise';
 
-
-let base = 'http://192.168.13.215:8082/enterprise';
 export const getUserListPage = params => axios.post(`${base}/rs/lbconfig/process/getProcessList`, params);
-
-
 
 /*
 * 流程设置列表
@@ -38,8 +36,9 @@ export const updateProcessRelForm = params => axios.post(`${base}/rs/lbconfig/pr
 //export const getFormModelList =params  => axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList`);
 //表单预览获取uuid
 export const getFormPreview =params  => axios.get(`${base}/rs/lbconfig/form/getFormPreview/${params.modelId}/${params.formId}`);
-//关联表单数据
-export const getFormModelTypeList  = params =>axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList/${params.belong}`);
+//关联表单数据-->?sortType=desc
+export const getFormModelTypeList  = params =>axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList/${params.belong}?sortType=${params.sortType}`);
+//export const getFormModelTypeList  = params =>axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList/${params.belong}`);
 //获取表单列表-->树结构
 export const getFormInfosForProcess = params=>axios.get(`${base}/rs/lbconfig/form/getFormInfosForProcess/${params.modelId}/${params.processId}`);
 //查询表单列表
@@ -48,7 +47,7 @@ export const getFormInfosForm = params=>axios.get(`${base}/rs/lbconfig/form/getF
  * 工程模板接口
  */
 /*查询工程模板列表 */
-
+export const getFormModelTypeListCopy  = params =>axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList/${params.belong}`);
 export const getLDProjModelList = params => axios.get(`${base}/rs/lbconfig/projmodel/getLDProjModelList`, { params: params });
 /*获取工程模板展示明细*/
 export const getProjModelDetail = params => axios.get(`${base}/rs/lbconfig/projmodel/getProjModelDetail/${params}`);
@@ -59,6 +58,7 @@ export const updateProjModel = params => axios.post(`${base}/rs/lbconfig/projmod
 /*添加界面的下拉框选项*/
 /*添加界面树结构*/
 export const getFormInfos = params => axios.get(`${base}/rs/lbconfig/form/getFormInfos/${params}`);
+
 
 
 

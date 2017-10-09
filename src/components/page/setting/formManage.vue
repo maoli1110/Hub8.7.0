@@ -1,32 +1,32 @@
 <template>
     <div class="form-change">
         <el-row>
-            <el-menu  class="el-menu-demo" mode="horizontal" router>
+        <!--    <el-menu  class="el-menu-demo" mode="horizontal" router>
                 <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-            </el-menu>
-            <el-col :span="24">
-                <el-menu  class="el-menu-demo" mode="horizontal" router >
+            </el-menu>-->
+            <el-col :span="24" class="sub-menus-style">
+                <el-menu  class="el-menu-demo sub-menus" mode="horizontal" router >
                     <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                 </el-menu>
             </el-col>
         </el-row>
-        <el-row class="quality-search" >
+   <!--     <el-row class="quality-search" >
             <el-col :span="16" style="text-align:left">
                 <el-input  placeholder="请输入内容" icon="search" class="quality-searInput" style="width:30%" v-model="formVal" ></el-input>
                 <el-icon class="el-icon-circle-cross" v-show="formVal.length>0" @click.native="clearFormSearval"></el-icon>
             </el-col>
-        </el-row>
+        </el-row>-->
         <!--:default-sort = "{prop: 'date', order: 'descending'}" -->
-        <el-table :data="formDataList"  style="width: 100%"  class="form-table"  height="calc(100vh - 380px)" >
+        <el-table :data="formDataList"  style="width: 100%"  class="form-table"  >
             <el-table-column label="序号" width="80" type="index">
             </el-table-column>
-            <el-table-column prop="modelName" label="表单类型" sortable>
+            <el-table-column prop="modelName" label="表单类型" >
             </el-table-column>
-            <el-table-column prop="updateUser" width="120" label="更新人" sortable>
+            <!--<el-table-column prop="updateUser" width="120" label="更新人" >
             </el-table-column>
-            <el-table-column prop="updateTime"  width="130" label="更新时间"  sortable>
-            </el-table-column>
-            <el-table-column prop="remark" label="备注"  sortable>
+            <el-table-column prop="updateTime"  width="170" label="更新时间"  >
+            </el-table-column>-->
+            <el-table-column prop="remark" label="备注"  >
             </el-table-column>
             <el-table-column label="操作" width="100" @click.native="addnew">
                 <template scope="scope">
@@ -36,7 +36,7 @@
 
             </el-table-column>
         </el-table>
-        <div class="pagination">
+       <!-- <div class="pagination">
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -46,69 +46,67 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="400">
             </el-pagination>
-        </div>
+        </div>-->
         <!--模态框项目变更表格-->
         <div class="dialog-form">
             <!--模拟遮罩层-->
-            <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" style="opacity:0;" >
+            <el-dialog :visible.sync="changeFormVisible"  class="formManage-dialog" style="width:0;position:absolute;" :close-on-click-modal = "false">
             </el-dialog>
             <!--单层树结构模板-->
-            <div class="single-stump form-ztree-dialog" v-show="isSingForm">
-                <div class="form-dialog-title">
-                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
-                    <el-input icon="search" ></el-input>
-                </div>
-                <div class="form-dialog-body" >
-                    <div class="form-content">
-                        <el-table :data="zNodes"   :border="false" :show-header="false" class="ztreeSingData">
-                            <el-table-column prop="formName"></el-table-column>
-                            <el-table-column width="100">
-                                <template scope="scope"  v-show="zNodes.isForm">
-                                    <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
-                                    <span class="icon-eyes" @click="formPriview(scope.$index,scope.row)" style="margin-top:12px;"></span>
-                                </template>
+                <div class="single-stump form-ztree-dialog" v-show="isSingForm">
+                    <div class="form-dialog-title" style="padding-bottom:15px;">
+                        <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isSingForm = false,changeFormVisible=false"></el-icon></p>
+                        <div style="position:relative">
+                            <el-input icon="search" class="basicSearch" v-model="searchParam" :on-icon-click="basicSearch" placeholder="请输入表单名称搜索"></el-input>
+                            <el-icon class="el-icon-circle-close" style="font-size:14px;position:absolute;right:74px;color:#ccc;"  v-show="searchParam.length>0" @click.native="clearEvent"></el-icon>
+                        </div>
+                    </div>
+                    <div class="form-dialog-body" >
+                        <div class="form-content">
+                            <el-table :data="zNodes"   :border="false" :show-header="false" class="ztreeSingData">
+                                <el-table-column prop="formName"></el-table-column>
+                                <el-table-column width="100">
+                                    <template scope="scope"  v-show="zNodes.isForm">
+                                        <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
+                                        <span class="icon-eyes" @click="formPriview(scope.$index,scope.row)" ></span>
+                                    </template>
 
-                            </el-table-column>
-                        </el-table>
-                       <!-- <div class="priview-le" v-for="item in zNodes">
-                            <div>{{item.formName}}</div>
-                            <span class="icon-eyes" @click="formPriview" style="margin-top:12px;"></span>
-                        </div>-->
+                                </el-table-column>
+                            </el-table>
+                           <!-- <div class="priview-le" v-for="item in zNodes">
+                                <div>{{item.formName}}</div>
+                                <span class="icon-eyes" @click="formPriview" style="margin-top:12px;"></span>
+                            </div>-->
+                        </div>
                     </div>
                 </div>
-                <div class="form-dialog-footer">
-                    <el-button @click="isSingForm=false,changeFormVisible=false" >取 消</el-button>
-                    <el-button type="primary" @click="isSingForm=false,changeFormVisible=false">确 定</el-button>
-                </div>
-            </div>
             <!--多层树结构模板-->
-            <div class="form-ztree-dialog" v-show="isDoubForm">
-                <div class="form-dialog-title">
-                    <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
-                    <el-input icon="search" :on-icon-click="searchformTree"></el-input>
-                </div>
-                <div class="form-dialog-body">
-                    <ul id="formTree" class="ztree"></ul>
-                </div>
-                <div class="form-dialog-footer">
-                    <el-button @click="isDoubForm=false,changeFormVisible = false" >取 消</el-button>
-                    <el-button type="primary" @click="isDoubForm=false,changeFormVisible = false">确 定</el-button>
+                <div class="form-ztree-dialog double-stump"  v-show="isDoubForm">
+                    <div class="form-dialog-title">
+                        <p>四川省公路工程施工及监理统一用表<el-icon class="el-icon-close" @click.native="isDoubForm = false,changeFormVisible =false"></el-icon></p>
+                            <div style="position:relative">
+                                 <el-input icon="search" v-model="formTreeSearch" class="searchVal" :on-icon-click="searchformTree" style="width:75%" placeholder="请输入表单名称搜索" ></el-input>
+                                 <el-icon class="el-icon-circle-close" style="font-size:14px;position:absolute;right:127px;color:#ccc;"  v-show="formTreeSearch.length>0" @click.native="clearEvent"></el-icon>
+
+                            <div class="quality-collage" style="float:right;margin-top:7px;margin-right:21px;">
+                                <span id="expandBtn" class="icon-cut icon-plus" title="展开" @click="expandNode('expand','formTree')"></span>
+                                <span id="collapseBtn" class="icon-plus"  title="折叠" @click="expandNode('collapse','formTree')"></span></div>
+                            </div>
+
+                        </div>
+                    <div class="form-dialog-body">
+                        <ul class="ztree" id="formTree" ></ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <el-dialog :visible.sync="dialogFormPriview" class="dialogPriview">
+
+        <el-dialog :visible.sync="dialogFormPriview" class="dialogPriview" :close-on-click-modal="false">
             <iframe :src="formPriviewUrl"  scrolling="no" frameborder="0"></iframe>
         </el-dialog>
     </div>
 </template>
 <script>
-    import "../../../../static/css/setting-explorer.css";
-//    import "static/js/ztree/css/zTreeStyle_new.css";
-    import "static/js/ztree/js/jquery.ztree.core-3.5.js";
-    import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-    import "static/js/ztree/js/jquery.ztree.exedit.js";
-    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js"
-    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from 'src/api/getData.js'
+
     let level = 1;
     let maxLevel=-1;
     let newCount = 1;
@@ -125,35 +123,49 @@
     let formPriviewParams = {
         formId:'',
         modelId:""
-    }
-
+    };
+    let cachezNodes = [];
+    import "static/css/setting-qualityMeasure.css";
+    import "static/js/ztree/js/jquery.ztree.core-3.5.js";
+    import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
+    import "static/js/ztree/js/jquery.ztree.exedit.js";
+    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js";
+    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from 'src/api/getData.js'
     export default{
         data(){
             return {
                 setting: {
                     view: {
-//                        selectedMulti: false,
-                        addDiyDom: this.addDiyDom,
-                        showIcon :false,
+                        selectedMulti: false,
+                        showIcon:false,
+//                        addDiyDom: this.addDiyDom,
+                        addHoverDom: this.addHoverDom,
+                        removeHoverDom: this.removeHoverDom,
                     },
-                    simpleData: {
-                        enable: true,
-                        idKey: "formId",
-                        pIdKey: "pid",
-                        rootPId: 0
-                    },
-                    key: {
-                        name: "formName"
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            idKey: "formId",
+                            pIdKey: "pid",
+                            rootPId: 0,
+                        },
+                        key: {
+                            name: "formName",
+                        }
                     },
                     callback: {
-//                        beforeCheck: this.beforeCheck(),
-                        onClick: this.onCheck,
-                        onAsyncSuccess:this.zTreeOnAsyncSuccess
+                        onCollapse: function (event, treeId, treeNode) {
+                            console.info('折叠')
+                            level = treeNode.level;
+                        },
+                        onExpand: function (event, treeId, treeNode) {
+                            console.info('展开');
+                            level = treeNode.level;
+                        },
                     }
                 },
 
                 zNodes: [],
-                url: '../../../static/vuetable.json',
                 tableData: [],
                 cur_page: 1,
                 menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
@@ -166,27 +178,42 @@
                 isSingForm:false,
                 isDoubForm:false,
                 dialogFormPriview:false,
-                formPriviewUrl:""
+                formPriviewUrl:"",
+                searchParam:"",
+                formTreeSearch:""
             }
         },
+
         components:{
 
         },
         mounted(){
             $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
-            $('.form-dialog-title input').bind('keydown',this.searchformTree)
-          /*  $('.icon-eyes').map(function(){
-                $(this).bind('click',function(){
-                    console.info('预览界面')
-                })
-            })*/
+            $('.basicSearch input').bind('keyup',this.basicSearch);
+            $('.form-dialog-title input').bind('keydown',this.searchformTree);
+//            $("#expandBtn").bind("click",  {type:"expand",operObj:'formTree'}, this.expandNode);
+//            $("#collapseBtn").bind("click", {type:"collapse",operObj:'formTree'}, this.expandNode);
+            if(this.$route.path=='/setting/formManage'){
+                $('.sub-menus li').removeClass('is-active');
+                $('.sub-menus li').eq(2).addClass('is-active');
+                $('.nav-menu li:last').addClass('is-active');
+            }else{
+                $('.nav-menu li:last').removeClass('is-active');
+            }
         },
         created(){
-            this.getData()
+            this.getData();
         },
         methods: {
+            clearEvent(){//清除表格元素
+                if(this.searchParam) {
+                    this.searchParam = '';
+                }else if(this.formTreeSearch){
+                    this.formTreeSearch=""
+                }
+            },
             onCheck(event, treeId, treeNode){
-                console.log(treeNode);
+//                console.log(treeNode);
             },
             handleSizeChange(){
 
@@ -195,10 +222,39 @@
                 this.cur_page = val;
                 this.getData();
             },
+            dateFtt(fmt,date)
+                { //author: meizz
+                    var  dateList = {
+                        "M+" : date.getMonth()+1,                 //月份
+                        "d+" : date.getDate(),                    //日
+                        "h+" : date.getHours(),                   //小时
+                        "m+" : date.getMinutes(),                 //分
+                        "s+" : date.getSeconds(),                 //秒
+                        "q+" : Math.floor((date.getMonth()+3)/3), //季度
+                        "S"  : date.getMilliseconds()             //毫秒
+                    };
+                    if(/(y+)/.test(fmt))
+                        fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));
+                    for(var k in dateList)
+                        if(new RegExp("("+ k +")").test(fmt))
+                            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (dateList[k]) : (("00"+ dateList[k]).substr((""+ dateList[k]).length)));
+                    return fmt;
+            },
             getData(){
                 getFormModelTypeList({belong:0}).then((res) => {
-                    this.formDataList = res.data
+                    this.formDataList = res.data;
+
+                    for(var i = 0;i<this.formDataList.length;i++){
+//                        this.formDataList[i].updateTime = (new Date(this.formDataList[i].updateTime )).toLocaleDateString();
+                        let date = new Date(this.formDataList[i].updateTime );
+                        this.formDataList[i].updateTime =this.dateFtt("yyyy-MM-dd hh:mm",date)
+                    }
+
                 })
+             /*   getFormInfosForm({modelId:"3-6000"}).then((res)=>{
+                    this.zNodes = res.data;
+                     $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
+                })*/
             },
             formatter(row, column) {
                 return row.address;
@@ -212,59 +268,99 @@
             handleDelete(index, row) {
                 this.$message.error('删除第'+(index+1)+'行');
             },
+            notify(message){//地址为空的时候
+                this.$alert(message, {
+                    confirmButtonText: '确定'
+                })
+
+            },
             //表单的预览功能
             formPriview(index,row){
-                this.dialogFormPriview = true;
+
+                this.formPriviewUrl = "";
+
                 formPriviewParams.modelId = getFormInfosParams.modelId;
                 formPriviewParams.formId = row.formId;
-                console.info(row.formId,'');
                 getFormPreview(formPriviewParams).then((res) =>{
-                    this.formPriviewUrl = res.data;
+                   if(res.data){
+                        this.dialogFormPriview = true;
+                        this.formPriviewUrl = res.data;
+                    }else{
+                        this.notify('暂不知处预览');
+                    }
+
+                }).catch(function(error){
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        this.notify(error.response.data.message);
+                    } else if (error.request) {
+//                        console.log(error.request);
+                    } else {
+//                        console.log('Error', error.message);
+                    }
                 })
 
 
             },
+
             zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
                 alert(msg);
             },
-            addDiyDom(treeId, treeNode) {
+            addHoverDom(treeId, treeNode) {
+//                var aObj = $("#" + treeNode.tId + "_a");
                 var aObj = $("#" + treeNode.tId );
                 if ($("#diyBtn_"+treeNode.id).length>0) return;
                 var editStr = "<span id='diyBtn_space-" +treeNode.formId+ "' class='icon-eyes' > </span>";
-                if(!treeNode.isParent && treeNode.isForm){
+                var currentObj = '#diyBtn_space-'+treeNode.formId;
+                if(!treeNode.isParent && treeNode.isForm && !$(currentObj).length){
                     aObj.append(editStr);
                 }
                 let self =this;
-                $('.icon-eyes').map(function(){
+                $('#formTree .icon-eyes').map(function(){
                     $(this).unbind('click');
                     $(this).bind('click',function(){
+                        self.formPriviewUrl = "";
                         let  linkFormId = $(this).attr("id");
-
                         if(linkFormId){
                             linkFormId =  linkFormId.split('-')[1]
                         }
-                        console.info(linkFormId,'linkFormId')
-                        self.dialogFormPriview = true;
                         formPriviewParams.modelId = getFormInfosParams.modelId;
                         formPriviewParams.formId = linkFormId;
-                        console.info(formPriviewParams)
+//                        console.info(formPriviewParams)
                         getFormPreview(formPriviewParams).then((res)=>{
-                            self.formPriviewUrl = res.data;
-                        console.info( self.priviewUrl)
+//                            console.info(res.data,'res.data')
+                            if(res.data){
+                                self.dialogFormPriview = true;
+                                self.formPriviewUrl = res.data;
+                            }else{
+                                self.notify('暂时不支持预览');
+                            }
                         }).catch(function (error) {
-                                alert(error.message);
-                            })
+//                            console.info(error.message);
                         })
                     })
+                })
             },
+         /*   removeHoverDom(treeId, treeNode){
+                $("#diyBtn_space-" +treeNode.formId).remove();
+                $('.icon-eyes').unbind().remove();
+            },*/
             showTreeDialog(index,row){
+//                self = this;
+//                this.isDoubForm = true;
+                this.formTreeSearch = "";
+                this.searchParam ="";
                 this.changeFormVisible = true;
 //                this.istable= true;
                 getFormInfosParams.modelId = row.modelId;
                 getFormInfosForm(getFormInfosParams).then((res)=>{
                      this.zNodes = res.data;
+                     cachezNodes =res.data;
                      for(var i = 0;i<this.zNodes.length;i++){
                          this.zNodes[i].name = this.zNodes[i].formName;
+                      /*   this.zNodes[i].id = this.zNodes[i].formId;
+                         this.zNodes[i].pid = this.zNodes[i].pid;*/
                          if(this.zNodes[i].pid){
                              this.isDoubForm = true;
                              this.isSingForm = false;
@@ -273,14 +369,31 @@
                              this.isDoubForm = false;
                          }
                      }
-                     $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
+                    if(this.isDoubForm){
+                        var zTree = $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
+                      /*  var nodes = zTree.getNodes();
+                        if (nodes.length>0) {
+                            zTree.selectNode(nodes[0]);
+                        }*/
+                        var treeNodes = zTree.transformToArray(zTree.getNodes());
+                        //获取状态树的深度
+                        for (var i=0;i<treeNodes.length; i++) {
+                            if(treeNodes[i].level>=maxLevel){
+                                maxLevel=treeNodes[i].level;
+                            }
+                           /* if(treeNodes[i].level==0&&treeNodes[i].isParent){
+                                //展开"全部"下的子节点
+                                zTree.expandNode(treeNodes[i], true, false, null, true);
+                            }*/
+                        }
+                    }
+
                  })
 
             },
             //树结构的搜索功能
             getZtreeParentNode(ztreeNode, nodes) {
                 var pNode = ztreeNode.getParentNode();
-                /*console.log(pNode);*/
                 if (pNode != null) {
                     if (nodes.indexOf(pNode) < 0) {
                         nodes.push(pNode);
@@ -293,7 +406,6 @@
                     return;
                 }
                 var children = ztreeNode.children;
-                /* console.log(children);*/
                 if (children.length > 0) {
                     for (var i = 0; i < children.length; i++) {
                         var child = children[i];
@@ -307,7 +419,7 @@
             searchformTree(event){
                 var treeObj = $.fn.zTree.getZTreeObj('formTree');
                 var nodes1 = treeObj.getNodesByParam("isHidden", true);
-                var searchVal = $('.form-dialog-title').find('input').val();
+                var searchVal = $('.searchVal').find('input').val();
                 /* 将之前隐藏的展示*/
                 if (nodes1.length > 0) {
                     treeObj.showNodes(nodes1);
@@ -328,8 +440,36 @@
                     if (otherNeedShowNodes.length > 0) {
                         treeObj.showNodes(otherNeedShowNodes);
                     }
+                    treeObj.expandAll(true);
+                   if(!this.formTreeSearch){
+                       treeObj.expandAll(false);
+                   }
                 }
             },
+            clearSearchCirt(value){
+                var treeObj = $.fn.zTree.getZTreeObj('formTree');
+                if(!value){
+                    treeObj.expandAll(false);
+                }
+            },
+            basicSearch(event){//基础搜索功能
+                var arr = [];
+                var keyWord = this.searchParam;
+                var reg = new RegExp(keyWord);
+                for(var i=0;i<this.zNodes.length;i++){
+                    //如果字符串中不包含目标字符会返回-1
+                    if(this.zNodes[i].formName.indexOf(this.searchParam)!=-1){
+                        arr.push(this.zNodes[i]);
+                    }
+                }
+                if(event.type=='click' ||event.keyCode == 13){
+                    if(this.searchParam){
+                        this.zNodes =arr;
+                    }else{
+                        this.zNodes = cachezNodes;
+                    }
+                }
+             },
             //清除表单值
             clearFormSearval(){
                 this.formVal = '';
@@ -339,6 +479,58 @@
                     this.zNodes = res.data;
                 })
             },*/
+            //全部展开和收起
+            expandNode(type,operObj) {
+                //var index=layer.load(2);
+//                debugger;
+//                type = e.data.type;
+//                operObj = e.data.operObj;
+                var zTree = $.fn.zTree.getZTreeObj(operObj);
+                var treeNodes = zTree.transformToArray(zTree.getNodes());
+                var flag = true;
+                //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
+                for (var i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].level == level && treeNodes[i].isParent) {
+                        if (type == "expand" && !treeNodes[i].open) {
+                            flag = false;
+                            break;
+                        } else if (type == "collapse" && treeNodes[i].open) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (flag) {
+                    //说明当前level的节点都为折叠或者展开状态
+                    if (type == "expand") {
+//                        level++
+                        console.log(maxLevel,'maxLevel');
+                        if (level < maxLevel - 1) {
+                            level++;
+                            console.info(level,'++++level++')
+                        }
+
+                    } else if (type == "collapse") {
+                        console.info(level,'--level')
+                        if (level != 0) {
+                            level--;
+                        }else{
+                            return;
+                        }
+
+                    }
+                }
+                for (var i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].level == level && treeNodes[i].isParent) {
+                        if (type == "expand" && !treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], true, false, null, true);
+                        } else if (type == "collapse" && treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], false, false, null, true);
+                        }
+                    }
+                }
+            }
         }
     }
 </script>

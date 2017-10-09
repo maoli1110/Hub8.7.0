@@ -55,13 +55,13 @@ website:	http://code.google.com/p/jquerytree/
     text-overflow: ellipsis;
 }
 
-.ztree li a:hover {
+/*.ztree li a:hover {
 	text-decoration: none
-}
+}*/
 
 .ztree li a.curSelectedNode {
 	padding-top: 0px;
-	background-color: #FFE6B0;
+	background-color:#ddd !important;
 	color: black;
 	height: 28px;
 	border: 1px #FFB951 solid;
@@ -72,7 +72,7 @@ website:	http://code.google.com/p/jquerytree/
 	padding-top: 0px;
 	background-color: #FFE6B0;
 	color: black;
-	height: 16px;
+	height: 28px;
 	border: 1px #FFB951 solid;
 	opacity: 0.8;
 }
@@ -138,7 +138,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.chk.checkbox_false_full_focus {
-	background-position: -30px -113px
+	background-position: -32px -113px
 }
 
 .ztree li span.button.chk.checkbox_false_part {
@@ -150,15 +150,15 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.chk.checkbox_false_disable {
-    background-position: -34px -139px;
+    background-position: -32px -139px;
 }
 
 .ztree li span.button.chk.checkbox_true_full {
-	background-position: -57px -88px
+	background-position: -59px -88px
 }
 
 .ztree li span.button.chk.checkbox_true_full_focus {
-	background-position: -58px -115px
+	background-position: -59px -115px
 }
 
 .ztree li span.button.chk.checkbox_true_part {
@@ -170,7 +170,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.chk.checkbox_true_disable {
-    background-position: -34px -140px;
+    background-position: -32px -140px;
 }
 
 .ztree li span.button.chk.radio_false_full {
@@ -214,7 +214,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.switch {
-	width: 28px;
+	width: 26px;
 	height: 25px
 }
 
@@ -267,7 +267,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.bottom_open {
-	background-position: -88px 1px
+	background-position: -88px -4px
 }
 
 .ztree li span.button.bottom_open_hover {
@@ -275,7 +275,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li span.button.bottom_close {
-	background-position: -60px 1px
+	background-position: -60px -4px
 }
 
 .ztree li span.button.bottom_close_hover {

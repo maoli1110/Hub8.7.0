@@ -1,24 +1,27 @@
 <template>
     <div class="header">
         <div class="logo">
-            <img src="../../../static/img/logo.png" alt="" class="inline pull-left">
+            <img src="../../../static/img/logo.gif" alt="" class="inline pull-left">
             <div class="pull-left">
-                <div class="enterprise-name">中国公路工程咨询集团有限公司</div>
-                <div class="english-name">CHINA HIGHWAY ENGINEERING CONSULITING CORPORATION</div>
+                <!--<div class="enterprise-name">中国公路工程咨询集团有限公司</div>-->
+                <div class="enterprise-name">四川绵九高速公路有限责任公司</div>
+                <!--<div class="english-name">CHINA HIGHWAY ENGINEERING CONSULITING CORPORATION</div>-->
             </div>
         </div>
         <div class="user-info">
-            <el-dropdown trigger="click" @command="handleCommand" >
+            <el-dropdown trigger="click"  >
                 <span class="el-dropdown-link">
-                    <img class="user-logo" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80">
+                    <img class="user-logo" src="../../../static/img/退出.png" style="width:30px;height:30px">
+                    <a href="/enterprise/loginOutPDS.htm" style="color:#fff;font-weight:bold;height:60px;display:inline-block;line-height:60px">退出</a>
                 </span>
-                <el-dropdown-menu slot="dropdown" menu-align="start">
-                    <el-dropdown-item command="loginout">企业信息</el-dropdown-item>
-                    <el-dropdown-item command="loginout">个人信息</el-dropdown-item>
-                    <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
-                </el-dropdown-menu>
+
+                <!--<el-dropdown-menu slot="dropdown" menu-align="start">
+                    <el-dropdown-item >企业信息</el-dropdown-item>
+                    <el-dropdown-item >个人信息</el-dropdown-item>
+                    <el-dropdown-item ></el-dropdown-item>
+                </el-dropdown-menu>-->
             </el-dropdown>
-            <span class="user-name">{{name}}</span>
+            <!--<span class="user-name">{{name}}</span>-->
         </div>
     </div>
 </template>
@@ -36,12 +39,12 @@
             }
         },
         methods:{
-            handleCommand(command) {
-                if(command == 'loginout'){
-                    localStorage.removeItem('ms_username')
-                    this.$router.push('/login');
-                }
-            }
+             handleCommand(command) {
+              /*   if(command == 'loginout'){
+                     localStorage.removeItem('ms_username')
+                     this.$router.push('/enterprise/loginOutPDS.htm');
+                 }*/
+             }
         }
     }
 </script>
@@ -55,13 +58,19 @@
         /*line-height: 90px;*/
         color: #fff;
     }
-    .header .logo > * {
-        margin: 15px 10px;
+    .header .logo > img {
+        margin: 12px 10px;
+    }
+    .header .logo  .enterprise-name{
+        margin-top:25px ;
     }
     .header .logo{
         float: left;
         /*width:250px;*/
         text-align: center;
+    }
+    .logo img{
+        width:141px;height:65px;
     }
     .user-info {
         float: right;

@@ -16,7 +16,7 @@
 .quality-search .el-icon-circle-cross{
     position: absolute;
     right: 29px;
-    font-size: 10px;
+    font-size: 14px;
     top: 12px;
     color: #ccc;
 }
@@ -39,7 +39,8 @@
     float:right;min-width:388px;
 }
 .quality-page .quality-table{
-    height:calc( 100vh - 400px);overflow:auto;
+    height:calc( 100vh - 338px);overflow-y:auto;
+    overflow-x: hidden;
 }
 .quality-page .quality-table .el-table-column--selection .cell{
     padding:0;
@@ -53,7 +54,7 @@
 .quality-page .quality-table.el-table tbody tr td{
     height:45px;line-height:45px;text-align:center;border-right:1px solid #ddd;
 }
-.quality-page .quality-table.el-table tbody tr td:nth-child(3),.quality-page .quality-table.el-table tbody tr td:nth-child(4),.quality-page .quality-table.el-table tbody tr td:nth-child(6){
+.quality-page .quality-table.el-table tbody tr td:nth-child(2),.quality-page .quality-table.el-table tbody tr td:nth-child(3),.quality-page .quality-table.el-table tbody tr td:nth-child(5),.quality-page .quality-table.el-table tbody tr td:nth-child(6){
     text-align:left;
 }
 .quality-page .quality-table.el-table tbody tr td.cell:last-child{
@@ -70,10 +71,10 @@
 }
 
 .quality-page .quality-table.el-table tbody td span.icon:nth-child(1){
-    background-position: -202px -106px;
+    background-position: -203px -103px;
 }
 .quality-page .quality-table.el-table tbody td span.icon:nth-child(2){
-    background-position:-182px -78px;
+    background-position: -138px -105px;
 }
 .quality-page .quality-table.el-table tbody td span.icon:nth-child(3){
     background-position:-28px -30px;
@@ -100,13 +101,14 @@
     top: 5px;
 }
 .quality-page .link-table .icon-eyes{
-    float:none;
+    float:none;cursor:pointer;
 }
 .quality-page .icon-eyes{
-    width: 20px;
+    /*width: 20px;
     height: 20px;
     background: url(../../static/img/hubicon.png) no-repeat  -82px -31px;
-    display: inline-block;float:right;
+    display: inline-block;float:right;*/
+    width:16px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -152px -38px;float:none;margin-top:5px;cursor:pointer;position:absolute;right:0;
 }
 /*icon-add*/
 .quality-page .icon-add{
@@ -137,11 +139,9 @@
     /*text-align:left;*/
 }
 .BMP-process .table-step{
-    height:calc(100vh - 704px);overflow:auto;border:1px solid #ddd;border-top:none
+    height:calc(100vh - 704px);overflow:auto;border:1px solid #ddd;border-bottom:none;border-top:none;
 }
-.BMP-process .table-step table tr:last-child td{
-    border-bottom:none;
-}
+
 .BMP-process .table-step table td{
     height:40px;line-height:40px;border-right:1px solid #ddd;text-align:center;
 }
@@ -192,10 +192,13 @@
     font-weight:bold;padding:14px 20px;border-bottom:1px solid #ddd;margin-bottom:20px;
 }
 .content .BMP-info .BMP-text{
-    font-size:14px;padding-bottom:30px;
+    font-size:14px;padding-bottom:30px;vertical-align: top;
 }
 .content .process-set .BMP-text{
     font-size:16px;
+}
+. editPage .BMP-text{
+    vertical-align: top;
 }
 .BMP-info .pro-title{
     padding: 15px 20px;
@@ -241,7 +244,10 @@
     line-height:30px;border-radius:3px;height:30px;
     border: 1px solid #ddd;font-size:12px;
     width:60px;float: left;
-   position:relative;margin:5px 5px 5px 0;
+   position:relative;margin:5px 3px 5px 3px;
+}
+.content .BMP-process .addRoot:first-child{
+    /*margin-left:5px;*/
 }
 .content .BMP-process  .handle-delete{
     /*float: right;
@@ -278,7 +284,7 @@
     right: 0px;
 }
 .content .quality-dialog{
-    width: 557px;
+    width: 574px;
     height: 638px !important;
     position: fixed;
     left: 50%;
@@ -286,30 +292,36 @@
     margin-left: -312px;
     margin-top: -332px;
     background: #fff;
-    z-index: 2003;
+    z-index: 2005;
     border-radius: 5px;
 }
+.link-model .el-select{
+    width:78% !important;
+}
+.quality-dialog .el-input{
+    width:100% !important;
+}
 .quality-dialog .ztree{
-    padding:15px 40px 15px !important;height:374px !important;overflow:auto;
+    padding:15px 40px 15px !important;height:352px !important;overflow:auto;
 }
 .content .ztree-allCheck{
-    cursor:pointer;padding-left:40px;font-size:14px;
+    cursor:pointer;font-size:14px;padding:0px 0 10px 40px !important;
 }
 .content .ztree-allCheck>div{
     position: absolute;
     font-size: 14px;
 
 }
-.ztree-allCheck .quality-collage{
+ .quality-collage{
   width:auto;height:20px;display:inline-block;
 }
-.ztree-allCheck .quality-collage .icon-plus{
+ .quality-collage .icon-plus{
     background: url(../../static/img/hubtree.png) no-repeat -95px -6px;
     width: 23px;
     height: 23px;
     display: inline-block;margin-left:10px;
 }
-.ztree-allCheck .quality-collage .icon-plus.icon-cut{
+.quality-collage .icon-plus.icon-cut{
     background-position: -63px -6px;
 }
 .quality-dialog .ztree li a{
@@ -334,7 +346,7 @@
     width: 22px;
     height: 22px;
     background:url('../../static/js/ztree/css/img/zTreeStandard1.png') no-repeat -32px -90px;
-    background-position: -57px -89px;
+    background-position: -58px -89px;
 
 }
 .content #checkAllTrue,.content #checkAllFalse{
@@ -344,9 +356,20 @@
     z-index:9999 !important;
 }
 /*关联模型link-model*/
-.link-model .el-dialog{
+/*.link-model .el-dialog{
     width:734px;
     height:615px;
+}*/
+.link-model{
+    width:734px;
+    height:615px;
+    position: fixed;
+    z-index: 3000;
+    background: #fff;
+    top: 45%;
+    left: 50%;
+    margin-left:-380px;
+    margin-top:-307px;
 }
  .link-model .el-dialog__header{
    padding:20px 30px !important;border:1px solid #ddd;
@@ -384,7 +407,9 @@
 .link-model .dialog-footer{
     text-align:center;
 }
-
+.quality-page .el-table__empty-block{
+    border-bottom:1px solid #ddd;
+}
 /*工程模板*/
 .proTemplate-table .icon-compile{
     width:20px;height:20px;display:inline-block;background: url(../../static/img/hubicon.png) no-repeat -203px -105px;margin-top:10px;
@@ -407,6 +432,12 @@
 .proTemplate .proTemplate-edit .template-name .el-input{
     font-size:14px;
 }
+.proTemplate .el-input__inner{
+    padding-right: 45px !important;
+}
+.proTemplate .formEdit-body .el-input__inner{
+    padding-right: 45px !important;
+}
 /*pro-ztreeInfo*/
 .proTemplate .proTemplate-edit .pro-ztreeInfo{
     margin-top:20px;
@@ -416,7 +447,7 @@
     background:#fff;
 }
 .proTemplate .proTemplate-edit .pro-ztreeInfo .ztree{
-    height:414px;overflow:auto;border:1px solid #ddd;
+    height:413px;overflow:auto;border:1px solid #ddd;
 }
 .proTemplate .proTemplate-edit  .pro-sear-area{
     padding:10px 0 ;border-left:1px solid #ddd;border-right:1px solid #ddd;
@@ -425,6 +456,8 @@
     width:94% !important;margin-left:12px;
 }
 .proTemplate .proTemplate-edit .sear-icon{
+   height:28px;
+   line-height: 28px;
    float:right;
 }
 .proTemplate .multi-textarea .el-dialog__header{
@@ -458,11 +491,17 @@
     line-height: 18px;
     background:#6595f2;color:#fff;font-weight:bold;margin:0 5px;margin-top:8px;border-radius:2px;*/
 }
-.sear-icon .icon-cut{
+.icon-cut{
+    width: 22px;
+    height: 22px;
+    display:inline-block;
     background: url('../../static/img/hubtree.png') no-repeat -95px -6px;;
 }
-.sear-icon .icon-plus{
-    background: url('../../static/img/hubtree.png') no-repeat -64px -6px;;
+.icon-plus{
+    width: 22px;
+    height: 22px;
+    display:inline-block;
+    background: url('../../static/img/hubtree.png') no-repeat -63px -6px;
 }
 .proTemplate-edit .sear-icon>span#collapseBtn{
     margin-right:15px !important;
@@ -489,7 +528,7 @@
     background-color:#6595f2;
 }
 .handle-icon .tool-btns:nth-child(1)>span{
-    background-position: -64px -36px;border:none;
+    background-position: -63px -36px;border:none;
 }
 .handle-icon .tool-btns:nth-child(2)>span{
     background-position:-83px -36px;
@@ -504,7 +543,7 @@
     border-right:1px solid #ddd;
 }
 .handle-icon .tool-btns:nth-child(5)>span{
-    background-position:-132px -36px;
+    background:url(../../static/img/hubicon.png) no-repeat -45px -30px;
 }
 .proTemplate .proTemplate-edit .createNodes{
     display: inline-block;
@@ -529,16 +568,15 @@
 .proTemplate .el-table tbody tr:nth-child(1) td{
     border-top:1px solid #ddd;
 }
+.proTemplate .el-table tbody tr td:nth-child(2){
+    padding-left:6px !important;
+}
 .proTemplate .el-table tbody tr:hover{
     background:#e6e6e6 !important;
 }
 .proTemplate .el-table .cell{
     padding:0 !important;
 }
-.proTemplate .el-table tbody td{
-    height:45px;line-height:45px;border-right: 1px solid #ddd;text-align:center;
-}
-
 .proTemplate .el-table tbody tr td:nth-child(3),.proTemplate .el-table tbody tr td:nth-child(5){
     text-align:left;
 }
@@ -590,7 +628,10 @@
     width:100% !important;
 }
 .project-form .project-form-ele{
-    height:450px;width:100%;border-top:none;overflow:auto;
+    height:445px;width:100%;border-top:none;overflow:auto;
+}
+.project-forme{
+    height:274px;width:100%;border-top:none;overflow-y:auto;
 }
 .project-form .project-form-ele .project-sultable{
     height: 58px;
@@ -628,7 +669,8 @@
 }
 /*.form-table*/
 .form-change .form-table{
-    min-height:calc(100vh  - 400px );overflow:auto;
+    /*height:280px;
+    overflow:auto;*/
 }
 .form-change .form-table .table{
 
@@ -648,7 +690,7 @@
 .form-change .form-table tbody tr td{
     height:45px;line-height:45px;border-right:1px solid #ddd;text-align:center;
 }
-.form-change .form-table tbody tr td:nth-child(2),.form-change .form-table tbody tr td:nth-child(5),.form-change .form-table tbody tr td:nth-child(3){
+.form-change .form-table tbody tr td:nth-child(2),.form-change .form-table tbody tr td:nth-child(3),.form-change .form-table tbody tr td:nth-child(5),.form-change .form-table tbody tr td:nth-child(3){
     text-align:left;
 }
 .form-change .dialog-changeForm>.priview-le{
@@ -668,15 +710,15 @@
 
 }
 .form-change .single-stump .form-dialog-body{
-    height:388px;overflow:auto;padding:30px 40px;
+    height:400px;overflow:auto;padding:5px 40px 0;
 }
 .form-change .single-stump .form-dialog-body >.form-content{
-    padding:0px 20px 0px 20px;border:1px solid #ddd;height:374px;overflow:auto;
+   /* padding:0px 20px 0px 20px;*/border:1px solid #ddd;height:398px;overflow:auto;
 }
 /*form-ztree-dialog(表单结构树结构另外一套)*/
 .form-ztree-dialog{
     width: 535px;
-    height: 630px;
+    height: 600px;
     background: #fff;
     position: fixed;
     top: 0;
@@ -698,25 +740,31 @@
 .form-change .priview-le>.el-icon-search{
     float:right;margin-top:12px;opacity:0.5;
 }
+.form-change .form-ztree-dialog .form-dialog-title{
+    padding-bottom:20px;
+}
 .form-change .form-ztree-dialog .form-dialog-title>p{
     padding: 20px 40px;
     margin-bottom: 20px;
     border-bottom: 1px solid #ddd;font-size:18px;font-weight:bold;
 }
 .form-change .form-ztree-dialog .form-dialog-title .el-input{
-    width:85% !important;margin-left:40px;
+    width:85% ;margin-left:40px;
 }
 .form-change .form-ztree-dialog .form-dialog-title>p .el-icon-close{
     float:right;font-size:14px; margin-top: 5px;
 }
 .form-change .form-ztree-dialog .form-dialog-footer{
-    text-align:center;
+    text-align:center;padding-top:26px;
 }
 .form-change .form-ztree-dialog .icon-eyes{
-    width:15px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -153px -38px;float:right;margin-top:5px;
+    width:16px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -152px -38px;float:none;margin-top:5px;cursor:pointer;position:absolute;right:0;
 }
 .form-change .ztree{
-    height:374px !important;overflow:auto;padding:20px 40px 40px !important;
+    height:352px !important;overflow:auto;padding:20px 40px 40px !important;
+}
+.form-change .single-stump .icon-eyes{
+    top:11px  !important;right:15px;
 }
 /*表单编辑*/
 .formEdit{
@@ -736,7 +784,7 @@
 }
 /*工程模板表格*/
 .proTemplate .proTemplate-table{
-    height:calc(100vh - 350px)
+    height:calc(100vh - 210px)
 }
 .proTemplate .proTemplate-table .el-table__header-wrapper{
     height:54px;line-height:54px;
@@ -779,14 +827,15 @@
     width:106% !important;
 }
  .form-table{
-    max-height: 246px;
-    overflow: auto;
+    /*max-height: 246px;
+    overflow: auto;*/
 }
  .form-table .icon-tabs-eyes{
-     width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -82px -31px;
+     width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -82px -27px;
  }
 .form-table .icon-tabs-del{
-    width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -45px -31px;
+    width:20px;height:16px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -45px -31px;
+    vertical-align:baseline
 }
 .checked-title{
     height:35px;line-height:35px;margin:10px 10px;border:1px solid #ddd;border-radius:5px;padding-left:10px;
@@ -833,8 +882,14 @@
 .formLine .form-table li:hover{
     background:#e6e6e6;
 }
+.formLine .form-table li .tabs-icon>span{
+    float:left;
+}
 .formLine .form-table li .tabs-icon{
-    float:right!important;margin-right:10px;
+    float:right!important;margin-right:10px;margin-top:11px;
+}
+.formLine .form-table li .tabs-icon >span:last-child{
+    margin-top:5px;
 }
 .formLine .form-table li .tabs-icon>i{
     margin-right:7px;color:#6595f2;
@@ -872,15 +927,15 @@
     padding:20px 0px 0;
 }
 .content .quality-dialog-footer{
-    text-align:center;
+    text-align:center;padding:16px 0 0;
 }
 .ztree li a.curSelectedNode{
     background:transparent !important;
     border-color:transparent !important;
 }
-.ztree ul>li:hover{
+/*.ztree ul>li:hover{
     background:#f5f5f5;
-}
+}*/
 .el-button--primary:focus, .el-button--primary:hover{
     background:#4778C7 !important;color:#fff;border-color:#4778C7 !important;
 }
@@ -894,14 +949,23 @@
     width: 752px;
     background:#494949;
     position:absolute;
-    z-index:2200;
-  /*  height: 722px;*/
+    z-index:4000;
+    padding-bottom:20px;
 }
 .dialogPriview .el-dialog__body{
     padding:0 0 20px;
 }
 .dialogPriview iframe{
     width:100%; height: 722px;
+}
+.quality-priveiw{
+    position: fixed;
+    left: 50%;
+    z-index: 4000;
+    width: 752px;
+    background: #4A4A4A;
+    top: 12%;
+    margin-left: -387px;
 }
 .ztreeSingData.el-table{
     border:none !important;
@@ -914,6 +978,61 @@
     height:0;background:transparent;
 }
 .form-change .dialogPriview .el-dialog{
-    position:absolute;z-index:2004;
+
     width: 752px !important;top:5% !important;
+}
+
+.form-change .el-table::after, .el-table::before{
+    background:transparent !important;
+}
+/*
+.el-table__empty-text{
+    background: url(../../static/img/hubicon.png) no-repeat 30px -176px;
+    width: 252px;
+    height: 100px;
+    line-height: 58px;
+}
+*/
+.ztree li {
+   position:relative;
+}
+/*.ztree li a{
+    width:100% !important;
+}*/
+.quality-page .el-pagination__total{
+    float:none !important;
+    position:absolute;
+    left:0;
+}
+.el-icon-circle-close{
+    font-size: 14px;
+    position: absolute;
+    right: 30px;
+    height: 85% !important;
+    background: #fff;
+    padding: 0 0 0 4px;
+    margin-top: 1px;
+    top:0;
+    line-height:35px !important;
+    color:#ccc;
+
+}
+.link-model .el-pagination{
+    padding:10px 0 0;
+}
+.link-model .el-pagination__total{
+    left:33px !important;
+}
+.link-model .link-table .icon-eyes{
+    /*margin:2px 6px 0px 0px !important;*/
+    float: left;
+    margin-top: 2px;
+    margin-left: 14px;
+    position:static;
+}
+ .el-table .sort-caret.ascending{
+    border-bottom-color:#999;
+}
+ .el-table .sort-caret.descending{
+    border-top-color:#999;
 }

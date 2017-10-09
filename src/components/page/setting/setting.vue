@@ -6,6 +6,9 @@
      <!--       <el-menu  class="el-menu-demo" mode="horizontal" router>
                 <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
             </el-menu>-->
+            <el-row>
+
+            </el-row>
             <router-view></router-view>
         </div>
     </div>
@@ -19,7 +22,9 @@
             return {
                 url1:'static/navmenu.json',
                 navMenuData:[], //左侧导航数据
-                menusData:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}]
+                //menusData:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}]
+                menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
+
             }
         },
         created(){
@@ -27,7 +32,7 @@
         },
         methods: {
             getData(){
-                let self = this;
+                let self = this;                               
                 //获取左侧导航数据
                 // getNavMenu(self).then((res) => {
                 //     self.navMenuData = res.data.settings;

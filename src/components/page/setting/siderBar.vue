@@ -5,7 +5,8 @@
                 <template v-if="item.subs">
                     <el-submenu :index="item.index">
                         <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template>
-                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">{{ subItem.title }}
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">{{ subItem.title
+                            }}
                         </el-menu-item>
                     </el-submenu>
                 </template>
@@ -80,30 +81,32 @@
                 ]
             }
         },
-        computed:{
+        computed: {
             onRoutes(){
-                return this.$route.path.replace('/','');
+                return this.$route.path.replace('/', '');
             }
         }
     }
 </script>
 
 <style scoped>
-    .sidebar{
+    .sidebar {
         display: block;
         position: absolute;
         width: 250px;
         left: 0;
         top: 128px;
-        bottom:0;
+        bottom: 0;
         background: #2E363F;
     }
+
     .sidebar > ul {
-        height:100%;
+        height: 100%;
     }
-     .sidebar[data-v-1d68ccf6]{
-         top:0 !important;
-         left:0 !important;
-     }
+
+    .sidebar[data-v-1d68ccf6] {
+        top: 0 !important;
+        left: 0 !important;
+    }
 
 </style>

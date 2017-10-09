@@ -1,11 +1,11 @@
 <template>
     <div class="sidebar">
     <!-- <div>{{prop}}</div> -->
-    <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" unique-opened router>
-            <template v-for="item in navMenuProp">
+    <el-menu default-active="/setting/qualityMeasure" class="el-menu-vertical-demo" unique-opened router>
+      <!--      <template v-for="item in navMenuProp">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index">
-                        <!--  <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template> -->
+                        &lt;!&ndash;  <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template> &ndash;&gt;
                         <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template>
                         <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">{{ subItem.title }}
                         </el-menu-item>
@@ -16,7 +16,10 @@
                         <i :class="item.icon"></i>{{ item.title }}
                     </el-menu-item>
                 </template>
-            </template>
+            </template>-->
+            <el-menu-item index="/setting/qualityMeasure">
+                公路
+            </el-menu-item>
     </el-menu>
     </div>
 </template>
@@ -25,7 +28,7 @@
     export default {
         data() {
             return {
-               
+
             }
         },
         props:['navMenuProp'],

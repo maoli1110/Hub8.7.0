@@ -1,14 +1,14 @@
 <template>
     <div v-loading="qualityloading" class="quality-page">
 
-        <div class="" v-if="isQuality">
+        <div class="" v-show="isQuality">
             <div class="search-area">
                 <el-row>
-                    <el-menu  class="el-menu-demo" mode="horizontal" router>
+                   <!-- <el-menu  class="el-menu-demo" mode="horizontal" router>
                         <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-                    </el-menu>
-                    <el-col :span="24">
-                        <el-menu class="el-menu-demo" mode="horizontal" router>
+                    </el-menu>-->
+                    <el-col :span="24" class="sub-menus-style">
+                        <el-menu class="el-menu-demo sub-menus" mode="horizontal" router >
                             <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                         </el-menu>
                     </el-col>
@@ -16,26 +16,28 @@
                 <el-row class="quality-search" v-if="!isBMP">
                     <el-col :span="8">
                         <el-button type="primary" icon="plus" @click="addBPM">添加</el-button>
-                        <el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>
+                        <!--<el-button type="primary" style="position:relative"><span class="quality-del-icon" ></span><span style="margin-left:20px;">删除</span></el-button>-->
                     </el-col>
-                    <el-col :span="16" style="text-align:right">
-                        <el-input placeholder="请输入内容" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey"></el-input>
+                    <el-col :span="16" style="text-align:right;position:relative">
+
+                        <el-input placeholder="请输入流程名称搜索" class="quality-searInput" style="width:30%" icon="search" :on-icon-click="tableSearch" v-model="tableSearchKey" ></el-input>
                         <!--<el-button type="primary" icon="search" class="quality-searchBtn">搜索</el-button>-->
+                        <el-icon class="el-icon-circle-close" style="position:absolute"  v-show="tableSearchKey.length>0" @click.native="clearEvent"></el-icon>
                     </el-col>
                 </el-row>
             </div>
-            <el-table class="quality-table" :data="tableData.result" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)" >
-                <el-table-column width="50" type="selection" id="processId">
-                </el-table-column>
+            <el-table class="quality-table" :data="tableData.result" style="width: 100%" height="calc(100vh - 380px)" @sort-change = "sortChange">
+               <!-- <el-table-column width="50" type="selection" id="processId">
+                </el-table-column>-->
                 <el-table-column label="序号" width="80" type="index" >
                 </el-table-column>
-                <el-table-column prop="processName" width="" label="流程名称" sortable>
+                <el-table-column prop="processName" width="" label="流程名称" sortable >
                 </el-table-column>
                 <el-table-column prop="updateUser" width="120" label="更新人" sortable>
                 </el-table-column>
-                <el-table-column prop="updateTime" width="165" label="更新时间" sortable :formatter="formatTime">
+                <el-table-column prop="updateTime" width="165" label="更新时间" sortable :formatter="formatTime" >
                 </el-table-column>
-                <el-table-column prop="remark" label="备注"  sortable>
+                <el-table-column prop="remark" label="备注">
                 </el-table-column>
                 <el-table-column label="操作" width="135" @click.native="addnew" class="quality-page-tableIcon">
 
@@ -44,25 +46,25 @@
                    <!--     <el-icon class="icon-edit" @click.native="dialogFormVisible = true"></el-icon>
                         <el-icon class="icon-delete2" @click.native="open2(scope.$index,scope.row)"></el-icon>
                         <el-icon class="icon-document" @click.native="addBPM"></el-icon>-->
-                        <span class="quality-icon icon" @click="formModelList(scope.$index,scope.row)"></span>
-                        <span class="quality-icon icon"  @click="isBMPEditShow(scope.$index,scope.row)"></span>
-                        <span class="quality-icon icon" @click="open2(scope.$index,scope.row)"></span>
+                        <span class="quality-icon icon" title="编辑流程" @click="isBMPEditShow(scope.$index,scope.row)"></span>
+                        <span class="quality-icon icon" title="关联表单" @click="formModelList(scope.$index,scope.row)"></span>
+                        <span class="quality-icon icon" title="删除流程" @click="deleteProcess(scope.$index,scope.row)" ></span>
                     </template>
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 200]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                 </el-pagination>
             </div>
         </div>
-        <div v-if="isBMP" class="BMP-process">
+        <div v-show="isBMP" class="BMP-process addPage">
             <el-row class="BMP-info">
                 <el-col :span="24" class="pro-title">
                     工程名称
                 </el-col>
                 <el-col :span="6">
                     <span class="BMP-text">流程名称：</span>
-                    <el-input placeholder="请输入内容" v-model="flowName" style="width:40%;height:100px;"></el-input>
+                    <el-input placeholder="请输入流程名称" v-model="flowName" style="width:40%;height:100px;" @blur="messageValTips"></el-input>
                 </el-col>
                 <el-col :span="18">
                     <span class="BMP-text"  style="display:inline-block;vertical-align: top">备注：</span>
@@ -97,10 +99,10 @@
                                         <tr v-for="(rootInfo,index) in rootInfo" @click="processSetEdit($event,index)">
                                             <td width="50">{{index+1}}</td>
                                             <td width="210">
-                                                <el-input class="flowTitle" placeholder="请输入内容"></el-input>
+                                                <el-input class="flowTitle" placeholder="请输入步骤名" :maxlength=30 v-model="rootInfo.stepName"></el-input>
                                             </td>
                                             <td width="120" style="position:relative" class="list-isAll" >
-                                                <el-select :value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable">
+                                                <el-select :value="rootInfo.listVal" class="rootText" v-model="rootInfo.listVal" placeholder="请选择">
                                                     <el-option
                                                         v-for="item in rootInfo.option"
                                                         :key="item.value"
@@ -141,19 +143,20 @@
                     </el-col>
 
                 <el-col class="BMP-btns">
-                    <el-button type="primary" @click="BMPok">确定</el-button>
+                    <el-button type="primary" @click="BMPok" class="BMP-editOk">确定</el-button>
                     <el-button @click="BMPcancel">取消</el-button>
                 </el-col>
             </el-row>
         </div>
-        <div v-show="isBMPedit" class="BMP-process editPage">
+        <!--v-show="isBMPedit"-->
+        <div v-show="isBMPedit" class="BMP-process editPage" >
             <el-row class="BMP-info">
                 <el-col :span="24" class="pro-title">
                     工程名称
                 </el-col>
                 <el-col :span="6">
                     <span class="BMP-text">流程名称：</span>
-                    <el-input placeholder="请输入内容" v-model="flowNameEdit" style="width:40%;height:100px;"></el-input>
+                    <el-input placeholder="请输入流程名称" v-model="flowNameEdit" style="width:40%;height:100px;"  @blur="messageValTips"></el-input>
                 </el-col>
                 <el-col :span="18">
                     <span class="BMP-text"  style="display:inline-block;vertical-align: top">备注：</span>
@@ -188,10 +191,10 @@
                                 <tr v-for="(rootInfo,index) in rootInfoEdit.steps" @click="eidtProcessSetEdit($event,index)">
                                     <td width="50">{{index+1}}</td>
                                     <td width="210">
-                                        <el-input class="flowTitle" v-model="rootInfo.stepName" placeholder="请输入内容"></el-input>
+                                        <el-input class="flowTitle" v-model="rootInfo.stepName" :maxlength=30 placeholder="请输入步骤名"></el-input>
                                     </td>
                                     <td width="120" style="position:relative" class="list-isAll" >
-                                        <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"  :disabled="!rootInfo.isStepDisable" @change="changeEdit">
+                                        <el-select  class="rootText" value="rootInfo.listVal" v-model="rootInfo.listVal" placeholder="请选择"   @change="changeEdit">
                                             <el-option
                                                 v-for="item in rootInfo.option"
                                                 :key="item.value"
@@ -232,77 +235,87 @@
                 </el-col>
 
                 <el-col class="BMP-btns">
-                    <el-button type="primary" @click="eidtBMPok">确定</el-button>
-                    <el-button @click="eidtBMPcancel">取消</el-button>
+                    <el-button v-show="isLinkResult" type="primary" :disabled="true">确定</el-button>
+                    <el-button v-show="!isLinkResult" type="primary" @click="eidtBMPok">确定</el-button>
+                    <el-button type="default" @click="eidtBMPcancel">取消</el-button>
                 </el-col>
             </el-row>
         </div>
         <!--模态框(关联模型)-->
-        <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model">
-            <el-row>
-                <el-col :span="24" style="padding:10px 30px ;border-bottom:1px solid #ddd;">
-                <el-col :span="14">
-                    <label >表单目录：</label>
-                    <el-select  class="rootText" value="modelTypeVal" v-model="modelTypeVal" placeholder="请选择"  @change="formModelChange($event)">
-                        <el-option
-                            v-for="item in getformModelType"
-                            :key="item.modelId"
-                            :label="item.modelName"
-                            :value="item.modelId">
-                        </el-option>
-                    </el-select>
-                </el-col>
-                <el-col :span="10" style="text-align:right;padding:0;">
-                    <el-input placeholder="请选择日期" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch" style="width:100%">
-                    </el-input>
-                </el-col>
-            </el-col>
-            </el-row>
-            <el-row class="link-model-body">
-                <!--link-model-header-->
-                <el-col :span="24">
-                    <el-button type="primary" icon="plus" @click="BMPAddLink">
-                        添加关联</el-button>
-                    <el-button type="primary" style="position:relative" @click="BMPDeleteLink">
-                       <span class="quality-del-icon" style="left:15px;"></span> <span style="margin-left:15px;">删除关联</span></el-button>
-                </el-col>
-                <el-col :span="24" class="link-table" style="padding:0 40px;">
-                    <el-table :data="formModelData.result" style="width: 100%" :default-sort="{prop: '', order: 'descending'}"  class="link-modal-table" @select-all="modelSelectAll" @select="modelSelectRow" >
-                        <el-table-column width="50" type="selection">
-                        </el-table-column>
-                        <el-table-column label="序号" width="80" type="index">
-                        </el-table-column>
-                        <el-table-column label="表单名称" prop="formName">
-                        </el-table-column>
-                        <el-table-column label="操作" width="80" @click.native="addnew">
-                            <template scope="scope">
-                                <span class="icon-eyes" @click="formModelPriview(scope.$index,scope.row)"></span>
-                                <span class="quality-del-icon" style="position:static;background-position:-27px -30px;" @click="linkDelete(scope.$index,scope.row)"></span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-col>
-                <el-col :span="24"></el-col>
-            </el-row>
-            <div slot="footer" class="dialog-footer">
-                <el-pagination layout="prev, pager, next,jumper,total" :total="modelTotalNum" :page-size="7" @size-change="formModelSizeChange" @current-change="formModelSizeChange" :current-page="modelcur_page">
-                </el-pagination>
 
+        <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model" :close-on-click-modal="false" style="width:0;height:0;"></el-dialog>
+            <div v-show="dialogFormVisible" class="link-model">
+                <el-row>
+                    <el-col :span="24" style="padding:20px 30px 20px;border-bottom:1px solid #ddd;">
+                        <span style="font-weight:bolder">表单关联</span>
+                        <el-icon class="el-icon-close" style="float:right" @click.native="dialogFormVisible=false"></el-icon>
+                    </el-col>
+                    <el-col :span="24" style="padding:15px 30px;border-bottom:1px solid #ddd;">
+                        <el-col :span="14">
+                            <label style="vertical-align: middle;">表单目录：</label>
+                            <el-select  class="rootText" value="modelTypeVal" v-model="modelTypeVal" placeholder="请选择"  @change="formModelChange($event)">
+                                <el-option
+                                    v-for="item in getformModelType"
+                                    :key="item.modelId"
+                                    :label="item.modelName"
+                                    :value="item.modelId">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="10" style="text-align:right;padding:0;position:relative">
+                            <el-input placeholder="请输入表单名称搜索" class="formModelTable" icon="search" v-model="formModelVal" :on-icon-click="formModelSearch"  style="width:100%" >
+                            </el-input>
+                            <el-icon class="el-icon-circle-close" v-show="formModelVal.length>0" style="font-size:14px;position:absolute;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                        </el-col>
+                    </el-col>
+                </el-row>
+                <el-row class="link-model-body">
+                    <!--link-model-header-->
+                    <el-col :span="24">
+                        <el-button type="primary" icon="plus" @click="BMPAddLink">
+                            添加关联</el-button>
+                        <el-button type="primary" style="position:relative" @click="BMPDeleteLink">
+                           <span class="quality-del-icon" style="left:15px;"></span> <span style="margin-left:15px;">删除关联</span></el-button>
+                    </el-col>
+                    <el-col :span="24" class="link-table" style="padding:0 40px;">
+                        <el-table :data="formModelData.result" style="width: 100%" :default-sort="{prop: '', order: 'descending'}"  class="link-modal-table" @select-all="modelSelectAll" @select="modelSelectRow" >
+                            <el-table-column width="50" type="selection">
+                            </el-table-column>
+                            <el-table-column label="序号" width="80" type="index">
+                            </el-table-column>
+                            <el-table-column label="表单名称" prop="formName">
+                            </el-table-column>
+                            <el-table-column label="操作" width="80" @click.native="addnew">
+                                <template scope="scope">
+                                    <span class="icon-eyes" @click="formModelPriview(scope.$index,scope.row)"></span>
+                                    <span class="quality-del-icon" style="position:static;background-position:-27px -30px;" @click="linkDelete(scope.$index,scope.row)"></span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-col>
+                    <el-col :span="24"></el-col>
+                </el-row>
+                <div slot="footer" class="dialog-footer">
+                    <el-pagination layout="prev, pager, next,jumper,total" :total="modelTotalNum" :page-size="6" @size-change="formModelSizeChange" @current-change="formModelSizeChange" :current-page="modelcur_page">
+                    </el-pagination>
+
+                </div>
             </div>
-        </el-dialog>
+
+
         <!--模态框（收起算管理模块）-->
-        <el-dialog :visible.sync="linkTree" style="width:0px;"></el-dialog>
+        <el-dialog :visible.sync="linkTree" style="width:0;height:0;opacity:0;left:50%" :close-on-click-modal="false"></el-dialog>
         <div class="quality-dialog" v-show="linkTree">
             <div class="quality-dialog-header">
                 <el-row>
                     <el-col :span="24" style="padding:0px 30px 20px;border-bottom:1px solid #ddd;">
                         <span style="font-weight:bolder">表单关联</span>
-                        <el-icon class="el-icon-close" style="float:right" @click.native="linkTree=false"></el-icon>
+                        <el-icon class="el-icon-close" style="float:right" @click.native="linkTree=false,dialogFormVisible=true"></el-icon>
                     </el-col>
                     <el-col :span="24" style="padding:20px 40px;">
                         <el-col :span="15" >
                             <label style="font-size:14px;">表单目录：</label>
-                            <el-select value="modelTypeVal" v-model="modelTypeTreeVal" placeholder="请选择"  @change="formModelTreeChange($event)">
+                            <el-select value="modelTypeTreeValue" v-model="modelTypeTreeVal" placeholder="请选择"  @change="formModelTreeChange($event)" @visible-change="visibleEvent">
                                 <el-option  v-for="item in getformModelType"
                                             :key="item.modelId"
                                             :label="item.modelName"
@@ -310,8 +323,12 @@
                             </el-select>
                         </el-col>
                         <el-col :span="9" >
-                            <el-input placeholder="请选择日期" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%">
-                            </el-input>
+                            <div style="position:relative">
+                                <el-input placeholder="请输入关键字搜索
+" v-model="ztreeSearch" icon="search" class="qualityTree" :on-icon-click="qualitySearchTree" style="width:100%" >
+                                </el-input>
+                                <el-icon class="el-icon-circle-close" v-show="ztreeSearch.length>0" style="font-size:14px;position:absolute;right:30px;color:#ccc" @click.native="clearEvent"></el-icon>
+                            </div>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -322,20 +339,27 @@
                     <div class="simlue-checkbox"></div>&nbsp;&nbsp;全选
                     <div id="checkAllTrue" v-show="checkTrue"></div>
                     <div id="checkAllFalse" v-show="!checkTrue"></div>
-
                 </label>
                 <div class="quality-collage"><span class="icon-cut icon-plus" id="expandBtn"></span><span id="collapseBtn" class="icon-plus"></span></div>
             </div>
             <ul class="ztree" id="lineTree"></ul>
             <div class="quality-dialog-footer">
                 <el-button type="primary" @click="formModelLinkOk">确定</el-button>
-                <el-button type="primary" @click="linkTree=false">取消</el-button>
+                <el-button type="default" @click="linkTree=false,dialogFormVisible=true">取消</el-button>
             </div>
             <!--<ul class="ztree" id="lineTree"></ul>-->
         </div>
-        <el-dialog :visible.sync="dialogLinkPriview" class="dialogPriview">
+
+
+        <div v-show="dialogLinkPriview" class="dialogPriview quality-priveiw" style="padding-bottom:20px">
+            <el-row>
+                <el-col :span="24" style="padding:15px 30px 2px;">
+                    <!--<span style="font-weight:bolder;color:#fff;">表单预览</span>-->
+                    <el-icon class="el-icon-close" style="float:right;color:#e6e6e6;" @click.native="dialogLinkPriview=false"></el-icon>
+                </el-col>
+            </el-row>
             <iframe :src="priviewUrl"  scrolling="no" frameborder="0"></iframe>
-        </el-dialog>
+        </div>
     </div>
 </template>
 <script>
@@ -346,9 +370,9 @@ let editIsChange = false;
 let key;
 let type = '';
 let operObj = '';
-let level=""
+let level=1
 
-let maxLevel;//树结构的最大展开层
+let maxLevel =-1;//树结构的最大展开层
 let updateProcessId;
 //表格传参
 let processId;
@@ -400,6 +424,13 @@ let getFormPreviewParams ={
 let  isChecked = 0;
 let nodes;
 let checkedCount = 0;
+let errorMessage = false;
+let currentSelectVal="";
+let selectChangeStatus=false;
+let publickModelId = "";
+let deleteParams = false;
+let isUpdateStatus = false;
+let arrList = [];
 import "static/css/setting-qualityMeasure.css";
 //import "static/js/ztree/css/zTreeStyle_new.css";
 //    import "static/ztree/css/demo.css";
@@ -428,7 +459,7 @@ export default {
                 view: {
                     selectedMulti: false,
                     showIcon:false,
-                    addDiyDom: this.addDiyDom,
+                    addHoverDom: this.addDiyDom,
                 },
                 check: {
                     enable: true,
@@ -443,30 +474,22 @@ export default {
                     },
                     key: {
                         name: "formName",
-//                        nocheck:"isForm",
+                        title:"tips"
                     }
                 },
                 callback: {
+                    onCollapse: function (event, treeId, treeNode) {
+                        level = treeNode.level;
+                    },
+                    onExpand: function (event, treeId, treeNode) {
+                        level = treeNode.level;
+                    },
                     beforeCheck: this.beforeCheck,
                     onCheck: this.onZtreeFormModelCheck
                 }
             },
 
-            zNodes: [
-                /*{ id: 1, pId: 0, name: "随意勾选 1", open: true },
-                { id: 11, pId: 1, name: "随意勾选 1-1" },
-                { id: 12, pId: 1, name: "随意勾选 1-2", open: true },
-                { id: 121, pId: 12, name: "随意勾选 1-2-1" },
-                { id: 122, pId: 12, name: "随意勾选 1-2-2" },
-
-                { id: 2, pId: 0, name: "禁止勾选 2", open: true },
-                { id: 21, pId: 2, name: "禁止勾选 2-1" },
-                { id: 22, pId: 2, name: "禁止勾选 2-2" },
-                { id: 221, pId: 22, name: "禁止勾选 2-2-1" },
-                { id: 222, pId: 22, name: "禁止勾选 2-2-2" },
-                { id: 23, pId: 2, name: "禁止勾选 2-3" }*/
-            ],
-            url: 'static/vuetable.json',
+            zNodes: [],
             tableData: [],//流程列表
             cur_page: 1,
             tableSearchKey:"",
@@ -474,14 +497,7 @@ export default {
             menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
             totalNumber:0,
             menusData: [{ name: "流程设置", routerDump: 'qualityMeasure' }, { name: '工程模板', routerDump: 'proTemplate' }, { name: '表单管理', routerDump: 'formManage' }],
-            rootInfo: [
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}] ,listVal:"",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false ,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[]},
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"",listRolesId:[] },
-                { addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:"" ,listRolesId:[]}
-            ],
+            rootInfo: [],
             flowNameEdit:"",
             flowRemarkEdit:"",
             rootInfoEdit:[],
@@ -497,6 +513,7 @@ export default {
             linkTree: false,
             flowName: "",//流程名称
             flowRemark:"",//备注名称
+            stepNameEdit:"",
             checkTrue: false,
             modelList:"",
             //关联表单模板
@@ -506,23 +523,27 @@ export default {
             modelTotalNum:1,
             modelcur_page:1,
             formModelVal:"",
-            modelTypeTreeVal:"",//表单模型树model
-//            priviewUrl:"http://192.168.13.215:8081/pdsdoc/viewDispatcher/W3sidGltZXN0YW1wIjoxNDk4NTUwODM2MDQ3LCJmaWxlTmFtZSI6IsnovMax5Lj8yfPF-x-rHtIiwidXVpZCI6ImU1NjMzYzUwOTU1OTQ3NDg5MjhmN2Y0NTZmYTE5MzczIn1d/KkXDP0CUtlf8VKwo-x-TK3oDb8HN0uN61JTa5JX3iQg-x-fUhhY-x-nDOgmCSvWQYTel70A3AcZE0OYeZ-WgL4arQnmA",
-            // isStepDisable:false
-            priviewUrl:""
+            modelTypeTreeVal:this.modelTypeVal,//表单模型树model
+            priviewUrl:"",
+            isLinkResult:"",//是否被关联
+            clearKey:false,//清除关键字
+            totalPage:10,
+            ztreeSearch:""
         }
     },
     created() {
         curretPage = !curretPage?1:curretPage;
         pageSize = !pageSize?10:pageSize;
-        sortField = !sortField?"":sortField;
-        sortType = !sortType?"asc":sortType;
+        sortField = !sortField?"updateTime":sortField;
+        sortType = !sortType?"desc":sortType;
         tableParams.page= curretPage;
         tableParams.searchKey = this.tableSearchKey;
         tableParams.pageSize = pageSize;
         tableParams.sortType = sortType;
         tableParams.sortField = sortField;
         this.getData(tableParams);
+//        this.beforeRouteEnter();
+
     },
     mounted() {
         $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
@@ -531,49 +552,121 @@ export default {
         $("#expandBtn").bind("click",  {type:"expand",operObj:'lineTree'}, this.expandNode);
         $("#collapseBtn").bind("click", {type:"collapse",operObj:'lineTree'}, this.expandNode);
         $('.qualityTree input').bind('keydown',this.qualitySearchTree);
+        $('.formModelTable input').bind('keydown',this.formModelSearch);
+        $('.quality-searInput input').bind('keydown',this.tableSearch);
+        if(this.$route.path=='/setting/qualityMeasure'){
+            $('.sub-menus li').removeClass('is-active');
+            $('.sub-menus li').eq(0).addClass('is-active');
+            $('.nav-menu li:last').addClass('is-active');
+            console.log(this.$route.path);
+        }else{
+            $('.nav-menu li:last').removeClass('is-active');
 
+        }
     },
     methods: {
+        clearEvent(){//清除表格元素
+            if(this.formModelVal){
+                this.formModelVal ='';
+            }else if(this.tableSearchKey){
+                this.tableSearchKey = "";
+            }else if(this.ztreeSearch){
+                this.ztreeSearch =""
+            }
+        },
         changeEdit(value){
-            console.info(value)
+          /*  if(value==0){
+                this.rootInfoEdit.steps[editIndexTable].isAll = true;
+            }else{
+                this.rootInfoEdit.steps[editIndexTable].isAll = false;
+            }
+            console.info(value,'value值变化的时候')*/
+        },
+        //提示框
+        messageBox(message){
+            this.$alert(message, {
+                confirmButtonText: '确定',
+            });
+        },
+        messageTips() {
+            this.$message({
+                message: '请输入30个字符以内，超出部分不生效',
+                type: 'warning'
+            });
+        },
+        messageValTips(){
+            if(this.flowName.length>30){
+                this.messageTips();
+                this.flowName =this.flowName.substr(0,30);
+            }
+            if(this.flowNameEdit.length>30){
+                this.messageTips();
+                this.flowNameEdit =this.flowNameEdit.substr(0,30);
+            }
+        },
+        beforeRouteEnter () {
+//            next(vm => vm.from = from);
+            console.info(this.$route.name,'from')
         },
         getData(tableParam){//默认数据
             //表单列表
+            console.log(tableParam);
+//            this.tableData =[];
             getProcessList(tableParam).then((res)=>{
                 //console.info(res.data.result,'我是流程列表数据')
                 this.tableData = res.data;
                 this.totalNumber = res.data.pageInfo.totalNumber;
+                this.totalPage = res.data.pageInfo.pageSize;
+            }).catch(function(error){
+                console.info(error)
+                this.messageBox(error.response.data.message);
             })
-            //获取角色名称
+            /*//获取角色名称
             getRoleInfo().then((res)=>{
                 this.rootList = res.data;
-            });
-          /*  //更新的模板列表
-            updateProcessRelForm({addFormIds:["LBBG0004","LBBG0005"],delFormIds:["LBBG0004","LBBG0005"],modelId:"2-2",processId:40}).then((res)=>{
-                console.info(res.data,'更新模板列表')
+            }).catch(function(error){
+                self.messageBox(error.response.data.message);
+
             });*/
-
-
+        },
+        sortChange(column){
+            tableParams.sortField = column.prop;
+            if(column.order=='ascending'){
+                tableParams.sortType="asc";
+            }else if(column.order=='descending'){
+                tableParams.sortType="desc";
+            }
+            getProcessList(tableParams).then((res)=>{
+                this.tableData = res.data;
+                this.totalNumber = res.data.pageInfo.totalNumber;
+                this.totalPage = res.data.pageInfo.pageSize;
+             }).catch(function(error){
+                this.messageBox(error.response.data.message);
+            })
         },
         change() {//文本框输入数据限制
 			var txtVal = this.flowRemark.length;
 			this.remainLength =txtVal;
 		},
-        tableSearch(){//搜索功能
-            tableParams.searchKey = this.tableSearchKey;
-            this.getData(tableParams);
+        tableSearch(event){//搜索功能
+            console.log(event.type);
+
+            if(event.type=='click' || event.keyCode==13){
+                tableParams.searchKey = this.tableSearchKey;
+                this.getData(tableParams);
+            }
+
         },
         handleCurrentChange(val) {//显示第几页
             this.cur_page = val;
             curretPage= this.cur_page;
             tableParams.page = curretPage;
-
+            console.log(123)
             this.getData(tableParams);
         },
         handleSizeChange(val) {//每页显示多少条
-//            console.log(`每页 ${val} 条`);
+            console.log(`每页 ${val} 条`);
             tableParams.pageSize = val;
-
             this.getData(tableParams);
         },
         formatter(row, column) {
@@ -599,25 +692,48 @@ export default {
             this.$message.error('删除第' + (index + 1) + '行');
         },
         //新增页面
-        open2(index,row) {
-            console.info(row.remark)
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                //删除流程
-                removeProcessInfo({processId:row.processId}).then((res)=>{
-                    this.$message({
-                        message: '删除成功',
-                        type: 'success'
+        deleteProcess(index,row) {
+            isUsedProcess({processId:row.processId}).then((res)=>{
+                this.isLinkResult = res.data
+                if(this.isLinkResult){
+                    this.messageBox("相关表单正在使用，暂时不可删除流程");
+                    return false
+                }else{
+                    let self =this;
+                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                        closeOnClickModal:false
+                    }).then(() => {
+                        //删除流程
+                    removeProcessInfo({processId:row.processId}).then((res)=>{
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                        this.tableData.result.splice(index,1);
+                        // 删除后总条数减1
+                        getProcessList(tableParams).then((res)=>{
+                            this.tableData = res.data;
+                            this.totalNumber = res.data.pageInfo.totalNumber;
+                            this.totalPage = res.data.pageInfo.pageSize;
+                        }).catch(function(error){
+                            console.info(error)
+                            self.messageBox(error.response.data.message);
+                        })
                     });
-                    this.tableData.result.splice(index,1);
-                });
-            }).catch(() => {
+                }).catch(() => {
 
-            });
-        },
+                });
+            }
+        }).catch(function(error){
+                this.messageBox(error.response.data.message);
+        });
+            console.info(row.remark)
+
+    },
+
         //模态框
         handleClose(done) {
             this.$confirm('确认关闭？')
@@ -633,33 +749,41 @@ export default {
                 this.formModelData = res.data;
                 this.modelTotalNum = res.data.pageInfo.totalNumber;
                 console.info(this.modelTotalNum)
-             });
+             }).catch(function(error){
+                this.messageBox(error.response.data.message);
+            });
         },
         //编辑表单
         formModelList(index,row){
             processId = row.processId;
             this.dialogFormVisible = true;
-            //流程是否被关联
-            isUsedProcess({processId:processId}).then((res)=>{
-//                console.info(res.data);
 
-            });
             //表单类型   formModelParams
-            getFormModelTypeList({belong:0}).then((res)=>{
+            getFormModelTypeList({belong:0,sortType:"desc"}).then((res)=>{
+                this.modelTypeVal = res.data[0].modelId;
                 this.getformModelType = res.data;
+
                 //console.info(res.data,'模板列表');
                 formModelParams.processId = processId;
                 formModelParams.modelId = this.getformModelType[0].modelId;
                 formModelParams.page =  !formModelParams.page?1:formModelParams.page;
                 this.formModelType(formModelParams)
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
             });
         },
         //表单模板数据变更
         formModelChange(modelId){
+            console.info(modelId,'modelId');
+//            切换目录后，档期内目录以勾选的表单将取消，是否确认切换目录
             //关联表单数据
-            formModelParams.modelId = modelId;
-            formModelParams.pageSize =  !formModelParams.pageSize?7:formModelParams.pageSize;
-            this.formModelType(formModelParams);
+
+                formModelParams.modelId = modelId;
+                formModelParams.pageSize =  !formModelParams.pageSize?6:formModelParams.pageSize;
+                this.formModelType(formModelParams);
+
+
+
         },
         //表单模板分页数据展示
         formModelSizeChange(val){
@@ -668,9 +792,12 @@ export default {
             console.info(val,'显示的是第几页信息')
         },
         //表单查询
-        formModelSearch(){
-            formModelParams.searchKey = this.formModelVal;
-            this.formModelType(formModelParams);
+        formModelSearch(event){
+//            console.info(this.formModelVal,'不能执行删除')
+            if(event.type=='click' || event.keyCode == 13){
+                formModelParams.searchKey = this.formModelVal;
+                this.formModelType(formModelParams);
+            }
         },
         //关联表单删除
         modelSelectAll(selection){
@@ -705,22 +832,36 @@ export default {
             console.info(modelSelectionChange,'modelSelectionChange')
         },
         formModelTreeChange(modelId){
+            updateProcessRelFormParams.delFormIds = [];
+            updateProcessRelFormParams.addFormIds = [];
             formModelParams.modelId = modelId;
+            publickModelId = modelId;
+            console.log(publickModelId,'publickModelId');
             getFormProcessParams.modelId = formModelParams.modelId;
-            this.zTreeFiledProcess(getFormProcessParams);
-
+            console.log(updateProcessRelFormParams,'change');
+            /*    if(!updateProcessRelFormParams.addFormIds.length && !updateProcessRelFormParams.delFormIds.length){
+                console.log(getFormProcessParams);
+                this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+            }*/
+        },
+        visibleEvent(val){
+            currentSelectVal = val;
         },
         formModelPriview(idnex,row){
             //获取表单预览地址
-            this.dialogLinkPriview = true;
+            this.priviewUrl = "";
             getFormPreviewParams.modelId = formModelParams.modelId;
             getFormPreviewParams.formId = row.formId;
             getFormPreview(getFormPreviewParams).then((res)=>{
-                this.priviewUrl = res.data;
-                console.info( this.priviewUrl)
-            }).catch(function (error) {
-                alert(error.message);
-            });;
+                if(res.data){
+                    this.dialogLinkPriview = true;
+                    this.priviewUrl = res.data;
+                }else{
+                    this.messageBox('暂时不支持预览')
+                }
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
+            });
 
             console.log(row.formId,'formId');
         },
@@ -734,6 +875,7 @@ export default {
                 objTr[i].style.background = "#fff ";
             }
             event.currentTarget.style.background = "#f5f5f5";
+            console.info(indexTable,this.rootInfo)
         },
         //流程管理文件
         eidtProcessSetEdit(event, index) {
@@ -745,31 +887,44 @@ export default {
                 objTr[i].style.background = "#fff ";
             }
             event.currentTarget.style.background = "#f5f5f5";
+
         },
         addBPM() {
             this.isBMP = true;
-            this.isQuality = false
+            this.isQuality = false;
+            this.rootInfo = [];
+            //获取角色名称
+            getRoleInfo().then((res)=>{
+                this.rootList = res.data;
+            }).catch(function(error){
+                self.messageBox(error.response.data.message);
 
+            });
+            for (var i = 0; i < 6; i++) {
+                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部" ,listRolesId:[],stepName:""})
+            }
+            for(let i = 0;i<this.rootInfo.lenght;i++){
+                console.info(this.rootInfo[i].stepName,'stepName')
+                this.rootInfo[i].stepName = "";
+            }
         },
         //删除行
         deleteHandle(index) {
-            if (this.rootInfo.length > 1) {
+            console.info(index,'index')
+            if (this.rootInfo.length >0) {
                 this.rootInfo.splice(index, 1)
             }
         },
         editDeleteHandle(index){//编辑工程删除功能
-            if(this.rootInfoEdit.steps.length>1){
+            if(this.rootInfoEdit.steps.length>0){
                 this.rootInfoEdit.steps.splice(index, 1)
             }
         },
         //添加角色
         addRoles(index) {
-            for (let i = 0; i < this.rootInfo.length; i++) {
-                if (this.rootInfo[i].addRolesLine.length < 1) {
-                    this.rootInfo[i].isStepDisable = false;
-                } else {
-                    this.rootInfo[i].isStepDisable = true;
-                }
+            if(this.rootInfo.length==0){
+                this.messageBox('未设置流程步骤,请返回设置流程步骤');
+                return false;
             }
             if (this.rootInfo[indexTable].addRolesLine.indexOf(this.rootList[index].roleName) == -1 && this.rootInfo[indexTable].addRolesLine.length < 15 && isChange) {
                 this.rootInfo[indexTable].addRolesLine.push(this.rootList[index].roleName);
@@ -780,12 +935,9 @@ export default {
         },
         //编辑添加角色
         eidtAddRoles(index){
-            for (let i = 0; i <this.rootInfoEdit.steps.length; i++) {
-                if (this.rootInfoEdit.steps[i].roleIds.length <1) {
-                    this.rootInfoEdit.steps[i].isStepDisable = false;
-                } else {
-                    this.rootInfoEdit.steps[i].isStepDisable = true;
-                }
+            if(this.rootInfoEdit.steps.length==0){
+                this.messageBox('未设置流程步骤,请返回设置流程步骤');
+                return false;
             }
             if (this.rootInfoEdit.steps[editIndexTable].roleIds.indexOf(this.rootList[index].roleId) == -1 && this.rootInfoEdit.steps[editIndexTable].roleIds.length < 15 && editIsChange) {
                 this.rootInfoEdit.steps[editIndexTable].roleIds.push(this.rootList[index].roleId);
@@ -794,111 +946,201 @@ export default {
         },
         //关闭标签
         closeSelf(index) {
-            this.rootInfo[indexTable].addRolesLine.splice(index, 1)
-            this.rootInfo[indexTable].listRolesId.splice(index, 1)
-            listParams.roleIds.splice(index,1);
-            for (let i = 0; i < this.rootInfo.length; i++) {
-                if (this.rootInfo[i].addRolesLine.length < 1) {
-                    this.rootInfo[i].isStepDisable = false;
-                } else {
-                    this.rootInfo[i].isStepDisable = true;
-                }
+            if(listParams.roleIds){
+                this.rootInfo[indexTable].addRolesLine.splice(index, 1)
+                this.rootInfo[indexTable].listRolesId.splice(index, 1)
+                listParams.roleIds.splice(index,1);
             }
         },
         //编辑关闭标签
         eidtCloseSelf(index){
+
             this.rootInfoEdit.steps[editIndexTable].roleIds.splice(index, 1)
             this.rootInfoEdit.steps[editIndexTable].rootEditArr.splice(index, 1);
-             for (let i = 0; i <this.rootInfoEdit.steps.length; i++) {
-                 if (this.rootInfoEdit.steps[i].roleIds.length <=1) {
-                     this.rootInfoEdit.steps[i].isStepDisable = false;
-                 } else {
-                     this.rootInfoEdit.steps[i].isStepDisable = true;
-                 }
-             }
+
+//            console.info(this.rootInfoEdit.steps[editIndexTable],'splice')
         },
         //添加步骤
         addStep() {
             if (this.rootInfo.length < 15) {
-                this.rootInfo.push({ addRolesLine: [] })
+                this.rootInfo.push({ addRolesLine: [], isStepDisable: false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部",listRolesId:[] ,stepName:""})
             }
         },
         addStepEdit(){
             if (this.rootInfoEdit.steps.length < 15){
-                this.rootInfoEdit.steps.push({stepName:"",isAll:"",rootEditArr:[],roleIds:[],isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'随便'}],listVal:""})
+                this.rootInfoEdit.steps.push({stepName:"",isAll:"true",rootEditArr:[],roleIds:[],isStepDisable:false,option:[{value:0,label:'全部'},{value:1,label:'任意'}],listVal:"全部"})
             }
         },
         BMPcancel() {
             this.isBMP = false;
-            this.isQuality = true
-            for (let i = 0; i < this.rootInfo.length; i++) {
-                this.rootInfo[i].addRolesLine = [];
-            }
-            this.rootInfo.splice(6, this.rootInfo.length - 1)
-        },
-        eidtBMPok(){
-            this.isBMP = false;
             this.isQuality = true;
-            this.isBMPedit = false;
+            this.flowName ="";
+            this.flowRemark="";
+            for (let i = 0; i < this.rootInfo.length; i++) {
+                this.rootInfo[i].stepName = "";
+            }
+        },
+
+        eidtBMPok(){
+            let self =this;
+            let newSteps = [];
+            let that = this;
+            let isEmptyStatus = 0;
+
             this.flowNameEdit = !this.flowNameEdit?"":this.flowNameEdit;
             this.flowRemarkEdit = !this.flowRemarkEdit?"":this.flowRemarkEdit;
-            //console.log(this.flowNameEdit)
             this.rootInfoEdit.processName = this.flowNameEdit;
             this.rootInfoEdit.remark = this.flowRemarkEdit;
-            for(let m = 0;m<this.rootInfoEdit.steps.length;m++){//清理多余的步骤字段
-                delete this.rootInfoEdit.steps[m].rootEditArr;
-                delete this.rootInfoEdit.steps[m].option;
-                delete this.rootInfoEdit.steps[m].isStepDisable;
-                delete this.rootInfoEdit.steps[m].listVal;
-
-                let that = this;
-                $('.editPage tbody tr').map(function (i,val) {
-                    if($(this).find('input[icon=caret-top]').val()=='全部'){
-                        that.rootInfoEdit.steps[m].isAll = true;
-                    }else{
-                        that.rootInfoEdit.steps[m].isAll  = false;
-                    }
-                })
+            for(let m = 0;m<this.rootInfoEdit.steps.length;m++){//步骤名是否是全空的
+                 if(this.rootInfoEdit.steps[m] && this.rootInfoEdit.steps[m].stepName=="" && this.rootInfoEdit.steps[m].rootEditArr.length==0){
+                     isEmptyStatus++;
+                 }
             }
-            console.log(this.rootInfoEdit,'传值问题');
-            updateProcessInfo({processId:updateProcessId,ProcessAddParam:this.rootInfoEdit}).then((res)=>{
-                console.info(res.data)
+            if(isEmptyStatus==this.rootInfoEdit.steps.length){
+                this.messageBox('未设置流程步骤,请返回设置流程步骤');
+                return false;
+            }
+            for(let m = 0;m<this.rootInfoEdit.steps.length;m++){
+                if(this.rootInfoEdit.steps[m].stepName.length !=0 && this.rootInfoEdit.steps[m].rootEditArr.length ==0 ){
+                    self.messageBox('步骤名或者关联角色不能为空');
+                    return false;
+                }else if(this.rootInfoEdit.steps[m].stepName.length ==0 && this.rootInfoEdit.steps[m].rootEditArr.length !=0 ){
+                    self.messageBox('步骤名或者关联角色不能为空');
+                    return false;
+                }else if(this.rootInfoEdit.steps[m].stepName.length !=0 && this.rootInfoEdit.steps[m].rootEditArr.length !=0 ){
+                    newSteps.push(this.rootInfoEdit.steps[m])
+                }
+            }
+
+            this.rootInfoEdit.steps =newSteps;//排除空数组并重组数组
+
+            for(let m = 0;m<this.rootInfoEdit.steps.length;m++){//清理多余的步骤字段
+                if(this.rootInfoEdit.steps[m].stepName!= "" && this.rootInfoEdit.steps[m].rootEditArr.length !=0){
+                    isUpdateStatus = true;
+                }else{
+                    isUpdateStatus =false;
+                }
+            }
+            if(!isUpdateStatus){
+//                console.info('数据全为空')
+            }
+            $('.editPage .table-step tbody tr').map(function (i,val) {
+                if($(this).find('.addRoot ').length !==0 && $(this).find('.flowTitle').find('input[type="text"]').val() !=""){
+                    if($(this).find('input[icon=caret-top]').val()=='全部' ){
+                        that.rootInfoEdit.steps[i].isAll = true;
+                    }else if($(this).find('input[icon=caret-top]').val()=='任意' ){
+                        that.rootInfoEdit.steps[i].isAll  = false;
+                    }
+                }else{
+                    return false;
+                }
             })
+
+            for(let i=0;i<this.rootInfoEdit.steps.length;i++){//排除步骤名重名
+                for(let j = 0;j<this.rootInfoEdit.steps.length;j++){
+                    if( this.rootInfoEdit.steps[i].stepName === this.rootInfoEdit.steps[j].stepName && i!==j){
+                        self.messageBox('步骤名不能重复');
+                        return false;
+                    }
+                }
+            }
+            for(let i= 0;i<this.rootInfoEdit.steps.length;i++){
+                if(isUpdateStatus ){
+                    delete this.rootInfoEdit.steps[i].rootEditArr;
+                    delete this.rootInfoEdit.steps[i].option;
+                    delete this.rootInfoEdit.steps[i].isStepDisable;
+                    delete this.rootInfoEdit.steps[i].listVal;
+                }else{
+                    return false;
+                }
+
+            }
+            if($('.editPage .table-step tbody tr') !=0){
+                if(this.rootInfoEdit.steps.length==0){//阻止没有步骤名接口报错
+                    self.messageBox('未设置流程步骤,请返回设置流程步骤');
+                    return false;
+                }
+                updateProcessInfo({processId:updateProcessId,ProcessAddParam:this.rootInfoEdit}).then((res)=>{
+                    this.isBMP = false;
+                    this.isQuality = true;
+                    this.isBMPedit = false;
+                    //添加流程成功后给出的提示
+                    this.$message({
+                        message: '编辑成功！',
+                        type: 'success'
+                    });
+                    getProcessList(tableParams).then((res)=>{
+                        //console.info(res.data.result,'我是流程列表数据')
+                        this.tableData = res.data;
+                        this.totalNumber = res.data.pageInfo.totalNumber;
+                        //添加流程成功后给出的提示
+                        this.$message({
+                            message: '编辑成功！',
+                            type: 'success'
+                        });
+
+                    }).catch(function(error){
+                        this.messageBox(error.response.data.message);
+                    })
+                }).catch(function(error){
+                    self.messageBox(error.response.data.message);
+                })
+            }else{
+                self.messageBox("未设置流程步骤,请返回设置流程步骤");
+            }
         },
         eidtBMPcancel(){
             this.isBMP = false;
             this.isQuality = true;
             this.isBMPedit = false;
         },
+        incidenceRel(processId){
+            isUsedProcess({processId:processId}).then((res)=>{
+                this.isLinkResult = res.data;
+                if(this.isLinkResult){
+                    this.messageBox("相关表单正在使用，暂时不可更改流程");
+                }
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
+            });
+        },
         isBMPEditShow(index,row){
-
             this.isBMPedit = true;
             this.isBMP = false;
             this.isQuality = false;
+            let self =this;
+            //获取角色名称
+            getRoleInfo().then((res)=>{
+                this.rootList = res.data;
+            }).catch(function(error){
+                self.messageBox(error.response.data.message);
+
+            });
             updateProcessId = row.processId;
+            //流程是否被关联
+             this.incidenceRel(updateProcessId);//判断流程设置的关联关系
              getProcessInfo({processId:row.processId}).then((res)=>{
                 this.rootInfoEdit = res.data;
                 this.flowNameEdit = res.data.processName;
                 this.flowRemarkEdit = res.data.remark;
                 for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
+                    this.$set(this.rootInfoEdit.steps[j],'option',[{value:0,label:'全部'},{value:1,label:'任意'}]);
+                    this.$set(this.rootInfoEdit.steps[j],'listVal',"");
+                    this.$set(this.rootInfoEdit.steps[j],'rootEditArr',[]);
+                    this.$set(this.rootInfoEdit.steps[j],'isStepDisable',false);
+
                     if (this.rootInfoEdit.steps[j].roleIds.length <=1) {
                         this.rootInfoEdit.steps[j].isStepDisable = false;
-                        console.info(this.rootInfoEdit.steps[j].roleIds.length)
                     } else if(this.rootInfoEdit.steps[j].roleIds.length >1){
                         this.rootInfoEdit.steps[j].isStepDisable = true;
                     };
 
-                    this.rootInfoEdit.steps[j].rootEditArr = [];
-                    this.rootInfoEdit.steps[j].option = [{value:0,label:'全部'},{value:1,label:'随便'}];
-              /*      if(this.rootInfoEdit.steps[j].isAll){
-                        this.rootInfoEdit.steps[j].listVal = "全部";
+                    if(this.rootInfoEdit.steps[j].isAll){
+                       this.rootInfoEdit.steps[j].listVal="全部";
                     }else{
-                        this.rootInfoEdit.steps[j].listVal = "随意";
-                    }*/
-                    this.rootInfoEdit.steps[j].listVal ="";
-
+                        this.rootInfoEdit.steps[j].listVal="任意";
+                    }
                 }
-                console.log( this.rootInfoEdit.steps);
                 for (let i = 0;i<this.rootList.length;i++){
                     for (let j = 0;j<this.rootInfoEdit.steps.length;j++){
                         for(let l= 0;l<this.rootInfoEdit.steps[j].roleIds.length;l++){
@@ -908,13 +1150,14 @@ export default {
                         }
                     }
                 }
-                console.info(this.rootInfoEdit,'整体结构');
-             })
+             }).catch(function(error){
+                self.messageBox(error.response.data.message);
+            })
         },
         flowNameAlert() {//流程名称弹窗
-            this.$confirm('未填写流程名称,请返回输入流程名称?', '保存提示', {
+            errorMessage = true;
+            this.$alert('未填写流程名称,请返回输入流程名称?', '保存提示', {
                 confirmButtonText: '确定',
-                cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                 this.isBMP = true
@@ -923,9 +1166,9 @@ export default {
             });
         },
         addRulesRoot() {//流程步骤弹窗
-            this.$confirm('未设置流程步骤,请返回流程步骤?', '保存提示', {
+            errorMessage = true;
+            this.$alert('未设置流程步骤,请返回流程步骤?', '保存提示', {
                 confirmButtonText: '确定',
-                cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                 this.isBMP = true
@@ -938,12 +1181,12 @@ export default {
 //           console.info($(event))
         },
         deleteLinkModal() {//删除关联模型
+            let self =this;
             this.$confirm('所选表单将解除关联，是否确认?', '删除表单关联', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                console.info(processId)
                 updateProcessRelFormParams.processId = processId;
                 updateProcessRelFormParams.modelId = formModelParams.modelId ;
                 updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
@@ -951,66 +1194,119 @@ export default {
                         message: '删除关联成功',
                         type: 'success'
                     });
-                    this.formModelData.result.splice(0,updateProcessRelFormParams.delFormIds.length);
-                });
-            }).catch(() => {
-            });
+                    getProcessRelFormList(formModelParams).then((res)=>{//重新刷新关联表单数据列表
+                        this.formModelData = res.data;
+                        this.modelTotalNum = res.data.pageInfo.totalNumber;
+                    }).catch(function(error){
+                        self.messageBox(error.response.data.message);
+                    });
+                }).catch(function(error){
+                     self.messageBox(error.response.data.message);
+                    getProcessRelFormList(formModelParams).then((res)=>{
+                        self.formModelData = res.data;
+                        self.modelTotalNum = res.data.pageInfo.totalNumber;
+                    }).catch(function(error){
+                        self.messageBox(error.response.data.message);
+                    });
+                 });
+            })
         },
         selectIsAll(){
-            console.info(this.value)
         },
         BMPok() {
+            let self = this;
             this.flowName = !this.flowName?'':this.flowName;
             this.flowRemark = !this.flowRemark?'':this.flowRemark;
             list.remark = this.flowRemark;
             list.processName = this.flowName;
 
-            let tootipsAlert = this.flowNameAlert;
-            if (!this.flowName.length) {
-                this.flowNameAlert();
-            }
+            let tootipsAlert = this.addRulesRoot;
             let rolesId = this.rootInfo;
             list.steps =[];//清空步骤  避免重复
-            $('.table-step tbody tr').map(function (i,val) {
-                listParams = {};
-
-                if ($(this).find('input').val() && $(this).find('.addRoot').length == 0) {
-                    tootipsAlert();
-                } else if (!($(this).find('input').val()) && $(this).find('.addRoot').length != 0) {
-                    tootipsAlert();
-                } else if ($(this).find('input').val() && $(this).find('.addRoot').length != 0) {
-                    listParams.roleIds = rolesId[i].listRolesId;
-                    listParams.stepName = $(this).find('input').val();
-                    if($(this).find('input[icon=caret-top]').val()=='全部'){
-                        listParams.isAll = true;
-                    }else{
-                        listParams.isAll = false;
+            if (!this.flowName.length) {
+                this.flowNameAlert();
+            }else if($('.addPage .table-step tbody tr').length==0){
+                this.messageBox('未设置流程步骤,请返回设置流程步骤')
+            }else{
+                let self = this;
+                $('.addPage .table-step tbody tr').map(function (i,val) {
+                    listParams = {};
+                    if ($(this).find('input').val() && $(this).find('.addRoot').length == 0) {
+                        tootipsAlert();
+                    } else if (!($(this).find('input').val()) && $(this).find('.addRoot').length != 0) {
+                        tootipsAlert();
+                    } else if ($(this).find('input').val() && $(this).find('.addRoot').length != 0) {
+                        listParams.roleIds = rolesId[i].listRolesId;
+                        listParams.stepName = $(this).find('input').val();
+                        if($(this).find('input[icon=caret-top]').val()=='全部'){
+                            listParams.isAll = true;
+                        }else{
+                            listParams.isAll = false;
+                        }
+                        if(list.steps.indexOf(listParams)){
+                            list.steps.push(listParams);
+                        }
+                        errorMessage = false;
                     }
-                    if(list.steps.indexOf(listParams)){
-                        list.steps.push(listParams);
+
+                });
+            }
+            if(list.steps.length ==0 && this.flowName){//判断是否有完整的步骤名
+                tootipsAlert();//提示消息
+                return false;
+            }
+
+            if(!errorMessage && $('.addPage .table-step tbody tr').length!=0){
+
+                addProcessInfo(list).then((res)=>{//添加流程
+
+                    this.flowName ="";
+                    this.flowRemark="";
+
+                    getProcessList(tableParams).then((res)=>{
+                        //console.info(res.data.result,'我是流程列表数据')
+                        this.tableData = res.data;
+                        this.totalNumber = res.data.pageInfo.totalNumber;
+                        //添加流程成功后给出的提示
+                        this.$message({
+                            message: '您已成功添加了一条流程信息！',
+                            type: 'success'
+                        });
+
+                     }).catch(function(error){
+                        this.messageBox(error.response.data.message);
+                     })
+
+                    for(var key in this.rootInfo){//清除原始数据
+//                        console.info(this.rootInfo,'添加工程最终数据')
+                        this.rootInfo[key].addRolesLine =[];
+                        this.rootInfo[key].listVal ="全部";
+                        this.rootInfo[key].isStepDisable = false;
+                        this.rootInfo[key].listRolesId = [];
+                        this.rootInfo[key].stepName = "";
                     }
-                }
-
-            })
-
-            addProcessInfo(list).then((res)=>{//添加流程
-//                console.info(res)
-            },function(error){
-                alert(error.message)
-            });
-            this.isBMP = false;
-            this.isQuality = true;
+                    this.isBMP = false;
+                    this.isQuality = true;
+                    this.isBMPedit = false;
+                }).catch(function(error){
+                    self.messageBox(error.response.data.message)
+                });
+            }
         },
         //树结构字段处理
         zTreeFiledProcess(getFormProcessParams){
             getFormInfosForProcess(getFormProcessParams).then((res)=>{
                 checkedCount = 0;
                 //console.info(res.data,'树结构数据')
-                this.zNodes = res.data.splice(1,20);
+                this.zNodes = res.data;
                 for(var i= 0;i<this.zNodes.length;i++){
-                    //debugger;
                     if(!(this.zNodes[i].checked) && this.zNodes[i].isForm){
                         checkedCount++;
+                    }
+                    this.zNodes[i].tips = this.zNodes[i].formName;
+                    if(this.zNodes[i].processName){
+                        this.zNodes[i].processName = "已关联 : "+this.zNodes[i].processName;
+                        this.zNodes[i].tips = this.zNodes[i].tips+"\n"+ this.zNodes[i].processName;
                     }
                 }
                 if(checkedCount>0){
@@ -1019,7 +1315,6 @@ export default {
                     $('.simlue-label input[type=checkbox]').attr('checked',false);
                 }else{
                     this.checkTrue = true;
-                    console.log(this.checkTrue,'checked')
                     $('.ztree-allCheck').addClass('ztree-allActive');
                     $('.simlue-label input[type=checkbox]').attr('checked',true);
                 }
@@ -1033,34 +1328,55 @@ export default {
                     }
                     if(this.zNodes[k].chkDisabled){
                         this.zNodes[k].chkDisabled= false;
+
                     }else{
                         this.zNodes[k].chkDisabled =true;
                     }
                     delete this.zNodes[k].isForm;
                     delete this.zNodes[k].permit;
+
                 }
 //                console.info(this.zNodes)
-                 $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
-
-
+                var zTree =  $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
+                var treeNodes = zTree.transformToArray(zTree.getNodes());
+                //获取状态树的深度
+                for (var i=0;i<treeNodes.length; i++) {
+                    if(treeNodes[i].level>=maxLevel){
+                        maxLevel=treeNodes[i].level;
+                    }
+                }
+            }).catch(function(error){
+                this.messageBox(error.response.data.message);
             })
         },
         //添加关联
         BMPAddLink() {
             this.linkTree = true;
+            this.dialogFormVisible = false;
             //树结构
+//            this.modelTypeTreeVal =this.modelTypeVal;
+            this.modelTypeTreeVal = formModelParams.modelId;
             getFormProcessParams.modelId =formModelParams.modelId;
             getFormProcessParams.processId = processId;
+            updateProcessRelFormParams.addFormIds = [];
+            updateProcessRelFormParams.delFormIds = [];
             this.zTreeFiledProcess(getFormProcessParams);
         },
 
         //删除关联模型
         BMPDeleteLink() {
-            this.deleteLinkModal();
+            if(this.formModelData.result.length && updateProcessRelFormParams.delFormIds.length){
+                this.deleteLinkModal();
+            }else if(this.formModelData.result.length && !updateProcessRelFormParams.delFormIds.length){
+                this.messageBox('请选择要删除的表单！')
+            }
+            else{
+                this.messageBox('没有可以删除的数据！')
+            }
+
         },
         //关联模型模态框
         addDialogLink() {
-
         },
         //ztree-click
         beforeCheck() {
@@ -1075,12 +1391,12 @@ export default {
         },
         onZtreeFormModelCheck(event, treeId, treeNode) {//表单模板树结构的选择状态
             isChecked =1;
-            if(treeNode.status){//勾选树结构的表单
+            if(treeNode.checked){//勾选树结构的表单
                 if(updateProcessRelFormParams.addFormIds.indexOf(treeNode.formId)==-1) {
                     updateProcessRelFormParams.addFormIds.push(treeNode.formId);
                     this.onLinkModelFormaterParms(updateProcessRelFormParams.delFormIds,treeNode);
                 }
-            }else if(!treeNode.status){//取消勾选树结构的表单
+            }else if(!treeNode.checked){//取消勾选树结构的表单
                 if(updateProcessRelFormParams.delFormIds.indexOf(treeNode.formId)==-1){
                     updateProcessRelFormParams.delFormIds.push(treeNode.formId);
                     this.onLinkModelFormaterParms(updateProcessRelFormParams.addFormIds,treeNode);
@@ -1108,22 +1424,31 @@ export default {
             }
         },
         formModelLinkOk(){
+            let self = this;
+            this.modelTypeVal = this.modelTypeTreeVal
+            this.dialogFormVisible = true;
             this.linkTree = false;
             updateProcessRelFormParams.processId = processId;
             updateProcessRelFormParams.modelId = formModelParams.modelId;
+
             //console.info(formModelParams,'表单模板');
             var zTree = $.fn.zTree.getZTreeObj("lineTree");
             var selectNodes= zTree.getCheckedNodes(true);//当前选中的节点
-            if(isChecked==1){
                 updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
+                    updateProcessRelFormParams.addFormIds = [];
                     getProcessRelFormList(formModelParams).then((res)=>{
                        // console.info(res.data,'关联表单');
                         this.formModelData = res.data;
                         this.modelTotalNum = res.data.pageInfo.totalNumber;
-                        console.info(this.modelTotalNum)
+                    }).catch(function(error){
+                        self.messageBox(error.response.data.message);
                     });
+                }).catch(function(error){
+//                updateProcessRelFormParams.addFormIds = [];
+                    self.messageBox(error.response.data.message);
+
                 });
-            }
+
 //            console.info(updateProcessRelFormParams,'不知道不明了')
         },
         nocheckNode(e) {
@@ -1163,7 +1488,6 @@ export default {
             if(flag){
                 //说明当前level的节点都为折叠或者展开状态
                 if(type == "expand"){
-                    level++
                     if(level<maxLevel-1){
                         level++;
                     }
@@ -1190,17 +1514,18 @@ export default {
                 type = e.data.type;
 //                nodes = zTree.getSelectedNodes();
                 nodes =  zTree.transformToArray(zTree.getNodes());
-
             if (type.indexOf("All") < 0 && nodes.length == 0) {
                 alert("请先选择一个节点");
             }
-
+            updateProcessRelFormParams.addFormIds =[];
+            updateProcessRelFormParams.delFormIds = [];
             if (type == "checkAllTrue") {
                 zTree.checkAllNodes(true);
                 updateProcessRelFormParams.delFormIds = [];
                 for (let i = 0;i<nodes.length;i++){
-                    if(!nodes[i].nocheck && nodes[i].checked && updateProcessRelFormParams.addFormIds.indexOf(nodes[i].formId)){
-                        updateProcessRelFormParams.addFormIds.push(nodes[i].formId)
+                    if(!nodes[i].nocheck && nodes[i].checked && updateProcessRelFormParams.addFormIds.indexOf(nodes[i].formId) && !nodes[i].chkDisabled){
+                        updateProcessRelFormParams.addFormIds.push(nodes[i].formId);
+
                     }
                 }
              //console.info(updateProcessRelFormParams,'选中的')
@@ -1209,7 +1534,7 @@ export default {
                 zTree.checkAllNodes(false);
                 updateProcessRelFormParams.addFormIds = [];
                 for (let i = 0;i<nodes.length;i++){
-                    if(!nodes[i].nocheck && !(nodes[i].checked) && updateProcessRelFormParams.delFormIds.indexOf(nodes[i].formId) ){
+                    if(!nodes[i].nocheck && !(nodes[i].checked) && updateProcessRelFormParams.delFormIds.indexOf(nodes[i].formId) && !nodes[i].chkDisabled ){
                         updateProcessRelFormParams.delFormIds.push(nodes[i].formId)
                     }
                 }
@@ -1239,33 +1564,36 @@ export default {
             var aObj = $("#" + treeNode.tId );
             if ($("#diyBtn_"+treeNode.id).length>0) return;
             var editStr = "<span id='diyBtn_space-" +treeNode.formId+ "' class='icon-eyes' > </span>";
-            if(!treeNode.isParent && !(treeNode.nocheck)){
+            var currentObj = '#diyBtn_space-'+treeNode.formId;
+            if(!treeNode.isParent && !(treeNode.nocheck) && !$(currentObj).length){
                 aObj.append(editStr);
             }
-            console.log(treeNode.formId);
             let self =this;
-            $('.icon-eyes').map(function(){
+            $('#lineTree .icon-eyes').map(function(){
                $(this).unbind('click');
                $(this).bind('click',function(){
                    let  linkFormId = $(this).attr("id");
                    if(linkFormId){
                        linkFormId =  linkFormId.split('-')[1]
                    }
-                    console.info(linkFormId,'linkFormId')
-                   self.dialogLinkPriview = true;
+                   self.priviewUrl ="";
                    getFormPreviewParams.modelId = formModelParams.modelId;
                    getFormPreviewParams.formId = linkFormId;
                    getFormPreview(getFormPreviewParams).then((res)=>{
-                       self.priviewUrl = res.data;
-                       console.info( self.priviewUrl)
+                       if(res.data){
+                            self.dialogLinkPriview = true;
+                            self.priviewUrl = res.data;
+                       }else{
+                            self.messageBox('暂时不支持预览')
+                       }
+
                    }).catch(function (error) {
-                           alert(error.message);
-                       });;
-                   })
+                       self.messageBox(error.response.data.message);
+                   });
+               })
             })
         },
         checkAll() {
-           // debugger;
             $('.ztree-allCheck').toggleClass('ztree-allActive');
             if ($('.ztree-allCheck').hasClass('ztree-allActive')) {
                 this.checkTrue = true;
@@ -1284,11 +1612,20 @@ export default {
             updateProcessRelFormParams.processId = processId;
             updateProcessRelFormParams.modelId = formModelParams.modelId;
             updateProcessRelFormParams.delFormIds.push(row.formId);
-            console.info(row,'删除列里面都包含什么')
+            let self = this;
               //更新的模板列表
-             updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
-                 this.formModelData.result.splice(index,1)
-             });
+            this.$confirm('所选表单将解除关联，是否确认?', '删除表单关联', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                 updateProcessRelForm(updateProcessRelFormParams).then((res)=>{
+                     this.formModelData.result.splice(index,1);
+                     this.formModelType(formModelParams);//重新渲染数据
+                 }).catch(function(error){
+                     self.messageBox(error.response.data.message);
+                });
+             })
         },
         //树结构的搜索功能
         getZtreeParentNode(ztreeNode, nodes) {
@@ -1321,7 +1658,6 @@ export default {
             var treeObj = $.fn.zTree.getZTreeObj('lineTree');
             var nodes1 = treeObj.getNodesByParam("isHidden", true);
             var searchVal = $('.qualityTree').find('input').val();
-            console.info(searchVal,'searchVal')
             /* 将之前隐藏的展示*/
             if (nodes1.length > 0) {
                 treeObj.showNodes(nodes1);
@@ -1330,7 +1666,6 @@ export default {
             var otherNeedShowNodes = [];
             // 隐藏不符合搜索条件的节点
             if (event.type == 'click' || event.keyCode == 13) {
-                console.log(searchVal);
                 for (var i = 0; i < treeNodes.length; i++) {
                     if (treeNodes[i].formName.indexOf(searchVal) < 0) {
                         treeObj.hideNode(treeNodes[i]);
@@ -1342,11 +1677,42 @@ export default {
                 }
                 if (otherNeedShowNodes.length > 0) {
                     treeObj.showNodes(otherNeedShowNodes);
+                    treeObj.expandAll(true);
                 }
+                // 当输入值为空时折叠树结构
+                if(!searchVal){
+                    treeObj.expandAll(false);
+                }
+
             }
         },
-    }
+        clearSearchCirt(value){
+            var treeObj = $.fn.zTree.getZTreeObj('lineTree');
+            if(!value){
+                treeObj.expandAll(false);
+            }
+        }
+    },
+    watch: {
+        modelTypeTreeVal: function (newVal,oldVal) {
+            getFormProcessParams.modelId= this.modelTypeTreeVal;
+            if(!updateProcessRelFormParams.addFormIds.length && !updateProcessRelFormParams.delFormIds.length){
+                this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+            }
+            if( oldVal != newVal && oldVal && currentSelectVal  && (updateProcessRelFormParams.addFormIds.length || updateProcessRelFormParams.delFormIds.length)){
+                this.$confirm('切换目录后，档期内目录以勾选的表单将取消，是否确认切换目录', '切换目录', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    getFormProcessParams.modelId = newVal;
+                    this.zTreeFiledProcess(getFormProcessParams);//改变树结构
+                }).catch(()=>{
+                    this.modelTypeTreeVal = oldVal;
+                })
+            }
+        },
+    },
 }
-
 </script>
 
