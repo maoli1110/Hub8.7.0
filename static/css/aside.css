@@ -1,0 +1,35 @@
+.aside {
+    display: block;
+    position: absolute;
+    width: 302px;
+    left: 0;
+    top: 130px;
+    bottom: 0;
+    padding-top: 20px;
+    border-right: 1px solid #e6e6e6    
+}
+.aside .el-menu {
+    height: 100%;
+}
+.aside .el-menu-item {
+    height: 60px;
+    border-top: 1px solid #e6e6e6;
+    border-left: 4px solid #fff;
+    text-align: center
+}
+.aside .is-active {
+    border-left: 4px solid #6595f2;
+    text-align: center;
+    color: #2f332a;
+    font-weight: bold;
+    background-color: #f5f8fd;
+}
+.aside .el-menu-item:first-child {
+    border-top: 1px solid #fff;
+}
+.aside .el-menu-item:last-child {
+    border-bottom: 1px solid #e6e6e6;
+}
+.container {
+    margin-left: 302px;
+}

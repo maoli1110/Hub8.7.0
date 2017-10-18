@@ -1,0 +1,61 @@
+<template>
+    <div class="bims-container">
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
+            <el-menu-item index="/bimlib/bim-lib/housing">房建</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/civicism">市政</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/assembly">装配式</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/decoration">精装</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/cim">CIM</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/ppp">PPP</el-menu-item>
+        </el-menu>
+        <div class="bims-contents">
+            <router-view></router-view>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            activeIndex: '/bimlib/bim-lib/housing',
+        }
+    },
+    methods: {
+        handleOpen(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        handleClose(key, keyPath) {
+            console.log(key, keyPath);
+        }
+    },
+    mounted() {
+    }
+}
+</script>
+
+<style scoped>
+.container .el-menu {
+    padding: 10px 20px;
+    border: 1px solid #e6e6e6;
+    border-top: none;
+}
+
+.container .el-menu .el-menu-item {
+    height: 40px;
+    width: 132px;
+    margin-right: 50px;
+    line-height: 40px;
+    text-align: center
+}
+
+.container .is-active {
+    background-color: #f5f8fd;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.container .el-menu .el-menu-item:hover {
+    background-color: #f5f8fd;
+}
+</style>

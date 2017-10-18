@@ -1,10 +1,18 @@
 <template>
     <div id="app">
-        <router-view></router-view>
+        <router-view ref="main"></router-view>
     </div>
 </template>
 <style>
-    @import "../static/css/main.css";
-    /*@import "../static/css/color-dark.css";     深色主题*/
-    @import "../static/css/theme-green/color-green.css";   /*浅绿色主题*/
+@import "../static/zTree/css/demo.css";
+@import "../static/zTree/css/zTreeStyle/zTreeStyle.css";
+@import "../static/css/main.css";
+@import "../static/css/iconfont.css";
+@import "../static/css/theme-green/color-green.css";
 </style>
+<script>
+export default {
+
+}
+
+</script>
