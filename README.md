@@ -31,7 +31,7 @@
 	|           |-- Header.vue           // 公共头部
 	|           |-- Home.vue           	 // 公共路由入口
 	|           |-- Sidebar.vue          // 公共左边栏
-	|		|-- page                   	 // 主要路由页面
+	|		    |-- page                 // 主要路由页面
 	|           |-- BaseCharts.vue       // 基础图表
 	|           |-- BaseForm.vue         // 基础表单
 	|           |-- BaseTable.vue        // 基础表格
@@ -41,6 +41,69 @@
 	|           |-- Upload.vue           // 图片上传
 	|           |-- VueEditor.vue        // 富文本编辑器
 	|           |-- VueTable.vue         // vue表格组件
+                ├─Authority              //权限
+                │      Authority.vue
+                │      MemberManagement.vue
+                │      RoleManagement.vue
+                │
+                ├─Authority-management   //权限管理
+                │      BaseCharts.vue
+                │      BaseForm.vue
+                │      BaseTable.vue
+                │      DragList.vue
+                │      Markdown.vue
+                │      OldCharts.vue
+                │      Readme.vue
+                │      Upload.vue
+                │      VueEditor.vue
+                │      VueTable.vue
+                │
+                ├─BimLib                //bim库
+                │      Bim.vue
+                │      BimLib.vue
+                │      PdfDrawing.vue
+                │      RecycleBin.vue
+                │      WorkingSet.vue
+                │
+                ├─CompanyProfile        //企业概况
+                │      CompanyProfile.vue
+                │      OrganizationStructure.vue
+                │      SpaceUsage.vue
+                │
+                ├─ComponentLib          //构件库
+                │      ComponentLib.vue
+                │      LubanMep.vue
+                │
+                ├─Configuration         //应用配置
+                │      Assembly.vue
+                │      Cim.vue
+                │      Civicism.vue
+                │      Configuration.vue
+                │      Decoration.vue
+                │      Housing.vue
+                │      HousingExplorer.vue
+                │      HousingGovern.vue
+                │      PPP.vue
+                │
+                ├─DataBase             //主数据库
+                │      BaseClass.vue
+                │      DataBase.vue
+                │      ProcessMethod.vue
+                │
+                ├─IndicatorsLib        //指标库
+                │      CivilEngineering.vue
+                │      IndicatorsLib.vue
+                │
+                ├─Login                //登录
+                │      Login.vue
+                │
+                ├─PriceLib             //价格库
+                │      Material.vue
+                │      PriceLib.vue
+                │
+                └─QuotaLib             //定额库
+                        AutomaticTemplate.vue
+                        QuotaLib.vue
 	|   |-- App.vue                      // 页面入口文件
 	|   |-- main.js                      // 程序入口文件，加载各种公共组件
 	|-- .babelrc                         // ES6语法编译配置
@@ -52,29 +115,16 @@
 
 
 ## 安装步骤 ##
-
-	git clone https://github.com/lin-xin/manage-system.git      // 把模板下载到本地
-	cd manage-system    // 进入模板目录
 	npm install         // 安装项目依赖，等待安装完成之后
 
 ## 本地开发 ##
 
-	// 开启服务器，浏览器访问 http://localhost:8080
 	npm run dev
 
 ## 构建生产 ##
 
 	// 执行构建命令，生成的dist文件夹放在服务器下即可访问
 	npm run build
-
-## 组件使用说明与演示 ##
-
-### element-ui ###
-一套基于vue.js2.0的桌面组件库。访问地址：[element](http://element.eleme.io/#/zh-CN/component/layout)
-
-### vue-datasource ###
-一个用于动态创建表格的vue.js服务端组件。访问地址：[vue-datasource](https://github.com/coderdiaz/vue-datasource)
-
 ```JavaScript
 <template>
 	<div>
@@ -227,7 +277,7 @@ vue.js封装sChart.js的图表组件。访问地址：[vue-schart](https://githu
 		></schart>
     </div>
 </template>
-	
+
 <script>
     import Schart from 'vue-schart';        // 导入Schart组件
     export default {
@@ -272,13 +322,13 @@ vue.js封装sChart.js的图表组件。访问地址：[vue-schart](https://githu
 第二步：删除引入该组件的文件。在目录 src/components/page/ 删除 VueTable.vue 文件。
 
 第三步：删除该页面的入口。在目录 src/components/common/Sidebar.vue 中，找到该入口，删除下面这段代码。
-	
+
 ```HTML
 <el-menu-item index="vuetable">Vue表格组件</el-menu-item>
 ```
 
 第四步：卸载该组件。执行以下命令：
-	
+
 	npm un vue-datasource -S
 
 完成。

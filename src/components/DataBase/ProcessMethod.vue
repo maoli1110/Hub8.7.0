@@ -4,16 +4,11 @@
             vue-datasource：一个用于动态创建表格的vue.js服务端组件。
             访问地址：<a href="https://github.com/coderdiaz/vue-datasource" target="_blank">vue-datasource</a>
         </div>
-        <datasource language="en" :table-data="getData" :columns="columns" :pagination="information.pagination"
-                :actions="actions"
-                v-on:change="changePage"
-                v-on:searching="onSearch"></datasource>
     </div>
 </template>
 
 <script>
     import axios from 'axios';
-    import Datasource from 'vue-datasource';
     export default {
         data: function(){
             const self = this;
@@ -54,7 +49,6 @@
             }
         },
         components: {
-            Datasource
         },
         methods: {
             changePage(values) {

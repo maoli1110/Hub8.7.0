@@ -1,52 +1,15 @@
 <template>
     <div>
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-date"></i> 表单</el-breadcrumb-item>
-                <el-breadcrumb-item>编辑器</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
         <div class="plugins-tips">
-            Vue-Quill-Editor：基于Quill、适用于Vue2的富文本编辑器。
-            访问地址：<a href="https://github.com/surmon-china/vue-quill-editor" target="_blank">vue-quill-editor</a>
+             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508245375024&di=7fa50c424d017be33f8a78f53c3ddf4e&imgtype=0&src=http%3A%2F%2Fwapfile.desktx.com%2Fpc%2F161208%2Fbigpic%2F584516c6972b5.jpg" alt="" style="width:1620px;height:880px">           
         </div>
-        <quill-editor ref="myTextEditor" v-model="content" :config="editorOption"></quill-editor>
-        <el-button class="editor-btn" type="primary" @click="submit">提交</el-button>
     </div>
 </template>
 
 <script>
-    import { quillEditor } from 'vue-quill-editor';
     export default {
-        data: function(){
-            return {
-                content: '<p>Hello BBK</p>',
-                editorOption: {
-                    // something config
-                }
-            }
-        },
-        components: {
-            quillEditor
-        },
-        methods: {
-            onEditorChange({ editor, html, text }) {
-                this.content = html;
-            },
-            submit(){
-                console.log(this.content);
-                this.$message.success('提交成功！');
-            }
-        },
-        computed: {
-            editor() {
-                return this.$refs.myTextEditor.quillEditor;
-            }
-        }
     }
 </script>
-<style scoped>
-    .editor-btn{
-        margin-top: 20px;
-    }
+
+<style scoped>  
 </style>

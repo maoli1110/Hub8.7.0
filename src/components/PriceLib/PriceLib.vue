@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import Schart from 'vue-schart';
 export default {
     data: () => ({
         activeIndex: '/pricelib/material',

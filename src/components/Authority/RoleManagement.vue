@@ -1,88 +1,145 @@
+
 <template>
-    <div class="table">
-        <div class="plugins-tips">
-           <h2>{{curSelectedNode}}</h2> 
+    <div>
+        <h1>来拖拽我吧</h1>
+        <div style="height: 360px;">
+            <ul id="olderList" class="draggable-list">
+                <li v-for="(item, index) in olderList" :key="index" class="notwrap todolist-item" :data-index="index">
+                    好吃的美食--{{ item.name }}
+                </li>
+            </ul>
         </div>
-        <datasource language="en" :table-data="getData" :columns="columns" :pagination="information.pagination" :actions="actions" v-on:change="changePage" v-on:searching="onSearch"></datasource>
+        <div style="float:left">
+            <h2>默认</h2>
+            <li v-for="(item, index) in olderList" :key="index" class="notwrap todolist-item" :data-index="index">
+                好吃的美食--{{ item.name }}
+            </li>
+        </div>
+        <div style="float:right">
+            <h2>修改后</h2>
+            <li v-for="(item, index) in newList" :key="index" class="notwrap todolist-item" :data-index="index">
+                                    好吃的美食--{{ item.name }}
+                            </li>
+        </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
-import Datasource from 'vue-datasource';
-import { mapGetters } from 'vuex'
+import Sortable from 'sortablejs';
 export default {
-    data: function() {
-        const self = this;
+    data() {
         return {
-            url: '../../../static/datasource.json',
-            information: {
-                pagination: {},
-                data: []
-            },
-            columns: [
+            todoArray: [
                 {
-                    name: 'Id',
-                    key: 'id',
+                    content: '完成iview-admin基本开发'
                 },
                 {
-                    name: 'Name',
-                    key: 'name',
+                    content: '对iview-admin进行性能优化'
                 },
                 {
-                    name: 'email',
-                    key: 'email',
+                    content: '对iview-admin的细节进行优化'
                 },
                 {
-                    name: 'ip',
-                    key: 'ip',
+                    content: '完成iview-admin开发'
+                },
+                {
+                    content: '解决发现的bug'
+                },
+                {
+                    content: '添加更多组件'
+                },
+                {
+                    content: '封装更多图表'
+                },
+                {
+                    content: '增加更多人性化功能'
                 }
             ],
-            actions: [
-                {
-                    text: 'Click',
-                    class: 'btn-primary',
-                    event(e, row) {
-                        self.$message('选中的行数： ' + row.row.id);
-                    }
-                }
+            doArray: [],
+            olderList: [
+                { name: '香肠' },
+                { name: '烤鸭' },
+                { name: '烧鸡' },
+                { name: '卤煮' },
+                { name: '酱汁腊肉' },
+                { name: '松花小肚' },
+                { name: '白丸子' },
+                { name: '红丸子' },
+                { name: '汆丸子' },
+                { name: '蒸熊掌' },
+                { name: '蒸羊羔' },
+                { name: '蒸鹿尾' },
+                { name: '梅菜扣肉' },
+                { name: '四喜丸子' },
+                { name: '酒酿萝卜皮' },
+                { name: '红烧胖大海' },
+                { name: '连年有鱼' }
             ],
-            query: ''
-        }
+            newList:[
+                { name: '香肠' },
+                { name: '烤鸭' },
+                { name: '烧鸡' },
+                { name: '卤煮' },
+                { name: '酱汁腊肉' },
+                { name: '松花小肚' },
+                { name: '白丸子' },
+                { name: '红丸子' },
+                { name: '汆丸子' },
+                { name: '蒸熊掌' },
+                { name: '蒸羊羔' },
+                { name: '蒸鹿尾' },
+                { name: '梅菜扣肉' },
+                { name: '四喜丸子' },
+                { name: '酒酿萝卜皮' },
+                { name: '红烧胖大海' },
+                { name: '连年有鱼' }
+            ], 
+        };
     },
-    components: {
-        Datasource
+    created() {
+        this.getList()
+    },
+    mounted() {
+        document.body.ondrop = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+        };
     },
     methods: {
-        changePage(values) {
-            this.information.pagination.per_page = values.perpage;
-            this.information.data = this.information.data;
-        },
-        onSearch(searchQuery) {
-            this.query = searchQuery;
-        }
-    },
-    computed: {
-        ...mapGetters([
-            'curSelectedNode'
-        ]),
-        getData() {
-            const self = this;
-            return self.information.data.filter(function(d) {
-                if (d.name.indexOf(self.query) > -1) {
-                    return d;
-                }
+        getList() {
+            this.$nextTick(() => {
+                let olderList = document.getElementById('olderList');
+                Sortable.create(olderList, {
+                    animation: 120,
+                    // onRemove(event) {
+                    //     vm.newList.splice(event.newIndex, 0, vm.olderList[event.item.getAttribute('data-index')]);
+                    // },
+                    onEnd: evt => {  
+                        debugger                      
+                        const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
+                        this.newList.splice(evt.newIndex, 0, tempIndex)
+                    }
+                });
             })
-        }
-    },
-    beforeMount() {
-        if (process.env.NODE_ENV === 'development') {
-            this.url = '/ms/table/source';
-        };
-        axios.get(this.url).then((res) => {
-            this.information = res.data;
-        })
+        },
     }
-}
+};
 </script>
-<style src="../../../static/css/datasource.css"></style>
+<style scoped>
+.draggable-list li {
+    padding: 9px;
+    border: 1px solid #e7ebee;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: all .2s;
+    list-style: none;
+}
+
+.draggable-list {
+    height: 100%;
+    overflow: auto;
+}
+</style>
+

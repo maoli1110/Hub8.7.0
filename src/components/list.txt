@@ -1,0 +1,74 @@
+卷 系统 的文件夹 PATH 列表
+卷序列号为 0001-8318
+C:.
+│  list.txt
+│  
+├─Authority
+│      Authority.vue
+│      MemberManagement.vue
+│      RoleManagement.vue
+│      
+├─Authority-management
+│      BaseCharts.vue
+│      BaseForm.vue
+│      BaseTable.vue
+│      DragList.vue
+│      Markdown.vue
+│      OldCharts.vue
+│      Readme.vue
+│      Upload.vue
+│      VueEditor.vue
+│      VueTable.vue
+│      
+├─BimLib
+│      Bim.vue
+│      BimLib.vue
+│      PdfDrawing.vue
+│      RecycleBin.vue
+│      WorkingSet.vue
+│      
+├─Common
+│      Header.vue
+│      Home.vue
+│      Navbar.vue
+│      
+├─CompanyProfile
+│      CompanyProfile.vue
+│      OrganizationStructure.vue
+│      SpaceUsage.vue
+│      
+├─ComponentLib
+│      ComponentLib.vue
+│      LubanMep.vue
+│      
+├─Configuration
+│      Assembly.vue
+│      Cim.vue
+│      Civicism.vue
+│      Configuration.vue
+│      Decoration.vue
+│      Housing.vue
+│      HousingExplorer.vue
+│      HousingGovern.vue
+│      PPP.vue
+│      
+├─DataBase
+│      BaseClass.vue
+│      DataBase.vue
+│      ProcessMethod.vue
+│      
+├─IndicatorsLib
+│      CivilEngineering.vue
+│      IndicatorsLib.vue
+│      
+├─Login
+│      Login.vue
+│      
+├─PriceLib
+│      Material.vue
+│      PriceLib.vue
+│      
+└─QuotaLib
+        AutomaticTemplate.vue
+        QuotaLib.vue
+        

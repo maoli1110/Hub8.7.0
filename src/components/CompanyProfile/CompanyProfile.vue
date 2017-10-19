@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import Schart from 'vue-schart';
 export default {
     data: () => ({
         activeIndex: '/companyprofile/organization-structure',
