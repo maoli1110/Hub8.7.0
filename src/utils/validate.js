@@ -24,10 +24,19 @@ export function isvalidUsername(str) {
     const reg = /^[A-Z]+$/
     return reg.test(str)
   }
-  
   /* 大小写字母*/
   export function validatAlphabets(str) {
     const reg = /^[A-Za-z]+$/
+    return reg.test(str)
+  }
+  /* 手机号*/
+  export function validatephoneNumber(str) {
+    const reg = /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/
+    return reg.test(str)
+  }
+   /* 邮箱*/
+  export function validateEmail(str) {
+    const reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
     return reg.test(str)
   }
   

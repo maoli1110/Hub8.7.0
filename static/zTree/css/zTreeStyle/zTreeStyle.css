@@ -210,7 +210,7 @@
 }
 
 .ztree li span.button.root_open {
-	background-position: -28px -29px
+	background-position: -28px -33px
 }
 
 .ztree li span.button.root_open_hover {
@@ -218,7 +218,7 @@
 }
 
 .ztree li span.button.root_close {
-	background-position: 0px -29px
+	background-position: 0px -33px
 }
 
 .ztree li span.button.root_close_hover {
