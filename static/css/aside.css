@@ -3,7 +3,7 @@
     position: absolute;
     width: 302px;
     left: 0;
-    top: 130px;
+    top: 150px;
     bottom: 0;
     padding-top: 20px;
     border-right: 1px solid #e6e6e6    
@@ -14,15 +14,16 @@
 .aside .el-menu-item {
     height: 60px;
     border-top: 1px solid #e6e6e6;
-    border-left: 4px solid #fff;
-    text-align: center
+    border-left: 3px solid #fff;
+    text-align: center;
+    color:#444444
 }
 .aside .is-active {
-    border-left: 4px solid #6595f2;
+    border-left: 3px solid #6595f2;
     text-align: center;
-    color: #2f332a;
     font-weight: bold;
     background-color: #f5f8fd;
+
 }
 .aside .el-menu-item:first-child {
     border-top: 1px solid #fff;

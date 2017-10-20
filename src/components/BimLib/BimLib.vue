@@ -71,7 +71,7 @@ export default {
     width: 302px;
     padding-top: 40px;
     left: 0;
-    top: 130px;
+    top: 150px;
     bottom: 0;
     border: 1px solid #e6e6e6;
     box-sizing: border-box;

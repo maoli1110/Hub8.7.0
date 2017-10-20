@@ -2,16 +2,19 @@
     <div class="header">
         <div class="logo">中国公路工程咨询集团有限公司</div>
         <div class="configuration" @click="setting" v-show='showSetting'>
-            <span class="el-icon-setting" >   权限管理</span>                        
+            <span class="el-icon-setting" style="font-size:17px"></span>
+            <span>  权限管理</span>                       
         </div>
         <div class="configuration" @click="back" v-show='!showSetting'>
-            <span class="el-icon-setting" >   返回首页</span>                        
+            <span class="el-icon-setting" style="font-size:17px"></span>
+            <span>  返回首页</span>                        
         </div>
         <div class="user-info">
             <el-dropdown trigger="click" @command="handleCommand">
-                <span class="el-dropdown-link">
-                    <img class="user-logo" src="../../../static/img/img.jpg"> {{username}}
-                </span>
+                <div class="el-dropdown-link">
+                    <img class="user-logo" src="../../../static/img/img.jpg">
+                    <span style="display:inline-block;margin-top:10px">{{username}}</span> 
+                </div>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="loginout">退出</el-dropdown-item>
                 </el-dropdown-menu>
@@ -58,7 +61,7 @@ export default {
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    height: 70px;
+    height: 90px;
     font-size: 22px;
     line-height: 70px;
     color: #fff;
@@ -80,7 +83,7 @@ export default {
 .user-info .el-dropdown-link {
     position: relative;
     display: inline-block;
-    padding-left: 50px;
+    padding-left: 70px;
     color: #fff;
     cursor: pointer;
     vertical-align: middle;
@@ -90,8 +93,8 @@ export default {
     position: absolute;
     left: 0;
     top: 15px;
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
 }
 
@@ -99,14 +102,17 @@ export default {
     text-align: center;
 }
 .configuration{
-    width: 100px;
-    height: 35px;
+    width: 120px;
+    height: 40px;
     padding-left: 20px;
-    margin: 16px 20px 0 0;
-    border:2px solid #fff;
+    margin: 25px 20px 0 0;
+    border:1px solid #fff;
+    box-sizing: border-box;
+    border-radius: 2px;
     float:right;
-    line-height: 35px;
+    line-height: 40px;
     font-size: 14px;
     cursor: pointer;
+    
 }
 </style>

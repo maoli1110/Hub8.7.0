@@ -96,10 +96,12 @@ export default {
 
 .navbar .el-menu .el-menu-item {
     color: #fff;
+    border-right: 1px solid #5f88c9
 }
 
 .navbar .is-active {
     background-color: #6495f2;
+    font-size: 16px;
 }
 
 .navbar .el-menu-item:hover {
