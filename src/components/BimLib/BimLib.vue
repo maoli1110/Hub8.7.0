@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="position:relative">
         <div class="aside">
             <ul id="treeDemo" class="ztree"></ul>
         </div>
@@ -71,7 +71,7 @@ export default {
     width: 302px;
     padding-top: 40px;
     left: 0;
-    top: 150px;
+    top: 0px;
     bottom: 0;
     border: 1px solid #e6e6e6;
     box-sizing: border-box;

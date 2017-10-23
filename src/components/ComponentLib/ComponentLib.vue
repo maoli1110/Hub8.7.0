@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="position:relative">
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/componentlib/luban-mep">鲁班安装</el-menu-item>

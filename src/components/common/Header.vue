@@ -75,7 +75,7 @@ export default {
 
 .user-info {
     float: right;
-    margin-right: 150px;
+    margin-right: 190px;
     font-size: 16px;
     color: #fff;
 }
