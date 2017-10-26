@@ -79,11 +79,12 @@ export default {
    
      watch: {
  　　'$route' (to, from) {
+          if(!to.name && !from.name){return false}
           let toName = to.name;//路由跳转到信息
           let fromName = from.name;//路由跳转前的信息
           toName = toName.split("?")[1];
           fromName = fromName.split("?")[1];
-          this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是向后
+          this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是
  　　 }
 　　}
  
@@ -98,10 +99,12 @@ export default {
     width: 302px;
     padding-top: 40px;
     left: 0;
-    top: 130px;
+    top: 150px;
     bottom: 0;
     border: 1px solid #e6e6e6;
     box-sizing: border-box;
+    z-index:10;
+     background: #fff;
 }
 
 .aside .el-menu {
@@ -143,6 +146,7 @@ export default {
      width: 100%;
      transition: all .8s ease;
      top: 225px;
+     z-index:1;
 }
 .slide-left-enter,
 .slide-right-leave-active {

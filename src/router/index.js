@@ -120,12 +120,13 @@ export default new Router({
                             path: 'bim-lib',
                             component: resolve => require(['../components/BimLib/Bim.vue'], resolve),
                             redirect: '/bimlib/bim-lib/housing',
+
                             children: [
                                 {
                                     name:"bim-lib?1",
                                     path: 'housing',// 房建
                                     component: resolve => require(['../components/Authority-management/Markdown.vue'], resolve),
-
+                                    props:{'name':'xiaomingtongxue'},
                                 },
                                 {
                                     path: 'civicism',// 市政
