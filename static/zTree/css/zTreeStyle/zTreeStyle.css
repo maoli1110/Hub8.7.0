@@ -52,19 +52,21 @@
 
 .ztree li a.curSelectedNode {
 	padding-top: 0px;
-	background-color:#f5f8fd;
+	background-color:#fff;
 	color: black;
 	height: 24px;
-	border: 1px #6495f2 solid;
+	border: 1px rgb(209, 219, 229) solid;
 	opacity: 0.8;
+	border-color: rgb(209, 219, 229);
+	box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 4px, rgba(0, 0, 0, 0.12) 0px 0px 7px;
 }
 
 .ztree li a.curSelectedNode_Edit {
 	padding-top: 0px;
-	background-color: #FFE6B0;
+	background-color: #fff;
 	color: black;
 	height: 28px;
-	border: 1px #6495f2 solid;
+	border: 1px rgb(209, 219, 229) solid;	
 	opacity: 0.8;
 }
 
