@@ -2,6 +2,10 @@
     <div class="wrap">
       <h1>所有页面的jQuery不需要引入 可以直接使用</h1>
         <div>
+          <div style="margin:0 auto;width:550px;">
+            <span class="buttonStyle" @click="expandNode({type:'expand',operObj:'tree_edit'})">+</span><span class="buttonStyle" @click="expandNode({type:'collapse',operObj:'tree_edit'})">-</span>
+            <span class="buttonStyle">重</span>
+          </div>            
             <ul id="tree_edit" class="ztree"></ul>
         </div>
     </div>
@@ -22,9 +26,9 @@ Map.prototype.get = function(key) {
 };
 
 Map.prototype.keySet = function() {
-  var keyset = new Array();
-  var count = 0;
-  for (var key in this.container) {
+  let keyset = new Array();
+  let count = 0;
+  for (let key in this.container) {
     // 跳过object的extend函数
     if (key == "extend") {
       continue;
@@ -36,8 +40,8 @@ Map.prototype.keySet = function() {
 };
 
 Map.prototype.size = function() {
-  var count = 0;
-  for (var key in this.container) {
+  let count = 0;
+  for (let key in this.container) {
     // 跳过object的extend函数
     if (key == "extend") {
       continue;
@@ -50,7 +54,11 @@ Map.prototype.size = function() {
 Map.prototype.remove = function(key) {
   delete this.container[key];
 };
-var map = new Map();
+let map = new Map();
+//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
+let level;
+//预览状态模板树的深度
+let maxLevel = -1;
 export default {
   data() {
     return {
@@ -85,9 +93,15 @@ export default {
           beforeDrop: this.beforeDrop,
           onDrop: this.onDrop,
           beforeRename: this.beforeRename,
+          onCollapse: function(event, treeId, treeNode) {
+            level = treeNode.level;
+          },
+          onExpand: function(event, treeId, treeNode) {
+            level = treeNode.level;
+          },
           //onRename: onRename,
           onClick: function(event, treeId, treeNode, clickFlag) {
-            var preClickedNode = window.preClickedNode;
+            let preClickedNode = window.preClickedNode;
             window.preClickedNode = treeNode;
             event = window.event || event; //兼容IE
             if (!event.shiftKey || !preClickedNode) return; // shift键
@@ -95,19 +109,19 @@ export default {
               preClickedNode = null;
               return;
             }
-            var obj = jQuery.fn.zTree.getZTreeObj(treeId);
+            let obj = jQuery.fn.zTree.getZTreeObj(treeId);
             obj.selectNode(preClickedNode, true);
-            var firstNode = obj.getNodeIndex(preClickedNode);
-            var lastNode = obj.getNodeIndex(treeNode);
-            var count = lastNode - firstNode;
-            var nodeNew = preClickedNode;
+            let firstNode = obj.getNodeIndex(preClickedNode);
+            let lastNode = obj.getNodeIndex(treeNode);
+            let count = lastNode - firstNode;
+            let nodeNew = preClickedNode;
             if (count > 0) {
-              for (var i = 1; i < count; i++) {
+              for (let i = 1; i < count; i++) {
                 nodeNew = nodeNew.getNextNode();
                 obj.selectNode(nodeNew, true);
               }
             } else {
-              for (var j = 1; j < -count; j++) {
+              for (let j = 1; j < -count; j++) {
                 nodeNew = nodeNew.getPreNode();
                 obj.selectNode(nodeNew, true);
               }
@@ -122,23 +136,40 @@ export default {
   mounted() {
     axios.get(this.url).then(res => {
       this.zNodes = res.data[0].result;
-      $.fn.zTree.init($("#tree_edit"), this.setting, this.zNodes);
+      let zTree = $.fn.zTree.init($("#tree_edit"), this.setting, this.zNodes);
+      let nodes = zTree.getNodes();
+      if (nodes.length > 0) {
+        zTree.selectNode(nodes[0]);
+      }
+      let treeNodes = zTree.transformToArray(zTree.getNodes());
+      //获取状态树的深度
+      for (let i = 0; i < treeNodes.length; i++) {
+        if (treeNodes[i].level >= maxLevel) {
+          maxLevel = treeNodes[i].level;
+        }
+        if (treeNodes[i].level == 0 && treeNodes[i].isParent) {
+          //展开"全部"下的子节点
+          zTree.expandNode(treeNodes[i], true, false, null, true);
+        }
+      }
+      level = 1;
     });
   },
   methods: {
+    // 自定义颜色选择器
     addDiyDom_colorSelect(treeId, treeNode) {
       if (treeNode.isParent) {
         return;
       }
-      var aObj = $("#" + treeNode.tId + "_a");
+      let aObj = $("#" + treeNode.tId + "_a");
       aObj.find("span:first").detach();
-      var appendStr =
+      let appendStr =
         "<span id='colorSelect__" +
         treeNode.tId +
         "' style='display: inline-block;height: 13px;width: 20px;margin:0 auto;padding: 0px;z-index: 1000''></span> ";
       aObj.prepend(appendStr);
-      var index = treeNode.color.indexOf("#");
-      var colorSet;
+      let index = treeNode.color.indexOf("#");
+      let colorSet;
       if (index == 0) {
         colorSet = treeNode.color;
       } else if (index == -1) {
@@ -214,16 +245,16 @@ export default {
             "#4c1130"
           ]
         ],
-        localStorageKey: "spectrum.homepage",
+        // localStorageKey: "spectrum.homepage",
         chooseText: "确定",
         cancelText: "取消",
         beforeShow: function(color) {
           $(".sp-cancel").click(function() {
-            var selectNodes = zTree.getSelectedNodes();
+            let selectNodes = zTree.getSelectedNodes();
             if (selectNodes != null && selectNodes.length > 0) {
-              for (var i = 0; i < selectNodes.length; i++) {
+              for (let i = 0; i < selectNodes.length; i++) {
                 if (!selectNodes[i].isParent) {
-                  var originalColor = map.get(selectNodes[i].tId);
+                  let originalColor = map.get(selectNodes[i].tId);
                   $("#colorSelect__" + selectNodes[i].tId).css(
                     "background-color",
                     originalColor
@@ -237,15 +268,15 @@ export default {
             }
           });
           $(this).spectrum("set", $(this).css("background-color"));
-          var zTree = $.fn.zTree.getZTreeObj("tree_edit");
-          var idArray = $(this)
+          let zTree = $.fn.zTree.getZTreeObj("tree_edit");
+          let idArray = $(this)
             .attr("id")
             .split("__");
-          var node = zTree.getNodeByTId(idArray[1]);
-          var selectNodes = zTree.getSelectedNodes();
+          let node = zTree.getNodeByTId(idArray[1]);
+          let selectNodes = zTree.getSelectedNodes();
           if (selectNodes != null && selectNodes.length > 0) {
-            var selectedTids = new Array();
-            for (var i = 0; i < selectNodes.length; i++) {
+            let selectedTids = new Array();
+            for (let i = 0; i < selectNodes.length; i++) {
               selectedTids.push(selectNodes[i].tId);
             }
             if ($.inArray(idArray[1], selectedTids) == -1) {
@@ -257,7 +288,7 @@ export default {
           }
           //将选择的节点tid以及对应的颜色存入map,以便点击取消的时候恢复
           selectNodes = zTree.getSelectedNodes();
-          for (var i = 0; i < selectNodes.length; i++) {
+          for (let i = 0; i < selectNodes.length; i++) {
             if (!selectNodes[i].isParent) {
               map.put(
                 selectNodes[i].tId,
@@ -267,11 +298,11 @@ export default {
           }
         },
         change: function(color) {
-          var rgb = color.toRgb();
-          var zTree = $.fn.zTree.getZTreeObj("tree_edit");
-          var selectNodes = zTree.getSelectedNodes();
+          let rgb = color.toRgb();
+          let zTree = $.fn.zTree.getZTreeObj("tree_edit");
+          let selectNodes = zTree.getSelectedNodes();
           if (selectNodes != null) {
-            for (var i = 0; i < selectNodes.length; i++) {
+            for (let i = 0; i < selectNodes.length; i++) {
               if (!selectNodes[i].isParent) {
                 selectNodes[i].color = rgb.r + "," + rgb.g + "," + rgb.b;
                 $("#colorSelect__" + selectNodes[i].tId).css(
@@ -283,11 +314,11 @@ export default {
           }
         },
         move: function(color) {
-          var rgb = color.toRgb();
-          var zTree = $.fn.zTree.getZTreeObj("tree_edit");
-          var selectNodes = zTree.getSelectedNodes();
+          let rgb = color.toRgb();
+          let zTree = $.fn.zTree.getZTreeObj("tree_edit");
+          let selectNodes = zTree.getSelectedNodes();
           if (selectNodes != null) {
-            for (var i = 0; i < selectNodes.length; i++) {
+            for (let i = 0; i < selectNodes.length; i++) {
               if (!selectNodes[i].isParent) {
                 selectNodes[i].color = rgb.r + "," + rgb.g + "," + rgb.b;
                 $("#colorSelect__" + selectNodes[i].tId).css(
@@ -299,6 +330,52 @@ export default {
           }
         }
       });
+    },
+    //展开、收起树节点
+    expandNode(e) {
+      let type = e.type;
+      let operObj = e.operObj;
+      let zTree = $.fn.zTree.getZTreeObj(operObj);
+      let treeNodes = zTree.transformToArray(zTree.getNodes());
+      let flag = true;
+
+      //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
+      for (let i = 0; i < treeNodes.length; i++) {
+        if (treeNodes[i].level == level && treeNodes[i].isParent) {
+          if (type == "expand" && !treeNodes[i].open) {
+            flag = false;
+            break;
+          } else if (type == "collapse" && treeNodes[i].open) {
+            flag = false;
+            break;
+          }
+        }
+      }
+
+      if (flag) {
+        //说明当前level的节点都为折叠或者展开状态
+        if (type == "expand") {
+          // level++
+          if (level < maxLevel - 1) {
+            level++;
+          }
+        } else if (type == "collapse") {
+          //level--
+          if (level == 0) {
+            return;
+          }
+          level--;
+        }
+      }
+      for (let i = 0; i < treeNodes.length; i++) {
+        if (treeNodes[i].level == level && treeNodes[i].isParent) {
+          if (type == "expand" && !treeNodes[i].open) {
+            zTree.expandNode(treeNodes[i], true, false, null, true);
+          } else if (type == "collapse" && treeNodes[i].open) {
+            zTree.expandNode(treeNodes[i], false, false, null, true);
+          }
+        }
+      }
     }
   }
 };
@@ -315,5 +392,13 @@ export default {
   border: 1px solid #617775;
   overflow-y: auto;
   overflow-x: auto;
+}
+.buttonStyle {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  border: 1px solid #e6e6e6;
+  text-align: center;
+  cursor: pointer;
 }
 </style>
