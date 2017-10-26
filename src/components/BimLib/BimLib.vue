@@ -1,5 +1,5 @@
 <template>
-    <div style="position:relative">
+    <div>
         <div class="aside">
             <ul id="treeDemo" class="ztree"></ul>
         </div>
@@ -11,7 +11,9 @@
                 <el-menu-item index="/bimlib/pdf-drawing">PDF图纸</el-menu-item>
             </el-menu>
             <div class="contents">
-                <router-view></router-view>
+             <transition :name="transitionName" > 
+                <router-view class="Router"></router-view>
+             </transition>
             </div>
         </div>
     </div>
@@ -22,6 +24,7 @@ import "../../../static/zTree/js/jquery.ztree.core.min.js";
 export default {
     data: () => ({
         activeIndex: '/bimlib/bim-lib',
+        transitionName: 'slide-right' , // 默认动态路由变化为slide-right
         setting: {
             data: {
                 simpleData: {
@@ -57,10 +60,34 @@ export default {
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         }
+               
     },
     mounted() {
         $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
-    }
+    },
+    beforeRouteUpdate (to, from, next) {
+      let isBack = this.$router.isBack
+      
+      if (isBack) {
+         this.transitionName = 'slide-right'
+      } else {
+         this.transitionName = 'slide-left'
+      }
+        this.$router.isBack = false
+        next()
+    },
+   
+     watch: {
+ 　　'$route' (to, from) {
+          let toName = to.name;//路由跳转到信息
+          let fromName = from.name;//路由跳转前的信息
+          toName = toName.split("?")[1];
+          fromName = fromName.split("?")[1];
+          this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是向后
+ 　　 }
+　　}
+ 
+
 }
 </script>
 
@@ -71,7 +98,7 @@ export default {
     width: 302px;
     padding-top: 40px;
     left: 0;
-    top: 0px;
+    top: 130px;
     bottom: 0;
     border: 1px solid #e6e6e6;
     box-sizing: border-box;
@@ -109,5 +136,25 @@ export default {
     border-bottom: 2px solid #6495f2;
     font-size: 16px;
     font-weight: 700;
+}
+.Router {
+
+     position: absolute;
+     width: 100%;
+     transition: all .8s ease;
+     top: 225px;
+}
+.slide-left-enter,
+.slide-right-leave-active {
+     opacity: 0;
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+}
+
+.slide-left-leave-active,
+.slide-right-enter {
+     opacity: 0;
+    -webkit-transform: translate(-100%, 0);
+    transform: translate(-100% 0);
 }
 </style>

@@ -27,6 +27,9 @@
             submit(){
                 console.log(this.content);
                 this.$message.success('提交成功！');
+            },
+            goback () {
+              this.$router.goBack()
             }
         },
         computed: {

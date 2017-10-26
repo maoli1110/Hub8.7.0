@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-
+Router.prototype.goBack = function () {
+  this.isBack = true
+  window.history.go(-1)
+}
 Vue.use(Router);
 
 export default new Router({
@@ -113,13 +116,16 @@ export default new Router({
                     children: [
                         {
                             // BIM库
+                            name:"bim-lib?1",
                             path: 'bim-lib',
                             component: resolve => require(['../components/BimLib/Bim.vue'], resolve),
                             redirect: '/bimlib/bim-lib/housing',
                             children: [
                                 {
+                                    name:"bim-lib?1",
                                     path: 'housing',// 房建
-                                    component: resolve => require(['../components/Authority-management/Markdown.vue'], resolve)
+                                    component: resolve => require(['../components/Authority-management/Markdown.vue'], resolve),
+
                                 },
                                 {
                                     path: 'civicism',// 市政
@@ -145,18 +151,24 @@ export default new Router({
                         },
                         {
                             // 工作集库
+                            name:"working-set?2",
                             path: 'working-set',
-                            component: resolve => require(['../components/BimLib/WorkingSet.vue'], resolve)
+                            component: resolve => require(['../components/BimLib/WorkingSet.vue'], resolve),
+                            props: { type: 2 }
                         },
                         {
                             // 回收站
+                            name:"recycle-bin?3",
                             path: 'recycle-bin',
-                            component: resolve => require(['../components/BimLib/RecycleBin.vue'], resolve)
+                            component: resolve => require(['../components/BimLib/RecycleBin.vue'], resolve),
+                             props: { type: 3 }
                         },
                         {
                             // pdf图纸
+                            name:"pdf-drawing?4",
                             path: 'pdf-drawing',
-                            component: resolve => require(['../components/BimLib/PdfDrawing.vue'], resolve)
+                            component: resolve => require(['../components/BimLib/PdfDrawing.vue'], resolve),
+                             props: { type: 4}
                         },
                     ]
                 },

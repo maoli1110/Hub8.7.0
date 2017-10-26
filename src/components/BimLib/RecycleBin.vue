@@ -64,7 +64,10 @@ export default {
         },
         dragoverEvent(ev) {
             ev.preventDefault();
-        }
+        },
+       goback () {
+          this.$router.goBack()
+       }
     }
 }
 </script>
