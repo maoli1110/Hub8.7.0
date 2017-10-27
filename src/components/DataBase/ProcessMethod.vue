@@ -4,7 +4,7 @@
       <el-option v-show="false"
       :value="value">    
       </el-option>
-    <ul id="treeDemo" class="ztree"></ul>
+      <ul id="treeDemo" class="ztree"></ul>
   </el-select>
 </div>
 </template>

@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import {IndexCumsum} from "../../utils/validate.js"
 export default {
     data() {
         return {

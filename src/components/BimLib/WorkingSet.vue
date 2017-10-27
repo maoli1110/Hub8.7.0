@@ -68,9 +68,10 @@
 </template>
 
 <script>
+    import {FormIndex} from "../../utils/common.js"
     export default {
         created(){
-            this.getData();
+            FormIndex(this.tableData,2,10)
         },        
         data: function(){
             return {
@@ -102,6 +103,7 @@
             }
         },
         computed: {
+
             editor() {
                 return this.$refs.myTextEditor.quillEditor;
             }

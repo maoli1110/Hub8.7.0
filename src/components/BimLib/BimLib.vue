@@ -21,6 +21,7 @@
 
 <script>
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
+
 export default {
     data: () => ({
         activeIndex: '/bimlib/bim-lib',
