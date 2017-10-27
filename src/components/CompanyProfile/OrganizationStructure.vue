@@ -6,15 +6,49 @@
             <el-button type="primary" icon="plus"  @click="expandNode({type:'expand',operObj:'tree_edit'})"   size='small'></el-button>
             <el-button type="primary" icon="minus" @click="expandNode({type:'collapse',operObj:'tree_edit'})" size='small'></el-button>
           </div>
-          <div style="margin:10px auto;width:550px;">
-            <el-button type="primary" icon="date"  @click="add({isParent:true})" size='small'></el-button>
-            <el-button type="primary" icon="menu"  @click="add({isParent:false})" size='small'></el-button>
+          <div style="margin:10px auto;width:550px;position:relative">
+            <div class="selectStatus">
+                <span class="el-icon-caret-bottom" style="color:#e6e6e6" @click="dropdownShow('state')"> </span>
+                <div class="select-dropdown">
+                  <ul>
+                    <li @click="add({isParent:false})">增加单个状态</li>
+                    <li @click='textAreaVisible = true;textareaValue="";textTittle="增加多个状态";type="state" '>增加多个状态</li>
+                  </ul>
+                </div>
+            </div>
+            <div class="selcetNodes" >
+                <span class="el-icon-caret-bottom" style="color:#e6e6e6" @click="dropdownShow('node')"> </span>
+                <div class="select-dropdown">
+                  <ul>
+                    <li @click="add({isParent:true})">增加单个节点</li>
+                    <li @click='textAreaVisible = true;textareaValue="";textTittle="增加多个节点";type="node"'> 增加多个节点</li>
+                  </ul>
+                </div>
+            </div>
+            <el-button type="primary" icon="date"  @click="add({isParent:false})" size='small'></el-button>
+            <el-button type="primary" icon="menu"  @click="add({isParent:true})" size='small'></el-button>
             <el-button type="primary" icon="edit"  @click="rename()" size='small'></el-button>
             <el-button type="primary" icon="delete"  @click="remove()" size='small'></el-button>
             <el-button type="primary" icon="arrow-up"  @click="upMove()" size='small'></el-button>
             <el-button type="primary" icon="arrow-down"  @click="downMove()" size='small'></el-button>
             <el-button type="primary" icon="caret-top"  @click="upLevel()" size='small'></el-button>
             <el-button type="primary" icon="caret-bottom"  @click="downLevel()" size='small'></el-button>
+          </div>
+          <div style="margin:10px auto;width:550px;">
+            <!--增加多个节点/状态弹框-->
+            <el-dialog :title=textTittle :visible.sync="textAreaVisible" size='tiny'  
+                       :close-on-click-modal="false">
+                <el-input type="textarea" :rows="10"  v-model="textareaValue" placeholder="一行视为一个节点，支持多行复制粘贴" :maxlength='297'>
+                </el-input>
+                <div slot="footer" class="dialog-footer">
+                    <el-button type="primary"  @click="textAreaVisible = false,addMultiNodeState()">确 定
+                    </el-button>
+                    <el-button @click="textAreaVisible = false;cancleMultiNodeState()">取 消</el-button>
+                </div>
+            </el-dialog>
+           
+
+        
           </div>            
             <ul id="tree_edit" class="ztree"></ul>
         </div>
@@ -72,6 +106,10 @@ let maxLevel = -1;
 export default {
   data() {
     return {
+      textAreaVisible: false,
+      textareaValue: "",
+      textTittle:'',
+      type:'',
       // 树数据
       url: "../../../static/datasource.json",
       setting: {
@@ -108,7 +146,7 @@ export default {
           },
           onExpand: function(event, treeId, treeNode) {
             level = treeNode.level;
-          },
+          }
         }
       },
       zNodes: []
@@ -120,7 +158,7 @@ export default {
       let zTree = $.fn.zTree.init($("#tree_edit"), this.setting, this.zNodes);
       let nodes = zTree.getNodes();
       if (nodes.length > 0) {
-        // zTree.selectNode(nodes[0]);
+        zTree.selectNode(nodes[0]);
       }
       let treeNodes = zTree.transformToArray(zTree.getNodes());
       //获取状态树的深度
@@ -359,12 +397,14 @@ export default {
       }
     },
     // 新增节点或状态
-    add(e) {
+    add(type) {
+      $(".select-dropdown ul").slideUp("fast");
       var zTree = $.fn.zTree.getZTreeObj("tree_edit");
-      var isParent = e.isParent;
+      var isParent = type.isParent;
       var nodes = zTree.getSelectedNodes();
       if (nodes.length == 0) {
         this.$message({
+          showClose: true,
           message: "请先选择一个节点",
           type: "warning"
         });
@@ -372,6 +412,7 @@ export default {
       }
       if (nodes.length > 1) {
         this.$message({
+          showClose: true,
           message: "只能选择一个节点或状态，不能多选",
           type: "warning"
         });
@@ -453,6 +494,193 @@ export default {
       }
       zTree.editName(newNode[0]);
     },
+    // 增加多个节点/状态
+    addMultiNodeState() {
+      $(".select-dropdown ul").slideUp("fast");
+      var zTree = $.fn.zTree.getZTreeObj("tree_edit");
+      var isParent;
+      if (this.type == "node") {
+        isParent = true;
+      } else if (this.type == "state") {
+        isParent = false;
+      }
+      var nodes = zTree.getSelectedNodes();
+      if (nodes.length == 0) {
+        this.$message({
+          showClose: true,
+          message: "请先选择一个节点",
+          type: "warning"
+        });
+        return;
+      }
+      if (nodes.length > 1) {
+        this.$message({
+          showClose: true,
+          message: "只能选择一个节点或状态，不能多选",
+          type: "warning"
+        });
+        return;
+      }
+      //开始增加多个节点/状态
+      var treeNode = nodes[0];
+      //获取用户输入的节点或者状态
+      var contentArray = this.textareaValue.split("\n");
+      console.log(contentArray);
+
+      //过滤出空行
+      for (var i = 0; i < contentArray.length; i++) {
+        if ($.trim(contentArray[i]) == "") {
+          contentArray.splice(i, 1);
+          i = -1;
+          continue;
+        }
+      }
+      var illegalNodeState = new Array();
+      outer: for (var k = 0; k < contentArray.length; k++) {
+        //过滤出名称过长的节点/状态
+        if (contentArray[k].length > 128) {
+          illegalNodeState.push(contentArray[k]);
+          continue;
+        }
+        var newNode;
+        if (!isParent) {
+          var tmpNode = {
+            name: $.trim(contentArray[k]),
+            isParent: isParent,
+            color: "128,128,128"
+          };
+          //创建的是状态
+          if (treeNode.isParent) {
+            //选中的是节点,创建子状态
+            var childNodes = treeNode.children;
+            for (var i = 0; i < childNodes.length; i++) {
+              if (
+                !childNodes[i].isParent &&
+                childNodes[i].name == contentArray[k]
+              ) {
+                illegalNodeState.push(contentArray[k]);
+                continue outer;
+              }
+            }
+            newNode = this.createNode(zTree, treeNode, isParent, true, tmpNode);
+          } else {
+            //选中的是状态,创建平级状态
+            var parentNode = treeNode.getParentNode();
+            var childNodes = parentNode.children;
+            for (var i = 0; i < childNodes.length; i++) {
+              if (
+                !childNodes[i].isParent &&
+                childNodes[i].name == contentArray[k]
+              ) {
+                illegalNodeState.push(contentArray[k]);
+                continue outer;
+              }
+            }
+            newNode = this.createNode(
+              zTree,
+              treeNode.getParentNode(),
+              isParent,
+              true,
+              tmpNode
+            );
+            zTree.moveNode(treeNode, newNode[0], "next");
+          }
+        } else {
+          //创建的是节点
+          var tmpNode = {
+            name: $.trim(contentArray[k]),
+            isParent: isParent,
+            children: []
+          };
+          /**
+                     * 选中的是根节点需要特殊处理
+                     */
+          if (treeNode.level == 0) {
+            var childNodes = treeNode.children;
+            for (var i = 0; i < childNodes.length; i++) {
+              if (
+                childNodes[i].isParent &&
+                childNodes[i].name == contentArray[k]
+              ) {
+                illegalNodeState.push(contentArray[k]);
+                continue outer;
+              }
+            }
+            newNode = this.createNode(zTree, treeNode, isParent, true, tmpNode);
+            var parentNode = newNode[0].getParentNode();
+            var childNodes = parentNode.children;
+            var j = 0;
+            var z = 0;
+            var pNodeArray = new Array();
+            var cNodeArray = new Array();
+            for (var i = 0; i < childNodes.length; i++) {
+              if (childNodes[i].isParent) {
+                pNodeArray[z] = childNodes[i];
+                z++;
+              } else {
+                cNodeArray[j] = childNodes[i];
+                j++;
+              }
+            }
+            if (pNodeArray.length > 2) {
+              zTree.moveNode(
+                pNodeArray[pNodeArray.length - 2],
+                newNode[0],
+                "next"
+              );
+            } else if (pNodeArray.length == 1 && cNodeArray.length > 0) {
+              zTree.moveNode(cNodeArray[0], newNode[0], "prev");
+            }
+          } else {
+            /*if(!treeNode.isParent){
+                            alertDialog("warning", "请选择一个节点！", function(){});
+                            break;
+                        }*/
+            var parentNode = treeNode.getParentNode();
+            var childNodes = parentNode.children;
+            for (var i = 0; i < childNodes.length; i++) {
+              if (
+                childNodes[i].isParent &&
+                childNodes[i].name == contentArray[k]
+              ) {
+                illegalNodeState.push(contentArray[k]);
+                continue outer;
+              }
+            }
+            newNode = this.createNode(
+              zTree,
+              treeNode.getParentNode(),
+              isParent,
+              true,
+              tmpNode
+            );
+            zTree.moveNode(treeNode, newNode[0], "next");
+          }
+        }
+      }
+      var message;
+      if (illegalNodeState.length > 0) {
+        if (isParent) {
+          message = "以下节点名称重复或者过长无法创建！\n";
+          message += illegalNodeState.join("、") + "\n\n";
+          message += "符合要求的节点将被创建";
+        } else {
+          message = "以下状态名称重复或者过长无法创建！\n";
+          message += illegalNodeState.join("、") + "\n\n";
+          message += "符合要求的状态将被创建";
+        }
+        alert(message);
+        // this.$message({
+        //   showClose: true,
+        //   message: "至少选择一个节点或状态",
+        //   type: "warning"
+        // });
+      }
+    },
+    //取消
+    cancleMultiNodeState() {
+      $(".selectStatus ul").slideUp("fast");
+    },
     createNode(zTree, treeNode, isParent, directCreateName, node) {
       var newNode;
       /*var treeNodes = zTree.transformToArray(zTree.getNodes());*/
@@ -497,6 +725,7 @@ export default {
       let treeNode = nodes[0];
       if (nodes.length == 0) {
         this.$message({
+          showClose: true,
           message: "请先选择一个节点",
           type: "warning"
         });
@@ -504,6 +733,7 @@ export default {
       }
       if (nodes.length > 1) {
         this.$message({
+          showClose: true,
           message: "只能重命名一个节点或状态,不能多选",
           type: "warning"
         });
@@ -526,7 +756,12 @@ export default {
           } else {
             message = "状态名称不能为空";
           }
-          vm.$message.error(message);
+          // vm.$message.error(message);
+          vm.$message({
+            showClose: true,
+            message: message,
+            type: "error"
+          });
           zTree.cancelEditName();
           return false;
         } else if ($.trim(newName).length > 128) {
@@ -535,7 +770,11 @@ export default {
           } else {
             message = "状态名称不能超过128个字符";
           }
-          vm.$message.error(message);
+          vm.$message({
+            showClose: true,
+            message: message,
+            type: "error"
+          });
           zTree.cancelEditName();
           return false;
         } else {
@@ -554,7 +793,11 @@ export default {
               } else {
                 message = "状态名称不能重复";
               }
-              vm.$message.error(message);
+              vm.$message({
+                showClose: true,
+                message: message,
+                type: "error"
+              });
               zTree.cancelEditName();
               return false;
             }
@@ -565,11 +808,12 @@ export default {
       return true;
     },
     // 删除
-    remove(e) {
+    remove() {
       let zTree = $.fn.zTree.getZTreeObj("tree_edit");
       let nodes = zTree.getSelectedNodes();
       if (nodes.length == 0) {
         this.$message({
+          showClose: true,
           message: "至少选择一个节点或状态",
           type: "warning"
         });
@@ -603,6 +847,7 @@ export default {
       if (nodes.length == 0) {
         // alertDialog("warning", "至少选择一个节点", function() {});
         this.$message({
+          showClose: true,
           message: "至少选择一个节点",
           type: "warning"
         });
@@ -645,6 +890,7 @@ export default {
       var nodes = treeObj.getSelectedNodes();
       if (nodes.length == 0) {
         this.$message({
+          showClose: true,
           message: "至少选择一个节点",
           type: "warning"
         });
@@ -688,6 +934,7 @@ export default {
       var nodes = treeObj.getSelectedNodes();
       if (nodes.length == 0) {
         this.$message({
+          showClose: true,
           message: "至少选择一个节点",
           type: "warning"
         });
@@ -796,6 +1043,7 @@ export default {
       var nodes = treeObj.getSelectedNodes();
       if (nodes.length == 0) {
         this.$message({
+          showClose: true,
           message: "至少选择一个节点",
           type: "warning"
         });
@@ -996,6 +1244,20 @@ export default {
           );
         }
       }
+    },
+    // 新增节点和状态下拉框
+    dropdownShow(type) {
+      //获取选择的节点
+      var zTree = $.fn.zTree.getZTreeObj("tree_edit");
+      var nodes = zTree.getSelectedNodes();
+      if (nodes.length != 1) {
+        return;
+      }
+      if (!nodes[0].isParent && type == "node") {
+        return;
+      }
+      type=='node'? $(".selcetNodes ul").slideToggle():$(".selectStatus ul").slideToggle();
+     
     }
   }
 };
@@ -1013,12 +1275,49 @@ export default {
   overflow-y: auto;
   overflow-x: auto;
 }
-.buttonStyle {
-  width: 25px;
-  height: 25px;
-  display: inline-block;
-  border: 1px solid #e6e6e6;
-  text-align: center;
+.el-select-dropdown__item.selected {
+  color: rgb(72, 106, 106);
+  background-color: #fff;
+}
+.selectStatus {
+  position: absolute;
+  left: 36px;
+  top: 5px;
+}
+.selcetNodes{
+  position: absolute;
+  left: 93px;
+  top: 5px;
+}
+.select-dropdown ul {
+  position: absolute;
+  width: 120px;
+  border: 1px solid rgb(209, 229, 229);
+  border-radius: 2px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  margin: 5px 0;
+  display: none;
+  z-index: 999;
+}
+.select-dropdown ul li {
+  font-size: 14px;
+  padding: 8px 10px;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: rgb(72, 106, 106);
+  height: 36px;
+  line-height: 1.5;
+  box-sizing: border-box;
   cursor: pointer;
+  list-style: none;
+}
+.dialog-footer {
+  text-align: center;
+}
+.multi-textarea .el-button {
+  width: 116px;
 }
 </style>

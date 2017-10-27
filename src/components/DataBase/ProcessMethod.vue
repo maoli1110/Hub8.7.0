@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="process">
   <el-select v-model="value" placeholder="请选择">
       <el-option v-show="false"
       :value="value">    
@@ -53,10 +53,14 @@ export default {
       ]
     };
   },
+  watch: {
+    value:function(){
+    }
+  },
   methods: {
     onClick(event, treeId, treeNode) {
-      this.value = treeNode.name;
-    }
+      this.value = treeNode.name;     
+    },
   },
   mounted() {
     $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
