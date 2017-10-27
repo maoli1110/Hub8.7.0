@@ -68,7 +68,8 @@
 </template>
 
 <script>
-    import {FormIndex} from "../../utils/common.js"
+    import {FormIndex} from "../../utils/common.js";
+    // import "../../utils/directive.js"
     export default {
         created(){
             FormIndex(this.tableData,2,10)

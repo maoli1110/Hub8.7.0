@@ -5,7 +5,6 @@ Router.prototype.goBack = function () {
   window.history.go(-1)
 }
 Vue.use(Router);
-
 export default new Router({
     routes: [
         {
@@ -123,7 +122,7 @@ export default new Router({
 
                             children: [
                                 {
-                                    name:"bim-lib?1",
+                                    name:"housing?1",
                                     path: 'housing',// 房建
                                     component: resolve => require(['../components/Authority-management/Markdown.vue'], resolve),
                                     props:{'name':'xiaomingtongxue'},
