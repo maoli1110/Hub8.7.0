@@ -150,7 +150,6 @@ export default {
      width: 100%;
      transition: all .8s ease;
      top: 225px;
-     z-index:1;
 }
 .slide-left-enter,
 .slide-right-leave-active {

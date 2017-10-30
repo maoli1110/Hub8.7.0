@@ -4,12 +4,14 @@ import router from './router';
 import store from './store'
 import axios from 'axios';
 import ElementUI from 'element-ui';
+import EasyScroll from 'easyscroll';
 import directive from 'utils/directive.js';
 import $ from 'jquery';
 // import 'element-ui/lib/theme-default/index.css';    // 默认主题
 import '../static/css/theme-green/index.css';       // 浅绿色主题
 import "babel-polyfill";
 Vue.use(ElementUI);
+Vue.use(EasyScroll);
 Vue.prototype.$axios = axios;
 new Vue({
     router,
