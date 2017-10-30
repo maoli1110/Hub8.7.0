@@ -19,7 +19,7 @@
             </v-bar>
         </div>-->
         <div class="bims-contents">
-            <router-view></router-view>
+            <router-view class="bim" style="position:static"></router-view>
         </div>
     </div>
 </template>
@@ -77,5 +77,5 @@ export default {
 .container .el-menu .el-menu-item:hover {
     background-color: #f5f8fd;
 }
-.bims-contents{position:static !important;}
+.bims-contents>.bim {position:static !important;}
 </style>

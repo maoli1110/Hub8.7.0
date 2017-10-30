@@ -146,7 +146,6 @@ export default {
     font-weight: 700;
 }
 .bimlib.Router{
-
      position: absolute;
      width: 100%;
      transition: all .8s ease;
