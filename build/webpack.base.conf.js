@@ -29,7 +29,7 @@ module.exports = {
       'src': resolve('src'),
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
-      'jquery': 'jquery' 
+      'jquery': 'jquery'
     }
   },
   plugins: [
@@ -64,7 +64,7 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
     ]
   },
   // plugins: [

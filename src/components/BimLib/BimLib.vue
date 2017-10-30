@@ -1,18 +1,18 @@
 <template>
     <div>
         <div class="aside">
-            <ul id="treeDemo" class="ztree"></ul>
-        </div>
-        <div class="container">
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
+            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/bimlib/bim-lib">BIM库</el-menu-item>
                 <el-menu-item index="/bimlib/working-set">工作集库</el-menu-item>
                 <el-menu-item index="/bimlib/recycle-bin">回收站</el-menu-item>
                 <el-menu-item index="/bimlib/pdf-drawing">PDF图纸</el-menu-item>
             </el-menu>
+        </div>
+        <div class="container">
+            <!--<ul id="treeDemo" class="ztree"></ul>-->
             <div class="contents">
-             <transition :name="transitionName" > 
-                <router-view class="Router"></router-view>
+             <transition :name="transitionName">
+                <router-view class="Router bimlib"></router-view>
              </transition>
             </div>
         </div>
@@ -20,6 +20,10 @@
 </template>
 
 <script>
+/* 左侧导航菜单样式 */
+
+
+//js
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 
 export default {
@@ -61,14 +65,14 @@ export default {
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         }
-               
+
     },
     mounted() {
         $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
     },
     beforeRouteUpdate (to, from, next) {
       let isBack = this.$router.isBack
-      
+
       if (isBack) {
          this.transitionName = 'slide-right'
       } else {
@@ -77,7 +81,7 @@ export default {
         this.$router.isBack = false
         next()
     },
-   
+
      watch: {
  　　'$route' (to, from) {
           if(!to.name && !from.name){return false}
@@ -88,7 +92,7 @@ export default {
           this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是
  　　 }
 　　}
- 
+
 
 }
 </script>
@@ -98,7 +102,7 @@ export default {
     display: block;
     position: absolute;
     width: 302px;
-    padding-top: 40px;
+    padding-top: 0px;
     left: 0;
     top: 150px;
     bottom: 0;
@@ -141,7 +145,7 @@ export default {
     font-size: 16px;
     font-weight: 700;
 }
-.Router {
+.bimlib.Router{
 
      position: absolute;
      width: 100%;
@@ -162,4 +166,7 @@ export default {
     -webkit-transform: translate(-100%, 0);
     transform: translate(-100% 0);
 }
+</style>
+<style>
+    @import "../../../static/css/aside.css";
 </style>

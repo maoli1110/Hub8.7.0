@@ -8,6 +8,16 @@
             <el-menu-item index="/bimlib/bim-lib/cim">CIM</el-menu-item>
             <el-menu-item index="/bimlib/bim-lib/ppp">PPP</el-menu-item>
         </el-menu>
+      <!--  <div class="bims-contents" >
+            <v-bar wrapper="wrapper"
+                   vBar=""
+                   vBarInternal=""
+                   hBar=""
+                   hBarInternal="">
+                &lt;!&ndash; your content &ndash;&gt;
+                <router-view></router-view>
+            </v-bar>
+        </div>-->
         <div class="bims-contents">
             <router-view></router-view>
         </div>
@@ -15,6 +25,7 @@
 </template>
 
 <script>
+//import VBar from 'v-bar';
 import {IndexCumsum} from "../../utils/validate.js"
 export default {
     data() {
@@ -29,15 +40,20 @@ export default {
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         },
-       
+
     },
     mounted() {
         console.log(this.$router)
-    }
+    },
+//    components: { VBar }
 }
 </script>
 
 <style scoped>
+ .wrapper{
+    height: 300px;
+    width: 300px
+ }
 .container .el-menu {
     padding: 10px 20px;
     border: 1px solid #e6e6e6;
@@ -61,4 +77,5 @@ export default {
 .container .el-menu .el-menu-item:hover {
     background-color: #f5f8fd;
 }
+.bims-contents{position:static !important;}
 </style>

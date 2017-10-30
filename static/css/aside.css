@@ -5,8 +5,8 @@
     left: 0px;
     top:  0px;
     bottom: 0;
-    padding-top: 20px;
-    border-right: 1px solid #e6e6e6    
+    padding-top: 0px;
+    border-right: 1px solid #e6e6e6
 }
 .aside .el-menu {
     height: 100%;

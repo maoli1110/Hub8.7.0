@@ -4,6 +4,8 @@
     </div>
 </template>
 <style>
+@import "../static/css/init.css";
+@import '../static/css/common.css';
 @import "../static/zTree/css/demo.css";
 @import "../static/zTree/css/spectrum.css";
 @import "../static/zTree/css/zTreeStyle/zTreeStyle.css";
