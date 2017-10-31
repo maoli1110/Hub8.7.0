@@ -8965,7 +8965,6 @@
 }
 
 .el-transfer-panel {
-    border: 1px solid #d1dbe5;
     background: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,.12),0 0 6px rgba(0,0,0,.04);
     display: inline-block;
@@ -8978,10 +8977,10 @@
 .el-transfer-panel .el-transfer-panel__header {
     height: 36px;
     line-height: 36px;
-    background: #fbfdff;
+    /* background: #fbfdff; */
     margin: 0;
     padding-left: 20px;
-    border-bottom: 1px solid #d1dbe5;
+    /* border-bottom: 1px solid #d1dbe5; */
     box-sizing: border-box;
     color: #1f2d3d
 }
@@ -9029,8 +9028,10 @@
 }
 
 .el-transfer-panel__body {
-    padding-bottom: 36px;
-    height: 246px
+    padding-bottom: 22px;
+    border: 1px solid #c8c8c8;
+
+    /* height: 246px */
 }
 
 .el-transfer-panel__list {
@@ -9089,7 +9090,7 @@
 }
 
 .el-transfer-panel__filter .el-input__inner {
-    height: 22px;
+    height: 35px;
     width: 100%;
     display: inline-block;
     box-sizing: border-box
