@@ -1,13 +1,13 @@
 <template>
     <div class="houseing-container">
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
+        <!--<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
             <el-menu-item index="/configuration/housing/explorer">Explorer</el-menu-item>
             <el-menu-item index="/configuration/housing/govern">Govern</el-menu-item>
             <el-menu-item index="/configuration/housing/plan">Plan</el-menu-item>
             <el-menu-item index="/configuration/housing/coopreation">Coopreation</el-menu-item>
             <el-menu-item index="/configuration/housing/o-bw">原BW</el-menu-item>
             <el-menu-item index="/configuration/housing/o-govern">原Govern</el-menu-item>
-        </el-menu>
+        </el-menu>-->
         <div>
             <router-view></router-view>
         </div>
