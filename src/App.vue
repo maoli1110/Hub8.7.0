@@ -1,10 +1,16 @@
 <template>
     <div id="app" >
-        <EasyScrollbar>
-            <div id="wrapper" >
-                 <router-view ref="main"  :barOption="colorSizeOption"></router-view>
+        <template>
+            <div>
+                <EasyScrollbar>
+                <div id="wrapper" :barOption="colorSizeOption">
+                    <router-view ref="main"  ></router-view>
+                </div>
+            </EasyScrollbar>
             </div>
-        </EasyScrollbar>
+        </template>
+
+        <!--<router-view ref="main"></router-view>-->
     </div>
 </template>
 <style>

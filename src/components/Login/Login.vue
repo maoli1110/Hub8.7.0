@@ -14,7 +14,7 @@
                             子管理员账号
                         </div>
                     </div> -->
-                    
+
                 </div>
                 <div class="form">
                     <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0px" class="demo-ruleForm">
@@ -130,7 +130,8 @@ export default {
 .login-wrap {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 837px;
+
 }
 
 .ms-title {
