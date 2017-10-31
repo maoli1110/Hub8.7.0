@@ -12,7 +12,7 @@
             <!--<ul id="treeDemo" class="ztree"></ul>-->
             <div class="contents">
              <transition :name="transitionName">
-                <router-view class="Router bimlib"></router-view>
+                <router-view class="Router bimlib Bim-libs"></router-view>
              </transition>
             </div>
         </div>
@@ -107,6 +107,7 @@ export default {
     top: 150px;
     bottom: 0;
     border: 1px solid #e6e6e6;
+    border-right:none;
     box-sizing: border-box;
     z-index:10;
      background: #fff;
@@ -149,7 +150,7 @@ export default {
      position: absolute;
      width: 100%;
      transition: all .8s ease;
-     top: 173px;
+     top: 0px;
 }
 .slide-left-enter,
 .slide-right-leave-active {

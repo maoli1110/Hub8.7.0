@@ -1,8 +1,60 @@
+/*=================================common-style===========================*/
+/*shadow*/
+.shadow-style{
+    box-shadow: 1px 2px 3px #ddd;
+}
+/*button*/
+.basic-btn{
+    width:100px;height:40px;margin-right:-12px !important;
+}
+.basic-btn .bim-icon{
+    margin-right:10px;
+}
+/*lines*/
+
 /*==============================container=================================*/
-.container{background:#f5f8fd;height: calc(100vh - 190px);}
+.container{background:#f5f8fd;height: calc(100vh - 190px);width: calc(100% - 343px) !important;}
 /*wrapper(美化滚动条包裹)*/
 #wrapper{
     width: 100%;
     height: calc(100vh - 6px);
 }
-/*==============================container=================================*/
+/*==============================Bim-lib=================================*/
+/*.Bim-libs .contents*/
+.contents{height: calc(100vh - 190px);width:100%;position:relative}
+.Bim-libs .contents{position:relative}
+
+/*======================.Bim-libs-bim==================================*/
+.Bim-libs-bim{margin-top:20px;background:#fff;padding:20px;}
+/*filter-toobar*/
+.Bim-libs-bim .bim-filter-toobar .filter-bar{
+    margin-right:20px;
+}
+.Bim-libs-bim .bim-data:nth-child(1){
+    padding-bottom:12px;border-bottom:1px solid #ddd;
+}
+.Bim-libs-bim .bim-data:nth-child(2){
+    padding-top:15px;
+}
+.Bim-libs-bim .bim-data:nth-child(3){
+    padding-top:15px;
+}
+.Bim-libs-bim .el-table th > .cell,
+.Bim-libs-bim  .el-table .cell{
+    padding:0;text-align:center;
+}
+.Bim-libs-bim  .el-table td:nth-child(3) div,
+.Bim-libs-bim  .el-table td:nth-child(7) div,
+.Bim-libs-bim  .el-table td:nth-child(9) div{
+    padding:0 10px;
+}
+.Bim-libs-bim  .el-table td:nth-child(3) div,
+.Bim-libs-bim  .el-table td:nth-child(7) div,
+.Bim-libs-bim  .el-table td:nth-child(9) div,
+.Bim-libs-bim  .el-table td:nth-child(12) div{
+    text-align:left !important;
+}
+.Bim-libs-bim  .el-table td:nth-child(12) div span{
+    margin:0 4px;
+}
+

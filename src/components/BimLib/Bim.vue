@@ -1,6 +1,6 @@
 <template>
     <div class="bims-container">
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
+        <el-menu :default-active="activeIndex" class="el-menu-demo shadow-style" mode="horizontal" router>
             <el-menu-item index="/bimlib/bim-lib/housing">房建</el-menu-item>
             <el-menu-item index="/bimlib/bim-lib/BaseBuild">基建</el-menu-item>
             <el-menu-item index="/bimlib/bim-lib/decoration">精装</el-menu-item>
@@ -9,9 +9,9 @@
             <!--<el-menu-item index="/bimlib/bim-lib/cim">CIM</el-menu-item>-->
             <!--<el-menu-item index="/bimlib/bim-lib/ppp">PPP</el-menu-item>-->
         </el-menu>
-            <div class="bims-contents">
-                <router-view ></router-view>
-            </div>
+        <div class="bims-contents Bim-libs shadow-style">
+            <router-view ></router-view>
+        </div>
     </div>
 </template>
 
