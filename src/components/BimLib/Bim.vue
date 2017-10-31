@@ -2,11 +2,12 @@
     <div class="bims-container">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
             <el-menu-item index="/bimlib/bim-lib/housing">房建</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/civicism">市政</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/assembly">装配式</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/civicism">基建</el-menu-item>
             <el-menu-item index="/bimlib/bim-lib/decoration">精装</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/cim">CIM</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/ppp">PPP</el-menu-item>
+            <!--误删除 这期不做隐藏下次有需求放开-->
+            <!--<el-menu-item index="/bimlib/bim-lib/assembly">装配式</el-menu-item>-->
+            <!--<el-menu-item index="/bimlib/bim-lib/cim">CIM</el-menu-item>-->
+            <!--<el-menu-item index="/bimlib/bim-lib/ppp">PPP</el-menu-item>-->
         </el-menu>
             <div class="bims-contents">
                 <router-view ></router-view>
@@ -20,18 +21,6 @@ export default {
     data() {
         return {
             activeIndex: '/bimlib/bim-lib/housing',
-            /*colorSizeOption:{
-                barColor:"#959595",   //滚动条颜色
-                barWidth:6,           //滚动条宽度
-                railColor:"#eee",     //导轨颜色
-                barMarginRight:0,     //垂直滚动条距离整个容器右侧距离单位（px）
-                barMaginBottom:0,     //水平滚动条距离底部距离单位（px)
-                barOpacityMin:0.3,      //滚动条非激活状态下的透明度
-                zIndex:"auto",        //滚动条z-Index
-                autohidemode:true,     //自动隐藏模式
-                horizrailenabled:true,//是否显示水平滚动条
-
-            }*/
         }
     },
     methods: {

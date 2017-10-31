@@ -128,7 +128,7 @@ export default new Router({
                                     props:{'name':'xiaomingtongxue'},
                                 },
                                 {
-                                    path: 'civicism',// 市政
+                                    path: 'BaseBuild',// 市政
                                     component: resolve => require(['../components/Authority-management/Upload.vue'], resolve)
                                 },
                                 {
@@ -330,8 +330,8 @@ export default new Router({
                         },
                         {
                             // 市政
-                            path: 'civicism',
-                            component: resolve => require(['../components/Authority-management/Upload.vue'], resolve)
+                            path: 'BaseBuild',
+                            component: resolve => require(['../components/Configuration/BaseBuild.vue'], resolve)
                         },
                         {
                             // 装配式

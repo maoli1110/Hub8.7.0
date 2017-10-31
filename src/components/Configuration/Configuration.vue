@@ -3,7 +3,7 @@
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/configuration/housing">房建</el-menu-item>
-                <el-menu-item index="/configuration/civicism">市政</el-menu-item>
+                <el-menu-item index="/configuration/BaseBuild">基建</el-menu-item>
                 <el-menu-item index="/configuration/assembly">装配式</el-menu-item>
                 <el-menu-item index="/configuration/decoration">精装</el-menu-item>
                 <el-menu-item index="/configuration/cim">CIM</el-menu-item>
