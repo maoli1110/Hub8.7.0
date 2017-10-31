@@ -1,17 +1,7 @@
 <template>
     <div class="bims-container">
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
-            <el-menu-item index="/bimlib/bim-lib/housing">房建</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/BaseBuild">基建</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/decoration">精装</el-menu-item>
-            <!--误删除 这期不做隐藏下次有需求放开-->
-            <!--<el-menu-item index="/bimlib/bim-lib/assembly">装配式</el-menu-item>-->
-            <!--<el-menu-item index="/bimlib/bim-lib/cim">CIM</el-menu-item>-->
-            <!--<el-menu-item index="/bimlib/bim-lib/ppp">PPP</el-menu-item>-->
-        </el-menu>
-            <div class="bims-contents">
-                <router-view ></router-view>
-            </div>
+            房建
+
     </div>
 </template>
 
