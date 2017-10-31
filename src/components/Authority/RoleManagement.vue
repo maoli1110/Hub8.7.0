@@ -114,8 +114,7 @@ export default {
                     // onRemove(event) {
                     //     vm.newList.splice(event.newIndex, 0, vm.olderList[event.item.getAttribute('data-index')]);
                     // },
-                    onEnd: evt => {  
-                        debugger                      
+                    onEnd: evt => {                                  
                         const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
                         this.newList.splice(evt.newIndex, 0, tempIndex)
                     }

@@ -1,8 +1,8 @@
 <template>
 <div class="process">
   <el-select v-model="value" placeholder="请选择">
-      <el-option v-show="false"
-      :value="value">    
+      <el-option 
+      :value="value" v-show="false">    
       </el-option>
       <ul id="treeDemo" class="ztree"></ul>
   </el-select>
@@ -59,7 +59,10 @@ export default {
   },
   methods: {
     onClick(event, treeId, treeNode) {
-      this.value = treeNode.name;     
+      this.value = treeNode.name;
+      setTimeout(function() {
+        $(".el-select-dropdown__item.selected").click()
+      }, 100);     
     },
   },
   mounted() {

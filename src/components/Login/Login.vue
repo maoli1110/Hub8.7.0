@@ -58,7 +58,6 @@ import {
 export default {
   data: function() {
     const validateUsername = (rule, value, callback) => {
-      debugger;
       if (validatephoneNumber(value) || validateEmail(value)) {
         callback();
       } else {
