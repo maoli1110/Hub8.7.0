@@ -1,13 +1,23 @@
 <template>
     <div style="position:relative">
         <div class="aside">
-            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
+            <!--<el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/configuration/housing">房建</el-menu-item>
                 <el-menu-item index="/configuration/BaseBuild">基建</el-menu-item>
                 <el-menu-item index="/configuration/assembly">装配式</el-menu-item>
                 <el-menu-item index="/configuration/decoration">精装</el-menu-item>
                 <el-menu-item index="/configuration/cim">CIM</el-menu-item>
                 <el-menu-item index="/configuration/ppp">PPP</el-menu-item>
+            </el-menu>-->
+            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
+                <el-menu-item index="/configuration/explorer">Explorer</el-menu-item>
+                <el-menu-item index="/configuration/govern">Govern</el-menu-item>
+                <el-menu-item index="/configuration/plan">plan</el-menu-item>
+                <el-menu-item index="/configuration/coopreation">Co/View/Boss</el-menu-item>
+                <el-menu-item index="/configuration/explorerCivil">Explorer(Civil)</el-menu-item>
+                <el-menu-item index="/configuration/BaseBuild">Inspector</el-menu-item>
+                <el-menu-item index="/configuration/o-bw">原BW</el-menu-item>
+                <el-menu-item index="/configuration/o-govern">原Govern</el-menu-item>
             </el-menu>
         </div>
         <div class="container">
@@ -20,7 +30,7 @@
 export default {
     data() {
         return {
-            activeIndex: '/configuration/housing',
+            activeIndex: '/configuration/housing/explorer',
         }
     },
     methods: {

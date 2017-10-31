@@ -149,7 +149,7 @@ export default {
      position: absolute;
      width: 100%;
      transition: all .8s ease;
-     top: 225px;
+     top: 173px;
 }
 .slide-left-enter,
 .slide-right-leave-active {

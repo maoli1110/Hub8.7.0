@@ -282,45 +282,37 @@ export default new Router({
                     // 应用配置
                     path: '/configuration',
                     component: resolve => require(['../components/Configuration/Configuration.vue'], resolve),
-                    redirect: '/configuration/housing',
+                    redirect: '/configuration/explorer',
                     children: [
                         {
-                            // 房建
-                            path: 'housing',
-                            redirect: '/configuration/housing/explorer',
-                            component: resolve => require(['../components/Configuration/Housing.vue'], resolve),
+                            path: 'explorer',
+                            component: resolve => require(['../components/Configuration/HousingExplorer.vue'], resolve),
+                            redirect: '/configuration/explorer/process-template',
                             children: [
                                 {
-                                    path: 'explorer',
-                                    component: resolve => require(['../components/Configuration/HousingExplorer.vue'], resolve),
-                                    redirect: '/configuration/housing/explorer/process-template',
-                                    children: [
-                                        {
-                                            // 工序模板
-                                            path: 'process-template',
-                                            component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
-                                        },
-                                        {
-                                            // 颜色模板
-                                            path: 'color-template',
-                                            component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
-                                        },
-                                        {
-                                            // 资料目录
-                                            path: 'data-catalog',
-                                            component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
-                                        },
-                                        {
-                                            // 属性模板
-                                            path: 'attribute-template',
-                                            component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
-                                        },
-                                        {
-                                            // 标签管理
-                                            path: 'label-management',
-                                            component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
-                                        }
-                                    ]
+                                    // 工序模板
+                                    path: 'process-template',
+                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                },
+                                {
+                                    // 颜色模板
+                                    path: 'color-template',
+                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                },
+                                {
+                                    // 资料目录
+                                    path: 'data-catalog',
+                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                },
+                                {
+                                    // 属性模板
+                                    path: 'attribute-template',
+                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                },
+                                {
+                                    // 标签管理
+                                    path: 'label-management',
+                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
                                 },
                                 {
                                     path: 'govern',
