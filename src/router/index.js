@@ -124,12 +124,12 @@ export default new Router({
                                 {
                                     name:"housing?1",
                                     path: 'housing',// 房建
-                                    component: resolve => require(['../components/Authority-management/Markdown.vue'], resolve),
+                                    component: resolve => require(['../components/BimLib/housing.vue'], resolve),
                                     props:{'name':'xiaomingtongxue'},
                                 },
                                 {
-                                    path: 'BaseBuild',// 市政
-                                    component: resolve => require(['../components/Authority-management/Upload.vue'], resolve)
+                                    path: 'BaseBuild',// 基建
+                                    component: resolve => require(['../components/BimLib/BaseBuild.vue'], resolve)
                                 },
                                 {
                                     path: 'assembly',// 装配式
@@ -137,7 +137,7 @@ export default new Router({
                                 },
                                 {
                                     path: 'decoration',// 精装
-                                    component: resolve => require(['../components/Authority-management/Markdown.vue'], resolve)
+                                    component: resolve => require(['../components/BimLib/decoration.vue'], resolve)
                                 },
                                 {
                                     path: 'cim',// CIM
