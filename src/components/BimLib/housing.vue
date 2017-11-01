@@ -3,28 +3,26 @@
         <el-row class="bim-data bim-filter-toobar">
             <el-col :span="5" class="filter-bar">
                 <el-col :span="5">
-                    属性:
+                    组织结构:
                 </el-col>
                <el-col :span="19">
-                   <el-select v-model="value" placeholder="请选择" >
-                       <el-option
-                           v-for="item in options"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
+                   <el-select v-model="filterParams.orgNodeVal" placeholder="请选择" >
+                       <el-option v-show="false"
+                           :value="filterParams.orgNodeVal">
                        </el-option>
+                       <ul class="ztree" id="OrgZtree"></ul>
                    </el-select>
                </el-col>
 
             </el-col>
             <el-col :span="4" class="filter-bar">
-                <el-col :span="5">
-                   属性:
+                <el-col :span="8">
+                   BIM属性:
                 </el-col>
-                <el-col :span="19">
-                    <el-select v-model="value" placeholder="请选择" >
+                <el-col :span="16">
+                    <el-select v-model="filterParams.bimVal" placeholder="请选择" >
                         <el-option
-                            v-for="item in options"
+                            v-for="item in bimOptions"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -32,14 +30,14 @@
                     </el-select>
                 </el-col>
             </el-col>
-            <el-col :span="4" class="filter-bar">
-                <el-col :span="5">
-                    属性:
+            <el-col :span="3" class="filter-bar">
+                <el-col :span="8">
+                    专业:
                 </el-col>
-                <el-col :span="19">
-                    <el-select v-model="value" placeholder="请选择" >
+                <el-col :span="16">
+                    <el-select v-model="filterParams.majorVal" placeholder="请选择" >
                         <el-option
-                            v-for="item in options"
+                            v-for="item in majorOptions"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -47,14 +45,14 @@
                     </el-select>
                 </el-col>
             </el-col>
-            <el-col :span="4" class="filter-bar">
-                <el-col :span="5">
-                    属性:
+            <el-col :span="3" class="filter-bar">
+                <el-col :span="8">
+                    版本:
                 </el-col>
-                <el-col :span="19">
-                    <el-select v-model="value" placeholder="请选择" >
+                <el-col :span="16">
+                    <el-select v-model="filterParams.versionsVal" placeholder="请选择" >
                         <el-option
-                            v-for="item in options"
+                            v-for="item in versionsOptions"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -63,9 +61,8 @@
                 </el-col>
             </el-col>
             <el-col :span="5">
-                <el-input placeholder="请输入搜索项目名称" v-model="value" icon="search"></el-input>
+                <el-input placeholder="请输入搜索项目名称" v-model="filterParams.searchVal" icon="search" :on-icon-click="search"></el-input>
             </el-col>
-
         </el-row>
         <el-row class="bim-data bim-dev-toolbar">
             <el-col>
@@ -151,22 +148,82 @@ export default {
             activeIndex: '/bimlib/bim-lib/housing',//默认选中路由
             value:"",//输入框默认选中状态
             bimDeleteArray:[],
-            options: [{
-                value: '选项1',
-                label: '黄金糕'
+            filterParams:{
+                orgNodeVal:"",
+                majorVal:"",
+                bimVal:"",
+                versionsVal:"",
+                searchVal:""
+            },
+            setting: {
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    onClick: this.onClick
+                }
+            },
+            bimOptions: [{//BIM属性下拉框的值
+                value: '全部',
+                label: '全部'
             }, {
-                value: '选项2',
-                label: '双皮奶'
+                value: '施工',
+                label: '施工'
             }, {
-                value: '选项3',
-                label: '蚵仔煎'
-            }, {
-                value: '选项4',
-                label: '龙须面'
-            }, {
-                value: '选项5',
-                label: '北京烤鸭'
+                value: '预算',
+                label: '预算'
             }],
+            majorOptions: [{
+                value: '土建',
+                label: '土建'
+            }, {
+                value: '钢筋',
+                label: '钢筋'
+            }, {
+                value: '安装',
+                label: '安装'
+            }, {
+                value: 'Revit',
+                label: 'Revit'
+            }, {
+                value: 'Tekla',
+                label: 'Tekla'
+            }, {
+                value: '场布',
+                label: '场布'
+            }],
+            versionsOptions:[{
+                value: '1.0.0',
+                label: '1.0.0'
+            }],
+            zNodes: [
+                {
+                    id: 1,
+                    pId: 0,
+                    name: "展开、折叠 自定义图标不同",
+                    open: true,
+                    iconSkin: "pIcon01"
+                },
+                { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
+                { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
+                { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
+                {
+                    id: 2,
+                    pId: 0,
+                    name: "展开、折叠 自定义图标相同",
+                    open: true,
+                    iconSkin: "pIcon02"
+                },
+                { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
+                { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
+                { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
+                { id: 3, pId: 0, name: "不使用自定义图标", open: true },
+                { id: 31, pId: 3, name: "叶子节点1" },
+                { id: 32, pId: 3, name: "叶子节点2" },
+                { id: 33, pId: 3, name: "叶子节点3" }
+            ],
             tableData:[
                 {index:1,processName:'鲁班安装鲁班安装鲁班安装鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理成功",isRoot:'27人'},
                 {index:2,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理失败",isRoot:'27人'},
@@ -174,6 +231,7 @@ export default {
                 {index:4,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"待处理",isRoot:'27人'},
                 {index:5,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"未处理",isRoot:'27人'},
             ],
+
         }
     },
     methods: {
@@ -209,17 +267,25 @@ export default {
                 message: message
             })
         },
+        onClick(event, treeId, treeNode) {
+            this.filterParams.orgNodeVal = treeNode.name;
+            setTimeout(function() {
+                $(".el-select-dropdown__item.selected").click();
+            }, 100);
+        },
         /**
          * 全选
          * @params [{type array}]  selection  选中的队列对象
          */
 
         selectAll(selection){
+
             selection.forEach(function(val,key){
                 if( deletArray.indexOf(val.index) ==-1){
                     deletArray.push(val.index)
                 }
-            })
+            });
+            console.log(deletArray,'selectionall')
         },
 
         /**
@@ -244,7 +310,6 @@ export default {
                     this.tableData.splice( this.bimDeleteArray[0],1)
                 }*!/
             })*/
-            console.log(deletArray)
             if(!deletArray.length){
                 this.commonAlert('请选择要删除的文件')
                 return false;
@@ -257,25 +322,37 @@ export default {
                 if(this.tableData.length===deletArray.length){
                     //重新渲染数据
                 }else{
+                    console.log(deletArray)
                     for(let i = 0;i<deletArray.length;i++){
-                        if( this.tableData[i].index == deletArray[i]){
-                            this.tableData.splice(deletArray[i],1);
+                        console.log(this.tableData.length)
+                        for(let j = 0;j<this.tableData.length;j++){
+                            if( this.tableData[j].index == deletArray[i]){
+                                this.tableData.splice(j,1);
+                            }
                         }
                     }
                 }
 
-                deletArray = [];//接口成功之后删除数据
+//                deletArray = [];//接口成功之后删除数据
                 console.log(deletArray)
             }).catch(()=>{
 
             });
         },
-
+        search(){
+            console.log(this.filterParams,'filterparams')
+        },
 
     },
     mounted() {
-        console.log(this.$router)
+        $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
     },
+    created(){
+        this.filterParams.orgNodeVal = '根节点';
+        this.filterParams.bimVal = this.bimOptions[0].value;
+        this.filterParams.versionsVal = this.versionsOptions[0].value;
+        this.filterParams.majorVal = this.majorOptions[0].value;
+    }
 }
 </script>
 
