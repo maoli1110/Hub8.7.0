@@ -13,7 +13,7 @@
 /*lines*/
 
 /*==============================container=================================*/
-.container{background:#f5f8fd;height: calc(100vh - 190px);width: calc(100% - 343px) !important;}
+.container{background:#f5f8fd;overflow:auto;height: calc(100vh - 190px);width: calc(100% - 343px) !important;}
 /*wrapper(美化滚动条包裹)*/
 #wrapper{
     width: 100%;
@@ -62,3 +62,7 @@
     height:150px !important;overflow:auto !important;width:120px;min-width:120px !important;
 }
 .el-popover .root-name{display:inline-block !important;padding:0 5px;}
+.Bim-libs-bim .el-table.house-table{
+    min-width: 1280px !important;
+}
+.bim-main{overflow:auto;}

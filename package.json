@@ -56,6 +56,7 @@
     "url-loader": "^0.5.8",
     "v-bar": "^3.0.0",
     "vue-loader": "^11.3.4",
+    "vue-scrollbar": "^1.0.4",
     "vue-style-loader": "^2.0.5",
     "vue-template-compiler": "^2.2.6",
     "webpack": "^2.3.3",

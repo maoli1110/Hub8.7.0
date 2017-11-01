@@ -12,14 +12,21 @@
                 <el-menu-item index="/pricelib/clean-subcontracting">清工分包</el-menu-item>
             </el-menu>
         </div>
-        <div class="container">
-            <router-view></router-view>
-        </div>
+
+            <div class="container ">
+                <vue-scrollbar class="my-scrollbar" >
+                    <div class="scroll-me">
+                     <router-view></router-view>
+                    </div>
+                </vue-scrollbar>
+
+            </div>
     </div>
 </template>
 
 <script>
-export default {
+    import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
+    export default {
     data: () => ({
         activeIndex: '/pricelib/material',
     }),
@@ -30,7 +37,8 @@ export default {
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         }
-    }
+    },
+    components: { VueScrollbar },
 }
 </script>
 

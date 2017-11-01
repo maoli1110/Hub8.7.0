@@ -73,7 +73,8 @@
         </el-row>
         <el-row class="bim-data bim-main">
             <el-col>
-                <el-table class="quality-table" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)"  @select-all="selectAll" @select="selectChecked">
+                <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
+                <el-table class="house-table scroll-me" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)"  @select-all="selectAll" @select="selectChecked">
                     <el-table-column
                         type="selection"
                         width="40" >
@@ -134,6 +135,7 @@
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                     </el-pagination>
                 </div>-->
+                </vue-scrollbar>
             </el-col>
         </el-row>
     </div>
@@ -141,6 +143,7 @@
 
 <script>
 import {IndexCumsum} from "../../utils/validate.js";
+import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
 let deletArray = [];
 export default {
     data() {
@@ -352,7 +355,8 @@ export default {
         this.filterParams.bimVal = this.bimOptions[0].value;
         this.filterParams.versionsVal = this.versionsOptions[0].value;
         this.filterParams.majorVal = this.majorOptions[0].value;
-    }
+    },
+    components: { VueScrollbar },
 }
 </script>
 
@@ -385,4 +389,5 @@ export default {
     background-color: #f5f8fd;
 }
 .bims-contents>.bim {position:static !important;}
+
 </style>

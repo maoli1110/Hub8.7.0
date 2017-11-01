@@ -1,16 +1,6 @@
 <template>
     <div id="app" >
-        <template>
-            <div>
-            <EasyScrollbar>
-                <div id="wrapper" :barOption="colorSizeOption">
-                    <router-view ref="main"  ></router-view>
-                </div>
-            </EasyScrollbar>
-            </div>
-        </template>
-
-        <!--<router-view ref="main"></router-view>-->
+        <router-view ref="main" ></router-view>
     </div>
 </template>
 <style>
@@ -22,10 +12,11 @@
 @import "../static/css/main.css";
 @import "../static/css/iconfont.css";
 @import "../static/css/theme-green/color-green.css";
-
+@import "../static/css/vue2-scrollbar.css";
+@import "../static/css/app.css";
 </style>
 <script>
-export default {
+    export default {
     data(){
         return {
             colorSizeOption:{
@@ -41,7 +32,7 @@ export default {
 
             }
         }
-    }
+    },
 }
 
 </script>
