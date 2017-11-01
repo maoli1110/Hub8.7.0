@@ -154,7 +154,7 @@ export default {
       if (event.target.checked) {
         this.checkedCities = [];
         this.cities.forEach(item => {
-          this.checkedCities.push(item);
+          this.checkedCities.push(item);         
         });
       } else {
         this.checkedCities = [];
