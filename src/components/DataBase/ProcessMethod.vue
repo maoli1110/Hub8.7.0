@@ -10,7 +10,7 @@
             <div class="el-transfer-panel">  
                 <p class="el-transfer-panel__header">
                   <el-checkbox  v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                  <span style="float:right">全部账号人员 ({{cities.length}})</span>
+                  <span style="float:right">全部账号457896人员 ({{cities.length}})</span>
                 </p>
                 <div class="el-transfer-panel__body">
                     <el-input
