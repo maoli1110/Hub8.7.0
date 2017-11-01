@@ -47,6 +47,7 @@
 .Bim-libs-bim  .el-table td:nth-child(7) div,
 .Bim-libs-bim  .el-table td:nth-child(9) div{
     padding:0 10px;
+    white-space: nowrap;
 }
 .Bim-libs-bim  .el-table td:nth-child(3) div,
 .Bim-libs-bim  .el-table td:nth-child(7) div,
@@ -57,4 +58,7 @@
 .Bim-libs-bim  .el-table td:nth-child(12) div span{
     margin:0 4px;
 }
-
+.el-popover{
+    height:150px !important;overflow:auto !important;width:120px;min-width:120px !important;
+}
+.el-popover .root-name{display:inline-block !important;padding:0 5px;}
