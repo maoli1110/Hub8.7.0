@@ -61,9 +61,8 @@
                 </el-col>
             </el-col>
             <el-col :span="5">
-                <el-input placeholder="请输入搜索项目名称" v-model="filterParams.searchVal" icon="search"></el-input>
+                <el-input placeholder="请输入搜索项目名称" v-model="filterParams.searchVal" icon="search" :on-icon-click="search"></el-input>
             </el-col>
-
         </el-row>
         <el-row class="bim-data bim-dev-toolbar">
             <el-col>
@@ -280,11 +279,13 @@ export default {
          */
 
         selectAll(selection){
+
             selection.forEach(function(val,key){
                 if( deletArray.indexOf(val.index) ==-1){
                     deletArray.push(val.index)
                 }
-            })
+            });
+            console.log(deletArray,'selectionall')
         },
 
         /**
@@ -309,7 +310,6 @@ export default {
                     this.tableData.splice( this.bimDeleteArray[0],1)
                 }*!/
             })*/
-            console.log(deletArray)
             if(!deletArray.length){
                 this.commonAlert('请选择要删除的文件')
                 return false;
@@ -322,20 +322,26 @@ export default {
                 if(this.tableData.length===deletArray.length){
                     //重新渲染数据
                 }else{
+                    console.log(deletArray)
                     for(let i = 0;i<deletArray.length;i++){
-                        if( this.tableData[i].index == deletArray[i]){
-                            this.tableData.splice(deletArray[i],1);
+                        console.log(this.tableData.length)
+                        for(let j = 0;j<this.tableData.length;j++){
+                            if( this.tableData[j].index == deletArray[i]){
+                                this.tableData.splice(j,1);
+                            }
                         }
                     }
                 }
 
-                deletArray = [];//接口成功之后删除数据
+//                deletArray = [];//接口成功之后删除数据
                 console.log(deletArray)
             }).catch(()=>{
 
             });
         },
-
+        search(){
+            console.log(this.filterParams,'filterparams')
+        },
 
     },
     mounted() {
