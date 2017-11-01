@@ -1,9 +1,9 @@
 <template>
     <div class="navbar">
-        <el-menu :default-active="activeIndex" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-show='changeMenu'>
+        <el-menu :default-active="activeIndex" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if='changeMenu'>
             <el-menu-item :index="menuItem.path" v-for='(menuItem,i) in mainMenu' :key="i">{{menuItem.menuName}}</el-menu-item>
         </el-menu>
-        <el-menu :default-active="activeIndex2" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-show='!changeMenu'>
+        <el-menu :default-active="activeIndex2" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if='!changeMenu'>
             <el-menu-item :index="menuItem.path" v-for='(menuItem,i) in configurationMenu' :key="i">{{menuItem.menuName}}</el-menu-item>
         </el-menu>
     </div>
