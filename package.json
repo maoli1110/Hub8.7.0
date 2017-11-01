@@ -21,7 +21,7 @@
     "node-sass": "^4.5.1",
     "sass-loader": "^6.0.6",
     "sortablejs": "^1.6.1",
-    "vue": "^2.3.2",
+    "vue": "^2.5.2",
     "vue-core-image-upload": "2.1.11",
     "vue-router": "^2.3.1",
     "vuex": "^3.0.0"
