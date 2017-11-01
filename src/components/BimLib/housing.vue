@@ -66,9 +66,9 @@
         </el-row>
         <el-row class="bim-data bim-dev-toolbar">
             <el-col>
-                <el-button type="primary" class="basic-btn"><i class="bim-icon el-icon-plus"></i>添加</el-button>
+                <el-button type="primary" class="basic-btn" @click="addProject"><i class="bim-icon el-icon-plus"></i>添加</el-button>
                 <el-button type="primary" class="basic-btn" @click="deletelibs"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
-                <el-button type="primary" class="basic-btn" ><i class="bim-icon el-icon-view"></i>监控</el-button>
+                <el-button type="primary" class="basic-btn" @click="monitor('all')"><i class="bim-icon el-icon-view"></i>监控</el-button>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-main">
@@ -304,27 +304,15 @@ export default {
          *
          */
         deletelibs(){
-            /*this.commonMessage('确定要删除吗',function(){
-                console.log('确定删除', this.bimDeleteArray[0]);
-                /!*if(this.bimDeleteArray.length){
-                    this.tableData.splice( this.bimDeleteArray[0],1)
-                }*!/
-            })*/
             if(!deletArray.length){
                 this.commonAlert('请选择要删除的文件')
                 return false;
             }
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(()=>{
-                if(this.tableData.length===deletArray.length){
+            this.commonMessage('确定要删除吗',()=>{
+               /* if(this.tableData.length===deletArray.length){
                     //重新渲染数据
-                }else{
-                    console.log(deletArray)
+                }else*/if(deletArray.length){
                     for(let i = 0;i<deletArray.length;i++){
-                        console.log(this.tableData.length)
                         for(let j = 0;j<this.tableData.length;j++){
                             if( this.tableData[j].index == deletArray[i]){
                                 this.tableData.splice(j,1);
@@ -333,11 +321,23 @@ export default {
                     }
                 }
 
-//                deletArray = [];//接口成功之后删除数据
-                console.log(deletArray)
-            }).catch(()=>{
+                deletArray = [];//接口成功之后删除数据
+            },()=>{
 
-            });
+            })
+        },
+        //添加工程
+        addProject(){
+
+        },
+        /**
+         * @params type 批量监控还是监控
+         * **/
+        monitor(type){
+            if(!deletArray.length){
+                this.commonAlert('请添加监控文件')
+                return false;
+            }
         },
         search(){
             console.log(this.filterParams,'filterparams')

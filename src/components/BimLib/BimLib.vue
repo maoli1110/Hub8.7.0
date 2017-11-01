@@ -83,14 +83,14 @@ export default {
     },
 
      watch: {
- 　　'$route' (to, from) {
-          if(!to.name && !from.name){return false}
-          let toName = to.name;//路由跳转到信息
-          let fromName = from.name;//路由跳转前的信息
-          toName = toName.split("?")[1];
-          fromName = fromName.split("?")[1];
-          this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是
- 　　 }
+     　　'$router' (to, from) {
+              if(!to.name && !from.name){return false}
+              let toName = to.name;//路由跳转到信息
+              let fromName = from.name;//路由跳转前的信息
+              toName = toName.split("?")[1];
+              fromName = fromName.split("?")[1];
+              this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是
+     　　 }
 　　}
 
 
