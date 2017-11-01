@@ -83,7 +83,7 @@
                     <el-table-column prop="processName" width="170" label="工程名称" show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column prop="speciality" width="50" label="专业" :formatter="judge">
-                        <template scope="scope">
+                        <template slot-scope="scope">
                             <span v-show="scope.row.speciality==='土建'" class="el-icon-date"></span>
                             <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>
                         </template>
@@ -103,7 +103,7 @@
                     <el-table-column prop="output" width="" label="输出造价" >
                     </el-table-column>
                     <el-table-column prop="status" width="" label="数据处理" >
-                        <template scope="scope">
+                        <template slot-scope="scope">
                             <div v-show="scope.row.status==='处理成功'"><span  class="el-icon-circle-check"></span>处理成功</div>
                             <div v-show="scope.row.status==='处理失败'"><span  class="el-icon-circle-close"></span>处理失败</div>
                             <div v-show="scope.row.status==='处理中'"><span  class="el-icon-warning"></span>处理中</div>
@@ -123,7 +123,7 @@
                     </el-table-column>
 
                     <el-table-column label="操作" width="135" class="quality-page-tableIcon">
-                        <template scope="scope" >
+                        <template slot-scope="scope" >
                             <span class="quality-icon icon el-icon-circle-check" ></span>
                             <span class="quality-icon icon el-icon-circle-check" ></span>
                             <span class="quality-icon icon el-icon-circle-check" ></span>

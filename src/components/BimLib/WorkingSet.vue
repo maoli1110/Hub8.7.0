@@ -50,7 +50,7 @@
                 </el-table-column>
                 <el-table-column label="操作" width="135" class="quality-page-tableIcon">
 
-                    <template scope="scope" >
+                    <template slot-scope="scope" >
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                    <!--     <el-icon class="icon-edit" @click.native="dialogFormVisible = true"></el-icon>
                         <el-icon class="icon-delete2" @click.native="open2(scope.$index,scope.row)"></el-icon>

@@ -14,7 +14,7 @@
                 <el-table-column
                     label=""
                     width="120">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-checkbox :indeterminate="scope.row.isIndeterminate" v-model="scope.row.checkAll"
                                      @change="handleCheckAllChange($event,scope.row)">{{scope.row.name}}
                         </el-checkbox>
@@ -24,7 +24,7 @@
                     prop="address"
                     label="地址"
                     show-overflow-tooltip>
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-checkbox-group v-model="scope.row.checkedCities"
                                            @change="handleCheckedCitiesChange(scope.row.checkedCities,scope.row)">
                             <el-checkbox v-for="city in scope.row.cities" :label="city" :key="city">{{city}}
