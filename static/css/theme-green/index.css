@@ -1221,7 +1221,8 @@
 }
 
 .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover, .el-select-dropdown__item.hover {
-    background-color: rgb(228, 240, 241)
+   /* background-color: #6585fd9 */
+
 }
 
 .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {
@@ -1273,7 +1274,7 @@
 }
 
 .el-select-dropdown__item.selected.hover {
-    background-color: rgb(0, 184, 157)
+    background-color: #6595f2
 }
 
 .el-select-dropdown__item span {

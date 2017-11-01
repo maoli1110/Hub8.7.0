@@ -112,9 +112,9 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="isRoot" width="" label="已授权" >
-                        <template slot-scope="scope">
+                        <template scope="scope">
                             <el-popover trigger="hover" placement="top" class="root-tips">
-                                <p v-for=" item in 100" class="root-name">杨会杰</p>
+                                <p v-for=" item in 100" class="root-name" :key="item">杨会杰</p>
                                 <div slot="reference" >
                                     <span>{{scope.row.isRoot}}</span>
                                 </div>
