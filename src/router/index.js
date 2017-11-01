@@ -105,6 +105,16 @@ export default new Router({
                             path: 'role-management',
                             component: resolve => require(['../components/Authority/RoleManagement.vue'], resolve)
                         },
+                        {
+                            // 应用分配
+                            path: 'application-allot',
+                            component: resolve => require(['../components/Authority/MemberManagement.vue'], resolve)
+                        }, {
+                            // 管理员列表
+                            path: 'administrators-list',
+                            component: resolve => require(['../components/Authority/RoleManagement.vue'], resolve)
+                        },
+
                     ]
                 },
                 {

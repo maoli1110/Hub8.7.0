@@ -2,7 +2,7 @@
     <div id="app" >
         <template>
             <div>
-                <EasyScrollbar>
+            <EasyScrollbar>
                 <div id="wrapper" :barOption="colorSizeOption">
                     <router-view ref="main"  ></router-view>
                 </div>

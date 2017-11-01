@@ -1,16 +1,15 @@
 <template>
     <div style="position:relative">
         <div class="aside">
-            <ul id="treeDemo" class="ztree"></ul>
-        </div>
-        <div class="container">
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
+             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/authority/member-management">成员管理</el-menu-item>
                 <el-menu-item index="/authority/role-management">角色管理</el-menu-item>
+                <el-menu-item index="/authority/application-allot">应用分配</el-menu-item>
+                <el-menu-item index="/authority/administrators-list">管理员列表</el-menu-item>
             </el-menu>
-            <div class="contents">
-                <router-view></router-view>
-            </div>
+        </div>
+        <div class="container">
+            <router-view></router-view>
         </div>
     </div>
 </template>
@@ -82,25 +81,8 @@ export default {
 </script>
 
 <style scoped>
-.aside {
-  display: block;
-  position: absolute;
-  width: 302px;
-  padding-top: 40px;
-  left: 0px;
-  top: 0px;
-  bottom: 0;
-  border: 1px solid #e6e6e6;
-  box-sizing: border-box;
-}
-
-.aside .el-menu {
-  height: 100%;
-  border-right: 1px solid #e6e6e6;
-}
-
-.container {
-  padding: 20px;
+@import "../../../static/css/aside.css";
+.contents {
   margin-left: 302px;
 }
 
@@ -108,27 +90,5 @@ export default {
   width: 250px;
   margin: 0 auto;
   border: none;
-}
-
-.container .el-menu {
-  background-color: #fff;
-  border: 1px solid #e6e6e6;
-}
-
-.container .el-menu .el-menu-item {
-  height: 60px;
-  width: 180px;
-  border-right: 1px solid #e6e6e6;
-  text-align: center;
-}
-
-.container .is-active {
-  border-bottom: 2px solid #6495f2;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.container .contents {
-  padding-top: 20px;
 }
 </style>

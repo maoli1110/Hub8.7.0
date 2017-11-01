@@ -1,9 +1,5 @@
 <template>
     <div class="member-table">
-        <div>
-            <ul id="treeDemo2" class="ztree"></ul>
-        </div>
-        <h2>{{curSelectedNode}}</h2>
         <div style="position:relative">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAlls"
                                      @change="handleCheckAlls" style="position:absolute;left:19px;top:22px;z-index:1000">全部
@@ -208,9 +204,6 @@ export default {
 };
 </script>
 <style>
-.member-table .el-table_1_column_1 .el-table-column--selection {
-  border-right: red;
-}
 </style>
 
 
