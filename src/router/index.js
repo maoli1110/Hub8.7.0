@@ -135,7 +135,7 @@ export default new Router({
                                     name:"housing?1",
                                     path: 'housing',// 房建
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
-                                    props:{'name':'xiaomingtongxue'},
+                                    query:{'typeId':'11'},
                                 },
                                 {
                                     path: 'BaseBuild',// 基建

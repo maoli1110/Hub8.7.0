@@ -354,11 +354,15 @@ export default {
                 })
             }
             console.log(this.tableData)
+        },
+        defaultRouter(){
+            this.$router.push({ path: '/bimlib/bim-lib/housing', query: { typeId: '11' }});
         }
 
     },
     mounted() {
         $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
+
     },
     created(){
         this.filterParams.orgNodeVal = '根节点';
@@ -366,17 +370,18 @@ export default {
         this.filterParams.versionsVal = this.versionsOptions[0].value;
         this.filterParams.majorVal = this.majorOptions[0].value;
         this.getData();
+        this.defaultRouter();
     },
     components: { VueScrollbar },
     watch: {
         '$route' (to, from) {
 //            console.log(this.$route.query.typeId,'this.$route.path');
             if(this.$route.query.typeId==11){
-                this.getData('yhj')
+                this.getData('yhj');
             }else if(this.$route.query.typeId==12){
-                this.getData('ppp')
+                this.getData('ppp');
             }else{
-                this.getData('www')
+                this.getData('www');
             }
         }
     }
