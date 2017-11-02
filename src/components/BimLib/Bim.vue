@@ -40,12 +40,16 @@ export default {
         /**页签形式菜单 重新渲染问题
          * @params pathIndex  选中的路径
          **/
-        handleSelect(pathIndex){
-            console.log(this.$route.path,'this.$route.path');
+        handleSelect(index,path){
 
-            if(this.$route.path ==pathIndex){
+        },
+    },
+
+    watch: {
+        '$route' (to, from) {
+            console.log(this.$route.query.typeId,'this.$route.path');
+            if(this.$route.query.typeId){
                 this.tableData.forEach((val,key)=>{
-                    console.log(val,'val')
                     if(this.$route.query.typeId==11){
                         val.username = '杨会杰'
                     }else if(this.$route.query.typeId==12){
@@ -55,14 +59,10 @@ export default {
                     }
                 })
             }
-        },
-    },
+            console.log(this.tableData)
 
-   /* watch: {
-        '$router' (to, from) {
-            console.log(this.$router)
         }
-    }*/
+    }
 }
 </script>
 
