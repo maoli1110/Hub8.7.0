@@ -10,7 +10,7 @@
             <!--<el-menu-item index="/bimlib/bim-lib/ppp">PPP</el-menu-item>-->
         </el-menu>
         <div class="bims-contents Bim-libs shadow-style">
-            <router-view ></router-view>
+            <router-view :tableData="tableData"></router-view>
         </div>
     </div>
 </template>
@@ -21,6 +21,13 @@ export default {
     data() {
         return {
             activeIndex: '/bimlib/bim-lib/housing',
+            tableData:[
+                {index:10,processName:'鲁班安装鲁班安装鲁班安装鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理成功",isRoot:'27人'},
+                {index:11,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理失败",isRoot:'27人'},
+                {index:12,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理中",isRoot:'27人'},
+                {index:13,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"待处理",isRoot:'27人'},
+                {index:14,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"未处理",isRoot:'27人'},
+            ],
         }
     },
     methods: {
@@ -34,8 +41,19 @@ export default {
          * @params pathIndex  选中的路径
          **/
         handleSelect(pathIndex){
+            console.log(this.$route.path,'this.$route.path');
+
             if(this.$route.path ==pathIndex){
-                console.log(this.$route.query.typeId,pathIndex);
+                this.tableData.forEach((val,key)=>{
+                    console.log(val,'val')
+                    if(this.$route.query.typeId==11){
+                        val.username = '杨会杰'
+                    }else if(this.$route.query.typeId==12){
+                        val.username = '潘鹏程'
+                    }else{
+                        val.username = '毛毛阿莫'
+                    }
+                })
             }
         },
     },

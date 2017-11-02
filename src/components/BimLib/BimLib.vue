@@ -83,7 +83,7 @@ export default {
     },
 
      watch: {
-     　　'$router' (to, from) {
+     　　'$route' (to, from) {
               if(!to.name && !from.name){return false}
               let toName = to.name;//路由跳转到信息
               let fromName = from.name;//路由跳转前的信息
