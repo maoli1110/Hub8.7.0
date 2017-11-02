@@ -347,18 +347,14 @@ export default {
         search(){
             console.log(this.filterParams,'filterparams')
         },
-        getData(name){
-            if(this.$route.query.typeId && name){
+        getData(name,id){
+            if(id && name){
                 this.tableData.forEach((val,key)=>{
                     this.$set(val,'updateUser',name)
                 })
             }
             console.log(this.tableData)
         },
-        defaultRouter(){
-            this.$router.push({ path: '/bimlib/bim-lib/housing', query: { typeId: '11' }});
-        }
-
     },
     mounted() {
         $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
@@ -370,18 +366,17 @@ export default {
         this.filterParams.versionsVal = this.versionsOptions[0].value;
         this.filterParams.majorVal = this.majorOptions[0].value;
         this.getData();
-        this.defaultRouter();
     },
     components: { VueScrollbar },
     watch: {
         '$route' (to, from) {
-//            console.log(this.$route.query.typeId,'this.$route.path');
-            if(this.$route.query.typeId==11){
-                this.getData('yhj');
-            }else if(this.$route.query.typeId==12){
-                this.getData('ppp');
+//            console.log(this.$route.path,'this.$route.path');
+            if(this.$route.path=='/bimlib/bim-lib/housing'){
+                this.getData('yhj',11);
+            }else if(this.$route.path=="/bimlib/bim-lib/BaseBuild"){
+                this.getData('ppp',12);
             }else{
-                this.getData('www');
+                this.getData('www',13);
             }
         }
     }

@@ -84,7 +84,10 @@ export default {
 
      watch: {
      　　'$route' (to, from) {
-              if(!to.name && !from.name){return false}
+              if(!this.$route.name || this.$route.name.length<=0){
+                  return false
+              }
+              if(!to.name){return false}
               let toName = to.name;//路由跳转到信息
               let fromName = from.name;//路由跳转前的信息
               toName = toName.split("?")[1];

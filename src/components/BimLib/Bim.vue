@@ -1,9 +1,9 @@
 <template>
     <div class="bims-container">
         <el-menu :default-active="activeIndex" class="el-menu-demo shadow-style" mode="horizontal" @select="handleSelect"  router>
-            <el-menu-item index="/bimlib/bim-lib/housing" :route="{ path: '/bimlib/bim-lib/housing', query: { typeId: '11' }}">房建</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/housing" :route="{ path: '/bimlib/bim-lib/housing', query: { typeId: '12' }}">基建</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/housing" :route="{ path: '/bimlib/bim-lib/housing', query: { typeId: '13' }}">精装</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/housing" >房建</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/BaseBuild">基建</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/decoration" >精装</el-menu-item>
             <!--误删除 这期不做隐藏下次有需求放开-->
             <!--<el-menu-item index="/bimlib/bim-lib/assembly">装配式</el-menu-item>-->
             <!--<el-menu-item index="/bimlib/bim-lib/cim">CIM</el-menu-item>-->

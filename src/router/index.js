@@ -129,17 +129,15 @@ export default new Router({
                             path: 'bim-lib',
                             component: resolve => require(['../components/BimLib/Bim.vue'], resolve),
                             redirect: '/bimlib/bim-lib/housing',
-
                             children: [
                                 {
-                                    name:"housing?1",
                                     path: 'housing',// 房建
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
                                     query:{'typeId':'11'},
                                 },
                                 {
                                     path: 'BaseBuild',// 基建
-                                    component: resolve => require(['../components/BimLib/BaseBuild.vue'], resolve)
+                                    component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
                                 {
                                     path: 'assembly',// 装配式
@@ -147,7 +145,7 @@ export default new Router({
                                 },
                                 {
                                     path: 'decoration',// 精装
-                                    component: resolve => require(['../components/BimLib/decoration.vue'], resolve)
+                                    component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
                                 {
                                     path: 'cim',// CIM
