@@ -74,7 +74,7 @@
         <el-row class="bim-data bim-main">
             <el-col>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                <el-table class="house-table scroll-me"  :props="tableData" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)"  @select-all="selectAll" @select="selectChecked">
+                <el-table class="house-table scroll-me"   :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)"  @select-all="selectAll" @select="selectChecked">
                     <el-table-column
                         type="selection"
                         width="40" >
@@ -136,6 +136,7 @@
                     </el-pagination>
                 </div>-->
                 </vue-scrollbar>
+                <div >{{tableData[0].username}}</div>
             </el-col>
         </el-row>
     </div>
@@ -146,7 +147,7 @@ import {IndexCumsum} from "../../utils/validate.js";
 import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
 let deletArray = [];
 export default {
-    props: ['tableData'],
+//    props: ['tableData'],
     data() {
         return {
             activeIndex: '/bimlib/bim-lib/housing',//默认选中路由
@@ -228,13 +229,13 @@ export default {
                 { id: 32, pId: 3, name: "叶子节点2" },
                 { id: 33, pId: 3, name: "叶子节点3" }
             ],
-            /*tableData:[
+            tableData:[
                 {index:1,processName:'鲁班安装鲁班安装鲁班安装鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理成功",isRoot:'27人'},
                 {index:2,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理失败",isRoot:'27人'},
                 {index:3,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理中",isRoot:'27人'},
                 {index:4,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"待处理",isRoot:'27人'},
                 {index:5,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"未处理",isRoot:'27人'},
-            ],*/
+            ],
 
         }
     },
@@ -346,6 +347,14 @@ export default {
         search(){
             console.log(this.filterParams,'filterparams')
         },
+        getData(name){
+            if(this.$route.query.typeId && name){
+                this.tableData.forEach((val,key)=>{
+                    this.$set(val,'updateUser',name)
+                })
+            }
+            console.log(this.tableData)
+        }
 
     },
     mounted() {
@@ -356,8 +365,21 @@ export default {
         this.filterParams.bimVal = this.bimOptions[0].value;
         this.filterParams.versionsVal = this.versionsOptions[0].value;
         this.filterParams.majorVal = this.majorOptions[0].value;
+        this.getData();
     },
     components: { VueScrollbar },
+    watch: {
+        '$route' (to, from) {
+//            console.log(this.$route.query.typeId,'this.$route.path');
+            if(this.$route.query.typeId==11){
+                this.getData('yhj')
+            }else if(this.$route.query.typeId==12){
+                this.getData('ppp')
+            }else{
+                this.getData('www')
+            }
+        }
+    }
 }
 </script>
 

@@ -10,7 +10,7 @@
             <!--<el-menu-item index="/bimlib/bim-lib/ppp">PPP</el-menu-item>-->
         </el-menu>
         <div class="bims-contents Bim-libs shadow-style">
-            <router-view :tableData="tableData"></router-view>
+            <router-view ></router-view><!--:tableData="tableData"-->
         </div>
     </div>
 </template>
@@ -21,13 +21,6 @@ export default {
     data() {
         return {
             activeIndex: '/bimlib/bim-lib/housing',
-            tableData:[
-                {index:10,processName:'鲁班安装鲁班安装鲁班安装鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理成功",isRoot:'27人'},
-                {index:11,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理失败",isRoot:'27人'},
-                {index:12,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理中",isRoot:'27人'},
-                {index:13,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"待处理",isRoot:'27人'},
-                {index:14,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"不知道",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"未处理",isRoot:'27人'},
-            ],
         }
     },
     methods: {
@@ -45,24 +38,24 @@ export default {
         },
     },
 
-    watch: {
+/*    watch: {
         '$route' (to, from) {
             console.log(this.$route.query.typeId,'this.$route.path');
             if(this.$route.query.typeId){
                 this.tableData.forEach((val,key)=>{
                     if(this.$route.query.typeId==11){
-                        val.username = '杨会杰'
+                        this.$set(this.tableData,'username','杨会杰')
                     }else if(this.$route.query.typeId==12){
-                        val.username = '潘鹏程'
+                        this.$set(this.tableData,'username','潘鹏程')
                     }else{
-                        val.username = '毛毛阿莫'
+//                      this.$set(this.tableData[key],'username','潘鹏程')
                     }
                 })
             }
             console.log(this.tableData)
 
         }
-    }
+    }*/
 }
 </script>
 

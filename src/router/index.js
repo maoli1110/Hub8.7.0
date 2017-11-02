@@ -128,7 +128,7 @@ export default new Router({
                             name:"bim-lib?1",
                             path: 'bim-lib',
                             component: resolve => require(['../components/BimLib/Bim.vue'], resolve),
-                            redirect: '/bimlib/bim-lib/housing?typeId=11',
+                            redirect: '/bimlib/bim-lib/housing',
 
                             children: [
                                 {
