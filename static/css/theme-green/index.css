@@ -11,7 +11,16 @@
     content: ""
 }
 
-.el-dialog__headerbtn,
+.el-dialog__headerbtn{
+    float: right;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 16px;
+
+}
 .el-pagination__rightwrapper {
     float: right
 }
@@ -670,18 +679,19 @@
     background-color: #fff;
     border: 1px solid #e6ebf5;
     border-radius: 4px;
-    min-width: 100px;
-    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
-    background-color: white
+
 }
 
 .el-dropdown-menu__item {
     list-style: none;
     line-height: 36px;
-    padding: 0 10px;
+    padding: 0 20px;
     margin: 0;
-    cursor: pointer
+    font-size: 14px;
+    color: #5a5e66;
+    cursor: pointer;
+
 }
 
 .el-dropdown-menu__item:not(.is-disabled):hover {
@@ -2895,10 +2905,10 @@
     color: #6595f2
 }
 
-.el-popover {
+.el-popper {
     position: absolute;
     background: #fff;
-    min-width: 150px;
+    min-width: 100px;
     border-radius: 2px;
     border: 1px solid rgb(209, 229, 229);
     padding: 10px;
@@ -2906,8 +2916,8 @@
     font-size: 12px
 }
 
-.el-popover .popper__arrow,
-.el-popover .popper__arrow::after {
+.el-popper .popper__arrow,
+.el-popper .popper__arrow::after {
     position: absolute;
     display: block;
     width: 0;
@@ -2916,20 +2926,21 @@
     border-style: solid
 }
 
-.el-popover .popper__arrow {
-    border-width: 6px
+.el-popper .popper__arrow {
+    border-width: 6px;
+    filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .03));
 }
 
-.el-popover .popper__arrow::after {
+.el-popper .popper__arrow::after {
     content: " ";
     border-width: 6px
 }
 
-.el-popover[x-placement^=top] {
+.el-popper[x-placement^=top] {
     margin-bottom: 12px
 }
 
-.el-popover[x-placement^=top] .popper__arrow {
+.el-popper[x-placement^=top] .popper__arrow {
     bottom: -6px;
     left: 50%;
     margin-right: 3px;
@@ -2937,37 +2948,37 @@
     border-bottom-width: 0
 }
 
-.el-popover[x-placement^=top] .popper__arrow::after {
+.el-popper[x-placement^=top] .popper__arrow::after {
     bottom: 1px;
     margin-left: -6px;
     border-top-color: #fff;
     border-bottom-width: 0
 }
 
-.el-popover[x-placement^=bottom] {
+.el-popper[x-placement^=bottom] {
     margin-top: 12px
 }
 
-.el-popover[x-placement^=bottom] .popper__arrow {
+.el-popper[x-placement^=bottom] .popper__arrow {
     top: -6px;
     left: 50%;
     margin-right: 3px;
     border-top-width: 0;
-    border-bottom-color: rgb(209, 229, 229)
+    border-bottom-color: #e6ebf5;
 }
 
-.el-popover[x-placement^=bottom] .popper__arrow::after {
+.el-popper[x-placement^=bottom] .popper__arrow::after {
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
     border-bottom-color: #fff
 }
 
-.el-popover[x-placement^=right] {
+.el-popper[x-placement^=right] {
     margin-left: 12px
 }
 
-.el-popover[x-placement^=right] .popper__arrow {
+.el-popper[x-placement^=right] .popper__arrow {
     top: 50%;
     left: -6px;
     margin-bottom: 3px;
@@ -2975,18 +2986,18 @@
     border-left-width: 0
 }
 
-.el-popover[x-placement^=right] .popper__arrow::after {
+.el-popper[x-placement^=right] .popper__arrow::after {
     bottom: -6px;
     left: 1px;
     border-right-color: #fff;
     border-left-width: 0
 }
 
-.el-popover[x-placement^=left] {
+.el-popper[x-placement^=left] {
     margin-right: 12px
 }
 
-.el-popover[x-placement^=left] .popper__arrow {
+.el-popper[x-placement^=left] .popper__arrow {
     top: 50%;
     right: -6px;
     margin-bottom: 3px;
@@ -2994,7 +3005,7 @@
     border-left-color: rgb(209, 229, 229)
 }
 
-.el-popover[x-placement^=left] .popper__arrow::after {
+.el-popper[x-placement^=left] .popper__arrow::after {
     right: 1px;
     bottom: -6px;
     margin-left: -6px;
@@ -3002,7 +3013,7 @@
     border-left-color: #fff
 }
 
-.el-popover__title {
+.el-popper__title {
     color: rgb(31, 61, 60);
     font-size: 13px;
     line-height: 1;

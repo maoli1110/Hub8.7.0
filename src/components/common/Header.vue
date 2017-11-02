@@ -15,8 +15,12 @@
                     <img class="user-logo" src="../../../static/img/img.jpg">
                     <span style="display:inline-block;margin-top:10px">{{username}}</span> 
                 </div>
-                <el-dropdown-menu slot="dropdown">
+                <el-dropdown-menu slot="dropdown" class="el-popper">
                     <el-dropdown-item command="loginout">退出</el-dropdown-item>
+                    <el-dropdown-item command="loginout">退出</el-dropdown-item>
+                    <el-dropdown-item command="loginout">退出</el-dropdown-item>
+                    <el-dropdown-item command="loginout">退出</el-dropdown-item>
+                    <div x-arrow="" class="popper__arrow" style="left: 40px;"></div>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
