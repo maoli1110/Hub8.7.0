@@ -1,9 +1,9 @@
 <template>
     <div class="bims-container">
-        <el-menu :default-active="activeIndex" class="el-menu-demo shadow-style" mode="horizontal" router>
-            <el-menu-item index="/bimlib/bim-lib/housing">房建</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/BaseBuild">基建</el-menu-item>
-            <el-menu-item index="/bimlib/bim-lib/decoration">精装</el-menu-item>
+        <el-menu :default-active="activeIndex" class="el-menu-demo shadow-style" mode="horizontal" @select="handleSelect"  router>
+            <el-menu-item index="/bimlib/bim-lib/housing" :route="{ path: '/bimlib/bim-lib/housing', query: { typeId: '11' }}">房建</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/housing" :route="{ path: '/bimlib/bim-lib/housing', query: { typeId: '12' }}">基建</el-menu-item>
+            <el-menu-item index="/bimlib/bim-lib/housing" :route="{ path: '/bimlib/bim-lib/housing', query: { typeId: '13' }}">精装</el-menu-item>
             <!--误删除 这期不做隐藏下次有需求放开-->
             <!--<el-menu-item index="/bimlib/bim-lib/assembly">装配式</el-menu-item>-->
             <!--<el-menu-item index="/bimlib/bim-lib/cim">CIM</el-menu-item>-->
@@ -30,11 +30,21 @@ export default {
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         },
+        /**页签形式菜单 重新渲染问题
+         * @params pathIndex  选中的路径
+         **/
+        handleSelect(pathIndex){
+            if(this.$route.path ==pathIndex){
+                console.log(this.$route.query.typeId,pathIndex);
+            }
+        },
+    },
 
-    },
-    mounted() {
-        console.log(this.$router)
-    },
+   /* watch: {
+        '$router' (to, from) {
+            console.log(this.$router)
+        }
+    }*/
 }
 </script>
 
