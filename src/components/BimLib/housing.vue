@@ -264,23 +264,23 @@ export default {
         };
 
         return {
-            checkedCities: ["北京"],
-            data2: generateData(),
-            value2: [],
-            checkAll: false,
-            cities: cityOptions,
-            textarea:"",
-            proMsearchKey:"",
-            isDisable:false,
-            proManageData :proManage,
+            checkedCities: ["北京"],  //授权人员默认选中
+            data2: generateData(),  //组件公用数据
+            value2: [],//
+            checkAll: false,        //是否选中
+            cities: cityOptions,    //授权人员
+            textarea:"",            //备注
+            proMsearchKey:"",       //搜索关键字
+            isDisable:false,        //项目部是否可用 用于工程管理弹窗 区分是修改还是添加
+            proManageData :proManage,//公用数据复制
             filterMethod(query, item) {
                 return item.pinyin.indexOf(query) > -1;
             },
             activeIndex: '/bimlib/bim-lib/housing',//默认选中路由
-            value:"",//输入框默认选中状态
-            proManageVal:"",
+            value:"",               //输入框默认选中状态
+            proManageVal:"",        //弹窗项目部选中的值
             bimDeleteArray:[],
-            ProjManageDialog:false,
+            ProjManageDialog:false, //工程管理弹窗的状态
             url: "../../../static/datasource.json",
             filterParams:{
                 orgNodeVal:"",
@@ -289,7 +289,7 @@ export default {
                 versionsVal:"",
                 searchVal:""
             },
-            setting: {
+            setting: {//搜索条件ztree setting
                 data: {
                     simpleData: {
                         enable: true
@@ -299,7 +299,7 @@ export default {
                     onClick: this.onClick
                 }
             },
-            proDepartSetting:{
+            proDepartSetting:{//工程管理默认树结构setting
                 data: {
                     simpleData: {
                         enable: true
@@ -319,7 +319,7 @@ export default {
                 value: '预算',
                 label: '预算'
             }],
-            majorOptions: [{
+            majorOptions: [{//专业
                 value: '土建',
                 label: '土建'
             }, {
@@ -338,11 +338,11 @@ export default {
                 value: '场布',
                 label: '场布'
             }],
-            versionsOptions:[{
+            versionsOptions:[{//版本
                 value: '1.0.0',
                 label: '1.0.0'
             }],
-            proManage:{
+            proManage:{//工程管理
                 name:'什么什么度假村',
                 major:'初始项目部',
             },
@@ -386,9 +386,6 @@ export default {
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
-        handleChange(value, direction, movedKeys) {
-            console.log(value, direction, movedKeys);
-        },
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -418,12 +415,14 @@ export default {
                 message: message
             })
         },
+        //搜索条件树结构的单机事件
         onClick(event, treeId, treeNode) {
             this.filterParams.orgNodeVal = treeNode.name;
             setTimeout(function(event, treeId, treeNode) {
                 $(".el-select-dropdown__item.selected").click();
             }, 100);
         },
+        //工程管理树结构单机事件
         proDepartClick(event, treeId, treeNode){
             this.proManageVal = treeNode.name;
             setTimeout(function(event, treeId, treeNode) {
@@ -457,9 +456,7 @@ export default {
                 }
             })
         },
-        /**
-         *
-         */
+        //列表删除
         deletelibs(){
             if(!deletArray.length){
                 this.commonAlert('请选择要删除的文件')
@@ -483,6 +480,7 @@ export default {
 
             })
         },
+        //弹窗异步请求树结构
         getTree(){
             console.log(1111111)
             axios.get(this.url).then(res => {
@@ -511,10 +509,11 @@ export default {
                 return false;
             }
         },
+        //表格列表搜索
         search(){
             console.log(this.filterParams,'filterparams')
         },
-
+        //默认加载数据
         getData(name,id){
             if(id && name){
                 this.tableData.forEach((val,key)=>{
@@ -523,12 +522,18 @@ export default {
             }
             console.log(this.tableData)
         },
-        //彈窗 事件
-        //逐个删除已授权的
+
+        //添加和修改工程
+        //全部删除授权人员
         delRootAll(){
             this.checkedCities = [];
             this.checkAll = false;
         },
+        /**
+         *删除某个授权人
+         * @params item  值
+         * @params index 索引值
+         **/
         delRootItem(item,index){
             if(this.checkedCities.indexOf(item)!=-1){
                 this.checkedCities.splice(index,1)
@@ -537,7 +542,10 @@ export default {
                 this.checkAll = false;
             }
         },
-        //全选
+        /**
+         *全选授权人员
+         * @params event  事件
+         **/
         addAllRootPerson(event){
             if (event.target.checked) {
                 this.checkedCities = [];
@@ -548,6 +556,10 @@ export default {
                 this.checkedCities = [];
             }
         },
+        /**
+         *添加某个人员
+         * @params item  添加的队列集合
+         **/
         addRootPerson(item){
             let checkLength = item.length;
             if(item.length===this.cities.length){
@@ -556,6 +568,7 @@ export default {
                 this.checkAll = false;
             }
         },
+        //工程管理修改添加的搜索
         proManageSearch(){
             let searchArr = [];
                 this.cities.forEach((val,key)=>{
@@ -565,14 +578,18 @@ export default {
                 })
                 this.cities = searchArr;
         },
+        //工程管理保存
         proManageSave(){
-            console.log('该提交数据了')
+            if(this.proManage.length || this.isDisable){
+                //执行添加的接口
+            }else{
+                //执行修改的接口
+            }
+            console.log(this.proManage,'变了没有')
         },
     },
     mounted() {
         $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
-
-
     },
     created(){
         this.filterParams.orgNodeVal = '根节点';
