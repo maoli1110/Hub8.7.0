@@ -141,6 +141,7 @@ export default {
           beforeDrop: this.beforeDrop,
           onDrop: this.onDrop,
           beforeRename: this.beforeRename,
+          beforeClick: this.beforeClick,
           onCollapse: function(event, treeId, treeNode) {
             level = treeNode.level;
           },
@@ -176,6 +177,11 @@ export default {
   },
   methods: {
     // 自定义颜色选择器
+    beforeClick(){
+      var zTree = $.fn.zTree.getZTreeObj("tree_edit");
+      var nodes = zTree.getSelectedNodes();
+      console.log(nodes)
+    },
     colorSelect(treeId, treeNode) {
       if (treeNode.isParent) {
         return;

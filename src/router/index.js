@@ -112,7 +112,7 @@ export default new Router({
                         }, {
                             // 管理员列表
                             path: 'administrators-list',
-                            component: resolve => require(['../components/Authority/RoleManagement.vue'], resolve)
+                            component: resolve => require(['../components/Authority/AdministratorsList.vue'], resolve)
                         },
 
                     ]
