@@ -4,7 +4,7 @@
     <ul id="treeDemo" class="ztree"  style="float:left"></ul>
     <ul id="treeDemo2" class="ztree" style='float:right'></ul>
     </div>
-    
+
     <!-- <ul id="treeDemo3" class="ztree" ></ul> -->
 </div>
 </template>
@@ -111,11 +111,11 @@ export default {
           } else {
             // this.cacheTree.push({ id: treeNode.id, treeinfo: this.zNodes2 });
             //
-            console.log('后台请求数据');
+//            console.log('后台请求数据');
             // this.zNodes2 = el.preTreeInfo;
           }
         });
-        
+
         $.fn.zTree.init($("#treeDemo2"), this.setting2, this.zNodes2);
       });
     },

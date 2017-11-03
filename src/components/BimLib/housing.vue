@@ -66,7 +66,7 @@
         </el-row>
         <el-row class="bim-data bim-dev-toolbar">
             <el-col>
-                <el-button type="primary" class="basic-btn" @click="addProject"><i class="bim-icon el-icon-plus"></i>添加</el-button>
+                <el-button type="primary" class="basic-btn" @click="addProject('add')"><i class="bim-icon el-icon-plus"></i>添加</el-button>
                 <el-button type="primary" class="basic-btn" @click="deletelibs"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
                 <el-button type="primary" class="basic-btn" @click="monitor('all')"><i class="bim-icon el-icon-view"></i>监控</el-button>
             </el-col>
@@ -125,7 +125,7 @@
 
                     <el-table-column label="操作" width="135" class="quality-page-tableIcon">
                         <template slot-scope="scope" >
-                            <span class="quality-icon icon el-icon-circle-check" ></span>
+                            <span class="quality-icon icon el-icon-circle-check" @click="addProject('modific')"></span>
                             <span class="quality-icon icon el-icon-circle-check" ></span>
                             <span class="quality-icon icon el-icon-circle-check" ></span>
                         </template>
@@ -139,20 +139,149 @@
                 <div >{{tableData[0].username}}</div>
             </el-col>
         </el-row>
+        <!--工程添加/修改弹窗-->
+        <el-dialog title="工程管理" :visible.sync="ProjManageDialog">
+            <el-form :model="proManage">
+                <el-form-item label="工程名称:" label-width="80">
+                    <el-input v-model="proManage.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="专业:" label-width="80">
+                    <el-input v-model="proManage.major" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="所属项目:" label-width="80">
+                    <el-select v-model="proManageVal" placeholder="请选择活动区域" style="width:100%" :disabled="isDisable">
+                        <el-option :value="proManageVal" v-show="false"></el-option>
+                        <ul id="projectDepart" class="ztree"></ul>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="工程授权:" label-width="80">
+                    <el-row class="transfer">
+                        <el-col :span="10" class="transfer-con-add">
+                            <el-col :span="12"><el-checkbox v-model="checkAll" @change="addAllRootPerson">全部</el-checkbox></el-col>
+                            <el-col :span="12"><p offset="12">全部可授权人数{{cities.length}}</p></el-col>
+                            <el-col :span="24" class="border">
+                                <el-input style="width:100%"
+                                    class="el-transfer-panel__filter"
+                                    size="small"
+                                    icon="search"
+                                    v-model="proMsearchKey"
+                                    :on-icon-click="proManageSearch"
+                                ></el-input>
+                                <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
+                                    <el-checkbox-group v-model="checkedCities" @change="addRootPerson" class="scroll-me" style="background:#fff;">
+                                        <el-checkbox  class="el-transfer-panel__item"  v-for="city in cities" :label="city" :key="city" :title="city" >{{city}}</el-checkbox>
+                                    </el-checkbox-group>
+                                </vue-scrollbar>
+                            </el-col>
+                        </el-col>
+                        <el-col :span="10" class="transfer-con-del " style="margin-left:20px;">
+                            <el-col :span="14" >
+                                <span class="radius" @click="delRootAll" style="margin-left:11px;">
+                                    <i class="radius-lines"></i>
+                                </span>
+                            </el-col>
+                            <el-col :span="10" ><p offset="12" style="text-align:right">已授权人数{{checkedCities.length}}</p></el-col>
+                            <el-col :span="24" class="border">
+                                <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:306px;padding:10px;">
+                                   <ul class="scroll-me delete-rootPerson" style="background:#fff;">
+                                       <li  v-for="(item,index) in checkedCities" :key="index" @click="delRootItem(item,index)" class="substr" :title=" item">
+                                            <span class="radius" >
+                                                <i class="radius-lines"></i>
+                                            </span>
+                                           {{item}}
+                                       </li>
+                                   </ul>
+                                </vue-scrollbar>
+                            </el-col>
+                        </el-col>
+
+                    </el-row>
+                </el-form-item>
+                <el-form-item label="备注:" label-width="80">
+                    <el-input class="projManage-remark"
+                        type="textarea"
+                        :rows="3"
+                        placeholder="请输入内容"
+                        v-model="textarea" :maxlength=150>
+                    </el-input>
+                    <span class="info-pos">{{!textarea.length?(0+"/"+150):(textarea.length+"/"+150)}}</span>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="ProjManageDialog = false">取 消</el-button>
+                <el-button type="primary" @click="ProjManageDialog = false;proManageSave">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+import axios from "axios";
 import {IndexCumsum} from "../../utils/validate.js";
 import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
 let deletArray = [];
+const cityOptions = [
+    "上海11111111111111111111111111111111111111111111111",
+    "北京",
+    "广州",
+    "深圳",
+    "南京",
+    "西安",
+    "成都",
+    "广州1",
+    "深圳2",
+    "南京3",
+    "西安4",
+    "成都5"
+];
 export default {
 //    props: ['tableData'],
     data() {
+        const generateData = _ => {
+            const data = [];
+            const cities = ["上海", "北京", "广州", "深圳", "南京", "西安", "成都"];
+            const pinyin = [
+                "shanghai",
+                "beijing",
+                "guangzhou",
+                "shenzhen",
+                "nanjing",
+                "xian",
+                "chengdu"
+            ];
+            cities.forEach((city, index) => {
+                data.push({
+                    label: city,
+                    key: index,
+                    pinyin: pinyin[index]
+                });
+            });
+            return data;
+        };
+        let proManage = {
+                name:'什么什么度假村',
+                major:'初始项目部',
+        };
+
         return {
+            checkedCities: ["北京"],
+            data2: generateData(),
+            value2: [],
+            checkAll: false,
+            cities: cityOptions,
+            textarea:"",
+            proMsearchKey:"",
+            isDisable:false,
+            proManageData :proManage,
+            filterMethod(query, item) {
+                return item.pinyin.indexOf(query) > -1;
+            },
             activeIndex: '/bimlib/bim-lib/housing',//默认选中路由
             value:"",//输入框默认选中状态
+            proManageVal:"",
             bimDeleteArray:[],
+            ProjManageDialog:false,
+            url: "../../../static/datasource.json",
             filterParams:{
                 orgNodeVal:"",
                 majorVal:"",
@@ -168,6 +297,16 @@ export default {
                 },
                 callback: {
                     onClick: this.onClick
+                }
+            },
+            proDepartSetting:{
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    onClick: this.proDepartClick
                 }
             },
             bimOptions: [{//BIM属性下拉框的值
@@ -203,6 +342,10 @@ export default {
                 value: '1.0.0',
                 label: '1.0.0'
             }],
+            proManage:{
+                name:'什么什么度假村',
+                major:'初始项目部',
+            },
             zNodes: [
                 {
                     id: 1,
@@ -243,6 +386,9 @@ export default {
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
+        handleChange(value, direction, movedKeys) {
+            console.log(value, direction, movedKeys);
+        },
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -274,9 +420,15 @@ export default {
         },
         onClick(event, treeId, treeNode) {
             this.filterParams.orgNodeVal = treeNode.name;
-            setTimeout(function() {
+            setTimeout(function(event, treeId, treeNode) {
                 $(".el-select-dropdown__item.selected").click();
             }, 100);
+        },
+        proDepartClick(event, treeId, treeNode){
+            this.proManageVal = treeNode.name;
+            setTimeout(function(event, treeId, treeNode) {
+                $(".el-scrollbar .el-select-dropdown__item.selected").click();
+            }, 300);
         },
         /**
          * 全选
@@ -331,9 +483,24 @@ export default {
 
             })
         },
+        getTree(){
+            console.log(1111111)
+            axios.get(this.url).then(res => {
+                this.zNodes = res.data[0].result;
+                $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.zNodes);
+            });
+        },
         //添加工程
-        addProject(){
-
+        addProject(type){
+            this.ProjManageDialog = true;
+            if(type=='add'){
+                this.getTree();
+                this.proManage = {}
+                this.isDisable = false;
+            }else{
+                this.isDisable = true;
+                this.proManage = this.proManageData;
+            }
         },
         /**
          * @params type 批量监控还是监控
@@ -347,6 +514,7 @@ export default {
         search(){
             console.log(this.filterParams,'filterparams')
         },
+
         getData(name,id){
             if(id && name){
                 this.tableData.forEach((val,key)=>{
@@ -355,9 +523,55 @@ export default {
             }
             console.log(this.tableData)
         },
+        //彈窗 事件
+        //逐个删除已授权的
+        delRootAll(){
+            this.checkedCities = [];
+            this.checkAll = false;
+        },
+        delRootItem(item,index){
+            if(this.checkedCities.indexOf(item)!=-1){
+                this.checkedCities.splice(index,1)
+            }
+            if(this.checkedCities.length>0 && this.checkedCities.length<this.cities.length){
+                this.checkAll = false;
+            }
+        },
+        //全选
+        addAllRootPerson(event){
+            if (event.target.checked) {
+                this.checkedCities = [];
+                this.cities.forEach(item => {
+                    this.checkedCities.push(item);
+                });
+            } else {
+                this.checkedCities = [];
+            }
+        },
+        addRootPerson(item){
+            let checkLength = item.length;
+            if(item.length===this.cities.length){
+                this.checkAll = true;
+            }else{
+                this.checkAll = false;
+            }
+        },
+        proManageSearch(){
+            let searchArr = [];
+                this.cities.forEach((val,key)=>{
+                    if(this.cities[key].indexOf(this.proMsearchKey) !=-1){
+                        searchArr.push(this.proMsearchKey);
+                    }
+                })
+                this.cities = searchArr;
+        },
+        proManageSave(){
+            console.log('该提交数据了')
+        },
     },
     mounted() {
         $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
+
 
     },
     created(){
@@ -412,5 +626,13 @@ export default {
     background-color: #f5f8fd;
 }
 .bims-contents>.bim {position:static !important;}
+ .transfer-footer {
+     margin-left: 20px;
+     padding: 6px 5px;
+ }
 
+ .bims-contents .el-input{
+    width:86%;
+}
 </style>
+
