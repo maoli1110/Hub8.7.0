@@ -19,6 +19,7 @@ export default {
       url2: "../../../static/tree2.json",
       value: "",
       cacheTree: [],
+      treeNodeId: "",
       setting: {
         data: {
           simpleData: {
@@ -95,58 +96,42 @@ export default {
     };
   },
   watch: {
-    value: function() {}
+    treeNodeId: (n, o) => {
+      // console.log(n);
+      // console.log(o);
+    }
   },
   methods: {
     onClick(event, treeId, treeNode) {
-      this.value = treeNode.name;
-      axios.get(this.url).then(res => {
-        this.zNodes2 = res.data;
-        // 判断缓存数据中有无该节点
-        this.cacheTree.forEach((el, index) => {
-          if (el.id == treeNode.id) {
-            // console.log(123);
-            this.zNodes2 = el.preTreeInfo;
-
-          } else {
-            // this.cacheTree.push({ id: treeNode.id, treeinfo: this.zNodes2 });
-            //
-//            console.log('后台请求数据');
-            // this.zNodes2 = el.preTreeInfo;
-          }
-        });
-
-        $.fn.zTree.init($("#treeDemo2"), this.setting2, this.zNodes2);
-      });
+      // console.log(this.cacheTree)
+      let ExsistCacheTreeItem=this.cacheTree.find(el=> el.id==treeNode.id)
+      this.treeNodeId = treeNode.id; 
+      if(ExsistCacheTreeItem){
+          this.zNodes2 = ExsistCacheTreeItem.preTreeInfo;
+      }else{
+        console.log('后台请求数据');
+        axios.get(this.url).then(res => {this.zNodes2 = res.data; });
+      }
+      $.fn.zTree.init($("#treeDemo2"), this.setting2, this.zNodes2);      
     },
     beforeClick() {
-      //   左侧树选中节点
-      var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-      var preSelectnode = zTree.getSelectedNodes();
+      //  左侧树选中节点
+      let zTree = $.fn.zTree.getZTreeObj("treeDemo");
+      let preSelectNode = zTree.getSelectedNodes();
       // 记录右侧树状态
-      var preTreeObj = $.fn.zTree.getZTreeObj("treeDemo2");
-      // var preNodes = preTreeObj.transformToArray(preTreeObj.getNodes());
-      var preNodes = preTreeObj.getNodes();
-      if (this.cacheTree.length != 0) {
-        this.cacheTree.forEach((el, index) => {
-          // 点击同一个节点上
-          if (el.id == preSelectnode[0].id) {
-              console.log("repeat");
-              el.preTreeInfo=preNodes;
-              return true;
-          } else {
-            this.cacheTree.push({
-              id: preSelectnode[0].id,
-              preTreeInfo: preNodes
-            });
-
-          }
-        });
+      let preTreeObj = $.fn.zTree.getZTreeObj("treeDemo2");
+      // let preNodes = preTreeObj.transformToArray(preTreeObj.getNodes());
+      let preNodes = preTreeObj.getNodes();
+      if (this.cacheTree.length>0) {
+        let cacheTreeItem=this.cacheTree.find(el=> el.id==preSelectNode[0].id)
+        if(cacheTreeItem){
+          // console.log('repeat');
+          cacheTreeItem.preTreeInfo=preNodes
+        }else{
+          this.cacheTree.push({id: preSelectNode[0].id,preTreeInfo: preNodes});
+        }
       } else {
-        this.cacheTree.push({
-          id: preSelectnode[0].id,
-          preTreeInfo: preNodes
-        });
+        this.cacheTree.push({id: preSelectNode[0].id,preTreeInfo: preNodes});
       }
     }
   },
