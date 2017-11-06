@@ -109,7 +109,25 @@ export default new Router({
                             // 应用分配
                             path: 'application-allot',
                             component: resolve => require(['../components/Authority/MemberManagement.vue'], resolve)
+                        },
+                        {
+                            // 基础客户端
+                            path: 'basic-client',
+                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
                         }, {
+                            // 系统客户端
+                            path: 'system-client',
+                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                        }, {
+                            // BIM应用套餐
+                            path: 'bim-meal',
+                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                        }, {
+                            // 定额库
+                            path: 'quota-lib',
+                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                        },
+                        {
                             // 管理员列表
                             path: 'administrators-list',
                             component: resolve => require(['../components/Authority/AdministratorsList.vue'], resolve)

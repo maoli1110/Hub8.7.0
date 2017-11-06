@@ -98,11 +98,13 @@ export default {
         console.log("后台请求数据");
         axios.get(this.url).then(res => {
           this.folderNodes = res.data;
-          $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
+          $.fn.zTree.init(
+            $("#folderTree"),
+            this.folderSetting,
+            this.folderNodes
+          );
         });
       }
-
-      
     },
     beforeClick() {
       //  左侧组织树上次选中节点

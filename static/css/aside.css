@@ -3,34 +3,55 @@
     position: absolute;
     width: 302px;
     left: 0px;
-    top:  20px;
+    top: 20px;
     bottom: 0;
     padding-top: 0px;
     border-right: 1px solid #e6e6e6
 }
+
 .aside .el-menu {
     height: 100%;
 }
+
 .aside .el-menu-item {
     height: 60px;
     border-top: 1px solid #e6e6e6;
     border-left: 3px solid #fff;
     text-align: center;
-    color:#444444
+    color: #444444
 }
-.aside .is-active {
+
+.aside .el-menu-item.is-active {
     border-left: 3px solid #6595f2;
     text-align: center;
     font-weight: bold;
     background-color: #f5f8fd;
-
 }
-.aside .el-menu-item:first-child {
+
+.aside .el-menu .el-menu-item:first-child {
     border-top: 1px solid #fff;
 }
-.aside .el-menu-item:last-child {
+
+.aside .el-submenu .el-menu-item:first-child {
+    border-top: 1px solid #e6e6e6;
+}
+
+.aside .el-menu .el-menu-item:last-child {
     border-bottom: 1px solid #e6e6e6;
 }
+
+.aside .el-submenu .el-menu-item:last-child {
+    border-bottom: none
+}
+
+.el-submenu {
+    border-left: none !important;
+}
+
+.el-submenu__title {
+    background-color: #fff;
+}
+
 .container {
     margin-left: 302px;
 }
