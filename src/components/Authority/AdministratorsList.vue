@@ -1,8 +1,8 @@
 <template>
 <div class="process" style="width:600px">
     <div>
-    <ul id="treeDemo" class="ztree"  style="float:left"></ul>
-    <ul id="treeDemo2" class="ztree" style='float:right'></ul>
+    <ul id="orgTree" class="ztree"  style="float:left"></ul>
+    <ul id="folderTree" class="ztree" style='float:right'></ul>
     </div>
 
     <!-- <ul id="treeDemo3" class="ztree" ></ul> -->
@@ -20,7 +20,7 @@ export default {
       value: "",
       cacheTree: [],
       treeNodeId: "",
-      setting: {
+      orgSetting: {
         data: {
           simpleData: {
             enable: true
@@ -31,7 +31,7 @@ export default {
           beforeClick: this.beforeClick
         }
       },
-      setting2: {
+      folderSetting: {
         check: {
           enable: true
         },
@@ -41,17 +41,7 @@ export default {
           }
         }
       },
-      setting3: {
-        check: {
-          enable: true
-        },
-        data: {
-          simpleData: {
-            enable: true
-          }
-        }
-      },
-      zNodes: [
+      orgNodes: [
         {
           id: 1,
           pId: 0,
@@ -77,7 +67,7 @@ export default {
         { id: 32, pId: 3, name: "叶子节点2" },
         { id: 33, pId: 3, name: "叶子节点3" }
       ],
-      zNodes2: [
+      folderNodes: [
         { id: 1, pId: 0, name: "我是开始 1", open: true },
         { id: 11, pId: 1, name: "我是开始 1-1", open: true },
         { id: 111, pId: 11, name: "我是开始 1-1-1" },
@@ -91,53 +81,56 @@ export default {
         { id: 221, pId: 22, name: "我是开始 2-2-1", checked: true },
         { id: 222, pId: 22, name: "我是开始 2-2-2" },
         { id: 23, pId: 2, name: "我是开始 2-3" }
-      ],
-      zNodes3: []
+      ]
     };
   },
   watch: {
-    treeNodeId: (n, o) => {
-      // console.log(n);
-      // console.log(o);
-    }
+    treeNodeId: (n, o) => {}
   },
   methods: {
     onClick(event, treeId, treeNode) {
       // console.log(this.cacheTree)
-      let ExsistCacheTreeItem=this.cacheTree.find(el=> el.id==treeNode.id)
-      this.treeNodeId = treeNode.id; 
-      if(ExsistCacheTreeItem){
-          this.zNodes2 = ExsistCacheTreeItem.preTreeInfo;
-      }else{
-        console.log('后台请求数据');
-        axios.get(this.url).then(res => {this.zNodes2 = res.data; });
+      let ExsistCacheTreeItem = this.cacheTree.find(el => el.id == treeNode.id);
+      if (ExsistCacheTreeItem) {
+        this.folderNodes = ExsistCacheTreeItem.preTreeInfo;
+        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
+      } else {
+        console.log("后台请求数据");
+        axios.get(this.url).then(res => {
+          this.folderNodes = res.data;
+          $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
+        });
       }
-      $.fn.zTree.init($("#treeDemo2"), this.setting2, this.zNodes2);      
+
+      
     },
     beforeClick() {
-      //  左侧树选中节点
-      let zTree = $.fn.zTree.getZTreeObj("treeDemo");
+      //  左侧组织树上次选中节点
+      let zTree = $.fn.zTree.getZTreeObj("orgTree");
       let preSelectNode = zTree.getSelectedNodes();
-      // 记录右侧树状态
-      let preTreeObj = $.fn.zTree.getZTreeObj("treeDemo2");
+      // 记录右侧文件夹树上次选中状态
+      let preTreeObj = $.fn.zTree.getZTreeObj("folderTree");
       // let preNodes = preTreeObj.transformToArray(preTreeObj.getNodes());
       let preNodes = preTreeObj.getNodes();
-      if (this.cacheTree.length>0) {
-        let cacheTreeItem=this.cacheTree.find(el=> el.id==preSelectNode[0].id)
-        if(cacheTreeItem){
-          // console.log('repeat');
-          cacheTreeItem.preTreeInfo=preNodes
-        }else{
-          this.cacheTree.push({id: preSelectNode[0].id,preTreeInfo: preNodes});
-        }
+
+      if (this.cacheTree.length > 0) {
+        let cacheTreeItem = this.cacheTree.find(
+          el => el.id == preSelectNode[0].id
+        );
+        cacheTreeItem
+          ? (cacheTreeItem.preTreeInfo = preNodes)
+          : this.cacheTree.push({
+              id: preSelectNode[0].id,
+              preTreeInfo: preNodes
+            });
       } else {
-        this.cacheTree.push({id: preSelectNode[0].id,preTreeInfo: preNodes});
+        this.cacheTree.push({ id: preSelectNode[0].id, preTreeInfo: preNodes });
       }
     }
   },
   mounted() {
-    let zTree = $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
-    $.fn.zTree.init($("#treeDemo2"), this.setting2, this.zNodes2);
+    let zTree = $.fn.zTree.init($("#orgTree"), this.orgSetting, this.orgNodes);
+    $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
     let nodes = zTree.getNodes();
     if (nodes.length > 0) {
       zTree.selectNode(nodes[0]);
