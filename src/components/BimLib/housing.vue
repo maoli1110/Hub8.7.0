@@ -130,7 +130,7 @@
                             <span class="quality-icon icon el-icon-view" @click="addProject('modific')"></span>
                             <span class="quality-icon icon el-icon-caret-right" @click="extractDialog=true;extractData('处理中')"></span><!--extractData(scope.row.status)"-->
                             <span class="quality-icon icon el-icon-setting" @click="modifyInfo=true"></span>
-                            <span class="quality-icon icon el-icon-edit" ></span>
+                            <span class="quality-icon icon el-icon-edit" @click="monitorSeverVisible=true" ></span>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -141,8 +141,38 @@
                 </vue-scrollbar>
             </el-col>
         </el-row>
+        <!--检测页面-->
+        <el-dialog title="第三方监控服务设置" :visible.sync="monitorSeverVisible">
+            <el-form >
+                <el-form-item label="对接平台：" >
+                    <el-select v-model="monitorSever.projectItem" placeholder="请选择" >
+                        <el-option
+                            v-for="item in monitorSever.projectList"
+                            :key="item.value"
+                            :value="item.name">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="用户名：" >
+                    <el-input  v-model="monitorSever.username"></el-input>
+                </el-form-item>
+                <el-form-item label="密码：" >
+                    <el-input v-model="monitorSever.pasword"></el-input>
+                </el-form-item>
+                <el-form-item label="服务器地址：" >
+                    <el-input v-model="monitorSever.clientIp"></el-input>
+                </el-form-item>
+                <el-form-item label="端口：" >
+                    <el-input v-model="monitorSever.port"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="monitorSeverVisible = false">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="monitorSeverVisible = false">取 消</el-button>
+            </div>
+        </el-dialog>
         <!--工程添加/修改弹窗-->
-        <el-dialog title="工程管理" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog title="工程管理" custorm-class="project-manage" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
                 <el-form-item label="工程名称:" label-width="80">
                     <el-input v-model="proManage.name" auto-complete="off"></el-input>
@@ -176,7 +206,7 @@
                                 </vue-scrollbar>
                             </el-col>
                         </el-col>
-                        <el-col :span="10" class="transfer-con-del " style="margin-left:20px;">
+                        <el-col :span="10" class="transfer-con-del " style="margin-left:6px;">
                             <el-col :span="14" >
                                 <span class="radius" @click="delRootAll" style="margin-left:11px;">
                                     <i class="radius-lines"></i>
@@ -210,8 +240,8 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="ProjManageDialog = false">取 消</el-button>
-                <el-button type="primary" @click="ProjManageDialog = false;proManageSave">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="ProjManageDialog = false;proManageSave">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="ProjManageDialog = false">取 消</el-button>
             </div>
         </el-dialog>
         <!--抽取数据弹窗-->
@@ -220,15 +250,14 @@
             :visible.sync="extractDialog"
             width="30%"
             size="tiny">
-           <div clasls="dialog_body">
-               <p class="dialog-tips-title">对所选工程进行如下操作:</p>
-               <el-checkbox-group v-model="isExtractChecked" >
-                   <el-checkbox  :disabled="isExtractDisable"></el-checkbox ><span class="dialog-extract-status">抽取数据<i> ({{extractStatus}})</i><i>&nbsp;&nbsp;</i></span>
-               </el-checkbox-group>
+           <div class="dialog_body">
+               <i class="el-icon-warning"></i>
+               <p class="dialog-tips-title">当前数据{{extractStatus}},</p>
+               <p class="dialog-tips-title">是否重新处理？</p>
            </div>
             <span slot="footer" class="dialog-footer" style="text-align:center;">
-                <el-button @click="extractDialog = false;extractCancel()">取 消</el-button>
-                <el-button type="primary" @click="extractDialog = false;extractOk()">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="extractDialog = false;extractOk()">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-cacel" @click="extractDialog = false;extractCancel()">取 消</el-button>
             </span>
         </el-dialog>
         <!--修改名称-->
@@ -239,7 +268,7 @@
             size="tiny">
             <el-form :model="modifyInfoList">
                 <el-form-item label="修改为：" >
-                    <el-input v-model="modifyInfoList.name" auto-complete="off" style="width:76%"></el-input>
+                    <el-input v-model="modifyInfoList.name" auto-complete="off" style="width:73%"></el-input>
                 </el-form-item>
                 <el-form-item label="曾用名：">
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:150px;">
@@ -248,8 +277,8 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="modifyInfo = false">取 消</el-button>
-                <el-button type="primary" @click="modifyInfo = false;modifyUpdate()">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="modifyInfo = false;modifyUpdate()">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="modifyInfo = false">取 消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -317,6 +346,8 @@ export default {
             isExtractChecked:false,
             isExtractDisable:false,
             modifyInfo:false,//修改信息弹窗
+            monitorSeverVisible:false,//第三方监控设置
+
             extractStatus:'',
             filterMethod(query, item) {
                 return item.pinyin.indexOf(query) > -1;
@@ -395,6 +426,18 @@ export default {
                 name:'初始项目部',
                 formatName:'我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家'
             },
+            monitorSever:{
+                projectItem:'',
+                projectList:[
+                    {name:'列表元素1'},
+                    {name:'列表元素3'},
+                    {name:'列表元素2'},
+                ],
+                username:'yhj',
+                pasword:11111,
+                clientIp:"172.16.21.164",
+                port:8080
+            },
             zNodes: [
                 {
                     id: 1,
@@ -451,16 +494,24 @@ export default {
         * @params success  成功处理的
         * @params error    失败处理的
         * */
-        commonMessage(message,success,error){
+        commonConfirm(message,success,error,type){
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'warning'
+                type: type
             }).then(success).catch(error);
         },
         commonAlert(message){
-            this.$message(message,{
-                type: 'info',
+            this.$alert(message, '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    console.log(1111)
+                }
+            })
+        },
+        commonMessage(message,type){
+            this.$message({
+                type: type,
                 message: message
             })
         },
@@ -484,7 +535,7 @@ export default {
          */
 
         selectAll(selection){
-
+            this.commonAlert('全部选中了哦')
             selection.forEach(function(val,key){
                 if( deletArray.indexOf(val.index) ==-1){
                     deletArray.push(val.index)
@@ -508,10 +559,10 @@ export default {
         //列表删除
         deletelibs(){
             if(!deletArray.length){
-                this.commonAlert('请选择要删除的文件')
+                this.commonMessage('请选择要删除的文件','warning')
                 return false;
             }
-            this.commonMessage('确定要删除吗',()=>{
+            this.commonConfirm('确定要删除吗',()=>{
                /* if(this.tableData.length===deletArray.length){
                     //重新渲染数据
                 }else*/if(deletArray.length){
@@ -527,7 +578,7 @@ export default {
                 deletArray = [];//接口成功之后删除数据
             },()=>{
 
-            })
+            },'warning')
         },
         //弹窗异步请求树结构
         getTree(){
@@ -554,8 +605,14 @@ export default {
          * **/
         monitor(type){
             if(!deletArray.length){
-                this.commonAlert('请添加监控文件')
+                this.commonMessage('请添加监控文件','warning');
                 return false;
+            }else {
+                if(type=='all'){
+                    this.monitorSeverVisible =true;
+                    this.monitorSever = {};
+                }
+
             }
         },
         //表格列表搜索
@@ -717,9 +774,13 @@ export default {
      margin-left: 20px;
      padding: 6px 5px;
  }
-
+ .bims-contents .project-manage .el-form-item label.el-form-item__label{
+     width:83px !important;
+ }
  .bims-contents .el-input{
-    width:86%;
+    width:84%;
 }
+ .bims-contents .dialog_body{width:175px;margin:0 auto;}
+ .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;}
 </style>
 

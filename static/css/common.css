@@ -3,13 +3,21 @@
 .shadow-style{
     box-shadow: 1px 2px 3px #ddd;
 }
-/*button*/
-.basic-btn{
-    width:100px;height:40px;margin-right:-12px !important;
-}
+/*页面按钮样式 button*/
+.basic-btn{width:100px;height:40px;margin-right:-12px !important;border-radius:2px !important;}
+.basic-btn:hover{box-shadow:1px 0px 7px #d0dffb;background:#8eb8fd !important;}
+.basic-btn:active{ background:#4778c7 !important;}
 .basic-btn .bim-icon{
     margin-right:10px;
 }
+/*弹窗按钮样式 (ps：ok:确定 cancel：取消)*/
+.dialog-btn{width:140px;height:40px;border-radius:2px !important;}
+.dialog-btn:hover{box-shadow:1px 0px 7px #d0dffb;}
+.dialog-btn.dialog-btn-ok:hover{background:#8eb8fd !important;}
+.dialog-btn.dialog-btn-ok:active{ background:#4778c7 !important;}
+.dialog-btn.dialog-btn-cancel{border-color:#6595f2!important;color:#444 !important;}
+.dialog-btn.dialog-btn-cancel:hover{background:#e6e6e6;border-color:#8eb8fd}
+.dialog-btn.dialog-btn-cancel:active{background:#c8c8c8;border-color:#477c87}
 .radius{
     width:16px;height:16px;border:1px solid red;display:inline-block;border-radius: 50%;position:relative;
     float:left;
@@ -101,10 +109,10 @@
 }
 /*弹窗*/
 .bims-contents .el-form-item label.el-form-item__label{
-    width:84px !important;text-algin:right;
+    width:97px ;text-align:right;
 }
 .bims-contents .el-form-item .el-select,.bims-contents .el-form-item .el-textarea{
-    width:86% !important;
+    width:84% !important;
 }
 /*projManage-remark(备注)*/
 .bims-contents .projManage-remark{
@@ -116,7 +124,7 @@
 .el-dialog__footer{text-align:center !important;padding-bottom:22px;}
 .bims-contents  .extract-dialog .el-dialog__body{text-align:center;}
 .bims-contents  .extract-dialog .el-dialog__body .dialog-tips-title{
-    padding:20px;
+    padding:3px;text-align:left;
 }
 .bims-contents .dialog-extract-status{padding:0 7px;}
 .bims-contents .dialog-extract-status i{
