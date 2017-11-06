@@ -134,11 +134,12 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <!--<div class="pagination">
+
+                </vue-scrollbar>
+                <div class="pagination">
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                     </el-pagination>
-                </div>-->
-                </vue-scrollbar>
+                </div>
             </el-col>
         </el-row>
         <!--检测页面-->
@@ -167,7 +168,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="monitorSeverVisible = false">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="monitorSeverVisible = false;monitorSeverOk()">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="monitorSeverVisible = false">取 消</el-button>
             </div>
         </el-dialog>
@@ -347,7 +348,10 @@ export default {
             isExtractDisable:false,
             modifyInfo:false,//修改信息弹窗
             monitorSeverVisible:false,//第三方监控设置
-
+            //分页的一些设置
+            cur_page:1,
+            totalPage:50,
+            totalNumber:300,
             extractStatus:'',
             filterMethod(query, item) {
                 return item.pinyin.indexOf(query) > -1;
@@ -514,6 +518,13 @@ export default {
                 type: type,
                 message: message
             })
+        },
+        //分页器事件
+        handleSizeChange(size){
+            console.log(`每页显示多少条${size}`);
+        },
+        handleCurrentChange(currentPage){
+            console.log(`当前页${currentPage}`);
         },
         //搜索条件树结构的单机事件
         onClick(event, treeId, treeNode) {
@@ -713,7 +724,11 @@ export default {
         modifyUpdate(){
             console.log(this.modifyInfoList)
             //执行完成清除状态
-        }
+        },
+        //第三方监控
+        monitorSeverOk(){
+            console.log(this.monitorSever)
+        },
     },
     mounted() {
         $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
