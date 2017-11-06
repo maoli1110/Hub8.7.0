@@ -85,7 +85,11 @@
     margin:0 4px;
 }
 .el-popover{
-    height:150px !important;overflow:auto !important;width:120px;min-width:120px !important;
+    height: 150px !important;
+    overflow: auto !important;
+    width: 130px;
+    min-width: 133px !important;
+    background: #fff;
 }
 .el-popover .root-name{display:inline-block !important;padding:0 5px;}
 .Bim-libs-bim .el-table.house-table{
@@ -108,4 +112,22 @@
 }
 .bims-contents .info-pos{
     position:absolute;right:20px;bottom:0;
+}
+.el-dialog__footer{text-align:center !important;padding-bottom:22px;}
+.bims-contents  .extract-dialog .el-dialog__body{text-align:center;}
+.bims-contents  .extract-dialog .el-dialog__body .dialog-tips-title{
+    padding:20px;
+}
+.bims-contents .dialog-extract-status{padding:0 7px;}
+.bims-contents .dialog-extract-status i{
+    color:orange;font-style:normal;
+}
+.el-input__inner:focus{
+    border-color:transparent !important;
+    -webkit-box-shadow: 1px 0px 7px #ccc;
+    -moz-box-shadow: 1px 0px 7px #ccc;
+    box-shadow: 1px 0px 7px #ccc ;
+}
+.el-input__inner:hover{
+    border-color:transparent !important;
 }

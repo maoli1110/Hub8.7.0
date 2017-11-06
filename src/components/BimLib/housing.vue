@@ -114,20 +114,23 @@
                     </el-table-column>
                     <el-table-column prop="isRoot" width="" label="已授权" >
                         <template slot-scope="scope">
-                            <el-popover trigger="hover" placement="top" class="root-tips">
-                                <p v-for=" item in 100" class="root-name">杨会杰</p>
-                                <div slot="reference" >
-                                    <span>{{scope.row.isRoot}}</span>
-                                </div>
-                            </el-popover>
+                            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
+                                <el-popover trigger="hover" placement="top" class="root-tips scroll-me">
+                                    <p v-for=" item in 100" class="root-name">杨会杰</p>
+                                    <div slot="reference" >
+                                        <span>{{scope.row.isRoot}}</span>
+                                    </div>
+                                </el-popover>
+                            </vue-scrollbar>
                         </template>
                     </el-table-column>
 
                     <el-table-column label="操作" width="135" class="quality-page-tableIcon">
                         <template slot-scope="scope" >
-                            <span class="quality-icon icon el-icon-circle-check" @click="addProject('modific')"></span>
-                            <span class="quality-icon icon el-icon-circle-check" ></span>
-                            <span class="quality-icon icon el-icon-circle-check" ></span>
+                            <span class="quality-icon icon el-icon-view" @click="addProject('modific')"></span>
+                            <span class="quality-icon icon el-icon-caret-right" @click="extractDialog=true;extractData('处理中')"></span><!--extractData(scope.row.status)"-->
+                            <span class="quality-icon icon el-icon-setting" @click="modifyInfo=true"></span>
+                            <span class="quality-icon icon el-icon-edit" ></span>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -136,11 +139,10 @@
                     </el-pagination>
                 </div>-->
                 </vue-scrollbar>
-                <div >{{tableData[0].username}}</div>
             </el-col>
         </el-row>
         <!--工程添加/修改弹窗-->
-        <el-dialog title="工程管理" :visible.sync="ProjManageDialog">
+        <el-dialog title="工程管理" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
                 <el-form-item label="工程名称:" label-width="80">
                     <el-input v-model="proManage.name" auto-complete="off"></el-input>
@@ -212,6 +214,44 @@
                 <el-button type="primary" @click="ProjManageDialog = false;proManageSave">确 定</el-button>
             </div>
         </el-dialog>
+        <!--抽取数据弹窗-->
+        <el-dialog class="extract-dialog" :close-on-click-modal="false" :close-on-press-escape="false"
+            title="数据处理"
+            :visible.sync="extractDialog"
+            width="30%"
+            size="tiny">
+           <div clasls="dialog_body">
+               <p class="dialog-tips-title">对所选工程进行如下操作:</p>
+               <el-checkbox-group v-model="isExtractChecked" >
+                   <el-checkbox  :disabled="isExtractDisable"></el-checkbox ><span class="dialog-extract-status">抽取数据<i> ({{extractStatus}})</i><i>&nbsp;&nbsp;</i></span>
+               </el-checkbox-group>
+           </div>
+            <span slot="footer" class="dialog-footer" style="text-align:center;">
+                <el-button @click="extractDialog = false;extractCancel()">取 消</el-button>
+                <el-button type="primary" @click="extractDialog = false;extractOk()">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!--修改名称-->
+        <el-dialog class="modify-update" :close-on-click-modal="false" :close-on-press-escape="false"
+            title="修改名称"
+            :visible.sync="modifyInfo"
+            width="30%"
+            size="tiny">
+            <el-form :model="modifyInfoList">
+                <el-form-item label="修改为：" >
+                    <el-input v-model="modifyInfoList.name" auto-complete="off" style="width:76%"></el-input>
+                </el-form-item>
+                <el-form-item label="曾用名：">
+                    <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:150px;">
+                        <div contenteditable="true" class="scroll-me" style="display:block;text-align:left;background:#fff;">{{modifyInfoList.formatName}}</div>
+                    </vue-scrollbar>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="modifyInfo = false">取 消</el-button>
+                <el-button type="primary" @click="modifyInfo = false;modifyUpdate()">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -273,6 +313,11 @@ export default {
             proMsearchKey:"",       //搜索关键字
             isDisable:false,        //项目部是否可用 用于工程管理弹窗 区分是修改还是添加
             proManageData :proManage,//公用数据复制
+            extractDialog:false,//抽取数据的弹窗
+            isExtractChecked:false,
+            isExtractDisable:false,
+            modifyInfo:false,//修改信息弹窗
+            extractStatus:'',
             filterMethod(query, item) {
                 return item.pinyin.indexOf(query) > -1;
             },
@@ -345,6 +390,10 @@ export default {
             proManage:{//工程管理
                 name:'什么什么度假村',
                 major:'初始项目部',
+            },
+            modifyInfoList:{
+                name:'初始项目部',
+                formatName:'我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家'
             },
             zNodes: [
                 {
@@ -587,6 +636,27 @@ export default {
             }
             console.log(this.proManage,'变了没有')
         },
+        //列表中传过来初始状态
+        extractData(status){
+            this.extractStatus = status;
+        },
+        //抽取数据
+        extractOk(){
+            if(this.isExtractChecked && this.isExtractDisable){
+                //是否确认抽取数据
+                console.log('是选状态')
+                this.isExtractChecked = false;
+            }
+        },
+        //抽取失败
+        extractCancel(){
+            this.isExtractChecked = false;
+        },
+        //修改名称
+        modifyUpdate(){
+            console.log(this.modifyInfoList)
+            //执行完成清除状态
+        }
     },
     mounted() {
         $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
