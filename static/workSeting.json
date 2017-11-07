@@ -1,19 +1,24 @@
+
 {
     "gridData": [{
-        "date": "2016-05-02",
-        "name": "王小虎",
-        "address": "上海市普陀区金沙江路 1518 弄"
+        "templateImg":"../../../static/img/wavebrak519400.jpg",
+        "tamplateName": "上海鲁班软件",
+        "updatauser": "杨会杰",
+        "time": "2017.11.7 13:14:52"
     }, {
-        "date": "2016-05-04",
-        "name": "王小虎",
-        "address": "上海市普陀区金沙江路 1518 弄"
+        "templateImg":" ../../../static/img/wavebrak519705.jpg",
+        "tamplateName": "上海鲁班软件",
+        "updatauser": "杨会杰",
+        "time": "2017.11.7 13:14:52"
     }, {
-        "date": "2016-05-01",
-        "name": "王小虎",
-        "address": "上海市普陀区金沙江路 1518 弄"
+        "templateImg":"../../../static/img/wavebrak519804.jpg",
+        "tamplateName": "上海鲁班软件",
+        "updatauser": "杨会杰",
+        "time": "2017.11.7 13:14:52"
     }, {
-        "date": "2016-05-03",
-        "name": "王小虎",
-        "address": "上海市普陀区金沙江路 1518 弄"
+        "templateImg":"../../../static/img/wavebreak454024.jpg",
+        "tamplateName": "上海鲁班软件",
+        "updatauser": "杨会杰",
+        "time": "2017.11.7 13:14:52"
     }]
 }

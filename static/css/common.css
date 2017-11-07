@@ -148,3 +148,34 @@
 /*work-toolbar(工具栏)*/
 .workSeting .work-toobar{padding:10px 0;}
 .pagination{padding:10px 0}
+
+/*workSeting(弹窗自绘制表单)*/
+.workSeting .table-row{height:100px;border-bottom:1px solid #ddd;}
+.workSeting .table-header{background:#f5f5f5;line-height:60px;}
+.workSeting .table-header >div{float:left;text-align:center;}
+.table-body .table-row .table-item:nth-child(2),
+.table-body .table-row .table-item:nth-child(4)
+{text-align:left;}
+.table-body .table-row .table-item{text-align:center;line-height:100px;border-right:1px solid #ddd;height:100%;padding:0 10px;}
+.table-body .table-row .table-item:first-child{border-left:1px solid #ddd;}
+.table-body .table-row:hover{background:#f0f0f0}
+.table-title{font-size:16px;font-weight:bold;padding:10px 0 }
+.Bim-template{
+    width: 80px !important;
+    height: 80px;
+    background-size: cover;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    margin: 9px 10px 10px 8px;
+}
+/*pdfDrawing(pdf图纸)*/
+.pdfDrawing .el-table td:nth-child(8) div{
+    text-align:left !important;padding:0 10px !important;
+}
+/*form-item (修改图纸信息弹窗)*/
+.form-item .el-input,.form-item .el-select,.form-item .el-textarea{width:77%;}
+.form-item .el-select>.el-input{width:100%}
+.form-item .el-form-item__label{width:90px !important;}
+.form-item .projManage-remark{position:relative;}
+.form-item .info-pos{position:absolute;right:4px !important;bottom:2px;background:#fff;height:30px;}
