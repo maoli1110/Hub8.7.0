@@ -235,7 +235,7 @@
                         type="textarea"
                         :rows="3"
                         placeholder="请输入内容"
-                        v-model="textarea" :maxlength=150>
+                        v-model="textarea" :maxlength='150'>
                     </el-input>
                     <span class="info-pos">{{!textarea.length?(0+"/"+150):(textarea.length+"/"+150)}}</span>
                 </el-form-item>

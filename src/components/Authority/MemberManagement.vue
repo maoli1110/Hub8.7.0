@@ -171,15 +171,12 @@ export default {
       console.log(row);
       row.checkedCities = event.target.checked ? row.cities : [];
       row.isIndeterminate = false;
-      // console.log($(".is-checked"));
     },
-
     handleCheckedCitiesChange(value, row) {
       let checkedCount = value.length;
       row.checkAll = checkedCount === row.cities.length;
       row.isIndeterminate =
         checkedCount > 0 && checkedCount < row.cities.length;
-
       // 全部选项控制
       let checkedAllCount;
       let checkedAllCities = [];

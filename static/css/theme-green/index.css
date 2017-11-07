@@ -1429,7 +1429,8 @@
     cursor: not-allowed
 }
 
-.el-select .el-input.is-disabled .el-input__inner:hover {}
+/* .el-select .el-input.is-disabled .el-input__inner:hover {
+} */
 
 .el-select .el-tag__close {
     margin-top: -2px
@@ -8243,12 +8244,15 @@
 }
 
 .el-input__inner:hover {
-    border-color: #3789d3;
+    border-color: #b4bccc;
 }
 
 .el-input__inner:focus {
-    border-color: #3789d3;
-    outline: 0
+    outline: 0;
+    border-color:transparent;
+    -webkit-box-shadow: 1px 0px 7px #ccc;
+    -moz-box-shadow: 1px 0px 7px #ccc;
+    box-shadow: 1px 0px 7px #ccc;
 }
 
 .el-input__icon {

@@ -57,13 +57,6 @@
                                        class="el-transfer-panel__list">
                         <el-checkbox class="el-transfer-panel__item" v-for="city in cities" :label="city" :key="city"
                                      :title="city">{{city}}
-
-
-
-
-
-
-
                         </el-checkbox>
                     </el-checkbox-group>
                     <!-- <p
@@ -82,9 +75,6 @@
                     <span style="float:right">已选择账号人员 ({{checkedCities.length}})</span>
                 </p>
                 <div class="el-transfer-panel__body" style="height:291px">
-                    <!-- <div class="el-transfer-panel__filter" style="height:35px">
-
-                    </div> -->
                     <ul class="el-transfer-item el-transfer-panel__list">
                         <li class="el-transfer-panel__item" v-for="(item,index) in checkedCities" :key="index"
                             @click="deleteItem(item)" :title="item">

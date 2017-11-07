@@ -130,12 +130,3 @@
 .bims-contents .dialog-extract-status i{
     color:orange;font-style:normal;
 }
-.el-input__inner:focus{
-    border-color:transparent !important;
-    -webkit-box-shadow: 1px 0px 7px #ccc;
-    -moz-box-shadow: 1px 0px 7px #ccc;
-    box-shadow: 1px 0px 7px #ccc ;
-}
-.el-input__inner:hover{
-    border-color:transparent !important;
-}

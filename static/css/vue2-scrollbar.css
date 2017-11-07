@@ -34,13 +34,14 @@
   cursor: default;
 }
 .vue-scrollbar__scrollbar-vertical {
-  width: 10px;
+  width: 6px;
   height: 100%;
   top: 0;
   right: 0;
 }
 .vue-scrollbar__scrollbar-vertical .scrollbar {
-  width: 10px;
+  width: 6px;
+  border-radius: 3px;
 }
 .vue-scrollbar__scrollbar-horizontal {
   height: 10px;
@@ -49,5 +50,5 @@
   right: 0;
 }
 .vue-scrollbar__scrollbar-horizontal .scrollbar {
-  height: 10px;
+  height: 5px;
 }
