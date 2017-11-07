@@ -166,6 +166,10 @@ export default new Router({
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
                                 {
+                                    path: 'recycle-bin',// 精装
+                                    component: resolve => require(['../components/BimLib/housing.vue'], resolve)
+                                },
+                                {
                                     path: 'cim',// CIM
                                     component: resolve => require(['../components/Authority-management/Upload.vue'], resolve)
                                 },
@@ -182,13 +186,13 @@ export default new Router({
                             component: resolve => require(['../components/BimLib/WorkingSet.vue'], resolve),
                             props: { type: 2 }
                         },
-                        {
+                        /*{
                             // 回收站
                             name:"recycle-bin?3",
                             path: 'recycle-bin',
                             component: resolve => require(['../components/BimLib/RecycleBin.vue'], resolve),
                              props: { type: 3 }
-                        },
+                        },*/
                         {
                             // pdf图纸
                             name:"pdf-drawing?4",
