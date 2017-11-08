@@ -482,7 +482,10 @@
 .el-dialog--tiny {
     width: 30%
 }
-
+.el-dialog--tinys {
+    width: 797px;
+    height: 460px;
+}
 .el-dialog--small {
     width: 50%
 }
@@ -1708,7 +1711,7 @@
 
 .el-table tr {
     background-color: #fff;
-    height: 48px
+    height: 45px
 }
 
 .el-table .hidden-columns {
@@ -3402,11 +3405,12 @@
 
 .el-button--text:focus,
 .el-button--text:hover {
-    color: rgb(51, 218, 193)
+    color: #84aaf5
+
 }
 
 .el-button--text:active {
-    color: rgb(0, 188, 160)
+    color: #84aaf5
 }
 
 .el-button-group {
@@ -8452,10 +8456,16 @@
     color: #e6e6e6
 }
 
-.el-textarea__inner:hover {}
+.el-textarea__inner:hover {
+    border-color:#8391a5
+}
 
 .el-textarea__inner:focus {
     outline: 0;
+    border-color: transparent;
+    -webkit-box-shadow: 1px 0px 7px #ccc;
+    -moz-box-shadow: 1px 0px 7px #ccc;
+    box-shadow: 1px 0px 7px #ccc;
 }
 
 .el-cascader {
