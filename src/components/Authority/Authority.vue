@@ -89,8 +89,8 @@ export default {
 
 <style scoped>
 @import "../../../static/css/aside.css";
-.contents {
-  margin-left: 302px;
+.container {
+  padding: 20px;
 }
 
 .ztree {

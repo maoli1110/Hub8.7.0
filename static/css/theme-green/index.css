@@ -273,9 +273,9 @@
 .el-pagination span {
     display: inline-block;
     font-size: 13px;
-    min-width: 28px;
-    height: 28px;
-    line-height: 28px;
+    min-width: 36px;
+    height: 36px;
+    line-height: 36px;
     vertical-align: top;
     box-sizing: border-box
 }
@@ -287,7 +287,7 @@
 .el-pagination .el-select .el-input input {
     padding-right: 25px;
     border-radius: 2px;
-    height: 28px
+    height: 36px
 }
 
 .el-pagination button {
@@ -320,7 +320,7 @@
 .el-pagination .btn-prev {
     background: center center no-repeat #fff;
     background-size: 16px;
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     cursor: pointer;
     margin: 0;
     color: #e6e6e6
@@ -369,7 +369,7 @@
 
 .el-pagination__sizes .el-input .el-input__inner {
     font-size: 13px;
-    border-color: rgb(209, 229, 229)
+    border-color: #d1dbe5
 }
 
 .el-pagination__sizes .el-input .el-input__inner:hover {}
@@ -383,11 +383,11 @@
 }
 
 .el-pagination__editor {
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     border-radius: 2px;
     line-height: 18px;
-    padding: 4px 2px;
-    width: 30px;
+    padding: 8px 2px;
+    width: 60px;
     text-align: center;
     margin: 0 6px;
     box-sizing: border-box;
@@ -407,7 +407,7 @@
 
 .el-autocomplete-suggestion__wrap,
 .el-pager li {
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     box-sizing: border-box
 }
 
@@ -435,15 +435,15 @@
     border-right: 0;
     background: #fff;
     font-size: 13px;
-    min-width: 28px;
-    height: 28px;
-    line-height: 28px;
+    min-width: 36px;
+    height: 36px;
+    line-height: 36px;
     text-align: center;
     margin: 0
 }
 
 .el-pager li:last-child {
-    border-right: 1px solid rgb(209, 229, 229)
+    border-right: 1px solid #d1dbe5
 }
 
 .el-pager li.btn-quicknext,
@@ -614,7 +614,7 @@
 
 .el-autocomplete-suggestion li.divider {
     margin-top: 6px;
-    border-top: 1px solid rgb(209, 229, 229)
+    border-top: 1px solid #d1dbe5
 }
 
 .el-autocomplete-suggestion li.divider:last-child {
@@ -706,7 +706,7 @@
 .el-dropdown-menu__item--divided {
     position: relative;
     margin-top: 6px;
-    border-top: 1px solid rgb(209, 229, 229)
+    border-top: 1px solid #d1dbe5
 }
 
 .el-dropdown-menu__item--divided:before {
@@ -802,7 +802,7 @@
     position: absolute;
     top: 65px;
     left: 0;
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     padding: 5px 0;
     background-color: #fff;
     z-index: 100;
@@ -885,6 +885,7 @@
 .el-submenu {
     border-top: 1px solid #e6e6e6
 }
+
 
 /* .el-submenu .el-menu {} */
 
@@ -974,7 +975,7 @@
 
 .el-radio__input.is-disabled .el-radio__inner {
     background-color: #fff;
-    border-color: rgb(209, 229, 229);
+    border-color: #d1dbe5;
     cursor: not-allowed
 }
 
@@ -989,7 +990,7 @@
 
 .el-radio__input.is-disabled.is-checked .el-radio__inner {
     background-color: #f5f8fd;
-    border-color: rgb(209, 229, 229)
+    border-color: #d1dbe5
 }
 
 .el-radio__inner,
@@ -1131,7 +1132,7 @@
     cursor: not-allowed;
     background-image: none;
     background-color: #fff;
-    border-color: rgb(209, 229, 229)
+    border-color: #d1dbe5
 }
 
 .el-radio-button--large .el-radio-button__inner {
@@ -1269,7 +1270,7 @@
 .el-select-dropdown {
     position: absolute;
     z-index: 1001;
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     border-radius: 2px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
@@ -1428,6 +1429,7 @@
 .el-select .el-input.is-disabled .el-input__inner {
     cursor: not-allowed
 }
+
 
 /* .el-select .el-input.is-disabled .el-input__inner:hover {
 } */
@@ -1975,7 +1977,7 @@
 
 .el-checkbox__input.is-disabled .el-checkbox__inner {
     background-color: #fff;
-    border-color: rgb(209, 229, 229);
+    border-color: #d1dbe5;
     cursor: not-allowed
 }
 
@@ -1990,7 +1992,7 @@
 
 .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
     background-color: #f5f8fd;
-    border-color: rgb(209, 229, 229)
+    border-color: #d1dbe5
 }
 
 .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
@@ -1999,7 +2001,7 @@
 
 .el-checkbox__input.is-disabled.is-indeterminate .el-checkbox__inner {
     background-color: #f5f8fd;
-    border-color: rgb(209, 229, 229)
+    border-color: #d1dbe5
 }
 
 .el-checkbox__input.is-disabled.is-indeterminate .el-checkbox__inner::before {
@@ -2071,7 +2073,7 @@
 }
 
 .el-table-filter {
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     border-radius: 2px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
@@ -2108,7 +2110,7 @@
 }
 
 .el-table-filter__bottom {
-    border-top: 1px solid rgb(209, 229, 229);
+    border-top: 1px solid #d1dbe5;
     padding: 8px
 }
 
@@ -2438,12 +2440,12 @@
 
 .el-time-range-picker__body {
     border-radius: 2px;
-    border: 1px solid rgb(209, 229, 229)
+    border: 1px solid #d1dbe5
 }
 
 .el-picker-panel {
     color: rgb(72, 106, 106);
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     box-shadow: 0 2px 6px #ccc;
     background: #fff;
     border-radius: 2px;
@@ -2651,7 +2653,7 @@
 }
 
 .time-select-item.disabled {
-    color: rgb(209, 229, 229);
+    color: #d1dbe5;
     cursor: not-allowed
 }
 
@@ -2808,13 +2810,13 @@
 }
 
 .el-time-spinner__item.disabled {
-    color: rgb(209, 229, 229);
+    color: #d1dbe5;
     cursor: not-allowed
 }
 
 .el-time-panel {
     margin: 5px 0;
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     border-radius: 2px;
@@ -2912,7 +2914,7 @@
     background: #fff;
     min-width: 100px;
     border-radius: 2px;
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     padding: 10px;
     z-index: 2000;
     font-size: 12px
@@ -2946,7 +2948,7 @@
     bottom: -6px;
     left: 50%;
     margin-right: 3px;
-    border-top-color: rgb(209, 229, 229);
+    border-top-color: #d1dbe5;
     border-bottom-width: 0
 }
 
@@ -2984,7 +2986,7 @@
     top: 50%;
     left: -6px;
     margin-bottom: 3px;
-    border-right-color: rgb(209, 229, 229);
+    border-right-color: #d1dbe5;
     border-left-width: 0
 }
 
@@ -3004,7 +3006,7 @@
     right: -6px;
     margin-bottom: 3px;
     border-right-width: 0;
-    border-left-color: rgb(209, 229, 229)
+    border-left-color: #d1dbe5
 }
 
 .el-popper[x-placement^=left] .popper__arrow::after {
@@ -3065,7 +3067,7 @@
     box-sizing: border-box;
     outline: 0;
     margin: 0;
-    padding: 10px 15px;
+    padding: 12px 21px;
     font-size: 14px;
     border-radius: 5px
 }
@@ -3118,7 +3120,7 @@
     cursor: not-allowed;
     background-image: none;
     background-color: #fff;
-    border-color: rgb(209, 229, 229)
+    border-color: #d1dbe5
 }
 
 .el-button.is-disabled.el-button--text {
@@ -3129,7 +3131,7 @@
 .el-button.is-disabled.is-plain:focus,
 .el-button.is-disabled.is-plain:hover {
     background-color: #fff;
-    border-color: rgb(209, 229, 229);
+    border-color: #d1dbe5;
     color: #e6e6e6
 }
 
@@ -3978,7 +3980,7 @@
 
 .el-tabs--border-card {
     background: #fff;
-    border: 1px solid rgb(209, 229, 229)
+    border: 1px solid #d1dbe5
 }
 
 .el-tabs--border-card>.el-tabs__content {
@@ -4000,16 +4002,16 @@
 
 .el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active {
     background-color: #fff;
-    border-right-color: rgb(209, 229, 229);
-    border-left-color: rgb(209, 229, 229)
+    border-right-color: #d1dbe5;
+    border-left-color: #d1dbe5
 }
 
 .el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active:first-child {
-    border-left-color: rgb(209, 229, 229)
+    border-left-color: #d1dbe5
 }
 
 .el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active:last-child {
-    border-right-color: rgb(209, 229, 229)
+    border-right-color: #d1dbe5
 }
 
 .slideInRight-enter {
@@ -4198,7 +4200,7 @@
 .el-tree {
     cursor: default;
     background: #fff;
-    border: 1px solid rgb(209, 229, 229)
+    border: 1px solid #d1dbe5
 }
 
 .el-tree__empty-block {
@@ -4491,13 +4493,13 @@
 
 .el-input-number.is-disabled .el-input-number__decrease,
 .el-input-number.is-disabled .el-input-number__increase {
-    border-color: rgb(209, 229, 229);
-    color: rgb(209, 229, 229)
+    border-color: #d1dbe5;
+    color: #d1dbe5
 }
 
 .el-input-number.is-disabled .el-input-number__decrease:hover,
 .el-input-number.is-disabled .el-input-number__increase:hover {
-    color: rgb(209, 229, 229);
+    color: #d1dbe5;
     cursor: not-allowed
 }
 
@@ -4527,7 +4529,7 @@
 
 .el-input-number__decrease.is-disabled,
 .el-input-number__increase.is-disabled {
-    color: rgb(209, 229, 229);
+    color: #d1dbe5;
     cursor: not-allowed
 }
 
@@ -7646,7 +7648,7 @@
 
 .el-card__header {
     padding: 18px 20px;
-    border-bottom: 1px solid rgb(209, 229, 229);
+    border-bottom: 1px solid #d1dbe5;
     box-sizing: border-box
 }
 
@@ -8181,7 +8183,7 @@
 
 .el-input.is-disabled .el-input__inner {
     background-color: #fff;
-    border-color: rgb(209, 229, 229);
+    border-color: #d1dbe5;
     color: #bbb;
     cursor: not-allowed
 }
@@ -8244,12 +8246,12 @@
 }
 
 .el-input__inner:hover {
-    border-color: #b4bccc;
+    border-color: #8391a5;
 }
 
 .el-input__inner:focus {
     outline: 0;
-    border-color:transparent;
+    border-color: transparent;
     -webkit-box-shadow: 1px 0px 7px #ccc;
     -moz-box-shadow: 1px 0px 7px #ccc;
     box-shadow: 1px 0px 7px #ccc;
@@ -8400,7 +8402,7 @@
 
 .el-textarea.is-disabled .el-textarea__inner {
     background-color: #fff;
-    border-color: rgb(209, 229, 229);
+    border-color: #d1dbe5;
     color: #bbb;
     cursor: not-allowed
 }
@@ -8523,7 +8525,7 @@
     position: absolute;
     margin: 5px 0;
     z-index: 2;
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     border-radius: 2px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
@@ -8533,7 +8535,7 @@
     vertical-align: top;
     height: 204px;
     overflow: auto;
-    border-right: solid 1px rgb(209, 229, 229);
+    border-right: solid 1px #d1dbe5;
     background-color: #fff;
     box-sizing: border-box;
     margin: 0;
@@ -8870,7 +8872,7 @@
     z-index: 10;
     padding: 6px;
     background-color: #fff;
-    border: 1px solid rgb(209, 229, 229);
+    border: 1px solid #d1dbe5;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12)
 }
 
