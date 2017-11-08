@@ -1,6 +1,5 @@
-
 <template>
-    <div style="position:relative">
+    <div>
         <div class="aside">
             <el-menu mode="vertical" :default-active="activeIndex" class="el-menu-vertical-demo" router>
                 <el-menu-item-group title="自动套">

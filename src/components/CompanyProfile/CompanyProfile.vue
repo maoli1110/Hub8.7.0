@@ -1,5 +1,5 @@
 <template>
-    <div style="position:relative">
+    <div>
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/companyprofile/organization-structure">组织结构</el-menu-item>

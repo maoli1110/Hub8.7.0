@@ -1,4 +1,14 @@
 /*=================================common-style===========================*/
+.content > div {
+    position: absolute;
+    width: 100%;
+    background: #f5f8fd;
+    top: 150px;
+    /*top: 0;*/
+    left: 0;
+    bottom: 0; 
+}
+
 /*shadow*/
 ul>li{
     list-style:none;
@@ -50,7 +60,20 @@ ul>li{
 /*lines*/
 
 /*==============================container=================================*/
-.container{background:#f5f8fd;overflow:auto;height: calc(100vh - 190px);width: calc(100% - 343px) !important;}
+/*.container{background:#f5f8fd;overflow:auto;height: calc(100vh - 190px);width: calc(100% - 343px) !important;}*/
+.container{
+    background: #f5f8fd;
+    position: absolute;
+    width: auto;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    padding: 15px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
 /*wrapper(美化滚动条包裹)*/
 #wrapper{
     width: 100%;

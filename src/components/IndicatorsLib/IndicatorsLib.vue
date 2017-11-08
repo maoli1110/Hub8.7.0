@@ -1,6 +1,5 @@
-
 <template>
-    <div style="position:relative">
+    <div>
         <div class="aside">
             <el-menu mode="vertical" :default-active="activeIndex" router>
                 <el-menu-item-group title="未审核指标">

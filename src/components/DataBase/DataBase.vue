@@ -1,6 +1,6 @@
 
 <template>
-    <div style="position:relative">
+    <div>
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/database/process-method">工艺工法库</el-menu-item>
