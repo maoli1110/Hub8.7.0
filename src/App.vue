@@ -14,6 +14,7 @@
 @import "../static/css/theme-green/color-green.css";
 @import "../static/css/vue2-scrollbar.css";
 @import "../static/css/app.css";
+@import "../static/css/aside.css";
 </style>
 <script>
     export default {

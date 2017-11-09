@@ -116,25 +116,7 @@ export default {
 </script>
 
 <style scoped>
-.aside {
-    display: block;
-    position: absolute;
-    width: 302px;
-    padding-top: 0px;
-    left: 0;
-    /*top: 150px;*/
-    bottom: 0;
-    border: 1px solid #e6e6e6;
-    border-right:none;
-    box-sizing: border-box;
-    z-index:10;
-     background: #fff;
-}
 
-.aside .el-menu {
-    height: 100%;
-    border-right: 1px solid #e6e6e6
-}
 
 .container {
     padding: 20px;

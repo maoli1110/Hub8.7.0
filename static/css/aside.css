@@ -3,16 +3,20 @@
     position: absolute;
     width: 302px;
     left: 0px;
-    top: 20px;
+    top: 0px;
     bottom: 0;
     padding-top: 0px;
-    border-right: 1px solid #e6e6e6
+    background:#fff;
+    border-right: 1px solid #e6e6e6;
+    -webkit-box-shadow:  1px 3px 7px #ccc;
+    -moz-box-shadow:  1px 3px 7px #ccc;
+    box-shadow:  1px 3px 7px #ccc;
+    z-index:10
 }
 
-.aside .el-menu {
+.aside  {
     height: 100%;
 }
-
 .aside .el-menu-item {
     height: 60px;
     border-top: 1px solid #e6e6e6;
@@ -20,7 +24,12 @@
     text-align: center;
     color: #444444
 }
-
+.aside .el-menu {
+    height: 100%;
+}
+.aside .el-menu .el-submenu:first-child{
+    border-top:none;
+}
 .aside .el-menu-item.is-active {
     border-left: 3px solid #6595f2;
     text-align: center;

@@ -6,13 +6,13 @@
                 <el-menu-item index="/authority/role-management">角色管理</el-menu-item>
                 <el-submenu index="/authority/application-allot">
                 <template slot="title">应用分配</template>
-                <el-menu-item index="/authority/basic-client">基础客户端</el-menu-item>              
-                <el-menu-item index="/authority/system-client">系统客户端</el-menu-item>              
-                <el-menu-item index="/authority/bim-meal">BIM应用套餐</el-menu-item>              
-                <el-menu-item index="/authority/quota-lib">定额库</el-menu-item>              
+                <el-menu-item index="/authority/basic-client">基础客户端</el-menu-item>
+                <el-menu-item index="/authority/system-client">系统客户端</el-menu-item>
+                <el-menu-item index="/authority/bim-meal">BIM应用套餐</el-menu-item>
+                <el-menu-item index="/authority/quota-lib">定额库</el-menu-item>
                 </el-submenu>
                 <el-menu-item index="/authority/administrators-list">管理员列表</el-menu-item>
-                
+
             </el-menu>
         </div>
         <div class="container">

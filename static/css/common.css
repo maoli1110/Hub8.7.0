@@ -58,7 +58,10 @@ ul>li{
 }
 /*=======================左侧菜单样式调整==============================*/
 .aside .el-menu-item, .el-submenu__title{
-    text-align:left !important;
+    text-align:left !important;padding-left:45px !important;
+}
+.aside .el-menu-item{
+    padding-left:65px !important;
 }
 /*lines*/
 
