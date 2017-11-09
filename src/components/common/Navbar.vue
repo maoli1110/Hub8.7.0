@@ -16,7 +16,7 @@ export default {
         return {
             activeIndex: '',
             activeIndex2: '',
-            changeMenu:true,
+            changeMenu:false,
             mainMenu: [
                 {
                     menuName: '企业概况',
@@ -88,6 +88,12 @@ export default {
     created(){
         this.activeIndex = this.$route.matched[1].path;
         this.activeIndex2 = this.$route.matched[1].path;
+        if( this.$route.matched[1].path=='/order-management' || this.$route.matched[1].path=='/online' || this.$route.matched[1].path=='/system-log' || this.$route.matched[1].path=='/upgrade-notes'){
+            this.changeMenu = false;
+        }else{
+            this.changeMenu = true;
+        }
+
     }
 
 }

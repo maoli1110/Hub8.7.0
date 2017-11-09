@@ -199,7 +199,7 @@ export default new Router({
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
                                 },
                                 {
-                                    name:'housing',
+                                    name:'baseBuild',
                                     path: 'recycle-bin',// 精装
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
@@ -217,7 +217,7 @@ export default new Router({
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
                                 },
                                 {
-                                    name:'housing',
+                                    name:'decoration',
                                     path: 'recycle-bin',// 精装
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
