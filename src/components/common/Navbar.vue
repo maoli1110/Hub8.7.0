@@ -14,7 +14,7 @@
 export default {
     data() {
         return {
-            activeIndex: '/companyprofile',
+            // activeIndex: '/companyprofile',
             activeIndex2: '/order-management',
             changeMenu:true,
             mainMenu: [
@@ -84,7 +84,11 @@ export default {
         }
     },
     mounted(){
-    }
+        console.log(this.$router)
+    },
+    created () {
+    this.activeIndex=this.$route.path
+  },
 
 }
 </script>

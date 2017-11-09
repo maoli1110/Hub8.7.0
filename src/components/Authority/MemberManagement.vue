@@ -56,16 +56,17 @@
                 <el-table-column label="更新时间" width="180">
                     <template slot-scope="scope">{{ scope.row.date }}</template>
                 </el-table-column>
-                <el-table-column  label="周活跃度" width="100">
+                <el-table-column label="周活跃度" width="100">
                     <template slot-scope="scope">
-                      <el-button type="text" @click="weeklyActivityDialogVisible=true"> {{ scope.row.WAU }}</el-button>
+                        <el-button type="text" @click="weeklyActivityDialogVisible=true"> {{ scope.row.WAU }}
+
+                        </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="备注" width="200">
                     <template slot-scope="scope">
                         <div :title="scope.row.remarks" class="textcell">
                             {{ scope.row.remarks }}
-
 
                         </div>
                     </template>
@@ -74,7 +75,7 @@
                     <template slot-scope="scope">
                         <span type="primary" class="el-icon-edit"></span>
                         <span type="primary" class="el-icon-document"></span>
-                        <span type="primary" class="el-icon-delete"></span>
+                        <span type="primary" class="el-icon-picture"@click="signDialogVisible=true"></span>
                         <span type="primary" class="el-icon-search" @click="serviceDetailsDialogVisible=true"></span>
                     </template>
                 </el-table-column>
@@ -92,6 +93,7 @@
                 </el-pagination>
             </div>
 
+
         </div>
         <!-- 添加人员 -->
         <el-dialog
@@ -100,7 +102,7 @@
             size="tiny">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="鲁班通行证" prop="pass">
-                    <el-input  v-model="ruleForm.pass" auto-complete="off"></el-input>
+                    <el-input v-model="ruleForm.pass" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="姓名" prop="name">
                     <el-input v-model="ruleForm.name" auto-complete="off"></el-input>
@@ -137,55 +139,76 @@
         </el-dialog>
         <!-- 批量添加 -->
         <el-dialog
-            title="批量添加人员" 
+            title="批量添加人员"
             :visible.sync="batchAddUserDialogVisible"
             size="tinys">
             <div>
-             <el-input type="textarea"  style="float:left;width:460px;height:240px" resize='none'
-             :autosize="{ minRows: 12, maxRows: 12}" placeholder="请输入内容"v-model="textarea">
-             
-             </el-input>
-             <div style="margin-left:480px">
-               <h3>使用说明：</h3>
-               <ul class="contens-wrap">
-                 <li>1.选择一个成员，复制他的角色和授权</li>
-                 <li>2.每行请输入鲁班通行证、一个姓名</li>
-                 <li>3.通行证、姓名、使用空格隔开</li>
-                 <li>4.用户名限制11个字符</li>
-                 <li>示例：布鲁斯123  布鲁斯</li>
-                 <li>5.excel或者txt文本文件中按上面格式准备的帐号信息也可以直接复制到输入框中进行添加</li>
-                 <li>6.可添加数指批量添加的最大个数，通过被克隆的成员授权的客户端节点套餐剩余量最小的套餐计算</li>
-               </ul>
-             </div>
+                <el-input type="textarea" style="float:left;width:460px;height:240px" resize='none'
+                          :autosize="{ minRows: 12, maxRows: 12}" placeholder="请输入内容" v-model="textarea">
+
+                </el-input>
+                <div style="margin-left:480px">
+                    <h3>使用说明：</h3>
+                    <ul class="contens-wrap">
+                        <li>1.选择一个成员，复制他的角色和授权</li>
+                        <li>2.每行请输入鲁班通行证、一个姓名</li>
+                        <li>3.通行证、姓名、使用空格隔开</li>
+                        <li>4.用户名限制11个字符</li>
+                        <li>示例：布鲁斯123  布鲁斯</li>
+                        <li>5.excel或者txt文本文件中按上面格式准备的帐号信息也可以直接复制到输入框中进行添加</li>
+                        <li>6.可添加数指批量添加的最大个数，通过被克隆的成员授权的客户端节点套餐剩余量最小的套餐计算</li>
+                    </ul>
+                </div>
             </div>
-            
+
             <div slot="footer" class="dialog-footer" style="margin-top:25px">
-            <el-button type="primary" @click="batchAddUserDialogVisible= false" class="dialog-btn">确 定</el-button>
-            <el-button  @click="batchAddUserDialogVisible= false" class="dialog-btn">取 消</el-button>
+                <el-button type="primary" @click="batchAddUserDialogVisible= false" class="dialog-btn">确 定</el-button>
+                <el-button @click="batchAddUserDialogVisible= false" class="dialog-btn">取 消</el-button>
             </div>
         </el-dialog>
         <!-- 周活跃度 -->
         <el-dialog title="活跃度详情" :visible.sync="weeklyActivityDialogVisible">
-        <el-table :data="weeklyActivityData">
-        <el-table-column property="name" label="客户端" width="150"></el-table-column>
-        <el-table-column property="time" label="总时长" width="200"></el-table-column>
-        <el-table-column property="times" label="总次数"></el-table-column>
-        <el-table-column property="date" label="最近一次登录时间"></el-table-column>
-        </el-table>
+            <el-table :data="weeklyActivityData">
+                <el-table-column property="name" label="客户端" width="150"></el-table-column>
+                <el-table-column property="time" label="总时长" width="200"></el-table-column>
+                <el-table-column property="times" label="总次数"></el-table-column>
+                <el-table-column property="date" label="最近一次登录时间"></el-table-column>
+            </el-table>
         </el-dialog>
         <!-- 查看服务详情 -->
         <el-dialog title="查看服务详情" :visible.sync="serviceDetailsDialogVisible">
-        <div style="padding-bottom:20px">当前人员<span style="color:#6595f2">"李俊珅"</span>已分配以下服务</div>
-        <el-table :data="weeklyActivityData">
-        <el-table-column property="name" label="套餐服务" width="150"></el-table-column>
-        <el-table-column property="time" label="服务内容" width="200"></el-table-column>
-        <el-table-column property="times" label="服务到期时间"></el-table-column>
-        </el-table>
-        <span slot="footer" class="dialog-footer">
+            <div style="padding-bottom:20px">当前人员<span style="color:#6595f2">"李俊珅"</span>已分配以下服务</div>
+            <el-table :data="weeklyActivityData">
+                <el-table-column property="name" label="套餐服务" width="150"></el-table-column>
+                <el-table-column property="time" label="服务内容" width="200"></el-table-column>
+                <el-table-column property="times" label="服务到期时间"></el-table-column>
+            </el-table>
+            <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="serviceDetailsDialogVisible = false" class="dialog-btn">确 定</el-button>
         </span>
         </el-dialog>
+        <!-- 设置电子签名 -->
+        <el-dialog title="设置电子签名" :visible.sync="signDialogVisible" size='sign'>
+            <el-upload style="margin-top:30px;padding:0 20px"
+                class="upload-demo"
+                drag
+                ref="upload"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :auto-upload="false"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                multiple>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">点击上传电子签名</div>
+                <div class="el-upload__tip" slot="tip" style="color:#e30000">*建议签名图片尺寸（宽：100px-高：40px）</div>
+                <div class="el-upload__tip" slot="tip" style="color:#e30000">只能上传png和jpg格式的签名照片，且不超过500kb</div>
+            </el-upload>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="submitUpload" class="dialog-btn">确 定</el-button>
+            <el-button @click="signDialogVisible = false" class="dialog-btn">取消</el-button>
 
+        </span>
+        </el-dialog>    
     </div>
 
 </template>
@@ -206,7 +229,8 @@ export default {
       addUserDialogVisible: false,
       batchAddUserDialogVisible: false,
       weeklyActivityDialogVisible: false,
-      serviceDetailsDialogVisible:false,
+      serviceDetailsDialogVisible: false,
+      signDialogVisible: false,
       textarea: "",
       orgValue: "",
       role: "",
@@ -377,26 +401,26 @@ export default {
         {
           date: "2017.9.30 17:43:57",
           name: "Explorer",
-          time:'81.8',
-          times:'1',
+          time: "81.8",
+          times: "1"
         },
         {
           date: "2017.9.28 17:43:57",
           name: "Govern",
-          time:'1.8',
-          times:'188',
+          time: "1.8",
+          times: "188"
         },
         {
           date: "2017.9.31 17:43:57",
           name: "View Pad",
-          time:'88',
-          times:'18',
+          time: "88",
+          times: "18"
         },
         {
           date: "2017.10.31 16:43:57",
           name: "View",
-          time:'18',
-          times:'88',
+          time: "18",
+          times: "88"
         }
       ],
       options: [
@@ -484,11 +508,21 @@ export default {
     batchAddUser() {
       this.batchAddUserDialogVisible = true;
     },
-    deleteUser() {}
+    deleteUser() {},
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+    handlePreview(file) {
+        console.log(file);
+      }
+
   },
   mounted() {
     $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
-  }
+  },
 };
 </script>
 <style scoped>
@@ -523,15 +557,24 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .contens-wrap > li {
   padding: 3px 0px;
 }
+
 .contens-wrap > li:nth-child(1) {
   color: #e30000;
 }
+
 .contens-wrap > li:nth-child(5) {
   color: #e30000;
 }
+.el-upload-dragger {
+  margin-left: 20px;
+}
+/* .el-upload{
+      padding: 0 20px;
+    } */
 </style>
 
 

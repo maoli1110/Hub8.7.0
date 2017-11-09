@@ -27,7 +27,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      activeIndex: "/authority/member-management",
+      // activeIndex: "/authority/member-management",
       setting: {
         data: {
           simpleData: {
@@ -79,6 +79,9 @@ export default {
     onClick(event, treeId, treeNode) {
       this.curSelectedNode(treeNode);
     }
+  },
+  created () {
+    this.activeIndex=this.$route.path
   },
   mounted() {
     $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);

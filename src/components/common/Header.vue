@@ -12,7 +12,7 @@
         <div class="user-info">
             <el-dropdown trigger="click" @command="handleCommand">
                 <div class="el-dropdown-link">
-                    <img class="user-logo" src="../../../static/img/img.jpg">
+                    <img class="user-logo" src="../../../static/img/dog.jpg">
                     <span style="display:inline-block;margin-top:10px">{{username}}</span> 
                 </div>
                 <el-dropdown-menu slot="dropdown" class="el-popper">
