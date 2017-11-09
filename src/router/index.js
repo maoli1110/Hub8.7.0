@@ -101,6 +101,11 @@ export default new Router({
                             component: resolve => require(['../components/Authority/MemberManagement.vue'], resolve)
                         },
                         {
+                            // 成员管理
+                            path: 'edit-member/:id',
+                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                        },
+                        {
                             // 角色管理
                             path: 'role-management',
                             component: resolve => require(['../components/Authority/RoleManagement.vue'], resolve)

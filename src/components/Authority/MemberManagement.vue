@@ -73,10 +73,10 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span type="primary" class="el-icon-edit"></span>
+                        <span type="primary" class="el-icon-edit"  @click="editUser(scope.row.id)"></span>
                         <span type="primary" class="el-icon-document"></span>
-                        <span type="primary" class="el-icon-picture"@click="signDialogVisible=true"></span>
-                        <span type="primary" class="el-icon-search" @click="serviceDetailsDialogVisible=true"></span>
+                        <span type="primary" class="el-icon-picture"  @click="signDialogVisible=true"></span>
+                        <span type="primary" class="el-icon-search"   @click="serviceDetailsDialogVisible=true"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -298,6 +298,7 @@ export default {
       userTableData: [
         {
           name: "赵四",
+          id:1,
           pass: "wulijjjj111111111111111111",
           role: "项目经理",
           phone: "18075240365",
@@ -308,6 +309,7 @@ export default {
         },
         {
           name: "赵四",
+          id:2,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -318,6 +320,7 @@ export default {
         },
         {
           name: "赵四",
+          id:3,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -328,6 +331,7 @@ export default {
         },
         {
           name: "赵四",
+          id:4,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -338,6 +342,7 @@ export default {
         },
         {
           name: "赵四",
+          id:5,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -348,6 +353,7 @@ export default {
         },
         {
           name: "赵四",
+          id:6,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -358,6 +364,7 @@ export default {
         },
         {
           name: "赵四",
+          id:7,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -368,6 +375,7 @@ export default {
         },
         {
           name: "赵四",
+          id:8,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -378,6 +386,7 @@ export default {
         },
         {
           name: "赵四",
+          id:9,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -388,6 +397,7 @@ export default {
         },
         {
           name: "赵四",
+          id:10,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -489,6 +499,9 @@ export default {
           this.zNodes
         );
       }, 100);
+    },
+    editUser(userId){
+      this.$router.push({ path: `/authority/edit-member/${userId}` })
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
