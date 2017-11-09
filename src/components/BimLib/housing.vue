@@ -351,7 +351,6 @@ export default {
         };
 
         return {
-            transitionName: 'slide-right' , // 默认动态路由变化为slide-right
             checkedCities: ["北京"],  //授权人员默认选中
             data2: generateData(),  //组件公用数据
             value2: [],//
@@ -374,7 +373,7 @@ export default {
             filterMethod(query, item) {
                 return item.pinyin.indexOf(query) > -1;
             },
-            activeIndex: '/bimlib/bim-lib/housing',//默认选中路由
+            activeIndex: '',//默认选中路由
             value:"",               //输入框默认选中状态
             proManageVal:"",        //弹窗项目部选中的值
             bimDeleteArray:[],
@@ -768,6 +767,7 @@ export default {
         $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
     },
     created(){
+        this.activeIndex = this.$route.path,
         this.filterParams.orgNodeVal = '根节点';
         this.filterParams.bimVal = this.bimOptions[0].value;
         this.filterParams.versionsVal = this.versionsOptions[0].value;

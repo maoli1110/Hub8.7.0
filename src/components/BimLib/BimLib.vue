@@ -40,7 +40,7 @@ import "../../../static/zTree/js/jquery.ztree.core.min.js";
 
 export default {
     data: () => ({
-        activeIndex: '/bimlib/housing/bim-lib',
+        activeIndex: "",
         transitionName: 'slide-right' , // 默认动态路由变化为slide-right
         setting: {
             data: {
@@ -81,6 +81,7 @@ export default {
     },
     mounted() {
         $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
+        console.log(this.$route,'this.$router')
     },
     beforeRouteUpdate (to, from, next) {
       let isBack = this.$router.isBack
@@ -106,8 +107,10 @@ export default {
               fromName = fromName.split("?")[1];
               this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是
      　　 }
-　　}
-
+　　},
+    created(){
+        this.activeIndex =  this.$route.path;
+    }
 
 }
 </script>

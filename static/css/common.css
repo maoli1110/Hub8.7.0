@@ -31,6 +31,7 @@ ul>li{
 .dialog-btn.dialog-btn-cancel{border-color:#6595f2!important;color:#444 !important;}
 .dialog-btn.dialog-btn-cancel:hover{background:#e6e6e6;border-color:#8eb8fd}
 .dialog-btn.dialog-btn-cancel:active{background:#c8c8c8;border-color:#477c87}
+/*=================================删除按钮绘制================================*/
 .radius{
     width:16px;height:16px;border:1px solid red;display:inline-block;border-radius: 50%;position:relative;
     float:left;
@@ -45,6 +46,7 @@ ul>li{
     left: 3px;
 
 }
+/*文字过长处理*/
 .substr{
     white-space: nowrap;
     text-overflow:ellipsis;
@@ -54,8 +56,9 @@ ul>li{
 .border{
     border:1px solid #ddd;
 }
-.border .scroll-me{
-
+/*=======================左侧菜单样式调整==============================*/
+.aside .el-menu-item, .el-submenu__title{
+    text-align:left !important;
 }
 /*lines*/
 
