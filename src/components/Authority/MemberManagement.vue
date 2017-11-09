@@ -38,7 +38,7 @@
                 <el-button type="warning" @click='batchAddUser()'>批量添加</el-button>
                 <el-button type="danger" @click="deleteUser()"> 删除人员</el-button>
             </div>
-            <el-table ref="multipleTable" :data="memberTableData" border tooltip-effect="dark"
+            <el-table ref="multipleTable" :data="usertableData" border tooltip-effect="dark"
                       style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column type='index' label="序号" width="55"></el-table-column>
@@ -58,7 +58,7 @@
                 </el-table-column>
                 <el-table-column  label="周活跃度" width="100">
                     <template slot-scope="scope">
-                      <el-button type="text" @click="weeklyactivityDialogVisible=true"> {{ scope.row.WAU }}</el-button>
+                      <el-button type="text" @click="weeklyActivityDialogVisible=true"> {{ scope.row.WAU }}</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="备注" width="200">
@@ -75,7 +75,7 @@
                         <span type="primary" class="el-icon-edit"></span>
                         <span type="primary" class="el-icon-document"></span>
                         <span type="primary" class="el-icon-delete"></span>
-                        <span type="primary" class="el-icon-search"></span>
+                        <span type="primary" class="el-icon-search" @click="serviceDetailsDialogVisible=true"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -165,12 +165,25 @@
             </div>
         </el-dialog>
         <!-- 周活跃度 -->
-        <el-dialog title="收货地址" :visible.sync="weeklyactivityDialogVisible">
+        <el-dialog title="活跃度详情" :visible.sync="weeklyActivityDialogVisible">
         <el-table :data="weeklyactivityData">
-        <el-table-column property="date" label="日期" width="150"></el-table-column>
-        <el-table-column property="name" label="姓名" width="200"></el-table-column>
-        <el-table-column property="address" label="地址"></el-table-column>
+        <el-table-column property="name" label="客户端" width="150"></el-table-column>
+        <el-table-column property="time" label="总时长" width="200"></el-table-column>
+        <el-table-column property="times" label="总次数"></el-table-column>
+        <el-table-column property="date" label="最近一次登录时间"></el-table-column>
         </el-table>
+        </el-dialog>
+        <!-- 查看服务详情 -->
+        <el-dialog title="查看服务详情" :visible.sync="serviceDetailsDialogVisible">
+        <div style="padding-bottom:20px">当前人员 <span style="color:#6595f2"> "李俊珅" </span> 已分配以下服务</div>
+        <el-table :data="weeklyactivityData">
+        <el-table-column property="name" label="套餐服务" width="150"></el-table-column>
+        <el-table-column property="time" label="服务内容" width="200"></el-table-column>
+        <el-table-column property="times" label="服务到期时间"></el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="serviceDetailsDialogVisible = false" class="dialog-btn">确 定</el-button>
+        </span>
         </el-dialog>
 
     </div>
@@ -192,7 +205,8 @@ export default {
     return {
       addUserDialogVisible: false,
       batchAddUserDialogVisible: false,
-      weeklyactivityDialogVisible: false,
+      weeklyActivityDialogVisible: false,
+      serviceDetailsDialogVisible:false,
       textarea: "",
       orgValue: "",
       role: "",
@@ -257,7 +271,7 @@ export default {
         { id: 32, pId: 3, name: "叶子节点2" },
         { id: 33, pId: 3, name: "叶子节点3" }
       ],
-      memberTableData: [
+      usertableData: [
         {
           name: "赵四",
           pass: "wulijjjj111111111111111111",
@@ -361,24 +375,28 @@ export default {
       ],
       weeklyactivityData: [
         {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          date: "2017.9.30 17:43:57",
+          name: "Explorer",
+          time:'81.8',
+          times:'1',
         },
         {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          date: "2017.9.28 17:43:57",
+          name: "Govern",
+          time:'1.8',
+          times:'188',
         },
         {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          date: "2017.9.31 17:43:57",
+          name: "View Pad",
+          time:'88',
+          times:'18',
         },
         {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          date: "2017.10.31 16:43:57",
+          name: "View",
+          time:'18',
+          times:'88',
         }
       ],
       options: [
