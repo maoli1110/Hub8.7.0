@@ -199,14 +199,14 @@
                     <div>项目资料目录：
                     <el-checkbox style="float:right">全部</el-checkbox>
                     </div>
-                    <div>*勾选全部分配后，新增加的目录自动授权</div>
+                    <div style="color:rgb(255, 153, 0)">*勾选全部分配后，新增加的目录自动授权</div>
                
                   </div>
                   <ul id="folderTree" class="ztree"  ></ul>
               </div>
             </div>
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary"  class="dialog-btn">确 定</el-button>
+            <el-button type="primary" @click="authorizedDataCatalogVisible = false" class="dialog-btn">确 定</el-button>
             <el-button @click="authorizedDataCatalogVisible = false" class="dialog-btn">取消</el-button>
             </span>
         </el-dialog>  
@@ -252,7 +252,7 @@ export default {
     };
     return {
       url: "../../../static/tree1.json",
-      cacheTree: [],
+      cacheProjectTree: [],
       addMemberDialogVisible: false,
       batchAddMemberDialogVisible: false,
       weeklyActivityDialogVisible: false,
@@ -622,6 +622,8 @@ export default {
       console.log(file);
     },
     authorizedDataCatalog() {
+      console.log(this.cacheProjectTree);
+      this.cacheProjectTree = [];
       setTimeout(() => {
         let zTree = $.fn.zTree.init(
           $("#authorizedProjectTree"),
@@ -636,9 +638,11 @@ export default {
       }, 150);
     },
     authorizedProjectClick(event, treeId, treeNode) {
-      let exsistCacheTreeItem = this.cacheTree.find(el => el.id == treeNode.id);
-      if (exsistCacheTreeItem) {
-        this.folderNodes = exsistCacheTreeItem.preTreeInfo;
+      let exsistCacheProjectTreeItem = this.cacheProjectTree.find(
+        el => el.id == treeNode.id
+      );
+      if (exsistCacheProjectTreeItem) {
+        this.folderNodes = exsistCacheProjectTreeItem.preTreeInfo;
         $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
       } else {
         console.log("后台请求数据");
@@ -660,18 +664,21 @@ export default {
       let preTreeObj = $.fn.zTree.getZTreeObj("folderTree");
       // let preNodes = preTreeObj.transformToArray(preTreeObj.getNodes());
       let preNodes = preTreeObj.getNodes();
-      if (this.cacheTree.length > 0) {
-        let cacheTreeItem = this.cacheTree.find(
+      if (this.cacheProjectTree.length > 0) {
+        let cacheProjectTreeItem = this.cacheProjectTree.find(
           el => el.id == preSelectNode[0].id
         );
-        cacheTreeItem
-          ? (cacheTreeItem.preTreeInfo = preNodes)
-          : this.cacheTree.push({
+        cacheProjectTreeItem
+          ? (cacheProjectTreeItem.preTreeInfo = preNodes)
+          : this.cacheProjectTree.push({
               id: preSelectNode[0].id,
               preTreeInfo: preNodes
             });
       } else {
-        this.cacheTree.push({ id: preSelectNode[0].id, preTreeInfo: preNodes });
+        this.cacheProjectTree.push({
+          id: preSelectNode[0].id,
+          preTreeInfo: preNodes
+        });
       }
     }
   },
