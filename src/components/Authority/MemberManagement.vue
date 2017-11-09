@@ -189,11 +189,19 @@
         </el-dialog>
         <!-- 授权资料目录 -->
          <el-dialog title="授权资料目录" :visible.sync="authorizedDataCatalogVisible" size='samll'>
-            <div style="position:relative;height:500px;width:450px">
+            <div style="position:relative;height:500px;width:550px">
               <div class="authorizedDataCatalog">
-                  <ul id="authorizedDataCatalogTree" class="ztree" ></ul>
+                  <div style="padding-bottom:20px">已授权项目：</div>
+                  <ul id="authorizedProjectTree" class="ztree" ></ul>
               </div>
               <div class="dataCatalog">
+                  <div>
+                    <div>项目资料目录：
+                    <el-checkbox style="float:right">全部</el-checkbox>
+                    </div>
+                    <div>*勾选全部分配后，新增加的目录自动授权</div>
+               
+                  </div>
                   <ul id="folderTree" class="ztree"  ></ul>
               </div>
             </div>
@@ -229,6 +237,7 @@
 <script>
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+import axios from "axios";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -242,6 +251,8 @@ export default {
       }
     };
     return {
+      url: "../../../static/tree1.json",
+      cacheTree: [],
       addMemberDialogVisible: false,
       batchAddMemberDialogVisible: false,
       weeklyActivityDialogVisible: false,
@@ -312,18 +323,18 @@ export default {
         { id: 32, pId: 3, name: "叶子节点2" },
         { id: 33, pId: 3, name: "叶子节点3" }
       ],
-      authorizedDataCatalogSetting: {
+      authorizedProjectSetting: {
         data: {
           simpleData: {
             enable: true
           }
         },
         callback: {
-          onClick: this.authorizedDataCatalogClick,
-          beforeClick: this.authorizedDataCatalogBeforeClick
+          onClick: this.authorizedProjectClick,
+          beforeClick: this.authorizedProjectBeforeClick
         }
       },
-      authorizedDataCatalogNodes: [
+      authorizedProjectNodes: [
         {
           id: 1,
           pId: 0,
@@ -613,16 +624,55 @@ export default {
     authorizedDataCatalog() {
       setTimeout(() => {
         let zTree = $.fn.zTree.init(
-          $("#authorizedDataCatalogTree"),
-          this.authorizedDataCatalogSetting,
-          this.authorizedDataCatalogNodes
+          $("#authorizedProjectTree"),
+          this.authorizedProjectSetting,
+          this.authorizedProjectNodes
         );
         $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
         let nodes = zTree.getNodes();
         if (nodes.length > 0) {
           zTree.selectNode(nodes[0]);
         }
-      }, 300);
+      }, 150);
+    },
+    authorizedProjectClick(event, treeId, treeNode) {
+      let exsistCacheTreeItem = this.cacheTree.find(el => el.id == treeNode.id);
+      if (exsistCacheTreeItem) {
+        this.folderNodes = exsistCacheTreeItem.preTreeInfo;
+        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
+      } else {
+        console.log("后台请求数据");
+        axios.get(this.url).then(res => {
+          this.folderNodes = res.data;
+          $.fn.zTree.init(
+            $("#folderTree"),
+            this.folderSetting,
+            this.folderNodes
+          );
+        });
+      }
+    },
+    authorizedProjectBeforeClick() {
+      //  左侧组织树上次选中节点
+      let zTree = $.fn.zTree.getZTreeObj("authorizedProjectTree");
+      let preSelectNode = zTree.getSelectedNodes();
+      // 记录右侧文件夹树上次选中状态
+      let preTreeObj = $.fn.zTree.getZTreeObj("folderTree");
+      // let preNodes = preTreeObj.transformToArray(preTreeObj.getNodes());
+      let preNodes = preTreeObj.getNodes();
+      if (this.cacheTree.length > 0) {
+        let cacheTreeItem = this.cacheTree.find(
+          el => el.id == preSelectNode[0].id
+        );
+        cacheTreeItem
+          ? (cacheTreeItem.preTreeInfo = preNodes)
+          : this.cacheTree.push({
+              id: preSelectNode[0].id,
+              preTreeInfo: preNodes
+            });
+      } else {
+        this.cacheTree.push({ id: preSelectNode[0].id, preTreeInfo: preNodes });
+      }
     }
   },
   mounted() {
@@ -682,6 +732,10 @@ export default {
 }
 .dataCatalog {
   float: right;
+}
+.authorizedDataCatalog .ztree,
+.dataCatalog .ztree {
+  width: 250px;
 }
 </style>
 
