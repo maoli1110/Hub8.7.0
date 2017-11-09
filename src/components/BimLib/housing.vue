@@ -65,19 +65,19 @@
             </el-col>
         </el-row>
         <el-row class="bim-data bim-dev-toolbar" >
-            <el-col v-show="$route.path=='/bimlib/bim-lib/housing'" :span="17">
+            <el-col v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')" :span="17">
                 <el-button type="primary" class="basic-btn" @click="addProject('add')"><i class="bim-icon el-icon-plus"></i>添加</el-button>
                 <el-button type="primary" class="basic-btn" @click="deletelibs"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
                 <el-button type="primary" class="basic-btn" @click="monitor('all')"><i class="bim-icon el-icon-view"></i>监控</el-button>
             </el-col>
-            <el-col v-show="$route.path=='/bimlib/bim-lib/recycle-bin'" :span="17">
+            <el-col v-if="($route.path=='/bimlib/decoration/recycle-bin' || $route.path=='/bimlib/BaseBuild/recycle-bin'|| $route.path=='/bimlib/housing/recycle-bin')" :span="17">
                 <el-button type="primary" class="basic-btn" ><i class="bim-icon el-icon-plus"></i>还原</el-button>
                 <el-button type="primary" class="basic-btn" ><i class="bim-icon el-icon-delete" ></i>删除</el-button>
                 <el-button type="primary" class="basic-btn"><i class="bim-icon el-icon-view"></i>清空</el-button>
             </el-col>
-            <el-col :span="3" offset="4">
-                <el-button type="primary" class="basic-btn" @click="inRecycle()" style="float:right" v-show="$route.path=='/bimlib/bim-lib/housing'">>> 回收站</el-button>
-                <el-button type="primary" class="basic-btn" @click="inProLib()" style="width:120px;float:right;" v-show="$route.path=='/bimlib/bim-lib/recycle-bin'"><< 返回工程库</el-button>
+            <el-col :span="3" :offset="4">
+                <el-button type="primary" class="basic-btn" @click="inRecycle($route.matched[2].path)" style="float:right" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">>> 回收站</el-button>
+                <el-button type="primary" class="basic-btn" @click="inProLib($route.matched[2].path)" style="width:120px;float:right;" v-if="($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')"><< 返回工程库</el-button>
             </el-col>
         </el-row>
 
@@ -120,7 +120,7 @@
                     </el-table-column>
                     <el-table-column prop="output" width="" label="输出造价" >
                     </el-table-column>
-                    <el-table-column prop="status" width="" label="数据处理" v-if="$route.path=='/bimlib/bim-lib/housing'">
+                    <el-table-column prop="status" width="" label="数据处理" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
                         <template slot-scope="scope">
                             <div v-show="scope.row.status==='处理成功'"><span  class="el-icon-circle-check"></span>处理成功</div>
                             <div v-show="scope.row.status==='处理失败'"><span  class="el-icon-circle-close"></span>处理失败</div>
@@ -142,7 +142,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="操作" width="135" class="quality-page-tableIcon" v-if="$route.path=='/bimlib/bim-lib/housing'">
+                    <el-table-column label="操作" width="135" class="quality-page-tableIcon" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
                         <template slot-scope="scope" >
                             <span class="quality-icon icon el-icon-view" @click="addProject('modific')"></span>
                             <span class="quality-icon icon el-icon-caret-right" @click="extractDialog=true;extractData('处理中')"></span><!--extractData(scope.row.status)"-->
@@ -351,6 +351,7 @@ export default {
         };
 
         return {
+            transitionName: 'slide-right' , // 默认动态路由变化为slide-right
             checkedCities: ["北京"],  //授权人员默认选中
             data2: generateData(),  //组件公用数据
             value2: [],//
@@ -650,11 +651,11 @@ export default {
         //默认加载数据
         getData(name,id){
             console.log(this.$route.path);
-            if(this.$route.path==='/bimlib/bim-lib/recycle-bin'){
+            /*if(this.$route.path==='/bimlib/bim-lib/recycle-bin'){
 
             }else if(this.$route.path==='/bimlib/bim-lib/housing'){
 
-            }
+            }*/
 
             if(id && name){
                 this.tableData.forEach((val,key)=>{
@@ -754,12 +755,13 @@ export default {
             console.log(this.monitorSever)
         },
         //进入回收站
-        inRecycle(){
-            this.$router.push({ path: '/bimlib/bim-lib/recycle-bin'})
+        inRecycle(path){
+            console.log(path,'path')
+            this.$router.push({ path: path+'/recycle-bin'})
         },
         //返回工程库
-        inProLib(){
-            this.$router.push({ path: '/bimlib/bim-lib/housing'})
+        inProLib(path){
+            this.$router.push({ path: path+'/bim-lib'})
         },
     },
     mounted() {
@@ -782,6 +784,9 @@ export default {
                 this.getData('ppp',12);
             }else{
                 this.getData('www',13);
+            }
+            if(!this.$route.name || this.$route.name.length<=0){
+                return false
             }
         }
     }

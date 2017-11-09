@@ -2,11 +2,27 @@
     <div>
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-menu-item index="/bimlib/bim-lib">BIM库</el-menu-item>
+                <el-submenu index="/bimlib/housing">
+                    <template slot="title">房建</template>
+                    <el-menu-item index="/bimlib/housing/bim-lib">工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/housing/working-set">工作集库</el-menu-item>
+                    <el-menu-item index="/bimlib/housing/pdf-drawing">PDF图纸</el-menu-item>
+                </el-submenu>
+                <el-submenu index="/bimlib/BaseBuild">
+                    <template slot="title">基建</template>
+                    <el-menu-item index="/bimlib/BaseBuild/bim-lib">工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/BaseBuild/working-set">工作集库</el-menu-item>
+                </el-submenu>
+                <el-submenu index="/bimlib/decoration">
+                    <template slot="title">家装</template>
+                    <el-menu-item index="/bimlib/decoration/bim-lib">工程库</el-menu-item>
+                </el-submenu>
+               <!-- <el-menu-item index="/bimlib/bim-lib">BIM库</el-menu-item>
                 <el-menu-item index="/bimlib/working-set">工作集库</el-menu-item>
                 <el-menu-item index="/bimlib/recycle-bin">回收站</el-menu-item>
-                <el-menu-item index="/bimlib/pdf-drawing">PDF图纸</el-menu-item>
+                <el-menu-item index="/bimlib/pdf-drawing">PDF图纸</el-menu-item>-->
             </el-menu>
+
         </div>
         <div class="container">
             <!--<ul id="treeDemo" class="ztree"></ul>-->
