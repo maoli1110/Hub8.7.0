@@ -56,6 +56,16 @@ ul>li{
 .border{
     border:1px solid #ddd;
 }
+/*定位问题*/
+.absol{
+    position:absolute;z-index:11;font-size:14px;
+}
+.relat{
+    position:relative;
+}
+.span-block{
+   width:45px;display:inline-block;top:8px;
+}
 /*=======================左侧菜单样式调整==============================*/
 .aside .el-menu-item, .el-submenu__title{
     text-align:left !important;padding-left:45px !important;

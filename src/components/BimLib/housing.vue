@@ -1,66 +1,58 @@
 <template>
     <div class="bims-container Bim-libs-bim" >
         <el-row class="bim-data bim-filter-toobar">
-            <el-col :span="5" class="filter-bar">
-                <el-col :span="5">
-                    组织结构:
-                </el-col>
-               <el-col :span="19">
-                   <el-select v-model="filterParams.orgNodeVal" placeholder="请选择" >
-                       <el-option v-show="false"
-                           :value="filterParams.orgNodeVal">
-                       </el-option>
-                       <ul class="ztree" id="OrgZtree"></ul>
-                   </el-select>
-               </el-col>
+            <el-col :span="5" class="filter-bar relat">
+                <span class="absol span-block" style="width:80px;">组织结构: </span>
+               <el-select class="absol" v-model="filterParams.orgNodeVal" placeholder="请选择" style="left:72px">
+                   <el-option v-show="false"
+                       :value="filterParams.orgNodeVal">
+                   </el-option>
+                   <ul class="ztree" id="OrgZtree"></ul>
+               </el-select>
+            </el-col>
+            <el-col :span="2" class="filter-bar relat" style="left:15px" :offset="1">
+                <span class="absol span-block" style="width:60px;">
+                   BIM属性:
+                </span>
+                <el-select class="absol" v-model="filterParams.bimVal" placeholder="请选择"  style="left:72px">
+                    <el-option
+                        v-for="item in bimOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
 
             </el-col>
-            <el-col :span="4" class="filter-bar">
-                <el-col :span="8">
-                   BIM属性:
-                </el-col>
-                <el-col :span="16">
-                    <el-select v-model="filterParams.bimVal" placeholder="请选择" >
-                        <el-option
-                            v-for="item in bimOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-col>
-            </el-col>
-            <el-col :span="3" class="filter-bar" v-show="$route.path=='/bimlib/bim-lib/housing'">
-                <el-col :span="8" >
+            <el-col :span="2" class="filter-bar relat"  style="left:100px"  v-show="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
+                <span class="absol span-block" style="width:40px;">
                     专业:
-                </el-col>
-                <el-col :span="16">
-                    <el-select v-model="filterParams.majorVal" placeholder="请选择" >
-                        <el-option
-                            v-for="item in majorOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-col>
+                </span>
+
+                <el-select class="absol" v-model="filterParams.majorVal" placeholder="请选择" style="left:40px;">
+                    <el-option
+                        v-for="item in majorOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+
             </el-col>
-            <el-col :span="3" class="filter-bar">
-                <el-col :span="8">
+            <el-col :span="2" class="filter-bar relat" style="left:140px">
+                <span class="absol span-block" style="width:40px;">
                     版本:
-                </el-col>
-                <el-col :span="16">
-                    <el-select v-model="filterParams.versionsVal" placeholder="请选择" >
-                        <el-option
-                            v-for="item in versionsOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-col>
+                </span>
+                <el-select class="absol" v-model="filterParams.versionsVal" placeholder="请选择" style="left:40px;">
+                    <el-option
+                        v-for="item in versionsOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
             </el-col>
-            <el-col :span="5">
+            <el-col :span="4" class="relat" style="left:175px">
                 <el-input placeholder="请输入搜索项目名称" v-model="filterParams.searchVal" icon="search" :on-icon-click="search"></el-input>
             </el-col>
         </el-row>
@@ -76,8 +68,8 @@
                 <el-button type="primary" class="basic-btn"><i class="bim-icon el-icon-view"></i>清空</el-button>
             </el-col>
             <el-col :span="3" :offset="4">
-                <el-button type="primary" class="basic-btn" @click="inRecycle($route.matched[2].path)" style="float:right" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">>> 回收站</el-button>
-                <el-button type="primary" class="basic-btn" @click="inProLib($route.matched[2].path)" style="width:120px;float:right;" v-if="($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')"><< 返回工程库</el-button>
+                <el-button type="primary" class="basic-btn" @click="inRecycle($route.matched[2].path)" style="float:right;margin-right:20px;" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">>> 回收站</el-button>
+                <el-button type="primary" class="basic-btn" @click="inProLib($route.matched[2].path)" style="width:120px;float:right;;margin-right:20px;" v-if="($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')"><< 返回工程库</el-button>
             </el-col>
         </el-row>
 
@@ -834,5 +826,6 @@ export default {
 }
  .bims-contents .dialog_body{width:175px;margin:0 auto;}
  .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;}
+ .filter-bar>.el-select{width:100%;}
 </style>
 

@@ -1,9 +1,11 @@
 <template>
     <div class="workSeting">
-        <el-row class="work-toobar">
+        <el-row class="work-toobar" :gutter="15">
             <el-col  :span="24">
-                <el-col :span="5">
-                    <el-select v-model="workValue" placeholder="请选择" @change="changeProject">
+                <span style="float:left;font-size:14px;margin-top:5px;">项目部：</span>
+                <el-col :span="6" >
+
+                    <el-select v-model="workValue" placeholder="请选择" @change="changeProject" >
                         <el-option
                             v-for="item in projectList"
                             :key="item.name"
@@ -11,7 +13,7 @@
                         </el-option>
                     </el-select>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="5">
                     <el-input icon="search" placeholder="请输入搜索关键字"></el-input>
                 </el-col>
             </el-col>
@@ -271,5 +273,8 @@
 <style scoped>
     .editor-btn{
         margin-top: 20px;
+    }
+    .workSeting .work-toobar .el-select{
+        width:100%;
     }
 </style>

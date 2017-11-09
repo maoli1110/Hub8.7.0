@@ -1,9 +1,10 @@
 <template>
     <div class="workSeting pdfDrawing">
-        <el-row class="work-toobar" :gutter="15">
+        <el-row class="work-toobar" :gutter="5">
             <el-col  :span="24">
-                <el-col :span="4">
-                    <el-select v-model="workValue" placeholder="请选择" @change="changeProject">
+                <el-col :span="7"  class="relat">
+                    <span class="absol span-block" style="width:80px;">所属工程：</span>
+                    <el-select class="absol" v-model="workValue" placeholder="请选择" @change="changeProject" style="left:72px">
                         <el-option
                             v-for="item in projectList"
                             :key="item.name"
@@ -11,8 +12,9 @@
                         </el-option>
                     </el-select>
                 </el-col>
-                <el-col :span="3">
-                    <el-select v-model="workValue" placeholder="请选择" @change="changeProject">
+                <el-col :span="5" class="relat" style="left:80px;">
+                    <span  class="absol span-block" style="width:45px;">分类：</span>
+                    <el-select class="absol" v-model="workValue" placeholder="请选择" @change="changeProject" style="left:45px">
                         <el-option
                             v-for="item in projectList"
                             :key="item.name"
@@ -20,7 +22,7 @@
                         </el-option>
                     </el-select>
                 </el-col>
-                <el-col :span="6" >
+                <el-col :span="5" class="relat" style="left:135px;" >
                     <el-input icon="search" placeholder="请输入搜索关键字"></el-input>
                 </el-col>
             </el-col>
@@ -273,5 +275,7 @@
     .editor-btn{
         margin-top: 20px;
     }
-
+    .pdfDrawing .work-toobar .el-select{
+        width:100%;
+    }
 </style>
