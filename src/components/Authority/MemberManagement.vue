@@ -175,7 +175,7 @@
         </el-dialog>
         <!-- 查看服务详情 -->
         <el-dialog title="查看服务详情" :visible.sync="serviceDetailsDialogVisible">
-        <div style="padding-bottom:20px">当前人员 <span style="color:#6595f2"> "李俊珅" </span> 已分配以下服务</div>
+        <div style="padding-bottom:20px">当前人员<span>"李俊珅"</span>已分配以下服务</div>
         <el-table :data="weeklyactivityData">
         <el-table-column property="name" label="套餐服务" width="150"></el-table-column>
         <el-table-column property="time" label="服务内容" width="200"></el-table-column>

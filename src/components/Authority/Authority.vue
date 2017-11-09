@@ -1,5 +1,5 @@
 <template>
-    <div style="position:relative">
+    <div>
         <div class="aside">
              <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/authority/member-management">成员管理</el-menu-item>
@@ -89,8 +89,8 @@ export default {
 
 <style scoped>
 @import "../../../static/css/aside.css";
-.container {
-  padding: 20px;
+.contents {
+  margin-left: 302px;
 }
 
 .ztree {

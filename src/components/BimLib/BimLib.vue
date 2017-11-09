@@ -107,7 +107,7 @@ export default {
     width: 302px;
     padding-top: 0px;
     left: 0;
-    top: 150px;
+    /*top: 150px;*/
     bottom: 0;
     border: 1px solid #e6e6e6;
     border-right:none;
