@@ -34,11 +34,11 @@
         </div>
         <div class="main">
             <div>
-                <el-button type="success" @click="addUser()">添加人员</el-button>
-                <el-button type="warning" @click='batchAddUser()'>批量添加</el-button>
-                <el-button type="danger" @click="deleteUser()"> 删除人员</el-button>
+                <el-button type="success" @click="addMember()">添加人员</el-button>
+                <el-button type="warning" @click='batchAddMember()'>批量添加</el-button>
+                <el-button type="danger" @click="deleteMember()"> 删除人员</el-button>
             </div>
-            <el-table ref="multipleTable" :data="userTableData" border tooltip-effect="dark"
+            <el-table ref="multipleTable" :data="memberTableData" border tooltip-effect="dark"
                       style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column type='index' label="序号" width="55"></el-table-column>
@@ -73,8 +73,8 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span type="primary" class="el-icon-edit"  @click="editUser(scope.row.id)"></span>
-                        <span type="primary" class="el-icon-document"></span>
+                        <span type="primary" class="el-icon-edit"  @click="editMember(scope.row.id)"></span>
+                        <span type="primary" class="el-icon-document" @click="authorizedDataCatalog();authorizedDataCatalogVisible=true;"></span>
                         <span type="primary" class="el-icon-picture"  @click="signDialogVisible=true"></span>
                         <span type="primary" class="el-icon-search"   @click="serviceDetailsDialogVisible=true"></span>
                     </template>
@@ -98,7 +98,7 @@
         <!-- 添加人员 -->
         <el-dialog
             title="添加人员"
-            :visible.sync="addUserDialogVisible"
+            :visible.sync="addMemberDialogVisible"
             size="tiny">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="鲁班通行证" prop="pass">
@@ -134,13 +134,13 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitForm('ruleForm')" class="dialog-btn">确 定</el-button>
-            <el-button @click="addUserDialogVisible = false;resetForm('ruleForm')" class="dialog-btn">取 消</el-button>
+            <el-button @click="addMemberDialogVisible = false;resetForm('ruleForm')" class="dialog-btn">取 消</el-button>
             </span>
         </el-dialog>
         <!-- 批量添加 -->
         <el-dialog
             title="批量添加人员"
-            :visible.sync="batchAddUserDialogVisible"
+            :visible.sync="batchAddMemberDialogVisible"
             size="tinys">
             <div>
                 <el-input type="textarea" style="float:left;width:460px;height:240px" resize='none'
@@ -162,8 +162,8 @@
             </div>
 
             <div slot="footer" class="dialog-footer" style="margin-top:25px">
-                <el-button type="primary" @click="batchAddUserDialogVisible= false" class="dialog-btn">确 定</el-button>
-                <el-button @click="batchAddUserDialogVisible= false" class="dialog-btn">取 消</el-button>
+                <el-button type="primary" @click="batchAddMemberDialogVisible= false" class="dialog-btn">确 定</el-button>
+                <el-button @click="batchAddMemberDialogVisible= false" class="dialog-btn">取 消</el-button>
             </div>
         </el-dialog>
         <!-- 周活跃度 -->
@@ -187,6 +187,21 @@
             <el-button type="primary" @click="serviceDetailsDialogVisible = false" class="dialog-btn">确 定</el-button>
         </span>
         </el-dialog>
+        <!-- 授权资料目录 -->
+         <el-dialog title="授权资料目录" :visible.sync="authorizedDataCatalogVisible" size='samll'>
+            <div style="position:relative;height:500px;width:450px">
+              <div class="authorizedDataCatalog">
+                  <ul id="authorizedDataCatalogTree" class="ztree" ></ul>
+              </div>
+              <div class="dataCatalog">
+                  <ul id="folderTree" class="ztree"  ></ul>
+              </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary"  class="dialog-btn">确 定</el-button>
+            <el-button @click="authorizedDataCatalogVisible = false" class="dialog-btn">取消</el-button>
+            </span>
+        </el-dialog>  
         <!-- 设置电子签名 -->
         <el-dialog title="设置电子签名" :visible.sync="signDialogVisible" size='sign'>
             <el-upload style="margin-top:30px;padding:0 20px"
@@ -206,13 +221,14 @@
             <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitUpload" class="dialog-btn">确 定</el-button>
             <el-button @click="signDialogVisible = false" class="dialog-btn">取消</el-button>
-
-        </span>
+            </span>
         </el-dialog>    
     </div>
 
 </template>
 <script>
+import "../../../static/zTree/js/jquery.ztree.core.min.js";
+import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -226,10 +242,11 @@ export default {
       }
     };
     return {
-      addUserDialogVisible: false,
-      batchAddUserDialogVisible: false,
+      addMemberDialogVisible: false,
+      batchAddMemberDialogVisible: false,
       weeklyActivityDialogVisible: false,
       serviceDetailsDialogVisible: false,
+      authorizedDataCatalogVisible: false,
       signDialogVisible: false,
       textarea: "",
       orgValue: "",
@@ -295,10 +312,72 @@ export default {
         { id: 32, pId: 3, name: "叶子节点2" },
         { id: 33, pId: 3, name: "叶子节点3" }
       ],
-      userTableData: [
+      authorizedDataCatalogSetting: {
+        data: {
+          simpleData: {
+            enable: true
+          }
+        },
+        callback: {
+          onClick: this.authorizedDataCatalogClick,
+          beforeClick: this.authorizedDataCatalogBeforeClick
+        }
+      },
+      authorizedDataCatalogNodes: [
+        {
+          id: 1,
+          pId: 0,
+          name: "展开、折叠 自定义图标不同",
+          open: true,
+          iconSkin: "pIcon01"
+        },
+        { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
+        { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
+        { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
+        {
+          id: 2,
+          pId: 0,
+          name: "展开、折叠 自定义图标相同",
+          open: true,
+          iconSkin: "pIcon02"
+        },
+        { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
+        { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
+        { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
+        { id: 3, pId: 0, name: "不使用自定义图标", open: true },
+        { id: 31, pId: 3, name: "叶子节点1" },
+        { id: 32, pId: 3, name: "叶子节点2" },
+        { id: 33, pId: 3, name: "叶子节点3" }
+      ],
+      folderSetting: {
+        check: {
+          enable: true
+        },
+        data: {
+          simpleData: {
+            enable: true
+          }
+        }
+      },
+      folderNodes: [
+        { id: 1, pId: 0, name: "我是开始 1", open: true },
+        { id: 11, pId: 1, name: "我是开始 1-1", open: true },
+        { id: 111, pId: 11, name: "我是开始 1-1-1" },
+        { id: 112, pId: 11, name: "我是开始 1-1-2" },
+        { id: 12, pId: 1, name: "我是开始 1-2", open: true },
+        { id: 121, pId: 12, name: "我是开始 1-2-1" },
+        { id: 122, pId: 12, name: "我是开始 1-2-2" },
+        { id: 2, pId: 0, name: "我是开始 2", checked: true, open: true },
+        { id: 21, pId: 2, name: "我是开始 2-1" },
+        { id: 22, pId: 2, name: "我是开始 2-2", open: true },
+        { id: 221, pId: 22, name: "我是开始 2-2-1", checked: true },
+        { id: 222, pId: 22, name: "我是开始 2-2-2" },
+        { id: 23, pId: 2, name: "我是开始 2-3" }
+      ],
+      memberTableData: [
         {
           name: "赵四",
-          id:1,
+          id: 1,
           pass: "wulijjjj111111111111111111",
           role: "项目经理",
           phone: "18075240365",
@@ -309,7 +388,7 @@ export default {
         },
         {
           name: "赵四",
-          id:2,
+          id: 2,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -320,7 +399,7 @@ export default {
         },
         {
           name: "赵四",
-          id:3,
+          id: 3,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -331,7 +410,7 @@ export default {
         },
         {
           name: "赵四",
-          id:4,
+          id: 4,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -342,7 +421,7 @@ export default {
         },
         {
           name: "赵四",
-          id:5,
+          id: 5,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -353,7 +432,7 @@ export default {
         },
         {
           name: "赵四",
-          id:6,
+          id: 6,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -364,7 +443,7 @@ export default {
         },
         {
           name: "赵四",
-          id:7,
+          id: 7,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -375,7 +454,7 @@ export default {
         },
         {
           name: "赵四",
-          id:8,
+          id: 8,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -386,7 +465,7 @@ export default {
         },
         {
           name: "赵四",
-          id:9,
+          id: 9,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -397,7 +476,7 @@ export default {
         },
         {
           name: "赵四",
-          id:10,
+          id: 10,
           pass: "wulijjjj",
           role: "项目经理",
           phone: "18075240365",
@@ -490,8 +569,8 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    addUser() {
-      this.addUserDialogVisible = true;
+    addMember() {
+      this.addMemberDialogVisible = true;
       setTimeout(() => {
         $.fn.zTree.init(
           $("#dialogOrgTree"),
@@ -500,15 +579,15 @@ export default {
         );
       }, 100);
     },
-    editUser(userId){
-      this.$router.push({ path: `/authority/edit-member/${userId}` })
+    editMember(MemberId) {
+      this.$router.push({ path: `/authority/edit-member/${MemberId}` });
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           alert("提交中...........");
           console.log(this.ruleForm);
-          this.addUserDialogVisible = false;
+          this.addMemberDialogVisible = false;
         } else {
           console.log("error submit!!");
           return false;
@@ -518,24 +597,37 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    batchAddUser() {
-      this.batchAddUserDialogVisible = true;
+    batchAddMember() {
+      this.batchAddMemberDialogVisible = true;
     },
-    deleteUser() {},
+    deleteMember() {},
     submitUpload() {
       this.$refs.upload.submit();
     },
     handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
+      console.log(file, fileList);
+    },
     handlePreview(file) {
-        console.log(file);
-      }
-
+      console.log(file);
+    },
+    authorizedDataCatalog() {
+      setTimeout(() => {
+        let zTree = $.fn.zTree.init(
+          $("#authorizedDataCatalogTree"),
+          this.authorizedDataCatalogSetting,
+          this.authorizedDataCatalogNodes
+        );
+        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
+        let nodes = zTree.getNodes();
+        if (nodes.length > 0) {
+          zTree.selectNode(nodes[0]);
+        }
+      }, 300);
+    }
   },
   mounted() {
     $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
-  },
+  }
 };
 </script>
 <style scoped>
@@ -585,9 +677,12 @@ export default {
 .el-upload-dragger {
   margin-left: 20px;
 }
-/* .el-upload{
-      padding: 0 20px;
-    } */
+.authorizedDataCatalog {
+  float: left;
+}
+.dataCatalog {
+  float: right;
+}
 </style>
 
 
