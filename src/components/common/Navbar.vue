@@ -1,21 +1,21 @@
 <template>
     <div class="navbar">
-        <el-menu :default-active="activeIndex" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if='changeMenu'>
+        <el-menu :default-active="activeIndex" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if="$route.matched[1].path !='/order-management'">
             <el-menu-item :index="menuItem.path" v-for='(menuItem,i) in mainMenu' :key="i">{{menuItem.menuName}}</el-menu-item>
         </el-menu>
-        <el-menu :default-active="activeIndex2" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if='!changeMenu'>
+        <el-menu :default-active="activeIndex2" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if="$route.matched[1].path =='/order-management'">
             <el-menu-item :index="menuItem.path" v-for='(menuItem,i) in configurationMenu' :key="i">{{menuItem.menuName}}</el-menu-item>
         </el-menu>
     </div>
-    
+
 </template>
 
 <script>
 export default {
     data() {
         return {
-            activeIndex: '/companyprofile',
-            activeIndex2: '/order-management',
+            activeIndex: '',
+            activeIndex2: '',
             changeMenu:true,
             mainMenu: [
                 {
@@ -84,6 +84,11 @@ export default {
         }
     },
     mounted(){
+    },
+    created(){
+        console.log(this.$route.matched[1],'this.$route.path')
+        this.activeIndex = this.$route.matched[1].path;
+        this.activeIndex2 = this.$route.matched[1].path;
     }
 
 }

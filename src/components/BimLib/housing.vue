@@ -190,7 +190,7 @@
             </div>
         </el-dialog>
         <!--工程添加/修改弹窗-->
-        <el-dialog title="工程管理" custorm-class="project-manage" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog title="工程管理" custorm-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
                 <el-form-item label="工程名称:" label-width="80">
                     <el-input v-model="proManage.name" auto-complete="off"></el-input>
