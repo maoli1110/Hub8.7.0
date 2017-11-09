@@ -3,17 +3,17 @@
         <div class="logo">中国公路工程咨询集团有限公司</div>
         <div class="configuration" @click="setting" v-show='showSetting'>
             <span class="el-icon-setting" style="font-size:17px"></span>
-            <span>  权限管理</span>                       
+            <span>  权限管理</span>
         </div>
         <div class="configuration" @click="back" v-show='!showSetting'>
             <span class="el-icon-setting" style="font-size:17px"></span>
-            <span>  返回首页</span>                        
+            <span>  返回首页</span>
         </div>
         <div class="user-info">
             <el-dropdown trigger="click" @command="handleCommand">
                 <div class="el-dropdown-link">
                     <img class="user-logo" src="../../../static/img/img.jpg">
-                    <span style="display:inline-block;margin-top:10px">{{username}}</span> 
+                    <span style="display:inline-block;margin-top:10px">{{username}}</span>
                 </div>
                 <el-dropdown-menu slot="dropdown" class="el-popper">
                     <el-dropdown-item command="loginout">退出</el-dropdown-item>
@@ -31,7 +31,7 @@ export default {
     data() {
         return {
             name: 'linxin',
-            showSetting:true
+            showSetting:false
         }
     },
     computed: {
@@ -56,6 +56,13 @@ export default {
             this.$emit('authority');
             this.showSetting=true;
             this.$router.push('/companyprofile')
+        }
+    },
+    created(){
+        if( this.$route.matched[1].path=='/order-management' || this.$route.matched[1].path=='/online' || this.$route.matched[1].path=='/system-log' || this.$route.matched[1].path=='/upgrade-notes'){
+            this.showSetting = false;
+        }else{
+            this.showSetting = true;
         }
     }
 }
@@ -117,6 +124,6 @@ export default {
     line-height: 40px;
     font-size: 14px;
     cursor: pointer;
-    
+
 }
 </style>

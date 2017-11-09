@@ -1,9 +1,9 @@
 <template>
     <div class="navbar">
-        <el-menu :default-active="activeIndex" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if="$route.matched[1].path !='/order-management'">
+        <el-menu :default-active="activeIndex" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if="changeMenu">
             <el-menu-item :index="menuItem.path" v-for='(menuItem,i) in mainMenu' :key="i">{{menuItem.menuName}}</el-menu-item>
         </el-menu>
-        <el-menu :default-active="activeIndex2" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if="$route.matched[1].path =='/order-management'">
+        <el-menu :default-active="activeIndex2" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if="!changeMenu">
             <el-menu-item :index="menuItem.path" v-for='(menuItem,i) in configurationMenu' :key="i">{{menuItem.menuName}}</el-menu-item>
         </el-menu>
     </div>
@@ -16,7 +16,7 @@ export default {
         return {
             activeIndex: '',
             activeIndex2: '',
-            changeMenu:true,
+            changeMenu:false,
             mainMenu: [
                 {
                     menuName: '企业概况',
@@ -89,6 +89,12 @@ export default {
         console.log(this.$route.matched[1],'this.$route.path')
         this.activeIndex = this.$route.matched[1].path;
         this.activeIndex2 = this.$route.matched[1].path;
+        if( this.$route.matched[1].path=='/order-management' || this.$route.matched[1].path=='/online' || this.$route.matched[1].path=='/system-log' || this.$route.matched[1].path=='/upgrade-notes'){
+            this.changeMenu = false;
+        }else{
+             this.changeMenu = true;
+        }
+
     }
 
 }
