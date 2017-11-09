@@ -38,7 +38,7 @@
                 <el-button type="warning" @click='batchAddUser()'>批量添加</el-button>
                 <el-button type="danger" @click="deleteUser()"> 删除人员</el-button>
             </div>
-            <el-table ref="multipleTable" :data="usertableData" border tooltip-effect="dark"
+            <el-table ref="multipleTable" :data="userTableData" border tooltip-effect="dark"
                       style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column type='index' label="序号" width="55"></el-table-column>
@@ -166,7 +166,7 @@
         </el-dialog>
         <!-- 周活跃度 -->
         <el-dialog title="活跃度详情" :visible.sync="weeklyActivityDialogVisible">
-        <el-table :data="weeklyactivityData">
+        <el-table :data="weeklyActivityData">
         <el-table-column property="name" label="客户端" width="150"></el-table-column>
         <el-table-column property="time" label="总时长" width="200"></el-table-column>
         <el-table-column property="times" label="总次数"></el-table-column>
@@ -175,8 +175,8 @@
         </el-dialog>
         <!-- 查看服务详情 -->
         <el-dialog title="查看服务详情" :visible.sync="serviceDetailsDialogVisible">
-        <div style="padding-bottom:20px">当前人员<span>"李俊珅"</span>已分配以下服务</div>
-        <el-table :data="weeklyactivityData">
+        <div style="padding-bottom:20px">当前人员<span style="color:#6595f2">"李俊珅"</span>已分配以下服务</div>
+        <el-table :data="weeklyActivityData">
         <el-table-column property="name" label="套餐服务" width="150"></el-table-column>
         <el-table-column property="time" label="服务内容" width="200"></el-table-column>
         <el-table-column property="times" label="服务到期时间"></el-table-column>
@@ -225,24 +225,24 @@ export default {
         attribution: [{ required: true, message: "请输入归属", trigger: "blur" }]
       },
 
-      setting: {
+      orgSetting: {
         data: {
           simpleData: {
             enable: true
           }
         },
         callback: {
-          onClick: this.OrgTreeClick
+          onClick: this.orgTreeClick
         }
       },
-      DialogOrgSetting: {
+      dialogOrgSetting: {
         data: {
           simpleData: {
             enable: true
           }
         },
         callback: {
-          onClick: this.DialogorgTreeClick
+          onClick: this.dialogOrgTreeClick
         }
       },
       zNodes: [
@@ -271,7 +271,7 @@ export default {
         { id: 32, pId: 3, name: "叶子节点2" },
         { id: 33, pId: 3, name: "叶子节点3" }
       ],
-      usertableData: [
+      userTableData: [
         {
           name: "赵四",
           pass: "wulijjjj111111111111111111",
@@ -373,7 +373,7 @@ export default {
           remarks: "超长remarks"
         }
       ],
-      weeklyactivityData: [
+      weeklyActivityData: [
         {
           date: "2017.9.30 17:43:57",
           name: "Explorer",
@@ -426,13 +426,13 @@ export default {
   },
 
   methods: {
-    OrgTreeClick(event, treeId, treeNode) {
+    orgTreeClick(event, treeId, treeNode) {
       this.orgValue = treeNode.name;
       setTimeout(() => {
         $(".el-select-dropdown__item.selected").click();
       }, 100);
     },
-    DialogorgTreeClick(event, treeId, treeNode) {
+    dialogOrgTreeClick(event, treeId, treeNode) {
       this.ruleForm.attribution = treeNode.name;
       setTimeout(() => {
         $(".el-select-dropdown__item.selected").click();
@@ -461,7 +461,7 @@ export default {
       setTimeout(() => {
         $.fn.zTree.init(
           $("#dialogOrgTree"),
-          this.DialogOrgSetting,
+          this.dialogOrgSetting,
           this.zNodes
         );
       }, 100);
@@ -487,7 +487,7 @@ export default {
     deleteUser() {}
   },
   mounted() {
-    $.fn.zTree.init($("#orgTree"), this.setting, this.zNodes);
+    $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
   }
 };
 </script>
