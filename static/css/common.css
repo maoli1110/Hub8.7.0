@@ -6,7 +6,7 @@
     top: 150px;
     /*top: 0;*/
     left: 0;
-    bottom: 0; 
+    bottom: 0;
 }
 
 /*shadow*/
@@ -166,7 +166,7 @@ ul>li{
     border-color:transparent !important;
 } */
 .el-table .cell, .el-table th>div{padding:0 !important;text-align:center}
-/*工作集库*/
+/*=====================工作集库======================*/
 .workSeting  .el-table td:nth-child(3) div,
 .workSeting  .el-table td:nth-child(5) div,
 .workSeting  .el-table td:nth-child(6) div
@@ -175,7 +175,7 @@ ul>li{
 .workSeting .work-toobar{padding:10px 0;}
 .pagination{padding:10px 0}
 
-/*workSeting(弹窗自绘制表单)*/
+/*====================workSeting(弹窗自绘制表单)===============*/
 .workSeting .table-row{height:100px;border-bottom:1px solid #ddd;}
 .workSeting .table-header{background:#f5f5f5;line-height:60px;}
 .workSeting .table-header >div{float:left;text-align:center;}
@@ -195,13 +195,13 @@ ul>li{
     border: 1px solid #ddd;
     margin: 9px 10px 10px 8px;
 }
-/*pdfDrawing(pdf图纸)*/
+/*=======================pdfDrawing(pdf图纸)======================*/
 .pdfDrawing .el-table td:nth-child(8) div{
     text-align:left !important;padding:0 10px !important;
 }
 /*form-item (修改图纸信息弹窗)*/
-.form-item .el-input,.form-item .el-select,.form-item .el-textarea{width:77%;}
-.form-item .el-select>.el-input{width:100%}
-.form-item .el-form-item__label{width:90px !important;}
-.form-item .projManage-remark{position:relative;}
-.form-item .info-pos{position:absolute;right:4px !important;bottom:2px;background:#fff;height:30px;}
+.pdfDrawing .form-item .el-input,.pdfDrawing .form-item .el-select,.pdfDrawing .form-item .el-textarea{width:77%!important;}
+.pdfDrawing .form-item .el-select>.el-input{width:100%}
+.pdfDrawing .form-item .el-form-item__label{width:90px !important;}
+.pdfDrawing .form-item .projManage-remark{position:relative;}
+.pdfDrawing .form-item .info-pos{position:absolute;right:4px !important;bottom:2px;background:#fff;height:30px;}

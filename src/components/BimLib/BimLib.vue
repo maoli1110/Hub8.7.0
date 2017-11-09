@@ -17,10 +17,6 @@
                     <template slot="title">家装</template>
                     <el-menu-item index="/bimlib/decoration/bim-lib">工程库</el-menu-item>
                 </el-submenu>
-               <!-- <el-menu-item index="/bimlib/bim-lib">BIM库</el-menu-item>
-                <el-menu-item index="/bimlib/working-set">工作集库</el-menu-item>
-                <el-menu-item index="/bimlib/recycle-bin">回收站</el-menu-item>
-                <el-menu-item index="/bimlib/pdf-drawing">PDF图纸</el-menu-item>-->
             </el-menu>
 
         </div>
@@ -44,7 +40,7 @@ import "../../../static/zTree/js/jquery.ztree.core.min.js";
 
 export default {
     data: () => ({
-        activeIndex: '/bimlib/bim-lib',
+        activeIndex: '/bimlib/housing/bim-lib',
         transitionName: 'slide-right' , // 默认动态路由变化为slide-right
         setting: {
             data: {

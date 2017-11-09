@@ -145,7 +145,7 @@ export default new Router({
                             // BIM库
                             name:"housing?1",
                             path: 'housing',
-                            component: resolve => require(['../components/BimLib/Bim.vue'], resolve),
+                            component: resolve => require(['../components/BimLib/bim.vue'], resolve),
                             redirect: '/bimlib/housing/bim-lib',
                             children: [
                                 {
@@ -165,55 +165,56 @@ export default new Router({
                                     component: resolve => require(['../components/BimLib/PdfDrawing.vue'], resolve)
                                 },
                                 {
-                                    name:'housing?5',
-                                    path:'recycle-bin',
-                                    component: resolve => require(['../components/BimLib/housing.vue'], resolve),
+                                    name:'housing',
+                                    path: 'recycle-bin',// 精装
+                                    component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
                             ]
                         },
                         {
-                            // f房建
-                            name:"BaseBuild?6",
+                            // 房建
                             path: 'BaseBuild',
-                            component: resolve => require(['../components/BimLib/housing.vue'], resolve),
+                            component: resolve => require(['../components/BimLib/bim.vue'], resolve),
                             props: { type: 2 },
                             children: [
                                 {
-                                    name:'housing?7',
+                                    name:'BaseBuild?5',
                                     path: 'bim-lib',// 房建
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
                                     query:{'typeId':'11'},
                                 },
                                 {
-                                    name:'BaseBuild?8',
+                                    name:'BaseBuild?6',
                                     path: 'working-set',// 基建
                                     component: resolve => require(['../components/BimLib/WorkingSet.vue'], resolve)
                                 },
                                 {
-                                    name:'BaseBuild?9',
+                                    name:'BaseBuild?7',
                                     path:'recycle-bin',
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
                                 },
+                                {
+                                    name:'housing',
+                                    path: 'recycle-bin',// 精装
+                                    component: resolve => require(['../components/BimLib/housing.vue'], resolve)
+                                },
                             ]
                         },
-                        /*{
-                            // 回收站
-                            name:"recycle-bin?3",
-                            path: 'recycle-bin',
-                            component: resolve => require(['../components/BimLib/RecycleBin.vue'], resolve),
-                             props: { type: 3 }
-                        },*/
                         {
                             // pdf图纸
-                            name:"housing?10",
                             path: 'decoration',
-                            component: resolve => require(['../components/BimLib/housing.vue'], resolve),
+                            component: resolve => require(['../components/BimLib/bim.vue'], resolve),
                              props: { type: 4},
                             children: [
                                 {
-                                    name:'decoration?11',
+                                    name:'decoration?8',
                                     path: 'bim-lib',// 房建
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
+                                },
+                                {
+                                    name:'housing',
+                                    path: 'recycle-bin',// 精装
+                                    component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
 
                             ]

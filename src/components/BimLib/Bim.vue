@@ -1,7 +1,9 @@
 <template>
-    <div class="bims-container">path
+    <div class="bims-container">
         <div class="bims-contents Bim-libs shadow-style">
-            <router-view ></router-view><!--:tableData="tableData"-->
+            <transition :name="transitionName">
+                <router-view class="Router bimlib"></router-view><!--:tableData="tableData"-->
+            </transition>
         </div>
     </div>
 </template>
@@ -11,7 +13,7 @@ import {IndexCumsum} from "../../utils/validate.js"
 export default {
     data() {
         return {
-            activeIndex: '/bimlib/bim-lib/housing',
+            transitionName: 'slide-right' , // 默认动态路由变化为slide-right
         }
     },
     methods: {
@@ -44,7 +46,15 @@ export default {
                 })
             }
             console.log(this.tableData)
-
+            if(!this.$route.name || this.$route.name.length<=0){
+                return false
+            }
+            if(!to.name || !from.name){return false}
+            let toName = to.name;//路由跳转到信息
+            let fromName = from.name;//路由跳转前的信息
+            toName = toName.split("?")[1];
+            fromName = fromName.split("?")[1];
+            this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是
         }
     }
 }
@@ -78,5 +88,24 @@ export default {
 .container .el-menu .el-menu-item:hover {
     background-color: #f5f8fd;
 }
+ .bimlib.Router{
+     position: absolute;
+     width: 100%;
+     transition: all .8s ease;
+     top: 0px;
+ }
+ .slide-left-enter,
+ .slide-right-leave-active {
+     opacity: 0;
+     -webkit-transform: translate(100%, 0);
+     transform: translate(100%, 0);
+ }
+
+ .slide-left-leave-active,
+ .slide-right-enter {
+     opacity: 0;
+     -webkit-transform: translate(-100%, 0);
+     transform: translate(-100% 0);
+ }
 .bims-contents>.bim {position:static !important;}
 </style>
