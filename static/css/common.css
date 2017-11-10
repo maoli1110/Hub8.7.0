@@ -119,6 +119,12 @@ ul>li{
 .Bim-libs-bim  .el-table .cell{
     padding:0;text-align:center;
 }
+.el-table .el-table__row{
+   padding:0 ;height:45px !important;
+}
+.el-table .el-table__row td{
+    padding:0 !important;
+}
 .Bim-libs-bim  .el-table td:nth-child(3) div,
 .Bim-libs-bim  .el-table td:nth-child(7) div,
 .Bim-libs-bim  .el-table td:nth-child(9) div{
@@ -127,12 +133,8 @@ ul>li{
 }
 .Bim-libs-bim  .el-table td:nth-child(3) div,
 .Bim-libs-bim  .el-table td:nth-child(7) div,
-.Bim-libs-bim  .el-table td:nth-child(9) div,
-.Bim-libs-bim  .el-table td:nth-child(12) div{
-    text-align:left !important;
-}
-.Bim-libs-bim  .el-table td:nth-child(12) div span{
-    margin:0 4px;
+.Bim-libs-bim  .el-table td:nth-child(9) div{
+    text-align:left !important;padding:0 10px !important;
 }
 .el-popover{
     height: 150px !important;

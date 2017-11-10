@@ -24,7 +24,7 @@
                 </el-select>
 
             </el-col>
-            <el-col :span="2" class="filter-bar relat"  style="left:100px"  v-show="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
+            <el-col :span="2" class="filter-bar relat"  style="left:82px"  v-show="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
                 <span class="absol span-block" style="width:40px;">
                     专业:
                 </span>
@@ -39,7 +39,7 @@
                 </el-select>
 
             </el-col>
-            <el-col :span="2" class="filter-bar relat" style="left:140px">
+            <el-col :span="2" class="filter-bar relat" :class="[($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')?'left85':'left140']">
                 <span class="absol span-block" style="width:40px;">
                     版本:
                 </span>
@@ -52,7 +52,7 @@
                     </el-option>
                 </el-select>
             </el-col>
-            <el-col :span="4" class="relat" style="left:175px">
+            <el-col :span="4" class="relat" :class="[($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')?'left120':'left175']">
                 <el-input placeholder="请输入搜索项目名称" v-model="filterParams.searchVal" icon="search" :on-icon-click="search"></el-input>
             </el-col>
         </el-row>
@@ -67,23 +67,15 @@
                 <el-button type="primary" class="basic-btn" ><i class="bim-icon el-icon-delete" ></i>删除</el-button>
                 <el-button type="primary" class="basic-btn"><i class="bim-icon el-icon-view"></i>清空</el-button>
             </el-col>
-            <el-col :span="3" :offset="4">
-                <el-button type="primary" class="basic-btn" @click="inRecycle($route.matched[2].path)" style="float:right;margin-right:20px;" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">>> 回收站</el-button>
-                <el-button type="primary" class="basic-btn" @click="inProLib($route.matched[2].path)" style="width:120px;float:right;;margin-right:20px;" v-if="($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')"><< 返回工程库</el-button>
+            <el-col :span="3" :offset="4" class="relat">
+                <el-button type="primary" class="basic-btn absol" @click="inRecycle($route.matched[2].path)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">>> 回收站</el-button>
+                <el-button type="primary" class="basic-btn absol" @click="inProLib($route.matched[2].path)" style="width:120px;right:30px;" v-if="($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')"><< 返回工程库</el-button>
             </el-col>
         </el-row>
-
-        <!--<el-row class="bim-data bim-dev-toolbar" v-show="$route.path=='/bimlib/bim-lib/housing'">
-            <el-col>
-                <el-button type="primary" class="basic-btn" @click="addProject('add')"><i class="bim-icon el-icon-plus"></i>添加</el-button>
-                <el-button type="primary" class="basic-btn" @click="deletelibs"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
-                <el-button type="primary" class="basic-btn" @click="monitor('all')"><i class="bim-icon el-icon-view"></i>监控</el-button>
-            </el-col>
-        </el-row>-->
         <el-row class="bim-data bim-main">
             <el-col>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                <el-table class="house-table scroll-me"   :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)"  @select-all="selectAll" @select="selectChecked">
+                <el-table class="house-table scroll-me"  :fit="true" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked">
                     <el-table-column
                         type="selection"
                         width="40" >
@@ -112,8 +104,8 @@
                     </el-table-column>
                     <el-table-column prop="output" width="" label="输出造价" >
                     </el-table-column>
-                    <el-table-column prop="status" width="" label="数据处理" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
-                        <template slot-scope="scope">
+                    <el-table-column prop="status" width="" align="left" label="数据处理"  v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
+                        <template slot-scope="scope" >
                             <div v-show="scope.row.status==='处理成功'"><span  class="el-icon-circle-check"></span>处理成功</div>
                             <div v-show="scope.row.status==='处理失败'"><span  class="el-icon-circle-close"></span>处理失败</div>
                             <div v-show="scope.row.status==='处理中'"><span  class="el-icon-warning"></span>处理中</div>
@@ -122,9 +114,9 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="isRoot" width="" label="已授权" >
-                        <template slot-scope="scope">
-                            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-                                <el-popover trigger="hover" placement="top" class="root-tips scroll-me">
+                        <template slot-scope="scope" >
+                            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:30px;">
+                                <el-popover trigger="hover" placement="top" class="root-tips scroll-me" >
                                     <p v-for=" item in 100" class="root-name">杨会杰</p>
                                     <div slot="reference" >
                                         <span>{{scope.row.isRoot}}</span>
@@ -827,5 +819,10 @@ export default {
  .bims-contents .dialog_body{width:175px;margin:0 auto;}
  .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;}
  .filter-bar>.el-select{width:100%;}
+
+ .left85{left:85px;}
+ .left140{left:119px}
+ .left120{left:120px;}
+ .left175{left:155px}
 </style>
 
