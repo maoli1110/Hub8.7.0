@@ -1,30 +1,4 @@
 
-body {
-  background: #f9f9f9;
-  height: 1000px;
-}
 
-p {
-  margin-top: 0;
-}
 
-.my-scrollbar {
-    max-height:calc(100vh - 200px)
-}
 
-.scroll-me {
-  background: #EEE;
-}
-
-.kolom {
-  background: #2196F3;
-  width: 150px;
-  height: 150px;
-  float: left;
-  display: inline-block;
-  margin: 15px;
-}
-
-.clearfix {
-  clear: both;
-}

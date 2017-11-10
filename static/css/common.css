@@ -1,21 +1,937 @@
-/*=================================common-style===========================*/
-.content > div {
-    position: absolute;
-    width: 100%;
-    background: #f5f8fd;
-    top: 150px;
-    /*top: 0;*/
-    left: 0;
-    bottom: 0;
+
+/*=============================关于字体=====================================*/
+
+@font-face {font-family: "iconfont";
+    src: url('iconfont.eot?t=1507700185201'); /* IE9*/
+    src: url('iconfont.eot?t=1507700185201#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAWsAAsAAAAACEwAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFZW7kiFY21hcAAAAYAAAABnAAABnM+VbDFnbHlmAAAB6AAAAccAAAIQH0K+LmhlYWQAAAOwAAAALwAAADYPJuGvaGhlYQAAA+AAAAAcAAAAJAfeA4VobXR4AAAD/AAAABAAAAAQD+kAAGxvY2EAAAQMAAAACgAAAAoBfgCcbWF4cAAABBgAAAAfAAAAIAETAF1uYW1lAAAEOAAAAUUAAAJtPlT+fXBvc3QAAAWAAAAALAAAAD2wdFdBeJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2Bk/sU4gYGVgYOpk+kMAwNDP4RmfM1gxMjBwMDEwMrMgBUEpLmmMDgwVDybydzwv4EhhrmBoQEozAiSAwAvXQ0HeJzFkNENgCAMRK8UDTGO4qdxBfbwyxFYhQW7BraFHybgyCvt5ZISAGwAWLmUCNAHgulVl9xnHO5HPDonPUHvIllqa1NnIk8k79iStGOZaN3qWafXe0z232WgT5TcMV9qB+EHXgsS8wB4nGWQvW/TUBTF730vduKQPBN/Jk79FZM4aYilurEZaB0GJJQqQ9VOjLRSlYWulSKGqBKIpgz8DRSB2JiYitSBmbFLJgQD/wSGl27A1ZWO7hnO0f2BAPD7G72kdVChCxvwEHYBUOxjixEb/XAYkT7qvqCbGqNhEPrFoBXRbTRbombE6bBjikVRRoYObvpxGkYkxGSYkfsYGzZio2ntK+01hb7Gcj10nuc75A3qbrAmZ4N8fHekxZ5aOqkoSkNRXpVEQSgRUpAZPjUNSZDKYv5WkC390u0RFyuN0Jo8rnpN5cnL4bHdNiXE+RzVpsfej2pWje8zy1CVRvF2tVS3qsEdDU9+3KqrFbvzHfgg//WKXlEADaCdZHgv7YQMTQdNnWHRj5A8SMcobi0WWyKO03fXBTovXH9OvNPJ7ILSi9nk1Evk88PDcyjwrI/0mO6CDC5swiOeqK+IbGOGEaeHRpsX+LFh1lbZrQ7nEmF4gzVYda9aN4L/PPzJNGZZUjftSlb+BXsu2XHWkeuvT1wJ4H5mpz3jgJ5Np2f04O/zw1GZsfKRNEh9Px18dXvYd/LZjeCL5WiPGOuJs1xOF4Qspst/DYA/atZgCwB4nGNgZGBgAGIHzZjF8fw2Xxm4WRhA4BrzuZsI+v8GFgbmACCXg4EJJAoAGWIKKQB4nGNgZGBgbvjfwBDDwgACQJKRARWwAABHCgJtBAAAAAPpAAAEAAAABAAAAAAAAAAAdgCcAQgAAHicY2BkYGBgYQhkYGUAASYg5gJCBob/YD4DABESAXEAeJxlj01OwzAQhV/6B6QSqqhgh+QFYgEo/RGrblhUavdddN+mTpsqiSPHrdQDcB6OwAk4AtyAO/BIJ5s2lsffvHljTwDc4Acejt8t95E9XDI7cg0XuBeuU38QbpBfhJto41W4Rf1N2MczpsJtdGF5g9e4YvaEd2EPHXwI13CNT+E69S/hBvlbuIk7/Aq30PHqwj7mXle4jUcv9sdWL5xeqeVBxaHJIpM5v4KZXu+Sha3S6pxrW8QmU4OgX0lTnWlb3VPs10PnIhVZk6oJqzpJjMqt2erQBRvn8lGvF4kehCblWGP+tsYCjnEFhSUOjDFCGGSIyujoO1Vm9K+xQ8Jee1Y9zed0WxTU/3OFAQL0z1xTurLSeTpPgT1fG1J1dCtuy56UNJFezUkSskJe1rZUQuoBNmVXjhF6XNGJPyhnSP8ACVpuyAAAAHicY2BigAAuBuyAhZGJkZmRhZGVgbGCpbQ4tYgjILG4uDy/KIWBAQA6NAW6') format('woff'),
+    url('iconfont.ttf?t=1507700185201') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('iconfont.svg?t=1507700185201#iconfont') format('svg'); /* iOS 4.1- */
 }
 
-/*shadow*/
-ul>li{
-    list-style:none;
+.iconfont {
+    font-family:"iconfont" !important;
+    font-size:14px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
-.shadow-style{
-    box-shadow: 1px 2px 3px #ddd;
+
+.icon-user:before { content: "\e699"; }
+
+.icon-Password:before { content: "\e647"; }
+/*=============================reset初始样式================================*/
+*{padding:0;margin:0;}
+body{ margin: 0;padding: 0;font-family: "微软雅黑";overflow: hidden;}
+body,html{-webkit-text-size-adjust: none;width: 100%;height: 100%;}
+*{text-decoration: none;list-style: none;}
+img{border: 0px;}
+ul,li,dl,dd,dt,p,ol,h1,h2,h3,h4,h5,span,input,select,textarea,div,table,tr,td{font-size: 12px;font-weight: 100;padding: 0;margin: 0;font-family:'microsoft yahei'}
+
+.wrap{margin: 0 auto;}
+.fl{float: left;}
+.fr{float: right;}
+.index{overflow: hidden;}
+.clr{clear:both; height:0px; width:100%; font-size:1px; line-height:0px; visibility:hidden; overflow:hidden;}
+.pointer{cursor:pointer;}
+a,input,button{ outline:none; }
+::-moz-focus-inner{border:0px;}
+/*a:link {color:#0f0;text-decoration:none;}
+a:visited {color: #FFFF00; text-decoration:none;}
+a:hover {color: #00FF00; text-decoration:underline;}
+a:active {color: #0000FF; text-decoration:underline;}*/
+a{color: #000;}
+.wrapper{clear: both;width: 100%;}
+.text{
+    word-break:break-all;/*文字换行*/
+    white-space:nowrap; /*文字不换行*/
 }
+
+/*默认滚动条样式修改ie9 google Firefox 等高版本浏览器有效
+::selection {background: #D03333;color: white;text-shadow: none;}
+::-webkit-scrollbar-track-piece{width:10px;background-color:#f2f2f2}
+::-webkit-scrollbar{width:10px;height:6px}
+::-webkit-scrollbar-thumb{height:50px;background-color:rgba(0,0,0,.3);}
+::-webkit-scrollbar-thumb:hover{background:#cc0000}*/
+
+/*渐变*/
+/*background-image: -moz-linear-gradient(top, #8fa1ff, #3757fa);
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ff4f02), color-stop(1, #8f2c00)); Saf4+, Chrome
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endColorstr='#538300', GradientType='0'); IE*/
+
+/*整合demo.css文件的样式*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;padding: 0;border: 0;outline: 0;font-weight: inherit;font-style: inherit;font-size: 100%;font-family: inherit;vertical-align: baseline;}
+body {color: #2f332a;font: 15px/21px Arial, Helvetica, simsun, sans-serif;background: #f0f6e4 \9;}
+h1, h2, h3, h4, h5, h6 {color: #2f332a;font-weight: bold;font-family: Helvetica, Arial, sans-serif;padding-bottom: 5px;}
+h1 {font-size: 24px;line-height: 34px;text-align: center;}
+h2 {font-size: 14px;line-height: 24px;padding-top: 5px;}
+h6 {font-weight: normal;font-size: 12px;letter-spacing: 1px;line-height: 24px;text-align: center;}
+input.radio {margin: 0 2px 0 8px;}
+input.radio.first {margin-left:0;}
+input.empty {color: lightgray;}
+code {color: #2f332a;}
+.highlight_red {color:#A60000;}
+.highlight_green {color:#A7F43D;}
+li {list-style: circle;font-size: 12px;}
+li.title {list-style: none;}
+ul.list {margin-left: 17px;}
+
+div.content_wrap {width: 600px;height:380px;}
+div.content_wrap div.left{float: left;width: 250px;}
+div.content_wrap div.right{float: right;width: 340px;}
+div.zTreeDemoBackground {width:250px;height:362px;text-align:left;}
+
+ul.ztree {margin-top: 10px;width:220px;overflow-y:auto;overflow-x:auto;}
+ul.log {border: 1px solid #617775;background: #f0f6e4;width:300px;height:170px;overflow: hidden;}
+ul.log.small {height:45px;}
+ul.log li {color: #666666;list-style: none;padding-left: 10px;}
+ul.log li.dark {background-color: #E3E3E3;}
+
+/* ruler */
+div.ruler {height:20px; width:220px; background-color:#f0f6e4;border: 1px solid #333; margin-bottom: 5px; cursor: pointer}
+div.ruler div.cursor {height:20px; width:30px; background-color:#3C6E31; color:white; text-align: right; padding-right: 5px; cursor: pointer}
+
+body{
+    font-family:"Helvetica Neue",Helvetica, "microsoft yahei", arial, STHeiTi, sans-serif;
+}
+a{text-decoration: none}
+/*=============================icon图标绘制=================================*/
+.icon-close,
+.icon-initial-branch-company,
+.icon-initial-user,
+.icon-initial-sub-company,
+.icon-initial-project,
+.icon-enterprise-info,
+.icon-personal-info,
+.icon-login-setting,
+.icon-logout-safe,
+.icon-tree-expand,
+.icon-tree-fold,
+.icon-tree-total-expand,
+.icon-tree-total-fold,
+.icon-tree-total-expand-dark,
+.icon-tree-total-fold-dark,
+.icon-export,
+.icon-delete,
+.icon-edit,
+.icon-export-dark,
+.icon-tips-success,
+.icon-tips-error,
+.icon-tips-processing,
+.icon-tips-pending,
+.icon-tips-untreated,
+.icon-file-open,
+.icon-file-fold,
+.icon-invoiceInfo-save,
+.icon-clear,
+.icon-structure-tree-prev,
+.icon-structure-tree-next,
+.icon-structure-tree-update,
+.icon-structure-tree-save,
+.icon-upload,
+.icon-upload-dark,
+.icon-btn-delete,
+.icon-btn-delete-dark,
+.icon-search,
+.icon-authorize,
+.icon-return,
+.icon-signature,
+.icon-unauthorized,
+.icon-send,
+.icon-pass,
+.icon-search-dark,
+.icon-authorize-dark,
+.icon-return-dark,
+.icon-signature-dark,
+.icon-unauthorized-dark,
+.icon-send-dark,
+.icon-pass-dark,
+.icon-info-update,
+.icon-info-update-dark,
+.icon-forbidden,
+.icon-remove,
+.icon-monitor,
+.icon-username,
+.icon-password,
+.icon-selectAll,
+.icon-forbidden-dark,
+.icon-remove-dark,
+.icon-monitor-dark,
+.icon-authority-management,
+.icon-invoiceInfo-edit,
+.icon-calendar,
+.icon-BIM-monitor,
+.icon-BIM-edit,
+.icon-BIM-delete,
+.icon-BIM-authorize,
+.icon-BIM-extract,
+.icon-BIM-unauthorized,
+.icon-BIM-modify,
+.icon-bar-chart,
+.icon-pay-success,
+.icon-modal-alert,
+.icon-modal-success,
+.icon-modal-error,
+.icon-modal-delete,
+.icon-modal-email,
+.icon-no-avatar1,
+.icon-no-avatar2,
+.icon-checkInfo,
+.icon-no-avatar,
+.icon-arrow-top,
+.icon-arrow-bottom,
+.icon-arrow-left,
+.icon-arrow-right,
+.icon-btn-right,
+.icon-alipay {
+    display: inline-block;
+    background-image: url("../img/icon-menu.png");
+    background-repeat: no-repeat;
+}
+
+/* 18px*18px */
+.icon-close, .icon-initial-branch-company, .icon-initial-user, .icon-initial-sub-company, .icon-initial-project, .icon-enterprise-info, .icon-personal-info, .icon-login-setting, .icon-logout-safe, .icon-tree-expand, .icon-tree-fold, .icon-tree-total-expand, .icon-tree-total-fold, .icon-tree-total-expand-dark, .icon-tree-total-fold-dark, .icon-export, .icon-delete, .icon-edit, .icon-export-dark, .icon-tips-success, .icon-tips-error, .icon-tips-processing, .icon-tips-pending, .icon-tips-untreated, .icon-file-open, .icon-file-fold, .icon-invoiceInfo-save, .icon-clear, .icon-structure-tree-prev, .icon-structure-tree-next, .icon-structure-tree-update, .icon-structure-tree-save, .icon-upload, .icon-upload-dark, .icon-btn-delete, .icon-btn-delete-dark, .icon-search, .icon-authorize, .icon-return, .icon-signature, .icon-unauthorized, .icon-send, .icon-pass, .icon-search-dark, .icon-authorize-dark, .icon-return-dark, .icon-signature-dark, .icon-unauthorized-dark, .icon-send-dark, .icon-pass-dark, .icon-info-update, .icon-info-update-dark, .icon-forbidden, .icon-remove, .icon-monitor, .icon-username, .icon-password, .icon-selectAll, .icon-calendar, .icon-forbidden-dark, .icon-remove-dark, .icon-monitor-dark {
+    width: 18px;
+    height: 18px;
+}
+
+/*企业概况-初始化分公司名称*/
+.icon-initial-branch-company {
+    background-position: 0 -18px;
+}
+
+/*企业概况-初始化分公司-用户名称*/
+.icon-initial-user {
+    background-position: -72px -75px;
+}
+
+/*企业概况-初始化子公司名称*/
+.icon-initial-sub-company {
+    background-position: 0 -36px;
+}
+
+/*企业概况-初始化项目部名称*/
+.icon-initial-project {
+    transition: all 0.2s;
+    background-position: -18px -18px;
+}
+
+/*企业概况-初始化项目部名称激活状态*/
+.icon-initial-project:hover {
+    background-position: -18px -36px;
+}
+
+/*企业概况-企业信息*/
+.icon-enterprise-info {
+    background-position: -54px -72px;
+}
+
+/*企业概况-企业信息激活状态*/
+.icon-enterprise-info:hover {
+    background-position: -54px -90px;
+}
+
+/*企业概况-个人信息*/
+.icon-personal-info {
+    background-position: -72px -90px;
+}
+
+/*企业概况-个人信息激活状态-->>.icon-initial-user*/
+.icon-personal-info:hover {
+    background-position: -72px -74px;
+}
+
+/*企业概况-登陆设置*/
+.icon-login-setting {
+    background-position: -90px -90px;
+}
+
+/*企业概况-登陆设置激活状态*/
+.icon-login-setting:hover {
+    background-position: -90px -72px;
+}
+
+/*企业概况-安全退出*/
+.icon-logout-safe {
+    background-position: -36px -72px;
+}
+
+/*企业概况-安全退出激活状态*/
+.icon-logout-safe:hover {
+    background-position: -36px -90px;
+}
+
+/*企业概况-项目部树结构展开*/
+.icon-tree-expand {
+    background-position: -144px -18px;
+}
+
+/*企业概况-项目部树结构展开激活状态*/
+.icon-tree-expand.active {
+    background-position: -126px -18px;
+}
+
+/*企业概况-项目部树结构收缩*/
+.icon-tree-fold {
+    background-position: -108px -18px;
+}
+
+/*企业概况-项目部树结构收缩激活状态*/
+.icon-tree-fold.active {
+    background-position: -90px -18px;
+}
+
+/*企业概况-项目部树结构全部展开/添加/添加图片  + */
+.icon-tree-total-expand {
+    background-position: 0 -144px;
+}
+
+/*企业概况-项目部树结构全部展开激活状态*/
+.icon-tree-total-expand:hover {
+    background-position: 0 -162px;
+}
+
+.icon-tree-total-expand-dark {
+    background-position: 0 -180px;
+}
+
+/*企业概况-项目部树结构全部收缩*/
+.icon-tree-total-fold {
+    background-position: -18px -144px;
+}
+
+/*企业概况-项目部树结构全部收缩激活状态*/
+.icon-tree-total-fold:hover {
+    background-position: -18px -162px;
+}
+
+.icon-tree-total-fold-dark {
+    background-position: -18px -180px;
+}
+
+/*企业概况-项目部树结构导出结构图*/
+.icon-export {
+    background-position: -36px -144px;
+}
+
+/*企业概况-项目部树结构导出结构图激活状态*/
+.icon-export:hover {
+    background-position: -36px -162px;
+}
+
+.icon-export-dark {
+    background-position: -36px -180px;
+}
+
+/*企业概况-删除 X */
+.icon-delete {
+    background-position: -108px -90px;
+}
+
+/*企业概况-编辑*/
+.icon-edit.icon {
+    width: 16px;
+    background-position: -53px -57px;
+}
+
+/*弹框-关闭按钮*/
+.icon-close {
+    background-position: 0 0;
+}
+
+/*提示状态按钮-成功*/
+.icon-tips-success {
+    background-position: -18px 0;
+}
+
+/*提示状态按钮-错误*/
+.icon-tips-error {
+    background-position: -36px 0;
+}
+
+/*提示状态按钮-处理中*/
+.icon-tips-processing {
+    background-position: -54px 0;
+}
+
+/*提示状态按钮-待处理*/
+.icon-tips-pending {
+    background-position: -72px 0;
+}
+
+/*提示状态按钮-未处理*/
+.icon-tips-untreated {
+    background-position: -90px 0;
+}
+
+/*文件展开*/
+.icon-file-open {
+    background-position: -108px 0;
+}
+
+/*文件收缩*/
+.icon-file-fold {
+    background-position: -126px 0;
+}
+
+/*企业概况-发票信息-保存*/
+.icon-invoiceInfo-save {
+    background-position: -126px -216px;
+}
+
+/*企业概况-发票信息-保存激活状态*/
+.icon-invoiceInfo-save:hover {
+    background-position: -126px -198px;
+}
+
+/*文本框清空按钮*/
+.icon-clear {
+    background-position: -144px -198px;
+}
+
+/*文本框清空按钮*/
+.icon-clear:hover {
+    background-position: -144px -216px;
+}
+
+/*文本框清空按钮激活状态*/
+.icon-clear.active {
+    background-position: -144px -234px;
+}
+
+/*构建树管理-上一个*/
+.icon-structure-tree-prev {
+    background-position: 0 -126px;
+}
+
+.icon-structure-tree-prev:hover {
+    background-position: 0 -108px;
+}
+
+/*构建树管理-下一个*/
+.icon-structure-tree-next {
+    background-position: -18px -126px;
+}
+
+.icon-structure-tree-next:hover {
+    background-position: -18px -108px;
+}
+
+/*构建树管理-刷新*/
+.icon-structure-tree-update {
+    background-position: -36px -126px;
+}
+
+.icon-structure-tree-update:hover {
+    background-position: -36px -108px;
+}
+
+/*构建树管理-保存*/
+.icon-structure-tree-save {
+    background-position: -54px -126px;
+}
+
+.icon-structure-tree-save:hover {
+    background-position: -54px -108px;
+}
+
+/*上传*/
+.icon-upload {
+    background-position: -126px -144px;
+}
+
+.icon-upload:hover {
+    background-position: -126px -162px;
+}
+
+.icon-upload-dark {
+    background-position: -126px -180px;
+}
+
+/*删除*/
+.icon-btn-delete {
+    background-position: -54px -144px;
+}
+
+.icon-btn-delete:hover {
+    background-position: -54px -162px;
+}
+
+.icon-btn-delete-dark {
+    background-position: -54px -180px;
+}
+
+/*搜索*/
+.icon-search {
+    background-position: -90px -234px;
+}
+
+.icon-search:hover {
+    background-position: -90px -216px;
+}
+
+.icon-search-dark {
+    background-position: -90px -198px;
+}
+
+/*授权*/
+.icon-authorize {
+    background-position: -144px -144px;
+}
+
+.icon-authorize:hover {
+    background-position: -144px -162px;
+}
+
+.icon-authorize-dark {
+    background-position: -144px -180px;
+}
+
+/*返回*/
+.icon-return {
+    background-position: -90px -144px;
+}
+
+.icon-return:hover {
+    background-position: -90px -162px;
+}
+
+.icon-return-dark {
+    background-position: -90px -180px;
+}
+
+/*签字*/
+.icon-signature {
+    background-position: -108px -144px;
+}
+
+.icon-signature:hover {
+    background-position: -108px -162px;
+}
+
+.icon-signature-dark {
+    background-position: -108px -180px;
+}
+
+/*未授权*/
+.icon-unauthorized {
+    background-position: 0 -198px;
+}
+
+.icon-unauthorized:hover {
+    background-position: 0 -216px;
+}
+
+.icon-unauthorized-dark {
+    background-position: 0 -234px;
+}
+
+/*发送*/
+.icon-send {
+    background-position: -18px -198px;
+}
+
+.icon-send:hover {
+    background-position: -18px -216px;
+}
+
+.icon-send-dark {
+    background-position: -18px -234px;
+}
+
+/*通过*/
+.icon-pass {
+    background-position: -36px -198px;
+}
+
+.icon-pass:hover {
+    background-position: -36px -216px;
+}
+
+.icon-pass-dark {
+    background-position: -36px -234px;
+}
+
+/*更新*/
+.icon-info-update {
+    background-position: -54px -198px;
+}
+
+.icon-info-update:hover {
+    background-position: -54px -216px;
+}
+
+.icon-info-update-dark {
+    background-position: -54px -234px;
+}
+
+/*禁止*/
+.icon-forbidden {
+    background-position: -72px -198px;
+}
+
+.icon-forbidden:hover {
+    background-position: -72px -216px;
+}
+
+.icon-forbidden-dark {
+    background-position: -72px -234px;
+}
+
+/*删除已选择的人员*/
+.icon-remove {
+    width: 16px;
+    height: 16px;
+    background-position: -73px -19px;
+}
+
+.icon-remove:hover {
+    background-position: -73px -37px;
+}
+
+.icon-remove-dark {
+    border: 0.01px solid red;
+    border-radius: 50%;
+    background-position: -72px -54px;
+}
+
+/*监控*/
+.icon-monitor {
+    background-position: -72px -144px;
+}
+
+.icon-monitor:hover {
+    background-position: -72px -162px;
+}
+
+.icon-monitor-dark {
+    background-position: -72px -180px;
+}
+
+/*登录-用户名*/
+.icon-username {
+    background-position: -72px -108px;
+}
+
+/*登录-密码*/
+.icon-password {
+    background-position: -72px -126px;
+}
+
+/*弹框-向右选择全部授权人员*/
+.icon-selectAll {
+    background-position: -108px -75px;
+}
+
+/* 22px*22px */
+.icon-authority-management, .icon-invoiceInfo-edit, .icon-BIM-monitor, .icon-BIM-edit, .icon-BIM-delete, .icon-BIM-authorize, .icon-BIM-extract, .icon-BIM-unauthorized, .icon-BIM-modify,.icon-calendar{
+    width: 22px;
+    height: 22px;
+}
+
+/*企业概况-权限管理*/
+.icon-authority-management {
+    background-position: -44px -252px;
+}
+
+/*企业概况-扩容-发票信息-编辑*/
+.icon-invoiceInfo-edit {
+    background-position: -106px -196px;
+}
+
+/*企业概况-扩容-发票信息-编辑激活状态*/
+.icon-invoiceInfo-edit:hover {
+    background-position: -106px -214px;
+}
+
+/*构件库-日历图标*/
+.icon-calendar {
+    background-position: -44px -274px;
+}
+
+/*构件库-日历图标激活状态*/
+.icon-calendar:hover {
+    background-position: -44px -296px;
+}
+
+/*BIM库操作-监控*/
+.icon-BIM-monitor {
+    background-position: -110px -252px;
+}
+
+/*BIM库操作-编辑*/
+.icon-BIM-edit {
+    background-position: -88px -296px;
+}
+
+/*BIM库操作-删除*/
+.icon-BIM-delete {
+    background-position: -110px -296px;
+}
+
+/*BIM库操作-授权*/
+.icon-BIM-authorize {
+    background-position: -132px -274px;
+}
+
+/*BIM库操作-抽取数据*/
+.icon-BIM-extract {
+    background-position: -110px -274px;
+}
+
+/*BIM库操作-未授权*/
+.icon-BIM-unauthorized {
+    background-position: -132px -296px;
+}
+
+/*BIM库操作-修改*/
+.icon-BIM-modify {
+    background-position: -132px -252px;
+}
+
+/*企业概况-柱状图*/
+.icon-bar-chart {
+    width: 104px;
+    height: 52px;
+}
+
+.icon-bar-chart {
+    background-position: 0 -317px;
+}
+
+/*企业概况-柱状图激活状态*/
+.icon-bar-chart.active {
+    background-position: 0 -477px;
+}
+
+.icon-pay-success,.icon-modal-alert, .icon-modal-success, .icon-modal-error, .icon-modal-delete, .icon-modal-email {
+    width: 42px;
+    height: 42px;
+}
+
+/*企业概况-支付成功提示*/
+.icon-pay-success {
+    background-position: -106px -423px;
+}
+
+/*弹框-警告提示*/
+.icon-modal-alert {
+    background-position: -106px -381px;
+}
+
+/*弹框-成功提示*/
+.icon-modal-success {
+    background-position: -106px -465px;
+}
+
+/*弹框-错误提示*/
+.icon-modal-error {
+    background-position: -106px -507px;
+}
+
+/*弹框-删除提示*/
+.icon-modal-delete {
+    background-position: 0 -531px;
+}
+
+/*弹框-邮箱提示*/
+.icon-modal-email {
+    background-position: -43px -531px;
+}
+
+/*企业概况-暂无头像*/
+.icon-no-avatar1 {
+    width: 24px;
+    height: 24px;
+    background-position: -108px -550px;
+}
+
+.icon-no-avatar2 {
+    width: 60px;
+    height: 60px;
+    background-position: -66px -730px;
+}
+
+.icon-no-avatar3 {
+    width: 220px;
+    height: 220px;
+    display: inline-block;
+    background: url("../img/icon-no-avatar.png") 0 0 no-repeat;
+}
+
+/*查看信息详情*/
+.icon-checkInfo {
+    width: 64px;
+    height: 56px;
+    background-position: 0 -728px;
+}
+
+/*企业概况-企业图标-暂无头像*/
+.icon-no-avatar {
+    width: 150px;
+    height: 150px;
+    background-position: 0 -575px;
+}
+
+/* 箭头14px*12px */
+.icon-arrow-top, .icon-arrow-bottom {
+    width: 14px;
+    height: 12px;
+}
+
+/*下拉框-向上*/
+.icon-arrow-top {
+    background-position: -134px -108px;
+}
+
+/*下拉框-向上激活状态*/
+.icon-arrow-top:hover {
+    background-position: -134px -120px;
+}
+
+/*下拉框-向下*/
+.icon-arrow-bottom {
+    background-position: -120px -108px;
+}
+
+/*下拉框-向下激活状态*/
+.icon-arrow-bottom:hover {
+    background-position: -120px -120px;
+}
+
+/* 箭头10px*14px */
+.icon-arrow-left, .icon-arrow-right {
+    width: 10px;
+    height: 14px;
+}
+
+/*向左*/
+.icon-arrow-left {
+    background-position: -148px -108px;
+}
+
+/*向左激活状态*/
+.icon-arrow-left:hover {
+    background-position: -148px -122px;
+}
+
+/*向右*/
+.icon-arrow-right {
+    background-position: -158px -108px;
+}
+
+/*向右激活状态*/
+.icon-arrow-right:hover {
+    background-position: -158px -122px;
+}
+
+/*支付宝按钮*/
+.icon-alipay {
+    width: 30px;
+    height: 24px;
+    background-position: -90px -108px;
+}
+
+/*蓝色实心箭头*/
+.icon-btn-right {
+    width: 10px;
+    height: 12px;
+    background-position: -120px -131px;
+}
+
+/*鲁班币文本框*/
+.icon-luban-coin-text {
+    width: 110px;
+    height: 30px;
+    display: inline-block;
+    background: url("../img/icon-luban-coin.png") -3px -323px no-repeat;
+}
+
+.icon-luban-coin-text:hover {
+    background-position: -3px -205px;
+}
+
+.icon-luban-coin-text.active {
+    background-position: -3px -87px;
+}
+
+
+/*=============================左侧菜单样式调整==============================*/
+.aside .el-menu-item, .el-submenu__title{
+    text-align:left !important;padding-left:45px !important;
+}
+.aside .el-menu-item{
+    padding-left:65px !important;
+}
+.aside {
+    display: block;
+    position: absolute;
+    width: 302px;
+    left: 0px;
+    top: 0px;
+    bottom: 0;
+    padding-top: 0px;
+    background:#fff;
+    border-right: 1px solid #e6e6e6;
+    -webkit-box-shadow:  1px 3px 7px #ccc;
+    -moz-box-shadow:  1px 3px 7px #ccc;
+    box-shadow:  1px 3px 7px #ccc;
+    z-index:10
+}
+
+.aside  {
+    height: 100%;
+}
+.aside .el-menu-item {
+    height: 60px;
+    border-top: 1px solid #e6e6e6;
+    border-left: 3px solid #fff;
+    text-align: center;
+    color: #444444
+}
+.aside .el-menu {
+    height: 100%;
+}
+.aside .el-menu .el-submenu:first-child{
+    border-top:none;
+}
+.aside .el-menu-item.is-active {
+    border-left: 3px solid #6595f2;
+    text-align: center;
+    font-weight: bold;
+    background-color: #f5f8fd;
+}
+
+.aside .el-menu .el-menu-item:first-child {
+    border-top: 1px solid #fff;
+}
+
+.aside .el-submenu .el-menu-item:first-child {
+    border-top: 1px solid #e6e6e6;
+}
+
+.aside .el-menu .el-menu-item:last-child {
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.aside .el-submenu .el-menu-item:last-child {
+    border-bottom: none
+}
+
+.el-submenu {
+    border-left: none !important;
+}
+
+.el-submenu__title {
+    background-color: #fff;
+}
+
+.container {
+    margin-left: 302px;
+}
+
+/*=============================按钮样式===================================*/
 /*页面按钮样式 button*/
 .basic-btn{width:100px;height:40px;margin-right:-12px !important;border-radius:2px !important;}
 .basic-btn:hover{box-shadow:1px 0px 7px #d0dffb;background:#8eb8fd !important;}
@@ -31,7 +947,142 @@ ul>li{
 .dialog-btn.dialog-btn-cancel{border-color:#6595f2!important;color:#444 !important;}
 .dialog-btn.dialog-btn-cancel:hover{background:#e6e6e6;border-color:#8eb8fd}
 .dialog-btn.dialog-btn-cancel:active{background:#c8c8c8;border-color:#477c87}
-/*=================================删除按钮绘制================================*/
+
+/*=============================表格公用样式===================================*/
+.el-table td>div{font-size:12px;font-family:'microsoft yahei';color:#505050;height:46px;line-height:46px !important;}
+.el-table th>.cell{font-size:14px;font-weight:bold;color:#505050;}
+.el-table .el-table__row{
+    padding:0 ;height:45px !important;
+}
+.el-table .el-table__row td{
+    padding:0 !important;
+}
+.el-table .cell, .el-table th>div{padding:0 !important;text-align:center}
+
+/*=============================input框公用样式===============================*/
+.el-input__inner:focus{
+    border-color:transparent !important;
+    -webkit-box-shadow: 1px 0px 7px #eee;
+    -moz-box-shadow: 1px 0px 7px #eee;
+    box-shadow: 1px 0px 7px #eee ;
+}
+.el-input__inner:hover{
+    border-color:#c8c8c8 !important;
+    -webkit-box-shadow: 1px 0px 7px #eee;
+    -moz-box-shadow: 1px 0px 7px #eee;
+    box-shadow: 1px 0px 7px #eee ;
+}
+/*===========================模态框的公用样式================================*/
+
+/*确定、取消对齐方式*/
+.el-dialog__footer{text-align:center !important;padding-bottom:22px;}
+/*============================滚动条的样式==================================*/
+.vue-scrollbar-transition, .vue-scrollbar__scrollbar-vertical, .vue-scrollbar__scrollbar-horizontal {
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+}
+.vue-scrollbar-transition--scrollbar {
+    transition: opacity 0.5s linear;
+    -moz-transition: opacity 0.5s linear;
+    -webkit-transition: opacity 0.5s linear;
+    -o-transition: opacity 0.5s linear;
+}
+
+.vue-scrollbar__wrapper {
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    background: white;
+}
+.vue-scrollbar__wrapper:hover .vue-scrollbar__scrollbar-vertical, .vue-scrollbar__wrapper:hover .vue-scrollbar__scrollbar-horizontal {
+    opacity: 1;
+}
+.vue-scrollbar__scrollbar-vertical, .vue-scrollbar__scrollbar-horizontal {
+    opacity: 0.5;
+    position: absolute;
+    background: transparent;
+}
+.vue-scrollbar__scrollbar-vertical:hover, .vue-scrollbar__scrollbar-horizontal:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+.vue-scrollbar__scrollbar-vertical .scrollbar, .vue-scrollbar__scrollbar-horizontal .scrollbar {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    cursor: default;
+}
+.vue-scrollbar__scrollbar-vertical {
+    width: 6px;
+    height: 100%;
+    top: 0;
+    right: 0;
+}
+.vue-scrollbar__scrollbar-vertical .scrollbar {
+    width: 6px;
+    border-radius: 3px;
+}
+.vue-scrollbar__scrollbar-horizontal {
+    height: 6px;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+}
+.vue-scrollbar__scrollbar-horizontal .scrollbar {
+    height: 6px;border-radius:5px;
+}
+.my-scrollbar {
+    max-height:calc(100vh - 200px)
+}
+
+.scroll-me {
+    background: #EEE;
+}
+
+.kolom {
+    background: #2196F3;
+    width: 150px;
+    height: 150px;
+    float: left;
+    display: inline-block;
+    margin: 15px;
+}
+
+.clearfix {
+    clear: both;
+}
+/*=================================common-style(不分类 Ps:分类模块往下走）)===========================*/
+.content > div {
+    position: absolute;
+    width: 100%;
+    background: #f5f8fd;
+    top: 150px;
+    left: 0;
+    bottom: 0;
+}
+.container{
+    background: #f5f8fd;
+    position: absolute;
+    width: auto;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    padding: 20px;
+    overflow: hidden;
+    overflow-y: auto;
+    border-radius:5px;
+}
+/*.Bim-libs .contents*/
+.contents{height: calc(100vh - 190px);width:100%;position:relative}
+ul>li{
+    list-style:none;
+}
+/*shadow*/
+.shadow-style{
+    box-shadow: 1px 2px 3px #e2e5e9;
+}
+/*删除图标（ps:圆圈加减号）*/
 .radius{
     width:16px;height:16px;border:1px solid red;display:inline-block;border-radius: 50%;position:relative;
     float:left;
@@ -53,10 +1104,11 @@ ul>li{
     overflow:hidden;
     word-break: break-all;
 }
+/*加描边*/
 .border{
     border:1px solid #ddd;
 }
-/*定位问题*/
+/*定位问题 ps(用于input框和标题的布局)*/
 .absol{
     position:absolute;z-index:11;font-size:14px;
 }
@@ -64,173 +1116,11 @@ ul>li{
     position:relative;
 }
 .span-block{
-   width:45px;display:inline-block;top:8px;
+    width:45px;display:inline-block;top:8px;
 }
-/*=======================左侧菜单样式调整==============================*/
-.aside .el-menu-item, .el-submenu__title{
-    text-align:left !important;padding-left:45px !important;
-}
-.aside .el-menu-item{
-    padding-left:65px !important;
-}
-/*表格公用样式*/
-.el-table td>div{font-size:12px;font-family:'microsoft yahei';color:#505050;height:46px;line-height:46px !important;}
-.el-table th>.cell{font-size:14px;font-weight:bold;color:#505050;}
 /*投影*/
 .main-shadow{
     -webkit-box-shadow:  4px 2px 4px #e2e5e9;;
     -moz-box-shadow:  4px 2px 4px #e2e5e9;;
     box-shadow:  4px 2px 4px #e2e5e9;;
 }
-
-/*==============================container=================================*/
-/*.container{background:#f5f8fd;overflow:auto;height: calc(100vh - 190px);width: calc(100% - 343px) !important;}*/
-.container{
-    background: #f5f8fd;
-    position: absolute;
-    width: auto;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    padding: 20px;
-    overflow: hidden;
-    overflow-y: auto;
-    border-radius:5px;
-}
-
-/*==============================Bim-lib=================================*/
-/*.Bim-libs .contents*/
-.contents{height: calc(100vh - 190px);width:100%;position:relative}
-.Bim-libs .contents{position:relative}
-
-/*======================.Bim-libs-bim==================================*/
-.Bim-libs-bim{margin-top:20px;background:#fff;padding:20px;}
-/*filter-toobar*/
-.Bim-libs-bim .bim-filter-toobar .filter-bar{
-    margin-right:20px;
-}
-.Bim-libs-bim .bim-data:nth-child(1){
-    padding-bottom:12px;border-bottom:1px solid #ddd;
-}
-.Bim-libs-bim .bim-data:nth-child(2){
-    padding-top:15px;
-}
-.Bim-libs-bim .bim-data:nth-child(3){
-    padding-top:15px;
-}
-.Bim-libs-bim .el-table th > .cell,
-.Bim-libs-bim  .el-table .cell{
-    padding:0;text-align:center;
-}
-.el-table .el-table__row{
-   padding:0 ;height:45px !important;
-}
-.el-table .el-table__row td{
-    padding:0 !important;
-}
-.Bim-libs-bim  .el-table td:nth-child(3) div,
-.Bim-libs-bim  .el-table td:nth-child(7) div,
-.Bim-libs-bim  .el-table td:nth-child(9) div{
-    padding:0 10px;
-    white-space: nowrap;
-}
-.Bim-libs-bim  .el-table td:nth-child(3) div,
-.Bim-libs-bim  .el-table td:nth-child(7) div,
-.Bim-libs-bim  .el-table td:nth-child(9) div{
-    text-align:left !important;padding:0 20px !important;
-}
-.el-popover{
-    height: 150px !important;
-    overflow: auto !important;
-    width: 130px;
-    min-width: 133px !important;
-    background: #fff;
-}
-.el-popover .root-name{display:inline-block !important;padding:0 5px;}
-.Bim-libs-bim .el-table.house-table{
-    min-width: 1280px !important;
-}
-.bim-main{overflow:auto;}
-.delete-rootPerson{
-    width:100%;
-}
-/*弹窗*/
-.bims-contents .el-form-item label.el-form-item__label{
-    width:97px ;text-align:right;
-}
-.bims-contents .el-form-item .el-select,.bims-contents .el-form-item .el-textarea{
-    width:84% !important;
-}
-/*projManage-remark(备注)*/
-.bims-contents .projManage-remark{
-    position:relative;
-}
-.bims-contents .info-pos{
-    position:absolute;right:20px;bottom:0;
-}
-.el-dialog__footer{text-align:center !important;padding-bottom:22px;}
-.bims-contents  .extract-dialog .el-dialog__body{text-align:center;}
-.bims-contents  .extract-dialog .el-dialog__body .dialog-tips-title{
-    padding:3px;text-align:left;
-}
-.bims-contents .dialog-extract-status{padding:0 7px;}
-.bims-contents .dialog-extract-status i{
-    color:orange;font-style:normal;
-}
-.el-input__inner:focus{
-    border-color:transparent !important;
-    -webkit-box-shadow: 1px 0px 7px #eee;
-    -moz-box-shadow: 1px 0px 7px #eee;
-    box-shadow: 1px 0px 7px #eee ;
-}
-.el-input__inner:hover{
-    border-color:#c8c8c8 !important;
-    -webkit-box-shadow: 1px 0px 7px #eee;
-    -moz-box-shadow: 1px 0px 7px #eee;
-    box-shadow: 1px 0px 7px #eee ;
-}
-/* .el-input__inner:hover{
-    border-color:transparent !important;
-} */
-.el-table .cell, .el-table th>div{padding:0 !important;text-align:center}
-/*=====================工作集库======================*/
-.workSeting{padding:0 20px;background:#fff;}
-.workSeting  .el-table td:nth-child(3) div,
-.workSeting  .el-table td:nth-child(5) div,
-.workSeting  .el-table td:nth-child(6) div
-{text-align:left !important;padding:0 10px !important;}
-/*work-toolbar(工具栏)*/
-.workSeting .work-toobar{padding:10px 0;}
-.pagination{padding:10px 0}
-
-/*====================workSeting(弹窗自绘制表单)===============*/
-.workSeting .table-row{height:100px;border-bottom:1px solid #ddd;}
-.workSeting .table-header{background:#f5f5f5;line-height:60px;}
-.workSeting .table-header >div{float:left;text-align:center;}
-.table-body .table-row .table-item:nth-child(2),
-.table-body .table-row .table-item:nth-child(4)
-{text-align:left;}
-.table-body .table-row .table-item{text-align:center;line-height:100px;border-right:1px solid #ddd;height:100%;padding:0 10px;}
-.table-body .table-row .table-item:first-child{border-left:1px solid #ddd;}
-.table-body .table-row:hover{background:#f0f0f0}
-.table-title{font-size:16px;font-weight:bold;padding:10px 0 }
-.Bim-template{
-    width: 80px !important;
-    height: 80px;
-    background-size: cover;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid #ddd;
-    margin: 9px 10px 10px 8px;
-}
-/*=======================pdfDrawing(pdf图纸)======================*/
-.pdfDrawing .el-table td:nth-child(8) div{
-    text-align:left !important;padding:0 10px !important;
-}
-/*form-item (修改图纸信息弹窗)*/
-.pdfDrawing .form-item .el-input,.pdfDrawing .form-item .el-select,.pdfDrawing .form-item .el-textarea{width:77%!important;}
-.pdfDrawing .form-item .el-select>.el-input{width:100%}
-.pdfDrawing .form-item .el-form-item__label{width:90px !important;}
-.pdfDrawing .form-item .projManage-remark{position:relative;}
-.pdfDrawing .form-item .info-pos{position:absolute;right:4px !important;bottom:2px;background:#fff;height:30px;}

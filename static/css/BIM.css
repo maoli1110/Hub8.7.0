@@ -1,0 +1,112 @@
+/*==============================Bim-lib=================================*/
+
+.Bim-libs .contents{position:relative}
+
+/*======================.Bim-libs-bim==================================*/
+.Bim-libs-bim{margin-top:20px;background:#fff;padding:20px;}
+/*filter-toobar*/
+.Bim-libs-bim .bim-filter-toobar .filter-bar{
+    margin-right:20px;
+}
+.Bim-libs-bim .bim-data:nth-child(1){
+    padding-bottom:12px;border-bottom:1px solid #ddd;
+}
+.Bim-libs-bim .bim-data:nth-child(2){
+    padding-top:15px;
+}
+.Bim-libs-bim .bim-data:nth-child(3){
+    padding-top:15px;
+}
+.Bim-libs-bim .el-table th > .cell,
+.Bim-libs-bim  .el-table .cell{
+    padding:0;text-align:center;
+}
+
+.Bim-libs-bim  .el-table td:nth-child(3) div,
+.Bim-libs-bim  .el-table td:nth-child(7) div,
+.Bim-libs-bim  .el-table td:nth-child(9) div{
+    padding:0 10px;
+    white-space: nowrap;
+}
+.Bim-libs-bim  .el-table td:nth-child(3) div,
+.Bim-libs-bim  .el-table td:nth-child(7) div,
+.Bim-libs-bim  .el-table td:nth-child(9) div{
+    text-align:left !important;padding:0 20px !important;
+}
+.el-popover{
+    height: 150px !important;
+    overflow: auto !important;
+    width: 130px;
+    min-width: 133px !important;
+    background: #fff;
+}
+.el-popover .root-name{display:inline-block !important;padding:0 5px;}
+.Bim-libs-bim .el-table.house-table{
+    min-width: 1280px !important;
+}
+.bim-main{overflow:auto;}
+.delete-rootPerson{
+    width:100%;
+}
+/*弹窗*/
+.bims-contents .el-form-item label.el-form-item__label{
+    width:97px ;text-align:right;
+}
+.bims-contents .el-form-item .el-select,.bims-contents .el-form-item .el-textarea{
+    width:84% !important;
+}
+/*projManage-remark(备注)*/
+.bims-contents .projManage-remark{
+    position:relative;
+}
+.bims-contents .info-pos{
+    position:absolute;right:20px;bottom:0;
+}
+.bims-contents  .extract-dialog .el-dialog__body{text-align:center;}
+.bims-contents  .extract-dialog .el-dialog__body .dialog-tips-title{
+    padding:3px;text-align:left;
+}
+.bims-contents .dialog-extract-status{padding:0 7px;}
+.bims-contents .dialog-extract-status i{
+    color:orange;font-style:normal;
+}
+/*=====================工作集库======================*/
+.workSeting{padding:0 20px;background:#fff;}
+.workSeting  .el-table td:nth-child(3) div,
+.workSeting  .el-table td:nth-child(5) div,
+.workSeting  .el-table td:nth-child(6) div
+{text-align:left !important;padding:0 10px !important;}
+/*work-toolbar(工具栏)*/
+.workSeting .work-toobar{padding:10px 0;}
+.pagination{padding:10px 0}
+
+/*====================workSeting(弹窗自绘制表单)===============*/
+.workSeting .table-row{height:100px;border-bottom:1px solid #ddd;}
+.workSeting .table-header{background:#f5f5f5;line-height:60px;}
+.workSeting .table-header >div{float:left;text-align:center;}
+.table-body .table-row .table-item:nth-child(2),
+.table-body .table-row .table-item:nth-child(4)
+{text-align:left;}
+.table-body .table-row .table-item{text-align:center;line-height:100px;border-right:1px solid #ddd;height:100%;padding:0 10px;}
+.table-body .table-row .table-item:first-child{border-left:1px solid #ddd;}
+.table-body .table-row:hover{background:#f0f0f0}
+.table-title{font-size:16px;font-weight:bold;padding:10px 0 }
+.Bim-template{
+    width: 80px !important;
+    height: 80px;
+    background-size: cover;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    margin: 9px 10px 10px 8px;
+}
+/*=======================pdfDrawing(pdf图纸)======================*/
+.pdfDrawing .el-table td:nth-child(8) div{
+    text-align:left !important;padding:0 10px !important;
+}
+/*form-item (修改图纸信息弹窗)*/
+.pdfDrawing .form-item .el-input,.pdfDrawing .form-item .el-select,.pdfDrawing .form-item .el-textarea{width:77%!important;}
+.pdfDrawing .form-item .el-select>.el-input{width:100% !important;}
+.pdfDrawing .form-item .el-form-item__label{width:90px !important;}
+.pdfDrawing .form-item .projManage-remark{position:relative;}
+.pdfDrawing .form-item .info-pos{position:absolute;right:4px !important;bottom:2px;background:#fff;height:30px;}
