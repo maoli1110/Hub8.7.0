@@ -1,0 +1,759 @@
+.icon-close,
+.icon-initial-branch-company,
+.icon-initial-user,
+.icon-initial-sub-company,
+.icon-initial-project,
+.icon-enterprise-info,
+.icon-personal-info,
+.icon-login-setting,
+.icon-logout-safe,
+.icon-tree-expand,
+.icon-tree-fold,
+.icon-tree-total-expand,
+.icon-tree-total-fold,
+.icon-tree-total-expand-dark,
+.icon-tree-total-fold-dark,
+.icon-export,
+.icon-delete,
+.icon-edit,
+.icon-export-dark,
+.icon-tips-success,
+.icon-tips-error,
+.icon-tips-processing,
+.icon-tips-pending,
+.icon-tips-untreated,
+.icon-file-open,
+.icon-file-fold,
+.icon-invoiceInfo-save,
+.icon-clear,
+.icon-structure-tree-prev,
+.icon-structure-tree-next,
+.icon-structure-tree-update,
+.icon-structure-tree-save,
+.icon-upload,
+.icon-upload-dark,
+.icon-btn-delete,
+.icon-btn-delete-dark,
+.icon-search,
+.icon-authorize,
+.icon-return,
+.icon-signature,
+.icon-unauthorized,
+.icon-send,
+.icon-pass,
+.icon-search-dark,
+.icon-authorize-dark,
+.icon-return-dark,
+.icon-signature-dark,
+.icon-unauthorized-dark,
+.icon-send-dark,
+.icon-pass-dark,
+.icon-info-update,
+.icon-info-update-dark,
+.icon-forbidden,
+.icon-remove,
+.icon-monitor,
+.icon-username,
+.icon-password,
+.icon-selectAll,
+.icon-forbidden-dark,
+.icon-remove-dark,
+.icon-monitor-dark,
+.icon-authority-management,
+.icon-invoiceInfo-edit,
+.icon-calendar,
+.icon-BIM-monitor,
+.icon-BIM-edit,
+.icon-BIM-delete,
+.icon-BIM-authorize,
+.icon-BIM-extract,
+.icon-BIM-unauthorized,
+.icon-BIM-modify,
+.icon-bar-chart,
+.icon-pay-success,
+.icon-modal-alert,
+.icon-modal-success,
+.icon-modal-error,
+.icon-modal-delete,
+.icon-modal-email,
+.icon-no-avatar1,
+.icon-no-avatar2,
+.icon-checkInfo,
+.icon-no-avatar,
+.icon-arrow-top,
+.icon-arrow-bottom,
+.icon-arrow-left,
+.icon-arrow-right,
+.icon-btn-right,
+.icon-alipay {
+    display: inline-block;
+    background-image: url("../img/icon-menu.png");
+    background-repeat: no-repeat;
+}
+
+/* 18px*18px */
+.icon-close, .icon-initial-branch-company, .icon-initial-user, .icon-initial-sub-company, .icon-initial-project, .icon-enterprise-info, .icon-personal-info, .icon-login-setting, .icon-logout-safe, .icon-tree-expand, .icon-tree-fold, .icon-tree-total-expand, .icon-tree-total-fold, .icon-tree-total-expand-dark, .icon-tree-total-fold-dark, .icon-export, .icon-delete, .icon-edit, .icon-export-dark, .icon-tips-success, .icon-tips-error, .icon-tips-processing, .icon-tips-pending, .icon-tips-untreated, .icon-file-open, .icon-file-fold, .icon-invoiceInfo-save, .icon-clear, .icon-structure-tree-prev, .icon-structure-tree-next, .icon-structure-tree-update, .icon-structure-tree-save, .icon-upload, .icon-upload-dark, .icon-btn-delete, .icon-btn-delete-dark, .icon-search, .icon-authorize, .icon-return, .icon-signature, .icon-unauthorized, .icon-send, .icon-pass, .icon-search-dark, .icon-authorize-dark, .icon-return-dark, .icon-signature-dark, .icon-unauthorized-dark, .icon-send-dark, .icon-pass-dark, .icon-info-update, .icon-info-update-dark, .icon-forbidden, .icon-remove, .icon-monitor, .icon-username, .icon-password, .icon-selectAll, .icon-calendar, .icon-forbidden-dark, .icon-remove-dark, .icon-monitor-dark {
+    width: 18px;
+    height: 18px;
+}
+
+/*企业概况-初始化分公司名称*/
+.icon-initial-branch-company {
+    background-position: 0 -18px;
+}
+
+/*企业概况-初始化分公司-用户名称*/
+.icon-initial-user {
+    background-position: -72px -75px;
+}
+
+/*企业概况-初始化子公司名称*/
+.icon-initial-sub-company {
+    background-position: 0 -36px;
+}
+
+/*企业概况-初始化项目部名称*/
+.icon-initial-project {
+    transition: all 0.2s;
+    background-position: -18px -18px;
+}
+
+/*企业概况-初始化项目部名称激活状态*/
+.icon-initial-project:hover {
+    background-position: -18px -36px;
+}
+
+/*企业概况-企业信息*/
+.icon-enterprise-info {
+    background-position: -54px -72px;
+}
+
+/*企业概况-企业信息激活状态*/
+.icon-enterprise-info:hover {
+    background-position: -54px -90px;
+}
+
+/*企业概况-个人信息*/
+.icon-personal-info {
+    background-position: -72px -90px;
+}
+
+/*企业概况-个人信息激活状态-->>.icon-initial-user*/
+.icon-personal-info:hover {
+    background-position: -72px -74px;
+}
+
+/*企业概况-登陆设置*/
+.icon-login-setting {
+    background-position: -90px -90px;
+}
+
+/*企业概况-登陆设置激活状态*/
+.icon-login-setting:hover {
+    background-position: -90px -72px;
+}
+
+/*企业概况-安全退出*/
+.icon-logout-safe {
+    background-position: -36px -72px;
+}
+
+/*企业概况-安全退出激活状态*/
+.icon-logout-safe:hover {
+    background-position: -36px -90px;
+}
+
+/*企业概况-项目部树结构展开*/
+.icon-tree-expand {
+    background-position: -144px -18px;
+}
+
+/*企业概况-项目部树结构展开激活状态*/
+.icon-tree-expand.active {
+    background-position: -126px -18px;
+}
+
+/*企业概况-项目部树结构收缩*/
+.icon-tree-fold {
+    background-position: -108px -18px;
+}
+
+/*企业概况-项目部树结构收缩激活状态*/
+.icon-tree-fold.active {
+    background-position: -90px -18px;
+}
+
+/*企业概况-项目部树结构全部展开/添加/添加图片  + */
+.icon-tree-total-expand {
+    background-position: 0 -144px;
+}
+
+/*企业概况-项目部树结构全部展开激活状态*/
+.icon-tree-total-expand:hover {
+    background-position: 0 -162px;
+}
+
+.icon-tree-total-expand-dark {
+    background-position: 0 -180px;
+}
+
+/*企业概况-项目部树结构全部收缩*/
+.icon-tree-total-fold {
+    background-position: -18px -144px;
+}
+
+/*企业概况-项目部树结构全部收缩激活状态*/
+.icon-tree-total-fold:hover {
+    background-position: -18px -162px;
+}
+
+.icon-tree-total-fold-dark {
+    background-position: -18px -180px;
+}
+
+/*企业概况-项目部树结构导出结构图*/
+.icon-export {
+    background-position: -36px -144px;
+}
+
+/*企业概况-项目部树结构导出结构图激活状态*/
+.icon-export:hover {
+    background-position: -36px -162px;
+}
+
+.icon-export-dark {
+    background-position: -36px -180px;
+}
+
+/*企业概况-删除 X */
+.icon-delete {
+    background-position: -108px -90px;
+}
+
+/*企业概况-编辑*/
+.icon-edit.icon {
+    width: 16px;
+    background-position: -53px -57px;
+}
+
+/*弹框-关闭按钮*/
+.icon-close {
+    background-position: 0 0;
+}
+
+/*提示状态按钮-成功*/
+.icon-tips-success {
+    background-position: -18px 0;
+}
+
+/*提示状态按钮-错误*/
+.icon-tips-error {
+    background-position: -36px 0;
+}
+
+/*提示状态按钮-处理中*/
+.icon-tips-processing {
+    background-position: -54px 0;
+}
+
+/*提示状态按钮-待处理*/
+.icon-tips-pending {
+    background-position: -72px 0;
+}
+
+/*提示状态按钮-未处理*/
+.icon-tips-untreated {
+    background-position: -90px 0;
+}
+
+/*文件展开*/
+.icon-file-open {
+    background-position: -108px 0;
+}
+
+/*文件收缩*/
+.icon-file-fold {
+    background-position: -126px 0;
+}
+
+/*企业概况-发票信息-保存*/
+.icon-invoiceInfo-save {
+    background-position: -126px -216px;
+}
+
+/*企业概况-发票信息-保存激活状态*/
+.icon-invoiceInfo-save:hover {
+    background-position: -126px -198px;
+}
+
+/*文本框清空按钮*/
+.icon-clear {
+    background-position: -144px -198px;
+}
+
+/*文本框清空按钮*/
+.icon-clear:hover {
+    background-position: -144px -216px;
+}
+
+/*文本框清空按钮激活状态*/
+.icon-clear.active {
+    background-position: -144px -234px;
+}
+
+/*构建树管理-上一个*/
+.icon-structure-tree-prev {
+    background-position: 0 -126px;
+}
+
+.icon-structure-tree-prev:hover {
+    background-position: 0 -108px;
+}
+
+/*构建树管理-下一个*/
+.icon-structure-tree-next {
+    background-position: -18px -126px;
+}
+
+.icon-structure-tree-next:hover {
+    background-position: -18px -108px;
+}
+
+/*构建树管理-刷新*/
+.icon-structure-tree-update {
+    background-position: -36px -126px;
+}
+
+.icon-structure-tree-update:hover {
+    background-position: -36px -108px;
+}
+
+/*构建树管理-保存*/
+.icon-structure-tree-save {
+    background-position: -54px -126px;
+}
+
+.icon-structure-tree-save:hover {
+    background-position: -54px -108px;
+}
+
+/*上传*/
+.icon-upload {
+    background-position: -126px -144px;
+}
+
+.icon-upload:hover {
+    background-position: -126px -162px;
+}
+
+.icon-upload-dark {
+    background-position: -126px -180px;
+}
+
+/*删除*/
+.icon-btn-delete {
+    background-position: -54px -144px;
+}
+
+.icon-btn-delete:hover {
+    background-position: -54px -162px;
+}
+
+.icon-btn-delete-dark {
+    background-position: -54px -180px;
+}
+
+/*搜索*/
+.icon-search {
+    background-position: -90px -234px;
+}
+
+.icon-search:hover {
+    background-position: -90px -216px;
+}
+
+.icon-search-dark {
+    background-position: -90px -198px;
+}
+
+/*授权*/
+.icon-authorize {
+    background-position: -144px -144px;
+}
+
+.icon-authorize:hover {
+    background-position: -144px -162px;
+}
+
+.icon-authorize-dark {
+    background-position: -144px -180px;
+}
+
+/*返回*/
+.icon-return {
+    background-position: -90px -144px;
+}
+
+.icon-return:hover {
+    background-position: -90px -162px;
+}
+
+.icon-return-dark {
+    background-position: -90px -180px;
+}
+
+/*签字*/
+.icon-signature {
+    background-position: -108px -144px;
+}
+
+.icon-signature:hover {
+    background-position: -108px -162px;
+}
+
+.icon-signature-dark {
+    background-position: -108px -180px;
+}
+
+/*未授权*/
+.icon-unauthorized {
+    background-position: 0 -198px;
+}
+
+.icon-unauthorized:hover {
+    background-position: 0 -216px;
+}
+
+.icon-unauthorized-dark {
+    background-position: 0 -234px;
+}
+
+/*发送*/
+.icon-send {
+    background-position: -18px -198px;
+}
+
+.icon-send:hover {
+    background-position: -18px -216px;
+}
+
+.icon-send-dark {
+    background-position: -18px -234px;
+}
+
+/*通过*/
+.icon-pass {
+    background-position: -36px -198px;
+}
+
+.icon-pass:hover {
+    background-position: -36px -216px;
+}
+
+.icon-pass-dark {
+    background-position: -36px -234px;
+}
+
+/*更新*/
+.icon-info-update {
+    background-position: -54px -198px;
+}
+
+.icon-info-update:hover {
+    background-position: -54px -216px;
+}
+
+.icon-info-update-dark {
+    background-position: -54px -234px;
+}
+
+/*禁止*/
+.icon-forbidden {
+    background-position: -72px -198px;
+}
+
+.icon-forbidden:hover {
+    background-position: -72px -216px;
+}
+
+.icon-forbidden-dark {
+    background-position: -72px -234px;
+}
+
+/*删除已选择的人员*/
+.icon-remove {
+    width: 16px;
+    height: 16px;
+    background-position: -73px -19px;
+}
+
+.icon-remove:hover {
+    background-position: -73px -37px;
+}
+
+.icon-remove-dark {
+    border: 0.01px solid red;
+    border-radius: 50%;
+    background-position: -72px -54px;
+}
+
+/*监控*/
+.icon-monitor {
+    background-position: -72px -144px;
+}
+
+.icon-monitor:hover {
+    background-position: -72px -162px;
+}
+
+.icon-monitor-dark {
+    background-position: -72px -180px;
+}
+
+/*登录-用户名*/
+.icon-username {
+    background-position: -72px -108px;
+}
+
+/*登录-密码*/
+.icon-password {
+    background-position: -72px -126px;
+}
+
+/*弹框-向右选择全部授权人员*/
+.icon-selectAll {
+    background-position: -108px -75px;
+}
+
+/* 22px*22px */
+.icon-authority-management, .icon-invoiceInfo-edit, .icon-BIM-monitor, .icon-BIM-edit, .icon-BIM-delete, .icon-BIM-authorize, .icon-BIM-extract, .icon-BIM-unauthorized, .icon-BIM-modify,.icon-calendar{
+    width: 22px;
+    height: 22px;
+}
+
+/*企业概况-权限管理*/
+.icon-authority-management {
+    background-position: -44px -252px;
+}
+
+/*企业概况-扩容-发票信息-编辑*/
+.icon-invoiceInfo-edit {
+    background-position: -106px -196px;
+}
+
+/*企业概况-扩容-发票信息-编辑激活状态*/
+.icon-invoiceInfo-edit:hover {
+    background-position: -106px -214px;
+}
+
+/*构件库-日历图标*/
+.icon-calendar {
+    background-position: -44px -274px;
+}
+
+/*构件库-日历图标激活状态*/
+.icon-calendar:hover {
+    background-position: -44px -296px;
+}
+
+/*BIM库操作-监控*/
+.icon-BIM-monitor {
+    background-position: -110px -252px;
+}
+
+/*BIM库操作-编辑*/
+.icon-BIM-edit {
+    background-position: -88px -296px;
+}
+
+/*BIM库操作-删除*/
+.icon-BIM-delete {
+    background-position: -110px -296px;
+}
+
+/*BIM库操作-授权*/
+.icon-BIM-authorize {
+    background-position: -132px -274px;
+}
+
+/*BIM库操作-抽取数据*/
+.icon-BIM-extract {
+    background-position: -110px -274px;
+}
+
+/*BIM库操作-未授权*/
+.icon-BIM-unauthorized {
+    background-position: -132px -296px;
+}
+
+/*BIM库操作-修改*/
+.icon-BIM-modify {
+    background-position: -132px -252px;
+}
+
+/*企业概况-柱状图*/
+.icon-bar-chart {
+    width: 104px;
+    height: 52px;
+}
+
+.icon-bar-chart {
+    background-position: 0 -317px;
+}
+
+/*企业概况-柱状图激活状态*/
+.icon-bar-chart.active {
+    background-position: 0 -477px;
+}
+
+.icon-pay-success,.icon-modal-alert, .icon-modal-success, .icon-modal-error, .icon-modal-delete, .icon-modal-email {
+    width: 42px;
+    height: 42px;
+}
+
+/*企业概况-支付成功提示*/
+.icon-pay-success {
+    background-position: -106px -423px;
+}
+
+/*弹框-警告提示*/
+.icon-modal-alert {
+    background-position: -106px -381px;
+}
+
+/*弹框-成功提示*/
+.icon-modal-success {
+    background-position: -106px -465px;
+}
+
+/*弹框-错误提示*/
+.icon-modal-error {
+    background-position: -106px -507px;
+}
+
+/*弹框-删除提示*/
+.icon-modal-delete {
+    background-position: 0 -531px;
+}
+
+/*弹框-邮箱提示*/
+.icon-modal-email {
+    background-position: -43px -531px;
+}
+
+/*企业概况-暂无头像*/
+.icon-no-avatar1 {
+    width: 24px;
+    height: 24px;
+    background-position: -108px -550px;
+}
+
+.icon-no-avatar2 {
+    width: 60px;
+    height: 60px;
+    background-position: -66px -730px;
+}
+
+.icon-no-avatar3 {
+    width: 220px;
+    height: 220px;
+    display: inline-block;
+    background: url("../img/icon-no-avatar.png") 0 0 no-repeat;
+}
+
+/*查看信息详情*/
+.icon-checkInfo {
+    width: 64px;
+    height: 56px;
+    background-position: 0 -728px;
+}
+
+/*企业概况-企业图标-暂无头像*/
+.icon-no-avatar {
+    width: 150px;
+    height: 150px;
+    background-position: 0 -575px;
+}
+
+/* 箭头14px*12px */
+.icon-arrow-top, .icon-arrow-bottom {
+    width: 14px;
+    height: 12px;
+}
+
+/*下拉框-向上*/
+.icon-arrow-top {
+    background-position: -134px -108px;
+}
+
+/*下拉框-向上激活状态*/
+.icon-arrow-top:hover {
+    background-position: -134px -120px;
+}
+
+/*下拉框-向下*/
+.icon-arrow-bottom {
+    background-position: -120px -108px;
+}
+
+/*下拉框-向下激活状态*/
+.icon-arrow-bottom:hover {
+    background-position: -120px -120px;
+}
+
+/* 箭头10px*14px */
+.icon-arrow-left, .icon-arrow-right {
+    width: 10px;
+    height: 14px;
+}
+
+/*向左*/
+.icon-arrow-left {
+    background-position: -148px -108px;
+}
+
+/*向左激活状态*/
+.icon-arrow-left:hover {
+    background-position: -148px -122px;
+}
+
+/*向右*/
+.icon-arrow-right {
+    background-position: -158px -108px;
+}
+
+/*向右激活状态*/
+.icon-arrow-right:hover {
+    background-position: -158px -122px;
+}
+
+/*支付宝按钮*/
+.icon-alipay {
+    width: 30px;
+    height: 24px;
+    background-position: -90px -108px;
+}
+
+/*蓝色实心箭头*/
+.icon-btn-right {
+    width: 10px;
+    height: 12px;
+    background-position: -120px -131px;
+}
+
+/*鲁班币文本框*/
+.icon-luban-coin-text {
+    width: 110px;
+    height: 30px;
+    display: inline-block;
+    background: url("../img/icon-luban-coin.png") -3px -323px no-repeat;
+}
+
+.icon-luban-coin-text:hover {
+    background-position: -3px -205px;
+}
+
+.icon-luban-coin-text.active {
+    background-position: -3px -87px;
+}
+
