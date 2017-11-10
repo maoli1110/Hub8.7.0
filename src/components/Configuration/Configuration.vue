@@ -30,7 +30,7 @@
 export default {
     data() {
         return {
-            activeIndex: '/configuration/housing/explorer',
+            activeIndex: '',
         }
     },
     methods: {
@@ -42,6 +42,9 @@ export default {
         }
     },
     mounted() {
+    },
+    created(){
+        this.activeIndex = this.$route.path;
     }
 }
 </script>

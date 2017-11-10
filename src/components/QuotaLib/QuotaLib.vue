@@ -21,7 +21,7 @@
 export default {
     data() {
         return {
-            activeIndex: '/quotalib/automatic-template',
+            activeIndex: '',
         }
     },
     methods: {
@@ -31,6 +31,9 @@ export default {
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         }
+    },
+    created(){
+        this.activeIndex = this.$route.path;
     }
 }
 </script>

@@ -82,7 +82,7 @@
                     </el-table-column>
                     <el-table-column label="序号" width="50" prop="index"><!--(cur_page-1)*10+index-->
                     </el-table-column>
-                    <el-table-column prop="processName" width="170" label="工程名称" show-overflow-tooltip>
+                    <el-table-column prop="processName" width="" label="工程名称" show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column prop="speciality" width="50" label="专业" :formatter="judge">
                         <template slot-scope="scope">
@@ -90,27 +90,27 @@
                             <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="BIMparams" width="" label="BIM属性" >
+                    <el-table-column prop="BIMparams" width="70" label="BIM属性" >
                     </el-table-column>
-                    <el-table-column prop="updateUser" width="" label="上传人" >
+                    <el-table-column prop="updateUser" width="80" label="上传人" >
                     </el-table-column>
-                    <el-table-column prop="updateTime" width="150" label="上传时间" >
+                    <el-table-column prop="updateTime" width="135" label="上传时间" >
                     </el-table-column>
-                    <el-table-column prop="PDF" width="50" label="图纸" >
+                    <el-table-column prop="PDF" width="65" label="图纸" >
                     </el-table-column>
-                    <el-table-column prop="proDepartment" width="150" label="所属项目部" show-overflow-tooltip>
+                    <el-table-column prop="proDepartment" width="" label="所属项目部" show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column prop="size" width="50" label="大小">
+                    <el-table-column prop="size" width="65" label="大小">
                     </el-table-column>
-                    <el-table-column prop="output" width="" label="输出造价" >
+                    <el-table-column prop="output" width="100" label="输出造价" >
                     </el-table-column>
-                    <el-table-column prop="status" width="" align="left" label="数据处理"  v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
+                    <el-table-column prop="status" width=""   label="数据处理"  v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
                         <template slot-scope="scope" >
-                            <div v-show="scope.row.status==='处理成功'"><span  class="el-icon-circle-check"></span>处理成功</div>
-                            <div v-show="scope.row.status==='处理失败'"><span  class="el-icon-circle-close"></span>处理失败</div>
-                            <div v-show="scope.row.status==='处理中'"><span  class="el-icon-warning"></span>处理中</div>
-                            <div  v-show="scope.row.status==='待处理'"><span class="el-icon-time"></span>待处理</div>
-                            <div v-show="scope.row.status==='未处理'"><span  class="el-icon-loading"></span>未处理</div>
+                            <div v-show="scope.row.status==='处理成功'" class="align-l"><span  class="el-icon-circle-check"></span>处理成功</div>
+                            <div v-show="scope.row.status==='处理失败'" class="align-l"><span  class="el-icon-circle-close"></span>处理失败</div>
+                            <div v-show="scope.row.status==='处理中'"   class="align-l"><span  class="el-icon-warning"></span>处理中</div>
+                            <div  v-show="scope.row.status==='待处理'"  class="align-l"><span class="el-icon-time"></span>待处理</div>
+                            <div v-show="scope.row.status==='未处理'"   class="align-l"><span  class="el-icon-loading"></span>未处理</div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="isRoot" width="" label="已授权" >
@@ -819,7 +819,8 @@ export default {
  .bims-contents .dialog_body{width:175px;margin:0 auto;}
  .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;}
  .filter-bar>.el-select{width:100%;}
-
+  .align-l{text-align:left;padding:0 5px;}
+ .align-l>span{padding:0 3px;}
  .left85{left:85px;}
  .left140{left:119px}
  .left120{left:120px;}

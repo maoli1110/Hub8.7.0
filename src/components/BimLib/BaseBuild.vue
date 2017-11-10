@@ -9,7 +9,7 @@ import {IndexCumsum} from "../../utils/validate.js"
 export default {
     data() {
         return {
-            activeIndex: '/bimlib/bim-lib/housing',
+            activeIndex: '',
         }
     },
     methods: {
@@ -24,6 +24,9 @@ export default {
     mounted() {
         console.log(this.$router)
     },
+    created(){
+        this.activeIndex = this.$route.path;
+    }
 }
 </script>
 

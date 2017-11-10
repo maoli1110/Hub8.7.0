@@ -27,7 +27,7 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
     export default {
     data: () => ({
-        activeIndex: '/pricelib/material',
+        activeIndex: '',
     }),
     methods: {
         handleOpen(key, keyPath) {
@@ -38,6 +38,9 @@
         }
     },
     components: { VueScrollbar },
+    created(){
+        this.activeIndex = this.$route.path;
+    }
 }
 </script>
 

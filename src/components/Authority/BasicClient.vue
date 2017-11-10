@@ -108,7 +108,7 @@ export default {
         }
       ],
       multipleSelection: [],
-      activeIndex: "/authority/member-management",
+      activeIndex: "",
       setting: {
         check: {
           enable: true
@@ -202,6 +202,9 @@ export default {
   },
   mounted() {
     $.fn.zTree.init($("#treeDemo2"), this.setting, this.zNodes);
+  },
+  created(){
+        this.activeIndex = this.$route.path;
   },
   beforeRouteLeave (to, from, next) {
     if(!this.flag){

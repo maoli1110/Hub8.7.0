@@ -18,8 +18,11 @@
 export default {
     data(){
         return{
-            activeIndex: '/configuration/housing/explorer'
+            activeIndex: ''
         }
+    },
+    created(){
+        this.activeIndex = this.$route.path;
     }
 }
 </script>
