@@ -1,5 +1,4 @@
-/*==============================Bim-lib=================================*/
-
+/*==============================Bim-lib（bim库样式）=====================*/
 .Bim-libs .contents{position:relative}
 
 /*======================.Bim-libs-bim==================================*/
@@ -8,6 +7,7 @@
 .Bim-libs-bim .bim-filter-toobar .filter-bar{
     margin-right:20px;
 }
+/*bim-data(页面分块样式)*/
 .Bim-libs-bim .bim-data:nth-child(1){
     padding-bottom:12px;border-bottom:1px solid #ddd;
 }
@@ -17,11 +17,12 @@
 .Bim-libs-bim .bim-data:nth-child(3){
     padding-top:15px;
 }
+/*el-table(表格)*/
+.bim-main{overflow:auto;}
 .Bim-libs-bim .el-table th > .cell,
 .Bim-libs-bim  .el-table .cell{
     padding:0;text-align:center;
 }
-
 .Bim-libs-bim  .el-table td:nth-child(3) div,
 .Bim-libs-bim  .el-table td:nth-child(7) div,
 .Bim-libs-bim  .el-table td:nth-child(9) div{
@@ -33,21 +34,12 @@
 .Bim-libs-bim  .el-table td:nth-child(9) div{
     text-align:left !important;padding:0 20px !important;
 }
-.el-popover{
-    height: 150px !important;
-    overflow: auto !important;
-    width: 130px;
-    min-width: 133px !important;
-    background: #fff;
-}
-.el-popover .root-name{display:inline-block !important;padding:0 5px;}
+
 .Bim-libs-bim .el-table.house-table{
     min-width: 1280px !important;
 }
-.bim-main{overflow:auto;}
-.delete-rootPerson{
-    width:100%;
-}
+
+
 /*弹窗*/
 .bims-contents .el-form-item label.el-form-item__label{
     width:97px ;text-align:right;
@@ -70,7 +62,10 @@
 .bims-contents .dialog-extract-status i{
     color:orange;font-style:normal;
 }
-/*=====================工作集库======================*/
+.delete-rootPerson{
+    width:100%;
+}
+/*==========================工作集库页面样式===============================*/
 .workSeting{padding:0 20px;background:#fff;}
 .workSeting  .el-table td:nth-child(3) div,
 .workSeting  .el-table td:nth-child(5) div,
@@ -80,7 +75,7 @@
 .workSeting .work-toobar{padding:10px 0;}
 .pagination{padding:10px 0}
 
-/*====================workSeting(弹窗自绘制表单)===============*/
+/*=========================workSeting(弹窗自绘制表单)=====================*/
 .workSeting .table-row{height:100px;border-bottom:1px solid #ddd;}
 .workSeting .table-header{background:#f5f5f5;line-height:60px;}
 .workSeting .table-header >div{float:left;text-align:center;}
@@ -100,7 +95,7 @@
     border: 1px solid #ddd;
     margin: 9px 10px 10px 8px;
 }
-/*=======================pdfDrawing(pdf图纸)======================*/
+/*=======================pdfDrawing(pdf图纸页面)======================*/
 .pdfDrawing .el-table td:nth-child(8) div{
     text-align:left !important;padding:0 10px !important;
 }

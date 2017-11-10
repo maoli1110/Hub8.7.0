@@ -1124,3 +1124,12 @@ ul>li{
     -moz-box-shadow:  4px 2px 4px #e2e5e9;;
     box-shadow:  4px 2px 4px #e2e5e9;;
 }
+/*el-popover*/
+.el-popover{
+    height: 150px !important;
+    overflow: auto !important;
+    width: 130px;
+    min-width: 133px !important;
+    background: #fff;
+}
+.el-popover .root-name{display:inline-block !important;padding:0 5px;}

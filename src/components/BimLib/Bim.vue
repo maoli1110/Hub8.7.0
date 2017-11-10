@@ -11,6 +11,7 @@
 <script>
     //样式载入
     import '../../../static/css/BIM.css';
+    //js
     import {IndexCumsum} from "../../utils/validate.js"
     export default {
         data() {
