@@ -44,11 +44,11 @@
   border-radius: 3px;
 }
 .vue-scrollbar__scrollbar-horizontal {
-  height: 10px;
+  height: 6px;
   width: 100%;
   bottom: 0;
   right: 0;
 }
 .vue-scrollbar__scrollbar-horizontal .scrollbar {
-  height: 5px;
+  height: 6px;border-radius:5px;
 }

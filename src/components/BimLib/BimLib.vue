@@ -23,9 +23,7 @@
         <div class="container">
             <!--<ul id="treeDemo" class="ztree"></ul>-->
             <div class="contents">
-             <transition :name="transitionName">
                 <router-view class="Router bimlib Bim-libs"></router-view>
-             </transition>
             </div>
         </div>
     </div>
@@ -97,17 +95,7 @@ export default {
     },
 
      watch: {
-     　　'$route' (to, from) {
-              if(!this.$route.name || this.$route.name.length<=0){
-                  return false
-              }
-              if(!to.name || !from.name){return false}
-              let toName = to.name;//路由跳转到信息
-              let fromName = from.name;//路由跳转前的信息
-              toName = toName.split("?")[1];
-              fromName = fromName.split("?")[1];
-              this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是
-     　　 }
+     　　
 　　},
     created(){
         this.activeIndex =  this.$route.path;
@@ -147,25 +135,7 @@ export default {
     font-size: 16px;
     font-weight: 700;
 }
-.bimlib.Router{
-     position: absolute;
-     width: 100%;
-     transition: all .8s ease;
-     top: 0px;
-}
-.slide-left-enter,
-.slide-right-leave-active {
-     opacity: 0;
-    -webkit-transform: translate(100%, 0);
-    transform: translate(100%, 0);
-}
 
-.slide-left-leave-active,
-.slide-right-enter {
-     opacity: 0;
-    -webkit-transform: translate(-100%, 0);
-    transform: translate(-100% 0);
-}
 </style>
 <style>
     @import "../../../static/css/aside.css";

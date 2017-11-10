@@ -819,8 +819,8 @@ export default {
  .bims-contents .dialog_body{width:175px;margin:0 auto;}
  .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;}
  .filter-bar>.el-select{width:100%;}
-  .align-l{text-align:left;padding:0 5px;}
- .align-l>span{padding:0 3px;}
+  .align-l{text-align:left;padding-left:20px;}
+ .align-l>span{padding:0 10px;}
  .left85{left:85px;}
  .left140{left:119px}
  .left120{left:120px;}

@@ -73,7 +73,15 @@ ul>li{
 .aside .el-menu-item{
     padding-left:65px !important;
 }
-/*lines*/
+/*表格公用样式*/
+.el-table td>div{font-size:12px;font-family:'microsoft yahei';color:#505050;height:46px;line-height:46px !important;}
+.el-table th>.cell{font-size:14px;font-weight:bold;color:#505050;}
+/*投影*/
+.main-shadow{
+    -webkit-box-shadow:  4px 2px 4px #eee;;
+    -moz-box-shadow:  4px 2px 4px #eee;;
+    box-shadow:  4px 2px 4px #eee;;
+}
 
 /*==============================container=================================*/
 /*.container{background:#f5f8fd;overflow:auto;height: calc(100vh - 190px);width: calc(100% - 343px) !important;}*/
@@ -88,13 +96,9 @@ ul>li{
     padding: 20px;
     overflow: hidden;
     overflow-y: auto;
+    border-radius:5px;
 }
 
-/*wrapper(美化滚动条包裹)*/
-#wrapper{
-    width: 100%;
-    height: calc(100vh - 6px);
-}
 /*==============================Bim-lib=================================*/
 /*.Bim-libs .contents*/
 .contents{height: calc(100vh - 190px);width:100%;position:relative}
@@ -134,7 +138,7 @@ ul>li{
 .Bim-libs-bim  .el-table td:nth-child(3) div,
 .Bim-libs-bim  .el-table td:nth-child(7) div,
 .Bim-libs-bim  .el-table td:nth-child(9) div{
-    text-align:left !important;padding:0 10px !important;
+    text-align:left !important;padding:0 20px !important;
 }
 .el-popover{
     height: 150px !important;
@@ -176,15 +180,22 @@ ul>li{
 }
 .el-input__inner:focus{
     border-color:transparent !important;
-    -webkit-box-shadow: 1px 0px 7px #ccc;
-    -moz-box-shadow: 1px 0px 7px #ccc;
-    box-shadow: 1px 0px 7px #ccc ;
+    -webkit-box-shadow: 1px 0px 7px #eee;
+    -moz-box-shadow: 1px 0px 7px #eee;
+    box-shadow: 1px 0px 7px #eee ;
+}
+.el-input__inner:hover{
+    border-color:#c8c8c8 !important;
+    -webkit-box-shadow: 1px 0px 7px #eee;
+    -moz-box-shadow: 1px 0px 7px #eee;
+    box-shadow: 1px 0px 7px #eee ;
 }
 /* .el-input__inner:hover{
     border-color:transparent !important;
 } */
 .el-table .cell, .el-table th>div{padding:0 !important;text-align:center}
 /*=====================工作集库======================*/
+.workSeting{padding:0 20px;background:#fff;}
 .workSeting  .el-table td:nth-child(3) div,
 .workSeting  .el-table td:nth-child(5) div,
 .workSeting  .el-table td:nth-child(6) div

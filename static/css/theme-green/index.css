@@ -8280,7 +8280,7 @@
 }
 
 .el-input__inner::placeholder {
-    color: #e6e6e6
+    color: #c8c8c8;font-size:14px;font-family:"microsoft yahei";
 }
 
 .el-input__inner:hover {

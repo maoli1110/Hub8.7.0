@@ -2,7 +2,7 @@
     <div class="bims-container">
         <div class="bims-contents Bim-libs shadow-style">
             <transition :name="transitionName">
-                <router-view class="Router bimlib"></router-view><!--:tableData="tableData"-->
+                <router-view class="Router bimlib main-shadow"></router-view><!--:tableData="tableData"-->
             </transition>
         </div>
     </div>
@@ -84,13 +84,16 @@ export default {
     font-size: 16px;
     font-weight: 700;
 }
-
+.contents{
+    -webkit-box-shadow:  1px 0px 7px #eee;
+    -moz-box-shadow:  1px 0px 7px #eee;
+    box-shadow:  1px 0px 7px #eee;}
 .container .el-menu .el-menu-item:hover {
     background-color: #f5f8fd;
 }
- .bimlib.Router{
+ .Router{
      position: absolute;
-     width: 100%;
+     width: calc(100% - 20px);
      transition: all .8s ease;
      top: 0px;
  }
