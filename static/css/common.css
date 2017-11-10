@@ -78,9 +78,9 @@ ul>li{
 .el-table th>.cell{font-size:14px;font-weight:bold;color:#505050;}
 /*投影*/
 .main-shadow{
-    -webkit-box-shadow:  4px 2px 4px #eee;;
-    -moz-box-shadow:  4px 2px 4px #eee;;
-    box-shadow:  4px 2px 4px #eee;;
+    -webkit-box-shadow:  4px 2px 4px #e2e5e9;;
+    -moz-box-shadow:  4px 2px 4px #e2e5e9;;
+    box-shadow:  4px 2px 4px #e2e5e9;;
 }
 
 /*==============================container=================================*/
