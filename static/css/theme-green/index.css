@@ -3784,7 +3784,6 @@
     vertical-align: middle;
     float: left;
     font-size: 14px;
-    color: rgb(72, 106, 106);
     line-height: 1;
     padding: 11px 12px 11px 0;
     box-sizing: border-box
@@ -3858,6 +3857,7 @@
 }
 
 .el-tabs__nav-scroll {
+    border:1px solid #e6e6e6;
     overflow: hidden
 }
 
@@ -3879,6 +3879,7 @@
 }
 
 .el-tabs__nav {
+    
     white-space: nowrap;
     position: relative;
     transition: transform .3s;
@@ -3888,7 +3889,8 @@
 .el-tabs__item {
     padding: 0 16px;
     height: 60px;
-    width: 170px;
+    width: 180px;
+    border-right: 1px solid #e6e6e6;
     box-sizing: border-box;
     line-height: 60px;
     display: inline-block;

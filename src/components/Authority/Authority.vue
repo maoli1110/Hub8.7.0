@@ -6,7 +6,7 @@
                 <el-menu-item index="/authority/role-management">角色管理</el-menu-item>
                 <el-submenu index="/authority/application-allot">
                 <template slot="title">应用分配</template>
-                <el-menu-item index="/authority/basic-client">基础客户端</el-menu-item>
+                <el-menu-item index="/authority/basic-client" class="default">基础客户端</el-menu-item>
                 <el-menu-item index="/authority/system-client">系统客户端</el-menu-item>
                 <el-menu-item index="/authority/bim-meal">BIM应用套餐</el-menu-item>
                 <el-menu-item index="/authority/quota-lib">定额库</el-menu-item>
@@ -71,10 +71,9 @@ export default {
       "curSelectedNode" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
     ]),
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+       $('.default').click()
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
     },
     onClick(event, treeId, treeNode) {
       this.curSelectedNode(treeNode);

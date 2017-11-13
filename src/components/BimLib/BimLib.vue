@@ -18,7 +18,6 @@
                     <el-menu-item index="/bimlib/decoration/bim-lib">工程库</el-menu-item>
                 </el-submenu>
             </el-menu>
-
         </div>
         <div class="container">
             <!--<ul id="treeDemo" class="ztree"></ul>-->
