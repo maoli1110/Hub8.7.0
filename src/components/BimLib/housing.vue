@@ -59,13 +59,13 @@
         <el-row class="bim-data bim-dev-toolbar" >
             <el-col v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')" :span="17">
                 <el-button type="primary" class="basic-btn" @click="addProject('add')"><i class="bim-icon el-icon-plus"></i>添加</el-button>
-                <el-button type="primary" class="basic-btn" @click="deletelibs"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
+                <el-button type="primary" class="basic-btn" @click="deletelibs('whileData')"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
                 <el-button type="primary" class="basic-btn" @click="monitor('all')"><i class="bim-icon el-icon-view"></i>监控</el-button>
             </el-col>
             <el-col v-if="($route.path=='/bimlib/decoration/recycle-bin' || $route.path=='/bimlib/BaseBuild/recycle-bin'|| $route.path=='/bimlib/housing/recycle-bin')" :span="17">
-                <el-button type="primary" class="basic-btn" ><i class="bim-icon el-icon-plus"></i>还原</el-button>
-                <el-button type="primary" class="basic-btn" ><i class="bim-icon el-icon-delete" ></i>删除</el-button>
-                <el-button type="primary" class="basic-btn"><i class="bim-icon el-icon-view"></i>清空</el-button>
+                <el-button type="primary" class="basic-btn" @click="dataRestore"><i class="bim-icon el-icon-plus"></i>还原</el-button>
+                <el-button type="primary" class="basic-btn" @click="deletelibs('wipeData')"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
+                <el-button type="primary" class="basic-btn" @click="dataEmpty"><i class="bim-icon el-icon-view"></i>清空</el-button>
             </el-col>
             <el-col :span="3" :offset="4" class="relat">
                 <el-button type="primary" class="basic-btn absol" @click="inRecycle($route.matched[2].path)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">>> 回收站</el-button>
@@ -75,7 +75,67 @@
         <el-row class="bim-data bim-main">
             <el-col>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                <el-table class="house-table scroll-me"  :fit="true" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked">
+                <el-table class="house-table scroll-me"  :fit="true" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
+                    <el-table-column
+                        type="selection"
+                        width="40" >
+                    </el-table-column>
+                    <el-table-column label="序号" width="50" prop="index"><!--(cur_page-1)*10+index（ps:分页算法）-->
+                    </el-table-column>
+                    <el-table-column prop="processName" width="" label="工程名称" show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="speciality" width="50" label="专业" :formatter="judge">
+                        <template slot-scope="scope">
+                            <span v-show="scope.row.speciality==='土建'" class="el-icon-date"></span>
+                            <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="BIMparams" width="70" label="BIM属性" >
+                    </el-table-column>
+                    <el-table-column prop="updateUser" width="80" label="上传人" >
+                    </el-table-column>
+                    <el-table-column prop="updateTime" width="135" label="上传时间" >
+                    </el-table-column>
+                    <el-table-column prop="PDF" width="65" label="图纸" >
+                    </el-table-column>
+                    <el-table-column prop="proDepartment" width="" label="所属项目部" show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="size" width="65" label="大小">
+                    </el-table-column>
+                    <el-table-column prop="output" width="100" label="输出造价" >
+                    </el-table-column>
+                    <el-table-column prop="status" width=""   label="数据处理" >
+                        <template slot-scope="scope" >
+                            <div v-show="scope.row.status==='处理成功'" class="align-l"><span  class="el-icon-circle-check"></span>处理成功</div>
+                            <div v-show="scope.row.status==='处理失败'" class="align-l"><span  class="el-icon-circle-close"></span>处理失败</div>
+                            <div v-show="scope.row.status==='处理中'"   class="align-l"><span  class="el-icon-warning"></span>处理中</div>
+                            <div  v-show="scope.row.status==='待处理'"  class="align-l"><span class="el-icon-time"></span>待处理</div>
+                            <div v-show="scope.row.status==='未处理'"   class="align-l"><span  class="el-icon-loading"></span>未处理</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="isRoot" width="" label="已授权" >
+                        <template slot-scope="scope" >
+                            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:30px;">
+                                <el-popover trigger="hover" placement="top" class="root-tips scroll-me" >
+                                    <p v-for=" item in 100" class="root-name">杨会杰</p>
+                                    <div slot="reference" >
+                                        <span>{{scope.row.isRoot}}</span>
+                                    </div>
+                                </el-popover>
+                            </vue-scrollbar>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="135" class="quality-page-tableIcon">
+                        <template slot-scope="scope" >
+                            <span class="quality-icon icon el-icon-view" @click="addProject('modific')"></span>
+                            <span class="quality-icon icon el-icon-caret-right" @click="extractDialog=true;extractData('处理中')"></span><!--extractData(scope.row.status)"-->
+                            <span class="quality-icon icon el-icon-setting" @click="modifyInfo=true"></span>
+                            <span class="quality-icon icon el-icon-edit" @click="monitorSeverVisible=true" ></span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <el-table class="house-table scroll-me"  :fit="true" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked" v-if="($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')">
                     <el-table-column
                         type="selection"
                         width="40" >
@@ -104,38 +164,7 @@
                     </el-table-column>
                     <el-table-column prop="output" width="100" label="输出造价" >
                     </el-table-column>
-                    <el-table-column prop="status" width=""   label="数据处理"  v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
-                        <template slot-scope="scope" >
-                            <div v-show="scope.row.status==='处理成功'" class="align-l"><span  class="el-icon-circle-check"></span>处理成功</div>
-                            <div v-show="scope.row.status==='处理失败'" class="align-l"><span  class="el-icon-circle-close"></span>处理失败</div>
-                            <div v-show="scope.row.status==='处理中'"   class="align-l"><span  class="el-icon-warning"></span>处理中</div>
-                            <div  v-show="scope.row.status==='待处理'"  class="align-l"><span class="el-icon-time"></span>待处理</div>
-                            <div v-show="scope.row.status==='未处理'"   class="align-l"><span  class="el-icon-loading"></span>未处理</div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="isRoot" width="" label="已授权" >
-                        <template slot-scope="scope" >
-                            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:30px;">
-                                <el-popover trigger="hover" placement="top" class="root-tips scroll-me" >
-                                    <p v-for=" item in 100" class="root-name">杨会杰</p>
-                                    <div slot="reference" >
-                                        <span>{{scope.row.isRoot}}</span>
-                                    </div>
-                                </el-popover>
-                            </vue-scrollbar>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column label="操作" width="135" class="quality-page-tableIcon" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
-                        <template slot-scope="scope" >
-                            <span class="quality-icon icon el-icon-view" @click="addProject('modific')"></span>
-                            <span class="quality-icon icon el-icon-caret-right" @click="extractDialog=true;extractData('处理中')"></span><!--extractData(scope.row.status)"-->
-                            <span class="quality-icon icon el-icon-setting" @click="modifyInfo=true"></span>
-                            <span class="quality-icon icon el-icon-edit" @click="monitorSeverVisible=true" ></span>
-                        </template>
-                    </el-table-column>
                 </el-table>
-
                 </vue-scrollbar>
                 <div class="pagination">
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
@@ -569,28 +598,36 @@ export default {
             })
         },
         //列表删除
-        deletelibs(){
+        deletelibs(type){
+            console.log(type,'什么类型')
             if(!deletArray.length){
-                this.commonMessage('请选择要删除的文件','warning')
+                commonMessage('请选择要删除的文件','warning')
                 return false;
             }
-            this.commonConfirm('确定要删除吗',()=>{
-               /* if(this.tableData.length===deletArray.length){
-                    //重新渲染数据
-                }else*/if(deletArray.length){
-                    for(let i = 0;i<deletArray.length;i++){
-                        for(let j = 0;j<this.tableData.length;j++){
-                            if( this.tableData[j].index == deletArray[i]){
-                                this.tableData.splice(j,1);
+            if(type=='whileData'){
+                commonConfirm('确定要删除吗',()=>{
+                    /* if(this.tableData.length===deletArray.length){
+                     //重新渲染数据
+                     }else*/if(deletArray.length){
+                        for(let i = 0;i<deletArray.length;i++){
+                            for(let j = 0;j<this.tableData.length;j++){
+                                if( this.tableData[j].index == deletArray[i]){
+                                    this.tableData.splice(j,1);
+                                }
                             }
                         }
                     }
-                }
 
-                deletArray = [];//接口成功之后删除数据
-            },()=>{
+                    deletArray = [];//接口成功之后删除数据
+                },()=>{
 
-            },'warning')
+                },'warning')
+            }else if(type=='wipeData'){
+                commonConfirm('删除后执行永久删除,不可恢复',()=>{
+
+                },()=>{},'warning')
+            }
+
         },
         //弹窗异步请求树结构
         getTree(){
@@ -626,6 +663,14 @@ export default {
                 }
 
             }
+        },
+        //回收站还原
+        dataRestore(){
+            console.log('回收站还原')
+        },
+        //回收站清空
+        dataEmpty(){
+            console.log('回收站清空')
         },
         //表格列表搜索
         search(){
@@ -739,7 +784,6 @@ export default {
         },
         //进入回收站
         inRecycle(path){
-            console.log(path,'path')
             this.$router.push({ path: path+'/recycle-bin'})
         },
         //返回工程库

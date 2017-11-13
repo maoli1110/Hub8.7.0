@@ -4,9 +4,9 @@
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-submenu index="/bimlib/housing/bim-lib">
                     <template slot="title">房建</template>
-                    <el-menu-item index="/bimlib/housing/bim-lib">工程库</el-menu-item>
-                    <el-menu-item index="/bimlib/housing/working-set">工作集库</el-menu-item>
-                    <el-menu-item index="/bimlib/housing/pdf-drawing">PDF图纸</el-menu-item>
+                    <el-menu-item index="/bimlib/housing/bim-lib" >工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/housing/working-set" >工作集库</el-menu-item>
+                    <el-menu-item index="/bimlib/housing/pdf-drawing" >PDF图纸</el-menu-item>
                 </el-submenu>
                 <el-submenu index="/bimlib/BaseBuild/bim-lib">
                     <template slot="title">基建</template>
@@ -79,18 +79,6 @@ export default {
     },
     mounted() {
         $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
-        console.log(this.$route,'this.$router')
-    },
-    beforeRouteUpdate (to, from, next) {
-      let isBack = this.$router.isBack
-
-      if (isBack) {
-         this.transitionName = 'slide-right'
-      } else {
-         this.transitionName = 'slide-left'
-      }
-        this.$router.isBack = false
-        next()
     },
 
      watch: {
