@@ -7992,9 +7992,9 @@
 
 .el-carousel__indicators {
     position: absolute;
-    width: 90%;
+    width: 86%;
     list-style: none;
-    bottom: 0;
+    bottom: 31px;
     left: 50%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
@@ -8023,17 +8023,19 @@
 .el-carousel__indicator {
     width: 25%;
     display: inline-block;
-    background-color: transparent;
+    background-color: e6e6e6;
     /* padding: 12px 4px; */
     cursor: pointer
 }
 
 .el-carousel__indicator:hover button {
-    opacity: .72
+    opacity: .72;
 }
 
 .el-carousel__indicator.is-active button {
     background-color: #646464;
+    opacity: 1;
+
 }
 
 .el-carousel__button {
@@ -8041,9 +8043,10 @@
     opacity: .48;
     width: 100%;
     height: 3px;
-    background-color: #fff;
     border: none;
-    padding: 0
+    padding: 0;
+    background-color: e6e6e6;
+
 }
 
 .carousel-arrow-left-enter,
