@@ -1111,3 +1111,24 @@ ul>li{
     background: #fff;
 }
 .el-popover .root-name{display:inline-block !important;padding:0 5px;}
+.pagination{margin-top:20px;}
+/*日历插件*/
+._citys{background:#fff;}
+#provinLink{
+    height: 34px;
+    border: none;
+    border: 1px solid #e6e6e6;
+    border-radius: 2px;
+    padding: 0 10px;
+    z-index: 1090;
+    width:100%;
+    max-width:200px;
+}
+#PoPy{
+    width: 100% !important;
+    height: 100% !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-top: -247px;
+    margin-left: -192px;
+}

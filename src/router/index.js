@@ -144,7 +144,7 @@ export default new Router({
                     // BIM库
                     path: '/bimlib',
                     component: resolve => require(['../components/BimLib/BimLib.vue'], resolve),
-                    redirect: '/bimlib/housing/bim-lib/1',
+                    redirect: '/bimlib/housing/bim-lib',
                     children: [
                         {
                             // BIM库

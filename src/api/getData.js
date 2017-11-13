@@ -19,4 +19,4 @@ let base = '../../static/workSeting.json';
 // export const getWorksetingList = params => axios.post(`${base}`,params);
 
 export const getWorksetingList = params => axios.get(`${base}`);
-export const getCitys = params => axios.get('../../static/js/111.json');
+export const getCitys = params => axios.get('../../static/js/citys.json');
