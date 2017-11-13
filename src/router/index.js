@@ -144,7 +144,7 @@ export default new Router({
                     // BIM库
                     path: '/bimlib',
                     component: resolve => require(['../components/BimLib/BimLib.vue'], resolve),
-                    redirect: '/bimlib/housing/bim-lib',
+                    redirect: '/bimlib/housing/bim-lib/1',
                     children: [
                         {
                             // BIM库
@@ -157,7 +157,6 @@ export default new Router({
                                     name:'housing?2',
                                     path: 'bim-lib',// 房建
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
-                                    query:{'typeId':'11'},
                                 },
                                 {
                                     name:'housing?3',

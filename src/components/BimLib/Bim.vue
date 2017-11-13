@@ -48,7 +48,6 @@
                         }
                     })
                 }
-                console.log(this.tableData)
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
                 }
