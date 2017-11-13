@@ -103,7 +103,7 @@ export default new Router({
                         {
                             // 成员管理
                             path: 'edit-member/:id',
-                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                            component: resolve => require(['../components/Authority/AddMember.vue'], resolve)
                         },
                         {
                             // 角色管理

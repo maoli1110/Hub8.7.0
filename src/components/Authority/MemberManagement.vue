@@ -42,7 +42,15 @@
                       style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column type='index' label="序号" width="55"></el-table-column>
-                <el-table-column prop="name" label="姓名" width="100"></el-table-column>
+                <el-table-column prop="name" label="姓名" width="150" align='left'>
+                   <template slot-scope="scope">
+                        <div slot="reference" class="name-wrapper">
+                          <span style="margin-right:5px">{{ scope.row.name }}</span> 
+                          <el-tag v-show="scope.row.isAdmin" style="background:#13ce66">管理员</el-tag>
+                          <span v-show="!scope.row.isAdmin"style="height:24px;width:48px;display:inline-block"></span>
+                         </div>
+                    </template>
+                </el-table-column>
                 <el-table-column label="通行证" width="150">
                     <template slot-scope="scope">
                         <div :title="scope.row.pass" class="textcell">
@@ -51,7 +59,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="role" label="角色" width="100"></el-table-column>
-                <el-table-column prop="phone" label="手机号码" width="180"></el-table-column>
+                <el-table-column prop="phone" label="手机号码" width="100"></el-table-column>
                 <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
                 <el-table-column label="更新时间" width="180">
                     <template slot-scope="scope">{{ scope.row.date }}</template>
@@ -145,7 +153,6 @@
             <div>
                 <el-input type="textarea" style="float:left;width:460px;height:240px" resize='none'
                           :autosize="{ minRows: 12, maxRows: 12}" placeholder="请输入内容" v-model="textarea">
-
                 </el-input>
                 <div style="margin-left:480px">
                     <h3>使用说明：</h3>
@@ -237,7 +244,6 @@
 <script>
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
-import axios from "axios";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -391,6 +397,7 @@ export default {
           id: 1,
           pass: "wulijjjj111111111111111111",
           role: "项目经理",
+          isAdmin:true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -402,6 +409,7 @@ export default {
           id: 2,
           pass: "wulijjjj",
           role: "项目经理",
+          isAdmin:false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -413,6 +421,7 @@ export default {
           id: 3,
           pass: "wulijjjj",
           role: "项目经理",
+          isAdmin:false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -424,6 +433,7 @@ export default {
           id: 4,
           pass: "wulijjjj",
           role: "项目经理",
+          isAdmin:true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -435,6 +445,7 @@ export default {
           id: 5,
           pass: "wulijjjj",
           role: "项目经理",
+          isAdmin:false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -446,6 +457,7 @@ export default {
           id: 6,
           pass: "wulijjjj",
           role: "项目经理",
+          isAdmin:true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -457,6 +469,7 @@ export default {
           id: 7,
           pass: "wulijjjj",
           role: "项目经理",
+          isAdmin:false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -468,6 +481,7 @@ export default {
           id: 8,
           pass: "wulijjjj",
           role: "项目经理",
+          isAdmin:true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -479,6 +493,7 @@ export default {
           id: 9,
           pass: "wulijjjj",
           role: "项目经理",
+          isAdmin:true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -490,6 +505,7 @@ export default {
           id: 10,
           pass: "wulijjjj",
           role: "项目经理",
+          isAdmin:false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -646,7 +662,7 @@ export default {
         $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
       } else {
         console.log("后台请求数据");
-        axios.get(this.url).then(res => {
+        this.$axios.get(this.url).then(res => {
           this.folderNodes = res.data;
           $.fn.zTree.init(
             $("#folderTree"),

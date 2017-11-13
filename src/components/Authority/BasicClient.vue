@@ -1,6 +1,5 @@
 <template>
     <div class="member-table">
-        <el-button type="primary" @click="flag=true" class="dialog-btn">确 定</el-button>
         <div style="position:relative">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAlls"
                                      @change="handleCheckAlls" style="position:absolute;left:19px;top:22px;z-index:1000">全部
@@ -205,15 +204,6 @@ export default {
   },
   created(){
         this.activeIndex = this.$route.path;
-  },
-  beforeRouteLeave (to, from, next) {
-    if(!this.flag){
-       alert('你啥都没做就想走？')
-    }else{
-       next()
-    }
-    // 导航离开该组件的对应路由时调用
-    // 可以访问组件实例 `this`
   }
 };
 </script>
