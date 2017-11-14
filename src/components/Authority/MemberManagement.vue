@@ -168,7 +168,7 @@
                 </div>
             </div>
 
-            <div slot="footer" class="dialog-footer" style="margin-top:25px">
+            <div slot="footer" class="dialog-footer" style="margin-top:105px">
                 <el-button type="primary" @click="batchAddMemberDialogVisible= false" class="dialog-btn">确 定</el-button>
                 <el-button @click="batchAddMemberDialogVisible= false" class="dialog-btn">取 消</el-button>
             </div>
