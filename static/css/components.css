@@ -16,7 +16,7 @@
 .up-component{
     width:692px;height:564px;
 }
-.up-component .el-date-editor--daterange.el-input {
+.component-main .el-date-editor--daterange.el-input {
     width: 100% !important;
 }
 .up-component .relat{
