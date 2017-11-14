@@ -31,9 +31,6 @@
 <script>
 /* 左侧导航菜单样式 */
 
-
-//js
-
 export default {
     data: () => ({
         activeIndex: "",

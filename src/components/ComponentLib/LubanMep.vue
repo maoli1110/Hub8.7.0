@@ -204,13 +204,34 @@
                 </div>
             </el-dialog>
             <!--云构件库-->
-            <el-dialog :visible.sync="ModifyTree">
+            <el-dialog :visible.sync="ModifyTree" custom-class="cloud-component">
                 <el-row>
-                    <el-col>命令栏</el-col>
+                    <el-col ><div class="dialog-title">命令栏</div></el-col>
+                    <el-col class="cloud-toobar">
+
+                        <el-col :span="4" class="icon-item" >
+                            <div @click="expandNode({type:'expand',operObj:'cloudTree'})"><span class="el-icon-plus"></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item" >
+                            <div @click="expandNode({type:'collapse',operObj:'cloudTree'})"><span class="el-icon-minus"></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item"><span class="el-icon-arrow-up" @click="upMove"></span></el-col>
+                        <el-col :span="4" class="icon-item"><span class="el-icon-arrow-down" @click="downMove"></span></el-col>
+                        <el-col :span="4" class="icon-item"><span class="el-icon-d-arrow-left" @click="resetZtree"></span></el-col>
+                        <el-col :span="4" class="icon-item"><span class="el-icon-picture" @click="ztreeSave"></span></el-col>
+                    </el-col>
                     <el-col>
-                        <ul class="ztree" id="cloudTree"></ul>
+                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:600px;">
+                            <ul class="ztree scroll-me" id="cloudTree" style="background:#fff;"></ul>
+                        </vue-scrollbar>
                     </el-col>
                 </el-row>
+                <div slot="footer" class="dialog-footer">
+                    <el-button class="dialog-btn dialog-btn-ok" type="primary"
+                               @click="updateComponent = false;updateOk()">确 定
+                    </el-button>
+                    <el-button class="dialog-btn dialog-btn-cancel" @click="updateComponent = false;updateCancel()">取 消</el-button>
+                </div>
             </el-dialog>
         </div>
     </div>
@@ -220,7 +241,12 @@
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import {getCitys,cloudTree} from '../../api/getData.js';
+    import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
     let deletArray = [];
+    //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
+    let level;
+    //预览状态模板树的深度
+    let maxLevel = -1;
     export default {
         data(){
             return {
@@ -365,6 +391,7 @@
                     },
                     callback: {
 //                        onClick: this.onClick
+                        onMouseDown: this.zTreeOnMouseDown
                     }
                 },
                 zNodes:[]
@@ -541,14 +568,209 @@
                 this.updateParams = {};
             },
             //getCloudTree
-            getCloudTree(){
-                this.ModifyTree = true;
+            getZtree(){
                 cloudTree().then(res => {
 
-                    this.zNodes = res.data[0].result;
+                    //this.zNodes = res.data[0].result;
+                    this.zNodes = [ {
+                        id: 1,
+                        pId: 0,
+                        name: "展开、折叠 自定义图标不同",
+                        open: true,
+                        iconSkin: "pIcon01"
+                    },
+                        { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
+                        { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
+                        { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
+                        {
+                            id: 2,
+                            pId: 0,
+                            name: "展开、折叠 自定义图标相同",
+                            open: true,
+                            iconSkin: "pIcon02"
+                        },
+                        { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
+                        { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
+                        { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
+                        { id: 3, pId: 0, name: "不使用自定义图标", open: true },
+                        { id: 31, pId: 3, name: "叶子节点1" },
+                        { id: 32, pId: 3, name: "叶子节点2" },
+                        { id: 33, pId: 3, name: "叶子节点3" }]
                     console.log(this.zNodes)
-                    $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
+                    let zTree = $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
+                    let nodes = zTree.getNodes();
+                    if (nodes.length > 0) {
+                        zTree.selectNode(nodes[0]);
+                    }
+                    let treeNodes = zTree.transformToArray(zTree.getNodes());
+                    //获取状态树的深度
+                    for (let i = 0; i < treeNodes.length; i++) {
+                        if (treeNodes[i].level >= maxLevel) {
+                            maxLevel = treeNodes[i].level;
+                        }
+                        if (treeNodes[i].level == 0 && treeNodes[i].isParent) {
+                            //展开"全部"下的子节点
+                            zTree.expandNode(treeNodes[i], true, false, null, true);
+                        }
+                    }
+                    level = 1;
                 });
+            },
+            getCloudTree(){
+                this.ModifyTree = true;
+               this.getZtree();
+            },
+            //ztree
+            //展开、收起树节点
+            expandNode(e) {
+                let type = e.type;
+                let operObj = e.operObj;
+                let zTree = $.fn.zTree.getZTreeObj(operObj);
+                let treeNodes = zTree.transformToArray(zTree.getNodes());
+                let flag = true;
+
+                //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
+                for (let i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].level == level && treeNodes[i].isParent) {
+                        if (type == "expand" && !treeNodes[i].open) {
+                            flag = false;
+                            break;
+                        } else if (type == "collapse" && treeNodes[i].open) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (flag) {
+                    //说明当前level的节点都为折叠或者展开状态
+                    if (type == "expand") {
+                        // level++
+                        if (level < maxLevel - 1) {
+                            level++;
+                        }
+                    } else if (type == "collapse") {
+                        //level--
+                        if (level == 0) {
+                            return;
+                        }
+                        level--;
+                    }
+                }
+                for (let i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].level == level && treeNodes[i].isParent) {
+                        if (type == "expand" && !treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], true, false, null, true);
+                        } else if (type == "collapse" && treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], false, false, null, true);
+                        }
+                    }
+                }
+            },
+            //上移
+            upMove() {
+                let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
+                let nodes = treeObj.getSelectedNodes();
+                if (nodes.length == 0) {
+                    // alertDialog("warning", "至少选择一个节点", function() {});
+                    this.$message({
+                        showClose: true,
+                        message: "至少选择一个节点",
+                        type: "warning"
+                    });
+                    return;
+                }
+                //移动之前需要判断满足条件才能上移
+                //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许粘贴
+                for (let i = 0; i < nodes.length; i++) {
+                    if (nodes[i].isParent != nodes[0].isParent) {
+                        return;
+                    }
+                }
+                //判断多选的节点/状态是否是同一层级，如果不是，不允许粘贴
+                for (let i = 0; i < nodes.length; i++) {
+                    if (nodes[i].level != nodes[0].level) {
+                        return;
+                    }
+                }
+
+                //判断节点/状态是否是第一个，如果是，不能移动
+                for (let i = 0; i < nodes.length; i++) {
+                    if (nodes[i].getPreNode() == null) {
+                        return;
+                    }
+                }
+                //判断状态前一个节点是否是节点，如果是，不能移动
+                for (let i = 0; i < nodes.length; i++) {
+                    if (!nodes[i].isParent && nodes[i].getPreNode().isParent) {
+                        return;
+                    }
+                }
+
+                for (let i = 0; i < nodes.length; i++) {
+                    treeObj.moveNode(nodes[i].getPreNode(), nodes[i], "prev");
+                }
+            },
+            //下移
+            downMove() {
+                var treeObj = $.fn.zTree.getZTreeObj("cloudTree");
+                var nodes = treeObj.getSelectedNodes();
+                if (nodes.length == 0) {
+                    this.$message({
+                        showClose: true,
+                        message: "至少选择一个节点",
+                        type: "warning"
+                    });
+                    return;
+                }
+
+                //移动之前需要判断满足条件才能下移
+                //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].isParent != nodes[0].isParent) {
+                        return;
+                    }
+                }
+                //判断多选的节点/状态是否是同一层级，如果不是，不允许移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].level != nodes[0].level) {
+                        return;
+                    }
+                }
+
+                //判断节点/状态是否是最后一个，如果是，不能移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].getNextNode() == null) {
+                        return;
+                    }
+                }
+                //判断节点后一个节点是否是状态，如果是，不能移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].isParent && !nodes[i].getNextNode().isParent) {
+                        return;
+                    }
+                }
+
+                for (var i = nodes.length - 1; i >= 0; i--) {
+                    treeObj.moveNode(nodes[i].getNextNode(), nodes[i], "next");
+                }
+            },
+            //重置
+            resetZtree(){
+                this.getZtree();
+            },
+            //保存
+            ztreeSave(){
+                let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
+                let nodes = treeObj.transformToArray(treeObj.getNodes());
+                let treeNodes = [];
+                nodes.forEach((val,key)=>{
+                    treeNodes.push({ nodeId: val.id, pid: val.pId, nodeName: val.name })
+                });
+                console.log(treeNodes,'保存更改')
+            },
+            zTreeOnMouseDown(event, treeId, treeNode){
+                console.log(treeNode ? treeNode.tId + ", " + treeNode.name : "isRoot")
             },
         },
         mounted(){

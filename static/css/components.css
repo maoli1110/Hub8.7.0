@@ -43,5 +43,19 @@
 .simulate-label{
     width:84%;border:1px solid #e6e6e6;height:36px;line-height:36px;margin-left:80px;border-radius:2px;padding-left: 10px;
 }
-.up-component .dialog-title{font-size:16px;font-weight:bold;float:left;margin-top:-41px;}
-.up-component .el-dialog__body{margin-top:20px;}
+.component-main .dialog-title{font-size:16px;font-weight:bold;float:left;margin-top:-41px;}
+.component-main .el-dialog__body{margin-top:20px;}
+.cloud-component .cloud-toobar{
+    padding:0px 0px 20px;
+}
+.cloud-component{width:500px;}
+.cloud-component .cloud-toobar .icon-item{
+   float:left;text-align:center;line-height:40px;border:1px solid #ddd;border-right:none;
+}
+.cloud-component .cloud-toobar .icon-item:last-child{border-right:1px solid #e6e6e6}
+.cloud-component .cloud-toobar .icon-item:hover{
+    color:#fff;background:#6595f2;
+}
+.cloud-component .cloud-toobar .icon-item>div{
+    padding:0 10px;
+}
