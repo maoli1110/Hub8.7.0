@@ -70,7 +70,7 @@
             </el-row>
             <el-row class="tools-bar">
                 <el-col>
-                    <el-button type="primary" class="basic-btn"><i class="el-icon-upload2"></i>上传</el-button>
+                    <el-button type="primary" class="basic-btn" @click="override = false;updateComponent = true;upload()"><i class="el-icon-upload2"></i>上传</el-button>
                     <el-button type="primary" class="basic-btn" @click="deleteComp"><i class="el-icon-delete"></i>删除
                     </el-button>
                 </el-col>
@@ -111,7 +111,7 @@
                             </el-table-column>
                             <el-table-column label="操作">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-edit" @click="updateComponent = true"></i>
+                                    <i class="el-icon-edit" @click=" override = true;updateComponent = true;defaultCompDate()"></i>
 
                                 </template>
                             </el-table-column>
@@ -126,7 +126,9 @@
                 </el-col>
             </el-row>
             <!--上传构件-->
-            <el-dialog title="上传构件文件" :visible.sync="updateComponent" custom-class="up-component">
+            <el-dialog  :visible.sync="updateComponent" custom-class="up-component">
+                <span v-show="!override" class="dialog-title">上传构件文件</span>
+                <span v-show="override" class="dialog-title">修改构件文件</span>
                 <el-row>
                     <el-col :span="24" class="relat">
                         <span class="absol span-block label-w">模板文件：</span>
@@ -142,7 +144,8 @@
                                    :on-preview="handlePreview"
                                    :on-remove="handleRemove"
                                    :file-list="fileList">
-                            <el-button type="primary" class="basic-btn update-btn" @click="overUpdate">上传</el-button>
+                            <el-button type="primary" class="basic-btn update-btn" @click="overUpdate('update')" v-show="!override">上传</el-button>
+                            <el-button type="primary" class="basic-btn update-btn" @click="overUpdate('cover')" v-show="override">替换</el-button>
                         </el-upload>
 
                     </el-col>
@@ -216,6 +219,7 @@
                 selectDate: "",
                 fileName:"",
                 updateComponent: false,
+                override:false,//是否覆盖
                 cities: [],
                 province: [],
                 counties: [],
@@ -392,12 +396,41 @@
                 console.log(file,'上传文件上传成功')
             },
             updateError(err, file, fileList){
-                console.log(err)
+                this.commonMessage('上传失败哦。。。。','warning')
             },
+            /**
+             * 上传文件
+             * @param type  1.update上传 2.cover修改页面
+             **/
             overUpdate(){
                 this.fileList = [];
-                this.fileName = "";
+                this.updateParams.templateFile= '';
             },
+            //修改构件默认数据
+            defaultCompDate(){
+                this.updateParams.templateFile= '消防-消防栓-消防栓箱-室内灭火消防栓箱.clm';
+                this.updateParams.product= '鲁班安装';
+                this.updateParams.career= '消防';
+                this.updateParams.bigType= '消防栓';
+                this.updateParams.smallType= '消灭栓箱';
+                this.updateParams.facture= "长沙保平消防设备有限公司";
+                this.updateParams.type= "123";
+                this.updateParams.autor= "不知道";
+                this.updateParams.version= "2.0.0";
+            },
+            clearUploadInfo(){
+                for(var key in this.updateParams){
+                    console.log( this.updateParams[key])
+                    this.updateParams[key] = '';
+                }
+            },
+            //上传构件
+            upload(){
+                this.fileList = [];
+                this.clearUploadInfo();
+                console.log('我看看谁先执行的')
+            },
+
             /**
              * 全选
              * @params [{type array}]  selection  选中的队列对象
@@ -466,9 +499,16 @@
             },
             //上传构件到服务器
             updateOk(){
-                //保存到数据库
+                //保存上传到数据库
+                if(this.override){
+                    console.log('修改构件库接口');
+                }else {
+
+                    console.log('上传构件库接口')
+                }
+                //保存修改
                 console.log(this.updateParams)
-//                this.updateParams = {};
+                this.updateParams = {};
             },
             //取消上传
             updateCancel(){
