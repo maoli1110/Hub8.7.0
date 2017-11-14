@@ -65,7 +65,7 @@
                               :on-icon-click="searchComp"></el-input>
                 </el-col>
                 <el-col :span="4" :offset="2" style="text-align:right;">
-                    <el-button type="primary" class="basic-btn">云构件库</el-button>
+                    <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件库</el-button>
                 </el-col>
             </el-row>
             <el-row class="tools-bar">
@@ -203,14 +203,23 @@
                     <el-button class="dialog-btn dialog-btn-cancel" @click="updateComponent = false;updateCancel()">取 消</el-button>
                 </div>
             </el-dialog>
+            <!--云构件库-->
+            <el-dialog :visible.sync="ModifyTree">
+                <el-row>
+                    <el-col>命令栏</el-col>
+                    <el-col>
+                        <ul class="ztree" id="cloudTree"></ul>
+                    </el-col>
+                </el-row>
+            </el-dialog>
         </div>
     </div>
 </template>
 
 <script>
-    import {getCitys} from '../../api/getData.js';
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
+    import {getCitys,cloudTree} from '../../api/getData.js';
     let deletArray = [];
     export default {
         data(){
@@ -219,6 +228,7 @@
                 selectDate: "",
                 fileName:"",
                 updateComponent: false,
+                ModifyTree:false,
                 override:false,//是否覆盖
                 cities: [],
                 province: [],
@@ -346,7 +356,18 @@
                     autor:"",
                     version:"",
                     remark:"",
-                }
+                },
+                setting: {//搜索条件ztree setting
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    },
+                    callback: {
+//                        onClick: this.onClick
+                    }
+                },
+                zNodes:[]
             }
         },
         methods: {
@@ -376,6 +397,7 @@
                     message: message
                 })
             },
+
             //分页器事件
             handleSizeChange(size){
                 console.log(`每页显示多少条${size}`);
@@ -383,6 +405,7 @@
             handleCurrentChange(currentPage){
                 console.log(`当前页${currentPage}`);
             },
+
             //上传
             handleRemove(file, fileList) {
                 console.log(file, fileList);
@@ -398,8 +421,16 @@
             updateError(err, file, fileList){
                 this.commonMessage('上传失败哦。。。。','warning')
             },
+            //上传清除数据
+            clearUploadInfo(){
+                for(var key in this.updateParams){
+                    console.log( this.updateParams[key])
+                    this.updateParams[key] = '';
+                }
+            },
+
             /**
-             * 上传文件
+             * 上传文件再次上传覆盖之前的
              * @param type  1.update上传 2.cover修改页面
              **/
             overUpdate(){
@@ -417,12 +448,7 @@
                 this.updateParams.type= "123";
                 this.updateParams.autor= "不知道";
                 this.updateParams.version= "2.0.0";
-            },
-            clearUploadInfo(){
-                for(var key in this.updateParams){
-                    console.log( this.updateParams[key])
-                    this.updateParams[key] = '';
-                }
+                this.updateParams.remark= "我爱我家租房啦我爱我家租房啦我爱我家租房啦";
             },
             //上传构件
             upload(){
@@ -513,7 +539,17 @@
             //取消上传
             updateCancel(){
                 this.updateParams = {};
-            }
+            },
+            //getCloudTree
+            getCloudTree(){
+                this.ModifyTree = true;
+                cloudTree().then(res => {
+
+                    this.zNodes = res.data[0].result;
+                    console.log(this.zNodes)
+                    $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
+                });
+            },
         },
         mounted(){
             let vThis = this;
