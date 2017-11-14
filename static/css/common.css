@@ -827,6 +827,9 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
 .aside .el-menu-item{
     padding-left:65px !important;
 }
+.aside .el-menu.el-menu-vertical-demo>.el-menu-item{
+    padding-left:42px !important;
+}
 .aside {
     display: block;
     position: absolute;
