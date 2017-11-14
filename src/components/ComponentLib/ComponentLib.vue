@@ -4,9 +4,12 @@
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/componentlib/luban-mep">鲁班安装</el-menu-item>
                 <el-menu-item index="/componentlib/luban-steel">鲁班钢筋</el-menu-item>
-                <el-menu-item index="/componentlib/remiz">Remiz</el-menu-item>
-                <el-menu-item index="/componentlib/remiz-recycle">Remiz回收站</el-menu-item>
-                <el-menu-item index="/componentlib/revit">Revit</el-menu-item>
+                <el-submenu index="/componentlib/remiz-comp">
+                    <template slot="title">Remiz</template>
+                    <el-menu-item index="/componentlib/remiz-comp">Remiz-构件库</el-menu-item>
+                    <el-menu-item index="/componentlib/remiz-temp">Remiz-模型库</el-menu-item>
+                    <el-menu-item index="/componentlib/remiz-mate">Remiz-材质库</el-menu-item>
+                </el-submenu>
             </el-menu>
         </div>
         <div class="container">

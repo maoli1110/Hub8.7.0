@@ -12,3 +12,36 @@
 .tools-bar .basic-btn i{
     margin-right:10px;
 }
+/*up-component*/
+.up-component{
+    width:692px;height:564px;
+}
+.up-component .el-date-editor--daterange.el-input {
+    width: 100% !important;
+}
+.up-component .relat{
+    margin:8px 0;
+}
+.up-component .el-input-group.el-input{width:86.5%;}
+.up-component .el-input-group{width:90%;}
+.up-component .el-input{width:73%;}
+.up-component .el-select>.el-input{width:100%;}
+.up-component .el-textarea{width:86.5%;}
+.up-component .label-w{width:80px;text-align:right;}
+.el-input-group__append, .el-input-group__prepend{
+    background-color: #6595f2;padding: 0 19px;color:#fff;
+}
+.up-component .update-btn{
+    position: absolute;
+    right: 24px;
+    top: 0px;
+    height:38px !important;
+}
+.up-component .simulate-input{
+    width:240px;height:36px;line-height:36px;display:inline-block;
+}
+.simulate-label{
+    width:84%;border:1px solid #e6e6e6;height:36px;line-height:36px;margin-left:80px;border-radius:2px;padding-left: 10px;
+}
+.up-component .dialog-title{font-size:16px;font-weight:bold;float:left;margin-top:-41px;}
+.up-component .el-dialog__body{margin-top:20px;}

@@ -20,3 +20,4 @@ let base = '../../static/workSeting.json';
 
 export const getWorksetingList = params => axios.get(`${base}`);
 export const getCitys = params => axios.get('../../static/js/citys.json');
+export const cloudTree = params=> axios.get("../../static/datasource.json")

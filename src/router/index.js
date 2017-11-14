@@ -240,16 +240,16 @@ export default new Router({
                             component: resolve => require(['../components/ComponentLib/LubanMep.vue'], resolve)
                         },
                         {
-                            path: '/componentlib/remiz',
-                            component: resolve => require(['../components/ComponentLib/LubanMep.vue'], resolve)
+                            path: '/componentlib/remiz-comp',
+                            component: resolve => require(['../components/ComponentLib/remizComp.vue'], resolve)
                         },
                         {
-                            path: '/componentlib/remiz-recycle',
-                            component: resolve => require(['../components/ComponentLib/LubanMep.vue'], resolve)
+                            path: '/componentlib/remiz-temp',
+                            component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve)
                         },
                         {
-                            path: '/componentlib/revit',
-                            component: resolve => require(['../components/ComponentLib/LubanMep.vue'], resolve)
+                            path: '/componentlib/remiz-mate',
+                            component: resolve => require(['../components/ComponentLib/remizMate.vue'], resolve)
                         },
                     ]
                 },

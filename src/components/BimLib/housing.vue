@@ -318,7 +318,8 @@
 <script>
 import axios from "axios";
 import {IndexCumsum} from "../../utils/validate.js";
-import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
+import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
+import {cloudTree} from '../../api/getData.js'
 let deletArray = [];
 const cityOptions = [
     "上海11111111111111111111111111111111111111111111111",
@@ -505,7 +506,7 @@ export default {
                 {index:4,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"待处理",isRoot:'27人'},
                 {index:5,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"未处理",isRoot:'27人'},
             ],
-
+            proDepartNodes:[],
         }
     },
     methods: {
@@ -631,10 +632,10 @@ export default {
         },
         //弹窗异步请求树结构
         getTree(){
-            console.log(1111111)
-            axios.get(this.url).then(res => {
-                this.zNodes = res.data[0].result;
-                $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.zNodes);
+            cloudTree().then(res => {
+                this.proDepartNodes = res.data[0].result;
+                console.log( this.proDepartNodes)
+                $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
             });
         },
         //添加工程

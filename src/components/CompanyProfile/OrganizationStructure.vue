@@ -36,7 +36,7 @@
           </div>
           <div style="margin:10px auto;width:550px;">
             <!--增加多个节点/状态弹框-->
-            <el-dialog :title=textTittle :visible.sync="textAreaVisible" size='tiny'  
+            <el-dialog :title=textTittle :visible.sync="textAreaVisible" size='tiny'
                        :close-on-click-modal="false">
                 <el-input type="textarea" :rows="10"  v-model="textareaValue" placeholder="一行视为一个节点，支持多行复制粘贴" :maxlength='297'>
                 </el-input>
@@ -46,17 +46,17 @@
                     <el-button @click="textAreaVisible = false;cancleMultiNodeState()">取 消</el-button>
                 </div>
             </el-dialog>
-           
 
-        
-          </div>            
+
+
+          </div>
             <ul id="tree_edit" class="ztree"></ul>
         </div>
     </div>
 </template>
 <script>
 import axios from "axios";
-import "../../../static/zTree/js/jquery.ztree.all.min.js";
+
 import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
 function Map() {
   this.container = new Object();
@@ -1263,7 +1263,7 @@ export default {
         return;
       }
       type=='node'? $(".selcetNodes ul").slideToggle():$(".selectStatus ul").slideToggle();
-     
+
     }
   }
 };
