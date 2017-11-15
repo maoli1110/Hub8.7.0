@@ -2,20 +2,20 @@
     <div>
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-submenu index="/bimlib/housing/bim-lib">
+                <el-submenu index="/bimlib/housing/bim-lib/1">
                     <template slot="title">房建</template>
-                    <el-menu-item index="/bimlib/housing/bim-lib" >工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/housing/bim-lib/1" >工程库</el-menu-item>
                     <el-menu-item index="/bimlib/housing/working-set" >工作集库</el-menu-item>
                     <el-menu-item index="/bimlib/housing/pdf-drawing" >PDF图纸</el-menu-item>
                 </el-submenu>
-                <el-submenu index="/bimlib/BaseBuild/bim-lib">
+                <el-submenu index="/bimlib/BaseBuild/bim-lib/2">
                     <template slot="title">基建</template>
-                    <el-menu-item index="/bimlib/BaseBuild/bim-lib">工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/BaseBuild/bim-lib/2">工程库</el-menu-item>
                     <el-menu-item index="/bimlib/BaseBuild/working-set">工作集库</el-menu-item>
                 </el-submenu>
-                <el-submenu index="/bimlib/decoration/bim-lib">
+                <el-submenu index="/bimlib/decoration/bim-lib/3">
                     <template slot="title">家装</template>
-                    <el-menu-item index="/bimlib/decoration/bim-lib">工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/decoration/bim-lib/3">工程库</el-menu-item>
                 </el-submenu>
             </el-menu>
         </div>

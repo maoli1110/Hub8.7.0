@@ -57,25 +57,25 @@
             </el-col>
         </el-row>
         <el-row class="bim-data bim-dev-toolbar" >
-            <el-col v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')" :span="17">
-                <el-button type="primary" class="basic-btn" @click="addProject('add')"><i class="bim-icon el-icon-plus"></i>添加</el-button>
+            <el-col v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)" :span="17">
+                <el-button type="primary" class="basic-btn" @click="ProjManageDialog = true;addProject('add')"><i class="bim-icon el-icon-plus"></i>添加</el-button>
                 <el-button type="primary" class="basic-btn" @click="deletelibs('whileData')"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
                 <el-button type="primary" class="basic-btn" @click="monitor('all')"><i class="bim-icon el-icon-view"></i>监控</el-button>
             </el-col>
-            <el-col v-if="($route.path=='/bimlib/decoration/recycle-bin' || $route.path=='/bimlib/BaseBuild/recycle-bin'|| $route.path=='/bimlib/housing/recycle-bin')" :span="17">
+            <el-col v-if="($route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId|| $route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId)" :span="17">
                 <el-button type="primary" class="basic-btn" @click="dataRestore"><i class="bim-icon el-icon-plus"></i>还原</el-button>
                 <el-button type="primary" class="basic-btn" @click="deletelibs('wipeData')"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
                 <el-button type="primary" class="basic-btn" @click="dataEmpty"><i class="bim-icon el-icon-view"></i>清空</el-button>
             </el-col>
             <el-col :span="3" :offset="4" class="relat">
-                <el-button type="primary" class="basic-btn absol" @click="inRecycle($route.matched[2].path)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">>> 回收站</el-button>
-                <el-button type="primary" class="basic-btn absol" @click="inProLib($route.matched[2].path)" style="width:120px;right:30px;" v-if="($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')"><< 返回工程库</el-button>
+                <el-button type="primary" class="basic-btn absol" @click="inRecycle($route.matched[2].path,$route.params.typeId)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)">>> 回收站</el-button>
+                <el-button type="primary" class="basic-btn absol" @click="inProLib($route.matched[2].path,$route.params.typeId)" style="width:120px;right:30px;" v-if="($route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId)"><< 返回工程库</el-button>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-main">
             <el-col>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                <el-table class="house-table scroll-me"  :fit="true" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked" v-if="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
+                <el-table class="house-table scroll-me"  :fit="true" :data="tableData" style="width: 100%"  ref="multipleTable" :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked" v-if="($route.path==('/bimlib/housing/bim-lib/'+$route.params.typeId) ||$route.path==('/bimlib/BaseBuild/bim-lib/'+$route.params.typeId) || $route.path==('/bimlib/decoration/bim-lib/'+$route.params.typeId))">
                     <el-table-column
                         type="selection"
                         width="40" >
@@ -127,7 +127,7 @@
                     </el-table-column>
                     <el-table-column label="操作" width="135" class="quality-page-tableIcon">
                         <template slot-scope="scope" >
-                            <span class="quality-icon icon el-icon-view" @click="addProject('modific')"></span>
+                            <span class="quality-icon icon el-icon-view" @click="ProjManageDialog = true;addProject('modific')"></span>
                             <span class="quality-icon icon el-icon-caret-right" @click="extractDialog=true;extractData('处理中')"></span><!--extractData(scope.row.status)"-->
                             <span class="quality-icon icon el-icon-setting" @click="modifyInfo=true"></span>
                             <span class="quality-icon icon el-icon-edit" @click="monitorSeverVisible=true" ></span>
@@ -135,7 +135,7 @@
                     </el-table-column>
                 </el-table>
 
-                <el-table class="house-table scroll-me"  :fit="true" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked" v-if="($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')">
+                <el-table class="house-table scroll-me"  :fit="true" ref="multipleTable" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked" v-if="($route.path==('/bimlib/housing/recycle-bin/'+$route.params.typeId) ||$route.path==('/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId) || $route.path==('/bimlib/decoration/recycle-bin/'+$route.params.typeId))">
                     <el-table-column
                         type="selection"
                         width="40" >
@@ -170,6 +170,7 @@
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                     </el-pagination>
                 </div>
+                <div>{{$route.path}}</div>
             </el-col>
         </el-row>
         <!--检测页面-->
@@ -212,7 +213,10 @@
                     <el-input v-model="proManage.major" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="所属项目:" label-width="80">
-                    <el-select v-model="proManageVal" placeholder="请选择活动区域" style="width:100%" :disabled="isDisable">
+                    <el-select v-model="proManageVal" placeholder="请选择活动区域" v-show="isDisable" style="width:100%" :disabled="true">
+                        <el-option :value="proManageVal"></el-option>
+                    </el-select>
+                    <el-select v-model="proManageVal" placeholder="请选择活动区域" v-show="!isDisable" style="width:100%" :disabled="false">
                         <el-option :value="proManageVal" v-show="false"></el-option>
                         <ul id="projectDepart" class="ztree"></ul>
                     </el-select>
@@ -359,11 +363,6 @@ export default {
             });
             return data;
         };
-        let proManage = {
-                name:'什么什么度假村',
-                major:'初始项目部',
-        };
-
         return {
             checkedCities: ["北京"],  //授权人员默认选中
             data2: generateData(),  //组件公用数据
@@ -373,7 +372,6 @@ export default {
             textarea:"",            //备注
             proMsearchKey:"",       //搜索关键字
             isDisable:false,        //项目部是否可用 用于工程管理弹窗 区分是修改还是添加
-            proManageData :proManage,//公用数据复制
             extractDialog:false,//抽取数据的弹窗
             isExtractChecked:false,
             isExtractDisable:false,
@@ -454,8 +452,8 @@ export default {
                 label: '1.0.0'
             }],
             proManage:{//工程管理
-                name:'什么什么度假村',
-                major:'初始项目部',
+                name:'',
+                major:'',
             },
             modifyInfoList:{
                 name:'初始项目部',
@@ -602,11 +600,11 @@ export default {
         deletelibs(type){
             console.log(type,'什么类型')
             if(!deletArray.length){
-                commonMessage('请选择要删除的文件','warning')
+                this.commonMessage('请选择要删除的文件','warning')
                 return false;
             }
             if(type=='whileData'){
-                commonConfirm('确定要删除吗',()=>{
+                this.commonConfirm('确定要删除吗',()=>{
                     /* if(this.tableData.length===deletArray.length){
                      //重新渲染数据
                      }else*/if(deletArray.length){
@@ -624,7 +622,7 @@ export default {
 
                 },'warning')
             }else if(type=='wipeData'){
-                commonConfirm('删除后执行永久删除,不可恢复',()=>{
+                this.commonConfirm('删除后执行永久删除,不可恢复',()=>{
 
                 },()=>{},'warning')
             }
@@ -640,14 +638,19 @@ export default {
         },
         //添加工程
         addProject(type){
-            this.ProjManageDialog = true;
             if(type=='add'){
                 this.getTree();
-                this.proManage = {}
+                this.proManageVal = '';
+                this.proManage.name="";
+                this.proManage.major = '';
                 this.isDisable = false;
             }else{
+//                this.getTree();
+                this.proManageVal = 'SSSSSS';
+                this.proManage.name = '哈哈哈哈哈';
+                this.proManage.major = '哈哈哈哈哈';
                 this.isDisable = true;
-                this.proManage = this.proManageData;
+
             }
         },
         /**
@@ -679,19 +682,25 @@ export default {
         },
         //默认加载数据
         getData(name,id){
-            console.log(this.$route.path);
-            /*if(this.$route.path==='/bimlib/bim-lib/recycle-bin'){
+//            console.log(this.$route.path);
+            let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
 
-            }else if(this.$route.path==='/bimlib/bim-lib/housing'){
-
-            }*/
-
+            if(currentRoute=="/bimlib/housing/bim-lib"||currentRoute=="/bimlib/BaseBuild/bim-lib" || currentRoute=="/bimlib/decoration/bim-lib"){
+                //加载的是工作集的数据
+                console.log('加载工作集数据'+this.$route.params.typeId)
+            }else if(currentRoute=="/bimlib/housing/recycle-bin"||currentRoute=="/bimlib/BaseBuild/recycle-bin" || currentRoute=="/bimlib/decoration/recycle-bin"){
+                //加载回收站的数据
+                console.log('加载回收站数据'+this.$route.params.typeId)
+            }
             if(id && name){
                 this.tableData.forEach((val,key)=>{
                     this.$set(val,'updateUser',name)
                 })
             }
-            console.log(this.tableData)
+            if(this.$refs.multipleTable){//勾选列表复选框存在清除勾选
+                this.$refs.multipleTable.clearSelection();
+                deletArray = [];
+            }
         },
 
         //添加和修改工程
@@ -784,12 +793,15 @@ export default {
             console.log(this.monitorSever)
         },
         //进入回收站
-        inRecycle(path){
-            this.$router.push({ path: path+'/recycle-bin'})
+        inRecycle(path,paramId){
+            deletArray =[];
+            this.$router.push({ path: path+'/recycle-bin/'+paramId});
+
         },
         //返回工程库
-        inProLib(path){
-            this.$router.push({ path: path+'/bim-lib'})
+        inProLib(path,paramId){
+            deletArray =[];
+            this.$router.push({ path: path+'/bim-lib/'+paramId})
         },
     },
     mounted() {

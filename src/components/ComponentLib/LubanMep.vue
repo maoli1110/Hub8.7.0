@@ -17,12 +17,12 @@
                 <!--</el-col>-->
                 <!--</el-col>-->
 
+
                 <el-col :span="3" class="filter-bar relat" style="padding-right:65px;">
                     <span class="absol span-block" style="width:60px;left:10px;">
                         专业:
                     </span>
-
-                    <el-select v-model="filterParams.majorVal" placeholder="请选择" style="left:50px;">
+                    <el-select  v-model="filterParams.majorVal" placeholder="请选择" style="left:50px;" @change="majorChange">
                         <el-option
                             v-for="item in majorOptions"
                             :key="item.value"
@@ -30,16 +30,15 @@
                             :value="item.value">
                         </el-option>
                     </el-select>
-
                 </el-col>
                 <el-col :span="3" class="relat" style="padding-right:50px;">
                      <span class="absol span-block" style="width:80px;">
                         构件大类:
                     </span>
 
-                    <el-select v-model="filterParams.bigType" placeholder="请选择" style="left:80px;">
+                    <el-select  v-model="filterParams.bigType" placeholder="请选择" style="left:80px;" @change="typeBigChange">
                         <el-option
-                            v-for="item in majorOptions"
+                            v-for="item in compTypeBig"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -51,9 +50,9 @@
                         构件小类:
                     </span>
 
-                    <el-select v-model="filterParams.smallType" placeholder="请选择" style="left:120px;">
+                    <el-select  v-model="filterParams.smallType" placeholder="请选择" style="left:120px;" @change="typeSmallChange">
                         <el-option
-                            v-for="item in majorOptions"
+                            v-for="item in compTypeSmall"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -85,31 +84,38 @@
                                 type="selection"
                                 width="40">
                             </el-table-column>
-                            <el-table-column label="序号" width="50" prop="index"><!--(cur_page-1)*10+index-->
+                            <!--<el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
+                            </el-table-column>-->
+                            <el-table-column prop="compName" width="" label="构件名称" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="processName" width="" label="工程名称" show-overflow-tooltip>
-                            </el-table-column>
-                            <el-table-column prop="speciality" width="50" label="专业">
+                            <el-table-column prop="img" width="80" label="缩略图">
                                 <template slot-scope="scope">
-                                    <span v-show="scope.row.speciality==='土建'" class="el-icon-date"></span>
-                                    <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>
+                                    <!--<span v-show="scope.row.speciality==='土建'" class="el-icon-date"></span>
+                                    <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>-->
+                                    <img :src="scope.row.img" alt="" style="width:44px;">
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="BIMparams" width="70" label="BIM属性">
+                            <el-table-column prop="version" width="70" label="版本">
                             </el-table-column>
-                            <el-table-column prop="updateUser" width="80" label="上传人">
+                            <el-table-column prop="major" width="70" label="专业">
                             </el-table-column>
-                            <el-table-column prop="updateTime" width="135" label="上传时间">
+                            <el-table-column prop="typeBig" width="70" label="构件大类">
                             </el-table-column>
-                            <el-table-column prop="PDF" width="65" label="图纸">
+                            <el-table-column prop="typeSmall" width="70" label="构件小类">
                             </el-table-column>
-                            <el-table-column prop="proDepartment" width="" label="所属项目部" show-overflow-tooltip>
+                            <el-table-column prop="factrue" width="" label="厂商" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="size" width="65" label="大小">
+                            <el-table-column prop="fav" width="80" label="型号">
                             </el-table-column>
-                            <el-table-column prop="output" width="100" label="输出造价">
+                            <el-table-column prop="autor" width="80" label="作者">
                             </el-table-column>
-                            <el-table-column label="操作">
+                            <el-table-column prop="updatePeson" width="80" label="上传人">
+                            </el-table-column>
+                            <el-table-column prop="updateTime" width="130" label="更新时间">
+                            </el-table-column>
+                            <el-table-column prop="uploadTime" width="60" label="下载次数">
+                            </el-table-column>
+                            <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
                                     <i class="el-icon-edit" @click=" override = true;updateComponent = true;defaultCompDate()"></i>
 
@@ -206,7 +212,7 @@
             <!--云构件库-->
             <el-dialog :visible.sync="ModifyTree" custom-class="cloud-component">
                 <el-row>
-                    <el-col ><div class="dialog-title">命令栏</div></el-col>
+                    <el-col ><div class="dialog-title">构件树管理</div></el-col>
                     <el-col class="cloud-toobar">
 
                         <el-col :span="4" class="icon-item" >
@@ -215,22 +221,30 @@
                         <el-col :span="4" class="icon-item" >
                             <div @click="expandNode({type:'collapse',operObj:'cloudTree'})"><span class="el-icon-minus"></span></div>
                         </el-col>
-                        <el-col :span="4" class="icon-item"><span class="el-icon-arrow-up" @click="upMove"></span></el-col>
-                        <el-col :span="4" class="icon-item"><span class="el-icon-arrow-down" @click="downMove"></span></el-col>
-                        <el-col :span="4" class="icon-item"><span class="el-icon-d-arrow-left" @click="resetZtree"></span></el-col>
-                        <el-col :span="4" class="icon-item"><span class="el-icon-picture" @click="ztreeSave"></span></el-col>
+                        <el-col :span="4" class="icon-item">
+                            <div @click="upMove"><span class="el-icon-arrow-up" ></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item">
+                            <div @click="downMove"><span class="el-icon-arrow-down" ></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item">
+                            <div @click="resetZtree"><span class="el-icon-d-arrow-left" ></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item">
+                            <div @click="ztreeSave"><span class="el-icon-picture" ></span></div>
+                        </el-col>
                     </el-col>
                     <el-col>
-                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:600px;">
+                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:450px;">
                             <ul class="ztree scroll-me" id="cloudTree" style="background:#fff;"></ul>
                         </vue-scrollbar>
                     </el-col>
                 </el-row>
                 <div slot="footer" class="dialog-footer">
                     <el-button class="dialog-btn dialog-btn-ok" type="primary"
-                               @click="updateComponent = false;updateOk()">确 定
+                               @click="ModifyTree = false;ModifyOk()">确 定
                     </el-button>
-                    <el-button class="dialog-btn dialog-btn-cancel" @click="updateComponent = false;updateCancel()">取 消</el-button>
+                    <el-button class="dialog-btn dialog-btn-cancel" @click="ModifyTree = false;ModifyCancel()">取 消</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -251,27 +265,30 @@
         data(){
             return {
                 val: "",
-                selectDate: "",
-                fileName:"",
-                updateComponent: false,
-                ModifyTree:false,
-                override:false,//是否覆盖
-                cities: [],
-                province: [],
-                counties: [],
-                ruleForm: {
+                selectDate: "",     //日期插件选择的日期
+                updateComponent: false,//上传构件弹窗
+                ModifyTree:false,   //构件树修改弹窗
+                override:false,     //是否覆盖
+                cities: [],         //三级联动城市
+                province: [],       //三级联动省
+                counties: [],       //三级联动区
+                ruleForm: {         //关闭三级联动 选择的省、市、区的id和name
                     location: "",
                     countyId: ""
                 },
-                filterParams: {
-                    versionsVal: "",
-                    bigType: "",
-                    smallType: '',
-                    searchVal: '',
-                    startTime: "",
-                    endTime: ""
+                filterParams: {     //筛选栏的条件
+                    majorVal: "",//版本
+                    bigType: "",    //大类
+                    smallType: '',  //小类
+                    searchVal: '',  //关键字
+                    startTime: "",  //开始时间
+                    endTime: "",    //结束时间
+
                 },
-                majorOptions: [{//专业
+                majorOptions: [{    //专业选择框
+                    value: '不限',
+                    label: '不限'
+                },{    //专业选择框
                     value: '土建',
                     label: '土建'
                 }, {
@@ -290,88 +307,103 @@
                     value: '场布',
                     label: '场布'
                 }],
-                versionsOptions: [{//版本
-                    value: '1.0.0',
-                    label: '1.0.0'
+                compTypeBig:[{
+                    value:'不限',
+                    label:"不限"
                 }],
-                fileList: [],
+                compTypeSmall:[{
+                    value:'不限',
+                    label:"不限"
+                }],
+                versionsOptions: [{ //版本选择框
+                    value: '1.0.0',
+
+                }],
+                fileList: [],      //上传的文件信息
                 //分页的一些设置
                 cur_page: 1,
                 totalPage: 50,
                 totalNumber: 300,
+
                 tableData: [
                     {
                         index: 1,
-                        processName: '鲁班安装鲁班安装鲁班安装鲁班安装',
-                        speciality: "土建",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "处理成功",
-                        isRoot: '27人'
+                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙平安消防设备有限公司",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
                     {
                         index: 2,
-                        processName: '鲁班安装',
-                        speciality: "土建",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "处理失败",
-                        isRoot: '27人'
+                        compName: '鲁班安装',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙平安消防设备有限公司",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
                     {
                         index: 3,
-                        processName: '鲁班安装',
-                        speciality: "钢筋",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "处理中",
-                        isRoot: '27人'
+                        compName: '鲁班',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
                     {
                         index: 4,
-                        processName: '鲁班安装',
-                        speciality: "土建",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "待处理",
-                        isRoot: '27人'
+                        compName: '安装',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙平安消防设备有限公司",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
                     {
                         index: 5,
-                        processName: '鲁班安装',
-                        speciality: "钢筋",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "未处理",
-                        isRoot: '27人'
+                        compName: '鲁班安装',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙平安",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
-                ],
-                updateParams:{
+                ],  //模拟列表数据
+
+                updateParams:{     //上传构件的一些文件信息
                     templateFile:"",
                     product:"",
                     career:"",
@@ -391,10 +423,9 @@
                     },
                     callback: {
 //                        onClick: this.onClick
-                        onMouseDown: this.zTreeOnMouseDown
                     }
                 },
-                zNodes:[]
+                zNodes:[]   //树结构的初始值
             }
         },
         methods: {
@@ -440,15 +471,28 @@
             handlePreview(file) {
                 console.log(file);
             },
+            /**
+             *上传成功回调的函数
+             * @params response 浏览器的响应返回值
+             * @params file     文件信息
+             * @params fileList 文件的信息
+            **/
+
             updataSucess(response, file, fileList){
                 this.updateParams.templateFile = fileList[0].name
                 console.log(response,'response')
                 console.log(file,'上传文件上传成功')
             },
+            /**
+             *上传失败回调的函数
+             * @params err      上传失败的返回信息
+             * @params file     文件信息
+             * @params fileList 文件的信息
+             **/
             updateError(err, file, fileList){
                 this.commonMessage('上传失败哦。。。。','warning')
             },
-            //上传清除数据
+            //上传构件清除数据
             clearUploadInfo(){
                 for(var key in this.updateParams){
                     console.log( this.updateParams[key])
@@ -457,7 +501,7 @@
             },
 
             /**
-             * 上传文件再次上传覆盖之前的
+             * 上传文件再次上传 （ps:覆盖之前的)
              * @param type  1.update上传 2.cover修改页面
              **/
             overUpdate(){
@@ -518,6 +562,72 @@
                     this.filterParams.endTime = val.split('-')[1]
                 }
             },
+            majorChange(val){
+                console.log(val,'val');
+                if(val=='不限'){
+                    this.compTypeSmall = [{
+                        value:'不限',
+                        label:"不限"
+                    }]
+                }else{
+                    this.compTypeBig = [{
+                        value:'不限',
+                        label:"不限"
+                    },{
+                        value:'初始大类',
+                        label:"初始大类"
+                    },{
+                        value:'土建大类',
+                        label:"土建大类"
+                    },{
+                        value:'房建大类',
+                        label:"家装大类"
+                    },{
+                        value:'家装大类',
+                        label:"家装大类"
+                    },{
+                        value:'中关村',
+                        label:"中关村"
+                    }
+                    ]
+                }
+
+
+            },
+            typeBigChange(val){
+                console.log(val);
+                if(val=='不限'){
+                    this.compTypeSmall = [{
+                        value:'不限',
+                        label:"不限"
+                    }]
+                }else{
+                    this.compTypeSmall = [{
+                        value:'不限',
+                        label:"不限"
+                    },{
+                        value:'初始大类',
+                        label:"初始大类"
+                    },{
+                        value:'土建大类',
+                        label:"土建大类"
+                    },{
+                        value:'房建大类',
+                        label:"家装大类"
+                    },{
+                        value:'家装大类',
+                        label:"家装大类"
+                    },{
+                        value:'中关村',
+                        label:"中关村"
+                    }
+                    ]
+                }
+
+            },
+            typeSmallChange(val){
+
+            },
             //搜索功能
             searchComp(){
                 console.log(this.filterParams, '执行搜索')
@@ -567,10 +677,9 @@
             updateCancel(){
                 this.updateParams = {};
             },
-            //getCloudTree
+            //加载树结构
             getZtree(){
                 cloudTree().then(res => {
-
                     //this.zNodes = res.data[0].result;
                     this.zNodes = [ {
                         id: 1,
@@ -616,11 +725,12 @@
                     level = 1;
                 });
             },
+            //加载树结构
             getCloudTree(){
-                this.ModifyTree = true;
+               this.ModifyTree = true;
                this.getZtree();
             },
-            //ztree
+            //ztree  插件的事件
             //展开、收起树节点
             expandNode(e) {
                 let type = e.type;
@@ -769,32 +879,46 @@
                 });
                 console.log(treeNodes,'保存更改')
             },
-            zTreeOnMouseDown(event, treeId, treeNode){
-                console.log(treeNode ? treeNode.tId + ", " + treeNode.name : "isRoot")
+            //构件树保存
+            ModifyOk(){
+                //掉保存的接口
             },
+            //构件树取消保存
+            ModifyCancel(){
+                //不用调用接口
+            },
+            getData(){
+                this.filterParams.majorVal = this.majorOptions[0].value;
+                this.filterParams.smallType = this.compTypeSmall[0].value;
+                this.filterParams.bigType = this.compTypeBig[0].value;
+            },
+
         },
         mounted(){
             let vThis = this;
+            //后端返回省级结构进行赋值
             getCitys().then((data) => {
                 this.cities = data.data.cities;
                 this.province = data.data.provice;
                 this.counties = data.data.counties;
-            })
+            });
+            //三级联动加载数据
             $("#provinLink").click(function (e) {
                 SelCity(this, e, vThis, vThis.cities, vThis.counties, vThis.province);
             });
-        },
-        created(){
 
         },
         components: {VueScrollbar},
         watch: {
-            'ruleForm.countyId': function (val, old) {//三级联动效果
+            'ruleForm.countyId': function (val, old) {//三级联动countryId发生变化的时候触发
                 if (val != old) {
                     console.log(this.ruleForm.countyId, '有延迟吗');
                 }
             }
-        }
+        },
+        created(){
+            this.getData();
+        },
     }
 </script>
 

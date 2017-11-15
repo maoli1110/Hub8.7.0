@@ -3,6 +3,21 @@
     -webkit-box-shadow:  2px 4px 7px #e2e5e9;
     -moz-box-shadow:  2px 4px 7px #e2e5e9;
     box-shadow:  2px 4px 7px #e2e5e9;}
+.component-main .el-date-editor--daterange.el-input {
+    width: 100% !important;
+}
+.component-main .dialog-title{font-size:16px;font-weight:bold;float:left;margin-top:-41px;}
+.component-main .el-dialog__body{margin-top:20px;}
+.el-input-group__append, .el-input-group__prepend{
+    background-color: #6595f2;padding: 0 19px;color:#fff;
+}
+.component-main .el-table td:nth-child(3) .cell{
+    line-height: 64px !important;
+}
+.component-main .el-table td:nth-child(2) .cell,.component-main .el-table td:nth-child(8) .cell{
+    padding-left:20px !important;text-align:left;
+}
+.component-main .el-table td .cell{}
 /*filter-bar(工具栏)*/
 .filter-toolbar{
     margin-bottom:20px;border-bottom:1px solid #e6e6e6;padding-bottom:10px;
@@ -12,13 +27,11 @@
 .tools-bar .basic-btn i{
     margin-right:10px;
 }
-/*up-component*/
+/*up-component(上传构件弹窗)*/
 .up-component{
     width:692px;height:564px;
 }
-.component-main .el-date-editor--daterange.el-input {
-    width: 100% !important;
-}
+/*input*/
 .up-component .relat{
     margin:8px 0;
 }
@@ -28,23 +41,21 @@
 .up-component .el-select>.el-input{width:100%;}
 .up-component .el-textarea{width:86.5%;}
 .up-component .label-w{width:80px;text-align:right;}
-.el-input-group__append, .el-input-group__prepend{
-    background-color: #6595f2;padding: 0 19px;color:#fff;
-}
 .up-component .update-btn{
     position: absolute;
-    right: 24px;
+    right: 18px;
     top: 0px;
     height:38px !important;
 }
+/*simulate-input(模拟input  label样式)*/
 .up-component .simulate-input{
     width:240px;height:36px;line-height:36px;display:inline-block;
 }
 .simulate-label{
     width:84%;border:1px solid #e6e6e6;height:36px;line-height:36px;margin-left:80px;border-radius:2px;padding-left: 10px;
 }
-.component-main .dialog-title{font-size:16px;font-weight:bold;float:left;margin-top:-41px;}
-.component-main .el-dialog__body{margin-top:20px;}
+/*cloud-component(云构件树的弹窗样式)*/
+/*工具栏*/
 .cloud-component .cloud-toobar{
     padding:0px 0px 20px;
 }
@@ -57,5 +68,6 @@
     color:#fff;background:#6595f2;
 }
 .cloud-component .cloud-toobar .icon-item>div{
-    padding:0 10px;
+    width:100%;
 }
+/*树结构*/
