@@ -84,31 +84,38 @@
                                 type="selection"
                                 width="40">
                             </el-table-column>
-                            <el-table-column label="序号" width="50" prop="index"><!--(cur_page-1)*10+index-->
+                            <!--<el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
+                            </el-table-column>-->
+                            <el-table-column prop="compName" width="" label="构件名称" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="processName" width="" label="工程名称" show-overflow-tooltip>
-                            </el-table-column>
-                            <el-table-column prop="speciality" width="50" label="专业">
+                            <el-table-column prop="img" width="80" label="缩略图">
                                 <template slot-scope="scope">
-                                    <span v-show="scope.row.speciality==='土建'" class="el-icon-date"></span>
-                                    <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>
+                                    <!--<span v-show="scope.row.speciality==='土建'" class="el-icon-date"></span>
+                                    <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>-->
+                                    <img :src="scope.row.img" alt="" style="width:44px;">
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="BIMparams" width="70" label="BIM属性">
+                            <el-table-column prop="version" width="70" label="版本">
                             </el-table-column>
-                            <el-table-column prop="updateUser" width="80" label="上传人">
+                            <el-table-column prop="major" width="70" label="专业">
                             </el-table-column>
-                            <el-table-column prop="updateTime" width="135" label="上传时间">
+                            <el-table-column prop="typeBig" width="70" label="构件大类">
                             </el-table-column>
-                            <el-table-column prop="PDF" width="65" label="图纸">
+                            <el-table-column prop="typeSmall" width="70" label="构件小类">
                             </el-table-column>
-                            <el-table-column prop="proDepartment" width="" label="所属项目部" show-overflow-tooltip>
+                            <el-table-column prop="factrue" width="" label="厂商" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="size" width="65" label="大小">
+                            <el-table-column prop="fav" width="80" label="型号">
                             </el-table-column>
-                            <el-table-column prop="output" width="100" label="输出造价">
+                            <el-table-column prop="autor" width="80" label="作者">
                             </el-table-column>
-                            <el-table-column label="操作">
+                            <el-table-column prop="updatePeson" width="80" label="上传人">
+                            </el-table-column>
+                            <el-table-column prop="updateTime" width="130" label="更新时间">
+                            </el-table-column>
+                            <el-table-column prop="uploadTime" width="60" label="下载次数">
+                            </el-table-column>
+                            <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
                                     <i class="el-icon-edit" @click=" override = true;updateComponent = true;defaultCompDate()"></i>
 
@@ -321,73 +328,78 @@
                 tableData: [
                     {
                         index: 1,
-                        processName: '鲁班安装鲁班安装鲁班安装鲁班安装',
-                        speciality: "土建",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "处理成功",
-                        isRoot: '27人'
+                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙平安消防设备有限公司",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
                     {
                         index: 2,
-                        processName: '鲁班安装',
-                        speciality: "土建",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "处理失败",
-                        isRoot: '27人'
+                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙平安消防设备有限公司",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
                     {
                         index: 3,
-                        processName: '鲁班安装',
-                        speciality: "钢筋",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "处理中",
-                        isRoot: '27人'
+                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙平安消防设备有限公司",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
                     {
                         index: 4,
-                        processName: '鲁班安装',
-                        speciality: "土建",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "待处理",
-                        isRoot: '27人'
+                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙平安消防设备有限公司",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
                     {
                         index: 5,
-                        processName: '鲁班安装',
-                        speciality: "钢筋",
-                        BIMparams: "预算",
-                        updateUser: "杨会杰",
-                        updateTime: '2017-11-18:13:14',
-                        PDF: "0",
-                        proDepartment: "初始项目部",
-                        size: '512KB',
-                        output: '10.78kb',
-                        status: "未处理",
-                        isRoot: '27人'
+                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
+                        img: "../../../static/img/wavebrak519400.jpg",
+                        version: "2.0.0",
+                        major: "消防",
+                        typeBig: '消火栓',
+                        typeSmall: "消火栓箱",
+                        factrue: "长沙平安消防设备有限公司",
+                        fav: '123123',
+                        autor: '陈翔',
+                        updatePeson: "陈翔陈翔陈翔",
+                        updateTime: '2017.11.18 12:12:12',
+                        uploadTime:15
                     },
                 ],  //模拟列表数据
 
@@ -553,7 +565,7 @@
             majorChange(val){
                 console.log(val,'val');
                 if(val=='不限'){
-                    this.compTypeBig = [{
+                    this.compTypeSmall = [{
                         value:'不限',
                         label:"不限"
                     }]
