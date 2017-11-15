@@ -144,7 +144,7 @@ export default new Router({
                     // BIM库
                     path: '/bimlib',
                     component: resolve => require(['../components/BimLib/BimLib.vue'], resolve),
-                    redirect: '/bimlib/housing/bim-lib',
+                    redirect: '/bimlib/housing/bim-lib/1',
                     children: [
                         {
                             // BIM库
@@ -155,7 +155,7 @@ export default new Router({
                             children: [
                                 {
                                     name:'housing?2',
-                                    path: 'bim-lib',// 房建
+                                    path: 'bim-lib/:typeId',// 房建
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
                                 },
                                 {
@@ -170,7 +170,7 @@ export default new Router({
                                 },
                                 {
                                     name:'housing',
-                                    path: 'recycle-bin',// 精装
+                                    path: 'recycle-bin/:typeId',// 精装
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
                             ]
@@ -183,7 +183,7 @@ export default new Router({
                             children: [
                                 {
                                     name:'BaseBuild?5',
-                                    path: 'bim-lib',// 房建
+                                    path: 'bim-lib/:typeId',// 房建
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
                                     query:{'typeId':'11'},
                                 },
@@ -199,7 +199,7 @@ export default new Router({
                                 },
                                 {
                                     name:'baseBuild',
-                                    path: 'recycle-bin',// 精装
+                                    path: 'recycle-bin/:typeId',// 精装
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
                             ]
@@ -212,12 +212,12 @@ export default new Router({
                             children: [
                                 {
                                     name:'decoration?8',
-                                    path: 'bim-lib',// 房建
+                                    path: 'bim-lib/:typeId',// 房建
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
                                 },
                                 {
                                     name:'decoration',
-                                    path: 'recycle-bin',// 精装
+                                    path: 'recycle-bin/:typeId',// 精装
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve)
                                 },
 
