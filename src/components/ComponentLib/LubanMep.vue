@@ -17,12 +17,12 @@
                 <!--</el-col>-->
                 <!--</el-col>-->
 
+
                 <el-col :span="3" class="filter-bar relat" style="padding-right:65px;">
                     <span class="absol span-block" style="width:60px;left:10px;">
                         专业:
                     </span>
-
-                    <el-select v-model="filterParams.majorVal" placeholder="请选择" style="left:50px;">
+                    <el-select  v-model="filterParams.majorVal" placeholder="请选择" style="left:50px;" @change="majorChange">
                         <el-option
                             v-for="item in majorOptions"
                             :key="item.value"
@@ -30,16 +30,15 @@
                             :value="item.value">
                         </el-option>
                     </el-select>
-
                 </el-col>
                 <el-col :span="3" class="relat" style="padding-right:50px;">
                      <span class="absol span-block" style="width:80px;">
                         构件大类:
                     </span>
 
-                    <el-select v-model="filterParams.bigType" placeholder="请选择" style="left:80px;">
+                    <el-select  v-model="filterParams.bigType" placeholder="请选择" style="left:80px;" @change="typeBigChange">
                         <el-option
-                            v-for="item in majorOptions"
+                            v-for="item in compTypeBig"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -51,9 +50,9 @@
                         构件小类:
                     </span>
 
-                    <el-select v-model="filterParams.smallType" placeholder="请选择" style="left:120px;">
+                    <el-select  v-model="filterParams.smallType" placeholder="请选择" style="left:120px;" @change="typeSmallChange">
                         <el-option
-                            v-for="item in majorOptions"
+                            v-for="item in compTypeSmall"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -271,14 +270,18 @@
                     countyId: ""
                 },
                 filterParams: {     //筛选栏的条件
-                    versionsVal: "",//版本
+                    majorVal: "",//版本
                     bigType: "",    //大类
                     smallType: '',  //小类
                     searchVal: '',  //关键字
                     startTime: "",  //开始时间
                     endTime: "",    //结束时间
+
                 },
                 majorOptions: [{    //专业选择框
+                    value: '不限',
+                    label: '不限'
+                },{    //专业选择框
                     value: '土建',
                     label: '土建'
                 }, {
@@ -297,9 +300,17 @@
                     value: '场布',
                     label: '场布'
                 }],
+                compTypeBig:[{
+                    value:'不限',
+                    label:"不限"
+                }],
+                compTypeSmall:[{
+                    value:'不限',
+                    label:"不限"
+                }],
                 versionsOptions: [{ //版本选择框
                     value: '1.0.0',
-                    label: '1.0.0'
+
                 }],
                 fileList: [],      //上传的文件信息
                 //分页的一些设置
@@ -538,6 +549,72 @@
                     this.filterParams.startTimer = val.split('-')[0];
                     this.filterParams.endTime = val.split('-')[1]
                 }
+            },
+            majorChange(val){
+                console.log(val,'val');
+                if(val=='不限'){
+                    this.compTypeBig = [{
+                        value:'不限',
+                        label:"不限"
+                    }]
+                }else{
+                    this.compTypeBig = [{
+                        value:'不限',
+                        label:"不限"
+                    },{
+                        value:'初始大类',
+                        label:"初始大类"
+                    },{
+                        value:'土建大类',
+                        label:"土建大类"
+                    },{
+                        value:'房建大类',
+                        label:"家装大类"
+                    },{
+                        value:'家装大类',
+                        label:"家装大类"
+                    },{
+                        value:'中关村',
+                        label:"中关村"
+                    }
+                    ]
+                }
+
+
+            },
+            typeBigChange(val){
+                console.log(val);
+                if(val=='不限'){
+                    this.compTypeSmall = [{
+                        value:'不限',
+                        label:"不限"
+                    }]
+                }else{
+                    this.compTypeSmall = [{
+                        value:'不限',
+                        label:"不限"
+                    },{
+                        value:'初始大类',
+                        label:"初始大类"
+                    },{
+                        value:'土建大类',
+                        label:"土建大类"
+                    },{
+                        value:'房建大类',
+                        label:"家装大类"
+                    },{
+                        value:'家装大类',
+                        label:"家装大类"
+                    },{
+                        value:'中关村',
+                        label:"中关村"
+                    }
+                    ]
+                }
+
+            },
+            typeSmallChange(val){
+
             },
             //搜索功能
             searchComp(){
@@ -798,6 +875,11 @@
             ModifyCancel(){
                 //不用调用接口
             },
+            getData(){
+                this.filterParams.majorVal = this.majorOptions[0].value;
+                this.filterParams.smallType = this.compTypeSmall[0].value;
+                this.filterParams.bigType = this.compTypeBig[0].value;
+            },
 
         },
         mounted(){
@@ -812,8 +894,6 @@
             $("#provinLink").click(function (e) {
                 SelCity(this, e, vThis, vThis.cities, vThis.counties, vThis.province);
             });
-        },
-        created(){
 
         },
         components: {VueScrollbar},
@@ -823,7 +903,10 @@
                     console.log(this.ruleForm.countyId, '有延迟吗');
                 }
             }
-        }
+        },
+        created(){
+            this.getData();
+        },
     }
 </script>
 
