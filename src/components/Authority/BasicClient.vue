@@ -27,7 +27,7 @@
                     <template slot-scope="scope">
                         <el-checkbox-group v-model="scope.row.checkedCities"
                                            @change="handleCheckedCitiesChange(scope.row.checkedCities,scope.row)">
-                            <el-checkbox v-for="city in scope.row.cities" :label="city" :key="city">{{city}}
+                            <el-checkbox  class="el-checked-wrap" v-for="city in scope.row.cities" :label="city" :key="city">{{city}}
                             </el-checkbox>
                         </el-checkbox-group>
                     </template>
@@ -208,6 +208,7 @@ export default {
 };
 </script>
 <style>
+
 </style>
 
 

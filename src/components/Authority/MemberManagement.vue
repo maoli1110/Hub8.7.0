@@ -41,7 +41,6 @@
             <el-table ref="multipleTable" :data="memberTableData" border tooltip-effect="dark"
                       style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column type='index' label="序号" width="55"></el-table-column>
                 <el-table-column prop="name" label="姓名" width="150" align='left'>
                    <template slot-scope="scope">
                         <div slot="reference" class="name-wrapper">
@@ -59,7 +58,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="role" label="角色" width="100"></el-table-column>
-                <el-table-column prop="phone" label="手机号码" width="100"></el-table-column>
+                <el-table-column prop="phone" label="手机号码" width="150"></el-table-column>
                 <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
                 <el-table-column label="更新时间" width="180">
                     <template slot-scope="scope">{{ scope.row.date }}</template>
@@ -700,6 +699,9 @@ export default {
   },
   mounted() {
     $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
+  },
+  created () {
+    this.$emit('routerActive')
   }
 };
 </script>
@@ -728,14 +730,14 @@ export default {
 }
 
 .textcell {
-  height: 50px;
+  height: 46px;
   padding: 0 20px;
-  line-height: 50px;
+  line-height: 46px;
   overflow: hidden;
   text-overflow: ellipsis;
+  box-sizing: border-box;
   white-space: nowrap;
 }
-
 .contens-wrap > li {
   padding: 3px 0px;
 }

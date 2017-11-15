@@ -85,52 +85,13 @@
             <div>
                 <el-tabs v-model="activeName" class="member-tabs" @tab-click="handleClick">
                     <el-tab-pane label="系统客户端" name="first">
-                        <el-carousel trigger="click" height="280px" arrow="always" :interval="99999999">
-                            <el-carousel-item v-for="item in 4" :key="item">
-                                <div style="padding:26px">
-                                    <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in clientInformation"
-                                             :key="index" class="card">
-                                        <div style="height:20px;padding:2% 8px 23px 0 ">
-                                            <el-button type="text" style="float:right">
-                                            <span class="el-icon-star-on authorited" v-show="item.hasAuthorited"
-                                                  @click="cancleAuthorited(item,$event)"
-                                                  @mouseenter='authoritedMouseEnter($event)'
-                                                  @mouseleave='authoritedMouseLeave($event)'>已授权</span>
-                                                <span class="el-icon-star-on unauthorited"
-                                                      v-show="!item.hasAuthorited&&!item.hasPurchased"
-                                                      @click="authorited(item,$event)"
-                                                      @mouseenter='unAuthoritedMouseEnter($event)'
-                                                      @mouseleave='unAuthoritedMouseLeave($event)'
-                                                > 未授权</span>
-                                                <span class="el-icon-star-on" style="float:right;color:#e6e6e6;"
-                                                      v-show="item.hasPurchased&&!item.hasAuthorited"> 未购买</span>
-                                            </el-button>
-                                        </div>
-                                        <div style="text-align: center;border-bottom: 1px solid rgb(209, 229, 229);">
-                                            <img src="http://element.eleme.io/static/hamburger.50e4091.png"
-                                                 class="image"
-                                                 style="width:64px;height:64px;margin:0 auto">
-                                            <div style="height:35px;line-height:35px">{{item.productsName}}</div>
-                                        </div>
-                                        <div>
-                                            <div class="bottom clearfix" style="padding:5px 0 ">
-                                                <p style="text-align:center;">全部授权数:
-												   <span>{{item.allAuthorizations}}</span>
-                                                </p>
-                                                <p style="text-align:center;padding-top:5px">可用授权数:
-												   <span>{{item.availableAuthorizations}}</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </el-card>
-                                </div>
-                            </el-carousel-item>
-                        </el-carousel>
                     </el-tab-pane>
                     <el-tab-pane label="算量云功能" name="second">
-                        <el-carousel trigger="click" height="280px" arrow="always" :interval="99999999">
-                            <el-carousel-item v-for="item in 5" :key="item">
-                                <div style="padding:26px">
+                    </el-tab-pane>
+                    <el-tab-pane label="精装" name="third"></el-tab-pane>
+                    <el-carousel trigger="click" height="270px" arrow="always" :interval="99999999">
+                            <el-carousel-item v-for="item in 4" :key="item">
+                                <div style="padding:25px">
                                     <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in clientInformation"
                                              :key="index" class="card">
                                         <div style="height:20px;padding:2% 8px 23px 0 ">
@@ -149,8 +110,8 @@
                                                       v-show="item.hasPurchased&&!item.hasAuthorited"> 未购买</span>
                                             </el-button>
                                         </div>
-                                        <div style="text-align: center;border-bottom: 1px solid rgb(209, 229, 229);">
-                                            <img src="http://element.eleme.io/static/hamburger.50e4091.png"
+                                        <div style="text-align: center;border-bottom: 1px solid #e6e6e6;">
+                                            <img src="http://www.lubansoft.com/uploads/1497256436.png"
                                                  class="image"
                                                  style="width:64px;height:64px;margin:0 auto">
                                             <div style="height:35px;line-height:35px">{{item.productsName}}</div>
@@ -169,8 +130,6 @@
                                 </div>
                             </el-carousel-item>
                         </el-carousel>
-                    </el-tab-pane>
-                    <el-tab-pane label="精装" name="third">角色管理</el-tab-pane>
                 </el-tabs>
             </div>
             <div>
@@ -411,8 +370,7 @@
     </div>
 </template>
 <script>
-import "../../../static/zTree/js/jquery.ztree.core.min.js";
-import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+
 export default {
   data() {
     return {
@@ -669,11 +627,11 @@ export default {
 }
 
 .card + .card {
-  margin-left: 32px;
+  margin-left: 30px;
 }
 
 .card:nth-child(1) {
-  margin-left: 35px;
+  margin-left: 40px;
 }
 
 .authorited {
