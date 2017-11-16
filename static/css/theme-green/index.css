@@ -488,6 +488,18 @@
     height: 460px;
 }
 
+.el-dialog--add-member-dialog {
+    width: 540px;
+    height: 530px;
+}
+.el-dialog--batch-add-member{
+    width: 772px;
+    height:582px;
+}
+.el-dialog--authorized-data-catalog{
+    width:760px;
+    height: 670px;
+}
 .el-dialog--project-authorize {
     width: 520px;
     height: 700px;
@@ -507,7 +519,14 @@
     min-width: 390px;
     min-height: 383px;
 }
-
+.el-dialog--modify{
+    width:670px;
+    height:500px;
+}
+.el-dialog--add-authorization{
+    width:670px;
+    height: 607px;
+}
 .el-dialog--small {
     width: 50%
 }
@@ -1601,15 +1620,15 @@
 
 .el-table .cell,
 .el-table th>div {
-    padding-left: 18px;
-    padding-right: 18px;
+/*    padding-left: 18px;
+    padding-right: 18px;*/
     text-align: center;
     box-sizing: border-box;
     text-overflow: ellipsis
 }
 
 .role-wrap .el-table .cell {
-    margin-left:20px;
+    margin-left: 20px;
     text-align: left;
 }
 
@@ -3133,7 +3152,7 @@
     box-sizing: border-box;
     outline: 0;
     margin: 0;
-    padding: 12px 21px;
+    padding: 12px 12px;
     font-size: 14px;
     border-radius: 5px
 }
@@ -3830,9 +3849,15 @@
 }
 
 .el-form-item.is-required .el-form-item__label:before {
+    position: absolute;
     content: '*';
     color: #ff4949;
-    margin-right: 4px
+    /* margin-right: 4px */
+    right:25px;
+    color: #e30000;
+    font-family: 'yahei';
+    font-size: 14px;
+
 }
 
 .el-form-item__label {
@@ -9057,15 +9082,15 @@
 }
 
 .el-transfer-panel .el-checkbox__inner {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px
+    width: 18px;
+    height: 18px;
+    border-radius: 2px
 }
 
 .el-transfer-panel .el-checkbox__inner:after {
-    height: 6px;
+    height: 8px;
     width: 3px;
-    left: 4px
+    left: 5px
 }
 
 .el-transfer-panel__body {
@@ -9106,7 +9131,7 @@
 
 .el-transfer-panel__item .el-checkbox__input {
     position: absolute;
-    top: 9px
+    top: 7px
 }
 
 .el-transfer-panel__item+.el-transfer-panel__item {

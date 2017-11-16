@@ -2,9 +2,9 @@
     <div>
         <div class="header">
             <div class="el-form-item el-form_">
-                <label class="el-form-item__label" style="width: 85px;">组织节点：</label>
+                <label class="el-form-item__label" >组织节点：</label>
                 <div class="el-form-item__content" style="margin-left: 85px;">
-                    <el-select v-model="orgValue" placeholder="请选择">
+                    <el-select v-model="orgValue" placeholder="请选择" style="max-width:260px">
                         <el-option
                             :value="orgValue" v-show="false">
                         </el-option>
@@ -13,9 +13,9 @@
                 </div>
             </div>
             <div class="el-form-item el-form_">
-                <label class="el-form-item__label" style="width: 85px;">角色：</label>
-                <div class="el-form-item__content" style="margin-left: 85px;">
-                    <el-select v-model="role" placeholder="请选择">
+                <label class="el-form-item__label">角色：</label>
+                <div class="el-form-item__content" style="margin-left: 55px;">
+                    <el-select v-model="role" placeholder="请选择" style="max-width:170px">
                         <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -26,17 +26,16 @@
                 </div>
             </div>
             <div class="el-form-item el-form_">
-                <label class="el-form-item__label" style="width: 80px;"></label>
-                <div class="el-form-item__content" style="margin-left: 80px;">
-                    <el-input placeholder="请选择日期" icon="search"></el-input>
+                <div class="el-form-item__content">
+                    <el-input placeholder="请选择日期" icon="search" style="max-width:220px"></el-input>
                 </div>
             </div>
         </div>
         <div class="main">
             <div>
-                <el-button type="success" @click="addMember()">添加人员</el-button>
-                <el-button type="warning" @click='batchAddMember()'>批量添加</el-button>
-                <el-button type="danger" @click="deleteMember()"> 删除人员</el-button>
+                <el-button type="primary" class="basic-btn" icon="plus"  @click="addMember()">添加人员</el-button>
+                <el-button type="primary" class="basic-btn" icon="share" @click='batchAddMember()'>批量添加</el-button>
+                <el-button type="primary"  class="basic-btn" icon="delete" @click="deleteMember()"> 删除人员</el-button>
             </div>
             <el-table ref="multipleTable" :data="memberTableData" border tooltip-effect="dark"
                       style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
@@ -44,8 +43,8 @@
                 <el-table-column prop="name" label="姓名" width="150" align='left'>
                    <template slot-scope="scope">
                         <div slot="reference" class="name-wrapper">
-                          <span style="margin-right:5px">{{ scope.row.name }}</span> 
-                          <el-tag v-show="scope.row.isAdmin" style="background:#13ce66">管理员</el-tag>
+                          <span style="margin-right:5px">{{ scope.row.name }}</span>
+                          <el-tag v-show="scope.row.isAdmin" style="background:#76ca75">管理员</el-tag>
                           <span v-show="!scope.row.isAdmin"style="height:24px;width:48px;display:inline-block"></span>
                          </div>
                     </template>
@@ -106,16 +105,16 @@
         <el-dialog
             title="添加人员"
             :visible.sync="addMemberDialogVisible"
-            size="tiny">
+            size="add-member-dialog">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="鲁班通行证" prop="pass">
+                <el-form-item label="鲁班通行证：" prop="pass">
                     <el-input v-model="ruleForm.pass" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名" prop="name">
+                <el-form-item label="姓名：" prop="name">
                     <el-input v-model="ruleForm.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="角色" prop="role">
-                    <el-select v-model="ruleForm.role" placeholder="请选择">
+                <el-form-item label="角色：" prop="role">
+                    <el-select v-model="ruleForm.role" placeholder="请选择" style="width:360px">
                         <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -124,19 +123,22 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="归属" prop="attribution">
-                    <el-select v-model="ruleForm.attribution" placeholder="请选择">
+                <el-form-item label="归属：" prop="attribution">
+                    <el-select v-model="ruleForm.attribution" placeholder="请选择" style="width:360px">
                         <el-option
                             :value="ruleForm.attribution" v-show="false">
                         </el-option>
                         <ul id="dialogOrgTree" class="ztree"></ul>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="手机号码" prop="phone">
-                    <el-input v-model="ruleForm.phone" auto-complete="off" :disabled="true"></el-input>
+                <el-form-item label="手机号码：" prop="phone">
+                    <span>请先填写通行证账号，手机号码自动关联</span>
+                    <!-- <el-input v-model="ruleForm.phone" auto-complete="off" :disabled="true"></el-input> -->
                 </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="ruleForm.email" auto-complete="off" :disabled="true"></el-input>
+                <el-form-item label="邮箱：" prop="email">
+                    <span>请先填写通行证账号，邮箱自动关联</span>
+
+                    <!-- <el-input v-model="ruleForm.email" auto-complete="off" :disabled="true"></el-input> -->
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -148,10 +150,25 @@
         <el-dialog
             title="批量添加人员"
             :visible.sync="batchAddMemberDialogVisible"
-            size="tinys">
+            size="batch-add-member">
+             <div class="el-form-item" style="margin-top:40px">
+                <label class="el-form-item__label" style="width: 45px;text-align:left">克隆：</label>
+                <div class="el-form-item__content" style="margin-left: 45px;">
+                    <el-select v-model="ruleForm.role" placeholder="请选择"  style="width:208px" >
+                        <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <span class="red_">*</span>
+                    <span style="margin-left:45px">可添加数：(120/100)</span>
+                </div>
+            </div>
             <div>
-                <el-input type="textarea" style="float:left;width:460px;height:240px" resize='none'
-                          :autosize="{ minRows: 12, maxRows: 12}" placeholder="请输入内容" v-model="textarea">
+                <el-input type="textarea" style="float:left;width:430px;height:300px" resize='none'
+                          :autosize="{ minRows: 14, maxRows: 14}" placeholder="请输入内容" v-model="textarea">
                 </el-input>
                 <div style="margin-left:480px">
                     <h3>使用说明：</h3>
@@ -166,11 +183,10 @@
                     </ul>
                 </div>
             </div>
-
-            <div slot="footer" class="dialog-footer" style="margin-top:105px">
+            <span slot="footer" class="dialog-footer" style="">
                 <el-button type="primary" @click="batchAddMemberDialogVisible= false" class="dialog-btn">确 定</el-button>
                 <el-button @click="batchAddMemberDialogVisible= false" class="dialog-btn">取 消</el-button>
-            </div>
+            </span>
         </el-dialog>
         <!-- 周活跃度 -->
         <el-dialog title="活跃度详情" :visible.sync="weeklyActivityDialogVisible">
@@ -194,10 +210,10 @@
         </span>
         </el-dialog>
         <!-- 授权资料目录 -->
-         <el-dialog title="授权资料目录" :visible.sync="authorizedDataCatalogVisible" size='samll'>
-            <div style="position:relative;height:500px;width:550px">
+         <el-dialog title="授权资料目录" :visible.sync="authorizedDataCatalogVisible" size='authorized-data-catalog'>
+            <div style="position:relative;padding-top:40px">
               <div class="authorizedDataCatalog">
-                  <div style="padding-bottom:20px">已授权项目：</div>
+                  <div style="padding-bottom:15px" class="authorized-item">已授权项目：</div>
                   <ul id="authorizedProjectTree" class="ztree" ></ul>
               </div>
               <div class="dataCatalog">
@@ -206,11 +222,15 @@
                     <el-checkbox style="float:right">全部</el-checkbox>
                     </div>
                     <div style="color:rgb(255, 153, 0)">*勾选全部分配后，新增加的目录自动授权</div>
-
+                  <div class="authorized-item">项目资料目录：</div>
+                  <div style="padding:23px 0 10px 0">
+                    <el-checkbox>全部分配</el-checkbox>
+                    <div style="float:right"><span class="red_">*</span>勾选全部分配后，新增加的目录自动授权</div>
                   </div>
                   <ul id="folderTree" class="ztree"  ></ul>
               </div>
             </div>
+            <div style="clear:both;"></div>
             <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="authorizedDataCatalogVisible = false" class="dialog-btn">确 定</el-button>
             <el-button @click="authorizedDataCatalogVisible = false" class="dialog-btn">取消</el-button>
@@ -396,7 +416,7 @@ export default {
           id: 1,
           pass: "wulijjjj111111111111111111",
           role: "项目经理",
-          isAdmin:true,
+          isAdmin: true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -408,7 +428,7 @@ export default {
           id: 2,
           pass: "wulijjjj",
           role: "项目经理",
-          isAdmin:false,
+          isAdmin: false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -420,7 +440,7 @@ export default {
           id: 3,
           pass: "wulijjjj",
           role: "项目经理",
-          isAdmin:false,
+          isAdmin: false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -432,7 +452,7 @@ export default {
           id: 4,
           pass: "wulijjjj",
           role: "项目经理",
-          isAdmin:true,
+          isAdmin: true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -444,7 +464,7 @@ export default {
           id: 5,
           pass: "wulijjjj",
           role: "项目经理",
-          isAdmin:false,
+          isAdmin: false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -456,7 +476,7 @@ export default {
           id: 6,
           pass: "wulijjjj",
           role: "项目经理",
-          isAdmin:true,
+          isAdmin: true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -468,7 +488,7 @@ export default {
           id: 7,
           pass: "wulijjjj",
           role: "项目经理",
-          isAdmin:false,
+          isAdmin: false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -480,7 +500,7 @@ export default {
           id: 8,
           pass: "wulijjjj",
           role: "项目经理",
-          isAdmin:true,
+          isAdmin: true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -492,7 +512,7 @@ export default {
           id: 9,
           pass: "wulijjjj",
           role: "项目经理",
-          isAdmin:true,
+          isAdmin: true,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -504,7 +524,7 @@ export default {
           id: 10,
           pass: "wulijjjj",
           role: "项目经理",
-          isAdmin:false,
+          isAdmin: false,
           phone: "18075240365",
           email: "978648117@163.com",
           date: "2016-05-03 13:51",
@@ -700,8 +720,8 @@ export default {
   mounted() {
     $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
   },
-  created () {
-    this.$emit('routerActive')
+  created() {
+    this.$emit("routerActive");
   }
 };
 </script>
@@ -711,7 +731,9 @@ export default {
   background-color: #fff;
   padding: 10px 20px;
 }
-
+.header .el-form-item__label{
+  text-align: left
+}
 .ztree {
   margin-top: 0px;
   width: 205px;
@@ -722,7 +744,9 @@ export default {
   width: 20%;
   margin-bottom: 0px;
 }
-
+.el-form_+.el-form_{
+  margin-left: 20px
+}
 .main {
   padding: 20px;
   border-top: 1px solid #e6e6e6;
@@ -739,7 +763,7 @@ export default {
   white-space: nowrap;
 }
 .contens-wrap > li {
-  padding: 3px 0px;
+  padding: 9px 0;
 }
 
 .contens-wrap > li:nth-child(1) {
@@ -760,7 +784,30 @@ export default {
 }
 .authorizedDataCatalog .ztree,
 .dataCatalog .ztree {
-  width: 250px;
+  width: 330px;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #e6e6e6;
+  overflow: auto
+}
+.authorizedDataCatalog .ztree {
+  height: 420px;
+}
+.dataCatalog .ztree {
+  height: 380px;
+}
+.demo-ruleForm {
+  margin-top: 20px;
+}
+.red_ {
+  color: #e30000;
+  font-family: "yahei";
+  font-size: 14px;
+}
+.authorized-item {
+  font-size: 16px;
+  font-weight: bold;
+  color: #444444;
 }
 </style>
 
