@@ -204,7 +204,7 @@
             </div>
         </el-dialog>
         <!--工程添加/修改弹窗-->
-        <el-dialog title="工程管理" custorm-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog :title="addPrjectTitle" custorm-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
                 <el-form-item label="工程名称:" label-width="80">
                     <el-input v-model="proManage.name" auto-complete="off"></el-input>
@@ -377,6 +377,7 @@ export default {
             isExtractDisable:false,
             modifyInfo:false,//修改信息弹窗
             monitorSeverVisible:false,//第三方监控设置
+            addPrjectTitle:"添加工程",
             //分页的一些设置
             cur_page:1,
             totalPage:50,
@@ -644,13 +645,22 @@ export default {
                 this.proManage.name="";
                 this.proManage.major = '';
                 this.isDisable = false;
+                if(!this.isDisable){
+                    this.addPrjectTitle = '添加工程'
+                }else{
+                    this.addPrjectTitle = '工程管理'
+                }
             }else{
 //                this.getTree();
                 this.proManageVal = 'SSSSSS';
                 this.proManage.name = '哈哈哈哈哈';
                 this.proManage.major = '哈哈哈哈哈';
                 this.isDisable = true;
-
+                if(this.isDisable){
+                    this.addPrjectTitle = '工程管理'
+                }else{
+                    this.addPrjectTitle = '添加工程'
+                }
             }
         },
         /**

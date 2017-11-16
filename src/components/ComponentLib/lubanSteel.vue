@@ -69,7 +69,7 @@
             </el-row>
             <el-row class="tools-bar">
                 <el-col>
-                    <el-button type="primary" class="basic-btn" @click="override = false;uploadComp = true;upload()"><i class="el-icon-upload2"></i>上传</el-button>
+                    <el-button type="primary" class="basic-btn" @click="override = false;uploadCompDialog = true;uploadComp()"><i class="el-icon-upload2"></i>上传</el-button>
                     <el-button type="primary" class="basic-btn" @click="deleteComp"><i class="el-icon-delete"></i>删除
                     </el-button>
                 </el-col>
@@ -113,7 +113,7 @@
                             </el-table-column>
                             <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-edit" @click=" override = true;uploadComp = true;modifyCompData()"></i>
+                                    <i class="el-icon-edit" @click=" override = true;uploadCompDialog = true;modifyCompData()"></i>
 
                                 </template>
                             </el-table-column>
@@ -129,9 +129,7 @@
                 </el-col>
             </el-row>
             <!--上传构件-->
-            <el-dialog  :visible.sync="uploadComp" custom-class="up-component">
-                <span v-show="!override" class="dialog-title">上传构件文件</span>
-                <span v-show="override" class="dialog-title">修改构件文件</span>
+            <el-dialog  :visible.sync="uploadCompDialog" custom-class="up-component" :title="title">
                 <el-row>
                     <el-col :span="24" class="relat">
                         <span class="absol span-block label-w">构件文件：</span>
@@ -175,8 +173,8 @@
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">构件编码：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.coding"></span>
-                            <!--<el-input placeholder="请输入模板名称" v-model="updateParams.autor"></el-input>-->
+                            <span class="simulate-input substr " v-show="!override" style="margin-left:80px;" v-text="updateComList.coding"></span>
+                            <el-input placeholder="请输入模板名称" v-show="override" v-model="updateComList.coding" style="left:80px;"></el-input>
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">作者：</span>
@@ -193,9 +191,9 @@
                 </el-row>
                 <div slot="footer" class="dialog-footer">
                     <el-button class="dialog-btn dialog-btn-ok" type="primary"
-                               @click="uploadComp = false;updateOk()">确 定
+                               @click="uploadCompDialog = false;updateOk()">确 定
                     </el-button>
-                    <el-button class="dialog-btn dialog-btn-cancel" @click="uploadComp = false;updateCancel()">取 消</el-button>
+                    <el-button class="dialog-btn dialog-btn-cancel" @click="uploadCompDialog = false;updateCancel()">取 消</el-button>
                 </div>
             </el-dialog>
             <!--云构件库-->
@@ -254,8 +252,9 @@
         data(){
             return {
                 val: "",
+                title:"上传构件文件",
                 selectDate: "",     //日期插件选择的日期
-                uploadComp: false,//上传构件弹窗
+                uploadCompDialog: false,//上传构件弹窗
                 ModifyTree:false,   //构件树修改弹窗
                 override:false,     //是否覆盖
                 cities: [],         //三级联动城市
@@ -518,6 +517,11 @@
             },
             //修改构件默认数据
             modifyCompData(){
+                if(this.override){
+                    this.title="修改构件文件";
+                }else{
+                    this.title="上传构件文件";
+                }
                 this.updateComList.templateFile= '消防-消防栓-消防栓箱-室内灭火消防栓箱.clm';
                 this.updateComList.coding= 'LT830';
                 this.updateComList.career= '消防';
@@ -528,7 +532,12 @@
                 this.updateComList.remark= "我爱我家租房啦我爱我家租房啦我爱我家租房啦";
             },
             //上传构件
-            upload(){
+            uploadComp(){
+                if(!this.override){
+                    this.title="上传构件文件";
+                }else{
+                    this.title="修改构件文件";
+                }
                 this.fileList = [];
                 this.clearUploadInfo();
                 console.log('我看看谁先执行的')
