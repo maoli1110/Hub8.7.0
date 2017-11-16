@@ -90,22 +90,23 @@
                             <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="BIMparams" width="70" label="BIM属性" >
+                    <el-table-column prop="BIMparams" width="70" label="BIM属性" v-if="$route.params.typeId!=3">
                     </el-table-column>
                     <el-table-column prop="updateUser" width="80" label="上传人" >
                     </el-table-column>
                     <el-table-column prop="updateTime" width="135" label="上传时间" >
                     </el-table-column>
-                    <el-table-column prop="PDF" width="65" label="图纸" >
+                    <el-table-column prop="PDF" width="65" label="图纸"  v-if="$route.params.typeId!=3">
                     </el-table-column>
                     <el-table-column prop="proDepartment" width="" label="所属项目部" show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column prop="size" width="65" label="大小">
                     </el-table-column>
-                    <el-table-column prop="output" width="100" label="输出造价" >
+                    <el-table-column prop="output" width="100" label="输出造价" v-if="$route.params.typeId==1">
                     </el-table-column>
                     <el-table-column prop="status" width=""   label="数据处理" >
                         <template slot-scope="scope" >
+                            <!--{{$route.params.typeId}}-->
                             <div v-show="scope.row.status==='处理成功'" class="align-l"><span  class="el-icon-circle-check"></span>处理成功</div>
                             <div v-show="scope.row.status==='处理失败'" class="align-l"><span  class="el-icon-circle-close"></span>处理失败</div>
                             <div v-show="scope.row.status==='处理中'"   class="align-l"><span  class="el-icon-warning"></span>处理中</div>
@@ -134,7 +135,6 @@
                         </template>
                     </el-table-column>
                 </el-table>
-
                 <el-table class="house-table scroll-me"  :fit="true" ref="multipleTable" :data="tableData" style="width: 100%"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked" v-if="($route.path==('/bimlib/housing/recycle-bin/'+$route.params.typeId) ||$route.path==('/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId) || $route.path==('/bimlib/decoration/recycle-bin/'+$route.params.typeId))">
                     <el-table-column
                         type="selection"
@@ -150,19 +150,19 @@
                             <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="BIMparams" width="70" label="BIM属性" >
+                    <el-table-column prop="BIMparams" width="70" label="BIM属性"  v-if="$route.params.typeId!=3">
                     </el-table-column>
                     <el-table-column prop="updateUser" width="80" label="上传人" >
                     </el-table-column>
                     <el-table-column prop="updateTime" width="135" label="上传时间" >
                     </el-table-column>
-                    <el-table-column prop="PDF" width="65" label="图纸" >
+                    <el-table-column prop="PDF" width="65" label="图纸"   v-if="$route.params.typeId!=3">
                     </el-table-column>
                     <el-table-column prop="proDepartment" width="" label="所属项目部" show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column prop="size" width="65" label="大小">
                     </el-table-column>
-                    <el-table-column prop="output" width="100" label="输出造价" >
+                    <el-table-column prop="output" width="100" label="输出造价"  v-if="($route.params.typeId!=3)||( $route.params.typeId!=3)">
                     </el-table-column>
                 </el-table>
                 </vue-scrollbar>
@@ -599,6 +599,7 @@ export default {
         },
         //列表删除
         deletelibs(type){
+
             console.log(type,'什么类型')
             if(!deletArray.length){
                 this.commonMessage('请选择要删除的文件','warning')
@@ -617,7 +618,8 @@ export default {
                             }
                         }
                     }
-
+                    this.allChecked = false;
+                    countIndex = 0;
                     deletArray = [];//接口成功之后删除数据
                 },()=>{
 
@@ -711,6 +713,9 @@ export default {
                 this.$refs.multipleTable.clearSelection();
                 deletArray = [];
             }
+            this.tableData.forEach((val,key)=>{
+                this.$set(val,'checked',false)
+            })
         },
 
         //添加和修改工程
@@ -813,6 +818,23 @@ export default {
             deletArray =[];
             this.$router.push({ path: path+'/bim-lib/'+paramId})
         },
+        foreachs(allChecked,data){
+            if(allChecked){
+                data.forEach((val,key)=>{
+                    val.checked = true;
+                })
+            }else{
+                data.forEach((val,key)=>{
+                    val.checked = false;
+                })
+            }
+            if(this.allChecked){
+                data.forEach((val,key)=>{
+                    deletArray.push(val.index)
+                })
+            }
+
+        },
     },
     mounted() {
         $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
@@ -824,6 +846,7 @@ export default {
         this.filterParams.versionsVal = this.versionsOptions[0].value;
         this.filterParams.majorVal = this.majorOptions[0].value;
         this.getData();
+        console.log(this.tableData)
     },
     components: { VueScrollbar },
     watch: {
