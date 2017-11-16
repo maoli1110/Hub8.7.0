@@ -487,19 +487,21 @@
     width: 797px;
     height: 460px;
 }
+
 .el-dialog--project-authorize {
     width: 520px;
     height: 700px;
 }
+
 .el-dialog--engineering-authorize {
     width: 1006px;
     height: 716px;
 }
+
 .el-dialog--template-authorize {
     width: 520px;
     height: 700px;
 }
-
 
 .el-dialog--sign {
     min-width: 390px;
@@ -1551,10 +1553,13 @@
 
 .el-table td,
 .el-table th {
-    height: 40px;
+    height: 46px;
+    line-height: 46px;
     min-width: 0;
+    box-sizing: border-box;
     text-overflow: ellipsis;
-    vertical-align: middle
+    vertical-align: middle;
+    position: relative;
 }
 
 .el-table::after,
@@ -1598,8 +1603,18 @@
 .el-table th>div {
     padding-left: 18px;
     padding-right: 18px;
+    text-align: center;
     box-sizing: border-box;
     text-overflow: ellipsis
+}
+
+.role-wrap .el-table .cell {
+    margin-left:20px;
+    text-align: left;
+}
+
+.role-wrap .el-table .is-leaf .cell {
+    text-align: center;
 }
 
 .el-table::before {
@@ -1620,7 +1635,10 @@
 .el-table th>.cell {
     position: relative;
     display: inline-block;
-    vertical-align: middle
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: bold;
+    color: #505050;
 }
 
 .el-table th {
@@ -1637,7 +1655,7 @@
 }
 
 .el-table td>div {
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 
 .el-table th.required>div::before {
@@ -1676,6 +1694,25 @@
 .el-table .cell,
 .el-table__header-wrapper {
     overflow: hidden
+}
+
+.role-wrap .el-table .cell,
+.role-wrap .el-table__header-wrapper {
+    overflow: visible;
+}
+
+.role-wrap .el-table tr {
+    height: 60px;
+}
+
+.el-checked-wrap .el-checkbox__label {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 120px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: left;
 }
 
 .el-table .sort-caret {
@@ -1722,7 +1759,7 @@
 .el-table .cell {
     white-space: normal;
     word-break: break-all;
-    line-height: 24px
+    line-height: 46px
 }
 
 .el-table tr input[type=checkbox] {
@@ -2087,7 +2124,7 @@
 
 .el-checkbox__label {
     font-size: 14px;
-    padding-left: 5px
+    padding-left: 10px
 }
 
 .el-table-column--selection .cell {
@@ -3870,8 +3907,8 @@
 }
 
 .el-tabs__nav-scroll {
-    border:1px solid #e6e6e6;
-    border-left:none;
+    border: 1px solid #e6e6e6;
+    border-left: none;
     border-right: none;
     overflow: hidden
 }
@@ -3894,7 +3931,6 @@
 }
 
 .el-tabs__nav {
-    
     white-space: nowrap;
     position: relative;
     transition: transform .3s;
@@ -7981,7 +8017,7 @@
     background-color: rgba(31, 45, 61, .11);
     color: #fff;
     position: absolute;
-    top: 45%;
+    top: 50%;
     z-index: 10;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
@@ -8006,6 +8042,7 @@
 }
 
 .el-carousel__indicators {
+    display: none;
     position: absolute;
     list-style: none;
     bottom: 10px;
@@ -8036,7 +8073,7 @@
 
 .el-carousel__indicator {
     display: inline-block;
-    background-color:transparent;
+    background-color: transparent;
     padding: 12px 4px;
     cursor: pointer
 }
@@ -8048,7 +8085,6 @@
 .el-carousel__indicator.is-active button {
     background-color: #646464;
     opacity: 1;
-
 }
 
 .el-carousel__button {
@@ -8059,7 +8095,6 @@
     border: none;
     padding: 0;
     background-color: #e6e6e6;
-
 }
 
 .carousel-arrow-left-enter,
@@ -8298,7 +8333,9 @@
 }
 
 .el-input__inner::placeholder {
-    color: #c8c8c8;font-size:14px;font-family:"microsoft yahei";
+    color: #c8c8c8;
+    font-size: 14px;
+    font-family: "microsoft yahei";
 }
 
 .el-input__inner:hover {

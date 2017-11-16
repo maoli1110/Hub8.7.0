@@ -2,7 +2,7 @@
     <div>
         <div class="aside">
              <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-menu-item index="/authority/member-management">成员管理</el-menu-item>
+                <el-menu-item index="/authority/member-management" class="roleCome">成员管理</el-menu-item>
                 <el-menu-item index="/authority/role-management">角色管理</el-menu-item>
                 <el-submenu index="/authority/application-allot">
                 <template slot="title">应用分配</template>
@@ -16,7 +16,7 @@
             </el-menu>
         </div>
         <div class="container">
-            <router-view></router-view>
+            <router-view @routerActive='setRouterActive()'></router-view>
         </div>
     </div>
 </template>
@@ -77,6 +77,9 @@ export default {
     },
     onClick(event, treeId, treeNode) {
       this.curSelectedNode(treeNode);
+    },
+    setRouterActive(){
+      $('.roleCome').click()
     }
   },
   created () {

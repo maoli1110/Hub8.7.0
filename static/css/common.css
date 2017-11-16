@@ -915,15 +915,17 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
 .dialog-btn.dialog-btn-cancel:active{background:#c8c8c8;border-color:#477c87}
 
 /*=============================表格公用样式===================================*/
-.el-table td>div{font-size:12px;font-family:'microsoft yahei';color:#505050;height:46px;line-height:46px !important;}
+/* .el-table td>div{font-size:12px;font-family:'microsoft yahei';color:#505050;height:46px;line-height:46px !important;}
 .el-table th>.cell{font-size:14px;font-weight:bold;color:#505050;}
 .el-table .el-table__row{
-    padding:0 ;height:45px !important;
+    padding:0 ;min-height:45px !important;
 }
 .el-table .el-table__row td{
     padding:0 !important;
 }
-.el-table .cell, .el-table th>div{padding:0 !important;text-align:center}
+.el-table .cell, .el-table th>div{padding:0 !important;text-align:center} */
+
+
 
 /*=============================input框公用样式===============================*/
 .el-input__inner:focus{

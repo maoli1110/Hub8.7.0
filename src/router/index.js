@@ -101,7 +101,7 @@ export default new Router({
                             component: resolve => require(['../components/Authority/MemberManagement.vue'], resolve)
                         },
                         {
-                            // 成员管理
+                            // 成员管理(编辑/添加)
                             path: 'edit-member/:id',
                             component: resolve => require(['../components/Authority/AddMember.vue'], resolve)
                         },
@@ -109,6 +109,11 @@ export default new Router({
                             // 角色管理
                             path: 'role-management',
                             component: resolve => require(['../components/Authority/RoleManagement.vue'], resolve)
+                        },
+                        {
+                            // 角色管理(编辑/添加)
+                            path: 'edit-role/:id',
+                            component: resolve => require(['../components/Authority/AddRole.vue'], resolve)
                         },
                         {
                             // 应用分配
