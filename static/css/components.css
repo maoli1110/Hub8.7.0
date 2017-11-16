@@ -7,12 +7,16 @@
     width: 100% !important;
 }
 .component-main .dialog-title{font-size:16px;font-weight:bold;float:left;margin-top:-41px;}
-.component-main .el-dialog__body{margin-top:20px;}
+/*.component-main .el-dialog__body{margin-top:20px;}*/
 .el-input-group__append, .el-input-group__prepend{
     background-color: #6595f2;padding: 0 19px;color:#fff;
 }
+.component-main .el-dialog__header{
+    padding: 20px 20px 20px;
+    border-bottom: 1px solid #ddd;
+}
 .component-main .el-table td:nth-child(3) .cell{
-    line-height: 64px !important;
+    line-height: 10px !important;
 }
 .component-main .el-table td:nth-child(2) .cell,.component-main .el-table td:nth-child(8) .cell{
     padding-left:20px !important;text-align:left;

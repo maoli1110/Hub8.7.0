@@ -22,7 +22,7 @@
                     <span class="absol span-block" style="width:60px;left:10px;">
                         专业:
                     </span>
-                    <el-select  v-model="filterParams.majorVal" placeholder="请选择" style="left:50px;" @change="majorChange">
+                    <el-select  v-model="searchKeyParams.majorVal" placeholder="请选择" style="left:50px;" @change="majorChange">
                         <el-option
                             v-for="item in majorOptions"
                             :key="item.value"
@@ -36,7 +36,7 @@
                         构件大类:
                     </span>
 
-                    <el-select  v-model="filterParams.bigType" placeholder="请选择" style="left:80px;" @change="typeBigChange">
+                    <el-select  v-model="searchKeyParams.bigType" placeholder="请选择" style="left:80px;" @change="typeBigChange">
                         <el-option
                             v-for="item in compTypeBig"
                             :key="item.value"
@@ -50,7 +50,7 @@
                         构件小类:
                     </span>
 
-                    <el-select  v-model="filterParams.smallType" placeholder="请选择" style="left:120px;" @change="typeSmallChange">
+                    <el-select  v-model="searchKeyParams.smallType" placeholder="请选择" style="left:120px;" @change="typeSmallChange">
                         <el-option
                             v-for="item in compTypeSmall"
                             :key="item.value"
@@ -60,7 +60,7 @@
                     </el-select>
                 </el-col>
                 <el-col :span="4" class="relat" :offset="1" style="left:35px">
-                    <el-input placeholder="请输入要搜索的内容" icon="search" v-model="filterParams.searchVal"
+                    <el-input placeholder="请输入要搜索的内容" icon="search" v-model="searchKeyParams.searchVal"
                               :on-icon-click="searchComp"></el-input>
                 </el-col>
                 <el-col :span="4" :offset="2" style="text-align:right;">
@@ -69,7 +69,7 @@
             </el-row>
             <el-row class="tools-bar">
                 <el-col>
-                    <el-button type="primary" class="basic-btn" @click="override = false;updateComponent = true;upload()"><i class="el-icon-upload2"></i>上传</el-button>
+                    <el-button type="primary" class="basic-btn" @click="override = false;updateComponent = true;uploadComp()"><i class="el-icon-upload2"></i>上传</el-button>
                     <el-button type="primary" class="basic-btn" @click="deleteComp"><i class="el-icon-delete"></i>删除
                     </el-button>
                 </el-col>
@@ -111,13 +111,13 @@
                             </el-table-column>
                             <el-table-column prop="updatePeson" width="80" label="上传人">
                             </el-table-column>
-                            <el-table-column prop="updateTime" width="130" label="更新时间">
+                            <el-table-column prop="updateTime" width="135" label="更新时间">
                             </el-table-column>
                             <el-table-column prop="uploadTime" width="60" label="下载次数">
                             </el-table-column>
                             <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-edit" @click=" override = true;updateComponent = true;defaultCompDate()"></i>
+                                    <i class="el-icon-edit" @click=" override = true;updateComponent = true;modifyCompData()"></i>
 
                                 </template>
                             </el-table-column>
@@ -132,18 +132,18 @@
                 </el-col>
             </el-row>
             <!--上传构件-->
-            <el-dialog  :visible.sync="updateComponent" custom-class="up-component">
-                <span v-show="!override" class="dialog-title">上传构件文件</span>
-                <span v-show="override" class="dialog-title">修改构件文件</span>
+            <el-dialog  :visible.sync="updateComponent" custom-class="up-component" :title="title">
+                <!--<span v-show="!override" class="dialog-title">上传构件文件</span>-->
+                <!--<span v-show="override" class="dialog-title">修改构件文件</span>-->
                 <el-row>
                     <el-col :span="24" class="relat">
                         <span class="absol span-block label-w">模板文件：</span>
-                          <!--  <el-input style="margin-left:80px;" v-model="updateParams.templateFile" placeholder="模板名称">
+                          <!--  <el-input style="margin-left:80px;" v-model="updateComList.templateFile" placeholder="模板名称">
 
 
                                 <el-button slot="append">上传</el-button>
                             </el-input>-->
-                        <div class="simulate-label" v-text="updateParams.templateFile"></div>
+                        <div class="simulate-label" v-text="updateComList.templateFile"></div>
                         <el-upload :on-success = "updataSucess" :on-error = "updateError" :multiple ='true' :show-file-list="false"
                                    class="upload-demo"
                                    action="https://jsonplaceholder.typicode.com/posts/"
@@ -158,48 +158,48 @@
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">产品：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateParams.product"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.product"></span>
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">专业：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateParams.career"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.career"></span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">构件大类：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateParams.smallType"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.smallType"></span>
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">构件小类：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateParams.bigType"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.bigType"></span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">厂商：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateParams.facture"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.facture"></span>
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">型号：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateParams.type"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.type"></span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">作者：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateParams.autor"></span>
-                            <!--<el-input placeholder="请输入模板名称" v-model="updateParams.autor"></el-input>-->
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.autor"></span>
+                            <!--<el-input placeholder="请输入模板名称" v-model="updateComList.autor"></el-input>-->
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">版本：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateParams.version"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.version"></span>
                         </el-col>
                     </el-col>
                     <el-col class="relat">
                         <span class="absol span-block label-w">构件说明：</span>
-                        <el-input type="textarea" placeholder="请输入模板名称" class="projManage-remark" :maxlength="150" style="margin-left:80px;" :rows="4" v-model="updateParams.remark"></el-input>
-                        <span class="info-pos absol" style="right:15px;bottom:3px;background:#fff;">{{!updateParams.remark?(0+"/"+150):(updateParams.remark.length+"/"+150)}}</span>
+                        <el-input type="textarea" placeholder="请输入模板名称" class="projManage-remark" :maxlength="150" style="margin-left:80px;" :rows="4" v-model="updateComList.remark"></el-input>
+                        <span class="info-pos absol" style="right:15px;bottom:3px;background:#fff;">{{!updateComList.remark?(0+"/"+150):(updateComList.remark.length+"/"+150)}}</span>
                     </el-col>
                 </el-row>
                 <div slot="footer" class="dialog-footer">
@@ -210,9 +210,8 @@
                 </div>
             </el-dialog>
             <!--云构件库-->
-            <el-dialog :visible.sync="cloudComTree" custom-class="cloud-component">
+            <el-dialog :visible.sync="cloudComTree" custom-class="cloud-component" title="云构件树管理">
                 <el-row>
-                    <el-col ><div class="dialog-title">云构件树管理</div></el-col>
                     <el-col class="cloud-toobar">
 
                         <el-col :span="4" class="icon-item" >
@@ -264,10 +263,11 @@
     export default {
         data(){
             return {
+                title:"上传构件文件",
                 val: "",
                 selectDate: "",     //日期插件选择的日期
                 updateComponent: false,//上传构件弹窗
-                ModifyTree:false,   //构件树修改弹窗
+                cloudComTree:false,   //构件树修改弹窗
                 override:false,     //是否覆盖
                 cities: [],         //三级联动城市
                 province: [],       //三级联动省
@@ -276,7 +276,7 @@
                     location: "",
                     countyId: ""
                 },
-                filterParams: {     //筛选栏的条件
+                searchKeyParams: {     //筛选栏的条件
                     majorVal: "",//版本
                     bigType: "",    //大类
                     smallType: '',  //小类
@@ -403,7 +403,7 @@
                     },
                 ],  //模拟列表数据
 
-                updateParams:{     //上传构件的一些文件信息
+                updateComList:{     //上传构件的一些文件信息
                     templateFile:"",
                     product:"",
                     career:"",
@@ -479,7 +479,7 @@
             **/
 
             updataSucess(response, file, fileList){
-                this.updateParams.templateFile = fileList[0].name
+                this.updateComList.templateFile = fileList[0].name
                 console.log(response,'response')
                 console.log(file,'上传文件上传成功')
             },
@@ -494,9 +494,9 @@
             },
             //上传构件清除数据
             clearUploadInfo(){
-                for(var key in this.updateParams){
-                    console.log( this.updateParams[key])
-                    this.updateParams[key] = '';
+                for(var key in this.updateComList){
+                    console.log( this.updateComList[key])
+                    this.updateComList[key] = '';
                 }
             },
 
@@ -506,23 +506,34 @@
              **/
             overUpdate(){
                 this.fileList = [];
-                this.updateParams.templateFile= '';
+                this.updateComList.templateFile= '';
             },
             //修改构件默认数据
-            defaultCompDate(){
-                this.updateParams.templateFile= '消防-消防栓-消防栓箱-室内灭火消防栓箱.clm';
-                this.updateParams.product= '鲁班安装';
-                this.updateParams.career= '消防';
-                this.updateParams.bigType= '消防栓';
-                this.updateParams.smallType= '消灭栓箱';
-                this.updateParams.facture= "长沙保平消防设备有限公司";
-                this.updateParams.type= "123";
-                this.updateParams.autor= "不知道";
-                this.updateParams.version= "2.0.0";
-                this.updateParams.remark= "我爱我家租房啦我爱我家租房啦我爱我家租房啦";
+            modifyCompData(){
+                if(this.override){
+                    this.title="修改构件文件";
+                }else{
+                    this.title="上传构件文件";
+                }
+                this.updateComList.templateFile= '消防-消防栓-消防栓箱-室内灭火消防栓箱.clm';
+                this.updateComList.product= '鲁班安装';
+                this.updateComList.career= '消防';
+                this.updateComList.bigType= '消防栓';
+                this.updateComList.smallType= '消灭栓箱';
+                this.updateComList.facture= "长沙保平消防设备有限公司";
+                this.updateComList.type= "123";
+                this.updateComList.autor= "不知道";
+                this.updateComList.version= "2.0.0";
+                this.updateComList.remark= "我爱我家租房啦我爱我家租房啦我爱我家租房啦";
             },
             //上传构件
-            upload(){
+            uploadComp(){
+                if(!this.override){
+                    this.title="上传构件文件"
+                }else{
+                    this.title="修改构件文件"
+                }
+
                 this.fileList = [];
                 this.clearUploadInfo();
                 console.log('我看看谁先执行的')
@@ -558,8 +569,8 @@
             //日期插件日期改变触发
             changeData(val){
                 if (val) {
-                    this.filterParams.startTimer = val.split('-')[0];
-                    this.filterParams.endTime = val.split('-')[1]
+                    this.searchKeyParams.startTimer = val.split('-')[0];
+                    this.searchKeyParams.endTime = val.split('-')[1]
                 }
             },
             majorChange(val){
@@ -630,7 +641,7 @@
             },
             //搜索功能
             searchComp(){
-                console.log(this.filterParams, '执行搜索')
+                console.log(this.searchKeyParams, '执行搜索')
             },
             //列表删除
             deleteComp(){
@@ -670,12 +681,12 @@
                     console.log('上传构件库接口')
                 }
                 //保存修改
-                console.log(this.updateParams)
-                this.updateParams = {};
+                console.log(this.updateComList)
+                this.updateComList = {};
             },
             //取消上传
             updateCancel(){
-                this.updateParams = {};
+                this.updateComList = {};
             },
             //加载树结构
             getZtree(){
@@ -727,7 +738,7 @@
             },
             //加载树结构
             getCloudTree(){
-               this.ModifyTree = true;
+               this.cloudComTree = true;
                this.getZtree();
             },
             //ztree  插件的事件
@@ -888,9 +899,9 @@
                 //不用调用接口
             },
             getData(){
-                this.filterParams.majorVal = this.majorOptions[0].value;
-                this.filterParams.smallType = this.compTypeSmall[0].value;
-                this.filterParams.bigType = this.compTypeBig[0].value;
+                this.searchKeyParams.majorVal = this.majorOptions[0].value;
+                this.searchKeyParams.smallType = this.compTypeSmall[0].value;
+                this.searchKeyParams.bigType = this.compTypeBig[0].value;
             },
 
         },
