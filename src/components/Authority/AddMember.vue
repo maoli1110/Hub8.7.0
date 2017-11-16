@@ -2,12 +2,12 @@
     <div>
         <div class="member-wrap">
             <div class="member-title">用户基本信息
-              <span class="el-icon-edit" style="margin-left:20px;font-size:12px;cursor:pointer" @click="isEdit=true"
-                    v-show="!isEdit">编辑</span>
-                <span class="el-icon-document" style="margin-left:20px;font-size:12px;cursor:pointer"
-                      @click="isEdit=false" v-show="isEdit">保存</span>
+              <span class="el-icon-edit" style="margin-left:20px;font-size:14px;cursor:pointer;color:#6595f2" @click="isEdit=true"
+                    v-show="!isEdit"> 编辑</span>
+                <span class="el-icon-document" style="margin-left:20px;font-size:14px;cursor:pointer;color:#6595f2"
+                      @click="isEdit=false" v-show="isEdit"> 保存</span>
             </div>
-            <el-row class="member-message" :gutter="10">
+            <el-row class="member-message" >
                 <el-col :span="8">
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label">姓名：</label>
@@ -81,7 +81,7 @@
                     </div>
                 </el-col>
             </el-row>
-            <div class="member-title">客户端节点授权</div>
+            <div class="member-title" style="margin-top:30px">客户端节点授权</div>
             <div>
                 <el-tabs v-model="activeName" class="member-tabs" @tab-click="handleClick">
                     <el-tab-pane label="系统客户端" name="first">
@@ -133,7 +133,7 @@
                 </el-tabs>
             </div>
             <div>
-                <div class="member-title">客户端数据授权</div>
+                <div class="member-title" style="margin:30px 0 30px 0px">客户端数据授权</div>
                 <div>
                     <el-row class="member-contents">
                         <el-col :span="12" class='member-text'>
@@ -263,7 +263,7 @@
             </div>
             <div>
                  <el-checkbox > <span style="color:#6595f2">全部分配</span> </el-checkbox>
-                 <span style="margin-left:40px"><i class="red_">*</i>勾选全部分配后，项目新增加的工程自动授权</span>
+                 <span style="margin-left:40px"><span class="red_"> * </span> 勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div>
               <el-table :data="engineeringAuthorizationData"   height="400" style="margin-top:15px">
@@ -303,7 +303,7 @@
             </div>
             <div>
                  <el-checkbox > <span style="color:#6595f2">全部分配</span> </el-checkbox>
-                 <span style="margin-left:22px"><i class="red_">*</i>勾选全部分配后，项目新增加的工程自动授权</span>
+                 <span style="margin-left:22px"> <span class="red_"> * </span> 勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div>
               <el-table :data="engineeringAuthorizationData"   height="400" style="margin-top:15px">
@@ -325,7 +325,7 @@
         <el-dialog title="编辑govern权限" :visible.sync="governAuthorizationDialogVisible" size='project-authorize'>
             <div style="padding:20px 0px">
                  <el-checkbox > <span style="color:#6595f2">全部分配</span> </el-checkbox>
-                 <span style="margin-left:22px"><i class="red_">*</i>勾选全部分配后，项目新增加的工程自动授权</span>
+                 <span style="margin-left:22px"><span class="red_"> * </span>勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div style="height:420px">
                 <ul id="projectTree" class="ztree"></ul>
@@ -352,7 +352,7 @@
             </div>
             <div>
                  <el-checkbox > <span style="color:#6595f2">全部分配</span> </el-checkbox>
-                 <span style="margin-left:22px"><i class="red_">*</i>勾选全部分配后，项目新增加的工程自动授权</span>
+                 <span style="margin-left:22px"><span class="red_"> * </span>勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div>
               <el-table :data="engineeringAuthorizationData"   height="420" style="margin-top:15px">
@@ -370,7 +370,6 @@
     </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
@@ -585,9 +584,9 @@ export default {
 </script>
 <style scoped>
 .member-title {
+  padding: 10px 0;
   font-size: 16px;
   font-weight: 700;
-  line-height: 50px;
 }
 
 .member-wrap {
@@ -649,6 +648,7 @@ export default {
 }
 
 .member-text {
+  font-size: 14px;
   line-height: 40px;
   padding-left: 95px;
 }
@@ -659,7 +659,7 @@ export default {
 
 .member-describe {
   color: #6595f2;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .basic-btn {
@@ -682,9 +682,8 @@ export default {
   margin-top: 20px;
   border-radius: 2px;
 }
-.back-list:hover{
-    box-shadow: 3px 3px 2px #d0dffb
-    
+.back-list:hover {
+  box-shadow: 3px 3px 2px #d0dffb;
 }
 </style>
 

@@ -128,7 +128,7 @@ export default {
         }
       },
       projectNodes: [],
-      authoritedTableData:[],
+      authoritedTableData: [],
       clientInformation: [
         {
           hasAuthorited: true,
@@ -342,15 +342,7 @@ export default {
         {
           name: "王小11虎",
           checkedCities: ["广州", "深圳5"],
-          cities: [
-            "上海",
-            "北京",
-            "广州",
-            "深圳5",
-            "上海6",
-            "北京7",
-
-          ],
+          cities: ["上海", "北京", "广州", "深圳5", "上海6", "北京7"],
           isIndeterminate: true,
           checkAll: false
         },
@@ -400,6 +392,14 @@ export default {
     };
   },
   methods: {
+    split_array(arr, len) {
+      let a_len = arr.length;
+      let result = [];
+      for (let i = 0; i < a_len; i += len) {
+        result.push(arr.slice(i, i + len));
+      }
+      return result;
+    },
     handleCheckAlls(event) {
       if (event.target.checked) {
         this.authoritedTableData.forEach((item, index) => {
@@ -455,17 +455,18 @@ export default {
       this.isIndeterminate =
         checkedAllCount > 0 && checkedAllCount < allCities.length;
     },
-    selectClient(index){
-        index==0?this.authoritedTableData=this.tableData:this.authoritedTableData=this.tableData2
-    },
-  },
-  mounted(){
-        this.selectClient(0)
+    selectClient(index) {
+      index == 0
+        ? (this.authoritedTableData = this.tableData)
+        : (this.authoritedTableData = this.tableData2);
     }
+  },
+  mounted() {
+    this.selectClient(0);
+  }
 };
 </script>
 <style scoped>
-
 .role-base {
   font-size: 16px;
   font-weight: 700;
@@ -526,6 +527,8 @@ export default {
 
 .red_ {
   color: #e30000;
+  font-family: 'yahei';
+  font-size: 14px;
 }
 
 .role-text {
@@ -566,6 +569,5 @@ export default {
   margin-left: 0px;
   padding-right: 55px;
 }
-
 </style>
 

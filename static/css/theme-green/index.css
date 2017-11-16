@@ -488,6 +488,18 @@
     height: 460px;
 }
 
+.el-dialog--add-member-dialog {
+    width: 540px;
+    height: 530px;
+}
+.el-dialog--batch-add-member{
+    width: 772px;
+    height:582px;
+}
+.el-dialog--authorized-data-catalog{
+    width:760px;
+    height: 670px;
+}
 .el-dialog--project-authorize {
     width: 520px;
     height: 700px;
@@ -1609,7 +1621,7 @@
 }
 
 .role-wrap .el-table .cell {
-    margin-left:20px;
+    margin-left: 20px;
     text-align: left;
 }
 
@@ -3127,7 +3139,7 @@
     box-sizing: border-box;
     outline: 0;
     margin: 0;
-    padding: 12px 21px;
+    padding: 12px 12px;
     font-size: 14px;
     border-radius: 5px
 }
@@ -3824,9 +3836,15 @@
 }
 
 .el-form-item.is-required .el-form-item__label:before {
+    position: absolute;
     content: '*';
     color: #ff4949;
-    margin-right: 4px
+    /* margin-right: 4px */
+    right:25px;
+    color: #e30000;
+    font-family: 'yahei';
+    font-size: 14px;
+
 }
 
 .el-form-item__label {
