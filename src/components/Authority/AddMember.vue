@@ -42,30 +42,18 @@
                         <label class="el-form-item__label" style="width:96px">鲁班通行证:</label>
                         <div class="el-form-item__content" style="margin-left: 55px;overflow:hidden">
                             55555555555666
-
-
-
-
                         </div>
                     </div>
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label" style="width:95px">手机号码:</label>
                         <div class="el-form-item__content" style="margin-left: 55px;overflow:hidden">
                             15842546875
-
-
-
-
                         </div>
                     </div>
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label" style="width:55px">邮箱:</label>
                         <div class="el-form-item__content" style="margin-left: 96px;overflow:hidden">
                             yunyinyue@163.com
-
-
-
-
                         </div>
                     </div>
                 </el-col>

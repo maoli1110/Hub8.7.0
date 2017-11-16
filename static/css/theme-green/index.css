@@ -519,7 +519,14 @@
     min-width: 390px;
     min-height: 383px;
 }
-
+.el-dialog--modify{
+    width:670px;
+    height:500px;
+}
+.el-dialog--add-authorization{
+    width:670px;
+    height: 607px;
+}
 .el-dialog--small {
     width: 50%
 }
@@ -9069,15 +9076,15 @@
 }
 
 .el-transfer-panel .el-checkbox__inner {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px
+    width: 18px;
+    height: 18px;
+    border-radius: 2px
 }
 
 .el-transfer-panel .el-checkbox__inner:after {
-    height: 6px;
+    height: 8px;
     width: 3px;
-    left: 4px
+    left: 5px
 }
 
 .el-transfer-panel__body {
@@ -9118,7 +9125,7 @@
 
 .el-transfer-panel__item .el-checkbox__input {
     position: absolute;
-    top: 9px
+    top: 7px
 }
 
 .el-transfer-panel__item+.el-transfer-panel__item {
