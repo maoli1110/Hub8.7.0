@@ -206,7 +206,7 @@
                     <el-checkbox style="float:right">全部</el-checkbox>
                     </div>
                     <div style="color:rgb(255, 153, 0)">*勾选全部分配后，新增加的目录自动授权</div>
-               
+
                   </div>
                   <ul id="folderTree" class="ztree"  ></ul>
               </div>
@@ -215,7 +215,7 @@
             <el-button type="primary" @click="authorizedDataCatalogVisible = false" class="dialog-btn">确 定</el-button>
             <el-button @click="authorizedDataCatalogVisible = false" class="dialog-btn">取消</el-button>
             </span>
-        </el-dialog>  
+        </el-dialog>
         <!-- 设置电子签名 -->
         <el-dialog title="设置电子签名" :visible.sync="signDialogVisible" size='sign'>
             <el-upload style="margin-top:30px;padding:0 20px"
@@ -236,7 +236,7 @@
             <el-button type="primary" @click="submitUpload" class="dialog-btn">确 定</el-button>
             <el-button @click="signDialogVisible = false" class="dialog-btn">取消</el-button>
             </span>
-        </el-dialog>    
+        </el-dialog>
     </div>
 
 </template>

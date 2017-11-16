@@ -1762,6 +1762,12 @@
     line-height: 46px
 }
 
+
+.order-management .el-table__body-wrapper .cell {
+    height: 90px;
+    line-height: 90px;
+}
+
 .el-table tr input[type=checkbox] {
     margin: 0
 }

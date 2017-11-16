@@ -141,7 +141,7 @@ export default new Router({
                             // 管理员列表
                             path: 'administrators-list',
                             component: resolve => require(['../components/Authority/AdministratorsList.vue'], resolve)
-                        },
+                        }
 
                     ]
                 },
@@ -162,6 +162,7 @@ export default new Router({
                                     name:'housing?2',
                                     path: 'bim-lib/:typeId',// 房建
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve),
+                                    query:{'typeId':'11'}
                                 },
                                 {
                                     name:'housing?3',
@@ -177,7 +178,7 @@ export default new Router({
                                     name:'housing',
                                     path: 'recycle-bin/:typeId',// 精装
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve)
-                                },
+                                }
                             ]
                         },
                         {
@@ -206,7 +207,7 @@ export default new Router({
                                     name:'baseBuild',
                                     path: 'recycle-bin/:typeId',// 精装
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve)
-                                },
+                                }
                             ]
                         },
                         {
@@ -224,10 +225,9 @@ export default new Router({
                                     name:'decoration',
                                     path: 'recycle-bin/:typeId',// 精装
                                     component: resolve => require(['../components/BimLib/housing.vue'], resolve)
-                                },
-
+                                }
                             ]
-                        },
+                        }
                     ]
                 },
                 {
@@ -408,23 +408,131 @@ export default new Router({
                 {
                     //  权限管理(设置)-订单管理
                     path: '/order-management',
-                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                    component: resolve => require(['../components/Authority-management/OrderManagement.vue'], resolve),
+                    redirect:'/order-management/orders',
+                    children:[
+                        {
+                            //订单管理
+                            path: 'orders',
+                            component: resolve => require(['../components/Authority-management/orders.vue'], resolve)
+                        },
+                        {
+                            //EDS订单
+                            path: 'eds-orders',
+                            component: resolve => require(['../components/Authority-management/EDSOrders.vue'], resolve)
+                        },{
+                            //鲁班币管理
+                            path: 'lubancoins-management',
+                            component: resolve => require(['../components/Authority-management/LubanCoinsManagement.vue'], resolve)
+                        }
+                    ]
                 },
                 {
                     //  权限管理(设置)-在线人数
                     path: '/online',
-                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                    component: resolve => require(['../components/Authority-management/Online.vue'], resolve),
+                    redirect:'/online/all-clients',
+                    children:[
+                        {
+                            //所有客户端
+                            path: 'all-clients',
+                            name:'online',
+                            component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                        },
+                        {
+                            //MC在线人数
+                            path: 'mc-online',
+                            name:'online?1',
+                            component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                        },
+                        {
+                            //BE在线人数
+                            path: 'be-online',
+                            name:'online?2',
+                            component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                        },
+                        {
+                            //BW在线人数
+                            path: 'bw-online',
+                            name:'online?3',
+                            component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                        },
+                        {
+                            //SP在线人数
+                            path: 'sp-online',
+                            name:'online?4',
+                            component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                        },
+                        {
+                            //BV手机版在线人数
+                            path: 'bv-online',
+                            name:'online?5',
+                            component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                        },
+                        {
+                            //BVHD版在线人数
+                            path: 'bvhd-online',
+                            name:'online?6',
+                            component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                        }
+                    ]
                 },
                 {
                     //  权限管理(设置)-系统日志
                     path: '/system-log',
-                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
-                },
-                {
-                    //  权限管理(设置)-升级说明
-                    path: '/upgrade-notes',
-                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
-                },
+                    component: resolve => require(['../components/Authority-management/SystemLog.vue'], resolve),
+                    redirect:'/system-log/govern-log',
+                    children:[
+                        {
+                            //Govern应用日志
+                            path: 'govern-log',
+                            name:'systemLog',
+                            component: resolve => require(['../components/Authority-management/GovernLog.vue'], resolve)
+                        },
+                        {
+                            //Explorer应用日志
+                            path: 'explorer-log',
+                            name:'systemLog?1',
+                            component: resolve => require(['../components/Authority-management/GovernLog.vue'], resolve)
+                        },
+                        {
+                            //市政应用日志
+                            path: 'civil-log',
+                            name:'systemLog?2',
+                            component: resolve => require(['../components/Authority-management/GovernLog.vue'], resolve)
+                        },
+                        {
+                            //Works应用日志
+                            path: 'works-log',
+                            name:'systemLog?3',
+                            component: resolve => require(['../components/Authority-management/GovernLog.vue'], resolve)
+                        },
+                        {
+                            //Plan应用日志
+                            path: 'plan-log',
+                            name:'systemLog?4',
+                            component: resolve => require(['../components/Authority-management/GovernLog.vue'], resolve)
+                        },
+                        {
+                            //原BW应用日志
+                            path: 'prevbw-log',
+                            name:'systemLog?5',
+                            component: resolve => require(['../components/Authority-management/GovernLog.vue'], resolve)
+                        },
+                        {
+                            //原Govern应用日志
+                            path: 'prevgovern-log',
+                            name:'systemLog?6',
+                            component: resolve => require(['../components/Authority-management/GovernLog.vue'], resolve)
+                        },
+                        {
+                            //Remiz应用日志
+                            path: 'remiz-log',
+                            name:'systemLog?7',
+                            component: resolve => require(['../components/Authority-management/GovernLog.vue'], resolve)
+                        }
+                    ]
+                }
             ]
         },
         {
