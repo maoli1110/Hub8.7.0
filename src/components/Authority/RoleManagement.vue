@@ -2,8 +2,8 @@
     <div>
         <div class="main">
             <div>
-                <el-button type="success" @click="addMember()">添加角色</el-button>
-                <el-button type="danger" @click="deleteMember()"> 删除角色</el-button>
+                <el-button type="primary" class="basic-btn" icon="plus" @click="addMember()">添加角色</el-button>
+                <el-button type="primary"  class="basic-btn" icon="delete" @click="deleteMember()"> 删除角色</el-button>
                 <el-input placeholder="请选择日期" icon="search" style="float:right;width:210px"></el-input>
             </div>
             <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
