@@ -242,7 +242,7 @@ export default new Router({
                         },
                         {
                             path: '/componentlib/luban-steel',
-                            component: resolve => require(['../components/ComponentLib/LubanMep.vue'], resolve)
+                            component: resolve => require(['../components/ComponentLib/LubanSteel.vue'], resolve)
                         },
                         {
                             path: '/componentlib/remiz-comp',
