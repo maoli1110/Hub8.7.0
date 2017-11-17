@@ -71,7 +71,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import axios from "axios";
+    import {getOrderManagementList} from '../../api/getData.js';
+
     export default {
         data (){
 
@@ -139,7 +140,10 @@
             },
         },
         mounted() {
+//            分页获取订单列表
+            getOrderManagementList().then((data) => {
 
+            });
         }
     }
 </script>
