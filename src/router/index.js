@@ -156,7 +156,7 @@ export default new Router({
                             name:"housing?1",
                             path: 'housing',
                             component: resolve => require(['../components/BimLib/bim.vue'], resolve),
-                            redirect: '/bimlib/housing/bim-lib',
+                            redirect: '/bimlib/housing/bim-lib/1',
                             children: [
                                 {
                                     name:'housing?2',
@@ -354,22 +354,22 @@ export default new Router({
                                 {
                                     // 颜色模板
                                     path: 'color-template',
-                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/colorTemplate.vue'], resolve)
                                 },
                                 {
                                     // 资料目录
                                     path: 'data-catalog',
-                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/labelManagement.vue'], resolve)
                                 },
                                 {
                                     // 属性模板
                                     path: 'attribute-template',
-                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/labelManagement.vue'], resolve)
                                 },
                                 {
                                     // 标签管理
                                     path: 'label-management',
-                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/labelManagement.vue'], resolve)
                                 },
                                 {
                                     path: 'govern',
@@ -414,6 +414,11 @@ export default new Router({
                             //订单管理
                             path: 'orders',
                             component: resolve => require(['../components/Authority-management/orders.vue'], resolve)
+                        },
+                        {
+                            //订单管理--详情
+                            path: 'orders-detail/:id',
+                            component: resolve => require(['../components/Authority-management/orders-detail.vue'], resolve)
                         },
                         {
                             //EDS订单

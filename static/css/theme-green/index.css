@@ -1638,9 +1638,9 @@
 }
 
 .el-table .cell,
-.el-table th>div {
-    padding-left: 18px;
-    padding-right: 18px;
+.el-table th > div {
+   /* padding-left: 18px;
+    padding-right: 18px;*/
     text-align: center;
     box-sizing: border-box;
     text-overflow: ellipsis
@@ -1815,6 +1815,13 @@
 
 .order-management .btn-common span {
     font-weight: 700;
+}
+
+.order-management.eds-orders .el-table__body-wrapper .cell,
+.order-management.order-detail .el-table__body-wrapper .cell
+{
+    height: 40px;
+    line-height: 40px;
 }
 
 .el-table tr input[type=checkbox] {
@@ -2191,8 +2198,8 @@
     vertical-align: sub;
 }
 .el-table-column--selection .cell {
-    padding-left: 14px;
-    padding-right: 14px
+   /* padding-left: 14px;
+    padding-right: 14px*/
 }
 
 .el-table-filter {
