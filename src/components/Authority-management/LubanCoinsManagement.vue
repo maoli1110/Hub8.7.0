@@ -1,12 +1,13 @@
 <template>
     <div>
-        555555555555555555555
+        <div class="plugins-tips">
+            333
+        </div>
     </div>
 </template>
 
 <script>
-    export default {
-    }
+    export default {}
 </script>
 
 <style scoped>

@@ -2,27 +2,30 @@
     <div>
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-submenu index="/bimlib/housing/bim-lib/1">
+                <el-submenu index="/bimlib/housing/bim-lib">
                     <template slot="title">房建</template>
-                    <el-menu-item index="/bimlib/housing/bim-lib/1" >工程库</el-menu-item>
-                    <el-menu-item index="/bimlib/housing/working-set" >工作集库</el-menu-item>
-                    <el-menu-item index="/bimlib/housing/pdf-drawing" >PDF图纸</el-menu-item>
+                    <el-menu-item index="/bimlib/housing/bim-lib">工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/housing/working-set">工作集库</el-menu-item>
+                    <el-menu-item index="/bimlib/housing/pdf-drawing">PDF图纸</el-menu-item>
                 </el-submenu>
-                <el-submenu index="/bimlib/BaseBuild/bim-lib/2">
+                <el-submenu index="/bimlib/BaseBuild/bim-lib">
                     <template slot="title">基建</template>
-                    <el-menu-item index="/bimlib/BaseBuild/bim-lib/2">工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/BaseBuild/bim-lib">工程库</el-menu-item>
                     <el-menu-item index="/bimlib/BaseBuild/working-set">工作集库</el-menu-item>
                 </el-submenu>
-                <el-submenu index="/bimlib/decoration/bim-lib/3">
+                <el-submenu index="/bimlib/decoration/bim-lib">
                     <template slot="title">家装</template>
-                    <el-menu-item index="/bimlib/decoration/bim-lib/3">工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/decoration/bim-lib">工程库</el-menu-item>
                 </el-submenu>
             </el-menu>
+
         </div>
         <div class="container">
             <!--<ul id="treeDemo" class="ztree"></ul>-->
             <div class="contents">
+             <transition :name="transitionName">
                 <router-view class="Router bimlib Bim-libs"></router-view>
+             </transition>
             </div>
         </div>
     </div>
@@ -30,6 +33,10 @@
 
 <script>
 /* 左侧导航菜单样式 */
+
+
+//js
+import "../../../static/zTree/js/jquery.ztree.core.min.js";
 
 export default {
     data: () => ({
@@ -75,10 +82,33 @@ export default {
     },
     mounted() {
         $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
+        console.log(this.$route,'this.$router')
+    },
+    beforeRouteUpdate (to, from, next) {
+      let isBack = this.$router.isBack
+
+      if (isBack) {
+         this.transitionName = 'slide-right'
+      } else {
+         this.transitionName = 'slide-left'
+      }
+        this.$router.isBack = false
+        next()
     },
 
      watch: {
-     　　
+     　　'$route' (to, from) {
+             console.log(this.$route.name);
+              if(!this.$route.name || this.$route.name.length<=0){
+                  return false
+              }
+              if(!to.name || !from.name){return false}
+              let toName = to.name;//路由跳转到信息
+              let fromName = from.name;//路由跳转前的信息
+              toName = toName.split("?")[1];
+              fromName = fromName.split("?")[1];
+              this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是
+     　　 }
 　　},
     created(){
         this.activeIndex =  this.$route.path;
@@ -118,7 +148,25 @@ export default {
     font-size: 16px;
     font-weight: 700;
 }
+.bimlib.Router{
+     position: absolute;
+     width: 100%;
+     transition: all .8s ease;
+     top: 0px;
+}
+.slide-left-enter,
+.slide-right-leave-active {
+     opacity: 0;
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+}
 
+.slide-left-leave-active,
+.slide-right-enter {
+     opacity: 0;
+    -webkit-transform: translate(-100%, 0);
+    transform: translate(-100% 0);
+}
 </style>
 <style>
     @import "../../../static/css/aside.css";

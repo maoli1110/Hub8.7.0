@@ -1109,10 +1109,10 @@ ul>li{
 }
 /*el-popover*/
 .el-popover{
-    height: 150px !important;
-    overflow: auto !important;
+    height: 150px;
+    overflow: auto;
     width: 130px;
-    min-width: 133px !important;
+    min-width: 133px;
     background: #fff;
 }
 .el-popover .root-name{display:inline-block !important;padding:0 5px;}
@@ -1138,3 +1138,8 @@ ul>li{
     margin-left: -192px;
 }
 
+.el-form-item__label{width:80px;text-align:right;}
+
+body .el-popover.remark-popper {
+    height: 200px;
+}

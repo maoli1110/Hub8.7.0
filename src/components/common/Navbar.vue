@@ -67,11 +67,7 @@ export default {
                 {
                     menuName: '系统日志',
                     path: '/system-log'
-                },
-                {
-                    menuName: '升级说明',
-                    path: '/upgrade-notes'
-                },
+                }
             ]
         };
     },
