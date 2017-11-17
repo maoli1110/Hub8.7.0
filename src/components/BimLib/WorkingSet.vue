@@ -219,11 +219,15 @@
              * @params row 列
              */
             selectChecked(selection, row){
+                console.log(selection,'selection');
                 selection.forEach(function(val,key){
                     if( deletArray.indexOf(val.index) ==-1){
-                        deletArray.push(val.index)
+                        deletArray = selection
                     }
                 })
+               /* if(deletArray.indexOf(val.index) ==-1){
+                    deletArray.splice(index,1)
+                }*/
             },
             changeProject(value){
                 console.log(value)
@@ -238,6 +242,11 @@
                     /* if(this.tableData.length===deletArray.length){
                      //重新渲染数据
                      }else*/
+                    let deletArrayCopy = [];
+                    deletArray.forEach((val,key)=>{
+                        deletArrayCopy.push(val.index)
+                    })
+                    deletArray = deletArrayCopy;
                     if (deletArray.length) {
                         for (let i = 0; i < deletArray.length; i++) {
                             for (let j = 0; j < this.tableData.length; j++) {

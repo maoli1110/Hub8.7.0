@@ -362,11 +362,11 @@
                 ];
                 cities.forEach((city, index) => {
                     data.push({
-                        label: city,
-                        key: index,
-                        pinyin: pinyin[index]
-                    });
+                    label: city,
+                    key: index,
+                    pinyin: pinyin[index]
                 });
+            });
                 return data;
             };
             return {
@@ -547,11 +547,11 @@
             },
             commonAlert(message){
                 this.$alert(message, '提示', {
-                    confirmButtonText: '确定',
-                    callback: action => {
+                        confirmButtonText: '确定',
+                        callback: action => {
                         console.log(1111)
-                    }
-                })
+            }
+            })
             },
             commonMessage(message,type){
                 this.$message({
@@ -620,18 +620,18 @@
                         /* if(this.tableData.length===deletArray.length){
                          //重新渲染数据
                          }else*/if(deletArray.length){
-                            for(let i = 0;i<deletArray.length;i++){
-                                for(let j = 0;j<this.tableData.length;j++){
-                                    if( this.tableData[j].index == deletArray[i]){
-                                        this.tableData.splice(j,1);
-                                    }
+                        for(let i = 0;i<deletArray.length;i++){
+                            for(let j = 0;j<this.tableData.length;j++){
+                                if( this.tableData[j].index == deletArray[i]){
+                                    this.tableData.splice(j,1);
                                 }
                             }
                         }
-                        this.allChecked = false;
-                        countIndex = 0;
-                        deletArray = [];//接口成功之后删除数据
-                    },()=>{
+                    }
+                    this.allChecked = false;
+                    countIndex = 0;
+                    deletArray = [];//接口成功之后删除数据
+                },()=>{
 
                     },'warning')
                 }else if(type=='wipeData'){
@@ -645,9 +645,9 @@
             getTree(){
                 cloudTree().then(res => {
                     this.proDepartNodes = res.data[0].result;
-                    console.log( this.proDepartNodes)
-                    $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
-                });
+                console.log( this.proDepartNodes)
+                $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
+            });
             },
             //添加工程
             addProject(type){
@@ -717,7 +717,7 @@
                 if(id && name){
                     this.tableData.forEach((val,key)=>{
                         this.$set(val,'updateUser',name)
-                    })
+                })
                 }
                 if(this.$refs.multipleTable){//勾选列表复选框存在清除勾选
                     this.$refs.multipleTable.clearSelection();
@@ -725,7 +725,7 @@
                 }
                 this.tableData.forEach((val,key)=>{
                     this.$set(val,'checked',false)
-                })
+            })
             },
 
             //添加和修改工程
@@ -756,7 +756,7 @@
                     this.checkedCities = [];
                     this.cities.forEach(item => {
                         this.checkedCities.push(item);
-                    });
+                });
                 } else {
                     this.checkedCities = [];
                 }
@@ -778,9 +778,9 @@
                 let searchArr = [];
                 this.cities.forEach((val,key)=>{
                     if(this.cities[key].indexOf(this.proMsearchKey) !=-1){
-                        searchArr.push(this.proMsearchKey);
-                    }
-                })
+                    searchArr.push(this.proMsearchKey);
+                }
+            })
                 this.cities = searchArr;
             },
             //工程管理保存
@@ -832,16 +832,16 @@
                 if(allChecked){
                     data.forEach((val,key)=>{
                         val.checked = true;
-                    })
+                })
                 }else{
                     data.forEach((val,key)=>{
                         val.checked = false;
-                    })
+                })
                 }
                 if(this.allChecked){
                     data.forEach((val,key)=>{
                         deletArray.push(val.index)
-                    })
+                })
                 }
 
             },
@@ -903,6 +903,7 @@
                 }
                 this.allChecked = false;
                 deletArray = [];
+                countIndex = 0;
             }
         }
     }
