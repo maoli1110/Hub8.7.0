@@ -131,7 +131,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <table class="bim-lib" cellspacing="0" cellpadding="0" v-if="($route.path==('/bimlib/housing/recycle-bin/'+$route.params.typeId) ||$route.path==('/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId) || $route.path==('/bimlib/decoration/recycle-bin/'+$route.params.typeId))">
+                    <table class="recycle-bins" cellspacing="0" cellpadding="0" v-if="($route.path==('/bimlib/housing/recycle-bin/'+$route.params.typeId) ||$route.path==('/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId) || $route.path==('/bimlib/decoration/recycle-bin/'+$route.params.typeId))">
                         <thead>
                         <tr>
                             <th>
@@ -146,7 +146,7 @@
                             <th class="uploadPerson">上传人</th>
                             <th>上传时间</th>
                             <th v-if="$route.params.typeId!=3">图纸</th>
-                            <th>所属项目部</th>
+                            <th class="depart-pro">所属项目部</th>
                             <th>大小</th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
                         </tr>
@@ -158,13 +158,13 @@
                                     <el-checkbox v-model="item.checked" @change="singChecked" ></el-checkbox>
                                 </template>
                             </td>
-                            <td>{{item.processName}}</td>
+                            <td class="project-name">{{item.processName}}</td>
                             <td>{{item.speciality}}</td>
                             <td v-if="$route.params.typeId !=3" class="bim-params">{{item.BIMparams}}</td>
                             <td class="absol substr uploadPerson" :title="item.updateUser">{{item.updateUser}}</td>
                             <td class="times">{{item.updateTime}}</td>
                             <td  v-if="$route.params.typeId !=3">{{item.PDF}}</td>
-                            <td>{{item.proDepartment}}</td>
+                            <td class="depart-pro">{{item.proDepartment}}</td>
                             <td>{{item.size}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.output}}</td>
                         </tr>
