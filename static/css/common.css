@@ -1143,3 +1143,23 @@ ul>li{
 body .el-popover.remark-popper {
     height: 200px;
 }
+
+/*订单管理公共样式*/
+.order-management .orders-text {
+    font-weight: 700;
+    font-size: 16px;
+    color: #263147;
+}
+
+.order-management .header {
+    height: 40px;
+    background-color: #fff;
+    padding: 10px 20px;
+    line-height: 40px;
+}
+
+.order-management .main {
+    padding: 0 20px;
+    border-top: 1px solid #e6e6e6;
+    background-color: #fff;
+}

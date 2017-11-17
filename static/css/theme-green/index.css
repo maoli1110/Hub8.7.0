@@ -26,8 +26,8 @@
 }
 
 .el-pagination--small .arrow.disabled,
-.el-table td.is-hidden > *,
-.el-table th.is-hidden > * {
+.el-table td.is-hidden>*,
+.el-table th.is-hidden>* {
     visibility: hidden
 }
 
@@ -372,8 +372,7 @@
     border-color: #d1dbe5
 }
 
-.el-pagination__sizes .el-input .el-input__inner:hover {
-}
+.el-pagination__sizes .el-input .el-input__inner:hover {}
 
 .el-pagination__jump {
     margin-left: 10px
@@ -453,7 +452,7 @@
     color: #e6e6e6
 }
 
-.el-pager li.active + li {
+.el-pager li.active+li {
     border-left: 0;
     padding-left: 5px
 }
@@ -493,14 +492,17 @@
     width: 540px;
     height: 530px;
 }
-.el-dialog--batch-add-member{
+
+.el-dialog--batch-add-member {
     width: 772px;
-    height:582px;
+    height: 582px;
 }
-.el-dialog--authorized-data-catalog{
-    width:760px;
+
+.el-dialog--authorized-data-catalog {
+    width: 760px;
     height: 670px;
 }
+
 .el-dialog--project-authorize {
     width: 520px;
     height: 700px;
@@ -520,14 +522,22 @@
     min-width: 390px;
     min-height: 383px;
 }
-.el-dialog--modify{
-    width:670px;
-    height:500px;
+
+.el-dialog--modify {
+    width: 670px;
+    height: 500px;
 }
-.el-dialog--add-authorization{
-    width:670px;
+
+.el-dialog--add-authorization {
+    width: 670px;
     height: 607px;
 }
+
+.el-dialog--add-admin {
+    width: 760px;
+    height: 730px;
+}
+
 .el-dialog--small {
     width: 50%
 }
@@ -843,7 +853,7 @@
     position: relative
 }
 
-.el-menu--horizontal .el-submenu > .el-menu {
+.el-menu--horizontal .el-submenu>.el-menu {
     position: absolute;
     top: 65px;
     left: 0;
@@ -882,9 +892,9 @@
     background-color: #fff
 }
 
-.el-menu--horizontal > .el-menu-item:hover,
-.el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
-.el-menu--horizontal > .el-submenu:hover .el-submenu__title {
+.el-menu--horizontal>.el-menu-item:hover,
+.el-menu--horizontal>.el-submenu.is-active .el-submenu__title,
+.el-menu--horizontal>.el-submenu:hover .el-submenu__title {
     /* border-bottom: 5px solid #6595f2 */
 }
 
@@ -931,6 +941,7 @@
     border-top: 1px solid #e6e6e6
 }
 
+
 /* .el-submenu .el-menu {} */
 
 .el-submenu .el-menu-item:hover,
@@ -944,7 +955,7 @@
     padding: 0 0px
 }
 
-.el-submenu.is-opened > .el-submenu__title .el-submenu__icon-arrow {
+.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow {
     -ms-transform: rotate(180deg);
     transform: rotateZ(180deg)
 }
@@ -973,7 +984,7 @@
     display: inline-block
 }
 
-.el-menu-item-group > ul {
+.el-menu-item-group>ul {
     padding: 0
 }
 
@@ -991,7 +1002,7 @@
     white-space: nowrap
 }
 
-.el-radio + .el-radio {
+.el-radio+.el-radio {
     margin-left: 15px
 }
 
@@ -1028,7 +1039,7 @@
     background-color: #fff
 }
 
-.el-radio__input.is-disabled .el-radio__inner + .el-radio__label {
+.el-radio__input.is-disabled .el-radio__inner+.el-radio__label {
     cursor: not-allowed
 }
 
@@ -1042,7 +1053,7 @@
     background-color: #fff
 }
 
-.el-radio__input.is-disabled + .el-radio__label {
+.el-radio__input.is-disabled+.el-radio__label {
     color: #bbb;
     cursor: not-allowed
 }
@@ -1152,7 +1163,7 @@
     line-height: .9
 }
 
-.el-radio-button__inner [class*=el-icon-] + span {
+.el-radio-button__inner [class*=el-icon-]+span {
     margin-left: 5px
 }
 
@@ -1164,14 +1175,14 @@
     left: -999px
 }
 
-.el-radio-button__orig-radio:checked + .el-radio-button__inner {
+.el-radio-button__orig-radio:checked+.el-radio-button__inner {
     color: #fff;
     background-color: #6595f2;
     border-color: #6595f2;
     box-shadow: -1px 0 0 0 #6595f2
 }
 
-.el-radio-button__orig-radio:disabled + .el-radio-button__inner {
+.el-radio-button__orig-radio:disabled+.el-radio-button__inner {
     color: #e6e6e6;
     cursor: not-allowed;
     background-image: none;
@@ -1227,11 +1238,11 @@
     background-color: rgb(250, 254, 253) !important
 }
 
-.el-switch.is-disabled .el-switch__core ~ .el-switch__label * {
+.el-switch.is-disabled .el-switch__core~.el-switch__label * {
     color: rgb(250, 254, 253) !important
 }
 
-.el-switch.is-disabled .el-switch__input:checked + .el-switch__core {
+.el-switch.is-disabled .el-switch__input:checked+.el-switch__core {
     border-color: rgb(228, 240, 241);
     background-color: rgb(228, 240, 241)
 }
@@ -1274,7 +1285,7 @@
     display: none
 }
 
-.el-switch__input:checked + .el-switch__core {
+.el-switch__input:checked+.el-switch__core {
     border-color: #6595f2;
     background-color: #6595f2
 }
@@ -1321,6 +1332,13 @@
     box-sizing: border-box;
     margin: 5px 0
 }
+.el-select-dropdown.is-multiple{
+    border:1px solid #fff;
+    box-shadow: none
+}
+.el-select-dropdown.is-multiple .el-select-dropdown__list{
+    padding:0px
+}
 
 .el-select-dropdown .el-scrollbar.is-empty .el-select-dropdown__list {
     padding: 0
@@ -1362,9 +1380,9 @@
     list-style: none;
     padding: 6px 0;
     margin: 0;
-    box-sizing: border-box
+    box-sizing: border-box;
+    max-width: 634px;
 }
-
 .el-select-dropdown__item {
     font-size: 14px;
     padding: 8px 10px;
@@ -1429,15 +1447,13 @@
     position: relative
 }
 
-.el-select:hover .el-input__inner {
-}
+.el-select:hover .el-input__inner {}
 
 .el-select .el-input__inner {
     cursor: pointer
 }
 
-.el-select .el-input__inner:focus {
-}
+.el-select .el-input__inner:focus {}
 
 .el-select .el-input .el-input__icon {
     color: #e6e6e6;
@@ -1476,6 +1492,7 @@
     cursor: not-allowed
 }
 
+
 /* .el-select .el-input.is-disabled .el-input__inner:hover {
 } */
 
@@ -1489,6 +1506,7 @@
     box-sizing: border-box;
     margin: 3px 0 3px 6px
 }
+
 
 .el-select__input {
     border: none;
@@ -1543,7 +1561,7 @@
 
 .el-table .el-tooltip.cell,
 .el-table th,
-.el-table th > div {
+.el-table th>div {
     white-space: nowrap
 }
 
@@ -1652,7 +1670,7 @@
 }
 
 .el-table .caret-wrapper,
-.el-table th > .cell {
+.el-table th>.cell {
     position: relative;
     display: inline-block;
     vertical-align: middle;
@@ -1668,17 +1686,17 @@
     height: 60px;
 }
 
-.el-table th > div {
+.el-table th>div {
     display: inline-block;
     line-height: 40px;
     overflow: hidden
 }
 
-.el-table td > div {
+.el-table td>div {
     box-sizing: border-box;
 }
 
-.el-table th.required > div::before {
+.el-table th.required>div::before {
     display: inline-block;
     content: "";
     width: 8px;
@@ -1689,7 +1707,7 @@
     vertical-align: middle
 }
 
-.el-table th > .cell {
+.el-table th>.cell {
     word-wrap: normal;
     text-overflow: ellipsis;
     line-height: 20px;
@@ -1697,7 +1715,7 @@
     box-sizing: border-box
 }
 
-.el-table th > .cell.highlight {
+.el-table th>.cell.highlight {
     color: #6595f2
 }
 
@@ -1799,6 +1817,13 @@
     font-weight: 700;
 }
 
+.order-management.eds-orders .el-table__body-wrapper .cell,
+.order-management.order-detail .el-table__body-wrapper .cell
+{
+    height: 40px;
+    line-height: 40px;
+}
+
 .el-table tr input[type=checkbox] {
     margin: 0
 }
@@ -1851,7 +1876,7 @@
     background-color: #f0f0f0
 }
 
-.el-table__expand-icon > .el-icon {
+.el-table__expand-icon>.el-icon {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -1974,12 +1999,11 @@
     background: rgb(235, 251, 249)
 }
 
-.el-table__body tr.hover-row > td {
+.el-table__body tr.hover-row>td {
     background-color: #fff
 }
 
-.el-table__body tr.current-row > td {
-}
+.el-table__body tr.current-row>td {}
 
 .el-table__column-resize-proxy {
     position: absolute;
@@ -2014,7 +2038,7 @@
     transition: background-color .25s ease
 }
 
-.el-table--enable-row-hover tr:hover > td {
+.el-table--enable-row-hover tr:hover>td {
     background-color: #f0f0f0
 }
 
@@ -2029,7 +2053,7 @@
     -moz-user-select: none
 }
 
-.el-checkbox + .el-checkbox {
+.el-checkbox+.el-checkbox {
     margin-left: 15px
 }
 
@@ -2084,7 +2108,7 @@
     border-color: #fff
 }
 
-.el-checkbox__input.is-disabled .el-checkbox__inner + .el-checkbox__label {
+.el-checkbox__input.is-disabled .el-checkbox__inner+.el-checkbox__label {
     cursor: not-allowed
 }
 
@@ -2106,7 +2130,7 @@
     border-color: #fff
 }
 
-.el-checkbox__input.is-disabled + .el-checkbox__label {
+.el-checkbox__input.is-disabled+.el-checkbox__label {
     color: #bbb;
     cursor: not-allowed
 }
@@ -2162,9 +2186,17 @@
 
 .el-checkbox__label {
     font-size: 14px;
-    padding-left: 10px
+    padding-left: 10px;
 }
-
+.add-admin-group .el-checkbox__label {
+    font-size: 12px;
+    padding-left: 10px;
+    display:inline-block;
+    width:72px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align: sub;
+}
 .el-table-column--selection .cell {
    /* padding-left: 14px;
     padding-right: 14px*/
@@ -2490,7 +2522,7 @@
     box-sizing: border-box
 }
 
-.el-date-range-picker__time-header > .el-icon-arrow-right {
+.el-date-range-picker__time-header>.el-icon-arrow-right {
     font-size: 20px;
     vertical-align: middle;
     display: table-cell;
@@ -2647,8 +2679,8 @@
     background-color: rgb(250, 254, 253)
 }
 
-.el-picker-panel [slot=sidebar] + .el-picker-panel__body,
-.el-picker-panel__sidebar + .el-picker-panel__body {
+.el-picker-panel [slot=sidebar]+.el-picker-panel__body,
+.el-picker-panel__sidebar+.el-picker-panel__body {
     margin-left: 110px
 }
 
@@ -3170,7 +3202,7 @@
     border-radius: 5px
 }
 
-.el-button + .el-button {
+.el-button+.el-button {
     margin-left: 20px
 }
 
@@ -3190,7 +3222,7 @@
     border: 0
 }
 
-.el-button [class*=el-icon-] + span {
+.el-button [class*=el-icon-]+span {
     margin-left: 5px
 }
 
@@ -3582,7 +3614,7 @@
     position: relative
 }
 
-.el-button-group .el-button + .el-button {
+.el-button-group .el-button+.el-button {
     margin-left: 0
 }
 
@@ -3866,11 +3898,10 @@
     content: '*';
     color: #ff4949;
     /* margin-right: 4px */
-    right:25px;
+    right: 25px;
     color: #e30000;
     font-family: 'yahei';
     font-size: 14px;
-
 }
 
 .el-form-item__label {
@@ -4090,16 +4121,16 @@
     border: 1px solid #d1dbe5
 }
 
-.el-tabs--border-card > .el-tabs__content {
+.el-tabs--border-card>.el-tabs__content {
     padding: 15px
 }
 
-.el-tabs--border-card > .el-tabs__header {
+.el-tabs--border-card>.el-tabs__header {
     background-color: #fff;
     margin: 0
 }
 
-.el-tabs--border-card > .el-tabs__header > .el-tabs__item {
+.el-tabs--border-card>.el-tabs__header>.el-tabs__item {
     transition: all .3s cubic-bezier(.645, .045, .355, 1);
     border: 1px solid transparent;
     border-top: 0;
@@ -4107,17 +4138,17 @@
     margin-left: -1px
 }
 
-.el-tabs--border-card > .el-tabs__header > .el-tabs__item.is-active {
+.el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active {
     background-color: #fff;
     border-right-color: #d1dbe5;
     border-left-color: #d1dbe5
 }
 
-.el-tabs--border-card > .el-tabs__header > .el-tabs__item.is-active:first-child {
+.el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active:first-child {
     border-left-color: #d1dbe5
 }
 
-.el-tabs--border-card > .el-tabs__header > .el-tabs__item.is-active:last-child {
+.el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active:last-child {
     border-right-color: #d1dbe5
 }
 
@@ -4249,12 +4280,23 @@
     border-color: rgba(32, 160, 255, .2);
     color: #6595f2
 }
-
+.admin-select .el-tag--primary {
+    background-color: rgba(200, 200, 200, .1);
+    border: 1px solid #c8c8c8;
+    color: #444444
+}
+.admin-select .el-tag{
+    border-radius: 2px;
+}
 .el-tag--primary .el-tag__close:hover {
     background-color: #6595f2;
     color: #fff
 }
-
+.admin-select .el-tag--primary .el-tag__close{
+    background-color: #c8c8c8;
+    color: #fff;
+    margin-left:10px;
+}
 .el-tag--primary.is-hit {
     border-color: #6595f2
 }
@@ -4331,12 +4373,12 @@
     white-space: nowrap
 }
 
-.el-tree-node > .el-tree-node__children {
+.el-tree-node>.el-tree-node__children {
     overflow: hidden;
     background-color: transparent
 }
 
-.el-tree-node.is-expanded > .el-tree-node__children {
+.el-tree-node.is-expanded>.el-tree-node__children {
     display: block
 }
 
@@ -4353,12 +4395,12 @@
     cursor: pointer
 }
 
-.el-tree-node__content > .el-checkbox,
-.el-tree-node__content > .el-tree-node__expand-icon {
+.el-tree-node__content>.el-checkbox,
+.el-tree-node__content>.el-tree-node__expand-icon {
     margin-right: 8px
 }
 
-.el-tree-node__content > .el-checkbox {
+.el-tree-node__content>.el-checkbox {
     vertical-align: middle
 }
 
@@ -4404,7 +4446,7 @@
     color: #e6e6e6
 }
 
-.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
     background-color: rgb(235, 251, 249)
 }
 
@@ -4629,8 +4671,8 @@
     color: #6595f2
 }
 
-.el-input-number__decrease:hover:not(.is-disabled) ~ .el-input .el-input__inner:not(.is-disabled),
-.el-input-number__increase:hover:not(.is-disabled) ~ .el-input .el-input__inner:not(.is-disabled) {
+.el-input-number__decrease:hover:not(.is-disabled)~.el-input .el-input__inner:not(.is-disabled),
+.el-input-number__increase:hover:not(.is-disabled)~.el-input .el-input__inner:not(.is-disabled) {
     border-color: #6595f2
 }
 
@@ -5567,430 +5609,335 @@
     .el-col-xs-1 {
         width: 4.16667%
     }
-
     .el-col-xs-offset-1 {
         margin-left: 4.16667%
     }
-
     .el-col-xs-pull-1 {
         position: relative;
         right: 4.16667%
     }
-
     .el-col-xs-push-1 {
         position: relative;
         left: 4.16667%
     }
-
     .el-col-xs-2 {
         width: 8.33333%
     }
-
     .el-col-xs-offset-2 {
         margin-left: 8.33333%
     }
-
     .el-col-xs-pull-2 {
         position: relative;
         right: 8.33333%
     }
-
     .el-col-xs-push-2 {
         position: relative;
         left: 8.33333%
     }
-
     .el-col-xs-3 {
         width: 12.5%
     }
-
     .el-col-xs-offset-3 {
         margin-left: 12.5%
     }
-
     .el-col-xs-pull-3 {
         position: relative;
         right: 12.5%
     }
-
     .el-col-xs-push-3 {
         position: relative;
         left: 12.5%
     }
-
     .el-col-xs-4 {
         width: 16.66667%
     }
-
     .el-col-xs-offset-4 {
         margin-left: 16.66667%
     }
-
     .el-col-xs-pull-4 {
         position: relative;
         right: 16.66667%
     }
-
     .el-col-xs-push-4 {
         position: relative;
         left: 16.66667%
     }
-
     .el-col-xs-5 {
         width: 20.83333%
     }
-
     .el-col-xs-offset-5 {
         margin-left: 20.83333%
     }
-
     .el-col-xs-pull-5 {
         position: relative;
         right: 20.83333%
     }
-
     .el-col-xs-push-5 {
         position: relative;
         left: 20.83333%
     }
-
     .el-col-xs-6 {
         width: 25%
     }
-
     .el-col-xs-offset-6 {
         margin-left: 25%
     }
-
     .el-col-xs-pull-6 {
         position: relative;
         right: 25%
     }
-
     .el-col-xs-push-6 {
         position: relative;
         left: 25%
     }
-
     .el-col-xs-7 {
         width: 29.16667%
     }
-
     .el-col-xs-offset-7 {
         margin-left: 29.16667%
     }
-
     .el-col-xs-pull-7 {
         position: relative;
         right: 29.16667%
     }
-
     .el-col-xs-push-7 {
         position: relative;
         left: 29.16667%
     }
-
     .el-col-xs-8 {
         width: 33.33333%
     }
-
     .el-col-xs-offset-8 {
         margin-left: 33.33333%
     }
-
     .el-col-xs-pull-8 {
         position: relative;
         right: 33.33333%
     }
-
     .el-col-xs-push-8 {
         position: relative;
         left: 33.33333%
     }
-
     .el-col-xs-9 {
         width: 37.5%
     }
-
     .el-col-xs-offset-9 {
         margin-left: 37.5%
     }
-
     .el-col-xs-pull-9 {
         position: relative;
         right: 37.5%
     }
-
     .el-col-xs-push-9 {
         position: relative;
         left: 37.5%
     }
-
     .el-col-xs-10 {
         width: 41.66667%
     }
-
     .el-col-xs-offset-10 {
         margin-left: 41.66667%
     }
-
     .el-col-xs-pull-10 {
         position: relative;
         right: 41.66667%
     }
-
     .el-col-xs-push-10 {
         position: relative;
         left: 41.66667%
     }
-
     .el-col-xs-11 {
         width: 45.83333%
     }
-
     .el-col-xs-offset-11 {
         margin-left: 45.83333%
     }
-
     .el-col-xs-pull-11 {
         position: relative;
         right: 45.83333%
     }
-
     .el-col-xs-push-11 {
         position: relative;
         left: 45.83333%
     }
-
     .el-col-xs-12 {
         width: 50%
     }
-
     .el-col-xs-offset-12 {
         margin-left: 50%
     }
-
     .el-col-xs-pull-12 {
         position: relative;
         right: 50%
     }
-
     .el-col-xs-push-12 {
         position: relative;
         left: 50%
     }
-
     .el-col-xs-13 {
         width: 54.16667%
     }
-
     .el-col-xs-offset-13 {
         margin-left: 54.16667%
     }
-
     .el-col-xs-pull-13 {
         position: relative;
         right: 54.16667%
     }
-
     .el-col-xs-push-13 {
         position: relative;
         left: 54.16667%
     }
-
     .el-col-xs-14 {
         width: 58.33333%
     }
-
     .el-col-xs-offset-14 {
         margin-left: 58.33333%
     }
-
     .el-col-xs-pull-14 {
         position: relative;
         right: 58.33333%
     }
-
     .el-col-xs-push-14 {
         position: relative;
         left: 58.33333%
     }
-
     .el-col-xs-15 {
         width: 62.5%
     }
-
     .el-col-xs-offset-15 {
         margin-left: 62.5%
     }
-
     .el-col-xs-pull-15 {
         position: relative;
         right: 62.5%
     }
-
     .el-col-xs-push-15 {
         position: relative;
         left: 62.5%
     }
-
     .el-col-xs-16 {
         width: 66.66667%
     }
-
     .el-col-xs-offset-16 {
         margin-left: 66.66667%
     }
-
     .el-col-xs-pull-16 {
         position: relative;
         right: 66.66667%
     }
-
     .el-col-xs-push-16 {
         position: relative;
         left: 66.66667%
     }
-
     .el-col-xs-17 {
         width: 70.83333%
     }
-
     .el-col-xs-offset-17 {
         margin-left: 70.83333%
     }
-
     .el-col-xs-pull-17 {
         position: relative;
         right: 70.83333%
     }
-
     .el-col-xs-push-17 {
         position: relative;
         left: 70.83333%
     }
-
     .el-col-xs-18 {
         width: 75%
     }
-
     .el-col-xs-offset-18 {
         margin-left: 75%
     }
-
     .el-col-xs-pull-18 {
         position: relative;
         right: 75%
     }
-
     .el-col-xs-push-18 {
         position: relative;
         left: 75%
     }
-
     .el-col-xs-19 {
         width: 79.16667%
     }
-
     .el-col-xs-offset-19 {
         margin-left: 79.16667%
     }
-
     .el-col-xs-pull-19 {
         position: relative;
         right: 79.16667%
     }
-
     .el-col-xs-push-19 {
         position: relative;
         left: 79.16667%
     }
-
     .el-col-xs-20 {
         width: 83.33333%
     }
-
     .el-col-xs-offset-20 {
         margin-left: 83.33333%
     }
-
     .el-col-xs-pull-20 {
         position: relative;
         right: 83.33333%
     }
-
     .el-col-xs-push-20 {
         position: relative;
         left: 83.33333%
     }
-
     .el-col-xs-21 {
         width: 87.5%
     }
-
     .el-col-xs-offset-21 {
         margin-left: 87.5%
     }
-
     .el-col-xs-pull-21 {
         position: relative;
         right: 87.5%
     }
-
     .el-col-xs-push-21 {
         position: relative;
         left: 87.5%
     }
-
     .el-col-xs-22 {
         width: 91.66667%
     }
-
     .el-col-xs-offset-22 {
         margin-left: 91.66667%
     }
-
     .el-col-xs-pull-22 {
         position: relative;
         right: 91.66667%
     }
-
     .el-col-xs-push-22 {
         position: relative;
         left: 91.66667%
     }
-
     .el-col-xs-23 {
         width: 95.83333%
     }
-
     .el-col-xs-offset-23 {
         margin-left: 95.83333%
     }
-
     .el-col-xs-pull-23 {
         position: relative;
         right: 95.83333%
     }
-
     .el-col-xs-push-23 {
         position: relative;
         left: 95.83333%
     }
-
     .el-col-xs-24 {
         width: 100%
     }
-
     .el-col-xs-offset-24 {
         margin-left: 100%
     }
-
     .el-col-xs-pull-24 {
         position: relative;
         right: 100%
     }
-
     .el-col-xs-push-24 {
         position: relative;
         left: 100%
@@ -6001,430 +5948,335 @@
     .el-col-sm-1 {
         width: 4.16667%
     }
-
     .el-col-sm-offset-1 {
         margin-left: 4.16667%
     }
-
     .el-col-sm-pull-1 {
         position: relative;
         right: 4.16667%
     }
-
     .el-col-sm-push-1 {
         position: relative;
         left: 4.16667%
     }
-
     .el-col-sm-2 {
         width: 8.33333%
     }
-
     .el-col-sm-offset-2 {
         margin-left: 8.33333%
     }
-
     .el-col-sm-pull-2 {
         position: relative;
         right: 8.33333%
     }
-
     .el-col-sm-push-2 {
         position: relative;
         left: 8.33333%
     }
-
     .el-col-sm-3 {
         width: 12.5%
     }
-
     .el-col-sm-offset-3 {
         margin-left: 12.5%
     }
-
     .el-col-sm-pull-3 {
         position: relative;
         right: 12.5%
     }
-
     .el-col-sm-push-3 {
         position: relative;
         left: 12.5%
     }
-
     .el-col-sm-4 {
         width: 16.66667%
     }
-
     .el-col-sm-offset-4 {
         margin-left: 16.66667%
     }
-
     .el-col-sm-pull-4 {
         position: relative;
         right: 16.66667%
     }
-
     .el-col-sm-push-4 {
         position: relative;
         left: 16.66667%
     }
-
     .el-col-sm-5 {
         width: 20.83333%
     }
-
     .el-col-sm-offset-5 {
         margin-left: 20.83333%
     }
-
     .el-col-sm-pull-5 {
         position: relative;
         right: 20.83333%
     }
-
     .el-col-sm-push-5 {
         position: relative;
         left: 20.83333%
     }
-
     .el-col-sm-6 {
         width: 25%
     }
-
     .el-col-sm-offset-6 {
         margin-left: 25%
     }
-
     .el-col-sm-pull-6 {
         position: relative;
         right: 25%
     }
-
     .el-col-sm-push-6 {
         position: relative;
         left: 25%
     }
-
     .el-col-sm-7 {
         width: 29.16667%
     }
-
     .el-col-sm-offset-7 {
         margin-left: 29.16667%
     }
-
     .el-col-sm-pull-7 {
         position: relative;
         right: 29.16667%
     }
-
     .el-col-sm-push-7 {
         position: relative;
         left: 29.16667%
     }
-
     .el-col-sm-8 {
         width: 33.33333%
     }
-
     .el-col-sm-offset-8 {
         margin-left: 33.33333%
     }
-
     .el-col-sm-pull-8 {
         position: relative;
         right: 33.33333%
     }
-
     .el-col-sm-push-8 {
         position: relative;
         left: 33.33333%
     }
-
     .el-col-sm-9 {
         width: 37.5%
     }
-
     .el-col-sm-offset-9 {
         margin-left: 37.5%
     }
-
     .el-col-sm-pull-9 {
         position: relative;
         right: 37.5%
     }
-
     .el-col-sm-push-9 {
         position: relative;
         left: 37.5%
     }
-
     .el-col-sm-10 {
         width: 41.66667%
     }
-
     .el-col-sm-offset-10 {
         margin-left: 41.66667%
     }
-
     .el-col-sm-pull-10 {
         position: relative;
         right: 41.66667%
     }
-
     .el-col-sm-push-10 {
         position: relative;
         left: 41.66667%
     }
-
     .el-col-sm-11 {
         width: 45.83333%
     }
-
     .el-col-sm-offset-11 {
         margin-left: 45.83333%
     }
-
     .el-col-sm-pull-11 {
         position: relative;
         right: 45.83333%
     }
-
     .el-col-sm-push-11 {
         position: relative;
         left: 45.83333%
     }
-
     .el-col-sm-12 {
         width: 50%
     }
-
     .el-col-sm-offset-12 {
         margin-left: 50%
     }
-
     .el-col-sm-pull-12 {
         position: relative;
         right: 50%
     }
-
     .el-col-sm-push-12 {
         position: relative;
         left: 50%
     }
-
     .el-col-sm-13 {
         width: 54.16667%
     }
-
     .el-col-sm-offset-13 {
         margin-left: 54.16667%
     }
-
     .el-col-sm-pull-13 {
         position: relative;
         right: 54.16667%
     }
-
     .el-col-sm-push-13 {
         position: relative;
         left: 54.16667%
     }
-
     .el-col-sm-14 {
         width: 58.33333%
     }
-
     .el-col-sm-offset-14 {
         margin-left: 58.33333%
     }
-
     .el-col-sm-pull-14 {
         position: relative;
         right: 58.33333%
     }
-
     .el-col-sm-push-14 {
         position: relative;
         left: 58.33333%
     }
-
     .el-col-sm-15 {
         width: 62.5%
     }
-
     .el-col-sm-offset-15 {
         margin-left: 62.5%
     }
-
     .el-col-sm-pull-15 {
         position: relative;
         right: 62.5%
     }
-
     .el-col-sm-push-15 {
         position: relative;
         left: 62.5%
     }
-
     .el-col-sm-16 {
         width: 66.66667%
     }
-
     .el-col-sm-offset-16 {
         margin-left: 66.66667%
     }
-
     .el-col-sm-pull-16 {
         position: relative;
         right: 66.66667%
     }
-
     .el-col-sm-push-16 {
         position: relative;
         left: 66.66667%
     }
-
     .el-col-sm-17 {
         width: 70.83333%
     }
-
     .el-col-sm-offset-17 {
         margin-left: 70.83333%
     }
-
     .el-col-sm-pull-17 {
         position: relative;
         right: 70.83333%
     }
-
     .el-col-sm-push-17 {
         position: relative;
         left: 70.83333%
     }
-
     .el-col-sm-18 {
         width: 75%
     }
-
     .el-col-sm-offset-18 {
         margin-left: 75%
     }
-
     .el-col-sm-pull-18 {
         position: relative;
         right: 75%
     }
-
     .el-col-sm-push-18 {
         position: relative;
         left: 75%
     }
-
     .el-col-sm-19 {
         width: 79.16667%
     }
-
     .el-col-sm-offset-19 {
         margin-left: 79.16667%
     }
-
     .el-col-sm-pull-19 {
         position: relative;
         right: 79.16667%
     }
-
     .el-col-sm-push-19 {
         position: relative;
         left: 79.16667%
     }
-
     .el-col-sm-20 {
         width: 83.33333%
     }
-
     .el-col-sm-offset-20 {
         margin-left: 83.33333%
     }
-
     .el-col-sm-pull-20 {
         position: relative;
         right: 83.33333%
     }
-
     .el-col-sm-push-20 {
         position: relative;
         left: 83.33333%
     }
-
     .el-col-sm-21 {
         width: 87.5%
     }
-
     .el-col-sm-offset-21 {
         margin-left: 87.5%
     }
-
     .el-col-sm-pull-21 {
         position: relative;
         right: 87.5%
     }
-
     .el-col-sm-push-21 {
         position: relative;
         left: 87.5%
     }
-
     .el-col-sm-22 {
         width: 91.66667%
     }
-
     .el-col-sm-offset-22 {
         margin-left: 91.66667%
     }
-
     .el-col-sm-pull-22 {
         position: relative;
         right: 91.66667%
     }
-
     .el-col-sm-push-22 {
         position: relative;
         left: 91.66667%
     }
-
     .el-col-sm-23 {
         width: 95.83333%
     }
-
     .el-col-sm-offset-23 {
         margin-left: 95.83333%
     }
-
     .el-col-sm-pull-23 {
         position: relative;
         right: 95.83333%
     }
-
     .el-col-sm-push-23 {
         position: relative;
         left: 95.83333%
     }
-
     .el-col-sm-24 {
         width: 100%
     }
-
     .el-col-sm-offset-24 {
         margin-left: 100%
     }
-
     .el-col-sm-pull-24 {
         position: relative;
         right: 100%
     }
-
     .el-col-sm-push-24 {
         position: relative;
         left: 100%
@@ -6435,430 +6287,335 @@
     .el-col-md-1 {
         width: 4.16667%
     }
-
     .el-col-md-offset-1 {
         margin-left: 4.16667%
     }
-
     .el-col-md-pull-1 {
         position: relative;
         right: 4.16667%
     }
-
     .el-col-md-push-1 {
         position: relative;
         left: 4.16667%
     }
-
     .el-col-md-2 {
         width: 8.33333%
     }
-
     .el-col-md-offset-2 {
         margin-left: 8.33333%
     }
-
     .el-col-md-pull-2 {
         position: relative;
         right: 8.33333%
     }
-
     .el-col-md-push-2 {
         position: relative;
         left: 8.33333%
     }
-
     .el-col-md-3 {
         width: 12.5%
     }
-
     .el-col-md-offset-3 {
         margin-left: 12.5%
     }
-
     .el-col-md-pull-3 {
         position: relative;
         right: 12.5%
     }
-
     .el-col-md-push-3 {
         position: relative;
         left: 12.5%
     }
-
     .el-col-md-4 {
         width: 16.66667%
     }
-
     .el-col-md-offset-4 {
         margin-left: 16.66667%
     }
-
     .el-col-md-pull-4 {
         position: relative;
         right: 16.66667%
     }
-
     .el-col-md-push-4 {
         position: relative;
         left: 16.66667%
     }
-
     .el-col-md-5 {
         width: 20.83333%
     }
-
     .el-col-md-offset-5 {
         margin-left: 20.83333%
     }
-
     .el-col-md-pull-5 {
         position: relative;
         right: 20.83333%
     }
-
     .el-col-md-push-5 {
         position: relative;
         left: 20.83333%
     }
-
     .el-col-md-6 {
         width: 25%
     }
-
     .el-col-md-offset-6 {
         margin-left: 25%
     }
-
     .el-col-md-pull-6 {
         position: relative;
         right: 25%
     }
-
     .el-col-md-push-6 {
         position: relative;
         left: 25%
     }
-
     .el-col-md-7 {
         width: 29.16667%
     }
-
     .el-col-md-offset-7 {
         margin-left: 29.16667%
     }
-
     .el-col-md-pull-7 {
         position: relative;
         right: 29.16667%
     }
-
     .el-col-md-push-7 {
         position: relative;
         left: 29.16667%
     }
-
     .el-col-md-8 {
         width: 33.33333%
     }
-
     .el-col-md-offset-8 {
         margin-left: 33.33333%
     }
-
     .el-col-md-pull-8 {
         position: relative;
         right: 33.33333%
     }
-
     .el-col-md-push-8 {
         position: relative;
         left: 33.33333%
     }
-
     .el-col-md-9 {
         width: 37.5%
     }
-
     .el-col-md-offset-9 {
         margin-left: 37.5%
     }
-
     .el-col-md-pull-9 {
         position: relative;
         right: 37.5%
     }
-
     .el-col-md-push-9 {
         position: relative;
         left: 37.5%
     }
-
     .el-col-md-10 {
         width: 41.66667%
     }
-
     .el-col-md-offset-10 {
         margin-left: 41.66667%
     }
-
     .el-col-md-pull-10 {
         position: relative;
         right: 41.66667%
     }
-
     .el-col-md-push-10 {
         position: relative;
         left: 41.66667%
     }
-
     .el-col-md-11 {
         width: 45.83333%
     }
-
     .el-col-md-offset-11 {
         margin-left: 45.83333%
     }
-
     .el-col-md-pull-11 {
         position: relative;
         right: 45.83333%
     }
-
     .el-col-md-push-11 {
         position: relative;
         left: 45.83333%
     }
-
     .el-col-md-12 {
         width: 50%
     }
-
     .el-col-md-offset-12 {
         margin-left: 50%
     }
-
     .el-col-md-pull-12 {
         position: relative;
         right: 50%
     }
-
     .el-col-md-push-12 {
         position: relative;
         left: 50%
     }
-
     .el-col-md-13 {
         width: 54.16667%
     }
-
     .el-col-md-offset-13 {
         margin-left: 54.16667%
     }
-
     .el-col-md-pull-13 {
         position: relative;
         right: 54.16667%
     }
-
     .el-col-md-push-13 {
         position: relative;
         left: 54.16667%
     }
-
     .el-col-md-14 {
         width: 58.33333%
     }
-
     .el-col-md-offset-14 {
         margin-left: 58.33333%
     }
-
     .el-col-md-pull-14 {
         position: relative;
         right: 58.33333%
     }
-
     .el-col-md-push-14 {
         position: relative;
         left: 58.33333%
     }
-
     .el-col-md-15 {
         width: 62.5%
     }
-
     .el-col-md-offset-15 {
         margin-left: 62.5%
     }
-
     .el-col-md-pull-15 {
         position: relative;
         right: 62.5%
     }
-
     .el-col-md-push-15 {
         position: relative;
         left: 62.5%
     }
-
     .el-col-md-16 {
         width: 66.66667%
     }
-
     .el-col-md-offset-16 {
         margin-left: 66.66667%
     }
-
     .el-col-md-pull-16 {
         position: relative;
         right: 66.66667%
     }
-
     .el-col-md-push-16 {
         position: relative;
         left: 66.66667%
     }
-
     .el-col-md-17 {
         width: 70.83333%
     }
-
     .el-col-md-offset-17 {
         margin-left: 70.83333%
     }
-
     .el-col-md-pull-17 {
         position: relative;
         right: 70.83333%
     }
-
     .el-col-md-push-17 {
         position: relative;
         left: 70.83333%
     }
-
     .el-col-md-18 {
         width: 75%
     }
-
     .el-col-md-offset-18 {
         margin-left: 75%
     }
-
     .el-col-md-pull-18 {
         position: relative;
         right: 75%
     }
-
     .el-col-md-push-18 {
         position: relative;
         left: 75%
     }
-
     .el-col-md-19 {
         width: 79.16667%
     }
-
     .el-col-md-offset-19 {
         margin-left: 79.16667%
     }
-
     .el-col-md-pull-19 {
         position: relative;
         right: 79.16667%
     }
-
     .el-col-md-push-19 {
         position: relative;
         left: 79.16667%
     }
-
     .el-col-md-20 {
         width: 83.33333%
     }
-
     .el-col-md-offset-20 {
         margin-left: 83.33333%
     }
-
     .el-col-md-pull-20 {
         position: relative;
         right: 83.33333%
     }
-
     .el-col-md-push-20 {
         position: relative;
         left: 83.33333%
     }
-
     .el-col-md-21 {
         width: 87.5%
     }
-
     .el-col-md-offset-21 {
         margin-left: 87.5%
     }
-
     .el-col-md-pull-21 {
         position: relative;
         right: 87.5%
     }
-
     .el-col-md-push-21 {
         position: relative;
         left: 87.5%
     }
-
     .el-col-md-22 {
         width: 91.66667%
     }
-
     .el-col-md-offset-22 {
         margin-left: 91.66667%
     }
-
     .el-col-md-pull-22 {
         position: relative;
         right: 91.66667%
     }
-
     .el-col-md-push-22 {
         position: relative;
         left: 91.66667%
     }
-
     .el-col-md-23 {
         width: 95.83333%
     }
-
     .el-col-md-offset-23 {
         margin-left: 95.83333%
     }
-
     .el-col-md-pull-23 {
         position: relative;
         right: 95.83333%
     }
-
     .el-col-md-push-23 {
         position: relative;
         left: 95.83333%
     }
-
     .el-col-md-24 {
         width: 100%
     }
-
     .el-col-md-offset-24 {
         margin-left: 100%
     }
-
     .el-col-md-pull-24 {
         position: relative;
         right: 100%
     }
-
     .el-col-md-push-24 {
         position: relative;
         left: 100%
@@ -6869,430 +6626,335 @@
     .el-col-lg-1 {
         width: 4.16667%
     }
-
     .el-col-lg-offset-1 {
         margin-left: 4.16667%
     }
-
     .el-col-lg-pull-1 {
         position: relative;
         right: 4.16667%
     }
-
     .el-col-lg-push-1 {
         position: relative;
         left: 4.16667%
     }
-
     .el-col-lg-2 {
         width: 8.33333%
     }
-
     .el-col-lg-offset-2 {
         margin-left: 8.33333%
     }
-
     .el-col-lg-pull-2 {
         position: relative;
         right: 8.33333%
     }
-
     .el-col-lg-push-2 {
         position: relative;
         left: 8.33333%
     }
-
     .el-col-lg-3 {
         width: 12.5%
     }
-
     .el-col-lg-offset-3 {
         margin-left: 12.5%
     }
-
     .el-col-lg-pull-3 {
         position: relative;
         right: 12.5%
     }
-
     .el-col-lg-push-3 {
         position: relative;
         left: 12.5%
     }
-
     .el-col-lg-4 {
         width: 16.66667%
     }
-
     .el-col-lg-offset-4 {
         margin-left: 16.66667%
     }
-
     .el-col-lg-pull-4 {
         position: relative;
         right: 16.66667%
     }
-
     .el-col-lg-push-4 {
         position: relative;
         left: 16.66667%
     }
-
     .el-col-lg-5 {
         width: 20.83333%
     }
-
     .el-col-lg-offset-5 {
         margin-left: 20.83333%
     }
-
     .el-col-lg-pull-5 {
         position: relative;
         right: 20.83333%
     }
-
     .el-col-lg-push-5 {
         position: relative;
         left: 20.83333%
     }
-
     .el-col-lg-6 {
         width: 25%
     }
-
     .el-col-lg-offset-6 {
         margin-left: 25%
     }
-
     .el-col-lg-pull-6 {
         position: relative;
         right: 25%
     }
-
     .el-col-lg-push-6 {
         position: relative;
         left: 25%
     }
-
     .el-col-lg-7 {
         width: 29.16667%
     }
-
     .el-col-lg-offset-7 {
         margin-left: 29.16667%
     }
-
     .el-col-lg-pull-7 {
         position: relative;
         right: 29.16667%
     }
-
     .el-col-lg-push-7 {
         position: relative;
         left: 29.16667%
     }
-
     .el-col-lg-8 {
         width: 33.33333%
     }
-
     .el-col-lg-offset-8 {
         margin-left: 33.33333%
     }
-
     .el-col-lg-pull-8 {
         position: relative;
         right: 33.33333%
     }
-
     .el-col-lg-push-8 {
         position: relative;
         left: 33.33333%
     }
-
     .el-col-lg-9 {
         width: 37.5%
     }
-
     .el-col-lg-offset-9 {
         margin-left: 37.5%
     }
-
     .el-col-lg-pull-9 {
         position: relative;
         right: 37.5%
     }
-
     .el-col-lg-push-9 {
         position: relative;
         left: 37.5%
     }
-
     .el-col-lg-10 {
         width: 41.66667%
     }
-
     .el-col-lg-offset-10 {
         margin-left: 41.66667%
     }
-
     .el-col-lg-pull-10 {
         position: relative;
         right: 41.66667%
     }
-
     .el-col-lg-push-10 {
         position: relative;
         left: 41.66667%
     }
-
     .el-col-lg-11 {
         width: 45.83333%
     }
-
     .el-col-lg-offset-11 {
         margin-left: 45.83333%
     }
-
     .el-col-lg-pull-11 {
         position: relative;
         right: 45.83333%
     }
-
     .el-col-lg-push-11 {
         position: relative;
         left: 45.83333%
     }
-
     .el-col-lg-12 {
         width: 50%
     }
-
     .el-col-lg-offset-12 {
         margin-left: 50%
     }
-
     .el-col-lg-pull-12 {
         position: relative;
         right: 50%
     }
-
     .el-col-lg-push-12 {
         position: relative;
         left: 50%
     }
-
     .el-col-lg-13 {
         width: 54.16667%
     }
-
     .el-col-lg-offset-13 {
         margin-left: 54.16667%
     }
-
     .el-col-lg-pull-13 {
         position: relative;
         right: 54.16667%
     }
-
     .el-col-lg-push-13 {
         position: relative;
         left: 54.16667%
     }
-
     .el-col-lg-14 {
         width: 58.33333%
     }
-
     .el-col-lg-offset-14 {
         margin-left: 58.33333%
     }
-
     .el-col-lg-pull-14 {
         position: relative;
         right: 58.33333%
     }
-
     .el-col-lg-push-14 {
         position: relative;
         left: 58.33333%
     }
-
     .el-col-lg-15 {
         width: 62.5%
     }
-
     .el-col-lg-offset-15 {
         margin-left: 62.5%
     }
-
     .el-col-lg-pull-15 {
         position: relative;
         right: 62.5%
     }
-
     .el-col-lg-push-15 {
         position: relative;
         left: 62.5%
     }
-
     .el-col-lg-16 {
         width: 66.66667%
     }
-
     .el-col-lg-offset-16 {
         margin-left: 66.66667%
     }
-
     .el-col-lg-pull-16 {
         position: relative;
         right: 66.66667%
     }
-
     .el-col-lg-push-16 {
         position: relative;
         left: 66.66667%
     }
-
     .el-col-lg-17 {
         width: 70.83333%
     }
-
     .el-col-lg-offset-17 {
         margin-left: 70.83333%
     }
-
     .el-col-lg-pull-17 {
         position: relative;
         right: 70.83333%
     }
-
     .el-col-lg-push-17 {
         position: relative;
         left: 70.83333%
     }
-
     .el-col-lg-18 {
         width: 75%
     }
-
     .el-col-lg-offset-18 {
         margin-left: 75%
     }
-
     .el-col-lg-pull-18 {
         position: relative;
         right: 75%
     }
-
     .el-col-lg-push-18 {
         position: relative;
         left: 75%
     }
-
     .el-col-lg-19 {
         width: 79.16667%
     }
-
     .el-col-lg-offset-19 {
         margin-left: 79.16667%
     }
-
     .el-col-lg-pull-19 {
         position: relative;
         right: 79.16667%
     }
-
     .el-col-lg-push-19 {
         position: relative;
         left: 79.16667%
     }
-
     .el-col-lg-20 {
         width: 83.33333%
     }
-
     .el-col-lg-offset-20 {
         margin-left: 83.33333%
     }
-
     .el-col-lg-pull-20 {
         position: relative;
         right: 83.33333%
     }
-
     .el-col-lg-push-20 {
         position: relative;
         left: 83.33333%
     }
-
     .el-col-lg-21 {
         width: 87.5%
     }
-
     .el-col-lg-offset-21 {
         margin-left: 87.5%
     }
-
     .el-col-lg-pull-21 {
         position: relative;
         right: 87.5%
     }
-
     .el-col-lg-push-21 {
         position: relative;
         left: 87.5%
     }
-
     .el-col-lg-22 {
         width: 91.66667%
     }
-
     .el-col-lg-offset-22 {
         margin-left: 91.66667%
     }
-
     .el-col-lg-pull-22 {
         position: relative;
         right: 91.66667%
     }
-
     .el-col-lg-push-22 {
         position: relative;
         left: 91.66667%
     }
-
     .el-col-lg-23 {
         width: 95.83333%
     }
-
     .el-col-lg-offset-23 {
         margin-left: 95.83333%
     }
-
     .el-col-lg-pull-23 {
         position: relative;
         right: 95.83333%
     }
-
     .el-col-lg-push-23 {
         position: relative;
         left: 95.83333%
     }
-
     .el-col-lg-24 {
         width: 100%
     }
-
     .el-col-lg-offset-24 {
         margin-left: 100%
     }
-
     .el-col-lg-pull-24 {
         position: relative;
         right: 100%
     }
-
     .el-col-lg-push-24 {
         position: relative;
         left: 100%
@@ -7384,11 +7046,11 @@
     line-height: 50px
 }
 
-.el-upload-dragger + .el-upload__tip {
+.el-upload-dragger+.el-upload__tip {
     text-align: center
 }
 
-.el-upload-dragger ~ .el-upload__files {
+.el-upload-dragger~.el-upload__files {
     border-top: 1px solid rgba(191, 203, 217, .2);
     margin-top: 7px;
     padding-top: 5px
@@ -7486,6 +7148,7 @@
     height: 100%;
     line-height: inherit
 }
+
 
 /* .el-upload-list__item-status-label {
     position: absolute;
@@ -7611,7 +7274,7 @@
     cursor: pointer
 }
 
-.el-upload-list--picture-card .el-upload-list__item-actions span + span {
+.el-upload-list--picture-card .el-upload-list__item-actions span+span {
     margin-left: 15px
 }
 
@@ -7744,7 +7407,7 @@
     height: 100%
 }
 
-.el-upload-cover + .el-upload__inner {
+.el-upload-cover+.el-upload__inner {
     opacity: 0;
     position: relative;
     z-index: 1
@@ -7778,7 +7441,7 @@
     width: 243px
 }
 
-.el-upload-cover__progress + .el-upload__inner {
+.el-upload-cover__progress+.el-upload__inner {
     opacity: 0
 }
 
@@ -8213,7 +7876,7 @@
     font-size: 0
 }
 
-.el-steps > :last-child .el-step__line {
+.el-steps> :last-child .el-step__line {
     display: none
 }
 
@@ -8277,7 +7940,7 @@
     line-height: 28px
 }
 
-.el-step__icon > * {
+.el-step__icon>* {
     line-height: inherit;
     vertical-align: middle
 }
@@ -8585,7 +8248,7 @@
     left: 2px
 }
 
-.el-scrollbar__bar.is-horizontal > div {
+.el-scrollbar__bar.is-horizontal>div {
     height: 100%
 }
 
@@ -8594,7 +8257,7 @@
     top: 2px
 }
 
-.el-scrollbar__bar.is-vertical > div {
+.el-scrollbar__bar.is-vertical>div {
     width: 100%
 }
 
@@ -8652,7 +8315,7 @@
     margin-bottom: -1px
 }
 
-.el-collapse-item.is-active > .el-collapse-item__header .el-collapse-item__header__arrow {
+.el-collapse-item.is-active>.el-collapse-item__header .el-collapse-item__header__arrow {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg)
 }
@@ -8792,7 +8455,7 @@
     vertical-align: middle
 }
 
-.el-input__icon + .el-input__inner {
+.el-input__icon+.el-input__inner {
     padding-right: 35px
 }
 
@@ -8801,7 +8464,7 @@
     color: #444444
 }
 
-.el-input__icon.is-clickable:hover + .el-input__inner {
+.el-input__icon.is-clickable:hover+.el-input__inner {
     border-color: #444444
 }
 
@@ -8836,7 +8499,7 @@
     border-collapse: separate
 }
 
-.el-input-group > .el-input__inner {
+.el-input-group>.el-input__inner {
     vertical-align: middle;
     display: table-cell
 }
@@ -9215,7 +8878,7 @@
     position: absolute
 }
 
-.el-color-svpanel__cursor > div {
+.el-color-svpanel__cursor>div {
     cursor: head;
     width: 4px;
     height: 4px;
@@ -9418,7 +9081,7 @@
     margin-bottom: 6px
 }
 
-.el-transfer__buttons .el-button [class*=el-icon-] + span {
+.el-transfer__buttons .el-button [class*=el-icon-]+span {
     margin-left: 0
 }
 
@@ -9526,7 +9189,7 @@
     top: 7px
 }
 
-.el-transfer-panel__item + .el-transfer-panel__item {
+.el-transfer-panel__item+.el-transfer-panel__item {
     margin-left: 0
 }
 

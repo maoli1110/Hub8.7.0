@@ -105,13 +105,17 @@
                         </label>
                         <span style="float:right">已选择账号人员 ({{checkedCities.length}})</span>
                     </p>
-                    <div class="el-transfer-panel__body">
+                    <div class="el-transfer-panel__body">                     
                         <ul class="el-transfer-item el-transfer-panel__list">
+                          <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
+                           <div class="scroll-me">
                             <li class="el-transfer-panel__item" v-for="(item,index) in checkedCities" :key="index"
                                 @click="deleteItem(item)" :title="item">
                                 <span class="icon icon-remove" style="vertical-align:sub"> </span>
                                 <span style="margin-left:5px">  {{item}}</span>
                             </li>
+                          </div>
+                          </vue-scrollbar>
                         </ul>
                         <!-- <p
                             class="el-transfer-panel__empty"></p>
@@ -123,7 +127,7 @@
             </div>
             <div slot="footer" class="dialog-footer" style="margin-top:10px">
                 <el-button type="primary" class="dialog-btn">确 定</el-button>
-                <el-button @click="templateAuthorizationDialogVisible = false" class="dialog-btn">取消</el-button>
+                <el-button @click="addAuthorizationDialogVisible = false" class="dialog-btn">取消</el-button>
             </div>
         </el-dialog>
         <!-- 更改 -->
@@ -131,7 +135,7 @@
             <div>当前服务共有5条订单，请选择后授权</div>
              <el-table ref="multipleTable" :data="modifyTableData" border tooltip-effect="dark"  height="301"
                       style="width: 100%;margin-top:15px" @selection-change="handleSelectionChange">
-                <el-table-column  width="55">
+                <el-table-column  width="55" label="序号">
                   <template slot-scope="scope">
                       <el-radio class="radio" v-model="radio" :label="scope.row.id"></el-radio>
                   </template>
@@ -152,7 +156,7 @@
             </el-table>
             <div slot="footer" class="dialog-footer" style="margin-top:10px">
                 <el-button type="primary" class="dialog-btn">确 定</el-button>
-                <el-button @click="templateAuthorizationDialogVisible = false" class="dialog-btn">取消</el-button>
+                <el-button @click="modifyDialogVisible = false" class="dialog-btn">取消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -295,6 +299,11 @@ export default {
       ]
     };
   },
+  watch:{
+    radio(new_,old_){
+       console.log(new_)
+    }
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -385,7 +394,6 @@ export default {
 
 .basic-aside .el-menu-item.is-active {
   border-left: 3px solid #6595f2;
-  text-align: center;
   font-weight: bold;
   background-color: #f5f8fd;
 }
@@ -446,6 +454,7 @@ export default {
 
 .el-transfer-right .el-transfer-panel__list {
   padding-top: 10px;
+  overflow: hidden
 }
 
 .el-transfer-right .el-transfer-panel__item {

@@ -431,6 +431,11 @@ export default new Router({
                             component: resolve => require(['../components/Authority-management/orders.vue'], resolve)
                         },
                         {
+                            //订单管理--详情
+                            path: 'orders-detail/:id',
+                            component: resolve => require(['../components/Authority-management/orders-detail.vue'], resolve)
+                        },
+                        {
                             //EDS订单
                             path: 'eds-orders',
                             component: resolve => require(['../components/Authority-management/EDSOrders.vue'], resolve)
