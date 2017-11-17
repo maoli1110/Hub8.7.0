@@ -25,3 +25,8 @@
 /*template-dialog*/
 .template-rename{width:450px;height:340px;}
 .template-rename .el-input,.template-rename .el-textarea{width:76%}
+/*label-tempalte*/
+.lab-template-filter{border-bottom:1px solid #e6e6e6;padding-top:0 !important;padding-bottom:20px ;}
+/*dialog*/
+.lab-addTemplate{width:450px;}
+.lab-addTemplate .el-input{width:75% !important;}

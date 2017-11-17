@@ -34,7 +34,7 @@
                 </el-table-column>
                <!-- <el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
                 </el-table-column>-->
-                <el-table-column prop="processName" width="" label="工程名称" show-overflow-tooltip>
+                <el-table-column prop="processName" width="" label="模板名称" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="updateUser" width="100" label="创建人" >
                 </el-table-column>
