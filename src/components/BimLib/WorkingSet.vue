@@ -34,7 +34,7 @@
                 </el-table-column>
                 <el-table-column prop="updateUser" width="100" label="创建人" >
                 </el-table-column>
-                <el-table-column prop="updateTime" width="150" label="创建时间" >
+                <el-table-column prop="updateTime" width="160" label="创建时间" >
                 </el-table-column>
                 <el-table-column prop="proDepartment" width="" label="所属项目部" show-overflow-tooltip>
                 </el-table-column>
