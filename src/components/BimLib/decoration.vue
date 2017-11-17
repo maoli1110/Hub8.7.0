@@ -903,6 +903,7 @@
                 }
                 this.allChecked = false;
                 deletArray = [];
+                countIndex = 0;
             }
         }
     }

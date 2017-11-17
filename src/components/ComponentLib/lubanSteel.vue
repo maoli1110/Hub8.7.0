@@ -16,22 +16,7 @@
                 <!--<input type="text" style="margin-left:47px;" id="provinLink" placeholder="请输入城市"/>-->
                 <!--</el-col>-->
                 <!--</el-col>-->
-
-
-                <el-col :span="3" class="filter-bar relat" style="padding-right:65px;">
-                    <span class="absol span-block" style="width:60px;left:10px;">
-                        专业:
-                    </span>
-                    <el-select  v-model="searchKeyParams.majorVal" placeholder="请选择" style="left:50px;" @change="majorChange">
-                        <el-option
-                            v-for="item in majorOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-col>
-                <el-col :span="3" class="relat" style="padding-right:50px;">
+                <el-col :span="3" class="relat" style="padding-right:50px;margin-left:20px;">
                      <span class="absol span-block" style="width:80px;">
                         构件大类:
                     </span>
@@ -274,31 +259,24 @@
                     endTime: "",    //结束时间
 
                 },
-                majorOptions: [{    //专业选择框
-                    value: '不限',
-                    label: '不限'
-                },{    //专业选择框
-                    value: '土建',
-                    label: '土建'
-                }, {
-                    value: '钢筋',
-                    label: '钢筋'
-                }, {
-                    value: '安装',
-                    label: '安装'
-                }, {
-                    value: 'Revit',
-                    label: 'Revit'
-                }, {
-                    value: 'Tekla',
-                    label: 'Tekla'
-                }, {
-                    value: '场布',
-                    label: '场布'
-                }],
-                compTypeBig:[{
+                compTypeBig: [{
                     value:'不限',
                     label:"不限"
+                },{
+                    value:'初始大类',
+                    label:"初始大类"
+                },{
+                    value:'土建大类',
+                    label:"土建大类"
+                },{
+                    value:'房建大类',
+                    label:"家装大类"
+                },{
+                    value:'家装大类',
+                    label:"家装大类"
+                },{
+                    value:'中关村',
+                    label:"中关村"
                 }],
                 compTypeSmall:[{
                     value:'不限',
@@ -564,10 +542,13 @@
              * @params row 列
              */
             selectChecked(selection, row){
+                console.log(row,selection,'selection')
                 selection.forEach(function (val, key) {
                     if (deletArray.indexOf(val.index) == -1) {
                         deletArray.push(val.index)
-                    }
+                    }/*else{
+                        deletArray.splice(index,1)
+                    }*/
                 })
             },
             //日期插件日期改变触发
@@ -577,38 +558,7 @@
                     this.searchKeyParams.endTime = val.split('-')[1]
                 }
             },
-            majorChange(val){
-                console.log(val,'val');
-                if(val=='不限'){
-                    this.compTypeSmall = [{
-                        value:'不限',
-                        label:"不限"
-                    }]
-                }else{
-                    this.compTypeBig = [{
-                        value:'不限',
-                        label:"不限"
-                    },{
-                        value:'初始大类',
-                        label:"初始大类"
-                    },{
-                        value:'土建大类',
-                        label:"土建大类"
-                    },{
-                        value:'房建大类',
-                        label:"家装大类"
-                    },{
-                        value:'家装大类',
-                        label:"家装大类"
-                    },{
-                        value:'中关村',
-                        label:"中关村"
-                    }
-                    ]
-                }
 
-
-            },
             typeBigChange(val){
                 console.log(val);
                 if(val=='不限'){
@@ -903,9 +853,8 @@
                 //不用调用接口
             },
             getData(){
-                this.searchKeyParams.majorVal = this.majorOptions[0].value;
-                this.searchKeyParams.smallType = this.compTypeSmall[0].value;
                 this.searchKeyParams.bigType = this.compTypeBig[0].value;
+                this.searchKeyParams.smallType = this.compTypeSmall[0].value;
                 this.size = parseInt(this.totalNumber/50);
             },
 
