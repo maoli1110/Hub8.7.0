@@ -59,7 +59,7 @@
                                 <span>可修改{{scope.row.bindManage[3]}}台</span>
                             </div>
                             <div class="btn-common bindManage">
-                                <el-button size="mini">详细</el-button>
+                                <el-button size="mini" @click="checkDetail(1)">详细</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -210,12 +210,9 @@
             hideExpiredService (){
                 // 隐藏过期服务
             },
-            serviceHover(){
-
+            checkDetail(listId) {
+                this.$router.push({path:'/order-management/orders-detail/'+listId+''});
             },
-//            handleSelectionChange(val) {
-//                this.multipleSelection = val;
-//            },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
@@ -248,24 +245,6 @@
 
     .remark-text .sureBtn {
         margin-left: 60px;
-    }
-    .orders-text {
-        font-weight: 700;
-        font-size: 16px;
-        color: #263147;
-    }
-
-    .header {
-        height: 40px;
-        background-color: #fff;
-        padding: 10px 20px;
-        line-height: 40px;
-    }
-
-    .main {
-        padding: 0 20px;
-        border-top: 1px solid #e6e6e6;
-        background-color: #fff;
     }
 
     .icon-package-service {

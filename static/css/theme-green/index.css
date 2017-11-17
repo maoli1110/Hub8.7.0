@@ -1799,6 +1799,13 @@
     font-weight: 700;
 }
 
+.order-management.eds-orders .el-table__body-wrapper .cell,
+.order-management.order-detail .el-table__body-wrapper .cell
+{
+    height: 40px;
+    line-height: 40px;
+}
+
 .el-table tr input[type=checkbox] {
     margin: 0
 }
