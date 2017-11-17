@@ -1,11 +1,11 @@
 <template>
     <div class="bims-container">
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
-                <el-menu-item index="/configuration/housing/explorer/process-template">工序模板</el-menu-item>
-                <el-menu-item index="/configuration/housing/explorer/color-template">颜色模板</el-menu-item>
-                <el-menu-item index="/configuration/housing/explorer/data-catalog">资料目录</el-menu-item>
-                <el-menu-item index="/configuration/housing/explorer/attribute-template">属性模板</el-menu-item>
-                <el-menu-item index="/configuration/housing/explorer/label-management">标签管理</el-menu-item>
+                <el-menu-item index="/configuration/explorer/process-template">工序模板</el-menu-item>
+                <el-menu-item index="/configuration/explorer/color-template">颜色模板</el-menu-item>
+                <el-menu-item index="/configuration/explorer/data-catalog">资料目录</el-menu-item>
+                <el-menu-item index="/configuration/explorer/attribute-template">属性模板</el-menu-item>
+                <el-menu-item index="/configuration/explorer/label-management">标签管理</el-menu-item>
             </el-menu>
         <div class="bims-contents">
             <router-view></router-view>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+
 export default {
     data(){
         return{

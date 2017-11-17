@@ -11,7 +11,7 @@
                 </el-select>
             </el-col>
             <el-col :span="2" class="filter-bar relat" style="left:15px" :offset="1">
-                <span class="absol span-block" style="width:60px;">
+                <span class="absol span-block" style="width:65px;">
                    BIM属性:
                 </span>
                 <el-select class="absol" v-model="filterParams.bimVal" placeholder="请选择"  style="left:72px">

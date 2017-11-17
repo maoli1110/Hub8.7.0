@@ -354,22 +354,22 @@ export default new Router({
                                 {
                                     // 颜色模板
                                     path: 'color-template',
-                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/colorTemplate.vue'], resolve)
                                 },
                                 {
                                     // 资料目录
                                     path: 'data-catalog',
-                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/labelManagement.vue'], resolve)
                                 },
                                 {
                                     // 属性模板
                                     path: 'attribute-template',
-                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/labelManagement.vue'], resolve)
                                 },
                                 {
                                     // 标签管理
                                     path: 'label-management',
-                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/labelManagement.vue'], resolve)
                                 },
                                 {
                                     path: 'govern',

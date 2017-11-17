@@ -1,0 +1,27 @@
+/*颜色模板*/
+.color-template{}
+.color-template .color-toolbar{
+    padding:20px 0;background:#fff;margin:0 !important;
+}
+
+.color-template .template-filter.relat{
+    padding: 0 20px 15px !important;
+}
+.color-template .template-filter:last-child{
+    padding:15px 20px 0!important;
+}
+.color-template .template-filter:first-child{
+    border-bottom: 1px solid #e6e6e6 ;
+}
+.color-toolbar .el-select {width:100%;}
+/*template-table*/
+.color-template .my-scrollbar{padding:20px 20px;}
+.color-template .el-table td:nth-child(2),
+.color-template .el-table td:nth-child(5),
+.color-template .el-table td:nth-child(2) > div,
+.color-template .el-table td:nth-child(5) > div
+{text-align:left !important;padding:0 0 0 15px;}
+
+/*template-dialog*/
+.template-rename{width:450px;height:340px;}
+.template-rename .el-input,.template-rename .el-textarea{width:76%}
