@@ -125,7 +125,7 @@
             <div>当前服务共有5条订单，请选择后授权</div>
              <el-table ref="multipleTable" :data="modifyTableData" border tooltip-effect="dark"  height="301"
                       style="width: 100%;margin-top:15px" @selection-change="handleSelectionChange">
-                <el-table-column  width="55">
+                <el-table-column  width="55" label="序号">
                   <template slot-scope="scope">
                       <el-radio class="radio" v-model="radio" :label="scope.row.id"></el-radio>
                   </template>
@@ -289,6 +289,11 @@ export default {
       ]
     };
   },
+  watch:{
+    radio(new_,old_){
+       console.log(new_)
+    }
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -379,7 +384,6 @@ export default {
 
 .basic-aside .el-menu-item.is-active {
   border-left: 3px solid #6595f2;
-  text-align: center;
   font-weight: bold;
   background-color: #f5f8fd;
 }
