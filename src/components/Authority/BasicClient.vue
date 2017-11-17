@@ -70,26 +70,32 @@
                         <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                         <span style="float:right">全部账号人员 ({{cities.length}})</span>
                     </p>
-                    <div class="el-transfer-panel__body">
-                        <el-input
-                            class="el-transfer-panel__filter"
-                            size="small"
-                            icon="search"
-                        ></el-input>
-                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange"
-                                           class="el-transfer-panel__list">
-                            <el-checkbox class="el-transfer-panel__item" v-for="city in cities" :label="city"
-                                         :key="city"
-                                         :title="city">{{city}}
 
-                            </el-checkbox>
-                        </el-checkbox-group>
-                        <!-- <p
-                            class="el-transfer-panel__empty"></p>
-                        <p
-                            class="el-transfer-panel__empty"
-                        ></p> -->
-                    </div>
+                        <div class="el-transfer-panel__body ">
+                            <el-input
+                                class="el-transfer-panel__filter"
+                                size="small"
+                                icon="search"
+                            ></el-input>
+                            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:245px;">
+                                <div class="scroll-me">
+                                    <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange"
+                                                                                class="el-transfer-panel__list " style="height:auto;">
+                                    <el-checkbox class="el-transfer-panel__item" v-for="city in cities" :label="city"
+                                                 :key="city"
+                                                 :title="city">{{city}}
+
+                                    </el-checkbox>
+                                </el-checkbox-group>
+                            <!-- <p
+                                class="el-transfer-panel__empty"></p>
+                            <p
+                                class="el-transfer-panel__empty"
+                            ></p> -->
+                                </div>
+                            </vue-scrollbar>
+                        </div>
+
                 </div>
                 <div class="el-transfer-panel el-transfer-right">
                     <p class="el-transfer-panel__header">
