@@ -1,6 +1,8 @@
 <template>
     <div>
-        <div class="aside">
+        <div class="aside relat">
+            <!--左侧菜单项 材料、设备、人工、机械、周转材料、专业分包、清工分包-->
+            <div class="menus-status absol menus-mask"></div>
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
                 <el-menu-item index="/pricelib/material">材料</el-menu-item>
                 <el-menu-item index="/pricelib/device">设备</el-menu-item>
@@ -11,20 +13,23 @@
                 <el-menu-item index="/pricelib/clean-subcontracting">清工分包</el-menu-item>
             </el-menu>
         </div>
-
-            <div class="container ">
-                <vue-scrollbar class="my-scrollbar" >
-                    <div class="scroll-me">
-                     <router-view></router-view>
-                    </div>
-                </vue-scrollbar>
-
+        <div class="container " >
+            <vue-scrollbar class="my-scrollbar" v-if="$route.params.isRoot != 'false'">
+                <div class="scroll-me">
+                 <router-view></router-view>
+                </div>
+            </vue-scrollbar>
+            <div class="plugins-tips" v-if="$route.params.isRoot=='false'">
+                <img src="../../../static/img/pricelib-bj.png" alt="" style="width:100%;">
             </div>
+        </div>
+        <vue-footer></vue-footer>
     </div>
 </template>
 
 <script>
-    import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
+    import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
+    import VueFooter from '../../components/common/footer.vue'
     export default {
     data: () => ({
         activeIndex: '',
@@ -37,7 +42,7 @@
             console.log(key, keyPath);
         }
     },
-    components: { VueScrollbar },
+    components: { VueScrollbar,VueFooter },
     created(){
         this.activeIndex = this.$route.path;
     }
@@ -46,4 +51,8 @@
 
 <style scoped>
 @import "../../../static/css/aside.css";
+.vue-scrollbar__wrapper{
+    height: calc(100% - 63px);
+}
+
 </style>

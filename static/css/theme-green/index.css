@@ -535,7 +535,7 @@
 
 .el-dialog--add-admin {
     width: 760px;
-    height: 730px;
+    min-height: 730px;
 }
 
 .el-dialog--small {

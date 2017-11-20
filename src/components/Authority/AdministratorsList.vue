@@ -4,7 +4,10 @@
             <div>
                 <el-button type="primary" class="basic-btn" icon="plus" @click="addAdminDialogVisible=true;addAdmin()">
                     新增管理员
-                
+
+
+
+
 
                 </el-button>
                 <el-button type="primary" class="basic-btn" icon="delete" @click="cancleAdmin()">取消权限</el-button>
@@ -25,6 +28,9 @@
 
 
 
+
+
+
                         </div>
                     </template>
                 </el-table-column>
@@ -32,6 +38,9 @@
                     <template slot-scope="scope">
                         <div :title="scope.row.remarks" class="textcell">
                             {{ scope.row.remarks }}
+
+
+
 
 
 
@@ -65,10 +74,10 @@
             <div class="el-form-item">
                 <label class="el-form-item__label" style="text-align:left;width:45px">角色：</label>
                 <div class="el-form-item__content" style="margin-left: 45px;">
-                    <el-select v-model="checkedCities" placeholder="请选择" class="admin-select"
-                               @click.native="closeSelect()"
+                    <el-select v-model="checkedCities" placeholder="请选择" class="admin-select"                               
                                multiple
-                               @visible-change.native='visibleChange(v)'
+                               @visible-change='visibleChange'
+                               @click.native='closeSelect'                               
                                style="width:100%">
                         <el-option v-show="false"
                                    v-for="item in cities"
@@ -93,22 +102,65 @@
                     <div style="padding:10px;border-top:1px solid #e6e6e6">
                         <div style="float:left">没有找到，点击
 
+
+
+
                             <el-button type="text"><span style="font-size:14px;font-weight:700">添加成员</span>
                             </el-button>
                         </div>
                         <el-button type="primary" class="dialog-btn select-dialog-btn" style="margin-left:70px"
                                    @click="saveSelect()">确 定
 
+
+
+
                         </el-button>
                         <el-button class="dialog-btn select-dialog-btn" @click="cancleSelect()">取消</el-button>
                     </div>
                 </div>
             </div>
+            <div class="el-transfer">
+                <div class="el-transfer-panel">
+                    <p class="el-transfer-panel__header">
+                        管理范围
+                    </p>
 
-            <!-- <div slot="footer" class="dialog-footer" style="margin-top:10px">
+                    <div class="el-transfer-panel__body ">
+                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:375px;">
+                            <div class="scroll-me">
+                                <ul id="orgTree" class="ztree"></ul>
+                            </div>
+                        </vue-scrollbar>
+                    </div>
+
+                </div>
+                <div class="el-transfer-panel el-transfer-right">
+                    <p class="el-transfer-panel__header">
+                        权限范围
+                    </p>
+
+                    <div class="el-transfer-panel__body ">
+                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:375px;">
+                            <div class="scroll-me">
+                                <el-checkbox-group v-model="checkedPermissions" @change="handleCheckedCitiesChange"
+                                >
+                                    <el-checkbox v-for="permission in permissions" :label="permission" :key="permission"
+                                                 :title="permission"
+                                                 class="add-permission-group"
+                                    >{{permission}}
+
+
+                                    </el-checkbox>
+                                </el-checkbox-group>
+                            </div>
+                        </vue-scrollbar>
+                    </div>
+                </div>
+            </div>
+            <div slot="footer" class="dialog-footer" style="margin-top:20px">
                 <el-button type="primary" class="dialog-btn">确 定</el-button>
                 <el-button @click="addAdminDialogVisible = false" class="dialog-btn">取消</el-button>
-            </div> -->
+            </div>
         </el-dialog>
 
     </div>
@@ -117,6 +169,7 @@
 <script>
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+    import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
     const cityOptions = [
         "上海",
         "北京",
@@ -132,9 +185,19 @@
         "北京7",
         "广州5",
         "深55圳",
-        "合555肥"
+        "合555肥",
+        "广州21",
+        "深圳32",
+        "合肥42",
+        "上海32",
+        "北京72",
+        "广州52",
+        "深55圳2",
+        "合555肥2"
     ];
     export default {
+        components: {VueScrollbar},
+
         data() {
             return {
                 visible: true,
@@ -144,7 +207,9 @@
                 textarea: "",
                 checkedCities: ["上海", "北京"],
                 cities: cityOptions,
+                permissions: ['组织结构1111111111111111111111111111111111111111111111111111111', '空间使用', '主数据库', '成员管理', '角色管理', '应用分配', '工程库', '工作集库', '回收站', 'PDF图纸', '构建库', '定额库', '价格库',],
                 roles: [],
+                checkedPermissions: ['组织结构', '空间使用', '主数据库'],
                 roleTableData: [
                     {
                         name: "赵四",
@@ -207,6 +272,17 @@
                         remarks: "超长remark"
                     }
                 ],
+                orgSetting: {
+                    check: {
+                        enable: true
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    }
+                },
+                orgNodes: [],
                 options: [
                     {
                         value: "选项1",
@@ -269,23 +345,28 @@
             cancleAdmin() {
             },
             addAdmin() {
+                this.$axios.get(this.url).then(res => {
+                    this.orgNodes = res.data;
+                    $.fn.zTree.init($("#orgTree"), this.orgSetting, this.orgNodes);
+                });
             },
-            closeSelect(){
-                 $(".select-dropdown").slideToggle('fast');
+            closeSelect() {
+                $(".select-dropdown").slideToggle("fast");
             },
-            saveSelect(){
-                $(".select-dropdown").slideToggle('fast');
+            saveSelect() {
+                $(".select-dropdown").slideUp("fast");
             },
-            cancleSelect(){
+            cancleSelect() {
                 this.checkedCities = [];
-                $(".select-dropdown").slideToggle('fast');
-
+                $(".select-dropdown").slideUp("fast");
             },
-            visibleChange(v){
-                console.log(v)
+            visibleChange(isVisible) {             
             }
         },
         mounted() {
+            $('.el-select__tags').click(()=>{
+              console.log(123)
+            })
         }
     };
 </script>
@@ -315,12 +396,12 @@
         white-space: nowrap;
     }
 
-    .el-checkbox:nth-child(1) {
+    .add-admin-group:nth-child(1) {
         width: 120px;
         height: 40px;
     }
 
-    .el-checkbox + .el-checkbox {
+    .add-admin-group + .add-admin-group {
         width: 120px;
         height: 40px;
         margin-left: 0px;
@@ -331,10 +412,52 @@
         height: 36px;
         line-height: 0px;
     }
-    .select-dropdown{
-      display: none;
-      width:634px;
-      position: absolute;
+
+    .select-dropdown {
+        display: none;
+        width: 634px;
+        position: absolute;
+        background-color: #fff;
+        z-index: 999
+    }
+
+    .el-transfer {
+        margin-top: 20px;
+    }
+
+    .el-transfer-panel__body {
+        width: 330px;
+        height: 420px;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow: auto;
+    }
+
+    .el-transfer-panel__header {
+        padding: 0px;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .el-transfer-panel {
+        width: 280px;
+        box-shadow: none;
+    }
+
+    .el-transfer-panel + .el-transfer-panel {
+        margin-left: 65px;
+    }
+
+    .add-permission-group {
+        width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .add-permission-group + .add-permission-group {
+        margin-left: 0px;
+        margin-top: 5px
     }
 </style>
 
