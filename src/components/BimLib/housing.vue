@@ -106,12 +106,11 @@
                         </el-table-column>
                         <el-table-column prop="status" width=""   label="数据处理" >
                             <template slot-scope="scope" >
-                                <!--{{$route.params.typeId}}-->
-                                <div v-show="scope.row.status==='处理成功'" class="align-l"><span  class="el-icon-circle-check"></span>处理成功</div>
-                                <div v-show="scope.row.status==='处理失败'" class="align-l"><span  class="el-icon-circle-close"></span>处理失败</div>
-                                <div v-show="scope.row.status==='处理中'"   class="align-l"><span  class="el-icon-warning"></span>处理中</div>
-                                <div  v-show="scope.row.status==='待处理'"  class="align-l"><span class="el-icon-time"></span>待处理</div>
-                                <div v-show="scope.row.status==='未处理'"   class="align-l"><span  class="el-icon-loading"></span>未处理</div>
+                                <div v-show="scope.row.status==='处理成功'" class="align-l"><span class="bim-icon el-icon-circle-check"></span>处理成功</div>
+                                <div v-show="scope.row.status==='处理失败'" class="align-l"><span class="bim-icon el-icon-circle-close"></span>处理失败</div>
+                                <div v-show="scope.row.status==='处理中'"   class="align-l"><span class="bim-icon el-icon-warning"></span>处理中</div>
+                                <div  v-show="scope.row.status==='待处理'"  class="align-l"><span class="bim-icon el-icon-time"></span>待处理</div>
+                                <div v-show="scope.row.status==='未处理'"   class="align-l"><span class="bim-icon el-icon-loading"></span>未处理</div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="isRoot" width="" label="已授权" >
@@ -170,7 +169,6 @@
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                     </el-pagination>
                 </div>
-                <div>{{$route.path}}</div>
             </el-col>
         </el-row>
         <!--检测页面-->

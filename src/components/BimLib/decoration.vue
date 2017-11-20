@@ -57,19 +57,19 @@
             </el-col>
         </el-row>
         <el-row class="bim-data bim-dev-toolbar" >
-            <el-col v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)" :span="17">
-                <el-button type="primary" class="basic-btn" @click="ProjManageDialog = true;addProject('add')"><i class="bim-icon el-icon-plus"></i>添加</el-button>
-                <el-button type="primary" class="basic-btn" @click="deletelibs('whileData')"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
-                <el-button type="primary" class="basic-btn" @click="monitor('all')"><i class="bim-icon el-icon-view"></i>监控</el-button>
+            <el-col class="bim-prj" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)" :span="17">
+                <el-button type="primary" class="basic-btn relat" @click="ProjManageDialog = true;addProject('add')"><i class="bim-icon-tool icon-plus absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;添加</el-button>
+                <el-button type="primary" class="basic-btn relat" @click="deletelibs('whileData')"><i class="bim-icon-tool absol" ></i>&nbsp;&nbsp;&nbsp;&nbsp;删除</el-button>
+                <el-button type="primary" class="basic-btn relat" @click="monitor('all')"><i class="bim-icon-tool absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;监控</el-button>
             </el-col>
-            <el-col v-if="($route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId|| $route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId)" :span="17">
-                <el-button type="primary" class="basic-btn" @click="dataRestore"><i class="bim-icon el-icon-plus"></i>还原</el-button>
-                <el-button type="primary" class="basic-btn" @click="deletelibs('wipeData')"><i class="bim-icon el-icon-delete" ></i>删除</el-button>
-                <el-button type="primary" class="basic-btn" @click="dataEmpty"><i class="bim-icon el-icon-view"></i>清空</el-button>
+            <el-col class="bim-recy" v-if="($route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId|| $route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId)" :span="17">
+                <el-button type="primary" class="basic-btn relat" @click="dataRestore"><i class="bim-icon-tool absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;还原</el-button>
+                <el-button type="primary" class="basic-btn relat" @click="deletelibs('wipeData')"><i class="bim-icon-tool absol " ></i>&nbsp;&nbsp;&nbsp;&nbsp;删除</el-button>
+                <el-button type="primary" class="basic-btn relat" @click="dataEmpty"><i class="bim-icon-tool absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;清空</el-button>
             </el-col>
             <el-col :span="3" :offset="4" class="relat">
-                <el-button type="primary" class="basic-btn absol" @click="inRecycle($route.matched[2].path,$route.params.typeId)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)">>> 回收站</el-button>
-                <el-button type="primary" class="basic-btn absol" @click="inProLib($route.matched[2].path,$route.params.typeId)" style="width:120px;right:30px;" v-if="($route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId)"><< 返回工程库</el-button>
+                <el-button type="primary" class="basic-btn absol" @click="inRecycle($route.matched[2].path,$route.params.typeId)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)"><span class="go-back absol"></span>&nbsp;&nbsp;&nbsp;&nbsp;回收站</el-button>
+                <el-button type="primary" class="basic-btn absol" @click="inProLib($route.matched[2].path,$route.params.typeId)" style="width:120px;right:30px;" v-if="($route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId)"><span class="go-back absol"></span>&nbsp;&nbsp;&nbsp;&nbsp; 返回工程库</el-button>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-main">
@@ -115,18 +115,18 @@
                             <td>{{item.size}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.output}}</td>
                             <td>
-                                <div v-show="item.status==='处理成功'" class="align-l"><span  class="el-icon-circle-check"></span>处理成功</div>
-                                <div v-show="item.status==='处理失败'" class="align-l"><span  class="el-icon-circle-close"></span>处理失败</div>
-                                <div v-show="item.status==='处理中'"   class="align-l"><span  class="el-icon-warning"></span>处理中</div>
-                                <div  v-show="item.status==='待处理'"  class="align-l"><span class="el-icon-time"></span>待处理</div>
-                                <div v-show="item.status==='未处理'"   class="align-l"><span  class="el-icon-loading"></span>未处理</div>
+                                <div v-show="item.status==='处理成功'" class="align-l"><span class="bim-icon "></span>处理成功</div>
+                                <div v-show="item.status==='处理失败'" class="align-l"><span class="bim-icon "></span>处理失败</div>
+                                <div v-show="item.status==='处理中'"   class="align-l"><span class="bim-icon "></span>处理中</div>
+                                <div  v-show="item.status==='待处理'"  class="align-l"><span class="bim-icon "></span>待处理</div>
+                                <div v-show="item.status==='未处理'"   class="align-l"><span class="bim-icon "></span>未处理</div>
                             </td>
                             <td>{{item.isRoot}}</td>
                             <td>
-                                <span class="quality-icon icon el-icon-view" @click="ProjManageDialog = true;addProject('modific')"></span>
-                                <span class="quality-icon icon el-icon-caret-right" @click="extractDialog=true;extractData('处理中')"></span><!--extractData(scope.row.status)"-->
-                                <span class="quality-icon icon el-icon-setting" @click="modifyInfo=true"></span>
-                                <span class="quality-icon icon el-icon-edit" @click="monitorSeverVisible=true" ></span>
+                                <div class="handel-cotrol"><span class=" handel-icon " @click="ProjManageDialog = true;addProject('modific')"></span></div>
+                                <div class="handel-cotrol"><span class=" handel-icon " @click="extractDialog=true;extractData('处理中')"></span></div><!--extractData(scope.row.status)"-->
+                                <div class="handel-cotrol"><span class=" handel-icon " @click="modifyInfo=true"></span></div>
+                                <div class="handel-cotrol"><span class=" handel-icon " @click="monitorSeverVisible=true" ></span></div>
                             </td>
                         </tr>
                         </tbody>
@@ -954,7 +954,7 @@
     .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;}
     .filter-bar>.el-select{width:100%;}
     .align-l{text-align:left;padding-left:20px;}
-    .align-l>span{padding:0 10px;}
+    .align-l>span{margin:0 10px;margin-top:15px;float:left}
     .left85{left:85px;}
     .left140{left:119px}
     .left120{left:120px;}

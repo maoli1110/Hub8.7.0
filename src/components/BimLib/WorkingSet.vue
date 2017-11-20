@@ -18,7 +18,7 @@
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
-                <el-button class="basic-btn" type="primary" @click="delWork">删除</el-button>
+                <el-button class="basic-btn relat" type="primary" @click="delWork"><span class="work-icon icon-delete absol" style="width:11px;margin-left:0;"></span>&nbsp;&nbsp;&nbsp;&nbsp;删除</el-button>
             </el-col>
 
         </el-row>
@@ -40,7 +40,7 @@
                 </el-table-column>
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
-                        <span class="quality-icon icon el-icon-picture" @click="workInfoVisible=true,workLibInfo(scope.row.index)" ></span>
+                        <span class="work-icon icon-priview" @click="workInfoVisible=true,workLibInfo(scope.row.index)" ></span>
                     </template>
                 </el-table-column>
             </el-table>

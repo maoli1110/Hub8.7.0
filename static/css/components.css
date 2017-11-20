@@ -75,3 +75,16 @@
     width:100%;
 }
 /*树结构*/
+.components-icon{
+    width:15px;height:16px;display:inline-block;
+}
+.components-icon.icon-edit{
+    float: left;
+    margin-left: 30px;
+    background: url('../../static/img/icon-menu.png') -110px -216px no-repeat;
+}
+.components-icon.icon-map{
+    background: url('../../static/img/icon-menu.png') 0 0  no-repeat;
+}
+.components-icon.icon-update{background-position: -127px -146px;}
+.components-icon.icon-delete{background-position: -58px -146px;}

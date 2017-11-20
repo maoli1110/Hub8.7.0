@@ -64,13 +64,14 @@
                               :on-icon-click="searchComp"></el-input>
                 </el-col>
                 <el-col :span="4" :offset="2" style="text-align:right;">
-                    <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件库</el-button>
+                    <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件树管理</el-button>
                 </el-col>
             </el-row>
             <el-row class="tools-bar">
                 <el-col>
-                    <el-button type="primary" class="basic-btn" @click="override = false;updateComponent = true;uploadComp()"><i class="el-icon-upload2"></i>上传</el-button>
-                    <el-button type="primary" class="basic-btn" @click="deleteComp"><i class="el-icon-delete"></i>删除
+                    <el-button type="primary" class="basic-btn" @click="override = false;updateComponent = true;uploadComp()"><i
+                        class="components-icon icon-update icon-map absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;上传</el-button>
+                    <el-button type="primary" class="basic-btn" @click="deleteComp"><i class="components-icon icon-delete absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;删除
                     </el-button>
                 </el-col>
             </el-row>
@@ -117,7 +118,7 @@
                             </el-table-column>
                             <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-edit" @click=" override = true;updateComponent = true;modifyCompData()"></i>
+                                    <i class="components-icon icon-edit" @click=" override = true;updateComponent = true;modifyCompData()"></i>
 
                                 </template>
                             </el-table-column>

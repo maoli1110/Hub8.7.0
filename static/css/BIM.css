@@ -65,7 +65,61 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .Bim-libs-bim .el-table.house-table{
     min-width: 1280px !important;
 }
-
+.bim-icon{width:18px;height:18px;display:inline-block;background:url('../../static/img/icon-menu.png') 0 0 no-repeat}
+/*数据处理图标*/
+.align-l:nth-child(1) .bim-icon{
+    background-position: -18px 0;
+}
+.align-l:nth-child(2) .bim-icon{
+    background-position: -36px 0;
+}
+.align-l:nth-child(3) .bim-icon{
+    background-position: -54px 0;
+}
+.align-l:nth-child(4) .bim-icon{
+    background-position: -72px 0;
+}
+.align-l:nth-child(5) .bim-icon{
+    background-position: -90px 0;
+}
+/*数据操作图标*/
+.handel-cotrol{width:23px;height:23px;float:left;line-height:23px;border-radius:2px;}
+.handel-icon{width:20px;height:20px;background:pink;float:left;margin-right:10px;margin-left:1px;background:url('../../static/img/icon-menu.png') 0 0 no-repeat;background-size:144px;}
+.handel-cotrol:hover{background-color:lightskyblue;}
+.handel-cotrol:nth-child(1) .handel-icon{
+    background-position: -92px -212px;
+}
+.handel-cotrol:nth-child(2) .handel-icon{
+    background-position: -93px -231px;
+}
+.handel-cotrol:nth-child(3) .handel-icon{
+    background-position: -111px -212px;
+}
+.handel-cotrol:nth-child(4) .handel-icon{
+    background-position: -74px -250px;
+}
+/*表格按钮的图标*/
+.bim-icon-tool{width:14px;height:14px;display:inline-block;background:url('../../static/img/icon-menu.png') 0 0 no-repeat;margin:0 2px;}
+.bim-prj .basic-btn:nth-child(1) .bim-icon-tool{
+    background-position: -3px -146px;
+}
+.bim-prj .basic-btn:nth-child(2) .bim-icon-tool{
+    background-position: -58px -146px;
+}
+.bim-prj .basic-btn:nth-child(3) .bim-icon-tool{
+    background-position: -75px -146px;
+}
+/*回收站按钮样式*/
+.bim-recy .basic-btn:nth-child(1) .bim-icon-tool{
+    background-position: -92px -146px;
+}
+.bim-recy .basic-btn:nth-child(2) .bim-icon-tool{
+    background-position: -58px -146px;
+}
+.bim-recy .basic-btn:nth-child(3) .bim-icon-tool{
+    background-position: -111px -146px;
+}
+.go-back{width:20px;height:20px;float:left;background:url('../../static/img/icon-menu.png') -107px -72px no-repeat;margin-top:-2px;}
 /*弹窗*/
 .bims-contents .el-form-item label.el-form-item__label{
     width:97px ;text-align:right;
@@ -100,7 +154,9 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 /*work-toolbar(工具栏)*/
 .workSeting .work-toobar{padding:10px 0;}
 .pagination{padding:10px 0}
-
+.work-icon{
+    width:20px;height:20px;float:left;margin-left:12px;background:url('../../static/img/icon-btn.png') -272px -0px  no-repeat;
+}
 /*=========================workSeting(弹窗自绘制表单)=====================*/
 .workSeting .table-row{height:100px;border-bottom:1px solid #e6e6e6;}
 .workSeting .table-header{background:#f5f5f5;line-height:60px;}
@@ -124,6 +180,15 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 /*=======================pdfDrawing(pdf图纸页面)======================*/
 .pdfDrawing .el-table td:nth-child(8) div{
     text-align:left !important;padding:0 10px !important;
+}
+.pdf-icon{
+    width:16px;height:16px;
+}
+.pdf-icon.icon-delete,.work-icon.icon-delete{
+    background:url('../../static/img/icon-menu.png')  -58px -146px   no-repeat;
+}
+.pdf-icon.icon-edit{
+   float:left;margin-left:30px; background:url('../../static/img/icon-menu.png')  -110px -216px   no-repeat;
 }
 /*form-item (修改图纸信息弹窗)*/
 .pdfDrawing .form-item .el-input,.pdfDrawing .form-item .el-select,.pdfDrawing .form-item .el-textarea{width:77%!important;}

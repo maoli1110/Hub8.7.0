@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fb3a987b-e6fc-46f5-b67f-930193bd5d63" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/img/icon-btn.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/img/{2D2FFEFF-30CA-4D87-943B-A246D52E99D4}.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/static/img/icon-application-configuration.png" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/BimLib/PdfDrawing.vue" afterPath="$PROJECT_DIR$/src/components/BimLib/PdfDrawing.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/BimLib/WorkingSet.vue" afterPath="$PROJECT_DIR$/src/components/BimLib/WorkingSet.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/BimLib/decoration.vue" afterPath="$PROJECT_DIR$/src/components/BimLib/decoration.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/BimLib/housing.vue" afterPath="$PROJECT_DIR$/src/components/BimLib/housing.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/ComponentLib/LubanMep.vue" afterPath="$PROJECT_DIR$/src/components/ComponentLib/LubanMep.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/ComponentLib/lubanSteel.vue" afterPath="$PROJECT_DIR$/src/components/ComponentLib/lubanSteel.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/BIM.css" afterPath="$PROJECT_DIR$/static/css/BIM.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/components.css" afterPath="$PROJECT_DIR$/static/css/components.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/configuration.css" afterPath="$PROJECT_DIR$/static/css/configuration.css" />
+    </list>
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.29926237">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="common.css" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/static/css/common.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="108">
+                  <caret line="1024" column="1" lean-forward="false" selection-start-line="1024" selection-start-column="1" selection-end-line="1024" selection-end-column="1" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BIM.css" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/static/css/BIM.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="344">
+                  <caret line="187" column="66" lean-forward="false" selection-start-line="187" selection-start-column="54" selection-end-line="187" selection-end-column="66" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="components.css" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/static/css/components.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="288">
+                  <caret line="74" column="15" lean-forward="true" selection-start-line="74" selection-start-column="15" selection-end-line="74" selection-end-column="15" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="DataBase.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/components/DataBase/DataBase.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="279">
+                  <caret line="25" column="119" lean-forward="false" selection-start-line="25" selection-start-column="104" selection-end-line="25" selection-end-column="119" />
+                  <folding>
+                    <element signature="n#style#0;n#div#1;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="e#1814#1873#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="PriceLib.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/components/PriceLib/PriceLib.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="500">
+                  <caret line="20" column="106" lean-forward="false" selection-start-line="20" selection-start-column="102" selection-end-line="20" selection-end-column="106" />
+                  <folding>
+                    <element signature="n#style#0;n#div#0;n#div#1;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="colorTemplate.vue" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/components/Configuration/colorTemplate.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="300">
+                  <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="housing.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/components/BimLib/housing.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="579">
+                  <caret line="106" column="80" lean-forward="true" selection-start-line="106" selection-start-column="80" selection-end-line="106" selection-end-column="80" />
+                  <folding>
+                    <element signature="n#style#0;n#vue-scrollbar#0;n#el-col#2;n#el-col#0;n#el-row#0;n#el-form-item#3;n#el-form#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="decoration.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/components/BimLib/decoration.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="629">
+                  <caret line="74" column="42" lean-forward="true" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="42" />
+                  <folding>
+                    <element signature="e#3577#3583#0" expanded="true" />
+                    <element signature="e#3583#3589#0" expanded="true" />
+                    <element signature="e#3589#3595#0" expanded="true" />
+                    <element signature="e#3595#3601#0" expanded="true" />
+                    <element signature="e#3751#3757#0" expanded="true" />
+                    <element signature="e#3757#3763#0" expanded="true" />
+                    <element signature="e#3763#3769#0" expanded="true" />
+                    <element signature="e#3769#3775#0" expanded="true" />
+                    <element signature="e#3915#3921#0" expanded="true" />
+                    <element signature="e#3921#3927#0" expanded="true" />
+                    <element signature="e#3927#3933#0" expanded="true" />
+                    <element signature="e#3933#3939#0" expanded="true" />
+                    <element signature="e#4361#4367#0" expanded="true" />
+                    <element signature="e#4367#4373#0" expanded="true" />
+                    <element signature="e#4373#4379#0" expanded="true" />
+                    <element signature="e#4379#4385#0" expanded="true" />
+                    <element signature="e#4535#4541#0" expanded="true" />
+                    <element signature="e#4541#4547#0" expanded="true" />
+                    <element signature="e#4547#4553#0" expanded="true" />
+                    <element signature="e#4553#4559#0" expanded="true" />
+                    <element signature="e#4694#4700#0" expanded="true" />
+                    <element signature="e#4700#4706#0" expanded="true" />
+                    <element signature="e#4706#4712#0" expanded="true" />
+                    <element signature="e#4712#4718#0" expanded="true" />
+                    <element signature="e#5199#5205#0" expanded="true" />
+                    <element signature="e#5205#5211#0" expanded="true" />
+                    <element signature="e#5211#5217#0" expanded="true" />
+                    <element signature="e#5217#5223#0" expanded="true" />
+                    <element signature="e#5649#5655#0" expanded="true" />
+                    <element signature="e#5655#5661#0" expanded="true" />
+                    <element signature="e#5661#5667#0" expanded="true" />
+                    <element signature="e#5667#5673#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WorkingSet.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/components/BimLib/WorkingSet.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="150">
+                  <caret line="15" column="34" lean-forward="true" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+                  <folding>
+                    <element signature="n#style#0;n#span#0;n#el-button#0;n#el-col#1;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="e#1005#1011#0" expanded="true" />
+                    <element signature="e#1011#1017#0" expanded="true" />
+                    <element signature="e#1017#1023#0" expanded="true" />
+                    <element signature="e#1023#1029#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="lubanSteel.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/components/ComponentLib/lubanSteel.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="386">
+                  <caret line="59" column="94" lean-forward="true" selection-start-line="59" selection-start-column="94" selection-end-line="60" selection-end-column="103" />
+                  <folding>
+                    <element signature="e#3219#3225#0" expanded="true" />
+                    <element signature="e#3225#3231#0" expanded="true" />
+                    <element signature="e#3231#3237#0" expanded="true" />
+                    <element signature="e#3237#3243#0" expanded="true" />
+                    <element signature="e#3418#3424#0" expanded="true" />
+                    <element signature="e#3424#3430#0" expanded="true" />
+                    <element signature="e#3430#3436#0" expanded="true" />
+                    <element signature="e#3436#3442#0" expanded="true" />
+                    <marker date="1511178157297" expanded="false" signature="648:667" ph="..." />
+                    <marker date="1511178157297" expanded="false" signature="728:757" ph="..." />
+                    <marker date="1511178157297" expanded="false" signature="860:877" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LubanMep.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/components/ComponentLib/LubanMep.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="336">
+                  <caret line="69" column="38" lean-forward="true" selection-start-line="69" selection-start-column="38" selection-end-line="69" selection-end-column="38" />
+                  <folding>
+                    <element signature="e#3805#3811#0" expanded="true" />
+                    <element signature="e#3811#3817#0" expanded="true" />
+                    <element signature="e#3817#3823#0" expanded="true" />
+                    <element signature="e#3823#3829#0" expanded="true" />
+                    <element signature="e#3977#3983#0" expanded="true" />
+                    <element signature="e#3983#3989#0" expanded="true" />
+                    <element signature="e#3989#3995#0" expanded="true" />
+                    <element signature="e#3995#4001#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="configuration.css" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/static/css/configuration.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="663">
+                  <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="PdfDrawing.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/components/BimLib/PdfDrawing.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="275">
+                  <caret line="59" column="54" lean-forward="false" selection-start-line="59" selection-start-column="54" selection-end-line="59" selection-end-column="54" />
+                  <folding>
+                    <element signature="e#1616#1622#0" expanded="true" />
+                    <element signature="e#1622#1628#0" expanded="true" />
+                    <element signature="e#1628#1634#0" expanded="true" />
+                    <element signature="e#1634#1640#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>vue-scrollbar</find>
+      <find>.plugins-tips</find>
+      <find>align-l&gt;span</find>
+      <find>bim-icon</find>
+      <find>大小</find>
+      <find>数据处理</find>
+      <find>work-icon</find>
+      <find>pdf</find>
+      <find>background-size</find>
+      <find>上传</find>
+      <find>操作</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/components/PriceLib/PriceLib.vue" />
+        <option value="$PROJECT_DIR$/src/components/DataBase/DataBase.vue" />
+        <option value="$PROJECT_DIR$/static/css/common.css" />
+        <option value="$PROJECT_DIR$/src/components/BimLib/housing.vue" />
+        <option value="$PROJECT_DIR$/src/components/BimLib/decoration.vue" />
+        <option value="$PROJECT_DIR$/src/components/BimLib/PdfDrawing.vue" />
+        <option value="$PROJECT_DIR$/static/css/BIM.css" />
+        <option value="$PROJECT_DIR$/src/components/BimLib/WorkingSet.vue" />
+        <option value="$PROJECT_DIR$/static/css/components.css" />
+        <option value="$PROJECT_DIR$/src/components/ComponentLib/lubanSteel.vue" />
+        <option value="$PROJECT_DIR$/src/components/ComponentLib/LubanMep.vue" />
+        <option value="$PROJECT_DIR$/static/css/configuration.css" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <OptionsSetting value="false" id="Update" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="Scope" currentSubView="Project Files" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Hub8.7.0">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Hub8.7.0" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Hub8.7.0" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+    <property name="nodejs_interpreter_path" value="D:/Program Files/nodejs/node" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="ChangesBrowser.SHOW_FLATTEN" value="true" />
+  </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/components/Authority/AdministratorsList.vue</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/components/Configuration/Configuration.vue</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/router/index.js</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/css/theme-green/index.css</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/zTree/css/zTreeStyle/zTreeStyle.css</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/components/Configuration/Common.vue</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/components/Configuration/DataCatalog.vue</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/zTree/css/zTreeStyle/img/ztree.png</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/components/Configuration/HousingExplorer.vue</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <method />
+    </configuration>
+    <configuration default="true" type="DartTestRunConfigurationType" factoryName="Dart Test">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fb3a987b-e6fc-46f5-b67f-930193bd5d63" name="Default" comment="" />
+      <created>1511163924278</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1511163924278</updated>
+      <workItem from="1511163926305" duration="13928000" />
+    </task>
+    <task id="LOCAL-00001" summary="添加页面滚动条">
+      <created>1511166345852</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1511166345852</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="13928000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
+    <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09378293" sideWeight="0.5" order="-1" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.49578503" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33767644" sideWeight="0.5922023" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="NativeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.49578503" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3843648" sideWeight="0.4077977" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.4915701" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="BEK_SORT_TYPE" value="1" />
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="添加页面滚动条" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加页面滚动条" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/static/css/common.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="1024" column="1" lean-forward="false" selection-start-line="1024" selection-start-column="1" selection-end-line="1024" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/BimLib/decoration.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="74" column="42" lean-forward="true" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="42" />
+          <folding>
+            <element signature="e#3577#3583#0" expanded="true" />
+            <element signature="e#3583#3589#0" expanded="true" />
+            <element signature="e#3589#3595#0" expanded="true" />
+            <element signature="e#3595#3601#0" expanded="true" />
+            <element signature="e#3751#3757#0" expanded="true" />
+            <element signature="e#3757#3763#0" expanded="true" />
+            <element signature="e#3763#3769#0" expanded="true" />
+            <element signature="e#3769#3775#0" expanded="true" />
+            <element signature="e#3915#3921#0" expanded="true" />
+            <element signature="e#3921#3927#0" expanded="true" />
+            <element signature="e#3927#3933#0" expanded="true" />
+            <element signature="e#3933#3939#0" expanded="true" />
+            <element signature="e#4361#4367#0" expanded="true" />
+            <element signature="e#4367#4373#0" expanded="true" />
+            <element signature="e#4373#4379#0" expanded="true" />
+            <element signature="e#4379#4385#0" expanded="true" />
+            <element signature="e#4535#4541#0" expanded="true" />
+            <element signature="e#4541#4547#0" expanded="true" />
+            <element signature="e#4547#4553#0" expanded="true" />
+            <element signature="e#4553#4559#0" expanded="true" />
+            <element signature="e#4694#4700#0" expanded="true" />
+            <element signature="e#4700#4706#0" expanded="true" />
+            <element signature="e#4706#4712#0" expanded="true" />
+            <element signature="e#4712#4718#0" expanded="true" />
+            <element signature="e#5199#5205#0" expanded="true" />
+            <element signature="e#5205#5211#0" expanded="true" />
+            <element signature="e#5211#5217#0" expanded="true" />
+            <element signature="e#5217#5223#0" expanded="true" />
+            <element signature="e#5649#5655#0" expanded="true" />
+            <element signature="e#5655#5661#0" expanded="true" />
+            <element signature="e#5661#5667#0" expanded="true" />
+            <element signature="e#5667#5673#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/BimLib/PdfDrawing.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="59" column="54" lean-forward="false" selection-start-line="59" selection-start-column="54" selection-end-line="59" selection-end-column="54" />
+          <folding>
+            <element signature="e#1616#1622#0" expanded="true" />
+            <element signature="e#1622#1628#0" expanded="true" />
+            <element signature="e#1628#1634#0" expanded="true" />
+            <element signature="e#1634#1640#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/BimLib/housing.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="579">
+          <caret line="106" column="80" lean-forward="true" selection-start-line="106" selection-start-column="80" selection-end-line="106" selection-end-column="80" />
+          <folding>
+            <element signature="n#style#0;n#vue-scrollbar#0;n#el-col#2;n#el-col#0;n#el-row#0;n#el-form-item#3;n#el-form#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/BimLib/WorkingSet.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="15" column="34" lean-forward="true" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#el-button#0;n#el-col#1;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#1005#1011#0" expanded="true" />
+            <element signature="e#1011#1017#0" expanded="true" />
+            <element signature="e#1017#1023#0" expanded="true" />
+            <element signature="e#1023#1029#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/BIM.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="187" column="66" lean-forward="false" selection-start-line="187" selection-start-column="54" selection-end-line="187" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/DataBase/DataBase.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="25" column="119" lean-forward="false" selection-start-line="25" selection-start-column="104" selection-end-line="25" selection-end-column="119" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#1814#1873#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ComponentLib/lubanSteel.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="59" column="94" lean-forward="true" selection-start-line="59" selection-start-column="94" selection-end-line="60" selection-end-column="103" />
+          <folding>
+            <element signature="e#3219#3225#0" expanded="true" />
+            <element signature="e#3225#3231#0" expanded="true" />
+            <element signature="e#3231#3237#0" expanded="true" />
+            <element signature="e#3237#3243#0" expanded="true" />
+            <element signature="e#3418#3424#0" expanded="true" />
+            <element signature="e#3424#3430#0" expanded="true" />
+            <element signature="e#3430#3436#0" expanded="true" />
+            <element signature="e#3436#3442#0" expanded="true" />
+            <marker date="1511178157297" expanded="false" signature="648:667" ph="..." />
+            <marker date="1511178157297" expanded="false" signature="728:757" ph="..." />
+            <marker date="1511178157297" expanded="false" signature="860:877" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ComponentLib/LubanMep.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="69" column="38" lean-forward="true" selection-start-line="69" selection-start-column="38" selection-end-line="69" selection-end-column="38" />
+          <folding>
+            <element signature="e#3805#3811#0" expanded="true" />
+            <element signature="e#3811#3817#0" expanded="true" />
+            <element signature="e#3817#3823#0" expanded="true" />
+            <element signature="e#3823#3829#0" expanded="true" />
+            <element signature="e#3977#3983#0" expanded="true" />
+            <element signature="e#3983#3989#0" expanded="true" />
+            <element signature="e#3989#3995#0" expanded="true" />
+            <element signature="e#3995#4001#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/configuration.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/PriceLib/PriceLib.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="20" column="106" lean-forward="false" selection-start-line="20" selection-start-column="102" selection-end-line="20" selection-end-column="106" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#1;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Configuration/colorTemplate.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/components.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="74" column="15" lean-forward="true" selection-start-line="74" selection-start-column="15" selection-end-line="74" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

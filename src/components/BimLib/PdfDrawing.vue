@@ -27,7 +27,7 @@
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
-                <el-button class="basic-btn" type="primary" @click="delWork">删除</el-button>
+                <el-button class="basic-btn relat" type="primary" @click="delWork"><span class="pdf-icon icon-delete absol"></span>&nbsp;&nbsp;&nbsp;&nbsp;删除</el-button>
             </el-col>
 
         </el-row>
@@ -43,7 +43,7 @@
                 </el-table-column>
                 <el-table-column prop="type" width="100" label="分类" >
                 </el-table-column>
-                <el-table-column prop="size" width="80" label="大小" >
+                <el-table-column prop="size" width="90" label="大小" >
                 </el-table-column>
                 <el-table-column prop="updateUser" width="100" label="上传人" show-overflow-tooltip>
                 </el-table-column>
@@ -57,7 +57,7 @@
                 </el-table-column>
                 <el-table-column label="操作" width="90" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
-                        <span class="quality-icon icon el-icon-edit" @click="editDraw=true,editInfo(scope.row.index)" ></span>
+                        <span class="pdf-icon icon-edit" @click="editDraw=true,editInfo(scope.row.index)" ></span>
                     </template>
                 </el-table-column>
             </el-table>
