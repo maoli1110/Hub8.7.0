@@ -33,9 +33,9 @@ export default new Router({
                 },
                 {
                     // 主数据库
-                    path: '/database',
+                    path: '/database/:building',
                     component: resolve => require(['../components/DataBase/DataBase.vue'], resolve),
-                    redirect: '/database/process-method',
+                    // redirect: '/database/process-method',
                     children: [
                         {
                             // 工艺工法
@@ -279,9 +279,9 @@ export default new Router({
                 },
                 {
                     // 价格库
-                    path: '/pricelib',
+                    path: '/pricelib/:isRoot',
                     component: resolve => require(['../components/PriceLib/PriceLib.vue'], resolve),
-                    redirect: '/pricelib/material',
+                    // redirect: '/pricelib/material',
                     children: [
                         {
                             path: 'material',

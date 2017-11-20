@@ -1,62 +1,13 @@
 <template>
-    <div class="wrap">
-      <h1>所有页面的jQuery不需要引入 可以直接使用</h1>
-        <div>
-          <div style="margin:0 auto;width:550px;">
-            <el-button type="primary" icon="plus"  @click="expandNode({type:'expand',operObj:'tree_edit'})"   size='small'></el-button>
-            <el-button type="primary" icon="minus" @click="expandNode({type:'collapse',operObj:'tree_edit'})" size='small'></el-button>
-          </div>
-          <div style="margin:10px auto;width:550px;position:relative">
-            <div class="selectStatus">
-                <span class="el-icon-caret-bottom" style="color:#e6e6e6" @click="dropdownShow('state')"> </span>
-                <div class="select-dropdown">
-                  <ul>
-                    <li @click="add({isParent:false})">增加单个状态</li>
-                    <li @click='textAreaVisible = true;textareaValue="";textTittle="增加多个状态";type="state" '>增加多个状态</li>
-                  </ul>
-                </div>
-            </div>
-            <div class="selcetNodes" >
-                <span class="el-icon-caret-bottom" style="color:#e6e6e6" @click="dropdownShow('node')"> </span>
-                <div class="select-dropdown">
-                  <ul>
-                    <li @click="add({isParent:true})">增加单个节点</li>
-                    <li @click='textAreaVisible = true;textareaValue="";textTittle="增加多个节点";type="node"'> 增加多个节点</li>
-                  </ul>
-                </div>
-            </div>
-            <el-button type="primary" icon="date"  @click="add({isParent:false})" size='small'></el-button>
-            <el-button type="primary" icon="menu"  @click="add({isParent:true})" size='small'></el-button>
-            <el-button type="primary" icon="edit"  @click="rename()" size='small'></el-button>
-            <el-button type="primary" icon="delete"  @click="remove()" size='small'></el-button>
-            <el-button type="primary" icon="arrow-up"  @click="upMove()" size='small'></el-button>
-            <el-button type="primary" icon="arrow-down"  @click="downMove()" size='small'></el-button>
-            <el-button type="primary" icon="caret-top"  @click="upLevel()" size='small'></el-button>
-            <el-button type="primary" icon="caret-bottom"  @click="downLevel()" size='small'></el-button>
-          </div>
-          <div style="margin:10px auto;width:550px;">
-            <!--增加多个节点/状态弹框-->
-            <el-dialog :title=textTittle :visible.sync="textAreaVisible" size='tiny'
-                       :close-on-click-modal="false">
-                <el-input type="textarea" :rows="10"  v-model="textareaValue" placeholder="一行视为一个节点，支持多行复制粘贴" :maxlength='297'>
-                </el-input>
-                <div slot="footer" class="dialog-footer">
-                    <el-button type="primary"  @click="textAreaVisible = false,addMultiNodeState()">确 定
-                    </el-button>
-                    <el-button @click="textAreaVisible = false;cancleMultiNodeState()">取 消</el-button>
-                </div>
-            </el-dialog>
-
-
-
-          </div>
-            <ul id="tree_edit" class="ztree"></ul>
+    <div class="org">
+        <div class="header">
+        </div>
+        <div id="organization-tree" class="clearfix">
         </div>
     </div>
 </template>
 <script>
 import axios from "axios";
-
 import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
 function Map() {
   this.container = new Object();
@@ -114,8 +65,7 @@ export default {
       url: "../../../static/organization.json",
       setting: {
         view: {
-          showIcon: true,
-          addDiyDom: this.colorSelect
+          showIcon: true
         }
       },
       zNodes: []
@@ -123,24 +73,56 @@ export default {
   },
   mounted() {
     axios.get(this.url).then(res => {
-      this.zNodes = res.data[0].children;
-      let zTree = $.fn.zTree.init($("#tree_edit"), this.setting, this.zNodes);
+        console.log(this.setting);
+        var tempzNodes = res.data[0].children;
+        function* entries(tempzNodes) {
+            for (let key of Object.keys(tempzNodes)) {
+                yield [key, tempzNodes[key]];
+            }
+        }
+
+        $("#organization-tree").width(tempzNodes.length*260);
+        for(let [key,value] of entries(tempzNodes)){
+
+            var html = '<ul id="ztree-'+key+'" class="ztree"></ul>';
+            $("#organization-tree").append(html);
+            $.fn.zTree.init($("#ztree-"+key), this.setting, value);
+        }
+        // let zTree = $.fn.zTree.init($("#tree_edit"), this.setting, tempzNodes);
     });
   }
 };
 </script>
-<style scoped>
-.wrap {
+<style>
+.org {
   padding: 20px;
+  height: calc(100vh - 218px);
+  overflow: auto;
 }
-.wrap ul.ztree {
-  height: 560px;
-  width: 550px;
+.org .ztree li a {
+    line-height: 32px;
+    width: 150px;
+}
+.org .ztree li span.button.ico_open {
+    background-position: -134px -20px;
+}
+.org .ztree li span.button.ico_docu {
+    background-position: -134px -37px;
+}
+.org ul.ztree{
+    float: left;
+}
+.org ul.ztree {
+  /*height: 560px;*/
+  /*width: 260px;*/
   margin-top: 10px;
   margin: 0 auto;
-  border: 1px solid #617775;
+  /*border: 1px solid #617775;*/
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: hidden;
+}
+.org .ztree li a {
+    border: 1px solid #4778c7;
 }
 .el-select-dropdown__item.selected {
   color: rgb(72, 106, 106);
@@ -187,4 +169,5 @@ export default {
 .multi-textarea .el-button {
   width: 116px;
 }
+
 </style>
