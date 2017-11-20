@@ -323,7 +323,7 @@
     import axios from "axios";
     import {IndexCumsum} from "../../utils/validate.js";
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import {cloudTree} from '../../api/getData.js'
+    import {cloudTree} from '../../api/getData.js';
     let deletArray = [];
     const cityOptions = [
         "上海11111111111111111111111111111111111111111111111",
@@ -805,7 +805,10 @@
             },
             //第三方监控
             monitorSeverOk(){
-                console.log(this.monitorSever)
+                console.log(123123)
+                //加密文件的基本用法
+               /* let pass= BASE64.encoder('123456');
+                console.log(pass,'pass')*/
             },
             //进入回收站
             inRecycle(path,paramId){

@@ -815,7 +815,9 @@
             },
             //第三方监控
             monitorSeverOk(){
-                console.log(this.monitorSever)
+                //加密文件的基本用法
+                 let pass= BASE64.encoder('123456');
+                 console.log(pass,'pass')
             },
             //进入回收站
             inRecycle(path,paramId){
