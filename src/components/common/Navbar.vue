@@ -24,7 +24,7 @@ export default {
                 },
                 {
                     menuName: '主数据库',
-                    path: '/database'
+                    path: '/database/false'
                 },
                 {
                     menuName: '权限管理',
@@ -44,7 +44,7 @@ export default {
                 },
                 {
                     menuName: '价格库',
-                    path: '/pricelib'
+                    path: '/pricelib/false'
                 },
                 {
                     menuName: '指标库',
@@ -84,6 +84,12 @@ export default {
     created(){
         this.activeIndex = this.$route.matched[1].path;
         this.activeIndex2 = this.$route.matched[1].path;
+        if(this.$route.matched[1].path=='/database/:building'){
+            this.activeIndex = '/database/false'
+        }else if(this.$route.matched[1].path=='/pricelib/:isRoot'){
+            this.activeIndex = '/pricelib/false';
+        }
+
         if( this.$route.matched[1].path=='/order-management' || this.$route.matched[1].path=='/online' || this.$route.matched[1].path=='/system-log' || this.$route.matched[1].path=='/upgrade-notes'){
             this.changeMenu = false;
         }else{

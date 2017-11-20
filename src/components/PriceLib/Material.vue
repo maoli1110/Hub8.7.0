@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="plugins-tips" >
-             <img src="../../../static/img/pricelib-bj.png" alt="" style="width:100%;height:100%;">
+             <img src="../../../static/img/pricelib-bj.png" alt="" style="width:100%;">
         </div>
     </div>
 </template>
@@ -13,6 +13,6 @@
 
 <style scoped>
     .plugins-tips{
-
+        height:calc(100vh - 300px);background:#fff;
     }
 </style>
