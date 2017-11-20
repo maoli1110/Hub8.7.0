@@ -538,6 +538,10 @@
     min-height: 730px;
 }
 
+.el-dialog--modify-data-catalog{
+    width:490px;
+    height:756px;
+}
 .el-dialog--small {
     width: 50%
 }
