@@ -1016,8 +1016,12 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     margin: 15px;
 }
 
-.clearfix {
-    clear: both;
+.clearfix:before,.clearfix:after,{
+  display: table;
+  content: " ";
+}
+.clearfix:after {
+  clear: both;
 }
 /*三級聯動======================================*/
 * { -ms-word-wrap: break-word; word-wrap: break-word; }
@@ -1053,7 +1057,6 @@ ul, ol, dl { list-style: none; }
     right: 0px;
     padding: 20px;
     overflow: hidden;
-    overflow-y: auto;
     border-radius:5px;
 }
 /*.Bim-libs .contents*/
