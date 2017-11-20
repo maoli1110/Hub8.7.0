@@ -4,11 +4,6 @@
             <div>
                 <el-button type="primary" class="basic-btn" icon="plus" @click="addAdminDialogVisible=true;addAdmin()">
                     新增管理员
-
-
-
-
-
                 </el-button>
                 <el-button type="primary" class="basic-btn" icon="delete" @click="cancleAdmin()">取消权限</el-button>
                 <el-input placeholder="请选择日期" icon="search" style="float:right;width:210px"></el-input>
@@ -24,13 +19,6 @@
                     <template slot-scope="scope">
                         <div :title="scope.row.remarks" class="textcell">
                             {{ scope.row.remarks }}
-
-
-
-
-
-
-
                         </div>
                     </template>
                 </el-table-column>
@@ -38,13 +26,6 @@
                     <template slot-scope="scope">
                         <div :title="scope.row.remarks" class="textcell">
                             {{ scope.row.remarks }}
-
-
-
-
-
-
-
                         </div>
                     </template>
                 </el-table-column>
@@ -87,25 +68,21 @@
                         </el-option>
                     </el-select>
                 </div>
-                <div style="margin-left:45px;border:1px solid #e6e6e6" class="select-dropdown">
+                <div style="margin-left:45px;border:1px solid #e6e6e6" class="select-dropdown" >
                     <div style="padding:10px">
                         <el-input placeholder="请选择" icon="search"></el-input>
                         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange"
+
                                            style="margin-top:22px">
                             <el-checkbox v-for="city in cities" :label="city" :key="city" :title="city"
-                                         class="add-admin-group">{{city}}
-
-
+                                         class="add-admin-group"           
+                                         >{{city}}
                             </el-checkbox>
                         </el-checkbox-group>
                     </div>
                     <div style="padding:10px;border-top:1px solid #e6e6e6">
                         <div style="float:left">没有找到，点击
-
-
-
-
-                            <el-button type="text"><span style="font-size:14px;font-weight:700">添加成员</span>
+                            <el-button type="text" @click="addMemberDialogVisible=true"><span style="font-size:14px;font-weight:700">添加成员</span>
                             </el-button>
                         </div>
                         <el-button type="primary" class="dialog-btn select-dialog-btn" style="margin-left:70px"
@@ -162,6 +139,51 @@
                 <el-button @click="addAdminDialogVisible = false" class="dialog-btn">取消</el-button>
             </div>
         </el-dialog>
+         <!-- 添加人员 -->
+        <el-dialog
+            title="添加人员"
+            :visible.sync="addMemberDialogVisible"
+            size="add-member-dialog">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="鲁班通行证：" prop="pass">
+                    <el-input v-model="ruleForm.pass" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="姓名：" prop="name">
+                    <el-input v-model="ruleForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="角色：" prop="role">
+                    <el-select v-model="ruleForm.role" placeholder="请选择" style="width:360px">
+                        <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="归属：" prop="attribution">
+                    <el-select v-model="ruleForm.attribution" placeholder="请选择" style="width:360px">
+                        <el-option
+                            :value="ruleForm.attribution" v-show="false">
+                        </el-option>
+                        <ul id="dialogOrgTree" class="ztree"></ul>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="手机号码：" prop="phone">
+                    <span>请先填写通行证账号，手机号码自动关联</span>
+                    <!-- <el-input v-model="ruleForm.phone" auto-complete="off" :disabled="true"></el-input> -->
+                </el-form-item>
+                <el-form-item label="邮箱：" prop="email">
+                    <span>请先填写通行证账号，邮箱自动关联</span>
+
+                    <!-- <el-input v-model="ruleForm.email" auto-complete="off" :disabled="true"></el-input> -->
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="submitForm('ruleForm')" class="dialog-btn">确 定</el-button>
+            <el-button @click="addMemberDialogVisible = false;resetForm('ruleForm')" class="dialog-btn">取 消</el-button>
+            </span>
+        </el-dialog>
 
     </div>
 
@@ -197,13 +219,23 @@
     ];
     export default {
         components: {VueScrollbar},
-
         data() {
+          var validatePass = (rule, value, callback) => {
+                if (value === "") {
+                    callback(new Error("请输入通行证"));
+                } else {
+                    console.log("后台验证中......");
+                    this.ruleForm.phone = "18555524036";
+                    this.ruleForm.email = "yunyinyue@163.com";
+                    callback();
+                }
+            };
             return {
                 visible: true,
                 url: "../../../static/tree1.json",
                 cacheProjectTree: [],
                 addAdminDialogVisible: false,
+                addMemberDialogVisible:false,
                 textarea: "",
                 checkedCities: ["上海", "北京"],
                 cities: cityOptions,
@@ -272,6 +304,21 @@
                         remarks: "超长remark"
                     }
                 ],
+                role: "",
+                ruleForm: {
+                    pass: "",
+                    name: "",
+                    role: "",
+                    attribution: "",
+                    phone: "",
+                    email: ""
+                },
+                rules: {
+                    pass: [{ required: true, validator: validatePass, trigger: "blur" }],
+                    name: [{ required: false, message: "请输入姓名", trigger: "blur" }],
+                    role: [{ required: true, message: "请输入角色", trigger: "blur" }],
+                    attribution: [{ required: true, message: "请输入归属", trigger: "blur" }]
+                },
                 orgSetting: {
                     check: {
                         enable: true
@@ -361,7 +408,22 @@
                 $(".select-dropdown").slideUp("fast");
             },
             visibleChange(isVisible) {             
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate(valid => {
+                    if (valid) {
+                        alert("提交中...........");
+                        console.log(this.ruleForm);
+                        this.addMemberDialogVisible = false;
+                    } else {
+                        console.log("error submit!!");
+                return false;
             }
+            });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
         },
         mounted() {
             $('.el-select__tags').click(()=>{

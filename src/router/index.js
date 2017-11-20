@@ -339,12 +339,12 @@ export default new Router({
                     // 应用配置
                     path: '/configuration',
                     component: resolve => require(['../components/Configuration/Configuration.vue'], resolve),
-                    redirect: '/configuration/explorer',
+                    redirect: '/configuration/common',
                     children: [
                         {
-                            path: 'explorer',
-                            component: resolve => require(['../components/Configuration/HousingExplorer.vue'], resolve),
-                            redirect: '/configuration/explorer/process-template',
+                            path: 'common',
+                            component: resolve => require(['../components/Configuration/common.vue'], resolve),
+                            redirect: '/configuration/common/process-template',
                             children: [
                                 {
                                     // 工序模板
@@ -359,7 +359,7 @@ export default new Router({
                                 {
                                     // 资料目录
                                     path: 'data-catalog',
-                                    component: resolve => require(['../components/Configuration/labelManagement.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/DataCatalog.vue'], resolve)
                                 },
                                 {
                                     // 属性模板

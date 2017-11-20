@@ -10,7 +10,7 @@
                 <el-menu-item index="/configuration/ppp">PPP</el-menu-item>
             </el-menu>-->
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-menu-item index="/configuration/explorer">Explorer</el-menu-item>
+                <el-menu-item index="/configuration/common">通用</el-menu-item>
                 <el-menu-item index="/configuration/govern">Govern</el-menu-item>
                 <el-menu-item index="/configuration/plan">plan</el-menu-item>
                 <el-menu-item index="/configuration/coopreation">Co/View/Boss</el-menu-item>
