@@ -1194,3 +1194,7 @@ body .el-popover.remark-popper {
     background: #fff !important;
     height: calc(100vh - 245px);
 }
+
+.org .ztree li span.button {
+    background-image: url('../img/zTreeStandard2.png');
+}
