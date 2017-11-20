@@ -18,19 +18,24 @@
             </el-menu>
         </div>
         <div class="container">
-            <div v-if="$route.params.building!='false'">
-                <router-view></router-view>
-            </div>
-            <div class="plugins-tips" v-if="$route.params.building=='false'">
-                <img src="../../../static/img/basicData_03.png" alt="" style="width:100%;">
-            </div>
+            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
+                <div v-if="$route.params.building!='false'" class="scroll-me">
+                    <router-view></router-view>
+                </div>
+                <div class="plugins-tips scroll-me" v-if="$route.params.building=='false'" style="width:1300px;" >
+                    <div style="background:#fff url(../../../static/img/basicData_03.png) 0 0 no-repeat;background-size:100%;height:100%;min-width:1300px;"></div>
+                </div>
+
+            </vue-scrollbar>
+
         </div>
         <vue-footer></vue-footer>
     </div>
 </template>
 
 <script>
-    import VueFooter from "../../components/common/footer.vue"
+    import VueFooter from "../../components/common/footer.vue";
+    import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
 export default {
     data() {
         return {
@@ -50,7 +55,7 @@ export default {
         this.activeIndex = this.$route.path;
     },
     components:{
-        VueFooter
+        VueFooter,VueScrollbar
     }
 }
 </script>

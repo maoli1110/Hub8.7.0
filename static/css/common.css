@@ -1016,7 +1016,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     margin: 15px;
 }
 
-.clearfix:before,.clearfix:after,{
+.clearfix:before,.clearfix:after{
   display: table;
   content: " ";
 }
@@ -1169,8 +1169,7 @@ body .el-popover.remark-popper {
 /*footer*/
 .footer{
     width: calc(100% - 300px);
-    padding: 20px 10px;
-    height: 49px;
+    height: 60px;
     position: absolute;
     bottom: 0;
     right: 20px;
@@ -1191,6 +1190,5 @@ body .el-popover.remark-popper {
     width:100%;height:100%;background:#fff;opacity:0;top:0;left:0
 }
 .plugins-tips{
-    background: #fff !important;
-    height: calc(100vh - 245px);
+    height: calc(100vh - 254px);
 }

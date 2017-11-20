@@ -14,14 +14,15 @@
             </el-menu>
         </div>
         <div class="container " >
-            <vue-scrollbar class="my-scrollbar" v-if="$route.params.isRoot != 'false'">
-                <div class="scroll-me">
-                 <router-view></router-view>
+            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
+                <div class="scroll-me" v-if="$route.params.isRoot != 'false'">
+                    <router-view></router-view>
+                </div>
+                <div class="plugins-tips scroll-me" v-if="$route.params.isRoot=='false'" style="width:1300px;">
+                    <div style="background:#fff url(../../../static/img/pricelib-bj.png) 0 0 no-repeat;background-size:100%;height:99%;min-width:1300px;"></div>
                 </div>
             </vue-scrollbar>
-            <div class="plugins-tips" v-if="$route.params.isRoot=='false'">
-                <img src="../../../static/img/pricelib-bj.png" alt="" style="width:100%;">
-            </div>
+
         </div>
         <vue-footer></vue-footer>
     </div>
