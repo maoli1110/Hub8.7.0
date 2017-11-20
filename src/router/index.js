@@ -383,24 +383,39 @@ export default new Router({
                             component: resolve => require(['../components/Configuration/BaseBuild.vue'], resolve)
                         },
                         {
-                            // 装配式
-                            path: 'assembly',
+                            // explorer
+                            path: 'explorer',
+                            component: resolve => require(['../components/Configuration/BaseBuild.vue'], resolve)
+                        },
+                        {
+                            // govern
+                            path: 'govern',
                             component: resolve => require(['../components/Authority-management/BaseCharts.vue'], resolve)
                         },
                         {
-                            // 精装
-                            path: 'decoration',
+                            // plan
+                            path: 'plan',
                             component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
                         },
                         {
-                            // CIM
-                            path: 'cim',
+                            // coopreation 协同
+                            path: 'coopreation',
                             component: resolve => require(['../components/Authority-management/BaseCharts.vue'], resolve)
                         },
                         {
-                            // PPP
-                            path: 'ppp',
-                            component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                            // o-bw
+                            path: 'o-bw',
+                            component: resolve => require(['../components/Authority-management/BaseCharts.vue'], resolve)
+                        },
+                        {
+                            // o-govern
+                            path: 'o-govern',
+                            component: resolve => require(['../components/Authority-management/BaseCharts.vue'], resolve)
+                        },
+                        {
+                            // explorerCivil
+                            path: 'explorerCivil',
+                            component: resolve => require(['../components/Configuration/Cim.vue'], resolve)
                         }
                     ]
                 },

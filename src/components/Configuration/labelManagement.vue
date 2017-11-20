@@ -146,7 +146,7 @@
              * @params error    失败处理的
              * */
             commonConfirm(message,success,error,type){
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                this.$confirm(message, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: type
@@ -251,7 +251,7 @@
                             }
                         }
                     }
-
+                    console.log(deletArray,'数组')
                     deletArray = [];//接口成功之后删除数据
                 })
             },
