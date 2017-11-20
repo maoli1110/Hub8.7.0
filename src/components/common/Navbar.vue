@@ -82,14 +82,16 @@ export default {
     mounted(){
     },
     created(){
-        this.activeIndex = this.$route.matched[1].path;
-        this.activeIndex2 = this.$route.matched[1].path;
+        //一级路由的状态 主数据库和价格库正在建设中。。。。。。
         if(this.$route.matched[1].path=='/database/:building'){
             this.activeIndex = '/database/false'
         }else if(this.$route.matched[1].path=='/pricelib/:isRoot'){
             this.activeIndex = '/pricelib/false';
+        }else{
+            this.activeIndex = this.$route.matched[1].path;
         }
-
+        this.activeIndex2 = this.$route.matched[1].path;
+        //显示是常规路由还是不常规路由
         if( this.$route.matched[1].path=='/order-management' || this.$route.matched[1].path=='/online' || this.$route.matched[1].path=='/system-log' || this.$route.matched[1].path=='/upgrade-notes'){
             this.changeMenu = false;
         }else{
