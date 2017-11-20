@@ -94,25 +94,32 @@ export default {
 };
 </script>
 <style>
-.org .ztree li span.button {
-    
-}
 .org {
   padding: 20px;
   height: calc(100vh - 218px);
   overflow: auto;
+}
+.org .ztree li a {
+    line-height: 32px;
+    width: 150px;
+}
+.org .ztree li span.button.ico_open {
+    background-position: -134px -20px;
+}
+.org .ztree li span.button.ico_docu {
+    background-position: -134px -37px;
 }
 .org ul.ztree{
     float: left;
 }
 .org ul.ztree {
   /*height: 560px;*/
-  width: 260px;
+  /*width: 260px;*/
   margin-top: 10px;
   margin: 0 auto;
   /*border: 1px solid #617775;*/
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 .org .ztree li a {
     border: 1px solid #4778c7;

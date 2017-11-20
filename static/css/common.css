@@ -1192,3 +1192,7 @@ body .el-popover.remark-popper {
 .plugins-tips{
     height: calc(100vh - 254px);
 }
+
+.org .ztree li span.button {
+    background-image: url('../img/zTreeStandard2.png');
+}
