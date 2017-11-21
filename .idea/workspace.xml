@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fb3a987b-e6fc-46f5-b67f-930193bd5d63" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Configuration/AttributeTemplate.vue" afterPath="$PROJECT_DIR$/src/components/Configuration/AttributeTemplate.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Configuration/Common.vue" afterPath="$PROJECT_DIR$/src/components/Configuration/Common.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Configuration/ProcessTemplate.vue" afterPath="$PROJECT_DIR$/src/components/Configuration/ProcessTemplate.vue" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/restdate.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/restdate.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Configuration/calendarTemplate.vue" afterPath="$PROJECT_DIR$/src/components/Configuration/calendarTemplate.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/configuration.css" afterPath="$PROJECT_DIR$/static/css/configuration.css" />
     </list>
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -19,7 +22,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.36254728">
+    <splitter split-orientation="horizontal" split-proportion="0.3820933">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="common.css" pinned="false" current-in-tab="false">
@@ -68,8 +71,8 @@
           <file leaf-file-name="configuration.css" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/static/css/configuration.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="631">
-                  <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+                <state relative-caret-position="681">
+                  <caret line="57" column="39" lean-forward="false" selection-start-line="57" selection-start-column="39" selection-end-line="57" selection-end-column="39" />
                   <folding />
                 </state>
               </provider>
@@ -79,16 +82,6 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="colorTemplate.vue" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/components/Configuration/colorTemplate.vue">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="379">
-                  <caret line="19" column="46" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="19" selection-end-column="46" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="labelManagement.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/Configuration/labelManagement.vue">
               <provider selected="true" editor-type-id="text-editor">
@@ -99,16 +92,29 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="calendarTemplate.vue" pinned="false" current-in-tab="false">
+          <file leaf-file-name="calendarTemplate.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/components/Configuration/calendarTemplate.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="275">
-                  <caret line="53" column="10" lean-forward="true" selection-start-line="53" selection-start-column="10" selection-end-line="53" selection-end-column="10" />
+                <state relative-caret-position="406">
+                  <caret line="299" column="51" lean-forward="false" selection-start-line="299" selection-start-column="51" selection-end-line="299" selection-end-column="51" />
                   <folding>
                     <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#el-table#0;n#vue-scrollbar#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="e#3417#3465#0" expanded="true" />
+                    <element signature="n#style#0;n#el-col#2;n#el-col#0;n#el-row#0;n#template#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#el-col#1;n#el-row#0;n#template#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                    <element signature="e#6039#6087#0" expanded="true" />
+                    <element signature="e#6322#6369#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="restdate.css" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/static/css/restdate.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -148,11 +154,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Common.vue" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Common.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/Configuration/Common.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1350">
-                  <caret line="54" column="5" lean-forward="false" selection-start-line="32" selection-start-column="3" selection-end-line="54" selection-end-column="5" />
+                <state relative-caret-position="450">
+                  <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -177,18 +183,18 @@
           <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="375">
-                  <caret line="15" column="7" lean-forward="false" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
+                <state relative-caret-position="250">
+                  <caret line="10" column="8" lean-forward="true" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="common.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/utils/common.js">
+          <file leaf-file-name="restdate.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/static/js/restdate.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="350">
-                  <caret line="14" column="15" lean-forward="false" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="15" />
+                <state relative-caret-position="25">
+                  <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -207,9 +213,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>activeIndex</find>
-      <find>select</find>
-      <find>templateType</find>
       <find>templateInfo</find>
       <find>renameTemplateOK</find>
       <find>switchDialog</find>
@@ -237,6 +240,9 @@
       <find>CalendarSet</find>
       <find>el-select</find>
       <find>openWindow</find>
+      <find>debugger;</find>
+      <find>change</find>
+      <find>modifyDataPicker</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -263,12 +269,12 @@
         <option value="$PROJECT_DIR$/src/components/Configuration/Configuration.vue" />
         <option value="$PROJECT_DIR$/src/components/Configuration/plan.vue" />
         <option value="$PROJECT_DIR$/static/js/calendarTemplate.js" />
+        <option value="$PROJECT_DIR$/src/App.vue" />
+        <option value="$PROJECT_DIR$/src/components/Configuration/AttributeTemplate.vue" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/static/js/restdate.js" />
-        <option value="$PROJECT_DIR$/src/App.vue" />
-        <option value="$PROJECT_DIR$/src/components/Configuration/calendarTemplate.vue" />
         <option value="$PROJECT_DIR$/static/css/configuration.css" />
-        <option value="$PROJECT_DIR$/src/components/Configuration/AttributeTemplate.vue" />
+        <option value="$PROJECT_DIR$/src/components/Configuration/calendarTemplate.vue" />
       </list>
     </option>
   </component>
@@ -356,7 +362,7 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="css">
+            <PATH_ELEMENT USER_OBJECT="js">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
@@ -390,8 +396,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\project\Hub8.7.0\static\css" />
       <recent name="E:\project\Hub8.7.0\static\js" />
+      <recent name="E:\project\Hub8.7.0\static\css" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -485,7 +491,7 @@
       <option name="presentableId" value="Default" />
       <updated>1511163924278</updated>
       <workItem from="1511163926305" duration="14055000" />
-      <workItem from="1511227639890" duration="24436000" />
+      <workItem from="1511227639890" duration="26973000" />
     </task>
     <task id="LOCAL-00001" summary="添加页面滚动条">
       <created>1511166345852</created>
@@ -519,7 +525,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38491000" />
+    <option name="totallyTimeSpent" value="41028000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -586,7 +592,8 @@
     <MESSAGE value="列表icon更换" />
     <MESSAGE value="btn 图标更换" />
     <MESSAGE value="应用配置路由配置和模块展示" />
-    <option name="LAST_COMMIT_MESSAGE" value="应用配置路由配置和模块展示" />
+    <MESSAGE value="日历模板的复用" />
+    <option name="LAST_COMMIT_MESSAGE" value="日历模板的复用" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -847,14 +854,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/restdate.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/WdatePicker.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -887,14 +886,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="15" column="7" lean-forward="false" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/datepicker.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -911,14 +902,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/restdate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="260" column="0" lean-forward="false" selection-start-line="260" selection-start-column="0" selection-end-line="260" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="575">
@@ -929,34 +912,6 @@
             <marker date="1511261503779" expanded="true" signature="349:890" ph="{...}" />
             <marker date="1511261503779" expanded="true" signature="366:884" ph="{...}" />
             <marker date="1511261503779" expanded="true" signature="396:874" ph="{&quot;barColor&quot;: &quot;##959595&quot;...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Configuration/labelManagement.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="186" column="47" lean-forward="false" selection-start-line="186" selection-start-column="38" selection-end-line="186" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/configuration.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
-          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Configuration/calendarTemplate.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="53" column="10" lean-forward="true" selection-start-line="53" selection-start-column="10" selection-end-line="53" selection-end-column="10" />
-          <folding>
-            <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table#0;n#vue-scrollbar#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#3417#3465#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -977,6 +932,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Configuration/labelManagement.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="186" column="47" lean-forward="false" selection-start-line="186" selection-start-column="38" selection-end-line="186" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="10" column="8" lean-forward="true" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/restdate.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/restdate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Configuration/Common.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Configuration/AttributeTemplate.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
@@ -990,11 +985,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Configuration/Common.vue">
+    <entry file="file://$PROJECT_DIR$/static/css/configuration.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1350">
-          <caret line="54" column="5" lean-forward="false" selection-start-line="32" selection-start-column="3" selection-end-line="54" selection-end-column="5" />
+        <state relative-caret-position="681">
+          <caret line="57" column="39" lean-forward="false" selection-start-line="57" selection-start-column="39" selection-end-line="57" selection-end-column="39" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Configuration/calendarTemplate.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="299" column="51" lean-forward="false" selection-start-line="299" selection-start-column="51" selection-end-line="299" selection-end-column="51" />
+          <folding>
+            <element signature="n#style#0;n#el-col#0;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#vue-scrollbar#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#2;n#el-col#0;n#el-row#0;n#template#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#1;n#el-row#0;n#template#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#6039#6087#0" expanded="true" />
+            <element signature="e#6322#6369#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
