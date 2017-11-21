@@ -1,10 +1,17 @@
 <template>
     <div class="wrap">
-      <h1>所有页面的jQuery不需要引入 可以直接使用</h1>
         <div>
-          <div style="margin:0 auto;width:550px;">
-            <el-button type="primary" icon="plus"  @click="expandNode({type:'expand',operObj:'tree_edit'})"   size='small'></el-button>
-            <el-button type="primary" icon="minus" @click="expandNode({type:'collapse',operObj:'tree_edit'})" size='small'></el-button>
+          <div>
+            <div class="el-form-item el-form_">
+                <label class="el-form-item__label">模板名称：</label>
+                <div class="el-form-item__content" style="margin-left: 80px;">
+                   <el-input placeholder="请选择日期" style="width:75%"></el-input>
+                   <span   class="icon-tree-expand" style="display:inline-block;vertical-align:middle"       @click="expandNode({type:'collapse',operObj:'tree_edit'})" size='small'></span>
+                   <span   class="icon-tree-fold"   style="display:inline-block;vertical-align:middle"     @click="expandNode({type:'expand',operObj:'tree_edit'})"   size='small'></span>
+                </div>
+
+            </div>
+            
           </div>
           <div style="margin:10px auto;width:550px;position:relative">
             <div class="selectStatus">
@@ -107,8 +114,8 @@ export default {
     return {
       textAreaVisible: false,
       textareaValue: "",
-      textTittle:'',
-      type:'',
+      textTittle: "",
+      type: "",
       // 树数据
       url: "../../../static/datasource.json",
       setting: {
@@ -176,10 +183,10 @@ export default {
   },
   methods: {
     // 自定义颜色选择器
-    beforeClick(){
+    beforeClick() {
       var zTree = $.fn.zTree.getZTreeObj("tree_edit");
       var nodes = zTree.getSelectedNodes();
-      console.log(nodes)
+      console.log(nodes);
     },
     colorSelect(treeId, treeNode) {
       if (treeNode.isParent) {
@@ -1261,24 +1268,27 @@ export default {
       if (!nodes[0].isParent && type == "node") {
         return;
       }
-      type=='node'? $(".selcetNodes ul").slideToggle():$(".selectStatus ul").slideToggle();
-
+      type == "node"
+        ? $(".selcetNodes ul").slideToggle('fast')
+        : $(".selectStatus ul").slideToggle('fast');
     }
   }
 };
 </script>
 <style scoped>
-.wrap {
-  padding: 20px;
-}
 .wrap ul.ztree {
-  height: 560px;
-  width: 550px;
+  height: 500px;
+  width: 420px;
+  padding: 10px;
+  box-sizing: border-box;
   margin-top: 10px;
   margin: 0 auto;
-  border: 1px solid #617775;
+  border: 1px solid #c8c8c8;
   overflow-y: auto;
   overflow-x: auto;
+}
+.el-form-item__label {
+  text-align: left;
 }
 .el-select-dropdown__item.selected {
   color: rgb(72, 106, 106);
@@ -1289,7 +1299,7 @@ export default {
   left: 36px;
   top: 5px;
 }
-.selcetNodes{
+.selcetNodes {
   position: absolute;
   left: 93px;
   top: 5px;

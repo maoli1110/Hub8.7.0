@@ -349,12 +349,12 @@ export default new Router({
                                 {
                                     // 工序模板
                                     path: 'process-template',
-                                    component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/ProcessTemplate.vue'], resolve)
                                 },
                                 {
                                     // 颜色模板
                                     path: 'color-template',
-                                    component: resolve => require(['../components/Configuration/colorTemplate.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/ColorTemplate.vue'], resolve)
                                 },
                                 {
                                     // 资料目录
@@ -364,15 +364,21 @@ export default new Router({
                                 {
                                     // 属性模板
                                     path: 'attribute-template',
-                                    component: resolve => require(['../components/Configuration/labelManagement.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/AttributeTemplate.vue'], resolve)
+                                },
+                                {
+                                    // 标识管理
+                                    path: 'logo-management',
+                                    component: resolve => require(['../components/Configuration/LogoMangement.vue'], resolve)
                                 },
                                 {
                                     // 标签管理
                                     path: 'label-management',
-                                    component: resolve => require(['../components/Configuration/labelManagement.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/LabelManagement.vue'], resolve)
                                 },
                                 {
-                                    path: 'govern',
+                                    // 表单管理
+                                    path: 'form-management',
                                     component: resolve => require(['../components/Configuration/HousingGovern.vue'], resolve)
                                 }
                             ]

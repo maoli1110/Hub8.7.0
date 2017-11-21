@@ -1,9 +1,56 @@
 <template>
     <div class="org">
         <div class="header">
+            <el-button>+全部展开</el-button>
+            <el-button>-全部收起</el-button>
+            <el-popover ref="popover4" placement="right"  width="400" trigger="click">
+            <div class="pop-manager-dialog">
+                <div class="pop-header">
+                    <p class="enterprise-name">企业名称</p>
+                    <p class="company-name">初始化公司名字</p>
+                </div>
+                <div class="pop-manager-list">
+                    <p class="name">负责人</p>
+                    <div class="list">
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                    </div>
+                </div>
+                <div class="pop-operation">
+                    <el-button type="primary" class="basic-btn" icon="plus" >添加</el-button>
+                    <el-button type="primary" class="basic-btn" icon="plus" >删除</el-button>
+                    <el-button type="primary" class="basic-btn" icon="plus" >编辑</el-button>
+                </div>
+            </div>
+            </el-popover>
+            <el-button v-popover:popover4>click 激活</el-button>
+            
         </div>
         <div id="organization-tree" class="clearfix">
         </div>
+        
     </div>
 </template>
 <script>
@@ -68,7 +115,24 @@ export default {
           showIcon: true
         }
       },
-      zNodes: []
+      zNodes: [],
+      gridData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }]
     };
   },
   mounted() {
@@ -122,11 +186,51 @@ export default {
   overflow-x: hidden;
 }
 .org .ztree li a {
-    border: 1px solid #4778c7;
+    border: 2px solid #4778c7;
+    margin: 10px;
+    height: 40px;
+    line-height: 40px;
+    width: 170px;
+}
+.org .ztree li span.button {
+    margin-top: 9px;
+}
+/*el-popover*/
+.el-popover {
+    padding: 0;
+}
+.el-popover .pop-header {
+    border-bottom: 1px solid #e6e6e6;
+}
+.el-popover .pop-operation {
+    border-top: 1px solid #e6e6e6;
+}
+.el-popover .pop-header .en{
+    padding: 20px 10px;
+}
+.el-popover .pop-header .enterprise-name,.el-popover .pop-manager-list .name{
+    font-size: 14px;
+    font-weight: bold;
+    padding: 20px 10px;
+}
+.el-popover .pop-header .company-name {
+    font-size: 14px;
+    padding: 0 10px 20px 10px;
+}
+.el-popover .pop-manager-list .list > span {
+    width: 110px;
+    height: 30px;
+    display: inline-block;
 }
 .el-select-dropdown__item.selected {
   color: rgb(72, 106, 106);
   background-color: #fff;
+}
+.el-popover .pop-manager-list .list {
+    padding: 0 10px 20px 10px;
+}
+.el-popover .pop-operation {
+    padding: 20px 35px;
 }
 .selectStatus {
   position: absolute;
@@ -169,5 +273,7 @@ export default {
 .multi-textarea .el-button {
   width: 116px;
 }
-
+.el-popover[x-placement^=right] {
+    margin-left: 12px;
+}
 </style>

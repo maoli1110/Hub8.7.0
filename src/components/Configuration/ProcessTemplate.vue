@@ -12,30 +12,16 @@
                     </el-select>
                 </div>
             </div>
-            <div class="el-form-item el-form_">
-                <div class="el-form-item__content">
-                    <el-input placeholder="请选择日期" icon="search" style="max-width:220px"></el-input>
-                </div>
-            </div>
         </div>
         <div class="main">
             <div>
-                <el-button type="primary" class="basic-btn" icon="plus" @click="addFolder();isAddFolder=true">添加</el-button>
+                <el-button type="primary" class="basic-btn" icon="plus" @click="addFolder();editDialogVisible=true">添加</el-button>
                 <el-button type="primary" class="basic-btn" icon="delete" @click="deleteFolder()"> 删除</el-button>
-                <el-button type="primary" class="basic-btn" icon="share"
-                           @click='moveDataCatalog();moveDataCatalogVisible=true'>移动
-                </el-button>
             </div>
-            <el-breadcrumb separator=">">
-                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-                <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-            </el-breadcrumb>
             <el-table ref="multipleTable" :data="FolderTableData" border tooltip-effect="dark"
-                      style="width: 100%" @selection-change="handleSelectionChange">
+                      style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="name" label="文件夹名称" width="360" align='left'>
+                <el-table-column prop="name" label="模板名称" >
                     <template slot-scope="scope">
                         <div slot="reference" class="name-wrapper textcell">
                             <span style="height:15px;width:20px;display:inline-block" class="icon-file-fold"></span>
@@ -43,65 +29,17 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="已授权" width="550">
-                    <template slot-scope="scope">
-                        <div :title="scope.row.pass" class="textcell">
-                            {{ scope.row.pass }}
-
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column label="更新时间" width="180">
+                <el-table-column label="更新时间">
                     <template slot-scope="scope">{{ scope.row.date }}</template>
                 </el-table-column>
-                <el-table-column prop="role" label="操作人" width="180"></el-table-column>
+                <el-table-column prop="role" label="操作人" ></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span type="primary" class="el-icon-document"
-                              @click="modifyDataCatalog();modifyDataCatalogVisible=true;"></span>
+                              @click="modifyDataCatalog();editDialogVisible=true;"></span>
                     </template>
                 </el-table-column>
             </el-table>
-            <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition"
-                v-show="isAddFolder"
-                style="width: 100%;border-top:none">
-                <div class="el-table__body-wrapper">
-                    <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 1345px;">
-                        <colgroup>
-                            <col name="el-table_1_column_17" width="55">
-                            <col name="el-table_1_column_18" width="365">
-                            <col name="el-table_1_column_19" width="556">
-                            <col name="el-table_1_column_20" width="182">
-                            <col name="el-table_1_column_21" width="182">
-                            <col name="el-table_1_column_22" width="182">
-                        </colgroup>
-                        <tbody>
-                        <tr class="el-table__row">
-                            <td class="el-table_1_column_17 el-table-column--selection">
-                                <div class="cell"><label class="el-checkbox"><span class="el-checkbox__input"><span
-                                    class="el-checkbox__inner"></span><input type="checkbox"class="el-checkbox__original" value=""></span></label></div>
-                            </td>
-                            <td class="el-table_1_column_18">
-                                <div class="cell">
-                                    <div class="name-wrapper textcell"><span
-                                        class="icon-file-fold"
-                                        style="height: 15px; width: 20px; display: inline-block;"></span> 
-                                        <span title="赵四" style="margin-right: 5px;" v-show="isSaveFolderName">{{folderName}}</span>                                        
-                                        <el-input placeholder="新建文件夹" style="width:240px" v-model="folderName" v-show="!isSaveFolderName" autofocus></el-input>
-                                        <span class="icon-tips-success" style="vertical-align:sub;cursor:pointer;display:inline-block" @click="saveFolderName()"></span>
-                                        <span class="icon-tips-error" style="vertical-align:sub;cursor:pointer;display:inline-block" @click="cancleFolderName()"></span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
             <div style="margin-top: 20px">
                 <div style="float:left;height:40px;line-height:40px">共10个结果</div>
                 <el-pagination style="margin-left:30%"
@@ -116,42 +54,12 @@
             </div>
         </div>
         <!-- 移动资料目录 -->
-        <el-dialog title="移动文件夹" :visible.sync="moveDataCatalogVisible" size='authorized-data-catalog'>
-            <div style="position:relative;padding-top:40px">
-                <div class="authorizedDataCatalog">
-                    <div style="padding-bottom:15px" class="authorized-item">组织树：</div>
-                    <ul id="authorizedProjectTree" class="ztree"></ul>
-                </div>
-                <div class="dataCatalog">
-                    <div style="padding-bottom:15px" class="authorized-item">资料目录：</div>
-                    <ul id="folderTree" class="ztree"></ul>
-                </div>
-            </div>
+        <el-dialog title="移动文件夹" :visible.sync="editDialogVisible" size='process-edit-template'>
+            <edit-tree> </edit-tree>  
             <div style="clear:both;"></div>
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="moveDataCatalogVisible = false" class="dialog-btn">确 定</el-button>
-            <el-button @click="moveDataCatalogVisible = false" class="dialog-btn">取消</el-button>
-            </span>
-        </el-dialog>
-        <!-- 修改资料目录 -->
-        <el-dialog title="修改" :visible.sync="modifyDataCatalogVisible" size='modify-data-catalog'>
-             <label class="el-form-item__label">修改名称：</label>
-             <div class="el-form-item">
-                <div class="el-form-item__content" style="margin-left: 85px;">
-                    <el-input placeholder="请选择日期"></el-input>
-                </div>
-            </div>
-             <div>
-                <label class="el-form-item__label">修改层级：</label>
-                <div class="el-form-item">
-                <div class="el-form-item__content" style="margin-left: 85px;">
-                    <ul id="authorizedProjectTree_" class="ztree "></ul>
-                </div>
-                </div>
-            </div> 
-            <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="moveDataCatalogVisible = false" class="dialog-btn">确 定</el-button>
-            <el-button @click="moveDataCatalogVisible = false" class="dialog-btn">取消</el-button>
+            <el-button type="primary" @click="editDialogVisible = false" class="dialog-btn">确 定</el-button>
+            <el-button @click="editDialogVisible = false" class="dialog-btn">取消</el-button>
             </span>
         </el-dialog>
     </div>
@@ -160,17 +68,17 @@
 <script>
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+import EditTree from "./EditTree";
 export default {
+  components: {
+    EditTree
+  },
   data() {
     return {
       url: "../../../static/tree1.json",
       cacheProjectTree: [],
       addFolderDialogVisible: false,
-      moveDataCatalogVisible: false,
-      modifyDataCatalogVisible: false,
-      isAddFolder: false,
-      isSaveFolderName: false,
-      folderName: "新建文件夹",
+      editDialogVisible: false,
       textarea: "",
       orgValue: "",
       role: "",
@@ -486,22 +394,6 @@ export default {
         })
         .catch(() => {});
     },
-    moveDataCatalog() {
-      console.log(this.cacheProjectTree);
-      this.cacheProjectTree = [];
-      setTimeout(() => {
-        let zTree = $.fn.zTree.init(
-          $("#authorizedProjectTree"),
-          this.authorizedProjectSetting,
-          this.authorizedProjectNodes
-        );
-        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
-        let nodes = zTree.getNodes();
-        if (nodes.length > 0) {
-          zTree.selectNode(nodes[0]);
-        }
-      }, 150);
-    },
     authorizedProjectClick(event, treeId, treeNode) {
       let exsistCacheProjectTreeItem = this.cacheProjectTree.find(
         el => el.id == treeNode.id
@@ -603,16 +495,6 @@ export default {
   width: 205px;
 }
 
-.el-form_ {
-  float: left;
-  width: 20%;
-  margin-bottom: 0px;
-}
-
-.el-form_ + .el-form_ {
-  margin-left: 20px;
-}
-
 .main {
   padding: 20px;
   border-top: 1px solid #e6e6e6;
@@ -627,71 +509,6 @@ export default {
   text-overflow: ellipsis;
   box-sizing: border-box;
   white-space: nowrap;
-}
-
-.name-wrapper {
-  text-align: left;
-}
-
-.el-breadcrumb {
-  height: 45px;
-  padding-left: 20px;
-  margin-top: 20px;
-  line-height: 45px;
-  border: 1px solid #e6e6e6;
-  border-bottom: none;
-  font-size: 14px;
-  color: #444444;
-}
-
-.authorizedDataCatalog {
-  float: left;
-}
-
-.dataCatalog {
-  float: right;
-}
-
-.authorizedDataCatalog .ztree,
-.dataCatalog .ztree {
-  width: 330px;
-  padding: 20px;
-  box-sizing: border-box;
-  border: 1px solid #e6e6e6;
-  overflow: auto;
-}
-
-.authorizedDataCatalog .ztree {
-  height: 420px;
-}
-
-.dataCatalog .ztree {
-  height: 420px;
-}
-
-.demo-ruleForm {
-  margin-top: 20px;
-}
-
-.red_ {
-  color: #e30000;
-  font-family: "yahei";
-  font-size: 14px;
-}
-
-.authorized-item {
-  font-size: 16px;
-  font-weight: bold;
-  color: #444444;
-}
-
-#authorizedProjectTree_ {
-  width: 100%;
-  height: 500px;
-  border: 1px solid #e6e6e6;
-  padding: 10px;
-  box-sizing: border-box;
-  overflow: auto
 }
 </style>
 

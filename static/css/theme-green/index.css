@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url('../popover.css');
 .el-breadcrumb:after,
 .el-breadcrumb:before,
 .el-button-group:after,
@@ -542,6 +543,15 @@
     width:490px;
     height:756px;
 }
+.el-dialog--edit-template{
+    width: 970px;
+    height: 700px;
+}
+.el-dialog--process-edit-template {
+    width: 500px;
+    height: 790px;
+}
+
 .el-dialog--small {
     width: 50%
 }
