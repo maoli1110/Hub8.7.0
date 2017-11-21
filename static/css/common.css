@@ -1110,15 +1110,6 @@ ul>li{
     -moz-box-shadow:  4px 2px 4px #e2e5e9;;
     box-shadow:  4px 2px 4px #e2e5e9;;
 }
-/*el-popover*/
-.el-popover{
-    height: 150px;
-    overflow: auto;
-    width: 130px;
-    min-width: 133px;
-    background: #fff;
-}
-.el-popover .root-name{display:inline-block !important;padding:0 5px;}
 .pagination{margin-top:20px;}
 /*日历插件*/
 ._citys{background:#fff;}
@@ -1196,3 +1187,5 @@ body .el-popover.remark-popper {
 .org .ztree li span.button {
     background-image: url('../img/zTreeStandard2.png');
 }
+
+
