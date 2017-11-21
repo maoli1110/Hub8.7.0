@@ -28,9 +28,6 @@
 }
 /*tools-bar工具栏*/
 .tools-bar{padding-bottom:20px;}
-.tools-bar .basic-btn i{
-    margin-right:10px;
-}
 /*up-component(上传构件弹窗)*/
 .up-component{
     width:692px;height:564px;
@@ -76,15 +73,14 @@
 }
 /*树结构*/
 .components-icon{
-    width:15px;height:16px;display:inline-block;
+    width:15px;height:16px;display:inline-block;margin-left:16px;
 }
 .components-icon.icon-edit{
     float: left;
-    margin-left: 30px;
     background: url('../../static/img/icon-menu.png') -110px -216px no-repeat;
 }
 .components-icon.icon-map{
     background: url('../../static/img/icon-menu.png') 0 0  no-repeat;
 }
-.components-icon.icon-update{background-position: -127px -146px;}
-.components-icon.icon-delete{background-position: -58px -146px;}
+.components-icon.icon-update{background-position: -127px -146px;float:left}
+.components-icon.icon-delete{background-position: -58px -146px;float:left}

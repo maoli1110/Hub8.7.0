@@ -3,8 +3,8 @@
         <el-row class="color-toolbar" :gutter="15">
             <el-col :span="24" class="lab-template-filter" style="padding-top:20px;">
                 <el-col :span="8">
-                    <el-button class="basic-btn" type="primary" @click="addVisible= true;switchDialog=false;addTemplate()">添加</el-button>
-                    <el-button class="basic-btn" type="primary" @click="delTemplate">删除</el-button>
+                    <el-button class="basic-btn" type="primary" @click="addVisible= true;switchDialog=false;addTemplate()"><i class="icon-template icon-add"></i><span class="btn-text">添加</span></el-button>
+                    <el-button class="basic-btn" type="primary" @click="delTemplate"><i class="icon-template icon-del"></i><span class="btn-text">删除</span></el-button>
                 </el-col>
                 <el-col :span="5" :offset="11">
                    <el-input icon="search" placeholder="请输入标签名称" :on-icon-click="templateSearch" v-model="searchKey"></el-input>
@@ -27,8 +27,8 @@
                 </el-table-column>
                 <el-table-column label="操作" width="100" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
-                        <span class="quality-icon icon el-icon-edit" @click="addVisible=true;switchDialog=true;renameTemplate(scope.row)" ></span>
-                        <span class="quality-icon icon el-icon-delete" @click="delTemplate" ></span>
+                        <span class="icon-template icon-edit" @click="addVisible=true;switchDialog=true;renameTemplate(scope.row)" ></span>
+                        <span class="icon-template icon-dels" @click="delTemplate" ></span>
                     </template>
                 </el-table-column>
             </el-table>

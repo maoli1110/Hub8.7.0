@@ -23,7 +23,7 @@
                 </el-col>
             </el-col>
             <el-col :span="24" class="template-filter" style="padding-top:20px;">
-                <el-button class="basic-btn" type="primary" @click="delTemplate">删除</el-button>
+                <el-button class="basic-btn" type="primary" @click="delTemplate"><i class="icon-template icon-del"></i><span class="btn-text">删除</span></el-button>
             </el-col>
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
@@ -44,7 +44,7 @@
                 </el-table-column>
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
-                        <span class="quality-icon icon el-icon-edit" @click="renameVisble=true,renameTemplate(scope.row)" ></span>
+                        <span class="icon-template icon-edit" @click="renameVisble=true,renameTemplate(scope.row)" ></span>
                     </template>
                 </el-table-column>
             </el-table>
