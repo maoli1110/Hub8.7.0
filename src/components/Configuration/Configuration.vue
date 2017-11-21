@@ -44,7 +44,7 @@ export default {
     mounted() {
     },
     created(){
-        this.activeIndex = this.$route.path;
+        this.activeIndex = this.$route.matched[2].path;
     }
 }
 </script>

@@ -18,7 +18,7 @@
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
-                <el-button class="basic-btn relat" type="primary" @click="delWork"><span class="work-icon icon-delete absol" style="width:11px;margin-left:0;"></span>&nbsp;&nbsp;&nbsp;&nbsp;删除</el-button>
+                <el-button class="basic-btn relat" type="primary" @click="delWork"><span class="work-icon icon-delete " style="width:11px;margin-left:0;"></span><span class="btn-text">删除</span></el-button>
             </el-col>
 
         </el-row>

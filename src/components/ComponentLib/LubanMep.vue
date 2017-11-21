@@ -70,8 +70,8 @@
             <el-row class="tools-bar">
                 <el-col>
                     <el-button type="primary" class="basic-btn" @click="override = false;updateComponent = true;uploadComp()"><i
-                        class="components-icon icon-update icon-map absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;上传</el-button>
-                    <el-button type="primary" class="basic-btn" @click="deleteComp"><i class="components-icon icon-delete absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;删除
+                        class="components-icon icon-update icon-map "></i><span class="btn-text">上传</span></el-button>
+                    <el-button type="primary" class="basic-btn" @click="deleteComp"><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
                     </el-button>
                 </el-col>
             </el-row>

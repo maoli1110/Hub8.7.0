@@ -99,7 +99,7 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
     background-position: -74px -250px;
 }
 /*表格按钮的图标*/
-.bim-icon-tool{width:14px;height:14px;display:inline-block;background:url('../../static/img/icon-menu.png') 0 0 no-repeat;margin:0 2px;}
+.bim-icon-tool{width:14px;height:14px;float:left;background:url('../../static/img/icon-menu.png') 0 0 no-repeat;margin:0 2px 0 16px;}
 .bim-prj .basic-btn:nth-child(1) .bim-icon-tool{
     background-position: -3px -146px;
 }
@@ -182,10 +182,10 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
     text-align:left !important;padding:0 10px !important;
 }
 .pdf-icon{
-    width:16px;height:16px;
+    width:16px;height:16px;float:left;
 }
 .pdf-icon.icon-delete,.work-icon.icon-delete{
-    background:url('../../static/img/icon-menu.png')  -58px -146px   no-repeat;
+    background:url('../../static/img/icon-menu.png')  -58px -146px   no-repeat;margin-left:16px;
 }
 .pdf-icon.icon-edit{
    float:left;margin-left:30px; background:url('../../static/img/icon-menu.png')  -110px -216px   no-repeat;

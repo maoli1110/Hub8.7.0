@@ -401,7 +401,14 @@ export default new Router({
                         {
                             // plan
                             path: 'plan',
-                            component: resolve => require(['../components/Authority-management/DragList.vue'], resolve)
+                            component: resolve => require(['../components/Configuration/plan.vue'], resolve),
+                            redirect: 'plan/calendar-template',
+                            children:[
+                                {
+                                    path:'calendar-template',
+                                    component: resolve => require(['../components/Configuration/calendarTemplate.vue'], resolve)
+                                }
+                            ]
                         },
                         {
                             // coopreation 协同
