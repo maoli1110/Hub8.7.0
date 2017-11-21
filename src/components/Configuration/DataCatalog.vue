@@ -162,16 +162,6 @@ import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
 export default {
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入通行证"));
-      } else {
-        console.log("后台验证中......");
-        this.ruleForm.phone = "18555524036";
-        this.ruleForm.email = "yunyinyue@163.com";
-        callback();
-      }
-    };
     return {
       url: "../../../static/tree1.json",
       cacheProjectTree: [],
@@ -557,7 +547,6 @@ export default {
       }
     },
     saveFolderName() {
-      console.log(123);
       this.isSaveFolderName = true;
       this.FolderTableData.push({
         name: this.folderName,
@@ -575,7 +564,6 @@ export default {
       this.isSaveFolderName = false;
     },
     cancleFolderName() {
-      console.log(124);
       this.isAddFolder = false;
       this.isSaveFolderName = false;
     },
@@ -606,7 +594,6 @@ export default {
   padding: 10px 20px;
   margin-top: 20px;
 }
-
 .header .el-form-item__label {
   text-align: left;
 }

@@ -63,4 +63,5 @@
 
 .container {
     margin-left: 302px;
+    overflow: auto
 }

@@ -542,6 +542,11 @@
     width:490px;
     height:756px;
 }
+.el-dialog--edit-template{
+    width: 970px;
+    height: 700px;
+}
+
 .el-dialog--small {
     width: 50%
 }
