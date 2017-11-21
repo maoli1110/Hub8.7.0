@@ -1176,14 +1176,16 @@ body .el-popover.remark-popper {
 .footer p:nth-child(2){
     font-size:12px;
 }
-/*遮罩*/
+/*遮罩(ps:禁用的菜单蒙版)*/
 .menus-mask{
     width:100%;height:100%;background:#fff;opacity:0;top:0;left:0
 }
 .plugins-tips{
     height: calc(100vh - 254px);
 }
-
+/*btn-text*/
+.btn-text{float:left;margin:2px 0px 0 4px}
+/*ztree*/
 .org .ztree li span.button {
     background-image: url('../img/zTreeStandard2.png');
 }

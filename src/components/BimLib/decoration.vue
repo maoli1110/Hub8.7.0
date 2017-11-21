@@ -58,18 +58,18 @@
         </el-row>
         <el-row class="bim-data bim-dev-toolbar" >
             <el-col class="bim-prj" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)" :span="17">
-                <el-button type="primary" class="basic-btn relat" @click="ProjManageDialog = true;addProject('add')"><i class="bim-icon-tool icon-plus absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;添加</el-button>
-                <el-button type="primary" class="basic-btn relat" @click="deletelibs('whileData')"><i class="bim-icon-tool absol" ></i>&nbsp;&nbsp;&nbsp;&nbsp;删除</el-button>
-                <el-button type="primary" class="basic-btn relat" @click="monitor('all')"><i class="bim-icon-tool absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;监控</el-button>
+                <el-button type="primary" class="basic-btn " @click="ProjManageDialog = true;addProject('add')"><i class="bim-icon-tool icon-plus "></i><span class="btn-text">添加</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="deletelibs('whileData')"><i class="bim-icon-tool " ></i><span class="btn-text">删除</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="monitor('all')"><i class="bim-icon-tool "></i><span class="btn-text">监控</span></el-button>
             </el-col>
             <el-col class="bim-recy" v-if="($route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId|| $route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId)" :span="17">
-                <el-button type="primary" class="basic-btn relat" @click="dataRestore"><i class="bim-icon-tool absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;还原</el-button>
-                <el-button type="primary" class="basic-btn relat" @click="deletelibs('wipeData')"><i class="bim-icon-tool absol " ></i>&nbsp;&nbsp;&nbsp;&nbsp;删除</el-button>
-                <el-button type="primary" class="basic-btn relat" @click="dataEmpty"><i class="bim-icon-tool absol"></i>&nbsp;&nbsp;&nbsp;&nbsp;清空</el-button>
+                <el-button type="primary" class="basic-btn " @click="dataRestore"><i class="bim-icon-tool "></i><span class="btn-text">还原</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="deletelibs('wipeData')"><i class="bim-icon-tool  " ></i><span class="btn-text">删除</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="dataEmpty"><i class="bim-icon-tool "></i><span class="btn-text">清空</span></el-button>
             </el-col>
-            <el-col :span="3" :offset="4" class="relat">
-                <el-button type="primary" class="basic-btn absol" @click="inRecycle($route.matched[2].path,$route.params.typeId)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)"><span class="go-back absol"></span>&nbsp;&nbsp;&nbsp;&nbsp;回收站</el-button>
-                <el-button type="primary" class="basic-btn absol" @click="inProLib($route.matched[2].path,$route.params.typeId)" style="width:120px;right:30px;" v-if="($route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId)"><span class="go-back absol"></span>&nbsp;&nbsp;&nbsp;&nbsp; 返回工程库</el-button>
+            <el-col :span="3" :offset="4" class="">
+                <el-button type="primary" class="basic-btn " @click="inRecycle($route.matched[2].path,$route.params.typeId)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)"><span class="go-back "></span><span class="btn-text">回收站</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="inProLib($route.matched[2].path,$route.params.typeId)" style="width:120px;right:30px;" v-if="($route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId)"><span class="go-back "></span><span class="btn-text"> 返回工程库</span></el-button>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-main">
@@ -175,7 +175,6 @@
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
                     </el-pagination>
                 </div>
-                <div>{{$route.path}}</div>
             </el-col>
         </el-row>
         <!--检测页面-->

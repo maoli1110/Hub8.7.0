@@ -30,4 +30,21 @@
 /*dialog*/
 .lab-addTemplate{width:450px;}
 .lab-addTemplate .el-input{width:75% !important;}
-
+.icon-template{width:14px;height:14px;display:inline-block;background: url('../../static/img/icon-menu.png') -0px -0px no-repeat;}
+.icon-template.icon-del{
+    float: left;
+    margin-left: 18px;
+    background-position:-58px -146px;
+}
+.icon-template.icon-add{
+    float: left;
+    margin-left: 18px;
+    background-position: -3px -146px;
+}
+.icon-template.icon-edit{
+    width:16px;height:16px;
+    background-position: -110px -216px;
+}
+.icon-template.icon-dels{
+    background-position:-57px -164px;
+}

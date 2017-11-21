@@ -27,7 +27,7 @@
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
-                <el-button class="basic-btn relat" type="primary" @click="delWork"><span class="pdf-icon icon-delete absol"></span>&nbsp;&nbsp;&nbsp;&nbsp;删除</el-button>
+                <el-button class="basic-btn relat" type="primary" @click="delWork"><span class="pdf-icon icon-delete "></span><span class="btn-text">删除</span></el-button>
             </el-col>
 
         </el-row>

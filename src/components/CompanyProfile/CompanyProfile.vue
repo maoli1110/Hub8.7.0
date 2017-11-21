@@ -34,4 +34,7 @@ export default {
 <style scoped>
 /* 左侧导航菜单样式 */
 @import "../../../static/css/aside.css";
+.container{
+    overflow: hidden;
+}
 </style>

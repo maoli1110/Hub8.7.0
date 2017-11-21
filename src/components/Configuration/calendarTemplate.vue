@@ -7,7 +7,7 @@
                     <el-button class="basic-btn" type="primary" @click="delTemplate"><i class="icon-template icon-del"></i><span class="btn-text">删除</span></el-button>
                 </el-col>
                 <el-col :span="5" :offset="11">
-                   <el-input icon="search" placeholder="请输入标签名称" :on-icon-click="templateSearch" v-model="searchKey"></el-input>
+                    <el-input icon="search" placeholder="请输入标签名称" :on-icon-click="templateSearch" v-model="searchKey"></el-input>
                 </el-col>
             </el-col>
         </el-row>

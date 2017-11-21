@@ -1,15 +1,15 @@
 <template>
-    <div class="bims-container">
+    <div class="common-container">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
             <el-menu-item index="/configuration/common/data-catalog">资料目录</el-menu-item>
             <el-menu-item index="/configuration/common/attribute-template">属性模板</el-menu-item>
-            <el-menu-item index="/configuration/common/label-management">标识管理</el-menu-item>
+            <el-menu-item index="/configuration/common/logo-management">标识管理</el-menu-item>
             <el-menu-item index="/configuration/common/label-management">标签管理</el-menu-item>
-            <el-menu-item index="/configuration/common/label-management">表单管理</el-menu-item>
+            <el-menu-item index="/configuration/common/form-management">表单管理</el-menu-item>
             <el-menu-item index="/configuration/common/process-template">工序模板</el-menu-item>
             <el-menu-item index="/configuration/common/color-template">颜色模板</el-menu-item>
         </el-menu>
-        <div class="bims-contents">
+        <div class="common-main">
             <router-view></router-view>
         </div>
     </div>
