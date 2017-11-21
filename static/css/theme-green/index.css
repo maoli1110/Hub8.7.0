@@ -546,6 +546,10 @@
     width: 970px;
     height: 700px;
 }
+.el-dialog--process-edit-template {
+    width: 500px;
+    height: 790px;
+}
 
 .el-dialog--small {
     width: 50%

@@ -15,7 +15,7 @@
         </div>
         <div class="main">
             <div>
-                <el-button type="primary" class="basic-btn" icon="plus" @click="addFolder();isAddFolder=true">添加</el-button>
+                <el-button type="primary" class="basic-btn" icon="plus" @click="addFolder();editDialogVisible=true">添加</el-button>
                 <el-button type="primary" class="basic-btn" icon="delete" @click="deleteFolder()"> 删除</el-button>
             </div>
             <el-table ref="multipleTable" :data="FolderTableData" border tooltip-effect="dark"
@@ -36,7 +36,7 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span type="primary" class="el-icon-document"
-                              @click="modifyDataCatalog();modifyDataCatalogVisible=true;"></span>
+                              @click="modifyDataCatalog();editDialogVisible=true;"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -54,21 +54,12 @@
             </div>
         </div>
         <!-- 移动资料目录 -->
-        <el-dialog title="移动文件夹" :visible.sync="moveDataCatalogVisible" size='authorized-data-catalog'>
-            <div style="position:relative;padding-top:40px">
-                <div class="authorizedDataCatalog">
-                    <div style="padding-bottom:15px" class="authorized-item">组织树：</div>
-                    <ul id="authorizedProjectTree" class="ztree"></ul>
-                </div>
-                <div class="dataCatalog">
-                    <div style="padding-bottom:15px" class="authorized-item">资料目录：</div>
-                    <ul id="folderTree" class="ztree"></ul>
-                </div>
-            </div>
+        <el-dialog title="移动文件夹" :visible.sync="editDialogVisible" size='process-edit-template'>
+            <edit-tree> </edit-tree>  
             <div style="clear:both;"></div>
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="moveDataCatalogVisible = false" class="dialog-btn">确 定</el-button>
-            <el-button @click="moveDataCatalogVisible = false" class="dialog-btn">取消</el-button>
+            <el-button type="primary" @click="editDialogVisible = false" class="dialog-btn">确 定</el-button>
+            <el-button @click="editDialogVisible = false" class="dialog-btn">取消</el-button>
             </span>
         </el-dialog>
     </div>
@@ -77,14 +68,17 @@
 <script>
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+import EditTree from "./EditTree";
 export default {
+  components: {
+    EditTree
+  },
   data() {
     return {
       url: "../../../static/tree1.json",
       cacheProjectTree: [],
       addFolderDialogVisible: false,
-      modifyDataCatalogVisible: false,
-      moveDataCatalogVisible:false,
+      editDialogVisible: false,
       textarea: "",
       orgValue: "",
       role: "",
@@ -516,7 +510,6 @@ export default {
   box-sizing: border-box;
   white-space: nowrap;
 }
-
 </style>
 
 
