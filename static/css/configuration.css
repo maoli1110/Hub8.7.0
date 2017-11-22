@@ -52,9 +52,22 @@
 .calendar-template .el-select{width:75%;}
 .calendar-template .el-select>.el-input{width:100% !important;}
 .edit-template{width:1058px;}
-.calendar-template .ui-date-picker{width:224px !important;float:left;margin-right:10px;}
-.calendar-template .isWekendDate{color:red;}
+.calendar-template .ui-date-picker{width:216px !important;float:left;margin-right:5px;}
+/*.calendar-template .isWekendDate{color:red;}*/
 .calendar-template .ui-date-picker > .header{background:#e6e6e6 !important;color:#333 !important;font-weight:bold;}
 .calendar-template .ui-date-picker{border-color:#e6e6e6;}
-.calendar-template .cal-template{height:550px;overflow:auto;}
+.calendar-template .cal-template{height:620px;overflow:auto;border:1px solid #ddd;margin-left:30px;}
+.calendar-template .template-tips{
+    border-bottom: 1px solid #ddd;
+    line-height: 46px;
+    padding: 0 0 0 10px;
+    font-size: 13px;
+}
+/*左侧复选框*/
+.edit-template .edit-dup{border:1px solid #ddd;padding:13px;}
 .edit-template .edit-dup .calendar-time{padding:10px 0 }
+.edit-template .template-legend{line-height:40px;padding:0 0 0 10px;text-align:right;}
+.edit-template .legend-black,
+.edit-template .legend-red{width:20px;height:20px;display:inline-block;border:1px solid #ddd;line-height:20px;margin-right:10px;text-align:center;}
+.edit-template .legend-black{color:#000;}
+.edit-template .legend-red{color:red;}
