@@ -3,83 +3,78 @@
         <el-row class="color-toolbar" :gutter="15">
             <el-col :span="24" class="" style="padding-top:20px;">
                 <el-col :span="8">
-                    <el-button class="basic-btn" type="primary" @click="addVisible= true;switchDialog=false;addTemplate()"><i class="icon-template icon-add"></i><span class="btn-text">添加</span></el-button>
-                    <el-button class="basic-btn" type="primary" @click="delTemplate"><i class="icon-template icon-del"></i><span class="btn-text">删除</span></el-button>
+                    <el-button class="basic-btn" type="primary"
+                               @click="addVisible= true;switchDialog=false;addTemplate()"><i
+                        class="icon-template icon-add"></i><span class="btn-text">添加</span></el-button>
+                    <el-button class="basic-btn" type="primary" @click="delTemplate"><i
+                        class="icon-template icon-del"></i><span class="btn-text">删除</span></el-button>
                 </el-col>
             </el-col>
         </el-row>
-<<<<<<< HEAD
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
             <el-table class="house-table scroll-me" :data="tableData" @cell-click="previewTemplate" style="min-width: 900px;"
                       :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
                       @select="selectChecked">
-=======
-        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class="house-table scroll-me"   :data="tableData" style="min-width: 900px;"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked">
->>>>>>> c9b811e9406db5bb12e3972358921f27b685fd6e
                 <el-table-column
                     type="selection"
-                    width="40" >
+                    width="40">
                 </el-table-column>
                 <el-table-column prop="processName" width="" label="模板名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="updateTime" width="200" label="更新时间" >
+                <el-table-column prop="updateTime" width="200" label="更新时间">
                 </el-table-column>
-                <el-table-column prop="updateUser" width="200" label="更新人" >
+                <el-table-column prop="updateUser" width="200" label="更新人">
                 </el-table-column>
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
-                    <template slot-scope="scope" >
-                        <span class="icon-template icon-edit" @click="setTemplate= true;openWindow('set','16a5da8f68bc45f08755309dee7bec89')" ></span>
+                    <template slot-scope="scope">
+                        <span class="icon-template icon-edit"
+                              @click="setTemplate= true;modifyTemp = false;openWindow('set','16a5da8f68bc45f08755309dee7bec89')"></span>
                     </template>
                 </el-table-column>
             </el-table>
         </vue-scrollbar>
         <div class="pagination">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
+                           layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
             </el-pagination>
         </div>
         <!--创建模板-->
         <el-dialog custom-class="lab-addTemplate"
                    :title="title"
                    :visible.sync="addVisible" size="tiny">
-            <el-form  :model="templateInfo">
+            <el-form :model="templateInfo">
                 <el-form-item label="标签名称：">
                     <el-input v-model="templateInfo.name" placeholder="请输入标签名称"></el-input>
                 </el-form-item>
                 <el-form-item label="复制：">
-                    <el-select v-model="templateType" placeholder="请选择" @change="" >
+                    <el-select v-model="templateType" placeholder="请选择" @change="">
                         <el-option v-for="item in templateInfo.template"
-                                     :key="item.templateType"
-                                     :value="item.templateType"
-                                   >
+                                   :key="item.templateType"
+                                   :value="item.templateType"
+                        >
                         </el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="addVisible = false;renameTemplateOK()">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary"
+                           @click="addVisible = false;renameTemplateOK()">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="addVisible = false">取 消</el-button>
             </span>
         </el-dialog>
-<<<<<<< HEAD
         <el-dialog custom-class="edit-template" :visible.sync="setTemplate" title="设置模板" >
             <template>
                 <el-row class="calendar-main">
                     <el-col :span="6" class="edit-dup" >
-=======
-        <el-dialog custom-class="edit-template"   :visible.sync="setTemplate" title="设置模板">
-            <template>
-                <el-row  class="calendar-main">
-                    <el-col :span="6" class="edit-dup">
->>>>>>> c9b811e9406db5bb12e3972358921f27b685fd6e
                         <span class="">批量修改重复范围</span>
                         <el-col class="calendar-time" :span="20">
                             <template>
                                 <div class="block">
                                     <el-date-picker @change="modifyDataPicker" format="yyyy.MM.dd"
-                                        v-model="value6"
-                                        type="daterange"
-                                        placeholder="选择日期范围">
+                                                    v-model="value6"
+                                                    type="daterange"
+                                                    placeholder="选择日期范围">
                                     </el-date-picker>
                                 </div>
                             </template>
@@ -87,21 +82,16 @@
                         <el-col>
                             <template>
                                 <el-checkbox-group v-model="checkList" @change="checkedList">
-                                    <el-checkbox label="星期一"></el-checkbox>
-                                    <el-checkbox label="星期二"></el-checkbox>
-                                    <el-checkbox label="星期三"></el-checkbox>
-                                    <el-checkbox label="星期四" ></el-checkbox>
-                                    <el-checkbox label="星期五" ></el-checkbox>
-                                    <el-checkbox label="星期六" ></el-checkbox>
-                                    <el-checkbox label="星期日" ></el-checkbox>
+                                    <el-checkbox v-for="item in workDay" :label="item.key" :key="item.key">
+                                        {{item.name}}
+                                    </el-checkbox>
                                 </el-checkbox-group>
                             </template>
                         </el-col>
                         <el-col style="padding:10px 0 ">
-                            <el-button type="primary" size="small">工作日</el-button>
-                            <el-button type="primary" size="small">非工作日</el-button>
+                            <el-button type="primary" size="small" @click="setCalendarDate('work')">工作日</el-button>
+                            <el-button type="primary" size="small" @click="setCalendarDate('rest')">非工作日</el-button>
                         </el-col>
-<<<<<<< HEAD
                     </el-col v-show>
                     <el-col :span="17"  class="cal-template" >
                         <el-col class="template-tips">克隆：24小时日历</el-col>
@@ -123,18 +113,6 @@
                     <el-button class="dialog-btn dialog-btn-ok" type="primary"
                                @click="setTemplate = false;setTemplateOK()">确 定</el-button>
                     <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
-=======
-                    </el-col>
-                    <el-col :span="18"  class="cal-template" style="height:600px;">
-                        <el-col>标题标题</el-col>
-                        <el-col> <div class="calendar"></div></el-col>
-                    </el-col>
-                </el-row>
-            </template>
-                <span slot="footer" class="dialog-footer">
-                    <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="addVisible = false;renameTemplateOK()">确 定</el-button>
-                    <el-button class="dialog-btn dialog-btn-cancel" @click="addVisible = false">取 消</el-button>
->>>>>>> c9b811e9406db5bb12e3972358921f27b685fd6e
                 </span>
         </el-dialog>
         <!--查看模板-->
@@ -164,25 +142,28 @@
     // import "../../utils/directive.js"
     import "../../../static/css/configuration.css";
     import '../../../static/css/restdate.css';
-//    import {CalendarSet} from '../../../static/js/restdate.js';
-
+    //    import {CalendarSet} from '../../../static/js/restdate.js';
+    let calendarTemplate;
     let deletArray = [];
+    let isWekendWorkDates = [];
+    let notWekendRestDates = [];
+    let ct = {};
+    let restDates = [];
     export default {
         created(){
-            FormIndex(this.tableData,2,10);
+            FormIndex(this.tableData, 2, 10);
 //            this.getData();
-
         },
-        data: function(){
+        data: function () {
             return {
-                value6:new Date('2017-11-12'),
-                checkList:[],
-                templateType:"",//添加模板复制列表
-                setTemplate:false,
-                addVisible:false,
-                renameIndex:"",
+                value6: new Date('2017-11-12'),
+                checkList: [],
+                templateType: "",//添加模板复制列表
+                setTemplate: false,
+                addVisible: false,
+                renameIndex: "",
+                currentDate: "",
                 //分页的一些设置
-<<<<<<< HEAD
                 cur_page: 1,
                 totalPage: 50,
                 totalNumber: 300,
@@ -190,23 +171,24 @@
                 lookTemplate:false,
                 tableData: [],
                 templateName:"设置模板",
-=======
-                cur_page:1,
-                totalPage:50,
-                totalNumber:300,
-                title:'添加标签',
-                switchDialog:false,
-                tableData:[],
->>>>>>> c9b811e9406db5bb12e3972358921f27b685fd6e
                 //{processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                classfiyList:[{name:'初始项目部1'},{name:'初始项目部2'},{name:'初始项目部3'},{name:'初始项目部4'}],
-                templateInfo:{
-                    name:'',
-                    template:[
-                        {templateType:"24小时日历"},
-                        {templateType:"标准日历"}
+                classfiyList: [{name: '初始项目部1'}, {name: '初始项目部2'}, {name: '初始项目部3'}, {name: '初始项目部4'}],
+                templateInfo: {
+                    name: '',
+                    template: [
+                        {templateType: "24小时日历"},
+                        {templateType: "标准日历"}
                     ]
                 },
+                workDay: [
+                    {name: '星期一', key: 1},
+                    {name: '星期二', key: 2},
+                    {name: '星期三', key: 3},
+                    {name: '星期四', key: 4},
+                    {name: '星期五', key: 5},
+                    {name: '星期六', key: 6},
+                    {name: '星期日', key: 0}
+                ]
             }
         },
         components: {
@@ -214,8 +196,8 @@
         },
         methods: {
             getData(){
-                for(let i = 0;i<this.tableData.length;i++){
-                    this.tableData[i].index = 3*10+ this.tableData[i].index;
+                for (let i = 0; i < this.tableData.length; i++) {
+                    this.tableData[i].index = 3 * 10 + this.tableData[i].index;
                 }
             },
             /**common-message(公用消息框)
@@ -223,7 +205,7 @@
              * @params success  成功处理的
              * @params error    失败处理的
              * */
-            commonConfirm(message,success,error,type){
+            commonConfirm(message, success, error, type){
                 this.$confirm(message, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -238,7 +220,7 @@
                     }
                 })
             },
-            commonMessage(message,type){
+            commonMessage(message, type){
                 this.$message({
                     type: type,
                     message: message
@@ -258,8 +240,8 @@
              */
 
             selectAll(selection){
-                selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
+                selection.forEach(function (val, key) {
+                    if (deletArray.indexOf(val.index) == -1) {
                         deletArray.push(val.index)
                     }
                 });
@@ -271,8 +253,8 @@
              * @params row 列
              */
             selectChecked(selection, row){
-                selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
+                selection.forEach(function (val, key) {
+                    if (deletArray.indexOf(val.index) == -1) {
                         deletArray = selection
                     }
                 })
@@ -280,16 +262,16 @@
 
             //删除模板
             delTemplate(){
-                if(!deletArray.length){
-                    this.commonMessage('请选择要删除的文件','warning')
+                if (!deletArray.length) {
+                    this.commonMessage('请选择要删除的文件', 'warning')
                     return false;
                 }
-                this.commonConfirm('确定要删除吗',()=> {
+                this.commonConfirm('确定要删除吗', () => {
                     /* if(this.tableData.length===deletArray.length){
                      //重新渲染数据
                      }else*/
                     let deletArrayCopy = [];
-                    deletArray.forEach((val,key)=>{
+                    deletArray.forEach((val, key) => {
                         deletArrayCopy.push(val.index)
                     })
                     deletArray = deletArrayCopy;
@@ -302,42 +284,99 @@
                             }
                         }
                     }
-                    console.log(deletArray,'数组')
+                    console.log(deletArray, '数组')
                     deletArray = [];//接口成功之后删除数据
                 })
             },
             //重命名模板名称
             renameTemplate(item){
                 //去拿相关模板的信息
-<<<<<<< HEAD
 
-=======
-                if(this.switchDialog){
-                    this.title="修改标签"
-                }else{
-                    this.title="添加标签"
-                }
->>>>>>> c9b811e9406db5bb12e3972358921f27b685fd6e
                 this.renameIndex = item.index;
                 this.templateInfo.name = item.processName;
             },
             renameTemplateOK(){
                 let currentTime = new Date().toLocaleString();
-                console.log(this.tableData,'data')
-                this.tableData.unshift({processName:this.templateInfo.name,updateUser:"杨会杰",updateTime:currentTime,proDepartment:"初始项目部"},);
-                console.log(this.templateType.split('.')[1],'splice');
-                if(this.templateType.split('.')[1]){
-                    this.templateInfo.template.push({templateType:this.templateInfo.name+"."+this.templateType.split('.')[1].substr(0,2)})
-                }else{
-                    this.templateInfo.template.push({templateType:this.templateInfo.name+"."+this.templateType.substr(0,2)})
+                console.log(this.tableData, 'data')
+                this.tableData.unshift({
+                    processName: this.templateInfo.name,
+                    updateUser: "杨会杰",
+                    updateTime: currentTime,
+                    proDepartment: "初始项目部"
+                },);
+                if (this.templateType.split('.')[1]) {
+                    if (this.templateType.split('.')[1].substr(0, 2) == '24') {
+                        ct.calendarFalg = 0;
+                    } else {
+                        ct.calendarFalg = 1;
+                    }
+                    this.templateInfo.template.push({templateType: this.templateInfo.name + "." + this.templateType.split('.')[1].substr(0, 2)})
+                } else {
+                    if (this.templateType.substr(0, 2) == '24') {
+                        ct={
+                            calendarFalg:0,
+                            copyid:"0",
+                            createDate:{
+                                date:22,
+                                day:3,
+                                hours:14,
+                                minutes:59,
+                                month:10,
+                                seconds:0,
+                                time:1511333940854,
+                                timezoneOffset: -480,
+                                year:117,
+                            },
+                            createUser:"13800138000",
+                            ctName: "123456",
+                            ctid:"f806217cdc0a457db956485b509abb8d",
+                            endDate:null,
+                            epid:-1,
+                            restDates:[],
+                            startDate:null,
+                            updateDate: Object,
+                            updateUser:"13800138000",
+                            workDates:[],
+                        }
+                    } else {
+                        ct={
+                            calendarFalg:1,
+                            copyid:"0",
+                            createDate:{
+                                date:22,
+                                day:3,
+                                hours:14,
+                                minutes:59,
+                                month:10,
+                                seconds:0,
+                                time:1511333940854,
+                                timezoneOffset: -480,
+                                year:117,
+                            },
+                            createUser:"13800138000",
+                            ctName: "123456",
+                            ctid:"f806217cdc0a457db956485b509abb8d",
+                            endDate:null,
+                            epid:-1,
+                            restDates:[],
+                            startDate:null,
+                            updateDate: Object,
+                            updateUser:"13800138000",
+                            workDates:[],
+                        }
+                    }
+                    this.templateInfo.template.push({templateType: this.templateInfo.name + "." + this.templateType.substr(0, 2)})
                 }
+
+                this.setTemplate = true;
+                this.modifyTemp = true;
+                this.openWindow('set', '123')
             },
             renameTemplateCancel(){
 
             },
             //添加标签
             addTemplate(){
-<<<<<<< HEAD
                 this.templateInfo.name = "";
             },
             dealJavaDateArr(dates){
@@ -349,7 +388,7 @@
             },
             /**
              * 日历模板设置
-            **/
+             **/
             /* 算出时间段内星期几对应的日期 */
             getRulesDate(arr, sd, ed){
                 let rulesDates = [];
@@ -369,11 +408,11 @@
             /* 添加页面非日历初始化 */
             initCalendarSetMethod() {
 //                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null && "" != ct.endDate) {
-                    // 创建日历模板
-                    setTimeout(()=>{
-                        calendarTemplate = new CalendarSet('2017.01.01', '2017.12.12');
-                        this.inittocopystate();
-                    })
+                // 创建日历模板
+                setTimeout(()=>{
+                    calendarTemplate = new CalendarSet('2017.01.01', '2017.12.12');
+                    this.inittocopystate();
+                })
 
 //                }
             },
@@ -490,26 +529,14 @@
                 }else{
 
                 }
-=======
-                if(!this.switchDialog){
-                    this.title="添加标签"
-                }else{
-                    this.title="修改标签"
-                }
-                this.templateInfo.name = "";
-            },
-            //日历模板设置
-            openWindow(type,cpt){
-                new CalendarSet('2017/01/11','2017/12/12');
->>>>>>> c9b811e9406db5bb12e3972358921f27b685fd6e
             },
             modifyDataPicker(value){
                 let startTime = value.split('-')[0];
                 let endTime = value.split('-')[1];
-                new CalendarSet(startTime,endTime);
+                new CalendarSet(startTime, endTime);
             },
+
             checkedList(val){
-<<<<<<< HEAD
                 console.log(val, 'val')
                 this.currentDate = val;
             },
@@ -543,8 +570,8 @@
             },
             //查看模板
             previewTemplate(row, column,cell, event){
-              /*  console.log(row,'column')
-                console.log(column,'col');*/
+                /*  console.log(row,'column')
+                 console.log(column,'col');*/
 
                 if(column.id=='el-table_1_column_2'){
                     this.lookTemplate  =true;
@@ -554,25 +581,27 @@
                 }
             },
 
-=======
-                console.log(val)
-            }
->>>>>>> c9b811e9406db5bb12e3972358921f27b685fd6e
         },
         computed: {
-            editor() {
+            editor(){
                 return this.$refs.myTextEditor.quillEditor;
             }
         },
+
         mounted(){
+
         },
         created(){
-            this.value6 = ['2017.11.11','2017.12.12']
+            this.value6 = ['2017.11.11', '2017.12.12']
         }
 
     }
 </script>
 <style scoped>
-    .el-checkbox-group .el-checkbox{display:block;padding:5px 0;margin-left:0}
+    .el-checkbox-group .el-checkbox {
+        display: block;
+        padding: 5px 0;
+        margin-left: 0
+    }
 
 </style>
