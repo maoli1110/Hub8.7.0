@@ -1,3 +1,4 @@
+
 <template>
     <div>
         <div class="header">
@@ -511,7 +512,4 @@ export default {
   white-space: nowrap;
 }
 </style>
-
-
-
 

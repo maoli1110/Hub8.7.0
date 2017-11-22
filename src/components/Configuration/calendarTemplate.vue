@@ -1,55 +1,111 @@
 <template>
-    <div class="color-template label-template">
+    <div class="color-template label-template calendar-template">
         <el-row class="color-toolbar" :gutter="15">
-            <el-col :span="24" class="lab-template-filter" style="padding-top:20px;">
+            <el-col :span="24" class="" style="padding-top:20px;">
                 <el-col :span="8">
-                    <el-button class="basic-btn" type="primary" @click="addVisible= true;switchDialog=false;addTemplate()"><i class="icon-template icon-add"></i><span class="btn-text">添加</span></el-button>
-                    <el-button class="basic-btn" type="primary" @click="delTemplate"><i class="icon-template icon-del"></i><span class="btn-text">删除</span></el-button>
-                </el-col>
-                <el-col :span="5" :offset="11">
-                    <el-input icon="search" placeholder="请输入标签名称" :on-icon-click="templateSearch" v-model="searchKey"></el-input>
+                    <el-button class="basic-btn" type="primary"
+                               @click="addVisible= true;switchDialog=false;addTemplate()"><i
+                        class="icon-template icon-add"></i><span class="btn-text">添加</span></el-button>
+                    <el-button class="basic-btn" type="primary" @click="delTemplate"><i
+                        class="icon-template icon-del"></i><span class="btn-text">删除</span></el-button>
                 </el-col>
             </el-col>
         </el-row>
-        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class="house-table scroll-me"   :data="tableData" style="min-width: 900px;"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)"  @select-all="selectAll" @select="selectChecked">
+        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
+            <el-table class="house-table scroll-me" :data="tableData" style="min-width: 900px;"
+                      :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
+                      @select="selectChecked">
                 <el-table-column
                     type="selection"
-                    width="40" >
+                    width="40">
                 </el-table-column>
-                <!-- <el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
-                 </el-table-column>-->
-                <el-table-column prop="processName" width="" label="标签" show-overflow-tooltip>
+                <el-table-column prop="processName" width="" label="模板名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="updateTime" width="200" label="更新时间" >
+                <el-table-column prop="updateTime" width="200" label="更新时间">
                 </el-table-column>
-                <el-table-column prop="updateUser" width="200" label="操作人" >
+                <el-table-column prop="updateUser" width="200" label="更新人">
                 </el-table-column>
-                <el-table-column label="操作" width="100" class="quality-page-tableIcon">
-                    <template slot-scope="scope" >
-                        <span class="icon-template icon-edit" @click="addVisible=true;switchDialog=true;renameTemplate(scope.row)" ></span>
-                        <span class="icon-template icon-dels" @click="delTemplate" ></span>
+                <el-table-column label="操作" width="60" class="quality-page-tableIcon">
+                    <template slot-scope="scope">
+                        <span class="icon-template icon-edit"
+                              @click="setTemplate= true;openWindow('set','16a5da8f68bc45f08755309dee7bec89')"></span>
                     </template>
                 </el-table-column>
             </el-table>
         </vue-scrollbar>
         <div class="pagination">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
+                           layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
             </el-pagination>
         </div>
-        <!--重命名模板名称-->
+        <!--创建模板-->
         <el-dialog custom-class="lab-addTemplate"
                    :title="title"
                    :visible.sync="addVisible" size="tiny">
-            <el-form  :model="templateInfo">
+            <el-form :model="templateInfo">
                 <el-form-item label="标签名称：">
                     <el-input v-model="templateInfo.name" placeholder="请输入标签名称"></el-input>
                 </el-form-item>
+                <el-form-item label="复制：">
+                    <el-select v-model="templateType" placeholder="请选择" @change="">
+                        <el-option v-for="item in templateInfo.template"
+                                   :key="item.templateType"
+                                   :value="item.templateType"
+                        >
+                        </el-option>
+                    </el-select>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="addVisible = false;renameTemplateOK()">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary"
+                           @click="addVisible = false;renameTemplateOK()">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="addVisible = false">取 消</el-button>
             </span>
+        </el-dialog>
+        <el-dialog custom-class="edit-template" :visible.sync="setTemplate" title="设置模板">
+            <template>
+                <el-row class="calendar-main">
+                    <el-col :span="6" class="edit-dup">
+                        <span class="">批量修改重复范围</span>
+                        <el-col class="calendar-time" :span="20">
+                            <template>
+                                <div class="block">
+                                    <el-date-picker @change="modifyDataPicker" format="yyyy.MM.dd"
+                                                    v-model="value6"
+                                                    type="daterange"
+                                                    placeholder="选择日期范围">
+                                    </el-date-picker>
+                                </div>
+                            </template>
+                        </el-col>
+                        <el-col>
+                            <template>
+                                <el-checkbox-group v-model="checkList" @change="checkedList">
+                                    <el-checkbox v-for="item in workDay" :label="item.key" :key="item.key">
+                                        {{item.name}}
+                                    </el-checkbox>
+                                </el-checkbox-group>
+                            </template>
+                        </el-col>
+                        <el-col style="padding:10px 0 ">
+                            <el-button type="primary" size="small" @click="setCalendarDate('work')">工作日</el-button>
+                            <el-button type="primary" size="small" @click="setCalendarDate('rest')">非工作日</el-button>
+                        </el-col>
+                    </el-col>
+                    <el-col :span="18" class="cal-template" style="height:600px;">
+                        <el-col>标题标题</el-col>
+                        <el-col>
+                            <div class="calendar"></div>
+                        </el-col>
+                    </el-col>
+                </el-row>
+            </template>
+            <span slot="footer" class="dialog-footer">
+                    <el-button class="dialog-btn dialog-btn-ok" type="primary"
+                               @click="setTemplate = false;setTemplateOK()">确 定</el-button>
+                    <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
+                </span>
         </el-dialog>
     </div>
 </template>
@@ -61,74 +117,49 @@
     import ElCol from "element-ui/packages/col/src/col";
     // import "../../utils/directive.js"
     import "../../../static/css/configuration.css";
+    import '../../../static/css/restdate.css';
+//    import {CalendarSet} from '../../../static/js/restdate.js';
+    let calendarTemplate;
     let deletArray = [];
     export default {
         created(){
-            FormIndex(this.tableData,2,10);
+            FormIndex(this.tableData, 2, 10);
 //            this.getData();
-
         },
-        data: function(){
+        data: function () {
             return {
-                filterClassfiyVal:"",
-                filterWord:"",
-                addVisible:false,
-                renameIndex:"",
-                searchKey:"",//搜索关键字
+                value6: new Date('2017-11-12'),
+                checkList: [],
+                templateType: "",//添加模板复制列表
+                setTemplate: false,
+                addVisible: false,
+                renameIndex: "",
+                currentDate: "",
                 //分页的一些设置
-                cur_page:1,
-                totalPage:50,
-                totalNumber:300,
-                title:'添加标签',
-                switchDialog:false,
-                tableData:[
-                    {index:1,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                    {index:2,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                    {index:3,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                    {index:4,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                    {index:5,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                ],
-                classfiyList:[{name:'初始项目部1'},{name:'初始项目部2'},{name:'初始项目部3'},{name:'初始项目部4'}],
-                templateInfo:{
-                    name:'',
-                    remark:''
+                cur_page: 1,
+                totalPage: 50,
+                totalNumber: 300,
+                title: '添加标签',
+                switchDialog: false,
+                tableData: [],
+                //{processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
+                classfiyList: [{name: '初始项目部1'}, {name: '初始项目部2'}, {name: '初始项目部3'}, {name: '初始项目部4'}],
+                templateInfo: {
+                    name: '',
+                    template: [
+                        {templateType: "24小时日历"},
+                        {templateType: "标准日历"}
+                    ]
                 },
-                setting: {//搜索条件ztree setting
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
-                    },
-                    callback: {
-                        onClick: this.templateTreeClick
-                    }
-                },
-                zNodes: [
-                    {
-                        id: 1,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标不同",
-                        open: true,
-                        iconSkin: "pIcon01"
-                    },
-                    { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-                    { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-                    { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-                    {
-                        id: 2,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标相同",
-                        open: true,
-                        iconSkin: "pIcon02"
-                    },
-                    { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-                    { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-                    { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-                    { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-                    { id: 31, pId: 3, name: "叶子节点1" },
-                    { id: 32, pId: 3, name: "叶子节点2" },
-                    { id: 33, pId: 3, name: "叶子节点3" }
-                ],
+                workDay: [
+                    {name: '星期一', key: 1},
+                    {name: '星期二', key: 2},
+                    {name: '星期三', key: 3},
+                    {name: '星期四', key: 4},
+                    {name: '星期五', key: 5},
+                    {name: '星期六', key: 6},
+                    {name: '星期日', key: 0}
+                ]
             }
         },
         components: {
@@ -136,8 +167,8 @@
         },
         methods: {
             getData(){
-                for(let i = 0;i<this.tableData.length;i++){
-                    this.tableData[i].index = 3*10+ this.tableData[i].index;
+                for (let i = 0; i < this.tableData.length; i++) {
+                    this.tableData[i].index = 3 * 10 + this.tableData[i].index;
                 }
             },
             /**common-message(公用消息框)
@@ -145,7 +176,7 @@
              * @params success  成功处理的
              * @params error    失败处理的
              * */
-            commonConfirm(message,success,error,type){
+            commonConfirm(message, success, error, type){
                 this.$confirm(message, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -160,7 +191,7 @@
                     }
                 })
             },
-            commonMessage(message,type){
+            commonMessage(message, type){
                 this.$message({
                     type: type,
                     message: message
@@ -175,40 +206,13 @@
             },
 
             /**
-             * ztree
-             * @param event
-             * @param treeId
-             * @param treeNode
-             */
-            //工程管理树结构单机事件
-            templateTreeClick(event, treeId, treeNode){
-                this.filterWord = treeNode.name;
-                setTimeout(function(event, treeId, treeNode) {
-                    $(".el-scrollbar .el-select-dropdown__item.selected").click();
-                }, 300);
-            },
-
-            //filter筛选项目
-            filterWordChange(val){
-                console.log(val)
-            },
-            //筛选专业
-            filterClassfiyChange(value){
-                console.log(value)
-            },
-            templateSearch(){
-                console.log(this.searchKey)
-                //执行搜索
-            },
-
-            /**
              * 全选
              * @params [{type array}]  selection  选中的队列对象
              */
 
             selectAll(selection){
-                selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
+                selection.forEach(function (val, key) {
+                    if (deletArray.indexOf(val.index) == -1) {
                         deletArray.push(val.index)
                     }
                 });
@@ -220,8 +224,8 @@
              * @params row 列
              */
             selectChecked(selection, row){
-                selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
+                selection.forEach(function (val, key) {
+                    if (deletArray.indexOf(val.index) == -1) {
                         deletArray = selection
                     }
                 })
@@ -229,16 +233,16 @@
 
             //删除模板
             delTemplate(){
-                if(!deletArray.length){
-                    this.commonMessage('请选择要删除的文件','warning')
+                if (!deletArray.length) {
+                    this.commonMessage('请选择要删除的文件', 'warning')
                     return false;
                 }
-                this.commonConfirm('确定要删除吗',()=> {
+                this.commonConfirm('确定要删除吗', () => {
                     /* if(this.tableData.length===deletArray.length){
                      //重新渲染数据
                      }else*/
                     let deletArrayCopy = [];
-                    deletArray.forEach((val,key)=>{
+                    deletArray.forEach((val, key) => {
                         deletArrayCopy.push(val.index)
                     })
                     deletArray = deletArrayCopy;
@@ -251,33 +255,35 @@
                             }
                         }
                     }
-                    console.log(deletArray,'数组')
+                    console.log(deletArray, '数组')
                     deletArray = [];//接口成功之后删除数据
                 })
             },
             //重命名模板名称
             renameTemplate(item){
                 //去拿相关模板的信息
-                if(this.switchDialog){
-                    this.title="修改标签"
-                }else{
-                    this.title="添加标签"
+                if (this.switchDialog) {
+                    this.title = "修改标签"
+                } else {
+                    this.title = "添加标签"
                 }
                 this.renameIndex = item.index;
                 this.templateInfo.name = item.processName;
             },
             renameTemplateOK(){
                 let currentTime = new Date().toLocaleString();
-                console.log(this.tableData,'data')
-                if(!this.switchDialog){
-                    this.tableData.unshift({processName:this.templateInfo.name,updateUser:"杨会杰",updateTime:currentTime,proDepartment:"初始项目部"},)
-                }
-                if(this.switchDialog){
-                    this.tableData.forEach((val,key)=>{
-                        if(val.index==this.renameIndex){
-                            this.tableData[key].processName = this.templateInfo.name;
-                        }
-                    })
+                console.log(this.tableData, 'data')
+                this.tableData.unshift({
+                    processName: this.templateInfo.name,
+                    updateUser: "杨会杰",
+                    updateTime: currentTime,
+                    proDepartment: "初始项目部"
+                },);
+                console.log(this.templateType.split('.')[1], 'splice');
+                if (this.templateType.split('.')[1]) {
+                    this.templateInfo.template.push({templateType: this.templateInfo.name + "." + this.templateType.split('.')[1].substr(0, 2)})
+                } else {
+                    this.templateInfo.template.push({templateType: this.templateInfo.name + "." + this.templateType.substr(0, 2)})
                 }
             },
             renameTemplateCancel(){
@@ -285,26 +291,94 @@
             },
             //添加标签
             addTemplate(){
-                if(!this.switchDialog){
-                    this.title="添加标签"
-                }else{
-                    this.title="修改标签"
+                if (!this.switchDialog) {
+                    this.title = "添加标签"
+                } else {
+                    this.title = "修改标签"
                 }
                 this.templateInfo.name = "";
+            },
+            //日历模板设置
+            openWindow(type, cpt){
+                setTimeout(function(){
+                    calendarTemplate = new CalendarSet('2017/01/11', '2017/12/12');
+                })
+            },
+            modifyDataPicker(value){
+                let startTime = value.split('-')[0];
+                let endTime = value.split('-')[1];
+                new CalendarSet(startTime, endTime);
+            },
+            checkedList(val){
+                console.log(val, 'val')
+                this.currentDate = val;
+            },
+            /* 算出时间段内星期几对应的日期 */
+            getRulesDate(arr, sd, ed){
+                let rulesDates = [];
+                let sdate = new Date(sd);
+                let edate = new Date(ed);
+                let stime = sdate.getTime();
+                let etime = edate.getTime();
+                for (stime; stime <= etime;) {
+                    let thdate = new Date(stime);
+                    if (this.checkList.indexOf(thdate.getDay()) != -1) {
+                        rulesDates.push(thdate);
+                    }
+                    stime = stime + 24 * 60 * 60 * 1000;
+                }
+                return rulesDates;
+            },
+            /* 设置工作日||非工作日 */
+            setCalendarDate(dateType) {
+                // 获取时间范围
+                if (!this.currentDate) {
+                    alert("批量修改重复范围,没有对应值！！！");
+                    return;
+                }
+                // 获取星期几
+                if (this.checkList.length == 0) {
+                    alert("未选择对应星期*！！！");
+                    return;
+                }
+                // 计算这段时间内满足条件的日期
+                let chooseDate = this.getRulesDate(this.checkList, this.value6[0], this.value6[1]);
+                // 设置休息日
+                if (dateType == "work") {
+                    calendarTemplate.setWorkDate(chooseDate);
+                } else {
+                    calendarTemplate.setRestDate(chooseDate);
+                }
+            },
+            //setTemplateOK
+            setTemplateOK(){
+                let restDate =  calendarTemplate.getRestDate();
+                console.log(restDate,'restDate')
             }
+
         },
         computed: {
-
-            editor() {
+            editor()
+            {
                 return this.$refs.myTextEditor.quillEditor;
             }
-        },
+        }
+        ,
         mounted(){
-            $.fn.zTree.init($("#color-temp"), this.setting, this.zNodes);
+
+        }
+        ,
+        created(){
+            this.value6 = ['2017.11.11', '2017.12.12']
         }
 
     }
 </script>
 <style scoped>
+    .el-checkbox-group .el-checkbox {
+        display: block;
+        padding: 5px 0;
+        margin-left: 0
+    }
 
 </style>
