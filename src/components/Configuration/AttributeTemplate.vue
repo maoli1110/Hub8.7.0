@@ -19,7 +19,7 @@
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop="name" label="专业" width="300" align='left'>
                     <template slot-scope="scope">
-                        <div slot="reference" class="name-wrapper textcell">                        
+                        <div slot="reference" class="name-wrapper textcell">
                             <span style="margin-right:5px" :title="scope.row.name">{{ scope.row.name }}</span>
                         </div>
                     </template>
@@ -57,14 +57,14 @@
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop="name" label="属性"  align='left'>
                     <template slot-scope="scope">
-                        <div slot="reference" class="name-wrapper textcell">                        
+                        <div slot="reference" class="name-wrapper textcell">
                             <span style="margin-right:5px" :title="scope.row.name">{{ scope.row.name }}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="值">
                     <template slot-scope="scope">{{ scope.row.date }}</template>
-                </el-table-column>                
+                </el-table-column>
             </el-table>
             <div style="margin-top:40px">
             <el-button type="primary" @click="moveDataCatalogVisible = false" class="dialog-btn">增加一级</el-button>
