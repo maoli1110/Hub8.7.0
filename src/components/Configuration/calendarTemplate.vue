@@ -93,11 +93,19 @@
                             <el-button type="primary" size="small" @click="setCalendarDate('rest')">非工作日</el-button>
                         </el-col>
                     </el-col>
-                    <el-col :span="18" class="cal-template" style="height:600px;">
-                        <el-col>标题标题</el-col>
-                        <el-col>
-                            <div class="calendar"></div>
-                        </el-col>
+                    <el-col :span="17"  class="cal-template" >
+                        <el-col class="template-tips">克隆：24小时日历</el-col>
+                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
+                            <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
+                                <div class="calendar"></div>
+                            </el-col>
+                        </vue-scrollbar>
+
+                    </el-col>
+                    <el-col :span="17" :offset="7" class="template-legend">
+                        图例：
+                        <span class="legend-black">1</span>工作日&nbsp;&nbsp;
+                        <span class="legend-red">1</span>非工作日
                     </el-col>
                 </el-row>
             </template>
@@ -371,21 +379,11 @@
                 }
                 return result;
             },
-            //日历模板设置
-            /* 添加页面非日历初始化 */
-            initCalendarSetMethod() {
-//                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null && "" != ct.endDate) {
-                    // 创建日历模板
-                    setTimeout(()=>{
-                        calendarTemplate = new CalendarSet('2017.01.01', '2017.12.12');
-                        this.inittocopystate();
-                    })
-
-//                }
-            },
+            /**
+             * 日历模板设置
+            **/
             /* 算出时间段内星期几对应的日期 */
-            getRulesDate(arr, sd, ed)
-            {
+            getRulesDate(arr, sd, ed){
                 let rulesDates = [];
                 let sdate = new Date(sd);
                 let edate = new Date(ed);
@@ -399,8 +397,19 @@
                     stime = stime + 24 * 60 * 60 * 1000;
                 }
                 return rulesDates;
-            }
-            ,
+            },
+            /* 添加页面非日历初始化 */
+            initCalendarSetMethod() {
+//                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null && "" != ct.endDate) {
+                    // 创建日历模板
+                    setTimeout(()=>{
+                        calendarTemplate = new CalendarSet('2017.01.01', '2017.12.12');
+                        this.inittocopystate();
+                    })
+
+//                }
+            },
+
             /* 初始化设置日历模板页面 */
             inittocopystate() {
                 //修改页面渲染逻辑
@@ -443,74 +452,8 @@
                     }
                 }
             },
-            openWindow(type, cpt){
-
-
-                //执行ajax
-                if (ct.calendarFalg == 0) {
-                    restDates = [];
-                    if (ct.restDates != null && ct.restDates.length > 0) {
-                        restDates = dealJavaDateArr(ct.restDates);
-                    }
-                } else {
-                    isWekendWorkDates = [];
-                    if (ct.workDates != null && ct.workDates.length > 0) {
-                        isWekendWorkDates = dealJavaDateArr(ct.workDates);
-                    }
-                    notWekendRestDates = [];
-                    if (ct.restDates != null && ct.restDates.length > 0) {
-                        notWekendRestDates = dealJavaDateArr(ct.restDates);
-                    }
-                }
-                if(type=='set'){
-                    this.initCalendarSetMethod()
-//                        calendarTemplate = new CalendarSet('2017/01/11', '2017/12/12');
-                }
-
-
-            }
-            ,
-            modifyDataPicker(value)
-            {
-                let startTime = value.split('-')[0];
-                let endTime = value.split('-')[1];
-                new CalendarSet(startTime, endTime);
-            }
-            ,
-            checkedList(val)
-            {
-                console.log(val, 'val')
-                this.currentDate = val;
-            }
-            ,
-
-            /* 设置工作日||非工作日 */
-            setCalendarDate(dateType)
-            {
-                // 获取时间范围
-                if (!this.currentDate) {
-                    alert("批量修改重复范围,没有对应值！！！");
-                    return;
-                }
-                // 获取星期几
-                if (this.checkList.length == 0) {
-                    alert("未选择对应星期*！！！");
-                    return;
-                }
-                // 计算这段时间内满足条件的日期
-                let chooseDate = this.getRulesDate(this.checkList, this.value6[0], this.value6[1]);
-                // 设置休息日
-                if (dateType == "work") {
-                    calendarTemplate.setWorkDate(chooseDate);
-                } else {
-                    calendarTemplate.setRestDate(chooseDate);
-                }
-            }
-            ,
             //日期处理
-            dealDatas()
-            {
-
+            dealDatas() {
                 if (calendarTemplate == null)return;
                 var lastbsdate = new Date(this.value6[0]);
                 var lastbedate = new Date(this.value6[1]);
@@ -553,28 +496,77 @@
                     isWekendWorkDates = [];
                     isWekendWorkDates = thisIsWekendRestDates;
                 }
-            }
-            ,
+            },
+            openWindow(type, cpt){
+                //执行ajax
+                if (ct.calendarFalg == 0) {
+                    restDates = [];
+                    if (ct.restDates != null && ct.restDates.length > 0) {
+                        restDates = dealJavaDateArr(ct.restDates);
+                    }
+                } else {
+                    isWekendWorkDates = [];
+                    if (ct.workDates != null && ct.workDates.length > 0) {
+                        isWekendWorkDates = dealJavaDateArr(ct.workDates);
+                    }
+                    notWekendRestDates = [];
+                    if (ct.restDates != null && ct.restDates.length > 0) {
+                        notWekendRestDates = dealJavaDateArr(ct.restDates);
+                    }
+                }
+                if(type=='set'){
+                    this.initCalendarSetMethod()
+//                        calendarTemplate = new CalendarSet('2017/01/11', '2017/12/12');
+                }
+            },
+            modifyDataPicker(value){
+                let startTime = value.split('-')[0];
+                let endTime = value.split('-')[1];
+                new CalendarSet(startTime, endTime);
+            },
+
+            checkedList(val){
+                console.log(val, 'val')
+                this.currentDate = val;
+            },
+            /* 设置工作日||非工作日 */
+            setCalendarDate(dateType){
+                // 获取时间范围
+                if (!this.currentDate) {
+                    alert("批量修改重复范围,没有对应值！！！");
+                    return;
+                }
+                // 获取星期几
+                if (this.checkList.length == 0) {
+                    alert("未选择对应星期*！！！");
+                    return;
+                }
+                // 计算这段时间内满足条件的日期
+                let chooseDate = this.getRulesDate(this.checkList, this.value6[0], this.value6[1]);
+                // 设置休息日
+                if (dateType == "work") {
+                    calendarTemplate.setWorkDate(chooseDate);
+                } else {
+                    calendarTemplate.setRestDate(chooseDate);
+                }
+            },
+
             //setTemplateOK
-            setTemplateOK()
-            {
-                this.dealDatas();
+            setTemplateOK(){
+                this.dealDatas();//总时间段的普通时间标准
                 let restDate = calendarTemplate.getRestDate();
                 console.log(restDate, 'restDate')
             }
-
         },
         computed: {
-            editor()
-            {
+            editor(){
                 return this.$refs.myTextEditor.quillEditor;
             }
-        }
-        ,
+        },
+
         mounted(){
 
-        }
-        ,
+        },
         created(){
             this.value6 = ['2017.11.11', '2017.12.12']
         }
