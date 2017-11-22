@@ -399,7 +399,7 @@ export default new Router({
                                 {
                                     // 表单管理
                                     path: 'form-management',
-                                    component: resolve => require(['../components/Configuration/HousingGovern.vue'], resolve)
+                                    component: resolve => require(['../components/CompanyProfile/OrganizationStructure2.vue'], resolve)
                                 }
                             ]
                         },
