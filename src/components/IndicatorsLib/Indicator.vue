@@ -40,13 +40,13 @@
                 if(this.$route.query.typeId){
                     this.tableData.forEach((val,key)=>{
                         if(this.$route.query.typeId==11){
-                        this.$set(this.tableData,'username','杨会杰')
-                    }else if(this.$route.query.typeId==12){
-                        this.$set(this.tableData,'username','潘鹏程')
-                    }else{
-                        //                      this.$set(this.tableData[key],'username','潘鹏程')
-                    }
-                })
+                            this.$set(this.tableData,'username','杨会杰')
+                        }else if(this.$route.query.typeId==12){
+                            this.$set(this.tableData,'username','潘鹏程')
+                        }else{
+    //                      this.$set(this.tableData[key],'username','潘鹏程')
+                        }
+                    })
                 }
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
@@ -63,53 +63,54 @@
 </script>
 
 <style scoped>
-    .wrapper{
-        height: 300px;
-        width: 300px
-    }
-    .container .el-menu {
-        padding: 10px 20px;
-        border: 1px solid #e6e6e6;
-        border-top: none;
-    }
+ .wrapper{
+    height: 300px;
+    width: 300px
+ }
+.container .el-menu {
+    padding: 10px 20px;
+    border: 1px solid #e6e6e6;
+    border-top: none;
+}
 
-    .container .el-menu .el-menu-item {
-        height: 40px;
-        width: 132px;
-        margin-right: 50px;
-        line-height: 40px;
-        text-align: center
-    }
+.container .el-menu .el-menu-item {
+    height: 40px;
+    width: 132px;
+    margin-right: 50px;
+    line-height: 40px;
+    text-align: center
+}
 
-    .container .is-active {
-        background-color: #f5f8fd;
-        font-size: 16px;
-        font-weight: 700;
-    }
-    .contents{
-        -webkit-box-shadow:  1px 0px 7px #eee;
-        -moz-box-shadow:  1px 0px 7px #eee;
-        box-shadow:  1px 0px 7px #eee;}
-    .container .el-menu .el-menu-item:hover {
-        background-color: #f5f8fd;
-    }
-    .Router{
-        transition: all .8s ease;
-        position: absolute;
-        top: 20px;
-    }
-    .slide-left-enter,
-    .slide-right-leave-active {
-        opacity: 0;
-        -webkit-transform: translate(100%, 0);
-        transform: translate(100%, 0);
-    }
+.container .is-active {
+    background-color: #f5f8fd;
+    font-size: 16px;
+    font-weight: 700;
+}
+.contents{
+    -webkit-box-shadow:  1px 0px 7px #eee;
+    -moz-box-shadow:  1px 0px 7px #eee;
+    box-shadow:  1px 0px 7px #eee;}
+.container .el-menu .el-menu-item:hover {
+    background-color: #f5f8fd;
+}
+ .Router{
+     position: absolute;
+     width: calc(100% - 20px);
+     transition: all .8s ease;
+     top: 0px;
+ }
+ .slide-left-enter,
+ .slide-right-leave-active {
+     opacity: 0;
+     -webkit-transform: translate(100%, 0);
+     transform: translate(100%, 0);
+ }
 
-    .slide-left-leave-active,
-    .slide-right-enter {
-        opacity: 0;
-        -webkit-transform: translate(-100%, 0);
-        transform: translate(-100% 0);
-    }
-    .bims-contents>.bim {position:static !important;}
+ .slide-left-leave-active,
+ .slide-right-enter {
+     opacity: 0;
+     -webkit-transform: translate(-100%, 0);
+     transform: translate(-100% 0);
+ }
+.bims-contents>.bim {position:static !important;}
 </style>

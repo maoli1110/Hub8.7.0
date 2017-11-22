@@ -1,45 +1,40 @@
 <template>
     <div>
         <div class="order-management order-detail">
-            <div>
-                <span @click="backToOrderList" class="font-s-14">应用分配</span>
-                <span class="font-s-14"> > <span class=“font-s-14” style="color: #6694f2">绑定管理</span></span>
-            </div>
+
             <div class="header">
-                <el-col :span="10">
+                <el-col :span="8">
                     <div>
-                        <span class="orders-text">鲁班安装BIM应用套餐</span>
+                        <el-input
+                            placeholder="请输入搜索内容"
+                            icon="search"
+                            v-model="searchContent"
+                            :on-icon-click="searchContent" class="searchContent">
+                        </el-input>
                     </div>
                 </el-col>
-            </div>
-            <div class="main header-tips">
-                <el-col :span="6">
-                    <span>服务到期时间：</span>
-                    <strong class="font-w-14">2017年1月1日</strong>
-                </el-col>
-                <el-col :span="10">
-                    <span style="color: #e30000">*</span><span>注：在有效期内共可修改绑定电脑<span class="font-w-14">80</span>次，有效期内还可修改<span
-                    class="font-w-14">80</span>次</span>
+                <el-col :span="2">
+                    <div class="deepSearch">
+                        <el-button size="small">
+                            <span>高级搜索</span>
+                        </el-button>
+                    </div>
                 </el-col>
             </div>
             <div class="header">
                 <el-col :span="20">
                     <el-button size="small" class="unbind">
                         <i></i>
-                        <span>解绑软件</span>
+                        <span>审核通过</span>
                     </el-button>
-                </el-col>
-                <el-col :span="4">
-                    <el-input
-                        placeholder="搜索鲁班通行证或人员姓名"
-                        icon="search"
-                        v-model="staffName"
-                        :on-icon-click="searchContent">
-                    </el-input>
+                    <el-button size="small" class="unbind">
+                        <i></i>
+                        <span>删除</span>
+                    </el-button>
                 </el-col>
             </div>
 
-            <div class="main detail-list">
+            <div class="main">
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                     <el-table ref="multipleTable scroll-me" :data="bindManageTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
@@ -69,7 +64,7 @@
     export default {
         data(){
             return {
-                staffName: '曹相相',
+                searchContent: '曹相相',
                 multipleSelection: [],
                 bindManageTableData: [
                     {
@@ -87,7 +82,7 @@
         },
         methods: {
             backToOrderList(){
-                this.$router.push({path: '/system/order-management/orders'});
+                this.$router.push({path: '/order-management/orders'});
             },
             searchContent(ev){
 //                搜索
@@ -118,13 +113,16 @@
         margin-top: 20px;
     }
 
-    .detail-list {
-        margin-bottom: 20px;
+    .el-icon-search {
+        background-color: #4778c7;
     }
-    .header-tips {
-        height: 60px;
-        line-height: 60px;
+
+    .header .deepSearch button {
+        background-color: #4778c7;
+        color: #fff;
+        border-radius: 4px;
     }
+
     .header .unbind {
         padding: 10px 15px 10px 30px;
         background-color: #4778c7;
@@ -133,15 +131,6 @@
     }
 
     .header .unbind span {
-        font-size: 14px;
-    }
-
-    .font-w-14 {
-        font-weight: 700;
-        font-size: 14px;
-    }
-
-    .font-s-14 {
         font-size: 14px;
     }
 </style>
