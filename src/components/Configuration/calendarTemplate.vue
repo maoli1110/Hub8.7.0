@@ -82,7 +82,9 @@
                         <el-col>
                             <template>
                                 <el-checkbox-group v-model="checkList" @change="checkedList">
-                                    <el-checkbox v-for="item in workDay" :label="item.key" :key="item.key">{{item.name}}</el-checkbox>
+                                    <el-checkbox v-for="item in workDay" :label="item.key" :key="item.key">
+                                        {{item.name}}
+                                    </el-checkbox>
                                 </el-checkbox-group>
                             </template>
                         </el-col>
@@ -101,8 +103,8 @@
             </template>
             <span slot="footer" class="dialog-footer">
                     <el-button class="dialog-btn dialog-btn-ok" type="primary"
-                               @click="addVisible = false;renameTemplateOK()">确 定</el-button>
-                    <el-button class="dialog-btn dialog-btn-cancel" @click="addVisible = false">取 消</el-button>
+                               @click="setTemplate = false;setTemplateOK()">确 定</el-button>
+                    <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
                 </span>
         </el-dialog>
     </div>
@@ -116,14 +118,13 @@
     // import "../../utils/directive.js"
     import "../../../static/css/configuration.css";
     import '../../../static/css/restdate.css';
-    //    import {CalendarSet} from '../../../static/js/restdate.js';
+//    import {CalendarSet} from '../../../static/js/restdate.js';
     let calendarTemplate;
     let deletArray = [];
     export default {
         created(){
             FormIndex(this.tableData, 2, 10);
 //            this.getData();
-
         },
         data: function () {
             return {
@@ -150,14 +151,14 @@
                         {templateType: "标准日历"}
                     ]
                 },
-                workDay:[
-                    {name:'星期一',key:1},
-                    {name:'星期二',key:2},
-                    {name:'星期三',key:3},
-                    {name:'星期四',key:4},
-                    {name:'星期五',key:5},
-                    {name:'星期六',key:6},
-                    {name:'星期日',key:0}
+                workDay: [
+                    {name: '星期一', key: 1},
+                    {name: '星期二', key: 2},
+                    {name: '星期三', key: 3},
+                    {name: '星期四', key: 4},
+                    {name: '星期五', key: 5},
+                    {name: '星期六', key: 6},
+                    {name: '星期日', key: 0}
                 ]
             }
         },
@@ -299,7 +300,9 @@
             },
             //日历模板设置
             openWindow(type, cpt){
-                calendarTemplate = new CalendarSet('2017/01/11', '2017/12/12');
+                setTimeout(function(){
+                    calendarTemplate = new CalendarSet('2017/01/11', '2017/12/12');
+                })
             },
             modifyDataPicker(value){
                 let startTime = value.split('-')[0];
@@ -307,7 +310,7 @@
                 new CalendarSet(startTime, endTime);
             },
             checkedList(val){
-                console.log(val,'val')
+                console.log(val, 'val')
                 this.currentDate = val;
             },
             /* 算出时间段内星期几对应的日期 */
@@ -341,14 +344,17 @@
                 // 计算这段时间内满足条件的日期
                 let chooseDate = this.getRulesDate(this.checkList, this.value6[0], this.value6[1]);
                 // 设置休息日
-                console.log(calendarTemplate.startyear,'calendarTemplate');
                 if (dateType == "work") {
                     calendarTemplate.setWorkDate(chooseDate);
                 } else {
                     calendarTemplate.setRestDate(chooseDate);
                 }
             },
-
+            //setTemplateOK
+            setTemplateOK(){
+                let restDate =  calendarTemplate.getRestDate();
+                console.log(restDate,'restDate')
+            }
 
         },
         computed: {
@@ -358,12 +364,11 @@
             }
         }
         ,
-        mounted()
-        {
+        mounted(){
+
         }
         ,
-        created()
-        {
+        created(){
             this.value6 = ['2017.11.11', '2017.12.12']
         }
 

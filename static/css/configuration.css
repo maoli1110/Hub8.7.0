@@ -49,6 +49,8 @@
     background-position:-57px -164px;
 }
 /*日历模板*/
+.calendar-template .el-select{width:75%;}
+.calendar-template .el-select>.el-input{width:100% !important;}
 .edit-template{width:1058px;}
 .calendar-template .ui-date-picker{width:224px !important;float:left;margin-right:10px;}
 .calendar-template .isWekendDate{color:red;}
