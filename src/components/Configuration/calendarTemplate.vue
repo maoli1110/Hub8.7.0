@@ -28,7 +28,7 @@
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope">
                         <span class="icon-template icon-edit"
-                              @click="setTemplate= true;openWindow('set','16a5da8f68bc45f08755309dee7bec89')"></span>
+                              @click="setTemplate= true;modifyTemp = false;openWindow('set','16a5da8f68bc45f08755309dee7bec89')"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -118,9 +118,13 @@
     // import "../../utils/directive.js"
     import "../../../static/css/configuration.css";
     import '../../../static/css/restdate.css';
-//    import {CalendarSet} from '../../../static/js/restdate.js';
+    //    import {CalendarSet} from '../../../static/js/restdate.js';
     let calendarTemplate;
     let deletArray = [];
+    let isWekendWorkDates = [];
+    let notWekendRestDates = [];
+    let ct = {};
+    let restDates = [];
     export default {
         created(){
             FormIndex(this.tableData, 2, 10);
@@ -141,6 +145,7 @@
                 totalNumber: 300,
                 title: '添加标签',
                 switchDialog: false,
+                modifyTemp: false,
                 tableData: [],
                 //{processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
                 classfiyList: [{name: '初始项目部1'}, {name: '初始项目部2'}, {name: '初始项目部3'}, {name: '初始项目部4'}],
@@ -279,12 +284,73 @@
                     updateTime: currentTime,
                     proDepartment: "初始项目部"
                 },);
-                console.log(this.templateType.split('.')[1], 'splice');
                 if (this.templateType.split('.')[1]) {
+                    if (this.templateType.split('.')[1].substr(0, 2) == '24') {
+                        ct.calendarFalg = 0;
+                    } else {
+                        ct.calendarFalg = 1;
+                    }
                     this.templateInfo.template.push({templateType: this.templateInfo.name + "." + this.templateType.split('.')[1].substr(0, 2)})
                 } else {
+                    if (this.templateType.substr(0, 2) == '24') {
+                        ct={
+                            calendarFalg:0,
+                            copyid:"0",
+                            createDate:{
+                                date:22,
+                                day:3,
+                                hours:14,
+                                minutes:59,
+                                month:10,
+                                seconds:0,
+                                time:1511333940854,
+                                timezoneOffset: -480,
+                                year:117,
+                            },
+                            createUser:"13800138000",
+                            ctName: "123456",
+                            ctid:"f806217cdc0a457db956485b509abb8d",
+                            endDate:null,
+                            epid:-1,
+                            restDates:[],
+                            startDate:null,
+                            updateDate: Object,
+                            updateUser:"13800138000",
+                            workDates:[],
+                        }
+                    } else {
+                        ct={
+                            calendarFalg:1,
+                            copyid:"0",
+                            createDate:{
+                                date:22,
+                                day:3,
+                                hours:14,
+                                minutes:59,
+                                month:10,
+                                seconds:0,
+                                time:1511333940854,
+                                timezoneOffset: -480,
+                                year:117,
+                            },
+                            createUser:"13800138000",
+                            ctName: "123456",
+                            ctid:"f806217cdc0a457db956485b509abb8d",
+                            endDate:null,
+                            epid:-1,
+                            restDates:[],
+                            startDate:null,
+                            updateDate: Object,
+                            updateUser:"13800138000",
+                            workDates:[],
+                        }
+                    }
                     this.templateInfo.template.push({templateType: this.templateInfo.name + "." + this.templateType.substr(0, 2)})
                 }
+
+                this.setTemplate = true;
+                this.modifyTemp = true;
+                this.openWindow('set', '123')
             },
             renameTemplateCancel(){
 
@@ -298,23 +364,28 @@
                 }
                 this.templateInfo.name = "";
             },
+            dealJavaDateArr(dates){
+                var result = [];
+                for (var i = 0; i < dates.length; i++) {
+                    result.push(dates[i])
+                }
+                return result;
+            },
             //日历模板设置
-            openWindow(type, cpt){
-                setTimeout(function(){
-                    calendarTemplate = new CalendarSet('2017/01/11', '2017/12/12');
-                })
-            },
-            modifyDataPicker(value){
-                let startTime = value.split('-')[0];
-                let endTime = value.split('-')[1];
-                new CalendarSet(startTime, endTime);
-            },
-            checkedList(val){
-                console.log(val, 'val')
-                this.currentDate = val;
+            /* 添加页面非日历初始化 */
+            initCalendarSetMethod() {
+//                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null && "" != ct.endDate) {
+                    // 创建日历模板
+                    setTimeout(()=>{
+                        calendarTemplate = new CalendarSet('2017.01.01', '2017.12.12');
+                        this.inittocopystate();
+                    })
+
+//                }
             },
             /* 算出时间段内星期几对应的日期 */
-            getRulesDate(arr, sd, ed){
+            getRulesDate(arr, sd, ed)
+            {
                 let rulesDates = [];
                 let sdate = new Date(sd);
                 let edate = new Date(ed);
@@ -322,15 +393,100 @@
                 let etime = edate.getTime();
                 for (stime; stime <= etime;) {
                     let thdate = new Date(stime);
-                    if (this.checkList.indexOf(thdate.getDay()) != -1) {
-                        rulesDates.push(thdate);
+                    if (arr.indexOf(thdate.getDay()) != -1) {
+                        rulesDates.push(thdate.toLocaleDateString());
                     }
                     stime = stime + 24 * 60 * 60 * 1000;
                 }
                 return rulesDates;
+            }
+            ,
+            /* 初始化设置日历模板页面 */
+            inittocopystate() {
+                //修改页面渲染逻辑
+                if (ct.calendarFalg == 0) {//复制24小时
+                    if (restDates != null && restDates.length > 0) {// 已经设置过的
+                        var arr = [];
+                        for (var i = 0; i < restDates.length; i++) {
+                            if (new Date(this.value6[0]).getTime() <= new Date(restDates[i]).getTime() && new Date(restDates[i]).getTime() <= new Date(this.value6[1]).getTime()) {
+                                arr.push(restDates[i])
+                            }
+                        }
+                        // 设置对应非工作日
+                        calendarTemplate.setRestDate(arr);
+                    }
+                } else {//复制标准
+                    var arr = new Array(6, 0);
+                    var chooseDate = this.getRulesDate(arr, '2017.01.01', '2017.12.12');
+                    //将所有展示的周六，周日设置为非工作日
+                    console.log(chooseDate,'chooseDate')
+                    calendarTemplate.setRestDate(chooseDate);
+                    if (notWekendRestDates != null && notWekendRestDates.length > 0) {// 已经设置过的
+                        var arr = [];
+                        for (var i = 0; i < notWekendRestDates.length; i++) {
+                            if (new Date('2017.01.01').getTime() <= new Date(notWekendRestDates[i]).getTime() && new Date(notWekendRestDates[i]).getTime() <= new Date('2017.12.12').getTime()) {
+                                arr.push(notWekendRestDates[i])
+                            }
+                        }
+                        //将所有展示的周一到周五设置已经设置的非工作日
+                        calendarTemplate.setRestDate(arr);
+                    }
+                    if (isWekendWorkDates != null && isWekendWorkDates.length > 0) {
+                        var arr = [];
+                        for (var i = 0; i < isWekendWorkDates.length; i++) {
+                            if (new Date('2017.01.01').getTime() <= new Date(isWekendWorkDates[i]).getTime() && new Date(isWekendWorkDates[i]).getTime() <= new Date( '2017.12.12').getTime()) {
+                                arr.push(isWekendWorkDates[i])
+                            }
+                        }
+                        //将所有展示的周六、周日中工作日的设置为工作日
+                        calendarTemplate.setWorkDate(arr);
+                    }
+                }
             },
+            openWindow(type, cpt){
+
+
+                //执行ajax
+                if (ct.calendarFalg == 0) {
+                    restDates = [];
+                    if (ct.restDates != null && ct.restDates.length > 0) {
+                        restDates = dealJavaDateArr(ct.restDates);
+                    }
+                } else {
+                    isWekendWorkDates = [];
+                    if (ct.workDates != null && ct.workDates.length > 0) {
+                        isWekendWorkDates = dealJavaDateArr(ct.workDates);
+                    }
+                    notWekendRestDates = [];
+                    if (ct.restDates != null && ct.restDates.length > 0) {
+                        notWekendRestDates = dealJavaDateArr(ct.restDates);
+                    }
+                }
+                if(type=='set'){
+                    this.initCalendarSetMethod()
+//                        calendarTemplate = new CalendarSet('2017/01/11', '2017/12/12');
+                }
+
+
+            }
+            ,
+            modifyDataPicker(value)
+            {
+                let startTime = value.split('-')[0];
+                let endTime = value.split('-')[1];
+                new CalendarSet(startTime, endTime);
+            }
+            ,
+            checkedList(val)
+            {
+                console.log(val, 'val')
+                this.currentDate = val;
+            }
+            ,
+
             /* 设置工作日||非工作日 */
-            setCalendarDate(dateType) {
+            setCalendarDate(dateType)
+            {
                 // 获取时间范围
                 if (!this.currentDate) {
                     alert("批量修改重复范围,没有对应值！！！");
@@ -349,11 +505,62 @@
                 } else {
                     calendarTemplate.setRestDate(chooseDate);
                 }
-            },
+            }
+            ,
+            //日期处理
+            dealDatas()
+            {
+
+                if (calendarTemplate == null)return;
+                var lastbsdate = new Date(this.value6[0]);
+                var lastbedate = new Date(this.value6[1]);
+                if (ct.calendarFalg == 0) {
+                    var lastrestdate = calendarTemplate.getRestDate();
+                    var thisRestDates = [];
+                    for (var i = 0; i < restDates.length; i++) {
+                        if (new Date(lastbsdate).getTime() > new Date(restDates[i]).getTime() || new Date(restDates[i]).getTime() > new Date(lastbedate).getTime()) {
+                            thisRestDates.push(restDates[i]);
+                        }
+                    }
+                    for (var i = 0; i < lastrestdate.length; i++) {
+                        thisRestDates.push(lastrestdate[i]);
+                    }
+                    restDates = [];
+                    restDates = thisRestDates;
+                } else {
+                    var lastnotwekendrestdates = calendarTemplate.getNotWekendRestDate();
+                    var thisNotWekendRestDates = [];
+                    for (var i = 0; i < notWekendRestDates.length; i++) {
+                        if (new Date(lastbsdate).getTime() > new Date(notWekendRestDates[i]).getTime() || new Date(notWekendRestDates[i]).getTime() > new Date(lastbedate).getTime()) {
+                            thisNotWekendRestDates.push(notWekendRestDates[i]);
+                        }
+                    }
+                    for (var i = 0; i < lastnotwekendrestdates.length; i++) {
+                        thisNotWekendRestDates.push(lastnotwekendrestdates[i]);
+                    }
+                    notWekendRestDates = [];
+                    notWekendRestDates = thisNotWekendRestDates;
+                    var lastiswekendworkdates = calendarTemplate.getIsWekendWorkDate();
+                    var thisIsWekendRestDates = [];
+                    for (var i = 0; i < isWekendWorkDates.length; i++) {
+                        if (new Date(lastbsdate).getTime() > new Date(isWekendWorkDates[i]).getTime() || new Date(isWekendWorkDates[i]).getTime() > new Date(lastbedate).getTime()) {
+                            thisIsWekendRestDates.push(isWekendWorkDates[i]);
+                        }
+                    }
+                    for (var i = 0; i < lastiswekendworkdates.length; i++) {
+                        thisIsWekendRestDates.push(lastiswekendworkdates[i]);
+                    }
+                    isWekendWorkDates = [];
+                    isWekendWorkDates = thisIsWekendRestDates;
+                }
+            }
+            ,
             //setTemplateOK
-            setTemplateOK(){
-                let restDate =  calendarTemplate.getRestDate();
-                console.log(restDate,'restDate')
+            setTemplateOK()
+            {
+                this.dealDatas();
+                let restDate = calendarTemplate.getRestDate();
+                console.log(restDate, 'restDate')
             }
 
         },

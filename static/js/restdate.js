@@ -220,8 +220,8 @@ CalendarSet.prototype={
     /*设置非工作日*/
     setRestDate:function(calendarDates){
         for(var i=0;i<calendarDates.length;i++ ){
-            if($("td[data-date='"+calendarDates[i].toLocaleDateString()+"']")){
-                $("td[data-date='"+calendarDates[i].toLocaleDateString()+"']").each(function(){
+            if($("td[data-date='"+calendarDates[i]+"']")){
+                $("td[data-date='"+calendarDates[i]+"']").each(function(){
                 	if($(this).hasClass("work-date")){
                         $(this).removeClass("work-date");
                         $(this).addClass("rest-date");
@@ -233,8 +233,8 @@ CalendarSet.prototype={
     /*设置工作日*/
     setWorkDate:function(calendarDates){
         for(var i=0;i<calendarDates.length;i++ ){
-            if($("td[data-date='"+calendarDates[i].toLocaleDateString()+"']")){
-                $("td[data-date='"+calendarDates[i].toLocaleDateString()+"']").each(function(){
+            if($("td[data-date='"+calendarDates[i]+"']")){
+                $("td[data-date='"+calendarDates[i]+"']").each(function(){
                 	if($(this).hasClass("rest-date")){
                         $(this).removeClass("rest-date");
                         $(this).addClass("work-date");
