@@ -12,7 +12,7 @@
             </el-col>
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-            <el-table class="house-table scroll-me" :data="tableData" style="min-width: 900px;"
+            <el-table class="house-table scroll-me" :data="tableData" @cell-click="previewTemplate" style="min-width: 900px;"
                       :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
                       @select="selectChecked">
                 <el-table-column
@@ -63,10 +63,10 @@
                 <el-button class="dialog-btn dialog-btn-cancel" @click="addVisible = false">取 消</el-button>
             </span>
         </el-dialog>
-        <el-dialog custom-class="edit-template" :visible.sync="setTemplate" title="设置模板">
+        <el-dialog custom-class="edit-template" :visible.sync="setTemplate" title="设置模板" >
             <template>
                 <el-row class="calendar-main">
-                    <el-col :span="6" class="edit-dup">
+                    <el-col :span="6" class="edit-dup" >
                         <span class="">批量修改重复范围</span>
                         <el-col class="calendar-time" :span="20">
                             <template>
@@ -92,7 +92,7 @@
                             <el-button type="primary" size="small" @click="setCalendarDate('work')">工作日</el-button>
                             <el-button type="primary" size="small" @click="setCalendarDate('rest')">非工作日</el-button>
                         </el-col>
-                    </el-col>
+                    </el-col v-show>
                     <el-col :span="17"  class="cal-template" >
                         <el-col class="template-tips">克隆：24小时日历</el-col>
                         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
@@ -102,18 +102,34 @@
                         </vue-scrollbar>
 
                     </el-col>
-                    <el-col :span="17" :offset="7" class="template-legend">
+                    <el-col :span="17" :offset="7" class="template-legend" >
                         图例：
                         <span class="legend-black">1</span>工作日&nbsp;&nbsp;
                         <span class="legend-red">1</span>非工作日
                     </el-col>
                 </el-row>
             </template>
-            <span slot="footer" class="dialog-footer">
+            <span slot="footer" class="dialog-footer" >
                     <el-button class="dialog-btn dialog-btn-ok" type="primary"
                                @click="setTemplate = false;setTemplateOK()">确 定</el-button>
                     <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
                 </span>
+        </el-dialog>
+        <!--查看模板-->
+        <el-dialog custom-class="edit-template prview-template" :visible.sync="lookTemplate" title="查看模板" >
+            <template>
+                <el-row class="calendar-main">
+                    <el-col :span="24"  class="cal-template" style="margin:0">
+                        <el-col class="template-tips">克隆：24小时日历</el-col>
+                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
+                            <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
+                                <div class="calendar"></div>
+                            </el-col>
+                        </vue-scrollbar>
+
+                    </el-col>
+                </el-row>
+            </template>
         </el-dialog>
     </div>
 </template>
@@ -152,9 +168,9 @@
                 totalPage: 50,
                 totalNumber: 300,
                 title: '添加标签',
-                switchDialog: false,
-                modifyTemp: false,
+                lookTemplate:false,
                 tableData: [],
+                templateName:"设置模板",
                 //{processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
                 classfiyList: [{name: '初始项目部1'}, {name: '初始项目部2'}, {name: '初始项目部3'}, {name: '初始项目部4'}],
                 templateInfo: {
@@ -275,11 +291,7 @@
             //重命名模板名称
             renameTemplate(item){
                 //去拿相关模板的信息
-                if (this.switchDialog) {
-                    this.title = "修改标签"
-                } else {
-                    this.title = "添加标签"
-                }
+
                 this.renameIndex = item.index;
                 this.templateInfo.name = item.processName;
             },
@@ -365,11 +377,6 @@
             },
             //添加标签
             addTemplate(){
-                if (!this.switchDialog) {
-                    this.title = "添加标签"
-                } else {
-                    this.title = "修改标签"
-                }
                 this.templateInfo.name = "";
             },
             dealJavaDateArr(dates){
@@ -498,6 +505,7 @@
                 }
             },
             openWindow(type, cpt){
+                debugger;
                 //执行ajax
                 if (ct.calendarFalg == 0) {
                     restDates = [];
@@ -515,8 +523,11 @@
                     }
                 }
                 if(type=='set'){
+                    this.modifyTemp =true;
                     this.initCalendarSetMethod()
 //                        calendarTemplate = new CalendarSet('2017/01/11', '2017/12/12');
+                }else{
+
                 }
             },
             modifyDataPicker(value){
@@ -556,7 +567,20 @@
                 this.dealDatas();//总时间段的普通时间标准
                 let restDate = calendarTemplate.getRestDate();
                 console.log(restDate, 'restDate')
-            }
+            },
+            //查看模板
+            previewTemplate(row, column,cell, event){
+              /*  console.log(row,'column')
+                console.log(column,'col');*/
+
+                if(column.id=='el-table_1_column_2'){
+                    this.lookTemplate  =true;
+                    setTimeout(()=>{
+                        calendarTemplate = new CalendarSet('2017/01/11', '2017/12/12');
+                    })
+                }
+            },
+
         },
         computed: {
             editor(){
