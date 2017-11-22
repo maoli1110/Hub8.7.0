@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-      <h1>所有页面的jQuery不需要引入 可以直接使用</h1>
+      <h1>所</h1>
         <div>
           <div style="margin:0 auto;width:550px;">
             <el-button type="primary" icon="plus"  @click="expandNode({type:'expand',operObj:'tree_edit'})"   size='small'></el-button>
@@ -36,7 +36,7 @@
           </div>
           <div style="margin:10px auto;width:550px;">
             <!--增加多个节点/状态弹框-->
-            <el-dialog :title=textTittle :visible.sync="textAreaVisible" size='tiny'
+            <el-dialog :title=textTittle :visible.sync="textAreaVisible" size='tiny'  
                        :close-on-click-modal="false">
                 <el-input type="textarea" :rows="10"  v-model="textareaValue" placeholder="一行视为一个节点，支持多行复制粘贴" :maxlength='297'>
                 </el-input>
@@ -46,16 +46,19 @@
                     <el-button @click="textAreaVisible = false;cancleMultiNodeState()">取 消</el-button>
                 </div>
             </el-dialog>
+           
 
-
-
-          </div>
+        
+          </div>            
             <ul id="tree_edit" class="ztree"></ul>
         </div>
     </div>
 </template>
 <script>
 import axios from "axios";
+// import "../../../static/zTree/js/jquery.ztree.all.min.js";
+import "../../../static/zTree/js/jquery.ztree.core.min.js";
+import "../../../static/zTree/js/jquery.ztree.exedit.min.js";
 import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
 function Map() {
   this.container = new Object();
@@ -107,8 +110,8 @@ export default {
     return {
       textAreaVisible: false,
       textareaValue: "",
-      textTittle:'',
-      type:'',
+      textTittle: "",
+      type: "",
       // 树数据
       url: "../../../static/datasource.json",
       setting: {
@@ -140,7 +143,6 @@ export default {
           beforeDrop: this.beforeDrop,
           onDrop: this.onDrop,
           beforeRename: this.beforeRename,
-          beforeClick: this.beforeClick,
           onCollapse: function(event, treeId, treeNode) {
             level = treeNode.level;
           },
@@ -176,11 +178,6 @@ export default {
   },
   methods: {
     // 自定义颜色选择器
-    beforeClick(){
-      var zTree = $.fn.zTree.getZTreeObj("tree_edit");
-      var nodes = zTree.getSelectedNodes();
-      console.log(nodes)
-    },
     colorSelect(treeId, treeNode) {
       if (treeNode.isParent) {
         return;
@@ -1261,8 +1258,9 @@ export default {
       if (!nodes[0].isParent && type == "node") {
         return;
       }
-      type=='node'? $(".selcetNodes ul").slideToggle():$(".selectStatus ul").slideToggle();
-
+      type == "node"
+        ? $(".selcetNodes ul").slideToggle()
+        : $(".selectStatus ul").slideToggle();
     }
   }
 };
@@ -1289,7 +1287,7 @@ export default {
   left: 36px;
   top: 5px;
 }
-.selcetNodes{
+.selcetNodes {
   position: absolute;
   left: 93px;
   top: 5px;

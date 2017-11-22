@@ -15,7 +15,7 @@
         </div>
         <div class="main">
             <div>
-                <el-button type="primary" class="basic-btn" icon="plus" @click="addFolder();editDialogVisible=true">添加</el-button>
+                <el-button type="primary" class="basic-btn" icon="plus" @click="addFolder();isAddFolder=true">添加</el-button>
                 <el-button type="primary" class="basic-btn" icon="delete" @click="deleteFolder()"> 删除</el-button>
             </div>
             <el-table ref="multipleTable" :data="FolderTableData" border tooltip-effect="dark"
