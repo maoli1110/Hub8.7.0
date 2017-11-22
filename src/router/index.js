@@ -317,21 +317,41 @@ export default new Router({
                     // 指标库
                     path: '/indicatorslib',
                     component: resolve => require(['../components/IndicatorsLib/IndicatorsLib.vue'], resolve),
-                    redirect:'/indicatorslib/civilengineering',
-                    children:[
+                    redirect: '/indicatorslib/unchecked/civilEngineering-index',
+                    children: [
                         {
-                            path: 'civilengineering',
-                            component: resolve => require(['../components/IndicatorsLib/CivilEngineering.vue'], resolve)
+                            //未审核
+                            path: 'unchecked',
+                            component: resolve => require(['../components/IndicatorsLib/Indicator.vue'], resolve),
+                            children: [
+                                {
+                                    //土建指标
+                                    path: 'civilEngineering-index',
+                                    component: resolve => require(['../components/IndicatorsLib/civilEngineeringIndex.vue'], resolve)
+                                },
+                                {
+                                    //钢筋指标
+                                    path: 'reinforcement-index',
+                                    component: resolve => require(['../components/IndicatorsLib/reinforcementIndex.vue'], resolve)
+                                }
+                            ]
                         },
                         {
-                            path: 'steel',
-                            component: resolve => require(['../components/IndicatorsLib/CivilEngineering.vue'], resolve)
-                        },{
-                            path: 'civilengineering-pass',
-                            component: resolve => require(['../components/IndicatorsLib/CivilEngineering.vue'], resolve)
-                        },{
-                            path: 'steel-pass',
-                            component: resolve => require(['../components/IndicatorsLib/CivilEngineering.vue'], resolve)
+                            //已通过
+                            path: 'passed',
+                            component: resolve => require(['../components/IndicatorsLib/Indicator.vue'], resolve),
+                            children: [
+                                {
+                                    //土建指标
+                                    path: 'civil-engineering-index',
+                                    component: resolve => require(['../components/IndicatorsLib/civilEngineeringIndex.vue'], resolve)
+                                },
+                                {
+                                    //钢筋指标
+                                    path: 'reinforcement-index',
+                                    component: resolve => require(['../components/IndicatorsLib/reinforcementIndex.vue'], resolve)
+                                }
+                            ]
                         }
                     ]
                 },

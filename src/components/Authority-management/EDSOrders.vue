@@ -2,7 +2,7 @@
     <div>
         <div class="order-management eds-orders">
             <div class="header">
-                <el-col :span="13">
+                <el-col :span="12">
                     <span>查询您最近一年的支付记录：</span>
                     <el-button class="active" :plain="true" type="info" size="small" @click="refreshList($event)">
                         <span>最近一月</span>
@@ -14,7 +14,7 @@
                         <span>最近一年</span>
                     </el-button>
                 </el-col>
-                <el-col :span="11" style="text-align: right">
+                <el-col :span="12" style="text-align: right">
                     <span>重要提醒:请在下单后24小时内支付(银行电汇时限为5*24小时),否则订单将会自动取消</span>
                 </el-col>
             </div>
@@ -135,7 +135,7 @@
             },
             refreshList(e){
                 console.log(e);
-                $(e.target).addClass('active').siblings().removeClass('active')
+                $(e.currentTarget).addClass('active').siblings().removeClass('active')
             }
         },
         components: {
