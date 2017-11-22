@@ -2,8 +2,8 @@
     <div>
         <div class="order-management order-detail">
             <div>
-                <span @click="backToOrderList">应用分配</span>
-                <span> > <span style="color: #6694f2">绑定管理</span></span>
+                <span @click="backToOrderList" class="font-s-14">应用分配</span>
+                <span class="font-s-14"> > <span class=“font-s-14” style="color: #6694f2">绑定管理</span></span>
             </div>
             <div class="header">
                 <el-col :span="10">
@@ -14,12 +14,12 @@
             </div>
             <div class="main header-tips">
                 <el-col :span="6">
-                    <span>服务到期时间</span>
-                    <span>34个月11天</span>
+                    <span>服务到期时间：</span>
+                    <strong class="font-w-14">2017年1月1日</strong>
                 </el-col>
                 <el-col :span="10">
-                    <span style="color: #e30000">*</span><span>注：在有效期内共可修改绑定电脑<span class="orders-text">80</span>次，有效期内还可修改<span
-                    class="">80</span>次</span>
+                    <span style="color: #e30000">*</span><span>注：在有效期内共可修改绑定电脑<span class="font-w-14">80</span>次，有效期内还可修改<span
+                    class="font-w-14">80</span>次</span>
                 </el-col>
             </div>
             <div class="header">
@@ -87,7 +87,7 @@
         },
         methods: {
             backToOrderList(){
-                this.$router.push({path: '/order-management/orders'});
+                this.$router.push({path: '/system/order-management/orders'});
             },
             searchContent(ev){
 //                搜索
@@ -133,6 +133,15 @@
     }
 
     .header .unbind span {
+        font-size: 14px;
+    }
+
+    .font-w-14 {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .font-s-14 {
         font-size: 14px;
     }
 </style>

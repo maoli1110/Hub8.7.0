@@ -25,8 +25,8 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span type="primary" class="icon-edit_  icon"  @click="editRole(scope.row.id)"></span>
-                        <span type="primary" class="icon-view   icon"   @click="searchRole(scope.row.id)"></span>
+                        <span type="primary" class="el-icon-edit"  @click="editRole(scope.row.id)"></span>
+                        <span type="primary" class="el-icon-search"   @click="searchRole(scope.row.id)"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -67,7 +67,7 @@ export default {
       addMemberDialogVisible: false,
       textarea: "",
       orgValue: "",
-      role: "",
+      role: "",     
       orgSetting: {
         data: {
           simpleData: {
@@ -117,61 +117,61 @@ export default {
       roleTableData: [
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长"
         },
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber: 15,
+          roleNumber:15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         }
@@ -259,16 +259,18 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    addRole() {},
+    addRole() {
+    },
     editRole(MemberId) {
       this.$router.push({ path: `/authority/edit-role/5` });
     },
     searchRole(MemberId) {
       this.$router.push({ path: `/authority/member-management` });
     },
-    deleteRole() {}
+    deleteRole() {},
   },
-  mounted() {}
+  mounted() {
+  }
 };
 </script>
 <style scoped>
@@ -292,9 +294,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.icon + .icon {
-  margin-left: 15px;
 }
 </style>
 

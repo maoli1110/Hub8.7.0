@@ -53,22 +53,27 @@ export default {
                 {
                     menuName: '应用配置',
                     path: '/configuration'
-                }
-            ],
-            configurationMenu: [
-                {
-                    menuName: '订单管理',
-                    path: '/order-management'
                 },
                 {
-                    menuName: '在线人数',
-                    path: '/online'
-                },
-                {
-                    menuName: '系统日志',
-                    path: '/system-log'
+                    menuName: '系统',
+                    path: '/system'
                 }
             ]
+//            ,
+//            configurationMenu: [
+//                {
+//                    menuName: '订单管理',
+//                    path: '/order-management'
+//                },
+//                {
+//                    menuName: '在线人数',
+//                    path: '/online'
+//                },
+//                {
+//                    menuName: '系统日志',
+//                    path: '/system-log'
+//                }
+//            ]
         };
     },
     methods: {

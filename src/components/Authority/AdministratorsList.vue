@@ -2,14 +2,10 @@
     <div>
         <div class="admin-main">
             <div>
-                <el-button type="primary" class="basic-btn"  @click="addAdminDialogVisible=true;addAdmin()">                    
-                    <i class="icon-add-admin"></i>
-                    <span>新增管理员</span>                    
+                <el-button type="primary" class="basic-btn" icon="plus" @click="addAdminDialogVisible=true;addAdmin()">
+                    新增管理员
                 </el-button>
-                <el-button type="primary" class="basic-btn"  @click="cancleAdmin()">          
-                    <i class="icon-cancle-authorization pl-icon-s"></i>
-                    <span>取消权限</span>  
-                    </el-button>
+                <el-button type="primary" class="basic-btn" icon="delete" @click="cancleAdmin()">取消权限</el-button>
                 <el-input placeholder="请选择日期" icon="search" style="float:right;width:210px"></el-input>
             </div>
             <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
@@ -38,7 +34,7 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span type="primary" class="icon-edit_ " @click="addAdminDialogVisible=true"></span>
+                        <span type="primary" class="el-icon-edit" @click="editRole(scope.row.id)"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -91,6 +87,10 @@
                         </div>
                         <el-button type="primary" class="dialog-btn select-dialog-btn" style="margin-left:70px"
                                    @click="saveSelect()">确 定
+
+
+
+
                         </el-button>
                         <el-button class="dialog-btn select-dialog-btn" @click="cancleSelect()">取消</el-button>
                     </div>

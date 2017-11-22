@@ -34,10 +34,7 @@
         <div class="main">
             <div>
                 <el-button type="primary" class="basic-btn" icon="plus"  @click="addMember()">添加人员</el-button>
-                <el-button type="primary" class="basic-btn"  @click='batchAddMember()'>
-                    <i class="icon-batch-add pl-icon-batch-add"></i>
-                    <span>批量添加 </span>                                                           
-                </el-button>
+                <el-button type="primary" class="basic-btn" icon="share" @click='batchAddMember()'>批量添加</el-button>
                 <el-button type="primary"  class="basic-btn" icon="delete" @click="deleteMember()"> 删除人员</el-button>
             </div>
             <el-table ref="multipleTable" :data="memberTableData" border tooltip-effect="dark"
@@ -82,10 +79,10 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span  class="icon-edit_    icon"  @click="editMember(scope.row.id)"></span>
-                        <span  class="icon-authorize_ icon" @click="authorizedDataCatalog();authorizedDataCatalogVisible=true;"></span>
-                        <span  class="icon-sign  icon"  @click="signDialogVisible=true"></span>
-                        <span  class="icon-view icon"   @click="serviceDetailsDialogVisible=true"></span>
+                        <span type="primary" class="el-icon-edit"  @click="editMember(scope.row.id)"></span>
+                        <span type="primary" class="el-icon-document" @click="authorizedDataCatalog();authorizedDataCatalogVisible=true;"></span>
+                        <span type="primary" class="el-icon-picture"  @click="signDialogVisible=true"></span>
+                        <span type="primary" class="el-icon-search"   @click="serviceDetailsDialogVisible=true"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -806,9 +803,6 @@
         font-size: 16px;
         font-weight: bold;
         color: #444444;
-    }
-    .icon+.icon{
-        margin-left: 15px;
     }
 </style>
 
