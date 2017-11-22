@@ -211,7 +211,7 @@
                 // 隐藏过期服务
             },
             checkDetail(listId) {
-                this.$router.push({path:'/order-management/orders-detail/'+listId+''});
+                this.$router.push({path:'/system/order-management/orders-detail/'+listId+''});
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);

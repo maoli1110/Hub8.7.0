@@ -584,9 +584,7 @@
 }
 
 .el-dialog__header {
-    padding: 20px 20px 20px;
-    border-bottom:1px solid #e6e6e6;
-    box-sizing: border-box
+    padding: 20px 20px 0
 }
 
 .el-dialog__close {
