@@ -16,10 +16,10 @@
         </div>
         <div class="main">
             <div>
-                <el-button type="primary" class="basic-btn" icon="plus" @click="addFolder();isAddFolder=true">添加</el-button>
-                <el-button type="primary" class="basic-btn" icon="delete" @click="deleteFolder()"> 删除</el-button>
+                <el-button type="primary" class="basic-btn" icon="plus" @click="addProcess('add');editDialogVisible=true">添加</el-button>
+                <el-button type="primary" class="basic-btn" icon="delete" @click="deleteProcess()"> 删除</el-button>
             </div>
-            <el-table ref="multipleTable" :data="FolderTableData" border tooltip-effect="dark"
+            <el-table ref="multipleTable" :data="ProcessTableData" border tooltip-effect="dark"
                       style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop="name" label="模板名称" >
@@ -37,7 +37,7 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span type="primary" class="el-icon-document"
-                              @click="modifyDataCatalog();editDialogVisible=true;"></span>
+                              @click="addProcess('edit');editDialogVisible=true;"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -54,8 +54,9 @@
                 </el-pagination>
             </div>
         </div>
+        
         <!-- 移动资料目录 -->
-        <el-dialog title="移动文件夹" :visible.sync="editDialogVisible" size='process-edit-template'>
+        <el-dialog :title=title :visible.sync="editDialogVisible" size='process-edit-template'>
             <edit-tree> </edit-tree>  
             <div style="clear:both;"></div>
             <span slot="footer" class="dialog-footer">
@@ -76,13 +77,11 @@ export default {
   },
   data() {
     return {
-      url: "../../../static/tree1.json",
-      cacheProjectTree: [],
-      addFolderDialogVisible: false,
+      addProcessDialogVisible: false,
       editDialogVisible: false,
+      title: "",
       textarea: "",
       orgValue: "",
-      role: "",
       orgSetting: {
         data: {
           simpleData: {
@@ -91,16 +90,6 @@ export default {
         },
         callback: {
           onClick: this.orgTreeClick
-        }
-      },
-      dialogOrgSetting: {
-        data: {
-          simpleData: {
-            enable: true
-          }
-        },
-        callback: {
-          onClick: this.dialogOrgTreeClick
         }
       },
       zNodes: [
@@ -140,60 +129,7 @@ export default {
           beforeClick: this.authorizedProjectBeforeClick
         }
       },
-      authorizedProjectNodes: [
-        {
-          id: 1,
-          pId: 0,
-          name: "展开、折叠 自定义图标不同",
-          open: true,
-          iconSkin: "pIcon01"
-        },
-        { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-        { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-        { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-        {
-          id: 2,
-          pId: 0,
-          name: "展开、折叠 自定义图标相同",
-          open: true,
-          iconSkin: "pIcon02"
-        },
-        { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-        { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-        { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-        { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-        { id: 31, pId: 3, name: "叶子节点1" },
-        { id: 32, pId: 3, name: "叶子节点2" },
-        { id: 33, pId: 3, name: "叶子节点3" }
-      ],
-      folderSetting: {
-        check: {
-          enable: true,
-          chkStyle: "radio",
-          radioType: "all"
-        },
-        data: {
-          simpleData: {
-            enable: true
-          }
-        }
-      },
-      folderNodes: [
-        { id: 1, pId: 0, name: "我是开始 1", open: true },
-        { id: 11, pId: 1, name: "我是开始 1-1", open: true },
-        { id: 111, pId: 11, name: "我是开始 1-1-1" },
-        { id: 112, pId: 11, name: "我是开始 1-1-2" },
-        { id: 12, pId: 1, name: "我是开始 1-2", open: true },
-        { id: 121, pId: 12, name: "我是开始 1-2-1" },
-        { id: 122, pId: 12, name: "我是开始 1-2-2" },
-        { id: 2, pId: 0, name: "我是开始 2", checked: true, open: true },
-        { id: 21, pId: 2, name: "我是开始 2-1" },
-        { id: 22, pId: 2, name: "我是开始 2-2", open: true },
-        { id: 221, pId: 22, name: "我是开始 2-2-1", checked: true },
-        { id: 222, pId: 22, name: "我是开始 2-2-2" },
-        { id: 23, pId: 2, name: "我是开始 2-3" }
-      ],
-      FolderTableData: [
+      ProcessTableData: [
         {
           name: "赵四",
           id: 1,
@@ -315,28 +251,6 @@ export default {
           remarks: "超长remarks"
         }
       ],
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
       multipleSelection: []
     };
   },
@@ -348,21 +262,6 @@ export default {
         $(".el-select-dropdown__item.selected").click();
       }, 100);
     },
-    dialogOrgTreeClick(event, treeId, treeNode) {
-      this.ruleForm.attribution = treeNode.name;
-      setTimeout(() => {
-        $(".el-select-dropdown__item.selected").click();
-      }, 100);
-    },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
@@ -372,10 +271,14 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    addFolder() {
-      this.addFolderDialogVisible = true;
+    addProcess(e) {
+      if (e == "edit") {
+        this.title = "编辑模板";
+      } else {
+        this.title = "添加模板";
+      }
     },
-    deleteFolder() {
+    deleteProcess() {
       this.$confirm("确认删除该记录吗?", "提示", {
         type: "warning"
       })
@@ -394,85 +297,6 @@ export default {
           });
         })
         .catch(() => {});
-    },
-    authorizedProjectClick(event, treeId, treeNode) {
-      let exsistCacheProjectTreeItem = this.cacheProjectTree.find(
-        el => el.id == treeNode.id
-      );
-      if (exsistCacheProjectTreeItem) {
-        this.folderNodes = exsistCacheProjectTreeItem.preTreeInfo;
-        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
-      } else {
-        console.log("后台请求数据");
-        this.$axios.get(this.url).then(res => {
-          this.folderNodes = res.data;
-          $.fn.zTree.init(
-            $("#folderTree"),
-            this.folderSetting,
-            this.folderNodes
-          );
-        });
-      }
-    },
-    authorizedProjectBeforeClick() {
-      //  左侧组织树上次选中节点
-      let zTree = $.fn.zTree.getZTreeObj("authorizedProjectTree");
-      let preSelectNode = zTree.getSelectedNodes();
-      // 记录右侧文件夹树上次选中状态
-      let preTreeObj = $.fn.zTree.getZTreeObj("folderTree");
-      // let preNodes = preTreeObj.transformToArray(preTreeObj.getNodes());
-      let preNodes = preTreeObj.getNodes();
-      if (this.cacheProjectTree.length > 0) {
-        let cacheProjectTreeItem = this.cacheProjectTree.find(
-          el => el.id == preSelectNode[0].id
-        );
-        cacheProjectTreeItem
-          ? (cacheProjectTreeItem.preTreeInfo = preNodes)
-          : this.cacheProjectTree.push({
-              id: preSelectNode[0].id,
-              preTreeInfo: preNodes
-            });
-      } else {
-        this.cacheProjectTree.push({
-          id: preSelectNode[0].id,
-          preTreeInfo: preNodes
-        });
-      }
-    },
-    saveFolderName() {
-      this.isSaveFolderName = true;
-      this.FolderTableData.push({
-        name: this.folderName,
-        id: 1,
-        pass: "wulijjjj111111111111111111",
-        role: "项目经理",
-        isAdmin: true,
-        phone: "18075240365",
-        email: "978648117@163.com",
-        date: "2016-05-03 13:51",
-        WAU: "5小时.5次",
-        remarks: "新加的"
-      });
-      this.isAddFolder = false;
-      this.isSaveFolderName = false;
-    },
-    cancleFolderName() {
-      this.isAddFolder = false;
-      this.isSaveFolderName = false;
-    },
-    modifyDataCatalog() {
-      setTimeout(() => {
-        let zTree = $.fn.zTree.init(
-          $("#authorizedProjectTree_"),
-          this.authorizedProjectSetting,
-          this.authorizedProjectNodes
-        );
-        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
-        let nodes = zTree.getNodes();
-        if (nodes.length > 0) {
-          zTree.selectNode(nodes[0]);
-        }
-      }, 150);
     }
   },
   mounted() {

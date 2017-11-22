@@ -21,7 +21,6 @@
                             <li @click="add({isParent:false})">增加单个状态</li>
                             <li @click='textAreaVisible = true;textareaValue="";textTittle="增加多个状态";type="state" '>
                                 增加多个状态
-
                             </li>
                         </ul>
                     </div>
@@ -1375,7 +1374,6 @@
     .icon {
         margin-left: 5px;
     }
-
     .select-dropdown ul {
         position: absolute;
         width: 120px;

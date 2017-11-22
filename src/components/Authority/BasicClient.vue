@@ -14,10 +14,15 @@
         </div>
         <div class="basic-main">
             <div>
-                <el-button type="primary" class="basic-btn" icon="plus"
-                           @click="addAuthorizationDialogVisible=true;addAuthorization()">新增授权
+                <el-button type="primary" class="basic-btn"
+                           @click="addAuthorizationDialogVisible=true;addAuthorization()">
+                           <i class="icon-add-authorization pl-icon-s"></i>
+                           <span>新增授权</span>                           
                 </el-button>
-                <el-button type="primary" class="basic-btn" icon="delete">取消授权</el-button>
+                <el-button type="primary" class="basic-btn">
+                  <i class="icon-cancle-authorization pl-icon-s"></i>
+                  <span>取消授权</span>                 
+                  </el-button>
                 <el-input placeholder="请选择日期" icon="search" style="float:right;width:281px"></el-input>
             </div>
             <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
@@ -299,9 +304,9 @@ export default {
       ]
     };
   },
-  watch:{
-    radio(new_,old_){
-       console.log(new_)
+  watch: {
+    radio(new_, old_) {
+      console.log(new_);
     }
   },
   methods: {
@@ -454,7 +459,7 @@ export default {
 
 .el-transfer-right .el-transfer-panel__list {
   padding-top: 10px;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .el-transfer-right .el-transfer-panel__item {

@@ -58,7 +58,7 @@
                     <div style="position:relative;">
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAlls"
                                      @change="handleCheckAlls"
-                                     style="position:absolute;left:39px;top:22px;z-index:1000">全部
+                                     style="position:absolute;left:41px;top:22px;z-index:1000">全部
                         </el-checkbox>
                     </div>
 
