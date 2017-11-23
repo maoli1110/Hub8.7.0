@@ -56,7 +56,7 @@
                         <el-table-column prop="remarks" label="备注"></el-table-column>
                         <el-table-column label="操作" width="150">
                             <template slot-scope="scope">
-                                <i class="icon icon-unbind-software" @click=""></i>
+                                <i class="icon icon-unbind-software" title="解绑软件" @click=""></i>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -132,5 +132,9 @@
 
     .font-s-14 {
         font-size: 14px;
+    }
+
+    .icon-unbind-software {
+        margin-top: 10px;
     }
 </style>

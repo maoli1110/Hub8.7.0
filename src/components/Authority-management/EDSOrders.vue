@@ -3,7 +3,7 @@
         <div class="order-management eds-orders">
             <div class="header">
                 <el-col :span="12">
-                    <span>查询您最近一年的支付记录：</span>
+                    <span style="font-size: 14px;">查询您最近一年的支付记录：</span>
                     <el-button class="active" :plain="true" type="info" size="small" @click="refreshList($event)">
                         <span>最近一月</span>
                     </el-button>

@@ -11,7 +11,7 @@
         <div class="main">
             <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="min-width:900px">
                 <el-table ref="multipleTable" class="scroll-me" :data="orderManageTableData" border tooltip-effect="dark"
-                          style="min-width:1537px;margin-top:20px">
+                          style="min-width: 1537px;margin-top:20px">
                     <el-table-column class="" type='index' label="序号" width="60" :index="indexSort"></el-table-column>
                     <el-table-column label="套餐服务" width="150">
                         <template slot-scope="scope">
