@@ -505,7 +505,6 @@
                 }
             },
             openWindow(type, cpt){
-                debugger;
                 //执行ajax
                 if (ct.calendarFalg == 0) {
                     restDates = [];
