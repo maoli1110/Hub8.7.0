@@ -1,56 +1,54 @@
 <template>
     <div class="org">
         <div class="header">
-            <el-button>+全部展开</el-button>
-            <el-button>-全部收起</el-button>
-            <el-popover ref="popover4" placement="right"  width="400" trigger="click">
-            <div class="pop-manager-dialog">
-                <div class="pop-header">
-                    <p class="enterprise-name">企业名称</p>
-                    <p class="company-name">初始化公司名字</p>
-                </div>
-                <div class="pop-manager-list">
-                    <p class="name">负责人</p>
-                    <div class="list">
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                        <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+        <el-popover ref="popover4" placement="right"  width="400" trigger="click">
+                <div class="pop-manager-dialog">
+                    <div class="pop-header">
+                        <p class="enterprise-name">企业名称</p>
+                        <p class="company-name">初始化公司名字</p>
+                    </div>
+                    <div class="pop-manager-list">
+                        <p class="name">负责人</p>
+                        <div class="list">
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                        </div>
+                    </div>
+                    <div class="pop-operation">
+                        <el-button type="primary" class="basic-btn" icon="plus">添加</el-button>
+                        <el-button type="primary" class="basic-btn" icon="plus">删除</el-button>
+                        <el-button type="primary" class="basic-btn" icon="plus">编辑</el-button>
                     </div>
                 </div>
-                <div class="pop-operation">
-                    <el-button type="primary" class="basic-btn" icon="plus" >添加</el-button>
-                    <el-button type="primary" class="basic-btn" icon="plus" >删除</el-button>
-                    <el-button type="primary" class="basic-btn" icon="plus" >编辑</el-button>
-                </div>
-            </div>
-            </el-popover>
-            <el-button v-popover:popover4>click 激活</el-button>
-            
+        </el-popover>
+        <el-button type="primary" class="basic-btn" icon="plus">全部展开</el-button>
+        <el-button type="primary" class="basic-btn" icon="plus">全部收起</el-button>
+        <el-button type="primary" class="basic-btn" icon="plus" v-popover:popover4>负责人界面</el-button>
         </div>
         <div id="organization-tree" class="clearfix">
         </div>
-        
     </div>
 </template>
 <script>
@@ -109,7 +107,8 @@ export default {
       textTittle:'',
       type:'',
       // 树数据
-      url: "../../../static/organization.json",
+      url: "../../../static/orgs-old.json",
+      // url: "../../../static/organization.json",
       setting: {
         view: {
           showIcon: true
@@ -136,32 +135,79 @@ export default {
     };
   },
   mounted() {
+    /**
+     * 简要数据转换为标准JSON数组
+     * @param  {obj} param          获取树结构需要的临时参数
+     * @param  {obj} simpleOrgNode  原始数据
+     * @return {obj}                返回生成树结构所需要的对象
+     */
+    function transformToObjFormat(param, simpleOrgNodes) {
+        var i,l;
+        var key = param.orgNodeKey;
+        var parentKey = param.orgNodeParentKey;
+        if (!key || key=="" || !simpleOrgNodes) return [];
+        
+        if ($.isArray(simpleOrgNodes)) {
+            var r = [];
+            var tmpMap = [];
+            for (i=0, l=simpleOrgNodes.length; i<l; i++) {
+                tmpMap[simpleOrgNodes[i][key]] = simpleOrgNodes[i]; //引用赋值
+            }
+            for (i=0, l=simpleOrgNodes.length; i<l; i++) {
+                if (tmpMap[simpleOrgNodes[i][parentKey]]) {
+                    if (!tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol]){
+                        tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol] = [];
+                    }
+                    tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol].push(simpleOrgNodes[i]);
+                } else {
+                    r.push(simpleOrgNodes[i]);
+                }
+            }
+            return r;
+        }else {
+            return [simpleOrgNodes];
+        }
+    }
+
+    //获取原始树结构
     axios.get(this.url).then(res => {
-        console.log(this.setting);
-        var tempzNodes = res.data[0].children;
+        // 组合树结构需要的参数
+        var param = {
+            orgNodeKey: "id",
+            nodesCol:'children',
+            orgNodeParentKey: "pId"
+        }
+        // 处理原始树结构,返回生成树结构所需要的对象
+        var tempzNodes = transformToObjFormat(param,res.data);
+        tempzNodes = tempzNodes[0].children;
         function* entries(tempzNodes) {
             for (let key of Object.keys(tempzNodes)) {
                 yield [key, tempzNodes[key]];
             }
         }
-
         $("#organization-tree").width(tempzNodes.length*260);
         for(let [key,value] of entries(tempzNodes)){
-
             var html = '<ul id="ztree-'+key+'" class="ztree"></ul>';
             $("#organization-tree").append(html);
             $.fn.zTree.init($("#ztree-"+key), this.setting, value);
         }
-        // let zTree = $.fn.zTree.init($("#tree_edit"), this.setting, tempzNodes);
     });
   }
 };
 </script>
 <style>
 .org {
-  padding: 20px;
   height: calc(100vh - 218px);
   overflow: auto;
+  background: #fff;
+}
+.org .header {
+    border-bottom: 1px solid #e6e6e6;
+    background-color:#fff;
+    padding: 10px 10px;
+}
+.org .basic-btn {
+    width: auto;
 }
 .org .ztree li a {
     line-height: 32px;

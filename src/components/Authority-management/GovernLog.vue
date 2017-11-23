@@ -14,7 +14,7 @@
             <div class="main">
                 <el-button type="primary">主要按钮</el-button>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                    <el-table ref="multipleTable scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
+                    <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px">
                         <el-table-column class="" type='index' label="序号" width="60" :index="indexSort"></el-table-column>
                         <el-table-column class="table-tr" prop="date" label="通行证/账号名称" width="200"></el-table-column>

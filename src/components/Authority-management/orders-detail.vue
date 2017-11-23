@@ -3,7 +3,7 @@
         <div class="order-management order-detail">
             <div>
                 <span @click="backToOrderList" class="font-s-14">应用分配</span>
-                <span class="font-s-14"> > <span class=“font-s-14” style="color: #6694f2">绑定管理</span></span>
+                <span class="font-s-14"> > <span class="font-s-14" style="color: #6694f2">绑定管理</span></span>
             </div>
             <div class="header">
                 <el-col :span="10">
@@ -18,14 +18,14 @@
                     <strong class="font-w-14">2017年1月1日</strong>
                 </el-col>
                 <el-col :span="10">
-                    <span style="color: #e30000">*</span><span>注：在有效期内共可修改绑定电脑<span class="font-w-14">80</span>次，有效期内还可修改<span
+                    <span style="color: #e30000;">*</span><span>注：在有效期内共可修改绑定电脑<span class="font-w-14">80</span>次，有效期内还可修改<span
                     class="font-w-14">80</span>次</span>
                 </el-col>
             </div>
             <div class="header">
                 <el-col :span="20">
-                    <el-button size="small" class="unbind">
-                        <i></i>
+                    <el-button type="primary" class="basic-btn">
+                        <i class="icon-unbind icon"></i>
                         <span>解绑软件</span>
                     </el-button>
                 </el-col>
@@ -41,7 +41,7 @@
 
             <div class="main detail-list">
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                    <el-table ref="multipleTable scroll-me" :data="bindManageTableData" border tooltip-effect="dark"
+                    <el-table class="scroll-me" ref="multipleTable" :data="bindManageTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
                         <el-table-column type="selection" width="60"></el-table-column>
                         <el-table-column type='index' label="序号" width="60"
@@ -55,7 +55,9 @@
                         <el-table-column prop="bindingTime" label="操作时间" width="200"></el-table-column>
                         <el-table-column prop="remarks" label="备注"></el-table-column>
                         <el-table-column label="操作" width="150">
-
+                            <template slot-scope="scope">
+                                <i class="icon icon-unbind-software" @click=""></i>
+                            </template>
                         </el-table-column>
                     </el-table>
                 </vue-scrollbar>
@@ -118,22 +120,9 @@
         margin-top: 20px;
     }
 
-    .detail-list {
-        margin-bottom: 20px;
-    }
     .header-tips {
         height: 60px;
         line-height: 60px;
-    }
-    .header .unbind {
-        padding: 10px 15px 10px 30px;
-        background-color: #4778c7;
-        color: #fff;
-        border-radius: 4px;
-    }
-
-    .header .unbind span {
-        font-size: 14px;
     }
 
     .font-w-14 {

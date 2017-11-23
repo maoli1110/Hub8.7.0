@@ -20,7 +20,7 @@
             </div>
             <div class="main">
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                    <el-table ref="multipleTable scroll-me" :data="EDSOrdersTableData" border tooltip-effect="dark"
+                    <el-table ref="multipleTable" class="scroll-me" :data="EDSOrdersTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px">
                         <el-table-column prop="orderTime" label="下单时间" width="200"></el-table-column>
                         <el-table-column prop="outTradeId" label="订单号" width="200"></el-table-column>

@@ -22,7 +22,7 @@
         </div>
         <div class="main">
             <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                <el-table ref="multipleTable scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
+                <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
                           style="min-width: 1537px;margin-top:20px">
                     <el-table-column class="" type='index' label="序号" width="60" :index="indexSort"></el-table-column>
                     <el-table-column class="table-tr" prop="date" label="时间" width="200"></el-table-column>
@@ -53,7 +53,7 @@
     <!--立即充值-->
     <el-dialog
 		title="鲁班币充值"
-		:visible.sync="dialogVisible" 
+		:visible.sync="dialogVisible"
 		width="30%"
 		:before-close="handleClose" class="modelwidth726px">
         <el-form  :model="rechargeform" label-width="100px"  ref="rechargeruleForm">
@@ -64,7 +64,7 @@
 			    <div class="font-s-12 recharge-custom">
 			    	<el-input v-model="rechargeform.goldAmount" placeholder="自定义鲁班币" style="width:120px;" @blur="rechargeCustom"></el-input>个鲁班币
 			    </div>
-			    
+
 			</el-form-item>
 			<el-form-item label="发票类型：">
 			<!--1:不需要发票,0:普通发票,3专用发票 ,  -->
@@ -245,7 +245,7 @@ import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
 	box-sizing:border-box;
 }
 .recharge-ul li:hover{
-	border:1px solid #6694F2; 
+	border:1px solid #6694F2;
 	color:#6694F2;
 	cursor:pointer;
 }
@@ -288,7 +288,7 @@ button.normal-btn{
 	height:36px;
 	padding:10.5px 12px;
 }
-.recharge-custom .el-input .el-input__inner{ 
+.recharge-custom .el-input .el-input__inner{
 	width:110px;
 	height:30px;
 	line-height:30px;
