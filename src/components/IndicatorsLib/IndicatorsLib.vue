@@ -14,16 +14,6 @@
                     <el-menu-item index="/indicatorslib/passed/reinforcement-index">钢筋指标（）</el-menu-item>
                 </el-submenu>
                 </el-menu>
-            <!--<el-menu mode="vertical" :default-active="activeIndex" router>-->
-                <!--<el-menu-item-group title="未审核指标">-->
-                    <!--<el-menu-item index="/indicatorslib/civilengineering">土建指标</el-menu-item>-->
-                    <!--<el-menu-item index="/indicatorslib/steel">钢筋指标</el-menu-item>-->
-                <!--</el-menu-item-group>-->
-                <!--<el-menu-item-group title="已通过指标">-->
-                   <!--<el-menu-item index="/indicatorslib/civilengineering-pass">土建指标</el-menu-item>-->
-                    <!--<el-menu-item index="/indicatorslib/steel-pass">钢筋指标</el-menu-item>-->
-                <!--</el-menu-item-group>-->
-            <!--</el-menu>-->
         </div>
         <div class="container">
             <router-view></router-view>

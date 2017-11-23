@@ -12,9 +12,13 @@
                 </el-col>
             </div>
             <div class="main">
-                <el-button type="primary">主要按钮</el-button>
+
+                <el-button type="primary" class="basic-btn"
+                           @click=""><i
+                    class="components-icon icon-update icon-map "></i><span class="btn-text">导出</span>
+                </el-button>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                    <el-table ref="multipleTable scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
+                    <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px">
                         <el-table-column class="" type='index' label="序号" width="60" :index="indexSort"></el-table-column>
                         <el-table-column class="table-tr" prop="date" label="通行证/账号名称" width="200"></el-table-column>
@@ -41,46 +45,6 @@
                 </div>
             </div>
         </div>
-        <!--立即充值-->
-        <el-dialog
-            title="鲁班币充值"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleClose" class="modelwidth726px">
-            <el-form  :model="rechargeform" label-width="100px"  ref="rechargeruleForm">
-                <el-form-item label="充值数量：">
-                    <ul class="recharge-ul">
-                        <li @click="showCover(rechargeCommon,item)" v-for="item in rechargeCommon" :class="{'icon-luban-coin-checked':item.show===true}">{{item.goldAmount}}</li>
-                    </ul>
-                    <div class="font-s-12 recharge-custom">
-                        <el-input v-model="rechargeform.goldAmount" placeholder="自定义鲁班币" style="width:120px;" @blur="rechargeCustom"></el-input>个鲁班币
-                    </div>
-
-                </el-form-item>
-                <el-form-item label="发票类型：">
-                    <!--1:不需要发票,0:普通发票,3专用发票 ,  -->
-                    <el-radio-group v-model="rechargeform.invoiceType" @change="removeDis">
-                        <el-radio label="1">不需要发票</el-radio>
-                        <el-radio label="-1">需要发票</el-radio><el-button class="needrecharge" :disabled="disabledfalse">编辑</el-button>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="代金券：">
-                    <el-input v-model="rechargeform.voucherNo" placeholder="请输入代金券密码" style="width:220px"></el-input><el-button class="normal-btn">应用</el-button>
-                </el-form-item>
-                <el-form-item label="结算信息：">
-                    <span class="margin-r-20">总价：￥100.00</span>
-                    <span class="margin-r-20">快递费：￥0.00</span>
-                    <span>代金券：￥0.00</span>
-                    <span class="pull-r-f">总计：<span class="span-bule" style="font-size:12px">￥100.00</span></span>
-                </el-form-item>
-                <el-form-item class="text-a-c">
-                    <div class="span-bule" style="font-weight:normal;font-size:12px">《鲁班软件鲁班币充值购买协议》</div>
-                    <el-button type="primary" @click="onSubmit">
-                        接受协议并支付
-                    </el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog>
     </div>
 </template>
 
@@ -144,43 +108,12 @@
                 //序号
                 return index * 1;
             },
-            checkDetail(listId) {
-                this.$router.push({path:'/order-management/orders-detail/'+listId+''});
-            },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
-            },
-            //立即充值
-            onSubmit() {
-                console.log('submit!');
-            },
-            handleClose(done) {
-                done();
-            },
-            showCover(rechargeCommon,item){
-                for (var i = 0; i < rechargeCommon.length; i++) {
-                    rechargeCommon[i].show=false;
-                }
-                item.show=!item.show;
-                this.rechargeform.goldAmount='';
-            },
-            rechargeCustom(){
-                if(this.rechargeform.goldAmount){
-                    for (var i = 0; i < this.rechargeCommon.length; i++) {
-                        this.rechargeCommon[i].show=false;
-                    }
-                }
-            },
-            removeDis(dis){
-                if(dis=="-1"){
-                    this.disabledfalse=false;
-                }else{
-                    this.disabledfalse=true;
-                }
-            },
+            }
         },
         mounted() {
         }
@@ -194,20 +127,14 @@
         padding: 10px 20px;
         line-height: 40px;
     }
-    .main {
-        padding: 0 20px;
-        border-top: 1px solid #e6e6e6;
-        background-color: #fff;
+
+    button.basic-btn {
+        margin-top: 15px;
     }
     .order-management .header .font-w-n{
         font-weight:normal;
     }
-    .font-s-14{
-        font-size:14px;
-    }
-    .font-s-12{
-        font-size:12px;
-    }
+
     .span-bule{
         color:#6694F2;
         font-size:14px;

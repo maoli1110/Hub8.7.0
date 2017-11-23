@@ -9,8 +9,8 @@
             </el-col>
         </div>
         <div class="main">
-            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                <el-table ref="multipleTable scroll-me" :data="orderManageTableData" border tooltip-effect="dark"
+            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="min-width:900px">
+                <el-table ref="multipleTable" class="scroll-me" :data="orderManageTableData" border tooltip-effect="dark"
                           style="min-width: 1537px;margin-top:20px">
                     <el-table-column class="" type='index' label="序号" width="60" :index="indexSort"></el-table-column>
                     <el-table-column label="套餐服务" width="150">
@@ -211,7 +211,7 @@
                 // 隐藏过期服务
             },
             checkDetail(listId) {
-                this.$router.push({path:'/system/order-management/orders-detail/'+listId+''});
+                this.$router.push({path: '/system/order-management/orders-detail/' + listId + ''});
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -263,7 +263,7 @@
     }
 
     .text-package-service {
-        width: 150px;
+        width: 130px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;

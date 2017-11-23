@@ -9,26 +9,24 @@
                             placeholder="请输入搜索内容"
                             icon="search"
                             v-model="searchContent"
-                            :on-icon-click="searchContent" class="searchContent">
+                            :on-icon-click="search" class="searchContent">
                         </el-input>
                     </div>
                 </el-col>
                 <el-col :span="2">
-                    <div class="deepSearch">
-                        <el-button size="small">
-                            <span>高级搜索</span>
-                        </el-button>
+                    <div class="advanced-search">
+                        <el-button type="primary" class="basic-btn">高级搜索</el-button>
                     </div>
                 </el-col>
             </div>
             <div class="header">
                 <el-col :span="20">
-                    <el-button size="small" class="unbind">
-                        <i></i>
+                    <el-button type="primary" class="basic-btn">
+                        <i class="icon icon-pass"></i>
                         <span>审核通过</span>
                     </el-button>
-                    <el-button size="small" class="unbind">
-                        <i></i>
+                    <el-button type="primary" class="basic-btn">
+                        <i class="icon icon-btn-delete"></i>
                         <span>删除</span>
                     </el-button>
                 </el-col>
@@ -54,6 +52,18 @@
                         </el-table-column>
                     </el-table>
                 </vue-scrollbar>
+                <div style="margin-top: 20px">
+                    <div style="float:left;height:40px;line-height:40px">共10个结果</div>
+                    <el-pagination style="margin-left:30%"
+                                   @size-change="handleSizeChange"
+                                   @current-change="handleCurrentChange"
+                                   :current-page="4"
+                                   :page-sizes="[100, 200, 300, 400]"
+                                   :page-size="100"
+                                   layout="total, sizes, prev, pager, next, jumper"
+                                   :total="400">
+                    </el-pagination>
+                </div>
             </div>
         </div>
     </div>
@@ -84,7 +94,7 @@
             backToOrderList(){
                 this.$router.push({path: '/order-management/orders'});
             },
-            searchContent(ev){
+            search(ev){
 //                搜索
                 console.log(ev);
             },
@@ -117,10 +127,8 @@
         background-color: #4778c7;
     }
 
-    .header .deepSearch button {
-        background-color: #4778c7;
-        color: #fff;
-        border-radius: 4px;
+    .header .advanced-search {
+        margin-left: 10px;
     }
 
     .header .unbind {

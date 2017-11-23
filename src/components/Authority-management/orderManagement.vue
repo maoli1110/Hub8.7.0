@@ -2,7 +2,7 @@
     <div class="bims-container">
         <div class="bims-contents Bim-libs shadow-style">
             <transition :name="transitionName">
-                <router-view class="Router bimlib main-shadow"></router-view><!--:tableData="tableData"-->
+                <router-view class="main-shadow"></router-view><!--:tableData="tableData"-->
             </transition>
         </div>
     </div>
@@ -93,11 +93,7 @@
     .container .el-menu .el-menu-item:hover {
         background-color: #f5f8fd;
     }
-    .Router{
-        transition: all .8s ease;
-        position: absolute;
-        top: 20px;
-    }
+
     .slide-left-enter,
     .slide-right-leave-active {
         opacity: 0;

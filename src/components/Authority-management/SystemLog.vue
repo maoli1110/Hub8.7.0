@@ -2,7 +2,7 @@
     <div class="bims-container">
         <div class="bims-contents Bim-libs shadow-style">
             <transition :name="transitionName">
-                <router-view class="Router bimlib main-shadow"></router-view><!--:tableData="tableData"-->
+                <router-view class="main-shadow"></router-view><!--:tableData="tableData"-->
             </transition>
         </div>
     </div>
