@@ -434,7 +434,7 @@
 
             /* 初始化设置日历模板页面 */
             inittocopystate() {
-                console.log(restDates,'restDatesssssss')
+
                 //修改页面渲染逻辑
                 if (ct.calendarFalg == 0) {//复制24小时
                     if (restDates != null && restDates.length > 0) {// 已经设置过的
@@ -592,9 +592,10 @@
                     this.dealDatas();//总时间段的普通时间标准
                 }
                 console.log(restDate, '设置工作日和非工作日');
-                if(ct.calendarFalg==0){
-                    restDates = restDate
-                }
+//                if(ct.calendarFalg==0){
+                    this.restDates = restDate
+//                }
+                console.log(this.restDates,'复制成功了没有');
             },
             //el-table 单元格单机事件
             previewTemplate(row, column,cell, event){
@@ -606,7 +607,8 @@
 
             /* 详情页面日历初始化 */
             detailinittocopystate() {
-                console.log(restDates,'restDates');
+                 restDates = this.restDates;
+//                console.log(restDates,'restDates');
                 //修改页面渲染逻辑
                 if(ct.calendarFalg == 0){//复制24小时
                     if (restDates != null && restDates.length > 0) {// 已经设置过的
@@ -663,6 +665,7 @@
                      }
                      this.priveiwDate = new Date(startTime).toLocaleDateString()+"-"+new Date(endTime).toLocaleDateString();
                      calendarTemplate = new CalendarSet(startTime, endTime);
+                     console.log(restDates,'rest')
                      this.detailinittocopystate();
                  })
                     /*setTimeout(()=>{
