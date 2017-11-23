@@ -92,7 +92,7 @@
                             <el-button type="primary" size="small" @click="setCalendarDate('work')">工作日</el-button>
                             <el-button type="primary" size="small" @click="setCalendarDate('rest')">非工作日</el-button>
                         </el-col>
-                    </el-col v-show>
+                    </el-col>
                     <el-col :span="17"  class="cal-template" >
                         <el-col class="template-tips">克隆：24小时日历</el-col>
                         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
@@ -123,7 +123,7 @@
                         <el-col class="template-tips" style="line-height:58px;">
                             <el-col :span="4">24小时时间</el-col>
                             <el-col :span="6">
-                                <span class="absol span-block" style="width:108px;top:0">日历有效范围：</span><el-input placeholder="显示时间范围" style="margin-left:108px;"></el-input>
+                                <span class="absol span-block" style="width:108px;top:0">日历有效范围：</span><el-input v-model = "priveiwDate" readonly placeholder="显示时间范围" style="margin-left:108px;"></el-input>
                             </el-col>
                         </el-col>
                         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
@@ -153,7 +153,7 @@
     export default {
         created(){
             FormIndex(this.tableData, 2, 10);
-            this.selectInteral = ['2017.11.11', '2017.12.12'];//初始化赋值
+//            this.selectInteral = ['2017.11.11', '2017.12.12'];//初始化赋值
 //            this.getData();
         },
         data: function () {
@@ -165,7 +165,8 @@
                 addVisible: false,//添加模板控制显示隐藏
                 lookTemplate:false,//预览模板控制显示隐藏
                 chooseWeeks: [],//星期的队列
-                title: '添加标签',
+                title: '添加标签',//添加模板标题
+                priveiwDate:"",//预览模板日期范围
                 //分页的一些设置
                 cur_page: 1,//第几页
                 totalPage: 50,//每页显示多少条
@@ -289,6 +290,7 @@
             //设置模板确定
             newTemplateOK(){
                 let currentTime = new Date().toLocaleString();//当前时间
+                console.log(this.templateInfo,'name')
                 if(!this.templateInfo.name){//添加模板名称不能为空
                     this.commonMessage('请输入模板名称','warning');
                     this.addVisible = true;
@@ -414,8 +416,17 @@
             initCalendarSetMethod() {
 //                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null && "" != ct.endDate) {
                 // 创建日历模板
+                let startTime,endTime;
                 setTimeout(()=>{
-                    calendarTemplate = new CalendarSet('2017.01.01', '2017.12.12');
+                    if(!this.selectInteral.length){
+                       let fullYear =  new Date().getFullYear();
+                       startTime = fullYear+'/01/01';
+                       endTime = fullYear+"/12/30"
+                    }else{
+                        startTime = this.selectInteral[0];
+                        endTime = this.selectInteral[1];
+                    }
+                    calendarTemplate = new CalendarSet(startTime, endTime);
                     this.inittocopystate();
                 })
 //                }
@@ -423,6 +434,7 @@
 
             /* 初始化设置日历模板页面 */
             inittocopystate() {
+                console.log(restDates,'restDatesssssss')
                 //修改页面渲染逻辑
                 if (ct.calendarFalg == 0) {//复制24小时
                     if (restDates != null && restDates.length > 0) {// 已经设置过的
@@ -437,14 +449,14 @@
                     }
                 } else {//复制标准
                     var arr = new Array(6, 0);
-                    var chooseDate = this.getRulesDate(arr, '2017.01.01', '2017.12.12');
+                    var chooseDate = this.getRulesDate(arr, this.selectInteral[0],  this.selectInteral[1]);
                     //将所有展示的周六，周日设置为非工作日
                     console.log(chooseDate,'chooseDate')
                     calendarTemplate.setRestDate(chooseDate);
                     if (notWekendRestDates != null && notWekendRestDates.length > 0) {// 已经设置过的
                         var arr = [];
                         for (var i = 0; i < notWekendRestDates.length; i++) {
-                            if (new Date('2017.01.01').getTime() <= new Date(notWekendRestDates[i]).getTime() && new Date(notWekendRestDates[i]).getTime() <= new Date('2017.12.12').getTime()) {
+                            if (new Date(this.selectInteral[0]).getTime() <= new Date(notWekendRestDates[i]).getTime() && new Date(notWekendRestDates[i]).getTime() <= new Date(this.selectInteral[0]).getTime()) {
                                 arr.push(notWekendRestDates[i])
                             }
                         }
@@ -454,7 +466,7 @@
                     if (isWekendWorkDates != null && isWekendWorkDates.length > 0) {
                         var arr = [];
                         for (var i = 0; i < isWekendWorkDates.length; i++) {
-                            if (new Date('2017.01.01').getTime() <= new Date(isWekendWorkDates[i]).getTime() && new Date(isWekendWorkDates[i]).getTime() <= new Date( '2017.12.12').getTime()) {
+                            if (new Date(this.selectInteral[0]).getTime() <= new Date(isWekendWorkDates[i]).getTime() && new Date(isWekendWorkDates[i]).getTime() <= new Date( this.selectInteral[0]).getTime()) {
                                 arr.push(isWekendWorkDates[i])
                             }
                         }
@@ -540,6 +552,7 @@
             modifyDataPicker(value){
                 let startTime = value.split('-')[0];
                 let endTime = value.split('-')[1];
+                $('.vue-scrollbar-transition').css('margin-top','0px');
                 new CalendarSet(startTime, endTime);
             },
             //批量修改重复范围选择
@@ -572,13 +585,16 @@
             //日历设置模板确定
             setTemplateOK(){
                 let restDate;
+                let startTime,endTime;
                 if(ct.calendarFalg==0){
                     restDate = calendarTemplate.getRestDate();
                 }else{
                     this.dealDatas();//总时间段的普通时间标准
                 }
-
-                console.log(restDate, '设置工作日和非工作日')
+                console.log(restDate, '设置工作日和非工作日');
+                if(ct.calendarFalg==0){
+                    restDates = restDate
+                }
             },
             //el-table 单元格单机事件
             previewTemplate(row, column,cell, event){
@@ -590,6 +606,7 @@
 
             /* 详情页面日历初始化 */
             detailinittocopystate() {
+                console.log(restDates,'restDates');
                 //修改页面渲染逻辑
                 if(ct.calendarFalg == 0){//复制24小时
                     if (restDates != null && restDates.length > 0) {// 已经设置过的
@@ -634,10 +651,25 @@
              detailCalendarSetMethod() {
 //                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null&& "" != ct.endDate) {
                     // 创建日历模板
-                    setTimeout(()=>{
+                 let startTime,endTime;
+                 setTimeout(()=>{
+                     if(!this.selectInteral.length){
+                         let fullYear =  new Date().getFullYear();
+                         startTime = fullYear+'/01/01';
+                         endTime = fullYear+"/12/30"
+                     }else{
+                         startTime = this.selectInteral[0];
+                         endTime = this.selectInteral[1];
+                     }
+                     this.priveiwDate = new Date(startTime).toLocaleDateString()+"-"+new Date(endTime).toLocaleDateString();
+                     calendarTemplate = new CalendarSet(startTime, endTime);
+                     this.detailinittocopystate();
+                 })
+                    /*setTimeout(()=>{
+                        this.priveiwDate = this.selectInteral[0]+"-"+this.selectInteral[1]
                         calendarTemplate = new CalendarSet(this.selectInteral[0],this.selectInteral[1]);
                         this.detailinittocopystate();
-                    })
+                    })*/
 //                }
             },
         },
