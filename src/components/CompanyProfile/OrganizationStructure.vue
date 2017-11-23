@@ -1,53 +1,59 @@
 <template>
     <div class="org">
         <div class="header">
-        <el-popover ref="popover4" placement="right"  width="400" trigger="click">
-                <div class="pop-manager-dialog">
-                    <div class="pop-header">
-                        <p class="enterprise-name">企业名称</p>
-                        <p class="company-name">初始化公司名字</p>
-                    </div>
-                    <div class="pop-manager-list">
-                        <p class="name">负责人</p>
-                        <div class="list">
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+            <el-popover ref="popover4" placement="right"  width="400" trigger="click">
+                    <div class="pop-manager-dialog">
+                        <div class="pop-header">
+                            <p class="enterprise-name">企业名称</p>
+                            <p class="company-name">初始化公司名字</p>
+                        </div>
+                        <div class="pop-manager-list">
+                            <p class="name">负责人</p>
+                            <div class="list">
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
+                            </div>
+                        </div>
+                        <div class="pop-operation">
+                            <el-button type="primary" class="basic-btn" icon="plus">添加</el-button>
+                            <el-button type="primary" class="basic-btn" icon="plus">删除</el-button>
+                            <el-button type="primary" class="basic-btn" icon="plus">编辑</el-button>
                         </div>
                     </div>
-                    <div class="pop-operation">
-                        <el-button type="primary" class="basic-btn" icon="plus">添加</el-button>
-                        <el-button type="primary" class="basic-btn" icon="plus">删除</el-button>
-                        <el-button type="primary" class="basic-btn" icon="plus">编辑</el-button>
-                    </div>
-                </div>
-        </el-popover>
-        <el-button type="primary" class="basic-btn" icon="plus">全部展开</el-button>
-        <el-button type="primary" class="basic-btn" icon="plus">全部收起</el-button>
-        <el-button type="primary" class="basic-btn" icon="plus" v-popover:popover4>负责人界面</el-button>
+            </el-popover>
+            <el-button type="primary" class="basic-btn" icon="plus">全部展开</el-button>
+            <el-button type="primary" class="basic-btn" icon="plus">全部收起</el-button>
+            <el-button type="primary" class="basic-btn" icon="plus" v-popover:popover4>负责人界面</el-button>
         </div>
-        <div id="organization-tree" class="clearfix">
+        <div></div>
+        <div class="org-wrap">
+            <div class="root-node">
+                <div>PDS没网测试公司</div>
+            </div>
+            <div id="organization-tree" class="clearfix">
+            </div>
         </div>
     </div>
 </template>
@@ -169,6 +175,17 @@ export default {
         }
     }
 
+    /**
+     * 根据生成的树结构计算总宽度
+     */
+    function getOrgTreeWidth() {
+        let tempWidth = 0;
+        $("#organization-tree > div").each(function(){
+            tempWidth += $(this).width();
+        })
+        return tempWidth;
+    }
+
     //获取原始树结构
     axios.get(this.url).then(res => {
         // 组合树结构需要的参数
@@ -180,17 +197,35 @@ export default {
         // 处理原始树结构,返回生成树结构所需要的对象
         var tempzNodes = transformToObjFormat(param,res.data);
         tempzNodes = tempzNodes[0].children;
+        /**
+         * 给数组添加key值
+         * @yield {obj} 返回都带有key键值的obj
+         */
         function* entries(tempzNodes) {
             for (let key of Object.keys(tempzNodes)) {
                 yield [key, tempzNodes[key]];
             }
         }
-        $("#organization-tree").width(tempzNodes.length*260);
+
+       
         for(let [key,value] of entries(tempzNodes)){
-            var html = '<ul id="ztree-'+key+'" class="ztree"></ul>';
+            var lineStyle = "";
+            if(key != 0 && key != tempzNodes.length-1){
+                lineStyle = 'middleHLine';
+            } else if (key == "0"){
+                lineStyle = 'firstHLine';
+            } else if(key == tempzNodes.length-1) {
+                lineStyle = 'noneHLine';
+            }
+            var tree = '<ul id="ztree-'+key+'" class="ztree"></ul>';
+            var longLine ='<div class="'+lineStyle+'" style=""></div><div class="longitudinalLine2" style="height:25px;border-left:1px solid #4778c7;margin-left:120px"></div>';
+            var html = '<div style="float:left">'+longLine+''+tree+'</div>';
             $("#organization-tree").append(html);
             $.fn.zTree.init($("#ztree-"+key), this.setting, value);
         }
+        $("#organization-tree").width(getOrgTreeWidth()+300);
+        $(".org .org-wrap .root-node > div").css("margin-left",(getOrgTreeWidth()+300)/2);
+
     });
   }
 };
@@ -213,7 +248,7 @@ export default {
     line-height: 32px;
     width: 150px;
 }
-.org .ztree li span.button.ico_open {
+.org .ztree li span.button.ico_open,.org .ztree li span.button.ico_close{
     background-position: -134px -20px;
 }
 .org .ztree li span.button.ico_docu {
@@ -223,13 +258,8 @@ export default {
     float: left;
 }
 .org ul.ztree {
-  /*height: 560px;*/
-  /*width: 260px;*/
   margin-top: 10px;
   margin: 0 auto;
-  /*border: 1px solid #617775;*/
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 .org .ztree li a {
     border: 2px solid #4778c7;
@@ -240,6 +270,51 @@ export default {
 }
 .org .ztree li span.button {
     margin-top: 9px;
+}
+.org #organization-tree >ul {
+    min-width: 230px;
+}
+.org .firstHLine {
+    margin: 0px;
+    margin-left: 120px;
+    height: 1px;
+    display: block;
+    padding: 0px;
+    background: url(../../../static/img/line_conn2.jpg) repeat-x;
+    font: 0px/0px tahoma,"微软雅黑";
+    COLOR: #4778c7;
+    overflow: hidden;
+}
+.org .middleHLine  {
+    margin: 0px;
+    height: 1px;
+    display: block;
+    padding: 0px;
+    background: url(../../../static/img/line_conn2.jpg) repeat-x;
+    font: 0px/0px tahoma,"微软雅黑";
+    COLOR: #4778c7;
+    overflow: hidden;
+}
+.org .noneHLine {
+    margin: 0px;
+    margin-right: 101px;
+    height: 1px;
+    display: block;
+    padding: 0px;
+    background: url(../../../static/img/line_conn2.jpg) no-repeat;
+    font: 0px/0px tahoma,"微软雅黑";
+    COLOR: #4778c7;
+    overflow: hidden;
+}
+.org .org-wrap .root-node {
+    position:relative;
+}
+.org .org-wrap .root-node > div {
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    font-weight: bold;
 }
 /*el-popover*/
 .el-popover {
