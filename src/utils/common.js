@@ -17,26 +17,27 @@
      * @returns {basePath}  分属模块对应的路径
      */
     function basePath(localhost){
+        let basePaths = "";
          switch (localhost){
-             case 'builder':
-                 basePath = 'http://192.168.13.195:8989/builder/';
+             case 'http://192.168.13.195:8989/builder/':
+                 basePaths = 'http://192.168.13.195:8989/builder/';
                  break;
-             case 'cloud':
-                 basePath= 'http://192.168.13.195:8989/cloud/';
+             case 'http://192.168.13.195:8989/cloud/':
+                 basePaths= 'http://192.168.13.195:8989/cloud/';
                  break;
-             case 'builderCiVil':
-                 basePath= 'http://192.168.13.195:8989/builderCiVil/';
+             case 'http://192.168.13.195:8989/builderCiVil/':
+                 basePaths= 'http://192.168.13.195:8989/builderCiVil/';
                  break;
-             case 'cas':
-                 basePath= 'http://192.168.13.195:8989/cas/';
+             case 'http://192.168.13.195:8989/cas/':
+                 basePaths= 'http://192.168.13.195:8989/cas/';
                  break;
-             case 'palace':
-                 basePath= 'http://192.168.13.195:8989/palace/';
+             case 'http://192.168.13.195:8989/palace/':
+                 basePaths= 'http://192.168.13.195:8989/palace/';
                  break;
              default:
                  break;
          }
-         return basePath;
+        return basePaths;
      }
     /*function apiBase() {
         let hostname = window.location.hostname,
