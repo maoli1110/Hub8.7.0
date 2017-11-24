@@ -1,7 +1,6 @@
 <template>
     <div>
-        <div class="order-management order-detail">
-
+        <div class="order-management">
             <div class="header">
                 <el-col :span="8">
                     <div>
@@ -15,7 +14,7 @@
                 </el-col>
                 <el-col :span="2">
                     <div class="advanced-search">
-                        <el-button type="primary" class="basic-btn">高级搜索</el-button>
+                        <el-button type="primary" class="basic-btn" @click="deepSearch = true">高级搜索</el-button>
                     </div>
                 </el-col>
             </div>
@@ -31,25 +30,21 @@
                     </el-button>
                 </el-col>
             </div>
-
             <div class="main">
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                     <el-table ref="multipleTable scroll-me" :data="bindManageTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
                         <el-table-column type="selection" width="60"></el-table-column>
-                        <el-table-column type='index' label="序号" width="60"
+                        <el-table-column type='index' label="编号" width="60"
                                          :index="indexSort"></el-table-column>
-                        <el-table-column prop="computerName" label="电脑名称" width="200"></el-table-column>
-                        <el-table-column label="使用者" width="200">
+                        <el-table-column prop="computerName" label="工程名称" width="300"></el-table-column>
+                        <el-table-column label="上传人" width="200">
                             <template slot-scope="scope">
                                 <span>{{scope.row.username}}({{scope.row.realname}})</span>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="bindingTime" label="操作时间" width="200"></el-table-column>
+                        <el-table-column prop="bindingTime" label="上传时间" width="200"></el-table-column>
                         <el-table-column prop="remarks" label="备注"></el-table-column>
-                        <el-table-column label="操作" width="150">
-
-                        </el-table-column>
                     </el-table>
                 </vue-scrollbar>
                 <div style="margin-top: 20px">
@@ -66,6 +61,26 @@
                 </div>
             </div>
         </div>
+        <el-dialog title="高级搜索" :visible.sync="deepSearch" class="deepSearchModal" :close-on-click-modal="false"
+                   :close-on-press-escape="false">
+            <el-form :model="searchResult">
+                <el-form-item label="工程名称" label-width="200">
+                    <el-col :span="6">
+                        <el-input v-model="searchResult.name" auto-complete="off"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="活动区域" label-width="200">
+                    <el-select v-model="searchResult.region" placeholder="请选择活动区域">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deepSearch = false">确 定</el-button>
+                <el-button @click="deepSearch = false">取 消</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -87,7 +102,14 @@
                         "remarks": "string",
                         "username": "string"
                     }
-                ]
+                ],
+                deepSearch: false,
+                searchResult:
+                    {
+                        name:'建筑',
+                        region:'上海'
+                    }
+
             }
         },
         methods: {
@@ -106,7 +128,12 @@
                 //序号
                 return index * 1;
             },
-
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            },
         },
         components: {
             VueScrollbar
@@ -119,14 +146,6 @@
 </script>
 
 <style scoped>
-    .header {
-        margin-top: 20px;
-    }
-
-    .el-icon-search {
-        background-color: #4778c7;
-    }
-
     .header .advanced-search {
         margin-left: 10px;
     }
@@ -140,5 +159,13 @@
 
     .header .unbind span {
         font-size: 14px;
+    }
+
+</style>
+
+<style>
+    .deepSearchModal .el-dialog .el-dialog__header {
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e6e6e6;
     }
 </style>

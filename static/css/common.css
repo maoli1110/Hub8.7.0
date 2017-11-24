@@ -1434,6 +1434,14 @@ body .el-popover.remark-popper {
     background-color: #fff;
 }
 
+.searchContent .el-input__icon {
+    background-color: #6595f2;
+}
+
+.searchContent .el-input__inner {
+    height: 38px;
+}
+
 /*footer*/
 .footer {
     width: calc(100% - 300px);

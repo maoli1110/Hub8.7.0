@@ -104,26 +104,28 @@
         <el-dialog title="分配鲁班币" custorm-class="assign-lubanCoin" size="small" :visible.sync="assignLubanCoinDialog"
                    :close-on-click-modal="false" :close-on-press-escape="false" class="modelBorder">
             <el-form :model="assignLuban">
-
+                <el-form-item label="您的EDS账号当前鲁班币数:" class="coin-count">
+                    <span>2212</span>
+                </el-form-item>
                 <el-form-item>
                     <el-row class="transfer">
-                        <el-col :span="10" class="transfer-con-add">
+                        <el-col :span="11" class="transfer-con-add">
                             <el-col :span="12">
                                 <el-checkbox v-model="checkAll" @change="addAllRootPerson">全选</el-checkbox>
                             </el-col>
                             <el-col :span="12"><p offset="12">全部账号人员
-                                <!--{{cities.length}}-->
+                                <!--{{accounts.length}}-->
                             </p></el-col>
                             <el-col :span="24" class="border">
                                 <el-input style="width:100%"
                                           class="el-transfer-panel__filter"
                                           size="small"
                                           icon="search"
-                                          v-model="proMsearchKey"
-                                          :on-icon-click="proManageSearch" placeholder="搜索鲁班通行证/人员姓名"
+                                          v-model="accountSearchKey"
+                                          :on-icon-click="accountSearch" placeholder="搜索鲁班通行证/人员姓名"
                                 ></el-input>
                                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
-                                    <el-checkbox-group v-model="checkedCities" @change="addRootPerson" class="scroll-me"
+                                    <el-checkbox-group v-model="checkedAccounts" @change="addRootPerson" class="scroll-me"
                                                        style="background:#fff;">
                                         <el-checkbox class="el-transfer-panel__item" v-for="account in accounts"
                                                      :label="account" :key="account" :title="account">{{account}}
@@ -132,19 +134,20 @@
                                 </vue-scrollbar>
                             </el-col>
                         </el-col>
-                        <el-col :span="10" class="transfer-con-del " style="margin-left:6px;">
+                        <el-col :span="11" class="transfer-con-del " style="margin-left:6px;">
                             <el-col :span="14">
                                 <span class="radius" @click="delRootAll" style="margin-left:11px;">
                                     <i class="radius-lines"></i>
                                 </span>
+                                <span>全删</span>
                             </el-col>
                             <el-col :span="10"><p offset="12" style="text-align:right">
-                                已选择账号人员{{checkedCities.length}}</p></el-col>
+                                已选择账号人员{{checkedAccounts.length}}</p></el-col>
                             <el-col :span="24" class="border">
                                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar"
                                                style="height:306px;padding:10px;">
                                     <ul class="scroll-me delete-rootPerson" style="background:#fff;">
-                                        <li v-for="(item,index) in checkedCities" :key="index"
+                                        <li v-for="(item,index) in checkedAccounts" :key="index"
                                             @click="delRootItem(item,index)" class="substr" :title=" item">
                                             <span class="radius">
                                                 <i class="radius-lines"></i>
@@ -155,12 +158,11 @@
                                 </vue-scrollbar>
                             </el-col>
                         </el-col>
-
                     </el-row>
                 </el-form-item>
                 <el-form-item label="每个账号分配鲁班币数:" class="text-count">
                     <el-col :span="6">
-                        <el-input v-model="assignLuban.major" auto-complete="off" ></el-input>
+                        <el-input v-model="assignLuban.major" auto-complete="off"></el-input>
                     </el-col>
                     <span>个</span>
                 </el-form-item>
@@ -175,7 +177,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
     const accountOptions = [
         "曹相相1",
@@ -195,7 +197,7 @@
         data (){
 //            const generateData = _ => {
 //                const data = [];
-//                const cities = ["上海", "北京", "广州", "深圳", "南京", "西安", "成都"];
+//                const accounts = ["上海", "北京", "广州", "深圳", "南京", "西安", "成都"];
 //                const pinyin = [
 //                    "shanghai",
 //                    "beijing",
@@ -205,7 +207,7 @@
 //                    "xian",
 //                    "chengdu"
 //                ];
-//                cities.forEach((city, index) => {
+//                accounts.forEach((city, index) => {
 //                    data.push({
 //                    label: city,
 //                    key: index,
@@ -231,11 +233,10 @@
                 ],
 
                 accounts: accountOptions,    //账号人员
-                assignLuban:
-                    {
-                        name:1111,
-                        major:222
-                    }
+                assignLuban: {
+                    name: 1111,
+                    major: 222
+                }
                 ,
                 //时间搜索条件
                 selectDate: '',
@@ -244,10 +245,9 @@
                 //分配鲁班币弹框状态
                 assignLubanCoinDialog: false,
                 checkAll: false,        //是否选中
-                checkedCities: ["北京"],  //授权人员默认选中
+                checkedAccounts: ["曹相相1"],  //授权人员默认选中
 //                data2: generateData(),  //组件公用数据
-                proMsearchKey:"",       //搜索关键字
-
+                accountSearchKey: "",       //搜索关键字
 
 
                 rechargeform: {
@@ -284,9 +284,6 @@
             indexSort(){
                 //序号
                 return index * 1;
-            },
-            checkDetail(listId) {
-                this.$router.push({path: '/order-management/orders-detail/' + listId + ''});
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -325,7 +322,7 @@
             //分配鲁班币
             //全部删除授权人员
             delRootAll(){
-                this.checkedCities = [];
+                this.checkedAccounts = [];
                 this.checkAll = false;
             },
             /**
@@ -334,10 +331,10 @@
              * @params index 索引值
              **/
             delRootItem(item, index){
-                if (this.checkedCities.indexOf(item) != -1) {
-                    this.checkedCities.splice(index, 1)
+                if (this.checkedAccounts.indexOf(item) != -1) {
+                    this.checkedAccounts.splice(index, 1)
                 }
-                if (this.checkedCities.length > 0 && this.checkedCities.length < this.cities.length) {
+                if (this.checkedAccounts.length > 0 && this.checkedAccounts.length < this.accounts.length) {
                     this.checkAll = false;
                 }
             },
@@ -347,12 +344,12 @@
              **/
             addAllRootPerson(event){
                 if (event.target.checked) {
-                    this.checkedCities = [];
-                    this.cities.forEach(item => {
-                        this.checkedCities.push(item);
-                });
+                    this.checkedAccounts = [];
+                    this.accounts.forEach(item => {
+                        this.checkedAccounts.push(item);
+                    })
                 } else {
-                    this.checkedCities = [];
+                    this.checkedAccounts = [];
                 }
             },
             /**
@@ -361,30 +358,30 @@
              **/
             addRootPerson(item){
                 let checkLength = item.length;
-                if (item.length === this.cities.length) {
+                if (item.length === this.accounts.length) {
                     this.checkAll = true;
                 } else {
                     this.checkAll = false;
                 }
             },
             //搜索
-            proManageSearch(){
+            accountSearch(){
                 let searchArr = [];
-                this.cities.forEach((val, key) => {
-                    if(this.cities[key].indexOf(this.proMsearchKey) != -1){
-                    searchArr.push(this.proMsearchKey);
-                }
-            })
-                this.cities = searchArr;
+                this.accounts.forEach((val, key) => {
+                    if (this.accounts[key].indexOf(this.accountSearchKey) != -1) {
+                        searchArr.push(this.accountSearchKey);
+                    }
+                })
+                this.accounts = searchArr;
             },
-            //工程管理保存
-            proManageSave(){
-                if (this.proManage.length || this.isDisable) {
+            //确认分配鲁班币
+            assignLBSave(){
+                if (this.assignLuban.length) {
                     //执行添加的接口
                 } else {
                     //执行修改的接口
                 }
-                console.log(this.proManage, '变了没有')
+                console.log(this.assignLuban, '变了没有')
             },
         },
         mounted() {
@@ -458,11 +455,22 @@
     }
 </style>
 <style>
+    /*分配鲁班币*/
+    .modelBorder .el-dialog .el-dialog__header {
+        padding-bottom: 25px;
+        border-bottom: 1px solid #e6e6e6;
+    }
+
+    .modelBorder .el-dialog__body {
+        padding: 20px 0 0 50px;
+    }
+
     .LubanCoinsManagementBox .order-management .el-table__body-wrapper .cell {
         height: 40px;
         line-height: 40px;
     }
 
+    /* 立即充值 */
     .modelwidth726px .el-dialog {
         width: 726px;
     }
@@ -474,10 +482,6 @@
         border-bottom: none !important;
     }
 
-    .modelBorder .el-dialog  .el-dialog__header{
-        padding-bottom: 25px;
-        border-bottom: 1px solid #e6e6e6;
-    }
     .modelwidth726px .el-dialog .el-form-item__content {
         padding-bottom: 25px;
         border-bottom: 1px solid #e6e6e6;
@@ -515,5 +519,20 @@
     .text-count .el-form-item__label {
         width: 150px;
         margin-right: 10px;
+    }
+
+    .coin-count.el-form-item {
+        margin-bottom: 15px;
+    }
+    .coin-count .el-form-item__label {
+        width: 180px;
+        margin-right: 10px;
+        font-size: 14px;
+    }
+
+    .coin-count .el-form-item__content span {
+        font-size: 14px;
+        font-weight: 700;
+        color:rgb(102, 148, 242);
     }
 </style>
