@@ -31,30 +31,10 @@ let first,second,third;
 // export const getWorksetingList = params => axios.get(`${base}`,{params:params});
 //post方式-->不携带参数 略
 // export const getWorksetingList = params => axios.post(`${base}`,params);
-
+//    http://192.168.13.195:8989/cloud/payment/alipay/alipayCloseTradeNotify
+export const tests = params=> axios.get(`${params.url}`+"payment/alipay/alipayCloseTradeNotify");
 export const getWorksetingList = params => axios.get(`${base}`);
 export const getCitys = params => axios.get('../../static/js/citys.json');
 export const cloudTree = params=> axios.get("../../static/datasource.json");
-export const router = params=> axios.get(`${route}`)
+export const router = params=> axios.get(`${route}`);
 export const getOrderManagementList = params=> axios.get("../../static/datasource.json")
-
-router().then((data)=>{
-    console.log(data.data.list,'data');
-    let dataList = data.data.list;
-    dataList.forEach((val,key)=>{
-        first= basePath(val.sever)
-        if(val.children){
-            val.children.forEach((val1,key1)=>{
-                second = basePath(val1.sever)
-                console.log(second,'second')
-                if(val1.children){
-                    val1.children.forEach((val2,key2)=>{
-                      third =  basePath(val2.sever);
-                      console.log(third,'second')
-                    })
-                }
-            })
-        }
-        console.log(first,'first')
-    })
-})

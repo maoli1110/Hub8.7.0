@@ -253,7 +253,8 @@
 <script>
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import {getCitys, cloudTree} from '../../api/getData.js';
+    import {basePath} from "../../utils/common.js"
+    import {getCitys, cloudTree,tests} from '../../api/getData.js';
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
     let deletArray = [];
     //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
@@ -884,6 +885,14 @@
                 this.searchKeyParams.bigType = this.compTypeBig[0].value;
                 this.searchKeyParams.smallType = this.compTypeSmall[0].value;
                 this.size = parseInt(this.totalNumber / 50);
+                console.log(this.$route,'22222');
+                let baseUrl= basePath(this.$route.matched[2].path);
+                let params = {
+                    url:baseUrl,
+                }
+                tests(params).then((data)=>{
+                    console.log(data)
+                })
             },
 
         },

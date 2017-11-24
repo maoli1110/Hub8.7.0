@@ -17,27 +17,141 @@
      * @returns {basePath}  分属模块对应的路径
      */
     function basePath(localhost){
-        let basePaths = "";
+        let baseUrl = "";
          switch (localhost){
-             case 'http://192.168.13.195:8989/builder/':
-                 basePaths = 'http://192.168.13.195:8989/builder/';
+             //cas
+             case '/authority/administrators-list':             //权限管理->管理员管理
+                 baseUrl = 'http://192.168.13.195:8989/cas/';
                  break;
-             case 'http://192.168.13.195:8989/cloud/':
-                 basePaths= 'http://192.168.13.195:8989/cloud/';
+             case '/companyprofile/space-usage':                //企业概况->空间使用
+                 baseUrl = 'http://192.168.13.195:8989/cas/';
                  break;
-             case 'http://192.168.13.195:8989/builderCiVil/':
-                 basePaths= 'http://192.168.13.195:8989/builderCiVil/';
+
+             //builder
+             case '/companyprofile/organization-structure':     //企业概况->组织结构
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
                  break;
-             case 'http://192.168.13.195:8989/cas/':
-                 basePaths= 'http://192.168.13.195:8989/cas/';
+             case '/authority/member-management':               //权限管理->成员管理
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
                  break;
-             case 'http://192.168.13.195:8989/palace/':
-                 basePaths= 'http://192.168.13.195:8989/palace/';
+             case '/authority/role-management':                 //权限管理->角色管理
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+
+             case '/bimlib/housing/bim-lib/1':                  //Bim库->房建->工程库
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case '/bimlib/housing/working-set':               //Bim库->房建->工作集库
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case '/bimlib/housing/pdf-drawing':               //Bim库->房建->PDF图纸
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case '/bimlib/housing/bim-lib/2':                  //Bim库->基建->工程库
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case '/bimlib/housing/working-set/2':              //Bim库->基建->工作集库
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case '/bimlib/housing/bim-lib/3':                  //Bim库->家装->工程库
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+
+             case "/configuration/common/data-catalog":        //应用配置->通用->资料目录
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case "/configuration/common/attribute-template":   //应用配置->通用->属性模板
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case "/configuration/common/logo-management":      //应用配置->通用->标识管理
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case "/configuration/common/label-management":     //应用配置->通用->标签管理
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case "/configuration/common/form-management":      //应用配置->通用->表单管理
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case "/configuration/common/process-template":     //应用配置->通用->工序管理
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case "/configuration/common/color-template":       //应用配置->通用->颜色模板
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+
+             case "/configuration/o-bw":                        //应用配置->原bw
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+             case "/configuration/o-govern":                    //应用配置->原bw
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+
+             case "/configuration/govern":                      //应用配置->govern
+                 baseUrl = 'http://192.168.13.195:8989/builder/';
+                 break;
+
+
+
+           // palace
+             case "/componentlib/remiz-comp":           //构件库->remiz
+                 baseUrl= 'http://192.168.13.195:8989/palace/';
+                 break;
+             case "/componentlib/remiz-temp":
+                 baseUrl= 'http://192.168.13.195:8989/palace/';
+                 break;
+             case "/componentlib/remiz-mate":
+                 baseUrl= 'http://192.168.13.195:8989/palace/';
+                 break;
+
+           // builderCiVil
+             case "/configuration/BaseBuild":           //应用配置->市政
+                 baseUrl= 'http://192.168.13.195:8989/palace/';
+                 break;
+             case "/configuration/explorerCivil":       //应用配置->explorerCivil
+                 baseUrl= 'http://192.168.13.195:8989/palace/';
+                 break;
+
+           // cloud
+             case "/componentlib/Luban-mep":        //构件库->鲁班安装
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case "/componentlib/luban-steel":      //构件库->鲁班钢筋
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case '/quotalib/automatic-template':   //定额库->自动套
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case '/indicatorslib/unchecked/civilEngineering-index':    //指标库->未审核->土建指标
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case '/indicatorslib/unchecked/reinforcement-index':       //指标库->未审核->钢筋指标
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case '/indicatorslib/passed/civil-engineering-index':      //指标库->已审核->土建指标
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case '/indicatorslib/passed/reinforcement-index':          //指标库->已审核->土建指标
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case "/authority/basic-client":        //权限管理->应用分配>基础客户端
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case "/authority/system-client":       //权限管理->应用分配->系统客户端
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case "/authority/bim-meal":            //权限管理->应用分配->BIM应用套餐
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case "/authority/quota-lib":           //权限管理->应用分配->定额库
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
+                 break;
+             case "/system/lubancoins-management":  //系统->鲁班币
+                 baseUrl= 'http://192.168.13.195:8989/cloud/';
                  break;
              default:
                  break;
          }
-        return basePaths;
+        return baseUrl;
      }
     /*function apiBase() {
         let hostname = window.location.hostname,
