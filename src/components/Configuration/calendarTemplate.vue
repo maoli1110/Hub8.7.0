@@ -94,7 +94,7 @@
                         </el-col>
                     </el-col>
                     <el-col :span="17"  class="cal-template" >
-                        <el-col class="template-tips">克隆：24小时日历</el-col>
+                        <el-col class="template-tips">克隆：{{!templateInfo.name?template.name:templateInfo.name}}</el-col>
                         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
                             <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
                                 <div class="calendar"></div>
@@ -121,7 +121,7 @@
                 <el-row class="calendar-main">
                     <el-col :span="24"  class="cal-template" style="margin:0">
                         <el-col class="template-tips" style="line-height:58px;">
-                            <el-col :span="4">24小时时间</el-col>
+                            <el-col :span="4">{{template.name}}</el-col>
                             <el-col :span="6">
                                 <span class="absol span-block" style="width:108px;top:0">日历有效范围：</span><el-input v-model = "priveiwDate" readonly placeholder="显示时间范围" style="margin-left:108px;"></el-input>
                             </el-col>
@@ -187,7 +187,10 @@
                     {name: '星期五', key: 5},
                     {name: '星期六', key: 6},
                     {name: '星期日', key: 0}
-                ]
+                ],
+                template:{
+                    name:""
+                }
             }
         },
         components: {
@@ -526,6 +529,7 @@
              * @param cpt 模板cpt
              * */
             openWindow(type, cpt){
+                console.log(this.template,'this.template')
                 //执行ajax
                 if (ct.calendarFalg == 0) {//24小时(自定义时间)
                     restDates = [];
@@ -600,7 +604,9 @@
             //el-table 单元格单机事件
             previewTemplate(row, column,cell, event){
                 if(column.id=='el-table_1_column_2'){//查看模板
+                    console.log(row,'column')
                     this.lookTemplate  =true;
+                    this.template.name=row.name;
                     this.openWindow('show','123')
                 }
             },

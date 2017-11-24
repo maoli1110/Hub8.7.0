@@ -1,9 +1,20 @@
 /**
  * Created by yhj on 2017/11/7.
  */
+import {basePath} from '../utils/common.js'
 import axios from 'axios';
 
 let base = '../../static/workSeting.json';
+let where = 1;
+// let basePath = "";
+let baseUrl = basePath('builder');
+console.log(baseUrl,'url');
+/*basePath = 'http://192.168.13.195:8989/builder/';
+basePath= 'http://192.168.13.195:8989/cloud/';
+basePath= 'http://192.168.13.195:8989/builderCiVil/';
+basePath= 'http://192.168.13.195:8989/cas/';
+basePath= 'http://192.168.13.195:8989/palace/';*/
+
 //egg
 // let base = 'http:192.168.13.215:8080/main';
 /**
