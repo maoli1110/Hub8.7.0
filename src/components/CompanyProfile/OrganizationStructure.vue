@@ -1,6 +1,7 @@
 <template>
     <div class="org">
         <div class="header">
+            <!-- 负责人界面start -->
             <el-popover ref="popover4" placement="right"  width="400" trigger="click">
                     <div class="pop-manager-dialog">
                         <div class="pop-header">
@@ -43,11 +44,12 @@
                         </div>
                     </div>
             </el-popover>
+            <!-- 负责人界面end -->
             <el-button type="primary" class="basic-btn" icon="plus">全部展开</el-button>
             <el-button type="primary" class="basic-btn" icon="plus">全部收起</el-button>
             <el-button type="primary" class="basic-btn" icon="plus" v-popover:popover4>负责人界面</el-button>
+            <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加项目部</el-button>
         </div>
-        <div></div>
         <div class="org-wrap">
             <div class="root-node">
                 <div>PDS没网测试公司</div>
@@ -55,179 +57,228 @@
             <div id="organization-tree" class="clearfix">
             </div>
         </div>
+        <!-- 添加分公司界面start -->
+        <el-dialog title="添加分公司" :visible.sync="dialogVisible" size="tiny">
+            <el-form ref="orgForm" :model="orgForm" label-width="100px">
+                <el-radio-group v-model="orgForm.resource">
+                    <el-radio label="分公司"></el-radio>
+                    <el-radio label="项目部"></el-radio>
+                </el-radio-group>
+                <!-- 分公司 -->
+                <div class="branch-company">
+                    <el-form-item label="分公司名称：">
+                        <el-input v-model="orgForm.company"></el-input>
+                    </el-form-item>
+                    <el-form-item label="分公司负责人：">
+                        <el-input v-model="orgForm.responsible"></el-input>
+                    </el-form-item>
+                </div>
+                <!-- 项目部 -->
+                <div class="project">
+                    <el-form-item label="项目名称：">
+                        <el-input v-model="orgForm.name" placeholder="请输入公司名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="项目负责人：">
+                        <el-input v-model="orgForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="项目经理：">
+                        <el-input v-model="orgForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="手机号码：">
+                        <el-input v-model="orgForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="项目开工日期：">
+                        <el-form-item prop="date1">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="orgForm.date1" style="width: 100%;"></el-date-picker>
+                        </el-form-item>
+                    </el-form-item>
+                    <el-form-item label="项目竣工日期：">
+                        <el-form-item prop="date2">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="orgForm.date2" style="width: 100%;"></el-date-picker>
+                        </el-form-item>
+                    </el-form-item>
+                    <el-form-item label="建筑面积(m2)">
+                        <el-input v-model="orgForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="里程：">
+                        <el-input v-model="orgForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所在地：">
+                        <el-input v-model="orgForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="合同类型：">
+                        <el-select v-model="orgForm.region" placeholder="请选择活动区域">
+                            <el-option label="区域一" value="shanghai"></el-option>
+                            <el-option label="区域二" value="beijing"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="状态：">
+                        <el-select v-model="orgForm.region" placeholder="请选择活动区域">
+                            <el-option label="区域一" value="shanghai"></el-option>
+                            <el-option label="区域二" value="beijing"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="备注：">
+                         <el-input type="textarea" v-model="orgForm.desc"></el-input>
+                    </el-form-item>
+                </div>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" class="dialog-btn dialog-btn-ok" >确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
+            </div>
+        </el-dialog>
+        <!-- 添加分公司界面end -->
     </div>
 </template>
 <script>
 import axios from "axios";
-import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
-function Map() {
-  this.container = new Object();
-}
-Map.prototype.put = function(key, value) {
-  this.container[key] = value;
-};
-
-Map.prototype.get = function(key) {
-  return this.container[key];
-};
-
-Map.prototype.keySet = function() {
-  let keyset = new Array();
-  let count = 0;
-  for (let key in this.container) {
-    // 跳过object的extend函数
-    if (key == "extend") {
-      continue;
-    }
-    keyset[count] = key;
-    count++;
-  }
-  return keyset;
-};
-
-Map.prototype.size = function() {
-  let count = 0;
-  for (let key in this.container) {
-    // 跳过object的extend函数
-    if (key == "extend") {
-      continue;
-    }
-    count++;
-  }
-  return count;
-};
-
-Map.prototype.remove = function(key) {
-  delete this.container[key];
-};
-let map = new Map();
-//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
-let level;
-//预览状态模板树的深度
-let maxLevel = -1;
 export default {
-  data() {
-    return {
-      textAreaVisible: false,
-      textareaValue: "",
-      textTittle:'',
-      type:'',
-      // 树数据
-      url: "../../../static/orgs-old.json",
-      // url: "../../../static/organization.json",
-      setting: {
-        view: {
-          showIcon: true
-        }
-      },
-      zNodes: [],
-      gridData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
-    };
-  },
-  mounted() {
-    /**
-     * 简要数据转换为标准JSON数组
-     * @param  {obj} param          获取树结构需要的临时参数
-     * @param  {obj} simpleOrgNode  原始数据
-     * @return {obj}                返回生成树结构所需要的对象
-     */
-    function transformToObjFormat(param, simpleOrgNodes) {
-        var i,l;
-        var key = param.orgNodeKey;
-        var parentKey = param.orgNodeParentKey;
-        if (!key || key=="" || !simpleOrgNodes) return [];
-        
-        if ($.isArray(simpleOrgNodes)) {
-            var r = [];
-            var tmpMap = [];
-            for (i=0, l=simpleOrgNodes.length; i<l; i++) {
-                tmpMap[simpleOrgNodes[i][key]] = simpleOrgNodes[i]; //引用赋值
-            }
-            for (i=0, l=simpleOrgNodes.length; i<l; i++) {
-                if (tmpMap[simpleOrgNodes[i][parentKey]]) {
-                    if (!tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol]){
-                        tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol] = [];
+    data() {
+        return {
+            //dialog属性
+            dialogVisible: false,
+            orgForm: {
+                name: '',
+                region: '',
+                date1: '',
+                date2: '',
+                delivery: false,
+                type: [],
+                resource: '分公司',
+                desc: ''
+            },
+            // 树数据
+            url: "../../../static/orgs-old.json",
+            // url: "../../../static/organization.json",
+            setting: {
+                view: {
+                  showIcon: true
+                }
+            },
+            zNodes: [],
+            gridData: [{
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-04',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-01',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }]
+        };
+    },
+    mounted() {
+        /**
+         * 简要数据转换为标准JSON数组
+         * @param  {obj} param          获取树结构需要的临时参数
+         * @param  {obj} simpleOrgNode  原始数据
+         * @return {obj}                返回生成树结构所需要的对象
+         */
+        function transformToObjFormat(param, simpleOrgNodes) {
+            var i,l;
+            var key = param.orgNodeKey;
+            var parentKey = param.orgNodeParentKey;
+            if (!key || key=="" || !simpleOrgNodes) return [];
+            
+            if ($.isArray(simpleOrgNodes)) {
+                var r = [];
+                var tmpMap = [];
+                for (i=0, l=simpleOrgNodes.length; i<l; i++) {
+                    tmpMap[simpleOrgNodes[i][key]] = simpleOrgNodes[i]; //引用赋值
+                }
+                for (i=0, l=simpleOrgNodes.length; i<l; i++) {
+                    if (tmpMap[simpleOrgNodes[i][parentKey]]) {
+                        if (!tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol]){
+                            tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol] = [];
+                        }
+                        tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol].push(simpleOrgNodes[i]);
+                    } else {
+                        r.push(simpleOrgNodes[i]);
                     }
-                    tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol].push(simpleOrgNodes[i]);
-                } else {
-                    r.push(simpleOrgNodes[i]);
+                }
+                return r;
+            }else {
+                return [simpleOrgNodes];
+            }
+        }
+
+        /**
+         * 根据生成的树结构计算总宽度
+         */
+        function getOrgTreeWidth() {
+            let tempWidth = 0;
+            $("#organization-tree > div").each(function(){
+                tempWidth += $(this).width();
+            })
+            return tempWidth;
+        }
+
+        //获取原始树结构
+        axios.get(this.url).then(res => {
+            // 组合树结构需要的参数
+            var param = {
+                orgNodeKey: "id",
+                nodesCol:'children',
+                orgNodeParentKey: "pId"
+            }
+            // 处理原始树结构,返回生成树结构所需要的对象
+            var tempzNodes = transformToObjFormat(param,res.data);
+            tempzNodes = tempzNodes[0].children;
+            /**
+             * 给数组添加key值
+             * @yield {obj} 返回都带有key键值的obj
+             */
+            function* entries(tempzNodes) {
+                for (let key of Object.keys(tempzNodes)) {
+                    yield [key, tempzNodes[key]];
                 }
             }
-            return r;
-        }else {
-            return [simpleOrgNodes];
-        }
-    }
+           
+            for(let [key,value] of entries(tempzNodes)){
+                var lineStyle = "";
+                if(key != 0 && key != tempzNodes.length-1){
+                    lineStyle = 'middleHLine';
+                } else if (key == "0"){
+                    lineStyle = 'firstHLine';
+                } else if(key == tempzNodes.length-1) {
+                    lineStyle = 'noneHLine';
+                }
+                var tree = '<ul id="ztree-'+key+'" class="ztree"></ul>';
+                var longLine ='<div class="'+lineStyle+'" style=""></div><div class="longitudinalLine2" style="height:25px;border-left:1px solid #4778c7;margin-left:120px"></div>';
+                var html = '<div style="float:left">'+longLine+''+tree+'</div>';
+                $("#organization-tree").append(html);
+                $.fn.zTree.init($("#ztree-"+key), this.setting, value);
+            }
+            $("#organization-tree").width(getOrgTreeWidth()+300);
+            $(".org .org-wrap .root-node > div").css("margin-left",(getOrgTreeWidth()+300)/2);
 
-    /**
-     * 根据生成的树结构计算总宽度
-     */
-    function getOrgTreeWidth() {
-        let tempWidth = 0;
-        $("#organization-tree > div").each(function(){
-            tempWidth += $(this).width();
-        })
-        return tempWidth;
-    }
-
-    //获取原始树结构
-    axios.get(this.url).then(res => {
-        // 组合树结构需要的参数
-        var param = {
-            orgNodeKey: "id",
-            nodesCol:'children',
-            orgNodeParentKey: "pId"
-        }
-        // 处理原始树结构,返回生成树结构所需要的对象
-        var tempzNodes = transformToObjFormat(param,res.data);
-        tempzNodes = tempzNodes[0].children;
-        /**
-         * 给数组添加key值
-         * @yield {obj} 返回都带有key键值的obj
-         */
-        function* entries(tempzNodes) {
-            for (let key of Object.keys(tempzNodes)) {
-                yield [key, tempzNodes[key]];
+        });
+    },
+    methods: {
+        
+    },
+    watch:{
+        'orgForm.resource' (val,oldVal){
+            if(val !== oldVal){
+                if(val === '分公司'){
+                    $(".branch-company").css('display','block');
+                    $(".project").css('display','none');
+                } else {
+                    $(".branch-company").css('display','none');
+                    $(".project").css('display','block');
+                }
             }
         }
-
-       
-        for(let [key,value] of entries(tempzNodes)){
-            var lineStyle = "";
-            if(key != 0 && key != tempzNodes.length-1){
-                lineStyle = 'middleHLine';
-            } else if (key == "0"){
-                lineStyle = 'firstHLine';
-            } else if(key == tempzNodes.length-1) {
-                lineStyle = 'noneHLine';
-            }
-            var tree = '<ul id="ztree-'+key+'" class="ztree"></ul>';
-            var longLine ='<div class="'+lineStyle+'" style=""></div><div class="longitudinalLine2" style="height:25px;border-left:1px solid #4778c7;margin-left:120px"></div>';
-            var html = '<div style="float:left">'+longLine+''+tree+'</div>';
-            $("#organization-tree").append(html);
-            $.fn.zTree.init($("#ztree-"+key), this.setting, value);
-        }
-        $("#organization-tree").width(getOrgTreeWidth()+300);
-        $(".org .org-wrap .root-node > div").css("margin-left",(getOrgTreeWidth()+300)/2);
-
-    });
-  }
+    }
 };
 </script>
 <style>
@@ -397,4 +448,12 @@ export default {
 .el-popover[x-placement^=right] {
     margin-left: 12px;
 }
+</style>
+<style scoped>
+    .el-radio-group {
+        padding: 10px;
+    }
+    .el-dialog .project {
+        display: none;
+    }
 </style>
