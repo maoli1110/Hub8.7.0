@@ -135,26 +135,26 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="手机号码：" prop="phone">
-                    <span>请先填写通行证账号，手机号码自动关联</span>
+                    <span style="color:#e6e6e6">请先填写通行证账号，手机号码自动关联</span>
                     <!-- <el-input v-model="ruleForm.phone" auto-complete="off" :disabled="true"></el-input> -->
                 </el-form-item>
                 <el-form-item label="邮箱：" prop="email">
-                    <span>请先填写通行证账号，邮箱自动关联</span>
+                    <span style="color:#e6e6e6">请先填写通行证账号，邮箱自动关联</span>
 
                     <!-- <el-input v-model="ruleForm.email" auto-complete="off" :disabled="true"></el-input> -->
                 </el-form-item>
             </el-form>
-            <span slot="footer" class="dialog-footer">
+            <div slot="footer" class="dialog-footer" style="margin-top:-30px">
             <el-button type="primary" @click="submitForm('ruleForm')" class="dialog-btn">确 定</el-button>
             <el-button @click="addMemberDialogVisible = false;resetForm('ruleForm')" class="dialog-btn">取 消</el-button>
-            </span>
+            </div>
         </el-dialog>
         <!-- 批量添加 -->
         <el-dialog
             title="批量添加人员"
             :visible.sync="batchAddMemberDialogVisible"
             size="batch-add-member">
-            <div class="el-form-item" style="margin-top:40px">
+            <div class="el-form-item" style="margin-top:20px">
                 <label class="el-form-item__label" style="width: 45px;text-align:left">克隆：</label>
                 <div class="el-form-item__content" style="margin-left: 45px;">
                     <el-select v-model="ruleForm.role" placeholder="请选择"  style="width:208px" >
@@ -186,7 +186,7 @@
                     </ul>
                 </div>
             </div>
-            <span slot="footer" class="dialog-footer" style="">
+            <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="batchAddMemberDialogVisible= false" class="dialog-btn">确 定</el-button>
                 <el-button @click="batchAddMemberDialogVisible= false" class="dialog-btn">取 消</el-button>
             </span>
@@ -214,7 +214,7 @@
         </el-dialog>
         <!-- 授权资料目录 -->
         <el-dialog title="授权资料目录" :visible.sync="authorizedDataCatalogVisible" size='authorized-data-catalog'>
-            <div style="position:relative;padding-top:40px">
+            <div style="position:relative;padding-top:20px">
                 <div class="authorizedDataCatalog">
                     <div style="padding-bottom:15px" class="authorized-item">已授权项目：</div>
                     <ul id="authorizedProjectTree" class="ztree" ></ul>

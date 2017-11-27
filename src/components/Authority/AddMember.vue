@@ -195,17 +195,17 @@
         </el-dialog>    -->
         <!-- 项目授权 -->
         <el-dialog title="项目授权" :visible.sync="projectAuthorizationDialogVisible" size='project-authorize'>
-            <div style="height:420px;padding:20px 0">
+            <div style="height:420px;padding:20px 0;overflow:auto">
                 <ul id="projectTree" class="ztree"></ul>
             </div>
-            <div slot="footer" class="dialog-footer" style="margin-top:74px">
+            <div slot="footer" class="dialog-footer" style="margin-top:54px">
                 <el-button type="primary" class="dialog-btn">确 定</el-button>
                 <el-button @click="projectAuthorizationDialogVisible = false" class="dialog-btn">取消</el-button>
             </div>
         </el-dialog>
         <!-- 工程授权  Engineering authorization-->
         <el-dialog title="工程授权" :visible.sync="engineeringAuthorizationDialogVisible" size='engineering-authorize'>
-            <div style="height:40px;padding:20px 0 30px 0">
+            <div style="height:40px;padding:0px 0 30px 0">
                 <div class="el-form-item el-form__">
                     <label class="el-form-item__label" style="width: 63px;">组织结构:</label>
                     <div class="el-form-item__content" style="margin-left: 63px;">
@@ -251,7 +251,7 @@
             </div>
             <div>
                  <el-checkbox > <span style="color:#6595f2">全部分配</span> </el-checkbox>
-                 <span style="margin-left:40px"><span class="red_"> * </span> 勾选全部分配后，项目新增加的工程自动授权</span>
+                 <span style="margin-left:20px"><span class="red_"> * </span> 勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div>
               <el-table :data="engineeringAuthorizationData"   height="400" style="margin-top:15px">
@@ -264,14 +264,14 @@
               </el-table>
             </div>
             <div style="text-align:right;height:35px;line-height:35px">共搜索到1568个工程，已选中432个工程</div>
-            <div slot="footer" class="dialog-footer" style="">
+            <div slot="footer" class="dialog-footer" style="margin-top:-11px">
                 <el-button type="primary" class="dialog-btn">确 定</el-button>
                 <el-button @click="engineeringAuthorizationDialogVisible = false" class="dialog-btn">取消</el-button>
             </div>
         </el-dialog>
         <!-- 工作集授权 -->
         <el-dialog title="工作集授权" :visible.sync="workSetAuthorizationDialogVisible" size='engineering-authorize'>
-            <div style="height:40px;padding:20px 0 30px 0">
+            <div style="height:40px;padding:0 0 30px 0">
                 <div class="el-form-item el-form__">
                     <label class="el-form-item__label" style="width: 70px;">组织结构：</label>
                     <div class="el-form-item__content" style="margin-left: 70px;">
@@ -304,7 +304,7 @@
               </el-table>
             </div>
             <div style="text-align:right;height:35px;line-height:35px">共搜索到1568个工程，已选中432个工程</div>
-            <div slot="footer" class="dialog-footer" >
+            <div slot="footer" class="dialog-footer"  style="margin-top:-11px">
                 <el-button type="primary" class="dialog-btn">确 定</el-button>
                 <el-button @click="workSetAuthorizationDialogVisible = false" class="dialog-btn">取消</el-button>
             </div>
@@ -318,29 +318,29 @@
             <div style="height:420px">
                 <ul id="projectTree" class="ztree"></ul>
             </div>
-            <div slot="footer" class="dialog-footer" style="margin-top:54px">
+            <div slot="footer" class="dialog-footer" style="margin-top:31px">
                 <el-button type="primary" class="dialog-btn">确 定</el-button>
                 <el-button @click="governAuthorizationDialogVisible = false" class="dialog-btn">取消</el-button>
             </div>
         </el-dialog>
         <!-- 筑业模板库授权 -->
         <el-dialog title="筑业模板库授权" :visible.sync="templateAuthorizationDialogVisible" size='template-authorize'>
-            <div style="height:40px;padding:20px 0">
-                <div class="el-form-item el-form__">
+            <div style="height:40px;padding:0px 0">
+                <div style="float:left">
                     <div class="el-form-item__content" >
                        <span>  账号总数：40 个</span>         
                        <span style="margin-left:11px"> 可用：20个</span>    
                     </div>
                 </div>
-                <div class="el-form-item " style="float:right">
-                    <div class="el-form-item__content">
+                <div class="el-form-item " style="float:right;margin-bottom:0px">
+                    <div class="">
                         <el-input placeholder="搜索工作集名称" icon="search" style="width:210px"></el-input>
                     </div>
                 </div>
             </div>
-            <div>
-                 <el-checkbox > <span style="color:#6595f2">全部分配</span> </el-checkbox>
-                 <span style="margin-left:22px"><span class="red_"> * </span>勾选全部分配后，项目新增加的工程自动授权</span>
+            <div style="margin-top:20px">
+                 <el-checkbox style=""> <span style="color:#6595f2">全部分配</span> </el-checkbox>
+                 <span style="margin-left:22px;"><span class="red_"> * </span>勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div>
               <el-table :data="engineeringAuthorizationData"   height="420" style="margin-top:15px">
