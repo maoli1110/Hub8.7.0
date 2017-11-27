@@ -25,8 +25,8 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span type="primary" class="el-icon-edit"  @click="editRole(scope.row.id)"></span>
-                        <span type="primary" class="el-icon-search"   @click="searchRole(scope.row.id)"></span>
+                        <span type="primary" class="icon-edit_  icon"  @click="editRole(scope.row.id)"></span>
+                        <span type="primary" class="icon-view   icon"   @click="searchRole(scope.row.id)"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -294,6 +294,9 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.icon+.icon{
+  margin-left: 15px;
 }
 </style>
 

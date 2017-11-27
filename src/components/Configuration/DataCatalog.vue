@@ -22,9 +22,11 @@
             <div>
                 <el-button type="primary" class="basic-btn" icon="plus" @click="addFolder();isAddFolder=true">添加</el-button>
                 <el-button type="primary" class="basic-btn" icon="delete" @click="deleteFolder()"> 删除</el-button>
-                <el-button type="primary" class="basic-btn" icon="share"
-                           @click='moveDataCatalog();moveDataCatalogVisible=true'>移动
-                </el-button>
+                <el-button type="primary" class="basic-btn" 
+                            @click='moveDataCatalog();moveDataCatalogVisible=true'>
+                            <i class="icon-move pl-icon-s"></i>
+                     <span>移动</span> 
+                </el-button>     
             </div>
             <el-breadcrumb separator=">">
                 <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -57,7 +59,7 @@
                 <el-table-column prop="role" label="操作人" width="180"></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span type="primary" class="el-icon-document"
+                        <span type="primary" class="icon-edit_"
                               @click="modifyDataCatalog();modifyDataCatalogVisible=true;"></span>
                     </template>
                 </el-table-column>

@@ -1173,6 +1173,198 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     clear: both;
 }
 
+
+/* 工序模板展开折叠 */
+
+.icon-expand,
+.icon-collapse {
+    width: 23px;
+    height: 23px;
+    display: inline-block;
+    background-image: url("../img/expand.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.icon-expand {
+    background-position: -5px -5px
+}
+
+.icon-expand:hover {
+    background-position: -5px -38px
+}
+
+.icon-expand:active {
+    background-position: -5px -71px
+}
+
+.icon-collapse {
+    background-position: -38px -5px
+}
+
+.icon-collapse:hover {
+    background-position: -38px -38px
+}
+
+.icon-collapse:active {
+    background-position: -38px -71px
+}
+
+.icon-add-status,
+.icon-add-nodes,
+.icon-rename,
+.icon-remove_,
+.icon-up-move,
+.icon-down-move,
+.icon-up-level,
+.icon-down-level {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    background-image: url("../img/icon-btn.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.icon-add-status {
+    background-position: -3px -3px;
+}
+
+.icon-add-status:hover {
+    background-position: -3px -24px;
+}
+
+.icon-add-nodes {
+    background-position: -38px -2px;
+}
+
+.icon-add-nodes:hover {
+    background-position: -38px -23px;
+}
+
+.icon-rename {
+    background-position: -74px -2px;
+}
+
+.icon-rename:hover {
+    background-position: -74px -22px;
+}
+
+.icon-remove_ {
+    background-position: -101px -2px;
+}
+
+.icon-remove_:hover {
+    background-position: -101px -22px;
+}
+
+.icon-up-move {
+    background-position: -125px -2px;
+}
+
+.icon-up-move:hover {
+    background-position: -125px -23px;
+}
+
+.icon-down-move {
+    background-position: -150px -2px;
+}
+
+.icon-down-move:hover {
+    background-position: -151px -23px;
+}
+
+.icon-up-level {
+    background-position: -174px -2px;
+}
+
+.icon-up-level:hover {
+    background-position: -174px -22px;
+}
+
+.icon-down-level {
+    background-position: -200px -2px;
+}
+
+.icon-down-level:hover {
+    background-position: -200px -22px;
+}
+/* 权限管理 */
+
+.icon-batch-add,
+.icon-sign,
+.icon-edit_,
+.icon-view,
+.icon-authorize_,
+.icon-add-admin,
+.icon-move {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url("../img/icon-btn.png");
+    cursor: pointer;
+    vertical-align: middle
+}
+
+.icon-batch-add {
+    width: 15px;
+    height: 14px;
+    vertical-align: bottom;
+    background-position: -404px -3px;
+}
+
+.icon-edit_ {
+    background-position: -74px -20px;
+}
+
+.icon-authorize_ {
+    background-image: url("../img/icon-menu.png");
+    background-position: -132px -275px
+}
+
+.icon-sign {
+    background-position: -247px -2px
+}
+
+.icon-view {
+    background-position: -272px -3px
+}
+
+.icon-add-admin {
+    width: 15px;
+    height: 15px;
+    background-position: -296px -1px
+}
+
+.icon-move {
+    width: 15px;
+    height: 15px;
+    background-position: -349px 0px
+}
+
+.el-button [class*=pl-icon-]+span {
+    margin-left: 5px;
+}
+/* 应用分配 */
+.icon-add-authorization,
+.icon-cancle-authorization {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../img/icon-menu.png");
+    cursor: pointer;
+    vertical-align: middle
+}
+
+.icon-add-authorization {
+    background-position: -143px -146px
+}
+
+.icon-cancle-authorization {
+    background-position: 1px -200px;
+}
+
+
 /*三級聯動======================================*/
 * {
     -ms-word-wrap: break-word;

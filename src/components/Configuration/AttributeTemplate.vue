@@ -30,7 +30,7 @@
                 <el-table-column prop="role" label="操作人" width="380"></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span type="primary" class="el-icon-document"
+                        <span type="primary" class="icon-edit_"
                               @click="getTemplateInfo();editTemplateDialogVisible=true"></span>
                     </template>
                 </el-table-column>
@@ -111,7 +111,7 @@ export default {
     return {
       url: "../../../static/tree1.json",
       editTemplateDialogVisible: false,
-      editAttributesDialogVisible:false,
+      editAttributesDialogVisible: false,
       orgValue: "",
       role: "",
       FolderTableData: [
@@ -283,7 +283,7 @@ export default {
     getTemplateInfo() {},
     editTemplate() {
       if (this.multipleSelection.length > 0) {
-          this.editAttributesDialogVisible=true;
+        this.editAttributesDialogVisible = true;
       } else {
         this.$confirm("请选择要编辑的属性", "提示", {
           type: "warning"
