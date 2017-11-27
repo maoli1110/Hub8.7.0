@@ -3,13 +3,16 @@
         <div class="role-wrap">
             <div class="role-base">角色基本信息
             </div>
+            <div>
+              {{curEditRole}}
+            </div>
             <el-row class="role-message" >
                 <el-col :span="8">
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label">角色名：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;">
                             <div>
-                                <el-input placeholder="请输入姓名"></el-input>
+                                <el-input placeholder="请输入姓名" v-model="roleName"></el-input>
                                 <span class="red_">*</span>
                             </div>
                         </div>
@@ -17,7 +20,14 @@
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label">角色类型：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;">
-                            <el-input placeholder="请选择角色"></el-input>
+                            <el-select v-model="roleType" placeholder="请选择" style="width:70%">
+                        <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
                         </div>
                     </div>
                 </el-col>
@@ -106,17 +116,26 @@
                 <el-button type="primary" class="dialog-btn">保存</el-button>
                 <el-button  class="dialog-btn">取消</el-button>
             </div>
+            
         </div>
     </div>
 </template>
 <script>
+import { mapGetters} from "vuex";
 export default {
+  computed: {
+    ...mapGetters(["curEditRole"])
+  },
+
   data() {
     return {
       url: "../../../static/tree1.json",
+      roleName:"",
+      roleType:'',
       currentIndex: 0,
       textarea: "",
       orgValue: "",
+      role:'',
       projectSetting: {
         check: {
           enable: true
@@ -463,6 +482,8 @@ export default {
   },
   mounted() {
     this.selectClient(0);
+    this.roleName=this.curEditRole.roleName;
+    this.textarea=this.curEditRole.remarks
   }
 };
 </script>
@@ -527,7 +548,7 @@ export default {
 
 .red_ {
   color: #e30000;
-  font-family: 'yahei';
+  font-family: "yahei";
   font-size: 14px;
 }
 
