@@ -10,7 +10,8 @@
         </div>
         <div class="main">
             <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="min-width:900px">
-                <el-table ref="multipleTable" class="scroll-me" :data="orderManageTableData" border tooltip-effect="dark"
+                <el-table ref="multipleTable" class="scroll-me" :data="orderManageTableData" border
+                          tooltip-effect="dark"
                           style="min-width: 1537px;margin-top:20px">
                     <el-table-column class="" type='index' label="序号" width="60" :index="indexSort"></el-table-column>
                     <el-table-column label="套餐服务" width="150">
@@ -133,6 +134,8 @@
 
             return {
                 imgUrl: '/static/img/dog.jpg',
+                currentPage: '',//当前页的条数
+                pageSize: '',//每页多少条
                 orderManageTableData: [
                     {
                         packageService: "鲁班安装BIM应用套餐应用应用应用套餐",
@@ -179,11 +182,11 @@
                     return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日";
                 };
                 var date = new Date(parseInt(date) * 1000).toLocaleString();
-                console.log(date);
+//                console.log(date);
                 return data.date;
             },
             formatDate(date) {
-                console.log(date);
+//                console.log(date);
                 const now = new Date(parseInt(date)),
                     year = now.getFullYear(),
                     month = now.getMonth() + 1 > 10 ? now.getMonth() + 1 : '0' + (now.getMonth() + 1),
@@ -204,7 +207,7 @@
                 } else if (remainDays >= 30) {
                     remainDays = Math.floor((currentTime - date) / 1000 / 3600 / 24 / 30) + '个月';
                 }
-                console.log(remainDays);
+//                console.log(remainDays);
                 return remainDays;
             },
             hideExpiredService (){
@@ -215,15 +218,22 @@
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
+                this.currentPage = val;
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
-            },
+                this.pageSize = val;
+            }
         },
         mounted() {
-//            分页获取订单列表
-            getOrderManagementList().then((data) => {
-
+            //分页获取订单列表
+            let params = {
+                currentPage: this.currentPage,
+                pageSize: this.pageSize
+            }
+            getOrderManagementList(params).then((data) => {
+                console.log(111);
+                console.log(data);
             });
         }
     }
