@@ -90,8 +90,6 @@
                  baseUrl = 'http://192.168.13.195:8989/builder/';
                  break;
 
-
-
            // palace
              case "/componentlib/remiz-comp":           //构件库->remiz
                  baseUrl= 'http://192.168.13.195:8989/palace/';
@@ -112,7 +110,7 @@
                  break;
 
            // cloud
-             case "/componentlib/Luban-mep":        //构件库->鲁班安装
+             case "/componentlib/luban-mep":        //构件库->鲁班安装
                  baseUrl= 'http://192.168.13.195:8989/cloud/';
                  break;
              case "/componentlib/luban-steel":      //构件库->鲁班钢筋

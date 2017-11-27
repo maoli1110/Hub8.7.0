@@ -210,22 +210,22 @@
         <!--工程添加/修改弹窗-->
         <el-dialog :title="addPrjectTitle" custorm-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
-                <el-form-item label="工程名称:" label-width="80">
+                <el-form-item label="工程名称：" label-width="80">
                     <el-input v-model="proManage.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="专业:" label-width="80">
+                <el-form-item label="专业：" label-width="80">
                     <el-input v-model="proManage.major" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="所属项目:" label-width="80">
-                    <el-select v-model="proManageVal" placeholder="请选择活动区域" v-show="isDisable" style="width:100%" :disabled="true">
+                <el-form-item label="所属项目：" label-width="80">
+                    <el-select v-model="proManageVal" placeholder="" v-show="isDisable" style="width:100%" :disabled="true">
                         <el-option :value="proManageVal"></el-option>
                     </el-select>
-                    <el-select v-model="proManageVal" placeholder="请选择活动区域" v-show="!isDisable" style="width:100%" :disabled="false">
+                    <el-select v-model="proManageVal" placeholder="" v-show="!isDisable" style="width:100%" :disabled="false">
                         <el-option :value="proManageVal" v-show="false"></el-option>
                         <ul id="projectDepart" class="ztree"></ul>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="工程授权:" label-width="80">
+                <el-form-item label="工程授权：" label-width="80">
                     <el-row class="transfer">
                         <el-col :span="10" class="transfer-con-add">
                             <el-col :span="12"><el-checkbox v-model="checkAll" @change="addAllRootPerson">全部</el-checkbox></el-col>

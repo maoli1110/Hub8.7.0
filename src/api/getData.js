@@ -38,3 +38,11 @@ export const getCitys = params => axios.get('../../static/js/citys.json');
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 export const router = params=> axios.get(`${route}`);
 export const getOrderManagementList = params=> axios.get("../../static/datasource.json")
+
+//cloud
+/**
+ * 构件库
+ *
+ * 构件树管理
+ ***/
+export const treeList = params=>axios.get(`${params.url}/component/tree/list/${params.version}/${params.productId}`)
