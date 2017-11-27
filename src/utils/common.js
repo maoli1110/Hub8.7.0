@@ -112,7 +112,7 @@ function basePath(localhost) {
             break;
 
         // cloud
-        case "/componentlib/Luban-mep":        //构件库->鲁班安装
+        case "/componentlib/luban-mep":        //构件库->鲁班安装
             baseUrl = 'http://192.168.13.195:8989/cloud/';
             break;
         case "/componentlib/luban-steel":      //构件库->鲁班钢筋

@@ -751,6 +751,7 @@
             },
             //加载树结构
             getCloudTree(){
+               console.log(baseUrl,'urlurlurl');
                this.getZtreeList({url:baseUrl,version:1.5,productId:5})
                this.cloudComTree = true;
                this.getZtree();
