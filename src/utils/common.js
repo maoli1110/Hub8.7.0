@@ -41,19 +41,30 @@ function basePath(localhost) {
         case '/bimlib/housing/bim-lib/1':                  //Bim库->房建->工程库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
+        case "/bimlib/housing/recycle-bin/1":
+            baseUrl = 'http://192.168.13.195:8989/builder/';
+            break;
+
         case '/bimlib/housing/working-set':               //Bim库->房建->工作集库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
         case '/bimlib/housing/pdf-drawing':               //Bim库->房建->PDF图纸
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
-        case '/bimlib/housing/bim-lib/2':                  //Bim库->基建->工程库
+        case '/bimlib/BaseBuild/bim-lib/2':                  //Bim库->基建->工程库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
+        case "/bimlib/BaseBuild/recycle-bin/2":
+            baseUrl = 'http://192.168.13.195:8989/builder/';
+            break;
+
         case '/bimlib/housing/working-set/2':              //Bim库->基建->工作集库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
-        case '/bimlib/housing/bim-lib/3':                  //Bim库->家装->工程库
+        case '/bimlib/decoration/bim-lib/4':                  //Bim库->家装->工程库
+            baseUrl = 'http://192.168.13.195:8989/builder/';
+            break;
+        case "/bimlib/decoration/recycle-bin/4":
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
 
@@ -112,7 +123,7 @@ function basePath(localhost) {
             break;
 
         // cloud
-        case "/componentlib/Luban-mep":        //构件库->鲁班安装
+        case "/componentlib/luban-mep":        //构件库->鲁班安装
             baseUrl = 'http://192.168.13.195:8989/cloud/';
             break;
         case "/componentlib/luban-steel":      //构件库->鲁班钢筋

@@ -604,7 +604,7 @@
             //el-table 单元格单机事件
             previewTemplate(row, column,cell, event){
                 if(column.id=='el-table_1_column_2'){//查看模板
-                    console.log(row,'column')
+                    console.log(row,'columnssssss')
                     this.lookTemplate  =true;
                     this.template.name=row.name;
                     this.openWindow('show','123')

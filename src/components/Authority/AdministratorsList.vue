@@ -91,10 +91,6 @@
                         </div>
                         <el-button type="primary" class="dialog-btn select-dialog-btn" style="margin-left:70px"
                                    @click="saveSelect()">确 定
-
-
-
-
                         </el-button>
                         <el-button class="dialog-btn select-dialog-btn" @click="cancleSelect()">取消</el-button>
                     </div>

@@ -254,13 +254,15 @@
 <script>
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import {getCitys,cloudTree} from '../../api/getData.js';
+    import {basePath} from "../../utils/common.js";
+    import {getCitys,cloudTree,treeList} from '../../api/getData.js';
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
     let deletArray = [];
     //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let level;
     //预览状态模板树的深度
     let maxLevel = -1;
+    let baseUrl;
     export default {
         data(){
             return {
@@ -737,8 +739,20 @@
                     level = 1;
                 });
             },
+            //获取接口地址
+            getBaseUrl(){
+                baseUrl = basePath(this.$route.path);
+            },
+            //获取树结构
+            getZtreeList(params){
+                treeList(params).then((data)=>{
+                    console.log(data)
+                })
+            },
             //加载树结构
             getCloudTree(){
+               console.log(baseUrl,'urlurlurl');
+               this.getZtreeList({url:baseUrl,version:1.5,productId:5})
                this.cloudComTree = true;
                this.getZtree();
             },
@@ -900,6 +914,7 @@
                 //不用调用接口
             },
             getData(){
+                this.getBaseUrl();
                 this.searchKeyParams.majorVal = this.majorOptions[0].value;
                 this.searchKeyParams.smallType = this.compTypeSmall[0].value;
                 this.searchKeyParams.bigType = this.compTypeBig[0].value;

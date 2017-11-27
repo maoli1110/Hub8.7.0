@@ -18,13 +18,13 @@
                     <el-option
                         v-for="item in bimOptions"
                         :key="item.value"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.value">
                     </el-option>
                 </el-select>
 
             </el-col>
-            <el-col :span="2" class="filter-bar relat"  style="left:82px"  v-show="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
+            <el-col :span="2" class="filter-bar relat"  style="left:82px"  v-if="($route.path==`/bimlib/housing/bim-lib/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/bim-lib/${$route.params.typeId}` || $route.path==`/bimlib/decoration/bim-lib/${$route.params.typeId}`)">
                 <span class="absol span-block" style="width:40px;">
                     专业:
                 </span>
@@ -33,13 +33,13 @@
                     <el-option
                         v-for="item in majorOptions"
                         :key="item.value"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.value">
                     </el-option>
                 </el-select>
 
             </el-col>
-            <el-col :span="2" class="filter-bar relat" :class="[($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')?'left85':'left140']">
+            <el-col :span="2" class="filter-bar relat" :class="[($route.path==`/bimlib/housing/recycle-bin/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/recycle-bin/${$route.params.typeId}` || $route.path==`/bimlib/decoration/recycle-bin/${$route.params.typeId}`)?'left85':'left140']">
                 <span class="absol span-block" style="width:40px;">
                     版本:
                 </span>
@@ -47,7 +47,7 @@
                     <el-option
                         v-for="item in versionsOptions"
                         :key="item.value"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.value">
                     </el-option>
                 </el-select>
@@ -68,8 +68,8 @@
                 <el-button type="primary" class="basic-btn " @click="dataEmpty"><i class="bim-icon-tool "></i><span class="btn-text">清空</span></el-button>
             </el-col>
             <el-col :span="3" :offset="4" class="">
-                <el-button type="primary" class="basic-btn " @click="inRecycle($route.matched[2].path,$route.params.typeId)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)"><span class="go-back "></span><span class="btn-text">回收站</span></el-button>
-                <el-button type="primary" class="basic-btn " @click="inProLib($route.matched[2].path,$route.params.typeId)" style="width:120px;right:30px;" v-if="($route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId)"><span class="go-back "></span><span class="btn-text"> 返回工程库</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="inRecycle($route.matched[2].path,$route.params.typeId)" style="right:35px;" v-if="!isRecycle"><span class="go-back "></span><span class="btn-text">回收站</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="inProLib($route.matched[2].path,$route.params.typeId)" style="width:120px;right:30px;" v-if="isRecycle"><span class="go-back "></span><span class="btn-text"> 返回工程库</span></el-button>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-main">
@@ -86,10 +86,10 @@
                             </th>
                             <th>工程名称</th>
                             <th>专业</th>
-                            <th v-if="$route.params.typeId!=3">BIM属性	</th>
+                            <th v-if="$route.params.typeId!=4">BIM属性	</th>
                             <th class="uploadPerson">上传人</th>
                             <th>上传时间</th>
-                            <th v-if="$route.params.typeId!=3">图纸</th>
+                            <th v-if="$route.params.typeId!=4">图纸</th>
                             <th>所属项目部</th>
                             <th>大小</th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
@@ -107,10 +107,10 @@
                             </td>
                             <td>{{item.processName}}</td>
                             <td>{{item.speciality}}</td>
-                            <td v-if="$route.params.typeId !=3" class="bim-params">{{item.BIMparams}}</td>
+                            <td v-if="$route.params.typeId !=4" class="bim-params">{{item.BIMparams}}</td>
                             <td class="absol substr uploadPerson" :title="item.updateUser">{{item.updateUser}}</td>
                             <td class="times">{{item.updateTime}}</td>
-                            <td  v-if="$route.params.typeId !=3">{{item.PDF}}</td>
+                            <td  v-if="$route.params.typeId !=4">{{item.PDF}}</td>
                             <td>{{item.proDepartment}}</td>
                             <td>{{item.size}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.output}}</td>
@@ -131,7 +131,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <table class="recycle-bins" cellspacing="0" cellpadding="0" v-if="($route.path==('/bimlib/housing/recycle-bin/'+$route.params.typeId) ||$route.path==('/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId) || $route.path==('/bimlib/decoration/recycle-bin/'+$route.params.typeId))">
+                    <table class="recycle-bins" cellspacing="0" cellpadding="0" v-if="($route.path==`/bimlib/housing/recycle-bin/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/recycle-bin/${$route.params.typeId}` || $route.path==`/bimlib/decoration/recycle-bin/${$route.params.typeId}`)">
                         <thead>
                         <tr>
                             <th>
@@ -208,28 +208,28 @@
             </div>
         </el-dialog>
         <!--工程添加/修改弹窗-->
-        <el-dialog :title="addPrjectTitle" custorm-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog :title="addPrjectTitle" custom-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
-                <el-form-item label="工程名称:" label-width="80">
+                <el-form-item label="工程名称：" label-width="80">
                     <el-input v-model="proManage.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="专业:" label-width="80">
+                <el-form-item label="专业：" label-width="80">
                     <el-input v-model="proManage.major" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="所属项目:" label-width="80">
-                    <el-select v-model="proManageVal" placeholder="请选择活动区域" v-show="isDisable" style="width:100%" :disabled="true">
+                <el-form-item label="所属项目：" label-width="80">
+                    <el-select v-model="proManageVal" placeholder="" v-show="isDisable" style="width:100%" :disabled="true">
                         <el-option :value="proManageVal"></el-option>
                     </el-select>
-                    <el-select v-model="proManageVal" placeholder="请选择活动区域" v-show="!isDisable" style="width:100%" :disabled="false">
+                    <el-select v-model="proManageVal" placeholder="" v-show="!isDisable" style="width:100%" :disabled="false">
                         <el-option :value="proManageVal" v-show="false"></el-option>
                         <ul id="projectDepart" class="ztree"></ul>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="工程授权:" label-width="80">
+                <el-form-item label="工程授权：" label-width="80">
                     <el-row class="transfer">
                         <el-col :span="10" class="transfer-con-add">
                             <el-col :span="12"><el-checkbox v-model="checkAll" @change="addAllRootPerson">全部</el-checkbox></el-col>
-                            <el-col :span="12"><p offset="12">全部可授权人数{{cities.length}}</p></el-col>
+                            <el-col :span="12"><p offset="12">全部可授权人数{{authUserInfoList.length}}</p></el-col>
                             <el-col :span="24" class="border">
                                 <el-input style="width:100%"
                                           class="el-transfer-panel__filter"
@@ -239,8 +239,8 @@
                                           :on-icon-click="proManageSearch"
                                 ></el-input>
                                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
-                                    <el-checkbox-group v-model="checkedCities" @change="addRootPerson" class="scroll-me" style="background:#fff;">
-                                        <el-checkbox  class="el-transfer-panel__item"  v-for="city in cities" :label="city" :key="city" :title="city" >{{city}}</el-checkbox>
+                                    <el-checkbox-group v-model="authUserListItem" @change="addRootPerson" class="scroll-me" style="background:#fff;">
+                                         <el-checkbox   class="el-transfer-panel__item" v-for="item in authUserInfoList"  :label="item"  :key="item.userId" :title="item.userName" :disabled="item.allAuth">{{item.userName}}</el-checkbox>
                                     </el-checkbox-group>
                                 </vue-scrollbar>
                             </el-col>
@@ -251,15 +251,15 @@
                                     <i class="radius-lines"></i>
                                 </span>
                             </el-col>
-                            <el-col :span="10" ><p offset="12" style="text-align:right">已授权人数{{checkedCities.length}}</p></el-col>
+                            <el-col :span="10" ><p offset="12" style="text-align:right">已授权人数{{authUserListItem.length}}</p></el-col>
                             <el-col :span="24" class="border">
                                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:306px;padding:10px;">
                                     <ul class="scroll-me delete-rootPerson" style="background:#fff;">
-                                        <li  v-for="(item,index) in checkedCities" :key="index" @click="delRootItem(item,index)" class="substr" :title=" item">
-                                            <span class="radius" >
+                                        <li  v-for="(item,index) in authUserListItem" v-if="!item.allAuth" :key="index" class="substr" :title=" item.userName">
+                                            <span class="radius" v-show="!item.allAuth" @click="delRootItem(item,item.userId)" >
                                                 <i class="radius-lines"></i>
                                             </span>
-                                            {{item}}
+                                            {{item.userName}}
                                         </li>
                                     </ul>
                                 </vue-scrollbar>
@@ -326,58 +326,24 @@
 <script>
     import axios from "axios";
     import {IndexCumsum} from "../../utils/validate.js";
+    import {basePath} from "../../utils/common.js";
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import {cloudTree} from '../../api/getData.js'
+    import {
+        cloudTree,getMajorsByCreate,getProjGenre,
+        getProjType,getProjAuthUserInfos
+    } from '../../api/getData.js';
     let deletArray = [];
     let countIndex = 0;
-    const cityOptions = [
-        "上海11111111111111111111111111111111111111111111111",
-        "北京",
-        "广州",
-        "深圳",
-        "南京",
-        "西安",
-        "成都",
-        "广州1",
-        "深圳2",
-        "南京3",
-        "西安4",
-        "成都5"
-    ];
+    let baseUrl;
     export default {
 //    props: ['tableData'],
         data() {
-            const generateData = _ => {
-                const data = [];
-                const cities = ["上海", "北京", "广州", "深圳", "南京", "西安", "成都"];
-                const pinyin = [
-                    "shanghai",
-                    "beijing",
-                    "guangzhou",
-                    "shenzhen",
-                    "nanjing",
-                    "xian",
-                    "chengdu"
-                ];
-                cities.forEach((city, index) => {
-                    data.push({
-                    label: city,
-                    key: index,
-                    pinyin: pinyin[index]
-                });
-            });
-                return data;
-            };
             return {
                 allChecked:false,
                 checked:false,
                 currentCheck:false,
                 delIndex:-1,
-                checkedCities: ["北京"],  //授权人员默认选中
-                data2: generateData(),  //组件公用数据
-                value2: [],//
                 checkAll: false,        //是否选中
-                cities: cityOptions,    //授权人员
                 textarea:"",            //备注
                 proMsearchKey:"",       //搜索关键字
                 isDisable:false,        //项目部是否可用 用于工程管理弹窗 区分是修改还是添加
@@ -387,6 +353,8 @@
                 modifyInfo:false,//修改信息弹窗
                 monitorSeverVisible:false,//第三方监控设置
                 addPrjectTitle:"添加工程",
+                authUserInfoList:[],//添加授权人员
+                authUserListItem:[],//选中列表
                 //分页的一些设置
                 cur_page:1,
                 totalPage:50,
@@ -428,39 +396,10 @@
                         onClick: this.proDepartClick
                     }
                 },
-                bimOptions: [{//BIM属性下拉框的值
-                    value: '全部',
-                    label: '全部'
-                }, {
-                    value: '施工',
-                    label: '施工'
-                }, {
-                    value: '预算',
-                    label: '预算'
-                }],
-                majorOptions: [{//专业
-                    value: '土建',
-                    label: '土建'
-                }, {
-                    value: '钢筋',
-                    label: '钢筋'
-                }, {
-                    value: '安装',
-                    label: '安装'
-                }, {
-                    value: 'Revit',
-                    label: 'Revit'
-                }, {
-                    value: 'Tekla',
-                    label: 'Tekla'
-                }, {
-                    value: '场布',
-                    label: '场布'
-                }],
-                versionsOptions:[{//版本
-                    value: '1.0.0',
-                    label: '1.0.0'
-                }],
+                bimOptions: [],
+                majorOptions: [],
+                versionsOptions:[],//版本
+                isRecycle:false,//是否是回收站
                 proManage:{//工程管理
                     name:'',
                     major:'',
@@ -673,6 +612,7 @@
                         this.addPrjectTitle = '添加工程'
                     }
                 }
+                this.getRootMan();
             },
             /**
              * @params type 批量监控还是监控
@@ -691,6 +631,7 @@
             },
             //回收站还原
             dataRestore(){
+                this.getProjGenreEvent()
                 console.log('回收站还原')
             },
             //回收站清空
@@ -701,11 +642,70 @@
             search(){
                 console.log(this.filterParams,'filterparams')
             },
+            //获取地址
+            getBaseUrl(){
+                baseUrl = basePath(this.$route.path);
+            },
+            //获取属性
+            getProjGenreEvent(isDelete,packageType){
+                console.log(baseUrl,'baseUrl')
+                getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
+                    this.bimOptions = data.data.result;
+                    if(this.bimOptions.length>0){
+                        this.filterParams.versionsVal = this.versionsOptions[0].value;
+                    }
+
+                });
+            },
+            //获取版本
+            getProjTypeEvent(isDelete,packageType){
+                getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
+                    this.versionsOptions = data.data.result;
+                    if(this.versionsOptions.length>0){
+                        this.filterParams.versionsVal = this.versionsOptions[0].value;
+                    }
+                })
+            },
+            //获取授权人员
+            getRootMan(){
+                /**
+                 * val.allaAuth  是否权限管理的全部权限 true 不可操作 false可操作
+                 *
+                 */
+                getProjAuthUserInfos({url:baseUrl,deptId:3}).then((data)=>{
+                    this.authUserInfoList = data.data.result;
+                    this.authUserInfoList.forEach((val,key)=>{
+                        if(val.hasAuth){
+                            this.authUserListItem.push(val)
+                        }
+                        if(val.allAuth){
+                            this.authUserListItem.push(val)
+                        }
+                    });
+                    if(this.authUserInfoList.length== this.authUserListItem.length){
+                        this.checkAll = true;
+                    }else{
+                        this.checkAll = false;
+                    }
+                });
+
+            },
             //默认加载数据
             getData(name,id){
-//            console.log(this.$route.path);
+                this.getBaseUrl();
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
-
+                if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
+                    this.isRecycle = false;
+                }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
+                    this.isRecycle = true;
+                }
+                //专业
+                getMajorsByCreate({url:baseUrl}).then((data)=>{
+                    this.majorOptions = data.data.result;
+                    this.filterParams.majorVal = this.majorOptions[0].value
+                });
+                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
+                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
                 if(currentRoute=="/bimlib/housing/bim-lib"||currentRoute=="/bimlib/BaseBuild/bim-lib" || currentRoute=="/bimlib/decoration/bim-lib"){
                     //加载的是工作集的数据
                     console.log('加载工作集数据'+this.$route.params.typeId)
@@ -716,7 +716,7 @@
                 if(id && name){
                     this.tableData.forEach((val,key)=>{
                         this.$set(val,'updateUser',name)
-                })
+                    })
                 }
                 if(this.$refs.multipleTable){//勾选列表复选框存在清除勾选
                     this.$refs.multipleTable.clearSelection();
@@ -724,14 +724,20 @@
                 }
                 this.tableData.forEach((val,key)=>{
                     this.$set(val,'checked',false)
-            })
+                });
             },
 
             //添加和修改工程
             //全部删除授权人员
             delRootAll(){
-                this.checkedCities = [];
                 this.checkAll = false;
+                this.authUserListItem =[];
+                console.log(this.authUserListItem,'this.authUserListItem')
+                this.authUserInfoList.forEach((val,key)=>{
+                    if(val.allAuth){
+                        this.authUserListItem.push(val)
+                    }
+                })
             },
             /**
              *删除某个授权人
@@ -739,10 +745,13 @@
              * @params index 索引值
              **/
             delRootItem(item,index){
-                if(this.checkedCities.indexOf(item)!=-1){
-                    this.checkedCities.splice(index,1)
-                }
-                if(this.checkedCities.length>0 && this.checkedCities.length<this.cities.length){
+                this.authUserInfoList.forEach((val,key)=>{
+                    if(val.userId.indexOf(index)!=-1){
+                        this.authUserInfoList.splice(key,1);
+                        this.authUserListItem.splice(key,1)
+                    }
+                });
+                if(this.authUserInfoList.length>0 && this.authUserInfoList.length<this.cities.length){
                     this.checkAll = false;
                 }
             },
@@ -751,22 +760,22 @@
              * @params event  事件
              **/
             addAllRootPerson(event){
+
                 if (event.target.checked) {
-                    this.checkedCities = [];
-                    this.cities.forEach(item => {
-                        this.checkedCities.push(item);
-                });
+                    this.authUserInfoList.forEach(item => {
+                        this.authUserListItem.push(item);
+                    });
                 } else {
-                    this.checkedCities = [];
+                    this.authUserListItem = [];
                 }
+//               console.log(event,'event')
             },
             /**
              *添加某个人员
              * @params item  添加的队列集合
              **/
             addRootPerson(item){
-                let checkLength = item.length;
-                if(item.length===this.cities.length){
+                if(this.authUserListItem.length==this.authUserInfoList.length){
                     this.checkAll = true;
                 }else{
                     this.checkAll = false;
@@ -821,13 +830,14 @@
             //进入回收站
             inRecycle(path,paramId){
                 deletArray =[];
+                this.isRecycle = true;
                 this.$router.push({ path: path+'/recycle-bin/'+paramId});
-
             },
             //返回工程库
             inProLib(path,paramId){
                 deletArray =[];
-                this.$router.push({ path: path+'/bim-lib/'+paramId})
+                this.isRecycle = false;
+                this.$router.push({ path: path+'/bim-lib/'+paramId});
             },
             foreachs(allChecked,data){
                 if(allChecked){
@@ -880,25 +890,17 @@
             $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
         },
         created(){
+
             this.activeIndex = this.$route.path,
-                this.filterParams.orgNodeVal = '根节点';
-            this.filterParams.bimVal = this.bimOptions[0].value;
-            this.filterParams.versionsVal = this.versionsOptions[0].value;
-            this.filterParams.majorVal = this.majorOptions[0].value;
+            this.filterParams.orgNodeVal = '根节点';
             this.getData();
             console.log(this.tableData)
         },
         components: { VueScrollbar },
         watch: {
             '$route' (to, from) {
-//            console.log(this.$route.path,'this.$route.path');
-                if(this.$route.path=='/bimlib/bim-lib/housing'){
-                    this.getData('yhj',11);
-                }else if(this.$route.path=="/bimlib/bim-lib/BaseBuild"){
-                    this.getData('ppp',12);
-                }else{
-                    this.getData('www',13);
-                }
+                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
+                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
                 }
@@ -943,6 +945,7 @@
         margin-left: 20px;
         padding: 6px 5px;
     }
+
     .bims-contents .project-manage .el-form-item label.el-form-item__label{
         width:83px !important;
     }

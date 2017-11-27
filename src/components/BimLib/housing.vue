@@ -901,6 +901,9 @@
         margin-left: 20px;
         padding: 6px 5px;
     }
+    .bims-contents .project-manage{
+        width:780px !important;
+    }
     .bims-contents .project-manage .el-form-item label.el-form-item__label{
         width:83px !important;
     }
