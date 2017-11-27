@@ -584,7 +584,8 @@
 }
 
 .el-dialog__header {
-    padding: 20px 20px 0
+    padding: 20px 20px 20px;
+    border-bottom: 1px solid #e6e6e6
 }
 
 .el-dialog__close {
@@ -1661,7 +1662,7 @@
 }
 
 .role-wrap .el-table .cell {
-    margin-left: 20px;
+    margin-left: 38px;
     text-align: left;
 }
 
