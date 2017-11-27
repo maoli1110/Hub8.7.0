@@ -39,7 +39,7 @@
                 </el-select>
 
             </el-col>
-            <el-col :span="2" class="filter-bar relat" :class="[($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')?'left85':'left140']">
+            <el-col :span="2" class="filter-bar relat" :class="[($route.path==`/bimlib/housing/recycle-bin/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/recycle-bin/${$route.params.typeId}` || $route.path==`/bimlib/decoration/recycle-bin/${$route.params.typeId}`)?'left85':'left140']">
                 <span class="absol span-block" style="width:40px;">
                     版本:
                 </span>
@@ -86,10 +86,10 @@
                             </th>
                             <th>工程名称</th>
                             <th>专业</th>
-                            <th v-if="$route.params.typeId!=3">BIM属性	</th>
+                            <th v-if="$route.params.typeId!=4">BIM属性	</th>
                             <th class="uploadPerson">上传人</th>
                             <th>上传时间</th>
-                            <th v-if="$route.params.typeId!=3">图纸</th>
+                            <th v-if="$route.params.typeId!=4">图纸</th>
                             <th>所属项目部</th>
                             <th>大小</th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
@@ -107,10 +107,10 @@
                             </td>
                             <td>{{item.processName}}</td>
                             <td>{{item.speciality}}</td>
-                            <td v-if="$route.params.typeId !=3" class="bim-params">{{item.BIMparams}}</td>
+                            <td v-if="$route.params.typeId !=4" class="bim-params">{{item.BIMparams}}</td>
                             <td class="absol substr uploadPerson" :title="item.updateUser">{{item.updateUser}}</td>
                             <td class="times">{{item.updateTime}}</td>
-                            <td  v-if="$route.params.typeId !=3">{{item.PDF}}</td>
+                            <td  v-if="$route.params.typeId !=4">{{item.PDF}}</td>
                             <td>{{item.proDepartment}}</td>
                             <td>{{item.size}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.output}}</td>
@@ -131,7 +131,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <table class="recycle-bins" cellspacing="0" cellpadding="0" v-if="($route.path==('/bimlib/housing/recycle-bin/'+$route.params.typeId) ||$route.path==('/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId) || $route.path==('/bimlib/decoration/recycle-bin/'+$route.params.typeId))">
+                    <table class="recycle-bins" cellspacing="0" cellpadding="0" v-if="($route.path==`/bimlib/housing/recycle-bin/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/recycle-bin/${$route.params.typeId}` || $route.path==`/bimlib/decoration/recycle-bin/${$route.params.typeId}`)">
                         <thead>
                         <tr>
                             <th>
@@ -687,18 +687,26 @@
                 console.log(baseUrl,'baseUrl')
                 getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
                     this.bimOptions = data.data.result;
+                    if(this.bimOptions.length>0){
+                        this.filterParams.versionsVal = this.versionsOptions[0].value;
+                    }
+
                 });
             },
             //获取版本
             getProjTypeEvent(isDelete,packageType){
                 getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
                     this.versionsOptions = data.data.result;
+                    if(this.versionsOptions.length>0){
+                        this.filterParams.versionsVal = this.versionsOptions[0].value;
+                    }
                 })
             },
 
             //默认加载数据
             getData(name,id){
                 this.getBaseUrl();
+                console.log(baseUrl,'base')
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;
                 }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
@@ -707,6 +715,7 @@
                 //专业
                 getMajorsByCreate({url:baseUrl}).then((data)=>{
                     this.majorOptions = data.data.result;
+                    this.filterParams.majorVal = this.majorOptions[0].value
                 });
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
@@ -827,17 +836,14 @@
             //进入回收站
             inRecycle(path,paramId){
                 deletArray =[];
+                this.isRecycle = true;
                 this.$router.push({ path: path+'/recycle-bin/'+paramId});
-                this.getProjGenreEvent(this.isRecycle,paramId);
-                this.getProjTypeEvent(this.isRecycle,paramId);
-
             },
             //返回工程库
             inProLib(path,paramId){
                 deletArray =[];
+                this.isRecycle = false;
                 this.$router.push({ path: path+'/bim-lib/'+paramId});
-                this.getProjGenreEvent(this.isRecycle,paramId);
-                this.getProjTypeEvent(this.isRecycle,paramId);
             },
             foreachs(allChecked,data){
                 if(allChecked){
@@ -893,23 +899,14 @@
 
             this.activeIndex = this.$route.path,
             this.filterParams.orgNodeVal = '根节点';
-            /*this.filterParams.bimVal = this.bimOptions[0].value;
-            this.filterParams.versionsVal = this.versionsOptions[0].value;
-            this.filterParams.majorVal = this.majorOptions[0].value;*/
             this.getData();
             console.log(this.tableData)
         },
         components: { VueScrollbar },
         watch: {
             '$route' (to, from) {
-//            console.log(this.$route.path,'this.$route.path');
-                if(this.$route.path=='/bimlib/bim-lib/housing'){
-                    this.getData('yhj',11);
-                }else if(this.$route.path=="/bimlib/bim-lib/BaseBuild"){
-                    this.getData('ppp',12);
-                }else{
-                    this.getData('www',13);
-                }
+                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
+                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
                 }
