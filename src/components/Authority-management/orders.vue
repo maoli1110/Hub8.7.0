@@ -19,10 +19,10 @@
                             <!--([pictureUrl?pictureUrl:'/static/img/dog.jpg'])-->
                             <div class="icon-wrapper">
                                 <img class="icon-package-service"
-                                     :src="scope.row.pictureUrl?scope.row.pictureUrl:imgUrl">
+                                     :src="scope.row.iconUrl?scope.row.iconUrl:imgUrl">
                             </div>
-                            <div class="text-wrapper" :title="scope.row.packageService">
-                                <p class="text-package-service">{{ scope.row.packageService }}</p>
+                            <div class="text-wrapper" :title="scope.row.packageServicesName">
+                                <p class="text-package-service">{{ scope.row.packageServicesName }}</p>
                             </div>
                         </template>
                     </el-table-column>
@@ -30,10 +30,10 @@
 
                         <template slot-scope="scope">
                             <div class="service-time" style="margin-top: 25px;">
-                                <span>{{formatDate(scope.row.date)}}</span>
+                                <span>{{scope.row.expirationDateStr}}</span>
                             </div>
                             <div class="service-time">
-                                <span>剩余{{remainTime(scope.row.date)}}</span>
+                                <span>剩余{{scope.row.monthDayTO.monthNumber}}个月</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -127,37 +127,39 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import {getOrderManagementList} from '../../api/getData.js';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
+    import {basePath} from '../../utils/common.js'
+    import {getOrderManagementList} from '../../api/getData.js';
+
     export default {
         data (){
 
             return {
                 imgUrl: '/static/img/dog.jpg',
-                currentPage: '',//当前页的条数
-                pageSize: '',//每页多少条
+                currentPage: 1,//当前页数
+                pageSize: 10,//每页多少条
                 orderManageTableData: [
-                    {
-                        packageService: "鲁班安装BIM应用套餐应用应用应用套餐",
-                        pictureUrl: "",
-                        date: "1509999999999",
-                        status: "正常",
-                        accountNumber: 12,
-                        assignedAccount: [
-                            120,//"已分配
-                            201 //可分配
-                        ],
-                        bindNumber: 22,
-                        bindManage: [
-                            3,//已绑定3台
-                            6,//可绑定6台
-                            2,//已修改2台
-                            3 //可修改3台
-                        ],
-                        serviceContent: ["1.成都吃据东航从大环境从今;2.但毫无的话;3.新华社我i好像从i武侯祠"],
-                        orderNumber: "4564848412",
-                        remarks: "超长re1111111112超长remark11111111111111111111111111111111111111111111112"
-                    }
+//                    {
+//                        packageService: "鲁班安装BIM应用套餐应用应用应用套餐",
+//                        pictureUrl: "",
+//                        date: "1509999999999",
+//                        status: "正常",
+//                        accountNumber: 12,
+//                        assignedAccount: [
+//                            120,//"已分配
+//                            201 //可分配
+//                        ],
+//                        bindNumber: 22,
+//                        bindManage: [
+//                            3,//已绑定3台
+//                            6,//可绑定6台
+//                            2,//已修改2台
+//                            3 //可修改3台
+//                        ],
+//                        serviceContent: ["1.成都吃据东航从大环境从今;2.但毫无的话;3.新华社我i好像从i武侯祠"],
+//                        orderNumber: "4564848412",
+//                        remarks: "超长re1111111112超长remark11111111111111111111111111111111111111111111112"
+//                    }
                 ],
                 checked: false,
                 remarks: '超长remark1456484684612323256526511111111111112'
@@ -226,12 +228,16 @@
             }
         },
         mounted() {
+            let baseUrl = basePath(this.$route.matched[3].path)
+            console.log(baseUrl);
             //分页获取订单列表
             let params = {
+                url: baseUrl,
                 currentPage: this.currentPage,
                 pageSize: this.pageSize
             }
             getOrderManagementList(params).then((data) => {
+                this.orderManageTableData = data.data.result;
                 console.log(111);
                 console.log(data);
             });

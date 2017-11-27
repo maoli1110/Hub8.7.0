@@ -37,10 +37,10 @@ export const getWorksetingList = params => axios.get(`${base}`);
 export const getCitys = params => axios.get('../../static/js/citys.json')
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 export const router = params=> axios.get(`${route}`);
-// GET /order/manage/getEnterpriseServiceList/{currentPage}/{pageSize} 分页获取企业服务列表
-export const getOrderManagementList = params=> axios.get(`${basePath('cloud')}/order/manage/getEnterpriseServiceList/${params.currentPage}/${params.pageSize}`);
 /**
  * 云构件库
  * */
 //构件树列表
 export const treeList = params=> axios.get(`${params.url}/component/tree/list/${params.version}/${params.productId}`);
+// GET /order/manage/getEnterpriseServiceList/{currentPage}/{pageSize} 分页获取企业服务列表
+export const getOrderManagementList = params=> axios.get(`${params.url}` + "order/manage/getEnterpriseServiceList/" + params.currentPage + "/" + params.pageSize)
