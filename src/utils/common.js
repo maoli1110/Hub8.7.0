@@ -41,6 +41,10 @@ function basePath(localhost) {
         case '/bimlib/housing/bim-lib/1':                  //Bim库->房建->工程库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
+        case "/bimlib/housing/recycle-bin/1":
+            baseUrl = 'http://192.168.13.195:8989/builder/';
+            break;
+
         case '/bimlib/housing/working-set':               //Bim库->房建->工作集库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
@@ -50,10 +54,17 @@ function basePath(localhost) {
         case '/bimlib/housing/bim-lib/2':                  //Bim库->基建->工程库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
+        case "/bimlib/housing/recycle-bin/2":
+            baseUrl = 'http://192.168.13.195:8989/builder/';
+            break;
+
         case '/bimlib/housing/working-set/2':              //Bim库->基建->工作集库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
         case '/bimlib/housing/bim-lib/3':                  //Bim库->家装->工程库
+            baseUrl = 'http://192.168.13.195:8989/builder/';
+            break;
+        case "/bimlib/housing/recycle-bin/3":
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
 

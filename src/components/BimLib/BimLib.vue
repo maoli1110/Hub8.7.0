@@ -13,9 +13,9 @@
                     <el-menu-item index="/bimlib/BaseBuild/bim-lib/2">工程库</el-menu-item>
                     <el-menu-item index="/bimlib/BaseBuild/working-set">工作集库</el-menu-item>
                 </el-submenu>
-                <el-submenu index="/bimlib/decoration/bim-lib/3">
+                <el-submenu index="/bimlib/decoration/bim-lib/4">
                     <template slot="title">家装</template>
-                    <el-menu-item index="/bimlib/decoration/bim-lib/3">工程库</el-menu-item>
+                    <el-menu-item index="/bimlib/decoration/bim-lib/4">工程库</el-menu-item>
                 </el-submenu>
             </el-menu>
 

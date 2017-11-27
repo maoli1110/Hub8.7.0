@@ -18,13 +18,13 @@
                     <el-option
                         v-for="item in bimOptions"
                         :key="item.value"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.value">
                     </el-option>
                 </el-select>
 
             </el-col>
-            <el-col :span="2" class="filter-bar relat"  style="left:82px"  v-show="($route.path=='/bimlib/housing/bim-lib' ||$route.path=='/bimlib/BaseBuild/bim-lib' || $route.path=='/bimlib/decoration/bim-lib')">
+            <el-col :span="2" class="filter-bar relat"  style="left:82px"  v-if="($route.path==`/bimlib/housing/bim-lib/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/bim-lib/${$route.params.typeId}` || $route.path==`/bimlib/decoration/bim-lib/${$route.params.typeId}`)">
                 <span class="absol span-block" style="width:40px;">
                     专业:
                 </span>
@@ -33,7 +33,7 @@
                     <el-option
                         v-for="item in majorOptions"
                         :key="item.value"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.value">
                     </el-option>
                 </el-select>
@@ -47,7 +47,7 @@
                     <el-option
                         v-for="item in versionsOptions"
                         :key="item.value"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.value">
                     </el-option>
                 </el-select>
@@ -68,8 +68,8 @@
                 <el-button type="primary" class="basic-btn " @click="dataEmpty"><i class="bim-icon-tool "></i><span class="btn-text">清空</span></el-button>
             </el-col>
             <el-col :span="3" :offset="4" class="">
-                <el-button type="primary" class="basic-btn " @click="inRecycle($route.matched[2].path,$route.params.typeId)" style="right:35px;" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)"><span class="go-back "></span><span class="btn-text">回收站</span></el-button>
-                <el-button type="primary" class="basic-btn " @click="inProLib($route.matched[2].path,$route.params.typeId)" style="width:120px;right:30px;" v-if="($route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId)"><span class="go-back "></span><span class="btn-text"> 返回工程库</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="inRecycle($route.matched[2].path,$route.params.typeId)" style="right:35px;" v-if="!isRecycle"><span class="go-back "></span><span class="btn-text">回收站</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="inProLib($route.matched[2].path,$route.params.typeId)" style="width:120px;right:30px;" v-if="isRecycle"><span class="go-back "></span><span class="btn-text"> 返回工程库</span></el-button>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-main">
@@ -326,10 +326,15 @@
 <script>
     import axios from "axios";
     import {IndexCumsum} from "../../utils/validate.js";
+    import {basePath} from "../../utils/common.js";
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import {cloudTree} from '../../api/getData.js'
+    import {
+        cloudTree,getMajorsByCreate,getProjGenre,
+        getProjType,getProjAuthUserInfos
+    } from '../../api/getData.js';
     let deletArray = [];
     let countIndex = 0;
+    let baseUrl;
     const cityOptions = [
         "上海11111111111111111111111111111111111111111111111",
         "北京",
@@ -428,39 +433,10 @@
                         onClick: this.proDepartClick
                     }
                 },
-                bimOptions: [{//BIM属性下拉框的值
-                    value: '全部',
-                    label: '全部'
-                }, {
-                    value: '施工',
-                    label: '施工'
-                }, {
-                    value: '预算',
-                    label: '预算'
-                }],
-                majorOptions: [{//专业
-                    value: '土建',
-                    label: '土建'
-                }, {
-                    value: '钢筋',
-                    label: '钢筋'
-                }, {
-                    value: '安装',
-                    label: '安装'
-                }, {
-                    value: 'Revit',
-                    label: 'Revit'
-                }, {
-                    value: 'Tekla',
-                    label: 'Tekla'
-                }, {
-                    value: '场布',
-                    label: '场布'
-                }],
-                versionsOptions:[{//版本
-                    value: '1.0.0',
-                    label: '1.0.0'
-                }],
+                bimOptions: [],
+                majorOptions: [],
+                versionsOptions:[],//版本
+                isRecycle:false,//是否是回收站
                 proManage:{//工程管理
                     name:'',
                     major:'',
@@ -691,6 +667,7 @@
             },
             //回收站还原
             dataRestore(){
+                this.getProjGenreEvent()
                 console.log('回收站还原')
             },
             //回收站清空
@@ -701,9 +678,38 @@
             search(){
                 console.log(this.filterParams,'filterparams')
             },
+            //获取地址
+            getBaseUrl(){
+                baseUrl = basePath(this.$route.path);
+            },
+            //获取属性
+            getProjGenreEvent(isDelete,packageType){
+                console.log(baseUrl,'baseUrl')
+                getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
+                    this.bimOptions = data.data.result;
+                });
+            },
+            //获取版本
+            getProjTypeEvent(isDelete,packageType){
+                getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
+                    this.versionsOptions = data.data.result;
+                })
+            },
+
             //默认加载数据
             getData(name,id){
-//            console.log(this.$route.path);
+                this.getBaseUrl();
+                if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
+                    this.isRecycle = false;
+                }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
+                    this.isRecycle = true;
+                }
+                //专业
+                getMajorsByCreate({url:baseUrl}).then((data)=>{
+                    this.majorOptions = data.data.result;
+                });
+                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
+                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
 
                 if(currentRoute=="/bimlib/housing/bim-lib"||currentRoute=="/bimlib/BaseBuild/bim-lib" || currentRoute=="/bimlib/decoration/bim-lib"){
@@ -822,12 +828,16 @@
             inRecycle(path,paramId){
                 deletArray =[];
                 this.$router.push({ path: path+'/recycle-bin/'+paramId});
+                this.getProjGenreEvent(this.isRecycle,paramId);
+                this.getProjTypeEvent(this.isRecycle,paramId);
 
             },
             //返回工程库
             inProLib(path,paramId){
                 deletArray =[];
-                this.$router.push({ path: path+'/bim-lib/'+paramId})
+                this.$router.push({ path: path+'/bim-lib/'+paramId});
+                this.getProjGenreEvent(this.isRecycle,paramId);
+                this.getProjTypeEvent(this.isRecycle,paramId);
             },
             foreachs(allChecked,data){
                 if(allChecked){
@@ -880,11 +890,12 @@
             $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
         },
         created(){
+
             this.activeIndex = this.$route.path,
-                this.filterParams.orgNodeVal = '根节点';
-            this.filterParams.bimVal = this.bimOptions[0].value;
+            this.filterParams.orgNodeVal = '根节点';
+            /*this.filterParams.bimVal = this.bimOptions[0].value;
             this.filterParams.versionsVal = this.versionsOptions[0].value;
-            this.filterParams.majorVal = this.majorOptions[0].value;
+            this.filterParams.majorVal = this.majorOptions[0].value;*/
             this.getData();
             console.log(this.tableData)
         },
