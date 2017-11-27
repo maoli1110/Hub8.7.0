@@ -208,7 +208,7 @@
             </div>
         </el-dialog>
         <!--工程添加/修改弹窗-->
-        <el-dialog :title="addPrjectTitle" custorm-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog :title="addPrjectTitle" custom-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
                 <el-form-item label="工程名称：" label-width="80">
                     <el-input v-model="proManage.name" auto-complete="off"></el-input>
@@ -229,7 +229,7 @@
                     <el-row class="transfer">
                         <el-col :span="10" class="transfer-con-add">
                             <el-col :span="12"><el-checkbox v-model="checkAll" @change="addAllRootPerson">全部</el-checkbox></el-col>
-                            <el-col :span="12"><p offset="12">全部可授权人数{{cities.length}}</p></el-col>
+                            <el-col :span="12"><p offset="12">全部可授权人数{{authUserInfoList.length}}</p></el-col>
                             <el-col :span="24" class="border">
                                 <el-input style="width:100%"
                                           class="el-transfer-panel__filter"
@@ -239,8 +239,8 @@
                                           :on-icon-click="proManageSearch"
                                 ></el-input>
                                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
-                                    <el-checkbox-group v-model="checkedCities" @change="addRootPerson" class="scroll-me" style="background:#fff;">
-                                        <el-checkbox  class="el-transfer-panel__item"  v-for="city in cities" :label="city" :key="city" :title="city" >{{city}}</el-checkbox>
+                                    <el-checkbox-group v-model="authUserListItem" @change="addRootPerson" class="scroll-me" style="background:#fff;">
+                                         <el-checkbox   class="el-transfer-panel__item" v-for="item in authUserInfoList"  :label="item"  :key="item.userId" :title="item.userName" :disabled="item.allAuth">{{item.userName}}</el-checkbox>
                                     </el-checkbox-group>
                                 </vue-scrollbar>
                             </el-col>
@@ -251,15 +251,15 @@
                                     <i class="radius-lines"></i>
                                 </span>
                             </el-col>
-                            <el-col :span="10" ><p offset="12" style="text-align:right">已授权人数{{checkedCities.length}}</p></el-col>
+                            <el-col :span="10" ><p offset="12" style="text-align:right">已授权人数{{authUserListItem.length}}</p></el-col>
                             <el-col :span="24" class="border">
                                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:306px;padding:10px;">
                                     <ul class="scroll-me delete-rootPerson" style="background:#fff;">
-                                        <li  v-for="(item,index) in checkedCities" :key="index" @click="delRootItem(item,index)" class="substr" :title=" item">
-                                            <span class="radius" >
+                                        <li  v-for="(item,index) in authUserListItem" v-if="!item.allAuth" :key="index" class="substr" :title=" item.userName">
+                                            <span class="radius" v-show="!item.allAuth" @click="delRootItem(item,item.userId)" >
                                                 <i class="radius-lines"></i>
                                             </span>
-                                            {{item}}
+                                            {{item.userName}}
                                         </li>
                                     </ul>
                                 </vue-scrollbar>
@@ -335,54 +335,15 @@
     let deletArray = [];
     let countIndex = 0;
     let baseUrl;
-    const cityOptions = [
-        "上海11111111111111111111111111111111111111111111111",
-        "北京",
-        "广州",
-        "深圳",
-        "南京",
-        "西安",
-        "成都",
-        "广州1",
-        "深圳2",
-        "南京3",
-        "西安4",
-        "成都5"
-    ];
     export default {
 //    props: ['tableData'],
         data() {
-            const generateData = _ => {
-                const data = [];
-                const cities = ["上海", "北京", "广州", "深圳", "南京", "西安", "成都"];
-                const pinyin = [
-                    "shanghai",
-                    "beijing",
-                    "guangzhou",
-                    "shenzhen",
-                    "nanjing",
-                    "xian",
-                    "chengdu"
-                ];
-                cities.forEach((city, index) => {
-                    data.push({
-                    label: city,
-                    key: index,
-                    pinyin: pinyin[index]
-                });
-            });
-                return data;
-            };
             return {
                 allChecked:false,
                 checked:false,
                 currentCheck:false,
                 delIndex:-1,
-                checkedCities: ["北京"],  //授权人员默认选中
-                data2: generateData(),  //组件公用数据
-                value2: [],//
                 checkAll: false,        //是否选中
-                cities: cityOptions,    //授权人员
                 textarea:"",            //备注
                 proMsearchKey:"",       //搜索关键字
                 isDisable:false,        //项目部是否可用 用于工程管理弹窗 区分是修改还是添加
@@ -392,6 +353,8 @@
                 modifyInfo:false,//修改信息弹窗
                 monitorSeverVisible:false,//第三方监控设置
                 addPrjectTitle:"添加工程",
+                authUserInfoList:[],//添加授权人员
+                authUserListItem:[],//选中列表
                 //分页的一些设置
                 cur_page:1,
                 totalPage:50,
@@ -649,6 +612,7 @@
                         this.addPrjectTitle = '添加工程'
                     }
                 }
+                this.getRootMan();
             },
             /**
              * @params type 批量监控还是监控
@@ -702,11 +666,34 @@
                     }
                 })
             },
+            //获取授权人员
+            getRootMan(){
+                /**
+                 * val.allaAuth  是否权限管理的全部权限 true 不可操作 false可操作
+                 *
+                 */
+                getProjAuthUserInfos({url:baseUrl,deptId:3}).then((data)=>{
+                    this.authUserInfoList = data.data.result;
+                    this.authUserInfoList.forEach((val,key)=>{
+                        if(val.hasAuth){
+                            this.authUserListItem.push(val)
+                        }
+                        if(val.allAuth){
+                            this.authUserListItem.push(val)
+                        }
+                    });
+                    if(this.authUserInfoList.length== this.authUserListItem.length){
+                        this.checkAll = true;
+                    }else{
+                        this.checkAll = false;
+                    }
+                });
 
+            },
             //默认加载数据
             getData(name,id){
                 this.getBaseUrl();
-                console.log(baseUrl,'base')
+                let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;
                 }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
@@ -719,8 +706,6 @@
                 });
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
-                let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
-
                 if(currentRoute=="/bimlib/housing/bim-lib"||currentRoute=="/bimlib/BaseBuild/bim-lib" || currentRoute=="/bimlib/decoration/bim-lib"){
                     //加载的是工作集的数据
                     console.log('加载工作集数据'+this.$route.params.typeId)
@@ -731,7 +716,7 @@
                 if(id && name){
                     this.tableData.forEach((val,key)=>{
                         this.$set(val,'updateUser',name)
-                })
+                    })
                 }
                 if(this.$refs.multipleTable){//勾选列表复选框存在清除勾选
                     this.$refs.multipleTable.clearSelection();
@@ -739,14 +724,18 @@
                 }
                 this.tableData.forEach((val,key)=>{
                     this.$set(val,'checked',false)
-            })
+                });
             },
 
             //添加和修改工程
             //全部删除授权人员
             delRootAll(){
-                this.checkedCities = [];
                 this.checkAll = false;
+                this.authUserListItem.forEach((val,key)=>{
+                    if(!val.allAuth){
+                        this.authUserListItem.splice(key,1)
+                    }
+                })
             },
             /**
              *删除某个授权人
@@ -754,10 +743,13 @@
              * @params index 索引值
              **/
             delRootItem(item,index){
-                if(this.checkedCities.indexOf(item)!=-1){
-                    this.checkedCities.splice(index,1)
-                }
-                if(this.checkedCities.length>0 && this.checkedCities.length<this.cities.length){
+                this.authUserInfoList.forEach((val,key)=>{
+                    if(val.userId.indexOf(index)!=-1){
+                        this.authUserInfoList.splice(key,1);
+                        this.authUserListItem.splice(key,1)
+                    }
+                });
+                if(this.authUserInfoList.length>0 && this.authUserInfoList.length<this.cities.length){
                     this.checkAll = false;
                 }
             },
@@ -766,22 +758,22 @@
              * @params event  事件
              **/
             addAllRootPerson(event){
+
                 if (event.target.checked) {
-                    this.checkedCities = [];
-                    this.cities.forEach(item => {
-                        this.checkedCities.push(item);
-                });
+                    this.authUserInfoList.forEach(item => {
+                        this.authUserListItem.push(item);
+                    });
                 } else {
-                    this.checkedCities = [];
+                    this.authUserListItem = [];
                 }
+//               console.log(event,'event')
             },
             /**
              *添加某个人员
              * @params item  添加的队列集合
              **/
             addRootPerson(item){
-                let checkLength = item.length;
-                if(item.length===this.cities.length){
+                if(this.authUserListItem.length==this.authUserInfoList.length){
                     this.checkAll = true;
                 }else{
                     this.checkAll = false;
@@ -951,6 +943,7 @@
         margin-left: 20px;
         padding: 6px 5px;
     }
+
     .bims-contents .project-manage .el-form-item label.el-form-item__label{
         width:83px !important;
     }

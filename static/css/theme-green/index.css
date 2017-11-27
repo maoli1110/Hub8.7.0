@@ -2128,7 +2128,7 @@
 }
 
 .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
-    background-color: #f5f8fd;
+    background-color: #ddd;
     border-color: #d1dbe5
 }
 
