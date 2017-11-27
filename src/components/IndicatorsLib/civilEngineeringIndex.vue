@@ -86,6 +86,7 @@
 
 <script type="text/ecmascript-6">
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
+
     export default {
         data(){
             return {

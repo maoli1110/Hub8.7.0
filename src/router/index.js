@@ -233,7 +233,7 @@ export default new Router({
                     // 构件库
                     path: '/componentlib',
                     component: resolve => require(['../components/ComponentLib/ComponentLib.vue'], resolve),
-                    redirect: '/componentlib/Luban-mep',
+                    redirect: '/componentlib/luban-mep',
                     children: [
                         {
                             path: '/componentlib/luban-mep',

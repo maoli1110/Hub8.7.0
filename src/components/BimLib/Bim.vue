@@ -36,7 +36,6 @@
 
         watch: {
             '$route' (to, from) {
-                console.log(this.$route.query.typeId,'this.$route.path');
                 if(this.$route.query.typeId){
                     this.tableData.forEach((val,key)=>{
                         if(this.$route.query.typeId==11){
