@@ -91,7 +91,7 @@
             </div>
             <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitForm('ruleForm')" class="dialog-btn">确 定</el-button>
-            <el-button @click="editAttributesDialogVisible = false;resetForm('ruleForm')" class="dialog-btn">取 消</el-button>
+            <el-button @click="editAttributesDialogVisible = false;" class="dialog-btn">取 消</el-button>
             </span>
         </el-dialog>
     </div>

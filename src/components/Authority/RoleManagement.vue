@@ -25,8 +25,8 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span type="primary" class="icon-edit_  icon"  @click="editRole(scope.row.id)"></span>
-                        <span type="primary" class="icon-view   icon"   @click="searchRole(scope.row.id)"></span>
+                        <span type="primary" class="icon-edit_  icon"  @click="editRole(scope.row)"></span>
+                        <span type="primary" class="icon-view   icon"   @click="searchRole(scope.row)"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -49,6 +49,7 @@
 <script>
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+import { mapActions } from "vuex";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -229,6 +230,9 @@ export default {
   },
 
   methods: {
+    ...mapActions([
+      "curEditRole" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
+    ]),
     orgTreeClick(event, treeId, treeNode) {
       this.orgValue = treeNode.name;
       setTimeout(() => {
@@ -261,11 +265,15 @@ export default {
     },
     addRole() {
     },
-    editRole(MemberId) {
+    editRole(row) {
+
       this.$router.push({ path: `/authority/edit-role/5` });
+      this.curEditRole(row);
+
     },
     searchRole(MemberId) {
       this.$router.push({ path: `/authority/member-management` });
+      
     },
     deleteRole() {},
   },
