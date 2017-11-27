@@ -731,9 +731,11 @@
             //全部删除授权人员
             delRootAll(){
                 this.checkAll = false;
-                this.authUserListItem.forEach((val,key)=>{
-                    if(!val.allAuth){
-                        this.authUserListItem.splice(key,1)
+                this.authUserListItem =[];
+                console.log(this.authUserListItem,'this.authUserListItem')
+                this.authUserInfoList.forEach((val,key)=>{
+                    if(val.allAuth){
+                        this.authUserListItem.push(val)
                     }
                 })
             },
