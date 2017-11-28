@@ -19,7 +19,6 @@ function FormIndex(data, currentPage, pagesize) {
  * @return {obj}                返回生成树结构所需要的对象
  */
 function transformToObjFormat(param, simpleOrgNodes) {
-    debugger
     var i,l;
     var key = param.orgNodeKey;
     var parentKey = param.orgNodeParentKey;
