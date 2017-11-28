@@ -43,7 +43,7 @@
                 <span class="absol span-block" style="width:40px;">
                     版本:
                 </span>
-                <el-select class="absol" v-model="filterParams.versionsVal" placeholder="请选择" style="left:40px;">
+                <el-select class="absol" v-model="filterParams.versionsVal"  @change="versionChange" placeholder="请选择" style="left:40px;">
                     <el-option
                         v-for="item in versionsOptions"
                         :key="item.value"
@@ -53,7 +53,7 @@
                 </el-select>
             </el-col>
             <el-col :span="4" class="relat" :class="[($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')?'left120':'left175']">
-                <el-input placeholder="请输入搜索项目名称" v-model="filterParams.searchVal" icon="search" :on-icon-click="search"></el-input>
+                <el-input placeholder="搜索工程名称和上传人关键词" v-model="filterParams.searchVal" icon="search" :on-icon-click="search"></el-input>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-dev-toolbar" >
@@ -86,15 +86,16 @@
                             </th>
                             <th>工程名称</th>
                             <th>专业</th>
-                            <th v-if="$route.params.typeId!=4">BIM属性	</th>
+                            <th v-if="$route.params.typeId!=4">BIM属性</th>
                             <th class="uploadPerson">上传人</th>
                             <th>上传时间</th>
+
                             <th v-if="$route.params.typeId!=4">图纸</th>
                             <th>所属项目部</th>
                             <th>大小</th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
                             <th>数据处理</th>
-                            <th>已授权</th>
+                            <th>版本</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -105,15 +106,17 @@
                                     <el-checkbox v-model="item.checked" @change="singChecked" ></el-checkbox>
                                 </template>
                             </td>
-                            <td>{{item.processName}}</td>
-                            <td>{{item.speciality}}</td>
-                            <td v-if="$route.params.typeId !=4" class="bim-params">{{item.BIMparams}}</td>
-                            <td class="absol substr uploadPerson" :title="item.updateUser">{{item.updateUser}}</td>
-                            <td class="times">{{item.updateTime}}</td>
-                            <td  v-if="$route.params.typeId !=4">{{item.PDF}}</td>
-                            <td>{{item.proDepartment}}</td>
-                            <td>{{item.size}}</td>
-                            <td  v-if="$route.params.typeId ==1">{{item.output}}</td>
+                            <td>{{item.projName}}</td>
+                            <td>{{item.projType}}</td>
+                            <td v-if="$route.params.typeId !=4" class="bim-params">{{item.projGenre }}</td>
+                            <td class="absol substr uploadPerson" :title="
+                            item.createRealName+'\n'+item.createUserName">
+                            {{item.createRealName}}</td>
+                            <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
+                            <td  v-if="$route.params.typeId !=4">{{item.drawSize}}</td>
+                            <td>{{item.deptName}}</td>
+                            <td>{{item.projSize}}</td>
+                            <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
                             <td>
                                 <div v-show="item.status==='处理成功'" class="align-l"><span class="bim-icon "></span>处理成功</div>
                                 <div v-show="item.status==='处理失败'" class="align-l"><span class="bim-icon "></span>处理失败</div>
@@ -121,7 +124,7 @@
                                 <div  v-show="item.status==='待处理'"  class="align-l"><span class="bim-icon "></span>待处理</div>
                                 <div v-show="item.status==='未处理'"   class="align-l"><span class="bim-icon "></span>未处理</div>
                             </td>
-                            <td>{{item.isRoot}}</td>
+                            <td>{{item.version}}</td>
                             <td>
                                 <div class="handel-cotrol"><span class=" handel-icon " @click="ProjManageDialog = true;addProject('modific')"></span></div>
                                 <div class="handel-cotrol"><span class=" handel-icon " @click="extractDialog=true;extractData('处理中')"></span></div><!--extractData(scope.row.status)"-->
@@ -172,7 +175,7 @@
                     </table>
                 </vue-scrollbar>
                 <div class="pagination">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPages" layout="total, sizes, prev, pager, next, jumper" :total="pagesList.totalElements">
                     </el-pagination>
                 </div>
             </el-col>
@@ -338,12 +341,14 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import {
         cloudTree,getMajorsByCreate,getProjGenre,
-        getProjType,getProjAuthUserInfos,createProject
+        getProjType,getProjAuthUserInfos,createProject,
+        getProjects,zTreeNodes
     } from '../../api/getData.js';
     let deletArray = [];
     let countIndex = 0;
     let baseUrl;
     let authUserInfoListCopy;
+
     export default {
 //    props: ['tableData'],
         data() {
@@ -370,8 +375,7 @@
                 authItemCount:0,
                 //分页的一些设置
                 cur_page:1,
-                totalPage:50,
-                totalNumber:300,
+                totalPages:0,
                 extractStatus:'',
                 filterMethod(query, item) {
                     return item.pinyin.indexOf(query) > -1;
@@ -411,8 +415,32 @@
                 },
                 bimOptions: [],
                 majorOptions: [],
-                versionsOptions:[],//版本
+                versionsOptions:[
+                    {name:"显示最新",value:true},
+                    {name:"显示全部",value:false}
+                ],//版本
                 isRecycle:false,//是否是回收站
+                tableParam:{
+                    delete: false,
+                    deptIds: [],
+                    latest: true,
+                    packageType: 0,
+                    pageParam: {
+                        orders: [
+                            {
+                                direction: 0,
+                                ignoreCase: true,
+                                property: ""
+                            }
+                        ],
+                        page: 0,
+                        size: 0
+                    },
+                    projGenre: "",
+                    projType: "",
+                    searchKey: "",
+                    skOnlyProjName: false
+                },
                 proManage:{//工程管理
                     name:'',
                     major:'',
@@ -462,13 +490,8 @@
                     { id: 32, pId: 3, name: "叶子节点2" },
                     { id: 33, pId: 3, name: "叶子节点3" }
                 ],
-                tableData:[
-                    {index:1,processName:'鲁班安装鲁班安装鲁班安装鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理成功",isRoot:'27人'},
-                    {index:2,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理失败",isRoot:'27人'},
-                    {index:3,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理中",isRoot:'27人'},
-                    {index:4,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"待处理",isRoot:'27人'},
-                    {index:5,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"未处理",isRoot:'27人'},
-                ],
+                pagesList:{},
+                tableData:[],
                 proDepartNodes:[],
             }
         },
@@ -516,9 +539,19 @@
             //分页器事件
             handleSizeChange(size){
                 console.log(`每页显示多少条${size}`);
+                this.tableParam.pageParam.size = size;
+                this.totalPages = size;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
             },
             handleCurrentChange(currentPage){
                 console.log(`当前页${currentPage}`);
+                this.cur_page = currentPage;
+                this.tableParam.pageParam.page = currentPage;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
+            },
+            //change
+            versionChange(val){
+                this.tableParam.latest = val;
             },
             //搜索条件树结构的单机事件
             onClick(event, treeId, treeNode) {
@@ -559,6 +592,14 @@
                     if( deletArray.indexOf(val.index) ==-1){
                         deletArray.push(val.index)
                     }
+                })
+            },
+            getProjectList(params){
+                console.log(params)
+                getProjects(params).then((data)=>{
+//                    console.log(data.data.result.content,'表格列表结构')
+                    this.tableData = data.data.result.content;
+                    this.pagesList = data.data.result;
                 })
             },
             //列表删除
@@ -607,9 +648,9 @@
                 createProject({url:url,param:param}).then((data)=>{
                     if(data.data.code==500){
                         this.commonMessage(data.data.msg,'warning')
-                    }else{
+                    }else if(data.data.code==200){
                         //执行成功
-                        this.ProjManageDialog = true;
+                        this.ProjManageDialog = false;
                     }
                 },(error)=>{
                     this.commonMessage(error.data.msg)
@@ -620,15 +661,19 @@
                 this.authUserListItem = [];
                 if(type=='add'){
                     this.getTree();
-      /*              this.proManageVal = '';
-                    this.proManage.name="";
-                    this.proManage.major = '';*/
                     this.isDisable = false;
                     if(!this.isDisable){
                         this.addPrjectTitle = '添加工程'
                     }else{
                         this.addPrjectTitle = '工程管理'
                     }
+                    //专业
+                    getMajorsByCreate({url:baseUrl}).then((data)=>{
+                        this.majorOptions = data.data.result;
+                        this.newCreatmajor = data.data.result;
+                        this.proManage.major = this.newCreatmajor[0].value;
+                        this.filterParams.majorVal = this.majorOptions[0].value;
+                    });
                 }else{
 //                this.getTree();
                     this.proManageVal = 'SSSSSS';
@@ -687,12 +732,12 @@
 
                 });
             },
-            //获取版本
+            //获取专业
             getProjTypeEvent(isDelete,packageType){
                 getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
-                    this.versionsOptions = data.data.result;
-                    if(this.versionsOptions.length>0){
-                        this.filterParams.versionsVal = this.versionsOptions[0].value;
+                    this.majorOptions = data.data.result;
+                    if(this.majorOptions.length>0){
+                        this.filterParams.majorVal = this.majorOptions[0].value;
                     }
                 })
             },
@@ -728,21 +773,23 @@
             //默认加载数据
             getData(name,id){
                 this.getBaseUrl();
+                this.tableParam.delete = this.isRecycle;
+                this.tableParam.latest = true;
+                this.tableParam.deptIds[0] = "3"
+                this.tableParam.packageType = this.$route.params.typeId;
+                this.tableParam.pageParam.orders[0].property = "t1.projSize";
+                this.tableParam.pageParam.page = this.cur_page;
+                this.tableParam.pageParam.size = this.tableParam.totalPages;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;
                 }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
                     this.isRecycle = true;
                 }
-                //专业
-                getMajorsByCreate({url:baseUrl}).then((data)=>{
-                    this.majorOptions = data.data.result;
-                    this.newCreatmajor = data.data.result;
-                    this.proManage.major = this.newCreatmajor[0].value;
-                    this.filterParams.majorVal = this.majorOptions[0].value
-                });
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
+                this.filterParams.versionsVal = this.versionsOptions[0].value;
                 if(currentRoute=="/bimlib/housing/bim-lib"||currentRoute=="/bimlib/BaseBuild/bim-lib" || currentRoute=="/bimlib/decoration/bim-lib"){
                     //加载的是工作集的数据
                     console.log('加载工作集数据'+this.$route.params.typeId)
@@ -815,7 +862,6 @@
                     });
                 } else {
                     this.authUserListItem = [];
-
                     this.authUserInfoList.forEach((item,key) => {
                         if(item.allAuth){
                             this.authUserListItem.push(item);
