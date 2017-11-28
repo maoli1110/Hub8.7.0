@@ -1,10 +1,7 @@
-{
-  "code": 200,
-  "msg": "success",
-  "result":[
+[
     {
         "id":"org1",
-        "parentId":"org0",
+        "pId":"org0",
         "root":true,
         "isParent":true,
         "isOrg":true,
@@ -14,7 +11,7 @@
     },
     {
         "id":"org2",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"下级组织",
@@ -23,7 +20,7 @@
     },
     {
         "id":"org3",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"上海分公司",
@@ -32,7 +29,7 @@
     },
     {
         "id":"org5",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"pdf自动抽取",
@@ -41,7 +38,7 @@
     },
     {
         "id":"org7",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"胡彪的公司",
@@ -50,7 +47,7 @@
     },
     {
         "id":"org8",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"BE&MC测试工程积累（非测试组成员请勿修改）",
@@ -59,7 +56,7 @@
     },
     {
         "id":"org11",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"进度计划（请勿修改）",
@@ -68,7 +65,7 @@
     },
     {
         "id":"org43",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"123",
@@ -77,7 +74,7 @@
     },
     {
         "id":"org44",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"性能测试",
@@ -86,7 +83,7 @@
     },
     {
         "id":"org46",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"zhouping",
@@ -95,7 +92,7 @@
     },
     {
         "id":"org50",
-        "parentId":"org11",
+        "pId":"org11",
         "isParent":true,
         "isOrg":true,
         "name":"土建项目",
@@ -104,7 +101,7 @@
     },
     {
         "id":"org51",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"我的分公司-勿动",
@@ -113,7 +110,7 @@
     },
     {
         "id":"org54",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"程序",
@@ -122,7 +119,7 @@
     },
     {
         "id":"org55",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"Revit案例工程",
@@ -131,7 +128,7 @@
     },
     {
         "id":"org57",
-        "parentId":"org55",
+        "pId":"org55",
         "isParent":true,
         "isOrg":true,
         "name":"周",
@@ -140,7 +137,7 @@
     },
     {
         "id":"org61",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"test",
@@ -149,7 +146,7 @@
     },
     {
         "id":"org78",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"BW",
@@ -158,7 +155,7 @@
     },
     {
         "id":"org82",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"JDK1.7",
@@ -167,7 +164,7 @@
     },
     {
         "id":"org83",
-        "parentId":"org82",
+        "pId":"org82",
         "isParent":true,
         "isOrg":true,
         "name":"JDK1.7",
@@ -176,7 +173,7 @@
     },
     {
         "id":"org93",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"日照港第一生活区",
@@ -185,7 +182,7 @@
     },
     {
         "id":"org94",
-        "parentId":"org3",
+        "pId":"org3",
         "isParent":true,
         "isOrg":true,
         "name":"MC（分公司）",
@@ -194,7 +191,7 @@
     },
     {
         "id":"org155",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"戴欣的分公司",
@@ -203,7 +200,7 @@
     },
     {
         "id":"org156",
-        "parentId":"org155",
+        "pId":"org155",
         "isParent":true,
         "isOrg":true,
         "name":"华东分部",
@@ -212,7 +209,7 @@
     },
     {
         "id":"org169",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"ceshi-haoMon Aug 08 09:27:59 CST 2016",
@@ -221,7 +218,7 @@
     },
     {
         "id":"org241",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"SP",
@@ -230,7 +227,7 @@
     },
     {
         "id":"org304",
-        "parentId":"org155",
+        "pId":"org155",
         "isParent":true,
         "isOrg":true,
         "name":"产品部",
@@ -239,7 +236,7 @@
     },
     {
         "id":"org305",
-        "parentId":"org304",
+        "pId":"org304",
         "isParent":true,
         "isOrg":true,
         "name":"傅森泉",
@@ -248,7 +245,7 @@
     },
     {
         "id":"org306",
-        "parentId":"org2",
+        "pId":"org2",
         "isParent":true,
         "isOrg":true,
         "name":" 分公司a62600a5b9",
@@ -257,7 +254,7 @@
     },
     {
         "id":"org309",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"Govern测试专用",
@@ -266,7 +263,7 @@
     },
     {
         "id":"org310",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"Govern接口测试（勿修改数据）",
@@ -275,7 +272,7 @@
     },
     {
         "id":"org311",
-        "parentId":"org309",
+        "pId":"org309",
         "isParent":true,
         "isOrg":true,
         "name":"V10.0.0",
@@ -284,7 +281,7 @@
     },
     {
         "id":"org312",
-        "parentId":"org309",
+        "pId":"org309",
         "isParent":true,
         "isOrg":true,
         "name":"V10.1.0",
@@ -293,7 +290,7 @@
     },
     {
         "id":"org315",
-        "parentId":"org363",
+        "pId":"org363",
         "isParent":true,
         "isOrg":true,
         "name":"测试层级",
@@ -302,7 +299,7 @@
     },
     {
         "id":"org318",
-        "parentId":"org78",
+        "pId":"org78",
         "isParent":true,
         "isOrg":true,
         "name":"孔洞性能用",
@@ -311,7 +308,7 @@
     },
     {
         "id":"org319",
-        "parentId":"org3",
+        "pId":"org3",
         "isParent":true,
         "isOrg":true,
         "name":"Govern",
@@ -320,7 +317,7 @@
     },
     {
         "id":"org320",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"市政",
@@ -329,7 +326,7 @@
     },
     {
         "id":"org329",
-        "parentId":"org2",
+        "pId":"org2",
         "isParent":true,
         "isOrg":true,
         "name":"宁伟的公司",
@@ -338,7 +335,7 @@
     },
     {
         "id":"org331",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"北京钢构配合",
@@ -347,7 +344,7 @@
     },
     {
         "id":"org333",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"节点数据测试分公司",
@@ -356,7 +353,7 @@
     },
     {
         "id":"org334",
-        "parentId":"org333",
+        "pId":"org333",
         "isParent":true,
         "isOrg":true,
         "name":"24h+标准+24h自定义",
@@ -365,7 +362,7 @@
     },
     {
         "id":"org335",
-        "parentId":"org1",
+        "pId":"org1",
         "isParent":true,
         "isOrg":true,
         "name":"ccb的分公司",
@@ -374,7 +371,7 @@
     },
     {
         "id":"org337",
-        "parentId":"org335",
+        "pId":"org335",
         "isParent":true,
         "isOrg":true,
         "name":"ccb测试",
@@ -383,7 +380,7 @@
     },
     {
         "id":"org352",
-        "parentId":"org310",
+        "pId":"org310",
         "isParent":true,
         "isOrg":true,
         "name":"UI自动化测试",
@@ -392,7 +389,7 @@
     },
     {
         "id":"org355",
-        "parentId":"org304",
+        "pId":"org304",
         "isParent":true,
         "isOrg":true,
         "name":"公路工程",
@@ -401,7 +398,7 @@
     },
     {
         "id":"org356",
-        "parentId":"org355",
+        "pId":"org355",
         "isParent":true,
         "isOrg":true,
         "name":"桥梁",
@@ -410,7 +407,7 @@
     },
     {
         "id":"org357",
-        "parentId":"org305",
+        "pId":"org305",
         "isParent":true,
         "isOrg":true,
         "name":"公路工程案例",
@@ -419,7 +416,7 @@
     },
     {
         "id":"org358",
-        "parentId":"org309",
+        "pId":"org309",
         "isParent":true,
         "isOrg":true,
         "name":"各地区表单导入测试",
@@ -428,7 +425,7 @@
     },
     {
         "id":"org362",
-        "parentId":"org309",
+        "pId":"org309",
         "isParent":true,
         "isOrg":true,
         "name":"V10.2.0",
@@ -437,7 +434,7 @@
     },
     {
         "id":"org363",
-        "parentId":"org5",
+        "pId":"org5",
         "isParent":true,
         "isOrg":true,
         "name":"00",
@@ -446,7 +443,7 @@
     },
     {
         "id":"org365",
-        "parentId":"org309",
+        "pId":"org309",
         "isParent":true,
         "isOrg":true,
         "name":"V10.3.0",
@@ -455,7 +452,7 @@
     },
     {
         "id":"org368",
-        "parentId":"org5",
+        "pId":"org5",
         "isParent":true,
         "isOrg":true,
         "name":"地方",
@@ -464,7 +461,7 @@
     },
     {
         "id":"dept1",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"初始项目部",
         "ename":"初始项目部",
         "local":"110101",
@@ -482,7 +479,7 @@
     },
     {
         "id":"dept2",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"钢筋项目部",
         "ename":"钢筋项目部",
         "local":"110101",
@@ -500,7 +497,7 @@
     },
     {
         "id":"dept3",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"土建项目部",
         "ename":"土建项目部",
         "local":"110101",
@@ -518,7 +515,7 @@
     },
     {
         "id":"dept4",
-        "parentId":"org3",
+        "pId":"org3",
         "name":"nsj土建",
         "ename":"nsj土建",
         "local":"110106",
@@ -536,7 +533,7 @@
     },
     {
         "id":"dept5",
-        "parentId":"org3",
+        "pId":"org3",
         "name":"安装项目部",
         "ename":"安装项目部",
         "local":"310110",
@@ -554,7 +551,7 @@
     },
     {
         "id":"dept6",
-        "parentId":"org5",
+        "pId":"org5",
         "name":"大工程项目",
         "ename":"大工程项目",
         "local":"330206",
@@ -572,7 +569,7 @@
     },
     {
         "id":"dept7",
-        "parentId":"org94",
+        "pId":"org94",
         "name":"测试大工程项目部",
         "ename":"测试大工程项目部",
         "local":"310110",
@@ -590,7 +587,7 @@
     },
     {
         "id":"dept9",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"jsl测试项目",
         "ename":"jsl测试项目",
         "local":"310110",
@@ -608,7 +605,7 @@
     },
     {
         "id":"dept11",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"zhou",
         "ename":"zhou",
         "local":"310110",
@@ -626,7 +623,7 @@
     },
     {
         "id":"dept15",
-        "parentId":"org337",
+        "pId":"org337",
         "name":"临时",
         "ename":"临时",
         "local":"130303",
@@ -644,7 +641,7 @@
     },
     {
         "id":"dept16",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"PDF项目部",
         "ename":"PDF项目部",
         "local":"110115",
@@ -662,7 +659,7 @@
     },
     {
         "id":"dept17",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"sqs项目部",
         "ename":"sqs项目部",
         "local":"310110",
@@ -680,7 +677,7 @@
     },
     {
         "id":"dept38",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"东测试测试测试测试测试测试测试测试测试测试测试测试",
         "ename":"东测试测试测试测试测试测试测试测试测试测试测试测试",
         "local":"310115",
@@ -698,7 +695,7 @@
     },
     {
         "id":"dept40",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"PDF",
         "ename":"PDF",
         "local":"310110",
@@ -716,7 +713,7 @@
     },
     {
         "id":"dept42",
-        "parentId":"org8",
+        "pId":"org8",
         "name":"土建、钢筋和安装全专业全构件工程",
         "ename":"土建、钢筋和安装全专业全构件工程",
         "local":"110101",
@@ -734,7 +731,7 @@
     },
     {
         "id":"dept43",
-        "parentId":"org8",
+        "pId":"org8",
         "name":"大工程（性能测试）",
         "ename":"大工程（性能测试）",
         "local":"310119",
@@ -752,7 +749,7 @@
     },
     {
         "id":"dept44",
-        "parentId":"org8",
+        "pId":"org8",
         "name":"土建（功能测试、特殊构件测试）",
         "ename":"土建（功能测试、特殊构件测试）",
         "local":"110101",
@@ -770,7 +767,7 @@
     },
     {
         "id":"dept45",
-        "parentId":"org8",
+        "pId":"org8",
         "name":"钢筋（功能测试、特殊构件测试）",
         "ename":"钢筋（功能测试、特殊构件测试）",
         "local":"120110",
@@ -788,7 +785,7 @@
     },
     {
         "id":"dept46",
-        "parentId":"org8",
+        "pId":"org8",
         "name":"安装（功能测试和特殊构件）",
         "ename":"安装（功能测试和特殊构件）",
         "local":"120110",
@@ -806,7 +803,7 @@
     },
     {
         "id":"dept47",
-        "parentId":"org8",
+        "pId":"org8",
         "name":"造价工程",
         "ename":"造价工程",
         "local":"310110",
@@ -824,7 +821,7 @@
     },
     {
         "id":"dept49",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"SS",
         "ename":"SS",
         "local":"110101",
@@ -842,7 +839,7 @@
     },
     {
         "id":"dept50",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"进度计划",
         "ename":"进度计划",
         "local":"310113",
@@ -860,7 +857,7 @@
     },
     {
         "id":"dept53",
-        "parentId":"org3",
+        "pId":"org3",
         "name":"钢筋项目部",
         "ename":"钢筋项目部",
         "local":"120099",
@@ -878,7 +875,7 @@
     },
     {
         "id":"dept54",
-        "parentId":"org1",
+        "pId":"org1",
         "name":"V4.3.0test",
         "ename":"V4.3.0test",
         "local":"110101",
@@ -896,7 +893,7 @@
     },
     {
         "id":"dept55",
-        "parentId":"org337",
+        "pId":"org337",
         "name":"x64项目部",
         "ename":"x64项目部",
         "local":"310110",
@@ -914,7 +911,7 @@
     },
     {
         "id":"dept56",
-        "parentId":"org337",
+        "pId":"org337",
         "name":"支持造价V7：",
         "ename":"支持造价V7：",
         "local":"110099",
@@ -932,7 +929,7 @@
     },
     {
         "id":"dept64",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"JMeterCase专用",
         "ename":"JMeterCase专用",
         "local":"310119",
@@ -950,7 +947,7 @@
     },
     {
         "id":"dept68",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"项目节点名称",
         "ename":"项目节点名称",
         "local":"310119",
@@ -968,7 +965,7 @@
     },
     {
         "id":"dept77",
-        "parentId":"org3",
+        "pId":"org3",
         "name":"测试记录日志",
         "ename":"测试记录日志",
         "local":"120113",
@@ -986,7 +983,7 @@
     },
     {
         "id":"dept78",
-        "parentId":"org3",
+        "pId":"org3",
         "name":"项目部2015129rainyDay",
         "ename":"项目部2015129rainyDay",
         "local":"130406",
@@ -1004,7 +1001,7 @@
     },
     {
         "id":"dept79",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"新建项目部",
         "ename":"新建项目部",
         "local":"310110",
@@ -1022,7 +1019,7 @@
     },
     {
         "id":"dept80",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"中文名",
         "ename":"中文名",
         "local":"110115",
@@ -1040,7 +1037,7 @@
     },
     {
         "id":"dept81",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"测试项目",
         "ename":"测试项目",
         "local":"310114",
@@ -1058,7 +1055,7 @@
     },
     {
         "id":"dept83",
-        "parentId":"org43",
+        "pId":"org43",
         "name":"111",
         "ename":"111",
         "local":"500106",
@@ -1076,7 +1073,7 @@
     },
     {
         "id":"dept84",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"whc测试项目",
         "ename":"whc测试项目",
         "local":"310110",
@@ -1094,7 +1091,7 @@
     },
     {
         "id":"dept85",
-        "parentId":"org44",
+        "pId":"org44",
         "name":"安装性能测试",
         "ename":"安装性能测试",
         "local":"110101",
@@ -1112,7 +1109,7 @@
     },
     {
         "id":"dept86",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"施工段测试",
         "ename":"施工段测试",
         "local":"110101",
@@ -1130,7 +1127,7 @@
     },
     {
         "id":"dept87",
-        "parentId":"org3",
+        "pId":"org3",
         "name":"更新工程测试",
         "ename":"更新工程测试",
         "local":"110106",
@@ -1148,7 +1145,7 @@
     },
     {
         "id":"dept88",
-        "parentId":"org46",
+        "pId":"org46",
         "name":"施工段",
         "ename":"施工段",
         "local":"310110",
@@ -1166,7 +1163,7 @@
     },
     {
         "id":"dept90",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"钢筋项目",
         "ename":"钢筋项目",
         "local":"310103",
@@ -1184,7 +1181,7 @@
     },
     {
         "id":"dept91",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"安装项目",
         "ename":"安装项目",
         "local":"310119",
@@ -1202,7 +1199,7 @@
     },
     {
         "id":"dept92",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"土建安装钢筋综合项目",
         "ename":"土建安装钢筋综合项目",
         "local":"110101",
@@ -1220,7 +1217,7 @@
     },
     {
         "id":"dept93",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"plan",
         "ename":"plan",
         "local":"310119",
@@ -1238,7 +1235,7 @@
     },
     {
         "id":"dept94",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"MC读取进度计划",
         "ename":"MC读取进度计划",
         "local":"310110",
@@ -1256,7 +1253,7 @@
     },
     {
         "id":"dept96",
-        "parentId":"org51",
+        "pId":"org51",
         "name":"测试数据公司",
         "ename":"测试数据公司",
         "local":"110101",
@@ -1274,7 +1271,7 @@
     },
     {
         "id":"dept98",
-        "parentId":"org54",
+        "pId":"org54",
         "name":"zcj",
         "ename":"zcj",
         "local":"310110",
@@ -1292,7 +1289,7 @@
     },
     {
         "id":"dept99",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"MC8.8.0造价",
         "ename":"MC8.8.0造价",
         "local":"310110",
@@ -1310,7 +1307,7 @@
     },
     {
         "id":"dept100",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"Revit项目部",
         "ename":"Revit项目部",
         "local":"310099",
@@ -1328,7 +1325,7 @@
     },
     {
         "id":"dept101",
-        "parentId":"org55",
+        "pId":"org55",
         "name":"7-21",
         "ename":"7-21",
         "local":"310110",
@@ -1346,7 +1343,7 @@
     },
     {
         "id":"dept102",
-        "parentId":"org55",
+        "pId":"org55",
         "name":"7-22",
         "ename":"7-22",
         "local":"310110",
@@ -1364,7 +1361,7 @@
     },
     {
         "id":"dept103",
-        "parentId":"org55",
+        "pId":"org55",
         "name":"修改bug",
         "ename":"修改bug",
         "local":"310230",
@@ -1382,7 +1379,7 @@
     },
     {
         "id":"dept104",
-        "parentId":"org55",
+        "pId":"org55",
         "name":"7-23",
         "ename":"7-23",
         "local":"310117",
@@ -1400,7 +1397,7 @@
     },
     {
         "id":"dept105",
-        "parentId":"org55",
+        "pId":"org55",
         "name":"周",
         "ename":"周",
         "local":"310119",
@@ -1418,7 +1415,7 @@
     },
     {
         "id":"dept106",
-        "parentId":"org55",
+        "pId":"org55",
         "name":"孙",
         "ename":"孙",
         "local":"110101",
@@ -1436,7 +1433,7 @@
     },
     {
         "id":"dept107",
-        "parentId":"org55",
+        "pId":"org55",
         "name":"李",
         "ename":"李",
         "local":"120110",
@@ -1454,7 +1451,7 @@
     },
     {
         "id":"dept110",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"Revit性能测试whc",
         "ename":"Revit性能测试whc",
         "local":"310110",
@@ -1472,7 +1469,7 @@
     },
     {
         "id":"dept112",
-        "parentId":"org61",
+        "pId":"org61",
         "name":"test项目部",
         "ename":"test项目部",
         "local":"110101",
@@ -1490,7 +1487,7 @@
     },
     {
         "id":"dept114",
-        "parentId":"org337",
+        "pId":"org337",
         "name":"BE5.5",
         "ename":"BE5.5",
         "local":"310109",
@@ -1508,7 +1505,7 @@
     },
     {
         "id":"dept115",
-        "parentId":"org5",
+        "pId":"org5",
         "name":"1112",
         "ename":"1112",
         "local":"310110",
@@ -1526,7 +1523,7 @@
     },
     {
         "id":"dept116",
-        "parentId":"org3",
+        "pId":"org3",
         "name":"LBG格式项目部",
         "ename":"LBG格式项目部",
         "local":"310110",
@@ -1544,7 +1541,7 @@
     },
     {
         "id":"dept117",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"杨浦区超级长名字啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊",
         "ename":"杨浦区超级长名字啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊",
         "local":"310110",
@@ -1562,7 +1559,7 @@
     },
     {
         "id":"dept199",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"接口测试项目",
         "ename":"接口测试项目",
         "local":"310115",
@@ -1580,7 +1577,7 @@
     },
     {
         "id":"dept201",
-        "parentId":"org1",
+        "pId":"org1",
         "name":"PDF图纸",
         "ename":"PDF图纸",
         "local":"120099",
@@ -1598,7 +1595,7 @@
     },
     {
         "id":"dept206",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"6.1接口测试",
         "ename":"6.1接口测试",
         "local":"310099",
@@ -1616,7 +1613,7 @@
     },
     {
         "id":"dept207",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"6.1显示控制",
         "ename":"6.1显示控制",
         "local":"310110",
@@ -1634,7 +1631,7 @@
     },
     {
         "id":"dept209",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"BW-BT1.0.0",
         "ename":"BW-BT1.0.0",
         "local":"310115",
@@ -1652,7 +1649,7 @@
     },
     {
         "id":"dept211",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"案例工程",
         "ename":"案例工程",
         "local":"110101",
@@ -1670,7 +1667,7 @@
     },
     {
         "id":"dept212",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"HY",
         "ename":"HY",
         "local":"110101",
@@ -1688,7 +1685,7 @@
     },
     {
         "id":"dept213",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"BW接口用",
         "ename":"BW接口用",
         "local":"110101",
@@ -1706,7 +1703,7 @@
     },
     {
         "id":"dept215",
-        "parentId":"org319",
+        "pId":"org319",
         "name":"戴理瑞的项目",
         "ename":"戴理瑞的项目",
         "local":"341503",
@@ -1724,7 +1721,7 @@
     },
     {
         "id":"dept217",
-        "parentId":"org83",
+        "pId":"org83",
         "name":"JDK1.7",
         "ename":"JDK1.7",
         "local":"210323",
@@ -1742,7 +1739,7 @@
     },
     {
         "id":"dept218",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"工程顾问",
         "ename":"工程顾问",
         "local":"310119",
@@ -1760,7 +1757,7 @@
     },
     {
         "id":"dept219",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"测试0505li",
         "ename":"测试0505li",
         "local":"110101",
@@ -1778,7 +1775,7 @@
     },
     {
         "id":"dept221",
-        "parentId":"org93",
+        "pId":"org93",
         "name":"日照港第一生活区",
         "ename":"日照港第一生活区",
         "local":"371102",
@@ -1796,7 +1793,7 @@
     },
     {
         "id":"dept222",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"日照",
         "ename":"日照",
         "local":"371102",
@@ -1814,7 +1811,7 @@
     },
     {
         "id":"dept259",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"工程顾问测试用",
         "ename":"工程顾问测试用",
         "local":"110101",
@@ -1832,7 +1829,7 @@
     },
     {
         "id":"dept261",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"tekla测试",
         "ename":"tekla测试",
         "local":"110101",
@@ -1850,7 +1847,7 @@
     },
     {
         "id":"dept262",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"lym",
         "ename":"lym",
         "local":"310110",
@@ -1868,7 +1865,7 @@
     },
     {
         "id":"dept264",
-        "parentId":"org94",
+        "pId":"org94",
         "name":"mc9.0（项目部）",
         "ename":"mc9.0（项目部）",
         "local":"310110",
@@ -1886,7 +1883,7 @@
     },
     {
         "id":"dept283",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"MC9.0.0",
         "ename":"MC9.0.0",
         "local":"110106",
@@ -1904,7 +1901,7 @@
     },
     {
         "id":"dept284",
-        "parentId":"org155",
+        "pId":"org155",
         "name":"上海南翔污水处理厂",
         "ename":"上海南翔污水处理厂",
         "local":"530099",
@@ -1922,7 +1919,7 @@
     },
     {
         "id":"dept285",
-        "parentId":"org156",
+        "pId":"org156",
         "name":"南京宜家",
         "ename":"南京宜家",
         "local":"410099",
@@ -1940,7 +1937,7 @@
     },
     {
         "id":"dept286",
-        "parentId":"org1",
+        "pId":"org1",
         "name":"0000",
         "ename":"0000",
         "local":"110101",
@@ -1958,7 +1955,7 @@
     },
     {
         "id":"dept296",
-        "parentId":"org169",
+        "pId":"org169",
         "name":"hao",
         "ename":"hao",
         "local":"310110",
@@ -1976,7 +1973,7 @@
     },
     {
         "id":"dept305",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"测试",
         "ename":"测试",
         "local":"110101",
@@ -1994,7 +1991,7 @@
     },
     {
         "id":"dept306",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"用户反馈jjx",
         "ename":"用户反馈jjx",
         "local":"110101",
@@ -2012,7 +2009,7 @@
     },
     {
         "id":"dept333",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"测试项目部-wcc",
         "ename":"测试项目部-wcc",
         "local":"130324",
@@ -2030,7 +2027,7 @@
     },
     {
         "id":"dept344",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"测试版本",
         "ename":"测试版本",
         "local":"310114",
@@ -2048,7 +2045,7 @@
     },
     {
         "id":"dept345",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"发布版本",
         "ename":"发布版本",
         "local":"310113",
@@ -2066,7 +2063,7 @@
     },
     {
         "id":"dept346",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"上传测试",
         "ename":"上传测试",
         "local":"110099",
@@ -2084,7 +2081,7 @@
     },
     {
         "id":"dept347",
-        "parentId":"org241",
+        "pId":"org241",
         "name":"土建工程",
         "ename":"土建工程",
         "local":"120104",
@@ -2102,7 +2099,7 @@
     },
     {
         "id":"dept348",
-        "parentId":"org241",
+        "pId":"org241",
         "name":"钢筋",
         "ename":"钢筋",
         "local":"140202",
@@ -2120,7 +2117,7 @@
     },
     {
         "id":"dept349",
-        "parentId":"org241",
+        "pId":"org241",
         "name":"安装工程",
         "ename":"安装工程",
         "local":"120113",
@@ -2138,7 +2135,7 @@
     },
     {
         "id":"dept350",
-        "parentId":"org241",
+        "pId":"org241",
         "name":"revit或tekla",
         "ename":"revit或tekla",
         "local":"130132",
@@ -2156,7 +2153,7 @@
     },
     {
         "id":"dept352",
-        "parentId":"org1",
+        "pId":"org1",
         "name":"bw测试",
         "ename":"bw测试",
         "local":"130121",
@@ -2174,7 +2171,7 @@
     },
     {
         "id":"dept353",
-        "parentId":"org155",
+        "pId":"org155",
         "name":"郑州航空港",
         "ename":"郑州航空港",
         "local":"410099",
@@ -2192,7 +2189,7 @@
     },
     {
         "id":"dept356",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"标高换算",
         "ename":"标高换算",
         "local":"110101",
@@ -2210,7 +2207,7 @@
     },
     {
         "id":"dept377",
-        "parentId":"org155",
+        "pId":"org155",
         "name":"石春枫",
         "ename":"石春枫",
         "local":"110106",
@@ -2228,7 +2225,7 @@
     },
     {
         "id":"dept379",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"robot用",
         "ename":"robot用",
         "local":"110101",
@@ -2246,7 +2243,7 @@
     },
     {
         "id":"dept380",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"孔洞用",
         "ename":"孔洞用",
         "local":"310110",
@@ -2264,7 +2261,7 @@
     },
     {
         "id":"dept399",
-        "parentId":"org305",
+        "pId":"org305",
         "name":"案例项目",
         "ename":"案例项目",
         "local":"210102",
@@ -2282,7 +2279,7 @@
     },
     {
         "id":"dept400",
-        "parentId":"org306",
+        "pId":"org306",
         "name":"projecta62600a5b9",
         "ename":"projecta62600a5b9",
         "local":"520099",
@@ -2300,7 +2297,7 @@
     },
     {
         "id":"dept403",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"上传测试",
         "ename":"上传测试",
         "local":"110101",
@@ -2318,7 +2315,7 @@
     },
     {
         "id":"dept408",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"SP3.0.0项目部",
         "ename":"SP3.0.0项目部",
         "local":"130121",
@@ -2336,7 +2333,7 @@
     },
     {
         "id":"dept412",
-        "parentId":"org155",
+        "pId":"org155",
         "name":"Govern9.0.0（老）",
         "ename":"Govern9.0.0（老）",
         "local":"310110",
@@ -2354,7 +2351,7 @@
     },
     {
         "id":"dept413",
-        "parentId":"org94",
+        "pId":"org94",
         "name":"Govern9.0.0项目部",
         "ename":"Govern9.0.0项目部",
         "local":"310106",
@@ -2372,7 +2369,7 @@
     },
     {
         "id":"dept416",
-        "parentId":"org311",
+        "pId":"org311",
         "name":"戴欣的项目部",
         "ename":"戴欣的项目部",
         "local":"110101",
@@ -2390,7 +2387,7 @@
     },
     {
         "id":"dept417",
-        "parentId":"org311",
+        "pId":"org311",
         "name":"孙励的项目部",
         "ename":"孙励的项目部",
         "local":"110105",
@@ -2408,7 +2405,7 @@
     },
     {
         "id":"dept421",
-        "parentId":"org310",
+        "pId":"org310",
         "name":"项目部1",
         "ename":"项目部1",
         "local":"710000",
@@ -2426,7 +2423,7 @@
     },
     {
         "id":"dept422",
-        "parentId":"org310",
+        "pId":"org310",
         "name":"项目部2",
         "ename":"项目部2",
         "local":"820000",
@@ -2444,7 +2441,7 @@
     },
     {
         "id":"dept425",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"市政",
         "ename":"市政",
         "local":"310110",
@@ -2462,7 +2459,7 @@
     },
     {
         "id":"dept427",
-        "parentId":"org94",
+        "pId":"org94",
         "name":"deewwe",
         "ename":"deewwe",
         "local":"520221",
@@ -2480,7 +2477,7 @@
     },
     {
         "id":"dept428",
-        "parentId":"org155",
+        "pId":"org155",
         "name":"Govern9.0.0-定额（老）",
         "ename":"Govern9.0.0-定额（老）",
         "local":"110099",
@@ -2498,7 +2495,7 @@
     },
     {
         "id":"dept429",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"房建转市政",
         "ename":"房建转市政",
         "local":"310110",
@@ -2516,7 +2513,7 @@
     },
     {
         "id":"dept430",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"班筑PPP项目部",
         "ename":"班筑PPP项目部",
         "local":"310110",
@@ -2534,7 +2531,7 @@
     },
     {
         "id":"dept431",
-        "parentId":"org94",
+        "pId":"org94",
         "name":"Govern9.2项目部",
         "ename":"Govern9.2项目部",
         "local":"310110",
@@ -2552,7 +2549,7 @@
     },
     {
         "id":"dept432",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"彭佳佳测试",
         "ename":"彭佳佳测试",
         "local":"310110",
@@ -2570,7 +2567,7 @@
     },
     {
         "id":"dept433",
-        "parentId":"org155",
+        "pId":"org155",
         "name":"Govern9.2.0",
         "ename":"Govern9.2.0",
         "local":"110099",
@@ -2588,7 +2585,7 @@
     },
     {
         "id":"dept434",
-        "parentId":"org1",
+        "pId":"org1",
         "name":"测试用",
         "ename":"测试用",
         "local":"110101",
@@ -2606,7 +2603,7 @@
     },
     {
         "id":"dept435",
-        "parentId":"org320",
+        "pId":"org320",
         "name":"市政2.0",
         "ename":"市政2.0",
         "local":"510181",
@@ -2624,7 +2621,7 @@
     },
     {
         "id":"dept436",
-        "parentId":"org5",
+        "pId":"org5",
         "name":"空的",
         "ename":"空的",
         "local":"110101",
@@ -2642,7 +2639,7 @@
     },
     {
         "id":"dept437",
-        "parentId":"org337",
+        "pId":"org337",
         "name":"测试",
         "ename":"测试",
         "local":"110101",
@@ -2660,7 +2657,7 @@
     },
     {
         "id":"dept439",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"净高用",
         "ename":"净高用",
         "local":"120110",
@@ -2678,7 +2675,7 @@
     },
     {
         "id":"dept445",
-        "parentId":"org61",
+        "pId":"org61",
         "name":"邵君兰项目部",
         "ename":"邵君兰项目部",
         "local":"110101",
@@ -2696,7 +2693,7 @@
     },
     {
         "id":"dept446",
-        "parentId":"org315",
+        "pId":"org315",
         "name":"宁伟的项目",
         "ename":"宁伟的项目",
         "local":"110099",
@@ -2714,7 +2711,7 @@
     },
     {
         "id":"dept447",
-        "parentId":"org156",
+        "pId":"org156",
         "name":"新增项目170331",
         "ename":"新增项目170331",
         "local":"110101",
@@ -2732,7 +2729,7 @@
     },
     {
         "id":"dept448",
-        "parentId":"org156",
+        "pId":"org156",
         "name":"的额",
         "ename":"的额",
         "local":"120110",
@@ -2750,7 +2747,7 @@
     },
     {
         "id":"dept450",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"程序净高用",
         "ename":"程序净高用",
         "local":"110101",
@@ -2768,7 +2765,7 @@
     },
     {
         "id":"dept451",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"北京项目钢构配合",
         "ename":"北京项目钢构配合",
         "local":"110101",
@@ -2786,7 +2783,7 @@
     },
     {
         "id":"dept452",
-        "parentId":"org333",
+        "pId":"org333",
         "name":"北京城奥商业楼",
         "ename":"北京城奥商业楼",
         "local":"110099",
@@ -2804,7 +2801,7 @@
     },
     {
         "id":"dept453",
-        "parentId":"org46",
+        "pId":"org46",
         "name":"test",
         "ename":"test",
         "local":"110106",
@@ -2822,7 +2819,7 @@
     },
     {
         "id":"dept454",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"plan4.0新增",
         "ename":"plan4.0新增",
         "local":"130128",
@@ -2840,7 +2837,7 @@
     },
     {
         "id":"dept456",
-        "parentId":"org311",
+        "pId":"org311",
         "name":"朱莹的项目部",
         "ename":"朱莹的项目部",
         "local":"120110",
@@ -2858,7 +2855,7 @@
     },
     {
         "id":"dept457",
-        "parentId":"org312",
+        "pId":"org312",
         "name":"吕名轩的项目部",
         "ename":"吕名轩的项目部",
         "local":"610099",
@@ -2876,7 +2873,7 @@
     },
     {
         "id":"dept460",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"演示",
         "ename":"演示",
         "local":"310110",
@@ -2894,7 +2891,7 @@
     },
     {
         "id":"dept461",
-        "parentId":"org333",
+        "pId":"org333",
         "name":"24h+标准自定义",
         "ename":"24h+标准自定义",
         "local":"110115",
@@ -2912,7 +2909,7 @@
     },
     {
         "id":"dept462",
-        "parentId":"org333",
+        "pId":"org333",
         "name":"24h+标准",
         "ename":"24h+标准",
         "local":"310120",
@@ -2930,7 +2927,7 @@
     },
     {
         "id":"dept463",
-        "parentId":"org333",
+        "pId":"org333",
         "name":"24h自定义",
         "ename":"24h自定义",
         "local":"350213",
@@ -2948,7 +2945,7 @@
     },
     {
         "id":"dept464",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"Remiz",
         "ename":"Remiz",
         "local":"310110",
@@ -2966,7 +2963,7 @@
     },
     {
         "id":"dept465",
-        "parentId":"org337",
+        "pId":"org337",
         "name":"陈辰柄",
         "ename":"陈辰柄",
         "local":"310110",
@@ -2984,7 +2981,7 @@
     },
     {
         "id":"dept466",
-        "parentId":"org337",
+        "pId":"org337",
         "name":"Myluban测试项目部",
         "ename":"Myluban测试项目部",
         "local":"310110",
@@ -3002,7 +2999,7 @@
     },
     {
         "id":"dept467",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"绘制分区",
         "ename":"绘制分区",
         "local":"310119",
@@ -3020,7 +3017,7 @@
     },
     {
         "id":"dept468",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"合并孔洞",
         "ename":"合并孔洞",
         "local":"120110",
@@ -3038,7 +3035,7 @@
     },
     {
         "id":"dept473",
-        "parentId":"org315",
+        "pId":"org315",
         "name":"Govern10.1项目部",
         "ename":"Govern10.1项目部",
         "local":"310110",
@@ -3056,7 +3053,7 @@
     },
     {
         "id":"dept474",
-        "parentId":"org352",
+        "pId":"org352",
         "name":"测试项目部",
         "ename":"测试项目部",
         "local":"110099",
@@ -3074,7 +3071,7 @@
     },
     {
         "id":"dept477",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"场布",
         "ename":"场布",
         "local":"110106",
@@ -3092,7 +3089,7 @@
     },
     {
         "id":"dept482",
-        "parentId":"org305",
+        "pId":"org305",
         "name":"公路工程案例",
         "ename":"公路工程案例",
         "local":"330902",
@@ -3110,7 +3107,7 @@
     },
     {
         "id":"dept483",
-        "parentId":"org7",
+        "pId":"org7",
         "name":"场布模型性能测试",
         "ename":"场布模型性能测试",
         "local":"310103",
@@ -3128,7 +3125,7 @@
     },
     {
         "id":"dept484",
-        "parentId":"org11",
+        "pId":"org11",
         "name":"内网同步性能用",
         "ename":"内网同步性能用",
         "local":"110106",
@@ -3146,7 +3143,7 @@
     },
     {
         "id":"dept485",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"13清单",
         "ename":"13清单",
         "local":"120099",
@@ -3164,7 +3161,7 @@
     },
     {
         "id":"dept486",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"鲁班造价",
         "ename":"鲁班造价",
         "local":"310099",
@@ -3182,7 +3179,7 @@
     },
     {
         "id":"dept487",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达贵州08清单",
         "ename":"广联达贵州08清单",
         "local":"520099",
@@ -3200,7 +3197,7 @@
     },
     {
         "id":"dept488",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达河北",
         "ename":"广联达河北",
         "local":"130099",
@@ -3218,7 +3215,7 @@
     },
     {
         "id":"dept489",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达北京",
         "ename":"广联达北京",
         "local":"110099",
@@ -3236,7 +3233,7 @@
     },
     {
         "id":"dept490",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达辽宁",
         "ename":"广联达辽宁",
         "local":"210099",
@@ -3254,7 +3251,7 @@
     },
     {
         "id":"dept491",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达江苏",
         "ename":"广联达江苏",
         "local":"320099",
@@ -3272,7 +3269,7 @@
     },
     {
         "id":"dept492",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达浙江",
         "ename":"广联达浙江",
         "local":"330099",
@@ -3290,7 +3287,7 @@
     },
     {
         "id":"dept493",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达福建",
         "ename":"广联达福建",
         "local":"350099",
@@ -3308,7 +3305,7 @@
     },
     {
         "id":"dept494",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达河南",
         "ename":"广联达河南",
         "local":"410099",
@@ -3326,7 +3323,7 @@
     },
     {
         "id":"dept495",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达山东",
         "ename":"广联达山东",
         "local":"370099",
@@ -3344,7 +3341,7 @@
     },
     {
         "id":"dept496",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达四川",
         "ename":"广联达四川",
         "local":"510099",
@@ -3362,7 +3359,7 @@
     },
     {
         "id":"dept497",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达云南",
         "ename":"广联达云南",
         "local":"530099",
@@ -3380,7 +3377,7 @@
     },
     {
         "id":"dept498",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达重庆",
         "ename":"广联达重庆",
         "local":"500099",
@@ -3398,7 +3395,7 @@
     },
     {
         "id":"dept499",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"兴安得力上海",
         "ename":"兴安得力上海",
         "local":"310099",
@@ -3416,7 +3413,7 @@
     },
     {
         "id":"dept500",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"擎洲广达浙江",
         "ename":"擎洲广达浙江",
         "local":"330099",
@@ -3434,7 +3431,7 @@
     },
     {
         "id":"dept501",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"斯维尔深圳",
         "ename":"斯维尔深圳",
         "local":"440299",
@@ -3452,7 +3449,7 @@
     },
     {
         "id":"dept503",
-        "parentId":"org312",
+        "pId":"org312",
         "name":"新建项目部",
         "ename":"新建项目部",
         "local":"110101",
@@ -3470,7 +3467,7 @@
     },
     {
         "id":"dept504",
-        "parentId":"org305",
+        "pId":"org305",
         "name":"测试",
         "ename":"测试",
         "local":"210112",
@@ -3488,7 +3485,7 @@
     },
     {
         "id":"dept505",
-        "parentId":"org305",
+        "pId":"org305",
         "name":"国标清单测试",
         "ename":"国标清单测试",
         "local":"110101",
@@ -3506,7 +3503,7 @@
     },
     {
         "id":"dept506",
-        "parentId":"org362",
+        "pId":"org362",
         "name":"戴欣",
         "ename":"戴欣",
         "local":"310110",
@@ -3524,7 +3521,7 @@
     },
     {
         "id":"dept507",
-        "parentId":"org362",
+        "pId":"org362",
         "name":"孙励",
         "ename":"孙励",
         "local":"310110",
@@ -3542,7 +3539,7 @@
     },
     {
         "id":"dept508",
-        "parentId":"org362",
+        "pId":"org362",
         "name":"朱莹",
         "ename":"朱莹",
         "local":"310112",
@@ -3560,7 +3557,7 @@
     },
     {
         "id":"dept509",
-        "parentId":"org362",
+        "pId":"org362",
         "name":"吕名轩",
         "ename":"吕名轩",
         "local":"610116",
@@ -3578,7 +3575,7 @@
     },
     {
         "id":"dept510",
-        "parentId":"org94",
+        "pId":"org94",
         "name":"Govern10.2项目部",
         "ename":"Govern10.2项目部",
         "local":"310110",
@@ -3596,7 +3593,7 @@
     },
     {
         "id":"dept513",
-        "parentId":"org43",
+        "pId":"org43",
         "name":"测试删除",
         "ename":"测试删除",
         "local":"110101",
@@ -3614,7 +3611,7 @@
     },
     {
         "id":"dept514",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达湖北",
         "ename":"广联达湖北",
         "local":"420112",
@@ -3632,7 +3629,7 @@
     },
     {
         "id":"dept515",
-        "parentId":"org78",
+        "pId":"org78",
         "name":"BW6.5.0",
         "ename":"BW6.5.0",
         "local":"110101",
@@ -3650,7 +3647,7 @@
     },
     {
         "id":"dept517",
-        "parentId":"org365",
+        "pId":"org365",
         "name":"孙励",
         "ename":"孙励",
         "local":"310110",
@@ -3668,7 +3665,7 @@
     },
     {
         "id":"dept519",
-        "parentId":"org1",
+        "pId":"org1",
         "name":"北京分公司",
         "ename":"北京分公司",
         "local":"110099",
@@ -3686,7 +3683,7 @@
     },
     {
         "id":"dept521",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达广东",
         "ename":"广联达广东",
         "local":"440099",
@@ -3704,7 +3701,7 @@
     },
     {
         "id":"dept522",
-        "parentId":"org365",
+        "pId":"org365",
         "name":"李瑞霞",
         "ename":"李瑞霞",
         "local":"110115",
@@ -3722,7 +3719,7 @@
     },
     {
         "id":"dept523",
-        "parentId":"org365",
+        "pId":"org365",
         "name":"广联达贵州（含未计价材料）",
         "ename":"广联达贵州（含未计价材料）",
         "local":"520099",
@@ -3740,7 +3737,7 @@
     },
     {
         "id":"dept524",
-        "parentId":"org358",
+        "pId":"org358",
         "name":"广联达贵州13清单",
         "ename":"广联达贵州13清单",
         "local":"110106",
@@ -3758,7 +3755,7 @@
     },
     {
         "id":"dept525",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"PDS端LBIM升级测试",
         "ename":"PDS端LBIM升级测试",
         "local":"130404",
@@ -3776,7 +3773,7 @@
     },
     {
         "id":"dept526",
-        "parentId":"org2",
+        "pId":"org2",
         "name":"王唯唯测试",
         "ename":"王唯唯测试",
         "local":"310110",
@@ -3793,4 +3790,3 @@
         "isOrg":false
     }
 ]
-}
