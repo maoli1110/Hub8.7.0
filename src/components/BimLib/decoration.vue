@@ -237,7 +237,7 @@
                     <el-row class="transfer">
                         <el-col :span="10" class="transfer-con-add">
                             <el-col :span="12"><el-checkbox v-model="checkAll" @change="addAllRootPerson">全部</el-checkbox></el-col>
-                            <el-col :span="12"><p offset="12">全部可授权人数{{authCount.length}}</p></el-col>
+                            <el-col :span="12"><p offset="12">全部可授权人数{{authItemCount}}</p></el-col>
                             <el-col :span="24" class="border">
                                 <el-input style="width:100%"
                                           class="el-transfer-panel__filter"
@@ -366,6 +366,7 @@
                 authUserListItem:[],//选中列表
                 newCreatmajor:[],
                 authCount:[],
+                disableAuthList:[],
                 authItemCount:0,
                 //分页的一些设置
                 cur_page:1,
@@ -710,7 +711,8 @@
                             this.authCount.push(val);
                         }
                         if(val.allAuth){
-                            this.authUserListItem.push(val)
+                            this.authUserListItem.push(val);
+                            this.disableAuthList.push(val);
                         }else if(!val.allAuth && !val.hasAuth){
                             this.authCount.push(val);
                         }
@@ -775,6 +777,7 @@
                         this.authUserListItem.push(val)
                     }
                 })
+                debugger;
             },
             /**
              *删除某个授权人
@@ -794,14 +797,13 @@
                 if(this.authUserInfoList.length> this.authUserListItem.length){
                     this.checkAll = false;
                 }
-
+                this.authItemCount = this.authUserInfoList.length - (this.disableAuthList.length + this.authCount.length);
             },
             /**
              *全选授权人员
              * @params event  事件
              **/
             addAllRootPerson(event){
-                this.authItemCount =0;
                 this.authCount=[];
                 if (event.target.checked) {
                     this.authUserListItem = [];
@@ -827,7 +829,6 @@
              * @params item  添加的队列集合
              **/
             addRootPerson(item){
-                console.log(item,'选中userId')
                 if(this.authUserListItem.length==this.authUserInfoList.length){
                     this.checkAll = true;
                 }else{
@@ -839,6 +840,7 @@
                        this.authCount.push(val);
                    }
                 });
+                this.authItemCount = this.authUserInfoList.length - (this.disableAuthList.length + this.authCount.length);
             },
             //工程管理修改添加的搜索
             proManageSearch(){
