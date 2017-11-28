@@ -823,6 +823,7 @@
                     });
 
                 }
+                this.authItemCount = this.authUserInfoList.length - (this.disableAuthList.length + this.authCount.length);
             },
             /**
              *添加某个人员
