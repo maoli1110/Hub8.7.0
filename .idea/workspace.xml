@@ -3,7 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="fb3a987b-e6fc-46f5-b67f-930193bd5d63" name="Default" comment="日历模板的复用">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+<<<<<<< Updated upstream
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/BimLib/decoration.vue" afterPath="$PROJECT_DIR$/src/components/BimLib/decoration.vue" />
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/api/getData.js" afterPath="$PROJECT_DIR$/src/api/getData.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Authority-management/orders.vue" afterPath="$PROJECT_DIR$/src/components/Authority-management/orders.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/common.css" afterPath="$PROJECT_DIR$/static/css/common.css" />
+>>>>>>> Stashed changes
     </list>
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -24,6 +30,7 @@
     <favorites_list name="Hub8.7.0" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< Updated upstream
     <splitter split-orientation="horizontal" split-proportion="0.17650159">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="277">
@@ -190,6 +197,117 @@
         </leaf>
       </split-second>
     </splitter>
+=======
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="190">
+      <file leaf-file-name="orders.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/Authority-management/orders.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="478">
+              <caret line="258" column="56" selection-start-line="258" selection-start-column="56" selection-end-line="258" selection-end-column="56" />
+              <folding>
+                <element signature="n#style#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#0;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#1;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#2;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#3;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#4;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#5;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#6;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#7;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#8;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#li#9;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-pagination#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#8290#8357#0" expanded="true" />
+                <marker date="1511869009382" expanded="false" signature="1625:1642" ph="..." />
+                <marker date="1511869009382" expanded="false" signature="2565:2582" ph="..." />
+                <marker date="1511869009382" expanded="false" signature="3217:3234" ph="..." />
+                <marker date="1511869009382" expanded="false" signature="4661:4678" ph="..." />
+                <marker date="1511869009382" expanded="false" signature="5679:5696" ph="..." />
+                <marker date="1511869009382" expanded="false" signature="6059:6099" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="13383:13398" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="13978:13988" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="14230:14243" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="14478:14491" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="14827:14840" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="15491:15503" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="16959:16971" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="17375:17388" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="18547:18581" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="20396:20409" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="20532:20564" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="20624:20637" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="21960:21973" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="22985:22998" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="23027:23040" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="25246:25259" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="25298:25311" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="25344:25357" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="25674:25708" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="28252:28265" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="28476:28508" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="28568:28581" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="30916:30928" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="31288:31317" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="31562:31575" ph="..." />
+                <marker date="1511869009382" expanded="true" signature="31562:31606" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/common.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="454">
+              <caret line="1720" column="20" selection-start-line="1720" selection-start-column="20" selection-end-line="1720" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="enterprisePackage(1).js" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Desktop/enterprisePackage(1).js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="829">
+              <caret line="280" column="37" selection-start-line="280" selection-start-column="37" selection-end-line="280" selection-end-column="37" />
+              <folding>
+                <marker date="1511858311228" expanded="true" signature="6840:6856" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="7178:7188" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="11385:11400" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="11746:11761" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="14169:14184" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="14531:14546" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="14908:14923" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="15806:15821" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="16217:16232" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="16772:16787" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="17181:17196" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="38513:38532" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="39002:39021" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="39497:39517" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="39991:40010" ph="..." />
+                <marker date="1511858311228" expanded="true" signature="41728:41751" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="getData.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/api/getData.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="41" column="0" selection-start-line="38" selection-start-column="53" selection-end-line="41" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+>>>>>>> Stashed changes
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -265,11 +383,16 @@
         <option value="$PROJECT_DIR$/src/components/Authority-management/orders-detail.vue" />
         <option value="$PROJECT_DIR$/src/components/Authority-management/GovernLog.vue" />
         <option value="$PROJECT_DIR$/src/components/Authority-management/LubanCoinsManagement.vue" />
-        <option value="$PROJECT_DIR$/static/css/common.css" />
         <option value="$PROJECT_DIR$/src/components/IndicatorsLib/IndicatorsLib.vue" />
         <option value="$PROJECT_DIR$/src/components/IndicatorsLib/Indicator.vue" />
         <option value="$PROJECT_DIR$/src/components/IndicatorsLib/reinforcementIndex.vue" />
         <option value="$PROJECT_DIR$/src/components/IndicatorsLib/civilEngineeringIndex.vue" />
+<<<<<<< Updated upstream
+=======
+        <option value="$PROJECT_DIR$/src/api/getData.js" />
+        <option value="$USER_HOME$/Desktop/enterprisePackage(1).js" />
+        <option value="$PROJECT_DIR$/static/css/common.css" />
+>>>>>>> Stashed changes
         <option value="$PROJECT_DIR$/src/components/Authority-management/orders.vue" />
         <option value="$PROJECT_DIR$/src/components/ComponentLib/LubanMep.vue" />
         <option value="$PROJECT_DIR$/src/components/BimLib/BimLib.vue" />
@@ -353,6 +476,40 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="static">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Hub8.7.0">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="static">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+<<<<<<< Updated upstream
+=======
+            <PATH_ELEMENT USER_OBJECT="css">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Hub8.7.0">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT USER_OBJECT="src">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
@@ -371,6 +528,7 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
+>>>>>>> Stashed changes
             <PATH_ELEMENT USER_OBJECT="utils">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
@@ -389,10 +547,52 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
+<<<<<<< Updated upstream
+=======
+            <PATH_ELEMENT USER_OBJECT="router">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Hub8.7.0">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+>>>>>>> Stashed changes
             <PATH_ELEMENT USER_OBJECT="components">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
+<<<<<<< Updated upstream
+=======
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Hub8.7.0">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="api">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+>>>>>>> Stashed changes
           </PATH>
         </subPane>
       </pane>
@@ -636,8 +836,14 @@
       <workItem from="1511428701500" duration="11944000" />
       <workItem from="1511508685648" duration="3797000" />
       <workItem from="1511515642182" duration="122000" />
+<<<<<<< Updated upstream
       <workItem from="1511518806456" duration="5666000" />
       <workItem from="1511832239553" duration="18274000" />
+=======
+      <workItem from="1511518806456" duration="11066000" />
+      <workItem from="1511763019600" duration="496000" />
+      <workItem from="1511763541507" duration="30483000" />
+>>>>>>> Stashed changes
     </task>
     <task id="LOCAL-00001" summary="添加页面滚动条">
       <created>1511166345852</created>
@@ -734,7 +940,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< Updated upstream
     <option name="totallyTimeSpent" value="118838000" />
+=======
+    <option name="totallyTimeSpent" value="116706000" />
+>>>>>>> Stashed changes
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -749,7 +959,11 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
+<<<<<<< Updated upstream
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10958904" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> Stashed changes
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.49367756" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1791531" sideWeight="0.50632244" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="NativeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.49367756" order="0" side_tool="false" content_ui="tabs" />
@@ -1062,6 +1276,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< Updated upstream
     <entry file="file://$USER_HOME$/Desktop/resources/resources/src/api/getData.js" />
     <entry file="file://$PROJECT_DIR$/static/css/common.css">
       <provider selected="true" editor-type-id="text-editor">
@@ -1070,6 +1285,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> Stashed changes
     <entry file="file://$PROJECT_DIR$/src/components/IndicatorsLib/CivilEngineering.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1203,6 +1420,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< Updated upstream
     <entry file="file://$PROJECT_DIR$/static/css/theme-green/index.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="53250">
@@ -1227,6 +1445,103 @@
             <element signature="n#style#0;n#el-col#2;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#el-dialog#2;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="e#21722#21748#0" expanded="true" />
+=======
+    <entry file="file://$USER_HOME$/Desktop/enterprisePackage(1).js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="829">
+          <caret line="280" column="37" selection-start-line="280" selection-start-column="37" selection-end-line="280" selection-end-column="37" />
+          <folding>
+            <marker date="1511858311228" expanded="true" signature="6840:6856" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="7178:7188" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="11385:11400" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="11746:11761" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="14169:14184" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="14531:14546" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="14908:14923" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="15806:15821" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="16217:16232" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="16772:16787" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="17181:17196" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="38513:38532" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="39002:39021" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="39497:39517" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="39991:40010" ph="..." />
+            <marker date="1511858311228" expanded="true" signature="41728:41751" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/common.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="1720" column="20" selection-start-line="1720" selection-start-column="20" selection-end-line="1720" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Authority-management/orders.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="258" column="56" selection-start-line="258" selection-start-column="56" selection-end-line="258" selection-end-column="56" />
+          <folding>
+            <element signature="n#style#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#0;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#1;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#2;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#3;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#4;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#5;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#6;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#7;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#8;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#9;n#ul#0;n#div#0;n#vue-scrollbar#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-pagination#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#8290#8357#0" expanded="true" />
+            <marker date="1511869009382" expanded="false" signature="1625:1642" ph="..." />
+            <marker date="1511869009382" expanded="false" signature="2565:2582" ph="..." />
+            <marker date="1511869009382" expanded="false" signature="3217:3234" ph="..." />
+            <marker date="1511869009382" expanded="false" signature="4661:4678" ph="..." />
+            <marker date="1511869009382" expanded="false" signature="5679:5696" ph="..." />
+            <marker date="1511869009382" expanded="false" signature="6059:6099" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="13383:13398" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="13978:13988" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="14230:14243" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="14478:14491" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="14827:14840" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="15491:15503" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="16959:16971" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="17375:17388" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="18547:18581" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="20396:20409" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="20532:20564" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="20624:20637" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="21960:21973" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="22985:22998" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="23027:23040" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="25246:25259" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="25298:25311" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="25344:25357" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="25674:25708" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="28252:28265" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="28476:28508" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="28568:28581" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="30916:30928" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="31288:31317" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="31562:31575" ph="..." />
+            <marker date="1511869009382" expanded="true" signature="31562:31606" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/getData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="41" column="0" selection-start-line="38" selection-start-column="53" selection-end-line="41" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+>>>>>>> Stashed changes
           </folding>
         </state>
       </provider>

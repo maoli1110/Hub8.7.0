@@ -221,17 +221,19 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     background-repeat: no-repeat;
 }
 
-.icon-unbind ,.icon-unbind-software{
+.icon-unbind, .icon-unbind-software {
     display: inline-block;
     background-image: url("../img/icon-btn.png");
     background-repeat: no-repeat;
 
 }
+
 .icon-unbind-software {
     width: 23px;
     height: 23px;
     background-position: -221px -28px;
 }
+
 /* 18px*18px */
 .icon-close, .icon-initial-branch-company, .icon-initial-user, .icon-initial-sub-company, .icon-initial-project, .icon-enterprise-info, .icon-personal-info, .icon-login-setting, .icon-logout-safe, .icon-tree-expand, .icon-tree-fold, .icon-tree-total-expand, .icon-tree-total-fold, .icon-tree-total-expand-dark, .icon-tree-total-fold-dark, .icon-export, .icon-delete, .icon-edit, .icon-export-dark, .icon-tips-success, .icon-tips-error, .icon-tips-processing, .icon-tips-pending, .icon-tips-untreated, .icon-file-open, .icon-file-fold, .icon-invoiceInfo-save, .icon-clear, .icon-structure-tree-prev, .icon-structure-tree-next, .icon-structure-tree-update, .icon-structure-tree-save, .icon-upload, .icon-upload-dark, .icon-btn-delete, .icon-btn-delete-dark, .icon-search, .icon-authorize, .icon-return, .icon-signature, .icon-unauthorized, .icon-send, .icon-pass, .icon-search-dark, .icon-authorize-dark, .icon-return-dark, .icon-signature-dark, .icon-unauthorized-dark, .icon-send-dark, .icon-pass-dark, .icon-info-update, .icon-info-update-dark, .icon-forbidden, .icon-remove, .icon-monitor, .icon-username, .icon-password, .icon-selectAll, .icon-calendar, .icon-forbidden-dark, .icon-remove-dark, .icon-monitor-dark, .icon-unbind {
     width: 18px;
@@ -242,8 +244,8 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     background-position: -457px 0;
 }
 
-.basic-btn i ,.basic-btn span{
-    vertical-align:middle;
+.basic-btn i, .basic-btn span {
+    vertical-align: middle;
 }
 
 /*企业概况-初始化分公司名称*/
@@ -1173,7 +1175,6 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     clear: both;
 }
 
-
 /* 工序模板展开折叠 */
 
 .icon-expand,
@@ -1289,6 +1290,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
 .icon-down-level:hover {
     background-position: -200px -22px;
 }
+
 /* 权限管理 */
 
 .icon-batch-add,
@@ -1342,9 +1344,10 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     background-position: -349px 0px
 }
 
-.el-button [class*=pl-icon-]+span {
+.el-button [class*=pl-icon-] + span {
     margin-left: 5px;
 }
+
 /* 应用分配 */
 .icon-add-authorization,
 .icon-cancle-authorization {
@@ -1363,7 +1366,6 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
 .icon-cancle-authorization {
     background-position: 1px -200px;
 }
-
 
 /*三級聯動======================================*/
 * {
@@ -1682,4 +1684,60 @@ body .el-popover.remark-popper {
     background-image: url('../img/zTreeStandard2.png');
 }
 
+#packageDetail tr td {
+    border-left: 1px solid #E6E6E6;
+    /*height: 90px;*/
+    vertical-align: middle;
+}
+
+#packageDetail tr {
+    width: 100%;
+    display: block;
+    /*height: 90px;*/
+    /*line-height: 90px;*/
+    border-bottom: 1px solid #E6E6E6
+}
+
+.text-package-service {
+    width: 130px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 12px;
+    /*text-overflow: ellipsis;*/
+    line-height: 12px;
+    height: 24px;
+    margin-top: 8px;
+}
+
+.remarks {
+    width: 150px;
+    /*margin: 15px auto 0;*/
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 12px;
+    /*text-overflow: ellipsis;*/
+    /*line-height: 20px;*/
+    /*height: 80px;*/
+}
+.btn-common {
+    color: #4977c5;
+    background-color: #ebeff8;
+    border: 0 none;
+    line-height: 20px;
+    height: 20px;
+    display: block;
+    width: 40px;
+    text-align: center;
+    border-radius: 3px;
+    margin: 3px 0;
+}
+
+.btn-common:hover {
+    background-color: #dae4f4;
+    font-weight: 700;
+}
 
