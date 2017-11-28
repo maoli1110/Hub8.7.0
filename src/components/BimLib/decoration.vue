@@ -214,7 +214,15 @@
                     <el-input v-model="proManage.name" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="专业：" label-width="80">
-                    <el-input v-model="proManage.major" auto-complete="off"></el-input>
+                    <!--newCreatmajor-->
+                    <el-select v-model="proManage.major" placeholder=""  style="width:100%" @change="proManageChange">
+                        <el-option
+                            v-for="item in newCreatmajor"
+                            :key="item.value"
+                            :label="item.name"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="所属项目：" label-width="80">
                     <el-select v-model="proManageVal" placeholder="" v-show="isDisable" style="width:100%" :disabled="true">
@@ -229,7 +237,7 @@
                     <el-row class="transfer">
                         <el-col :span="10" class="transfer-con-add">
                             <el-col :span="12"><el-checkbox v-model="checkAll" @change="addAllRootPerson">全部</el-checkbox></el-col>
-                            <el-col :span="12"><p offset="12">全部可授权人数{{authUserInfoList.length}}</p></el-col>
+                            <el-col :span="12"><p offset="12">全部可授权人数{{authItemCount}}</p></el-col>
                             <el-col :span="24" class="border">
                                 <el-input style="width:100%"
                                           class="el-transfer-panel__filter"
@@ -251,12 +259,12 @@
                                     <i class="radius-lines"></i>
                                 </span>
                             </el-col>
-                            <el-col :span="10" ><p offset="12" style="text-align:right">已授权人数{{authUserListItem.length}}</p></el-col>
+                            <el-col :span="10" ><p offset="12" style="text-align:right">已授权人数{{authCount.length}}</p></el-col>
                             <el-col :span="24" class="border">
                                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:306px;padding:10px;">
                                     <ul class="scroll-me delete-rootPerson" style="background:#fff;">
-                                        <li  v-for="(item,index) in authUserListItem" v-if="!item.allAuth" :key="index" class="substr" :title=" item.userName">
-                                            <span class="radius" v-show="!item.allAuth" @click="delRootItem(item,item.userId)" >
+                                        <li  v-for="(item,index) in authUserListItem" v-if="!item.allAuth" :key="index" class="substr" :title=" item.userName"  @click="delRootItem(item,item.userId)">
+                                            <span class="radius" >
                                                 <i class="radius-lines"></i>
                                             </span>
                                             {{item.userName}}
@@ -273,13 +281,13 @@
                               type="textarea"
                               :rows="3"
                               placeholder="请输入内容"
-                              v-model="textarea" :maxlength='150'>
+                              v-model="proManage.remark" :maxlength='150'>
                     </el-input>
-                    <span class="info-pos">{{!textarea.length?(0+"/"+150):(textarea.length+"/"+150)}}</span>
+                    <span class="info-pos">{{!proManage.remark.length?(0+"/"+150):(proManage.remark.length+"/"+150)}}</span>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="ProjManageDialog = false;proManageSave">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="proManageSave">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="ProjManageDialog = false">取 消</el-button>
             </div>
         </el-dialog>
@@ -330,11 +338,12 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import {
         cloudTree,getMajorsByCreate,getProjGenre,
-        getProjType,getProjAuthUserInfos
+        getProjType,getProjAuthUserInfos,createProject
     } from '../../api/getData.js';
     let deletArray = [];
     let countIndex = 0;
     let baseUrl;
+    let authUserInfoListCopy;
     export default {
 //    props: ['tableData'],
         data() {
@@ -355,6 +364,10 @@
                 addPrjectTitle:"添加工程",
                 authUserInfoList:[],//添加授权人员
                 authUserListItem:[],//选中列表
+                newCreatmajor:[],
+                authCount:[],
+                disableAuthList:[],
+                authItemCount:0,
                 //分页的一些设置
                 cur_page:1,
                 totalPage:50,
@@ -403,6 +416,9 @@
                 proManage:{//工程管理
                     name:'',
                     major:'',
+                    deptId:"",
+                    userIds:[],
+                    remark:""
                 },
                 modifyInfoList:{
                     name:'初始项目部',
@@ -583,17 +599,30 @@
             getTree(){
                 cloudTree().then(res => {
                     this.proDepartNodes = res.data[0].result;
-                console.log( this.proDepartNodes)
-                $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
-            });
+                    console.log( this.proDepartNodes)
+                    $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
+                });
+            },
+            newCreateProject(url,param){
+                createProject({url:url,param:param}).then((data)=>{
+                    if(data.data.code==500){
+                        this.commonMessage(data.data.msg,'warning')
+                    }else{
+                        //执行成功
+                        this.ProjManageDialog = true;
+                    }
+                },(error)=>{
+                    this.commonMessage(error.data.msg)
+                })
             },
             //添加工程
             addProject(type){
+                this.authUserListItem = [];
                 if(type=='add'){
                     this.getTree();
-                    this.proManageVal = '';
+      /*              this.proManageVal = '';
                     this.proManage.name="";
-                    this.proManage.major = '';
+                    this.proManage.major = '';*/
                     this.isDisable = false;
                     if(!this.isDisable){
                         this.addPrjectTitle = '添加工程'
@@ -611,6 +640,7 @@
                     }else{
                         this.addPrjectTitle = '添加工程'
                     }
+
                 }
                 this.getRootMan();
             },
@@ -651,9 +681,9 @@
                 console.log(baseUrl,'baseUrl')
                 getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
                     this.bimOptions = data.data.result;
-                    if(this.bimOptions.length>0){
-                        this.filterParams.versionsVal = this.versionsOptions[0].value;
-                    }
+//                    if(this.bimOptions.length>0){
+//                        this.filterParams.bimVal = this.bimOptions[0].value;
+//                    }
 
                 });
             },
@@ -674,12 +704,17 @@
                  */
                 getProjAuthUserInfos({url:baseUrl,deptId:3}).then((data)=>{
                     this.authUserInfoList = data.data.result;
+                    authUserInfoListCopy = data.data.result;
                     this.authUserInfoList.forEach((val,key)=>{
                         if(val.hasAuth){
-                            this.authUserListItem.push(val)
+                            this.authUserListItem.push(val);
+                            this.authCount.push(val);
                         }
                         if(val.allAuth){
-                            this.authUserListItem.push(val)
+                            this.authUserListItem.push(val);
+                            this.disableAuthList.push(val);
+                        }else if(!val.allAuth && !val.hasAuth){
+                            this.authCount.push(val);
                         }
                     });
                     if(this.authUserInfoList.length== this.authUserListItem.length){
@@ -702,6 +737,8 @@
                 //专业
                 getMajorsByCreate({url:baseUrl}).then((data)=>{
                     this.majorOptions = data.data.result;
+                    this.newCreatmajor = data.data.result;
+                    this.proManage.major = this.newCreatmajor[0].value;
                     this.filterParams.majorVal = this.majorOptions[0].value
                 });
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
@@ -726,18 +763,21 @@
                     this.$set(val,'checked',false)
                 });
             },
-
+            proManageChange(val){
+                console.log(val,'valelll')
+            },
             //添加和修改工程
             //全部删除授权人员
             delRootAll(){
                 this.checkAll = false;
                 this.authUserListItem =[];
-                console.log(this.authUserListItem,'this.authUserListItem')
+                this.authCount = [];
                 this.authUserInfoList.forEach((val,key)=>{
                     if(val.allAuth){
                         this.authUserListItem.push(val)
                     }
                 })
+                debugger;
             },
             /**
              *删除某个授权人
@@ -745,30 +785,45 @@
              * @params index 索引值
              **/
             delRootItem(item,index){
-                this.authUserInfoList.forEach((val,key)=>{
+                this.authUserListItem.forEach((val,key)=>{
                     if(val.userId.indexOf(index)!=-1){
-                        this.authUserInfoList.splice(key,1);
-                        this.authUserListItem.splice(key,1)
+                        this.authUserListItem.splice(key,1);
+
                     }
                 });
-                if(this.authUserInfoList.length>0 && this.authUserInfoList.length<this.cities.length){
+                if( this.authCount.length>0){
+                    this.authCount.splice(0,1);
+                }
+                if(this.authUserInfoList.length> this.authUserListItem.length){
                     this.checkAll = false;
                 }
+                this.authItemCount = this.authUserInfoList.length - (this.disableAuthList.length + this.authCount.length);
             },
             /**
              *全选授权人员
              * @params event  事件
              **/
             addAllRootPerson(event){
-
+                this.authCount=[];
                 if (event.target.checked) {
-                    this.authUserInfoList.forEach(item => {
+                    this.authUserListItem = [];
+                    this.authUserInfoList.forEach((item,key) => {
                         this.authUserListItem.push(item);
+                        if(!item.allAuth && item.hasAuth){
+                            this.authCount.push(item)
+                        }
                     });
                 } else {
                     this.authUserListItem = [];
+
+                    this.authUserInfoList.forEach((item,key) => {
+                        if(item.allAuth){
+                            this.authUserListItem.push(item);
+                        }
+                    });
+
                 }
-//               console.log(event,'event')
+                this.authItemCount = this.authUserInfoList.length - (this.disableAuthList.length + this.authCount.length);
             },
             /**
              *添加某个人员
@@ -780,21 +835,52 @@
                 }else{
                     this.checkAll = false;
                 }
+                this.authCount =[];
+                item.forEach((val,key)=>{
+                   if(!val.allAuth && val.hasAuth){
+                       this.authCount.push(val);
+                   }
+                });
+                this.authItemCount = this.authUserInfoList.length - (this.disableAuthList.length + this.authCount.length);
             },
             //工程管理修改添加的搜索
             proManageSearch(){
                 let searchArr = [];
-                this.cities.forEach((val,key)=>{
-                    if(this.cities[key].indexOf(this.proMsearchKey) !=-1){
-                    searchArr.push(this.proMsearchKey);
+                this.authUserInfoList = authUserInfoListCopy;
+                this.authUserInfoList.forEach((val,key)=>{
+                    if(this.authUserInfoList[key].userName.indexOf(this.proMsearchKey) !=-1){
+                        searchArr.push(val);
+                    }
+                });
+                if(this.proMsearchKey){
+                    this.authUserInfoList = searchArr;
+                }else{
+                    this.authUserInfoList = authUserInfoListCopy;
                 }
-            })
-                this.cities = searchArr;
+
             },
             //工程管理保存
             proManageSave(){
-                if(this.proManage.length || this.isDisable){
-                    //执行添加的接口
+                let newCreate ={
+                    "deptId": "3",
+                    "packageType": this.$route.params.typeId,
+                    "projMemo": this.proManage.remark,
+                    "projName": this.proManage.name,
+                    "projType": this.proManage.major,
+                    "userIds": []
+                };
+                if(!newCreate.projName){
+                    this.commonMessage('项目名称不能为空','warning')
+                }else if(!newCreate.packageType){
+                    this.commonMessage('所属项目部不能为空','warning')
+                }
+                this.authUserListItem.forEach((val,key)=>{
+                    if(!val.allAuth && val.hasAuth){
+                        newCreate.userIds.push(val.userId)
+                    }
+                })
+                if(!this.proManage.length || this.isDisable){
+                    this.newCreateProject(baseUrl,newCreate)
                 }else{
                     //执行修改的接口
                 }

@@ -45,12 +45,14 @@ export const getOrderManagementList = params=> axios.get(`${basePath('cloud')}/o
 //Bim筛选条件->专业
 export const getMajorsByCreate = params =>axios.get(`${params.url}rs/bimParamRest/getMajorsByCreate`);
 //Bim筛选条件->专业
-export const getProjGenre = params =>axios.get(`${params.url}/rs/bimParamRest/getProjGenre/${params.isDelete}/${params.packageType}`);
+export const getProjGenre = params =>axios.get(`${params.url}rs/bimParamRest/getProjGenre/${params.isDelete}/${params.packageType}`);
 //Bim筛选条件->专业
-export const getProjType = params =>axios.get(`${params.url}/rs/bimParamRest/getProjType/${params.isDelete}/${params.packageType}`);
+export const getProjType = params =>axios.get(`${params.url}rs/bimParamRest/getProjType/${params.isDelete}/${params.packageType}`);
 //bim添加->授权人员列表
-export const getProjAuthUserInfos = params =>axios.get(`${params.url}/rs/bimParamRest/getProjAuthUserInfos/${params.deptId}`);
+export const getProjAuthUserInfos = params =>axios.get(`${params.url}rs/bimParamRest/getProjAuthUserInfos/${params.deptId}`);
 
+//bim创建工程
+export const createProject = params=>axios.post(`${params.url}rs/bimRest/createProject`,params.param)
 /**
  * 云构件库
  * */

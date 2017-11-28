@@ -104,9 +104,7 @@
 
                     <div class="el-transfer-panel__body ">
                         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:375px;">
-                            <div class="scroll-me">
                                 <ul id="orgTree" class="ztree"></ul>
-                            </div>
                         </vue-scrollbar>
                     </div>
 
@@ -117,19 +115,15 @@
                     </p>
 
                     <div class="el-transfer-panel__body ">
-                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:375px;">
-                            <div class="scroll-me">
+                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:375px;">                            
                                 <el-checkbox-group v-model="checkedPermissions" @change="handleCheckedCitiesChange"
                                 >
                                     <el-checkbox v-for="permission in permissions" :label="permission" :key="permission"
                                                  :title="permission"
                                                  class="add-permission-group"
                                     >{{permission}}
-
-
                                     </el-checkbox>
-                                </el-checkbox-group>
-                            </div>
+                                </el-checkbox-group>                           
                         </vue-scrollbar>
                     </div>
                 </div>
@@ -191,7 +185,6 @@
 <script>
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
-    import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
     const cityOptions = [
         "上海",
         "北京",
@@ -218,7 +211,6 @@
         "合555肥2"
     ];
     export default {
-        components: {VueScrollbar},
         data() {
           var validatePass = (rule, value, callback) => {
                 if (value === "") {

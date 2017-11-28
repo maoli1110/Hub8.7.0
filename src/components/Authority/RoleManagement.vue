@@ -68,7 +68,7 @@ export default {
       addMemberDialogVisible: false,
       textarea: "",
       orgValue: "",
-      role: "",     
+      role: "",
       orgSetting: {
         data: {
           simpleData: {
@@ -118,61 +118,61 @@ export default {
       roleTableData: [
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长"
         },
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         },
         {
           roleName: "赵四",
-          roleNumber:15,
+          roleNumber: 15,
           date: "2016-05-03 13:51",
           remarks: "超长remark"
         }
@@ -263,22 +263,17 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    addRole() {
-    },
+    addRole() {},
     editRole(row) {
-
       this.$router.push({ path: `/authority/edit-role/5` });
       this.curEditRole(row);
-
     },
     searchRole(MemberId) {
       this.$router.push({ path: `/authority/member-management` });
-      
     },
-    deleteRole() {},
+    deleteRole() {}
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 <style scoped>
@@ -303,7 +298,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.icon+.icon{
+.icon + .icon {
   margin-left: 15px;
 }
 </style>
