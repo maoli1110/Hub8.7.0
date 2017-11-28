@@ -56,3 +56,8 @@ export const getProjAuthUserInfos = params =>axios.get(`${params.url}/rs/bimPara
  * */
 //构件树列表
 export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.version}/${params.productId}`);
+
+/**
+ * 组织结构
+ */
+export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
