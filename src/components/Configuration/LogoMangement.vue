@@ -19,11 +19,26 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" label="标识名称" width="250" align='left'>
+                <el-table-column prop="name" label="标识名称" width="280" align='left'>
                     <template slot-scope="scope">
-                        <div slot="reference" class="name-wrapper textcell">
-                            <span style="margin-right:5px" :title="scope.row.logoName">{{ scope.row.logoName }}</span>
+                        <div slot="reference" class="name-wrapper textcell" 
+                        @mouseenter='scope.row.editShow=!scope.row.editShow'
+                        @mouseleave='scope.row.editShow=!scope.row.editShow'
+                        style="position:relative">
+                            <span  
+                            v-show="!scope.row.edit"                          
+                            >{{ scope.row.title }}</span>
+                            <el-input                             
+                            v-show="scope.row.edit" size="small" 
+                            @keyup.enter.native="scope.row.edit=!scope.row.edit"
+                            v-model="scope.row.title"></el-input>
+                            <span  
+                            v-show="scope.row.editShow"
+                            :class="scope.row.edit?'el-icon-document':'el-icon-edit'" style="position:absolute;right:2px;top:18px;color:#6595f2;cursor:pointer;font-size:14px"
+                            @click="scope.row.edit=!scope.row.edit"
+                              ></span> 
                         </div>
+                        
                     </template>
                 </el-table-column>
                 <el-table-column prop="author" label="更新人" width="250">
@@ -77,6 +92,7 @@ export default {
   data() {
     return {
       url: "../../../static/tree1.json",
+      isEdit: false,
       editTemplateDialogVisible: false,
       editAttributesDialogVisible: false,
       orgValue: "",
@@ -200,6 +216,10 @@ export default {
         .then(({ data }) => {
           if (data.hits.length) {
             this.list = this.list.concat(data.hits);
+            this.list.forEach(v =>{
+              this.$set(v, "edit", false);
+              this.$set(v, "editShow", false);
+            } )
             $state.loaded();
             if (this.list.length / 20 === 10) {
               $state.complete();
@@ -225,6 +245,7 @@ export default {
 }
 
 .textcell {
+  width: 94%;
   height: 46px;
   padding: 0 20px;
   line-height: 46px;

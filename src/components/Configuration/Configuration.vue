@@ -20,9 +20,11 @@
                 <el-menu-item index="/configuration/o-govern">原Govern</el-menu-item>
             </el-menu>
         </div>
+
         <div class="container">
             <router-view></router-view>
         </div>
+
     </div>
 </template>
 

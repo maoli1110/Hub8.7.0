@@ -30,7 +30,7 @@
 export default {
     data() {
         return {
-            name: 'linxin',
+            name: '鱼遇雨欲与雨语',
             showSetting:false
         }
     },
