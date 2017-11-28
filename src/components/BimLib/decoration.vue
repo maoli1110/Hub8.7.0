@@ -335,6 +335,7 @@
     let deletArray = [];
     let countIndex = 0;
     let baseUrl;
+    let authUserInfoListCopy;
     export default {
 //    props: ['tableData'],
         data() {
@@ -674,6 +675,7 @@
                  */
                 getProjAuthUserInfos({url:baseUrl,deptId:3}).then((data)=>{
                     this.authUserInfoList = data.data.result;
+                    authUserInfoListCopy = data.data.result;
                     this.authUserInfoList.forEach((val,key)=>{
                         if(val.hasAuth){
                             this.authUserListItem.push(val)
@@ -784,12 +786,18 @@
             //工程管理修改添加的搜索
             proManageSearch(){
                 let searchArr = [];
-                this.cities.forEach((val,key)=>{
-                    if(this.cities[key].indexOf(this.proMsearchKey) !=-1){
-                    searchArr.push(this.proMsearchKey);
+                this.authUserInfoList = authUserInfoListCopy;
+                this.authUserInfoList.forEach((val,key)=>{
+                    if(this.authUserInfoList[key].userName.indexOf(this.proMsearchKey) !=-1){
+                        searchArr.push(val);
+                    }
+                });
+                if(this.proMsearchKey){
+                    this.authUserInfoList = searchArr;
+                }else{
+                    this.authUserInfoList = authUserInfoListCopy;
                 }
-            })
-                this.cities = searchArr;
+
             },
             //工程管理保存
             proManageSave(){
