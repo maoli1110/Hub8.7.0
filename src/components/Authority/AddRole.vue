@@ -38,7 +38,7 @@
                             <el-input type="textarea" resize='none' :maxlength='100'
                                       :autosize="{ minRows: 6, maxRows: 6}" placeholder="请输入内容" v-model="textarea">
                             </el-input>
-                            <span style="position:absolute;right:10px;bottom:0">({{textarea.length}}/100)</span>
+                            <span style="position:absolute;right:16px;bottom:0">({{textarea.length}}/100)</span>
                         </div>
                     </div>
                 </el-col>
@@ -480,10 +480,15 @@ export default {
         : (this.authoritedTableData = this.tableData2);
     }
   },
+  created () {
+  },
   mounted() {
     this.selectClient(0);
     this.roleName=this.curEditRole.roleName;
-    this.textarea=this.curEditRole.remarks
+    this.textarea=this.curEditRole.remarks||'请输入';
+    if(!this.curEditRole.roleName){
+        this.$router.push('/authority/role-management')
+    }
   }
 };
 </script>

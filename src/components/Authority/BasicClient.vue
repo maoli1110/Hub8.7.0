@@ -82,7 +82,7 @@
                                 icon="search"
                             ></el-input>
                             <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:245px;">
-                                <div class="scroll-me">
+                                
                                     <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange"
                                                                                 class="el-transfer-panel__list " style="height:auto;">
                                     <el-checkbox class="el-transfer-panel__item" v-for="city in cities" :label="city"
@@ -95,8 +95,7 @@
                                 class="el-transfer-panel__empty"></p>
                             <p
                                 class="el-transfer-panel__empty"
-                            ></p> -->
-                                </div>
+                            ></p> -->                                
                             </vue-scrollbar>
                         </div>
 
@@ -112,7 +111,7 @@
                     <div class="el-transfer-panel__body">                     
                         <ul class="el-transfer-item el-transfer-panel__list">
                           <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
-                           <div class="scroll-me">
+                           <div>
                             <li class="el-transfer-panel__item" v-for="(item,index) in checkedCities" :key="index"
                                 @click="deleteItem(item)" :title="item">
                                 <span class="icon icon-remove" style="vertical-align:sub"> </span>
@@ -167,7 +166,6 @@
 </template>
 
 <script>
-import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 export default {
   components: { VueScrollbar },
   data() {

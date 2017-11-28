@@ -184,7 +184,7 @@
                 </div>
             </div>
             <div style="height:80px;width:100%;margin-top:40px;text-align:center;border-top:1px solid #e6e6e6">
-                <el-button type="primary" class="back-list">返回列表</el-button>
+                <el-button type="primary" class="back-list" @click="backList()">返回列表</el-button>
             </div>
         </div>
         <!-- <el-dialog title="项目授权" :visible.sync="projectAuthorizationDialogVisible" size='tiny'>
@@ -194,10 +194,10 @@
             </span>
         </el-dialog>    -->
         <!-- 项目授权 -->
-        <el-dialog title="项目授权" :visible.sync="projectAuthorizationDialogVisible" size='project-authorize'>
-            <div style="height:420px;padding:20px 0;overflow:auto">
-                <ul id="projectTree" class="ztree"></ul>
-            </div>
+        <el-dialog title="项目授权" :visible.sync="projectAuthorizationDialogVisible" size='project-authorize'>                       
+            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:400px;margin-top:20px">                           
+                                <ul id="projectTree" class="ztree"></ul>                            
+            </vue-scrollbar>
             <div slot="footer" class="dialog-footer" style="margin-top:54px">
                 <el-button type="primary" class="dialog-btn">确 定</el-button>
                 <el-button @click="projectAuthorizationDialogVisible = false" class="dialog-btn">取消</el-button>
@@ -358,6 +358,8 @@
     </div>
 </template>
 <script>
+import "../../../static/zTree/js/jquery.ztree.core.min.js";
+import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
 export default {
   data() {
     return {
@@ -514,12 +516,12 @@ export default {
       console.log(tab);
     },
     authoritedMouseEnter(e) {
-      $(e.target)
+      $(e.currentTarget)
         .text("取消授权")
         .css("color", "#e30000");
     },
     authoritedMouseLeave(e) {
-      $(e.target)
+      $(e.currentTarget)
         .text("已授权")
         .css("color", "#7fc977");
     },
@@ -529,12 +531,12 @@ export default {
       e.stopPropagation();
     },
     unAuthoritedMouseEnter(e) {
-      $(e.target)
+      $(e.currentTarget)
         .text("授权")
         .css("color", "#7fc977");
     },
     unAuthoritedMouseLeave(e) {
-      $(e.target)
+      $(e.currentTarget)
         .text("未授权")
         .css("color", "#e30000");
     },
@@ -566,7 +568,10 @@ export default {
         );
       });
     },
-    templateAuthorize() {}
+    templateAuthorize() {},
+    backList(){
+        this.$router.push({ path: `/authority/member-management` });
+    }
   }
 };
 </script>
