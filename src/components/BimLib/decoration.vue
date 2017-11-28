@@ -84,15 +84,15 @@
                                     <el-checkbox v-model="allChecked" @change="allSelectChange"></el-checkbox>
                                 </template>
                             </th>
-                            <th>工程名称</th>
-                            <th>专业</th>
-                            <th v-if="$route.params.typeId!=4">BIM属性</th>
+                            <th>工程名称<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.oriFileName','0')"></span><span class="desc absol" @click="tableListSort('t1.oriFileName','1')"></span></div></th>
+                            <th>专业<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projType','0')"></span><span class="desc absol" @click="tableListSort('t1.projType','1')"></span></div></th>
+                            <th v-if="$route.params.typeId!=4">BIM属性<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projGenre','0')"></span><span class="desc absol" @click="tableListSort('t1.projGenre','1  ')"></span></div></th>
                             <th class="uploadPerson">上传人</th>
-                            <th>上传时间</th>
+                            <th>上传时间<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.createDate','0')"></span><span class="desc absol" @click="tableListSort('t1.createDate','1')"></span></div></th>
 
                             <th v-if="$route.params.typeId!=4">图纸</th>
                             <th>所属项目部</th>
-                            <th>大小</th>
+                            <th>大小<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projSize','0')"></span><span class="desc absol" @click="tableListSort('t1.projSize','1')"></span></div></th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
                             <th>数据处理</th>
                             <th>版本</th>
@@ -143,15 +143,16 @@
                                     <el-checkbox v-model="allChecked" @change="allSelectChange"></el-checkbox>
                                 </template>
                             </th>
-                            <th>工程名称</th>
-                            <th>专业</th>
-                            <th v-if="$route.params.typeId!=3">BIM属性	</th>
+                            <th>工程名称<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.oriFileName','0')"></span><span class="desc absol" @click="tableListSort('t1.oriFileName','1')"></span></div></th>
+                            <th>专业<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projType','0')"></span><span class="desc absol" @click="tableListSort('t1.projType','1')"></span></div></th>
+                            <th v-if="$route.params.typeId!=4">BIM属性<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projGenre','0')"></span><span class="desc absol" @click="tableListSort('t1.projGenre','1  ')"></span></div></th>
                             <th class="uploadPerson">上传人</th>
-                            <th>上传时间</th>
-                            <th v-if="$route.params.typeId!=3">图纸</th>
+                            <th>上传时间<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.createDate','0')"></span><span class="desc absol" @click="tableListSort('t1.createDate','1')"></span></div></th>
+                            <th v-if="$route.params.typeId!=4">图纸</th>
                             <th class="depart-pro">所属项目部</th>
-                            <th>大小</th>
+                            <th>大小<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projSize','0')"></span><span class="desc absol" @click="tableListSort('t1.projSize','1')"></span></div></th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
+                            <th>版本</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -161,15 +162,17 @@
                                     <el-checkbox v-model="item.checked" @change="singChecked" ></el-checkbox>
                                 </template>
                             </td>
-                            <td class="project-name">{{item.processName}}</td>
-                            <td>{{item.speciality}}</td>
-                            <td v-if="$route.params.typeId !=3" class="bim-params">{{item.BIMparams}}</td>
-                            <td class="absol substr uploadPerson" :title="item.updateUser">{{item.updateUser}}</td>
-                            <td class="times">{{item.updateTime}}</td>
-                            <td  v-if="$route.params.typeId !=3">{{item.PDF}}</td>
-                            <td class="depart-pro">{{item.proDepartment}}</td>
+                            <td class="project-name">{{item.projName}}</td>
+                            <td>{{item.projType}}</td>
+                            <td v-if="$route.params.typeId !=3" class="bim-params">{{item.projGenre}}</td>
+                            <td class="absol substr uploadPerson" :title="
+                            item.createRealName+'\n'+item.createUserName">{{item.createRealName}}</td>
+                            <td class="times">{{item.createDate}}</td>
+                            <td  v-if="$route.params.typeId !=3">{{item.drawSize}}</td>
+                            <td class="depart-pro">{{item.deptName}}</td>
                             <td>{{item.size}}</td>
-                            <td  v-if="$route.params.typeId ==1">{{item.output}}</td>
+                            <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
+                            <td>item.version</td>
                         </tr>
                         </tbody>
                     </table>
@@ -375,7 +378,7 @@
                 authItemCount:0,
                 //分页的一些设置
                 cur_page:1,
-                totalPages:0,
+                totalPages:10,
                 extractStatus:'',
                 filterMethod(query, item) {
                     return item.pinyin.indexOf(query) > -1;
@@ -552,6 +555,7 @@
             //change
             versionChange(val){
                 this.tableParam.latest = val;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
             },
             //搜索条件树结构的单机事件
             onClick(event, treeId, treeNode) {
@@ -601,6 +605,11 @@
                     this.tableData = data.data.result.content;
                     this.pagesList = data.data.result;
                 })
+            },
+            tableListSort(fileName,sort){
+                this.tableParam.pageParam.orders[0].property = fileName;
+                this.tableParam.pageParam.orders[0].direction = parseInt(sort);
+                this.getProjectList({url:baseUrl,param:this.tableParam})
             },
             //列表删除
             deletelibs(type){
@@ -772,21 +781,22 @@
             },
             //默认加载数据
             getData(name,id){
-                this.getBaseUrl();
-                this.tableParam.delete = this.isRecycle;
-                this.tableParam.latest = true;
-                this.tableParam.deptIds[0] = "3"
-                this.tableParam.packageType = this.$route.params.typeId;
-                this.tableParam.pageParam.orders[0].property = "t1.projSize";
-                this.tableParam.pageParam.page = this.cur_page;
-                this.tableParam.pageParam.size = this.tableParam.totalPages;
-                this.getProjectList({url:baseUrl,param:this.tableParam})
+                this.getBaseUrl();//获取基础路径
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;
                 }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
                     this.isRecycle = true;
                 }
+                //列表初始值
+                this.tableParam.delete = this.isRecycle;
+                this.tableParam.latest = true;
+                this.tableParam.deptIds[0] = "3"
+                this.tableParam.packageType = this.$route.params.typeId;
+                this.tableParam.pageParam.orders[0].property = "t1.projSize";
+                this.tableParam.pageParam.page = this.cur_page;
+                this.tableParam.pageParam.size = this.totalPages;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
@@ -1031,11 +1041,14 @@
         components: { VueScrollbar },
         watch: {
             '$route' (to, from) {
-                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
-                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
+                this.tableParam.delete = this.isRecycle;
+                this.getProjectList({url:baseUrl,param:this.tableParam});//表格列表
+                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);//筛选属性
+                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);//筛选专业
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
                 }
+
                 this.allChecked = false;
                 deletArray = [];
                 countIndex = 0;
