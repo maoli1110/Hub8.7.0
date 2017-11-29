@@ -80,7 +80,6 @@
                         <tr>
                             <th>
                                 <template>
-                                    <!-- `checked` 为 true 或 false -->
                                     <el-checkbox v-model="allChecked" @change="allSelectChange"></el-checkbox>
                                 </template>
                             </th>
@@ -139,7 +138,6 @@
                         <tr>
                             <th>
                                 <template>
-                                    <!-- `checked` 为 true 或 false -->
                                     <el-checkbox v-model="allChecked" @change="allSelectChange"></el-checkbox>
                                 </template>
                             </th>
@@ -339,65 +337,52 @@
 </template>
 
 <script>
-    import axios from "axios";
-    import {IndexCumsum} from "../../utils/validate.js";
-    import {basePath} from "../../utils/common.js";
-    import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
+    import {basePath} from "../../utils/common.js";                         //基础路径返回
+    import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';    //滚动组件
     import {
         cloudTree,getMajorsByCreate,getProjGenre,getProjType,getProjAuthUserInfos,createProject,
         getProjects,zTreeNodes,getOrgTreeList,deleteProjects,deleteProject,bimRecycleRest
-    } from '../../api/getData-yhj.js';
-    let deletArray = [];
-    let countIndex = 0;
-    let baseUrl;
-    let authUserInfoListCopy;
+    } from '../../api/getData-yhj.js';                                      //接口数据
+    let deletArray = [];        //删除projIds队列
+    let countIndex = 0;         //表格选中状态个数统计
+    let baseUrl;                //基础路径
+    let authUserInfoListCopy;   //授权人员搜索deepCopy数据
 
     export default {
 //    props: ['tableData'],
         data() {
             return {
-                allChecked:false,
-                checked:false,
-                currentCheck:false,
-                delIndex:-1,
+                activeIndex: '',        //默认选中路由
+                allChecked:false,       //全选
+                delIndex:-1,            //队列中存在某元素 返回存在的位置 indexOf
                 checkAll: false,        //是否选中
-                textarea:"",            //备注
                 proMsearchKey:"",       //搜索关键字
                 isDisable:false,        //项目部是否可用 用于工程管理弹窗 区分是修改还是添加
-                extractDialog:false,//抽取数据的弹窗
-                isExtractChecked:false,
-                isExtractDisable:false,
-                modifyInfo:false,//修改信息弹窗
-                monitorSeverVisible:false,//第三方监控设置
-                addPrjectTitle:"添加工程",
-                authUserInfoList:[],//添加授权人员
-                authUserListItem:[],//选中列表
-                newCreatmajor:[],
-                authCount:[],
-                disableAuthList:[],
-                authItemCount:0,
-                //分页的一些设置
-                cur_page:1,
-                totalPages:10,
-                extractStatus:'',
-                filterMethod(query, item) {
-                    return item.pinyin.indexOf(query) > -1;
-                },
-                activeIndex: '',//默认选中路由
-                value:"",               //输入框默认选中状态
-                proManageVal:"",        //弹窗项目部选中的值
-                bimDeleteArray:[],
+                extractDialog:false,    //抽取数据的弹窗状态
+                modifyInfo:false,       //修改信息弹窗状态
                 ProjManageDialog:false, //工程管理弹窗的状态
-                createDeptId:"",//deptId
-                url: "../../../static/datasource.json",
-                filterParams:{
-                    orgNodeVal:"",
-                    majorVal:"",
-                    bimVal:"",
-                    versionsVal:"",
-                    searchVal:""
+                monitorSeverVisible:false,//第三方监控设置
+                addPrjectTitle:"添加工程",//添加修改工程动态标题
+                authUserInfoList:[],    //添加->授权人员列表
+                authUserListItem:[],    //添加->选中授权人员列表
+                authCount:[],           //添加->选中数量统计
+                disableAuthList:[],     //添加->不可用列表数量
+                authItemCount:0,        //添加->可授权人员数量
+                newCreatmajor:[],       //添加->专业
+                extractStatus:'',       //抽取状态
+                proManageVal:"",        //添加->弹窗项目部选中的值
+                createDeptId:"",        //添加->deptId
+                //分页的一些设置
+                cur_page:1,             //bim库分页当前页
+                totalPages:10,          //bim库分页显示条数
+                filterParams:{          //bim库筛选属性
+                    orgNodeVal:"",      //组织结构val
+                    majorVal:"",        //专业
+                    bimVal:"",          //bim属性
+                    versionsVal:"",     //版本
+                    searchVal:""        //搜索关键字
                 },
-                setting: {//搜索条件ztree setting
+                setting: {              //ztree setting
                     data: {
                         simpleData: {
                             enable: true
@@ -406,8 +391,8 @@
                     callback: {
                         onClick: this.onClick
                     }
-                },
-                proDepartSetting:{//工程管理默认树结构setting
+                },          //bim库组织结构setting
+                proDepartSetting:{      //工程管理默认树结构setting
                     data: {
                         simpleData: {
                             enable: true,
@@ -418,47 +403,48 @@
                     callback: {
                         onClick: this.proDepartClick
                     }
-                },
-                bimOptions: [],
-                majorOptions: [],
+                },  //添加->项目部setting
+
+                bimOptions: [],         //bim库属性
+                majorOptions: [],       //bim库专业数据
                 versionsOptions:[
                     {name:"显示最新",value:true},
                     {name:"显示全部",value:false}
-                ],//版本
-                isRecycle:false,//是否是回收站
+                ],  //版本
+                isRecycle:false,        //是否是回收站
                 tableParam:{
-                    delete: false,
-                    deptIds: [],
-                    latest: true,
-                    packageType: 0,
-                    pageParam: {
+                    delete: false,      //是否是回收站
+                    deptIds: [],        //项目部deptIds
+                    latest: true,       //版本状态
+                    packageType: 0,     //套餐类型
+                    pageParam: {        //分页属性
                         orders: [
                             {
-                                direction: 0,
-                                ignoreCase: true,
-                                property: ""
+                                direction: 0,       //排序方式
+                                ignoreCase: true, //排序关键字是否区分大小写
+                                property: ""      //排序字段
                             }
                         ],
-                        page: 0,
-                        size: 0
+                        page: 0,        //分页当前页
+                        size: 0         //分页显示数
                     },
-                    projGenre: "",
-                    projType: "",
-                    searchKey: "",
+                    projGenre: "",      //bim属性
+                    projType: "",       //bim类型
+                    searchKey: "",      //搜索关键字
                     skOnlyProjName: false
                 },
-                proManage:{//工程管理
+                proManage:{             //工程管理
                     name:'',
                     major:'',
                     deptId:"",
                     userIds:[],
                     remark:""
                 },
-                modifyInfoList:{
+                modifyInfoList:{        //修改弹窗数据
                     name:'初始项目部',
                     formatName:'我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家'
                 },
-                monitorSever:{
+                monitorSever:{          //监控弹窗数据
                     projectItem:'',
                     projectList:[
                         {name:'列表元素1'},
@@ -470,6 +456,9 @@
                     clientIp:"172.16.21.164",
                     port:8080
                 },
+
+                pagesList:{},           //bim库列表的信息
+                tableData:[],           //bim库列表数据
                 zNodes: [
                     {
                         id: 1,
@@ -495,20 +484,18 @@
                     { id: 31, pId: 3, name: "叶子节点1" },
                     { id: 32, pId: 3, name: "叶子节点2" },
                     { id: 33, pId: 3, name: "叶子节点3" }
-                ],
-                pagesList:{},
-                tableData:[],
-                proDepartNodes:[],
+                ],          //bim库组织结构zNodes
+                proDepartNodes:[],      //添加->所属项目部数据zNodes
             }
         },
         methods: {
             //默认加载数据
             getData(name,id){
-                this.getBaseUrl();//获取基础路径
+                this.getBaseUrl();      //获取基础路径
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
-                    this.isRecycle = false;
-                    this.tableParam.latest = true;
+                    this.isRecycle = false;         //回收站的状态
+                    this.tableParam.latest = true;  //版本状态
                 }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
                     this.isRecycle = true;
                     this.tableParam.latest = false;
@@ -521,35 +508,11 @@
                 this.tableParam.pageParam.orders[0].direction = 1;
                 this.tableParam.pageParam.page = this.cur_page;
                 this.tableParam.pageParam.size = this.totalPages;
-                this.getProjectList({url:baseUrl,param:this.tableParam})
-                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
-                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
-                if(currentRoute=="/bimlib/housing/bim-lib"||currentRoute=="/bimlib/BaseBuild/bim-lib" || currentRoute=="/bimlib/decoration/bim-lib"){
-                    //加载的是工作集的数据
-                    console.log('加载工作集数据'+this.$route.params.typeId)
-                }else if(currentRoute=="/bimlib/housing/recycle-bin"||currentRoute=="/bimlib/BaseBuild/recycle-bin" || currentRoute=="/bimlib/decoration/recycle-bin"){
-                    //加载回收站的数据
-                    console.log('加载回收站数据'+this.$route.params.typeId)
-                }
-                if(id && name){
-                    this.tableData.forEach((val,key)=>{
-                        this.$set(val,'updateUser',name)
-                    })
-                }
-                if(this.$refs.multipleTable){//勾选列表复选框存在清除勾选
-                    this.$refs.multipleTable.clearSelection();
-                    deletArray = [];
-                }
-                this.tableData.forEach((val,key)=>{
-                    this.$set(val,'checked',false)
-                });
-            },
-            handleOpen(key, keyPath) {
-                console.log(key, keyPath);
-            },
-            handleClose(key, keyPath) {
-                console.log(key, keyPath);
+
+                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //bim库bim属性
+                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -565,11 +528,11 @@
             },
             commonAlert(message){
                 this.$alert(message, '提示', {
-                        confirmButtonText: '确定',
-                        callback: action => {
-                        console.log(1111)
-            }
-            })
+                    confirmButtonText: '确定',
+                    callback: action => {
+
+                    }
+                })
             },
             commonMessage(message,type){
                 this.$message({
@@ -577,15 +540,31 @@
                     message: message
                 })
             },
+            //全选数据处理
+            foreachs(allChecked,data){
+                if(allChecked){
+                    data.forEach((val,key)=>{
+                        val.checked = true;
+                    })
+                }else{
+                    data.forEach((val,key)=>{
+                        val.checked = false;
+                    })
+                }
+                if(this.allChecked){
+                    data.forEach((val,key)=>{
+                        deletArray.push(val.projId)
+                    })
+                }
+
+            },
             //分页器事件
             handleSizeChange(size){
-                console.log(`每页显示多少条${size}`);
                 this.tableParam.pageParam.size = size;
                 this.totalPages = size;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
             handleCurrentChange(currentPage){
-                console.log(`当前页${currentPage}`);
                 this.cur_page = currentPage;
                 this.tableParam.pageParam.page = currentPage;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
@@ -615,13 +594,11 @@
             },
             //获取属性
             getProjGenreEvent(isDelete,packageType){
-                console.log(baseUrl,'baseUrl')
                 getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
                     this.bimOptions = data.data.result;
                     if(this.bimOptions.length>0){
                         this.filterParams.bimVal = this.bimOptions[0].value;
                     }
-
                 });
             },
             //获取专业
@@ -633,25 +610,6 @@
                     }
                 })
             },
-
-            foreachs(allChecked,data){
-                if(allChecked){
-                    data.forEach((val,key)=>{
-                        val.checked = true;
-                    })
-                }else{
-                    data.forEach((val,key)=>{
-                        val.checked = false;
-                    })
-                }
-                if(this.allChecked){
-                    data.forEach((val,key)=>{
-                        deletArray.push(val.projId)
-                    })
-                }
-
-            },
-
             //搜索条件树结构的单机事件
             onClick(event, treeId, treeNode) {
                 this.filterParams.orgNodeVal = treeNode.name;
@@ -669,7 +627,7 @@
             },
             //工程管理树结构单机事件
             proDepartClick(event, treeId, treeNode){
-                if(treeNode.type==1){
+                if(treeNode.type==1){       //项目部才有点击事件
                     this.proManageVal = treeNode.name;
                     this.createDeptId = treeNode.id;
                     setTimeout(function(event, treeId, treeNode) {
@@ -682,14 +640,9 @@
             },
             //创建->获取授权人员
             getRootMan(){
-                /**
-                 * val.allaAuth  是否权限管理的全部权限 true 不可操作 false可操作
-                 *
-                 */
-                console.log(this.createDeptId,'this.createDeptId')
                 getProjAuthUserInfos({url:baseUrl,deptId:"d68ceeb2d02043bd9ea5991ac44d649b"}).then((data)=>{
-                    this.authUserInfoList = data.data.result;
-                    authUserInfoListCopy = data.data.result;
+                    this.authUserInfoList = data.data.result; //可授权人员列表
+                    authUserInfoListCopy = data.data.result;  //可授权人员deep_copy
                     this.authUserInfoList.forEach((val,key)=>{
                         if(val.hasAuth){
                             this.authUserListItem.push(val);
@@ -702,7 +655,7 @@
                             this.authCount.push(val);
                         }
                     });
-                    if(this.authUserInfoList.length== this.authUserListItem.length){
+                    if(this.authUserInfoList.length== this.authUserListItem.length){    //选中个数和可授权的个数一致全选勾上
                         this.checkAll = true;
                     }else{
                         this.checkAll = false;
@@ -728,9 +681,8 @@
              */
             delTableList(params){
                 deleteProjects(params).then((data)=>{
-                    console.log(data,'删除的状态');
                     if(data.data.code==200){
-                        if(deletArray.length==this.tableData.length){
+                        if(deletArray.length==this.tableData.length){      //删除整页重新渲染数据
                             this.getProjectList({url:baseUrl,param:this.tableParam})
                         }
                         $('table.bim-lib td span').removeClass('is-checked');
@@ -764,7 +716,7 @@
              */
             tableListRestore(params){
                 bimRecycleRest(params).then((data)=>{
-                    console.log(data.data.result);
+//                    console.log(data.data.result);
                     if(data.data.code==200){
                         deletArray = [];
                         this.getProjectList({url:baseUrl,param:this.tableParam});
@@ -781,7 +733,6 @@
                 countIndex = 0;     //选中数量统计清空
                 this.allChecked = false;
                 getProjects(params).then((data)=>{
-                 // console.log(data.data.result.content,'表格列表结构')
                     this.tableData = data.data.result.content;
                     this.tableData.forEach((val,key)=>{
                         this.$set(this.tableData[key],'checked',false)
@@ -810,7 +761,6 @@
             },
             //表格删除单选
             singChecked(event){//逐个选中
-
                 if(event.target.checked){
                     countIndex++;
                 }else{
@@ -849,7 +799,7 @@
                          if(this.tableData.length===deletArray.length){
                          //重新渲染数据
                          }else if(deletArray.length){
-                            for(let i = 0;i<deletArray.length;i++){
+                            for(let i = 0;i<deletArray.length;i++){     //逐个删除的时候手动抽取
                                 for(let j = 0;j<this.tableData.length;j++){
                                     if( this.tableData[j].projId == deletArray[i]){
                                         this.tableData.splice(j,1);
@@ -868,7 +818,6 @@
             //回收站还原
             dataRestore(){
                 this.tableListRestore({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}});
-                console.log('回收站还原')
             },
             //回收站清空
             dataEmpty(){
@@ -889,7 +838,7 @@
             },
             //创建弹窗专业change事件
             proManageChange(val){
-                console.log(val,'valelll')
+
             },
             //添加弹窗授权项目部树结构
             getTree(){
@@ -953,15 +902,14 @@
             },
             //全部删除授权人员
             delRootAll(){
-                this.checkAll = false;
-                this.authUserListItem =[];
-                this.authCount = [];
+                this.checkAll = false;      //全选状态改变
+                this.authUserListItem =[];  //选中数组清空
+                this.authCount = [];        //选中统计数清空
                 this.authUserInfoList.forEach((val,key)=>{
-                    if(val.allAuth){
-                        this.authUserListItem.push(val)
+                    if(val.allAuth){        //权限授权
+                        this.authUserListItem.push(val);    //不可用的加入到选中列表
                     }
                 })
-                debugger;
             },
             /**
              *删除某个授权人
@@ -969,27 +917,27 @@
              * @params index 索引值
              **/
             delRootItem(item,index){
-                this.authUserListItem.forEach((val,key)=>{
+                this.authUserListItem.forEach((val,key)=>{//删除已选中的数据
                     if(val.userId.indexOf(index)!=-1){
                         this.authUserListItem.splice(key,1);
 
                     }
                 });
-                if( this.authCount.length>0){
+                if( this.authCount.length>0){//选中数量相应改变
                     this.authCount.splice(0,1);
                 }
-                if(this.authUserInfoList.length> this.authUserListItem.length){
+                if(this.authUserInfoList.length> this.authUserListItem.length){ //选中和可选的个数不一致 全选取消
                     this.checkAll = false;
                 }
-                this.authItemCount = this.authUserInfoList.length - (this.disableAuthList.length + this.authCount.length);
+                this.authItemCount = this.authUserInfoList.length - (this.disableAuthList.length + this.authCount.length);//重新计算可授权数量
             },
             /**
              *全选授权人员
              * @params event  事件
              **/
             addAllRootPerson(event){
-                this.authCount=[];
-                if (event.target.checked) {
+                this.authCount=[];  //全选选中数量清空处理
+                if (event.target.checked) {//全选选中状态 重新插入authCount
                     this.authUserListItem = [];
                     this.authUserInfoList.forEach((item,key) => {
                         this.authUserListItem.push(item);
@@ -997,7 +945,7 @@
                             this.authCount.push(item)
                         }
                     });
-                } else {
+                } else {//全选取消状态 清空选中数组并将不可用的重新在复制进去
                     this.authUserListItem = [];
                     this.authUserInfoList.forEach((item,key) => {
                         if(item.allAuth){
@@ -1019,7 +967,7 @@
                     this.checkAll = false;
                 }
                 this.authCount =[];
-                item.forEach((val,key)=>{
+                item.forEach((val,key)=>{   //可授权的成员加入到authCount
                    if(!val.allAuth && val.hasAuth){
                        this.authCount.push(val);
                    }
@@ -1028,40 +976,39 @@
             },
             //工程管理修改添加的搜索
             proManageSearch(){
-                let searchArr = [];
-                this.authUserInfoList = authUserInfoListCopy;
-                this.authUserInfoList.forEach((val,key)=>{
+                let searchArr = [];     //搜索展示数组
+                this.authUserInfoList = authUserInfoListCopy;//对元素数据进行搜索
+                this.authUserInfoList.forEach((val,key)=>{//搜索匹配成功的加入到searchArr
                     if(this.authUserInfoList[key].userName.indexOf(this.proMsearchKey) !=-1){
                         searchArr.push(val);
                     }
                 });
-                if(this.proMsearchKey){
+                if(this.proMsearchKey){//搜索关键字存在
                     this.authUserInfoList = searchArr;
-                }else{
+                }else{                 //搜索关键字不存在
                     this.authUserInfoList = authUserInfoListCopy;
                 }
 
             },
             //工程管理保存
             proManageSave(){
-                let newCreate ={
-//                    deptId:this.createDeptId,
-                    deptId:this.createDeptId,
-                    packageType: this.$route.params.typeId,
-                    projMemo: this.proManage.remark,
-                    projName: this.proManage.name,
-                    projType: this.proManage.major,
-                    userIds: []
+                let newCreate ={    //创建工程param
+                    deptId:this.createDeptId,               //所属项目部
+                    packageType: this.$route.params.typeId, //套餐类型
+                    projMemo: this.proManage.remark,        //备注
+                    projName: this.proManage.name,          //名称
+                    projType: this.proManage.major,         //专业
+                    userIds: []                            //授权人员名单
                 };
-                if(!newCreate.projName){
+                if(!newCreate.projName){                    //工程名称不存在
                     this.commonMessage('工程名称不能为空','warning');
                     return false;
                 }
-                if(!this.createDeptId){
+                if(!this.createDeptId){                     //所属项目部
                     this.commonMessage('所属项目部不能为空','warning');
                     return false;
                 }
-                this.authUserListItem.forEach((val,key)=>{
+                this.authUserListItem.forEach((val,key)=>{  //将选中结果里面可用值提取出来
                     if(!val.allAuth && val.hasAuth){
                         newCreate.userIds.push(val.userId)
                     }
@@ -1093,15 +1040,11 @@
             },
             //抽取数据
             extractOk(){
-                if(this.isExtractChecked && this.isExtractDisable){
-                    //是否确认抽取数据
-                    console.log('是选状态')
-                    this.isExtractChecked = false;
-                }
+
             },
             //抽取失败
             extractCancel(){
-                this.isExtractChecked = false;
+
             },
             //修改名称
             modifyUpdate(){
