@@ -9,15 +9,11 @@
  {cas}          'http://192.168.13.195:8989/cas/';
  {palace}       'http://192.168.13.195:8989/palace/';
  */
-// basePath('builder');分属模块地址返回
-import {basePath} from "../utils/common.js";
 import axios from "axios";
 
 let base = '../../static/workSeting.json';
 let route = '../../static/routes.json';
 let first, second, third;
-// console.log(basePath('builder'),'url');
-
 //egg
 // let base = 'http:192.168.13.215:8080/main';
 /**
@@ -50,16 +46,22 @@ export const getMajorsByCreate = params =>axios.get(`${params.url}rs/bimParamRes
 export const getProjGenre = params =>axios.get(`${params.url}rs/bimParamRest/getProjGenre/${params.isDelete}/${params.packageType}`);
 //Bim筛选条件->专业
 export const getProjType = params =>axios.get(`${params.url}rs/bimParamRest/getProjType/${params.isDelete}/${params.packageType}`);
-//bim添加->授权人员列表
-export const getProjAuthUserInfos = params =>axios.get(`${params.url}rs/bimParamRest/getProjAuthUserInfos/${params.deptId}`);
 
+
+//bim库列表
+export const getProjects = params =>axios.post(`${params.url}rs/bimRest/getProjects`,params.param)
 //bim创建工程
-export const createProject = params=>axios.post(`${params.url}rs/bimRest/createProject`,params.param)
+export const createProject = params=>axios.post(`${params.url}rs/bimRest/createProject`,params.param);
+//bim创建->授权人员列表
+export const getProjAuthUserInfos = params =>axios.get(`${params.url}rs/bimParamRest/getProjAuthUserInfos/${params.deptId}`);
+//bim创建 项目部树结构
+export const zTreeNodes = params =>axios.get(`${params.url}org/admin/nodes`);
 /**
  * 云构件库
  * */
 //构件树列表
 export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.version}/${params.productId}`);
+
 
 /**
  * 组织结构
