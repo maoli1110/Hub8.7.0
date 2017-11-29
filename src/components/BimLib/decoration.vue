@@ -14,7 +14,7 @@
                 <span class="absol span-block" style="width:65px;">
                    BIM属性:
                 </span>
-                <el-select class="absol" v-model="filterParams.bimVal" placeholder="请选择"  style="left:72px">
+                <el-select class="absol" v-model="filterParams.bimVal" @change="BimParamChange" placeholder="请选择"  style="left:72px">
                     <el-option
                         v-for="item in bimOptions"
                         :key="item.value"
@@ -29,7 +29,7 @@
                     专业:
                 </span>
 
-                <el-select class="absol" v-model="filterParams.majorVal" placeholder="请选择" style="left:40px;">
+                <el-select class="absol" v-model="filterParams.majorVal" @change="majorParamChange" placeholder="请选择" style="left:40px;">
                     <el-option
                         v-for="item in majorOptions"
                         :key="item.value"
@@ -53,7 +53,7 @@
                 </el-select>
             </el-col>
             <el-col :span="4" class="relat" :class="[($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')?'left120':'left175']">
-                <el-input placeholder="搜索工程名称和上传人关键词" v-model="filterParams.searchVal" icon="search" :on-icon-click="search"></el-input>
+                <el-input placeholder="搜索工程名称和上传人关键词" v-model="filterParams.searchVal" icon="search" :on-icon-click="tableListSearch"></el-input>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-dev-toolbar" >
@@ -101,7 +101,7 @@
                         </thead>
                         <tbody>
                         <tr v-for="(item,index) in tableData" :key="index">
-                            <td @click="isClick(item)">
+                            <td @click="tableCheckedClick(item)">
                                 <template >
                                     <el-checkbox v-model="item.checked" @change="singChecked" ></el-checkbox>
                                 </template>
@@ -114,7 +114,7 @@
                             {{item.createRealName}}</td>
                             <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
                             <td  v-if="$route.params.typeId !=4">{{item.drawSize}}</td>
-                            <td>{{item.deptName}}</td>
+                            <td class="relat" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
                             <td>{{item.projSize}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
                             <td>
@@ -157,7 +157,7 @@
                         </thead>
                         <tbody>
                         <tr v-for="(item,index) in tableData" :key="index">
-                            <td @click="isClick(item)">
+                            <td @click="tableCheckedClick(item)">
                                 <template >
                                     <el-checkbox v-model="item.checked" @change="singChecked" ></el-checkbox>
                                 </template>
@@ -167,9 +167,10 @@
                             <td v-if="$route.params.typeId !=3" class="bim-params">{{item.projGenre}}</td>
                             <td class="absol substr uploadPerson" :title="
                             item.createRealName+'\n'+item.createUserName">{{item.createRealName}}</td>
-                            <td class="times">{{item.createDate}}</td>
+                            <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
                             <td  v-if="$route.params.typeId !=3">{{item.drawSize}}</td>
-                            <td class="depart-pro">{{item.deptName}}</td>
+                            <!--<td class="depart-pro">{{item.deptName}}</td>-->
+                            <td class="relat depart-pro" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
                             <td>{{item.size}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
                             <td>item.version</td>
@@ -261,7 +262,7 @@
                         </el-col>
                         <el-col :span="10" class="transfer-con-del " style="margin-left:6px;">
                             <el-col :span="14" >
-                                <span class="radius" @click="delRootAll" style="margin-left:11px;">
+                                <span class="radius" @click="delRootAll" style="margin-left:11px;" title="删除">
                                     <i class="radius-lines"></i>
                                 </span>
                             </el-col>
@@ -343,10 +344,9 @@
     import {basePath} from "../../utils/common.js";
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import {
-        cloudTree,getMajorsByCreate,getProjGenre,
-        getProjType,getProjAuthUserInfos,createProject,
-        getProjects,zTreeNodes,getOrgTreeList
-    } from '../../api/getData.js';
+        cloudTree,getMajorsByCreate,getProjGenre,getProjType,getProjAuthUserInfos,createProject,
+        getProjects,zTreeNodes,getOrgTreeList,deleteProjects,deleteProject,bimRecycleRest
+    } from '../../api/getData-yhj.js';
     let deletArray = [];
     let countIndex = 0;
     let baseUrl;
@@ -502,19 +502,54 @@
             }
         },
         methods: {
+            //默认加载数据
+            getData(name,id){
+                this.getBaseUrl();//获取基础路径
+                let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
+                if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
+                    this.isRecycle = false;
+                    this.tableParam.latest = true;
+                }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
+                    this.isRecycle = true;
+                    this.tableParam.latest = false;
+                }
+                //列表初始值
+                this.tableParam.delete = this.isRecycle;
+                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b'
+                this.tableParam.packageType = this.$route.params.typeId;
+                this.tableParam.pageParam.orders[0].property = "t1.createDate";
+                this.tableParam.pageParam.orders[0].direction = 1;
+                this.tableParam.pageParam.page = this.cur_page;
+                this.tableParam.pageParam.size = this.totalPages;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
+                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
+                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
+                this.filterParams.versionsVal = this.versionsOptions[0].value;
+                if(currentRoute=="/bimlib/housing/bim-lib"||currentRoute=="/bimlib/BaseBuild/bim-lib" || currentRoute=="/bimlib/decoration/bim-lib"){
+                    //加载的是工作集的数据
+                    console.log('加载工作集数据'+this.$route.params.typeId)
+                }else if(currentRoute=="/bimlib/housing/recycle-bin"||currentRoute=="/bimlib/BaseBuild/recycle-bin" || currentRoute=="/bimlib/decoration/recycle-bin"){
+                    //加载回收站的数据
+                    console.log('加载回收站数据'+this.$route.params.typeId)
+                }
+                if(id && name){
+                    this.tableData.forEach((val,key)=>{
+                        this.$set(val,'updateUser',name)
+                    })
+                }
+                if(this.$refs.multipleTable){//勾选列表复选框存在清除勾选
+                    this.$refs.multipleTable.clearSelection();
+                    deletArray = [];
+                }
+                this.tableData.forEach((val,key)=>{
+                    this.$set(val,'checked',false)
+                });
+            },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);
             },
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
-            },
-            //formatter
-            judge(data){
-                //taxStatus 布尔值
-                if(data.speciality==='土建'){
-                    data.speciality = 'tj'
-                }
-                return  data.speciality
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -555,11 +590,68 @@
                 this.tableParam.pageParam.page = currentPage;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
-            //change
+            //tableList搜索功能
             versionChange(val){
                 this.tableParam.latest = val;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
+            BimParamChange(val){
+                this.tableParam.projGenre = val;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
+            },
+            majorParamChange(val){
+                this.tableParam.projType = val;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
+            },
+            //表格列表搜索
+            tableListSearch(){
+                if(!this.filterParams.searchVal){return false;}
+                this.tableParam.searchKey = this.filterParams.searchVal;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
+            },
+            //获取地址
+            getBaseUrl(){
+                baseUrl = basePath(this.$route.path);
+            },
+            //获取属性
+            getProjGenreEvent(isDelete,packageType){
+                console.log(baseUrl,'baseUrl')
+                getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
+                    this.bimOptions = data.data.result;
+                    if(this.bimOptions.length>0){
+                        this.filterParams.bimVal = this.bimOptions[0].value;
+                    }
+
+                });
+            },
+            //获取专业
+            getProjTypeEvent(isDelete,packageType){
+                getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
+                    this.majorOptions = data.data.result;
+                    if(this.majorOptions.length>0){
+                        this.filterParams.majorVal = this.majorOptions[0].value;
+                    }
+                })
+            },
+
+            foreachs(allChecked,data){
+                if(allChecked){
+                    data.forEach((val,key)=>{
+                        val.checked = true;
+                    })
+                }else{
+                    data.forEach((val,key)=>{
+                        val.checked = false;
+                    })
+                }
+                if(this.allChecked){
+                    data.forEach((val,key)=>{
+                        deletArray.push(val.projId)
+                    })
+                }
+
+            },
+
             //搜索条件树结构的单机事件
             onClick(event, treeId, treeNode) {
                 this.filterParams.orgNodeVal = treeNode.name;
@@ -588,81 +680,218 @@
                 }
 
             },
-            /**
-             * 全选
-             * @params [{type array}]  selection  选中的队列对象
-             */
-
-            selectAll(selection){
-                this.commonAlert('全部选中了哦')
-                selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray.push(val.index)
+            //创建->获取授权人员
+            getRootMan(){
+                /**
+                 * val.allaAuth  是否权限管理的全部权限 true 不可操作 false可操作
+                 *
+                 */
+                console.log(this.createDeptId,'this.createDeptId')
+                getProjAuthUserInfos({url:baseUrl,deptId:"d68ceeb2d02043bd9ea5991ac44d649b"}).then((data)=>{
+                    this.authUserInfoList = data.data.result;
+                    authUserInfoListCopy = data.data.result;
+                    this.authUserInfoList.forEach((val,key)=>{
+                        if(val.hasAuth){
+                            this.authUserListItem.push(val);
+                            this.authCount.push(val);
+                        }
+                        if(val.allAuth){
+                            this.authUserListItem.push(val);
+                            this.disableAuthList.push(val);
+                        }else if(!val.allAuth && !val.hasAuth){
+                            this.authCount.push(val);
+                        }
+                    });
+                    if(this.authUserInfoList.length== this.authUserListItem.length){
+                        this.checkAll = true;
+                    }else{
+                        this.checkAll = false;
                     }
                 });
-                console.log(deletArray,'selectionall')
-            },
 
+            },
             /**
-             * 单选
-             * @params [{type obj}] selection    选中的对象
-             * @params row 列
+             * bim列表-排序
+             * @params fileName     排序字段
+             * @params sort         ps(0:asc(降序),1:desc(升序))
              */
-            selectChecked(selection, row){
-                selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray.push(val.index)
-                    }
-                })
-            },
-            getProjectList(params){
-                console.log(params)
-                getProjects(params).then((data)=>{
-//                    console.log(data.data.result.content,'表格列表结构')
-                    this.tableData = data.data.result.content;
-                    this.pagesList = data.data.result;
-                })
-            },
             tableListSort(fileName,sort){
                 this.tableParam.pageParam.orders[0].property = fileName;
                 this.tableParam.pageParam.orders[0].direction = parseInt(sort);
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
-            //列表删除
-            deletelibs(type){
+            /**
+             * bim列表-删除接口
+             * @params params.url               响应地址
+             * @params params.packageType       套餐类型（位运算:1房建; 2基建; 4家装）
+             * @params params.projIds           删除的工程id
+             */
+            delTableList(params){
+                deleteProjects(params).then((data)=>{
+                    console.log(data,'删除的状态');
+                    if(data.data.code==200){
+                        if(deletArray.length==this.tableData.length){
+                            this.getProjectList({url:baseUrl,param:this.tableParam})
+                        }
+                        $('table.bim-lib td span').removeClass('is-checked');
+                        countIndex = 0;
+                        deletArray = [];//接口成功之后删除数据
+                        this.allChecked = false;
+                        this.commonMessage('删除成功','success');
+                    }
+                })
+            },
+            /**
+             * 回收站-删除数据
+             * @params params.url               响应地址
+             * @params params.packageType       套餐类型（位运算:1房建; 2基建; 4家装）
+             * @params params.projIds           删除的工程id
+             */
+            delRecycle(params){
+                deleteProject(params).then((data)=>{
+                    if(data.data.code==200){
+                        deletArray = [];
+                        this.getProjectList({url:baseUrl,param:this.tableParam});
+                        this.commonMessage('删除成功','success');
+                    }
+                })
+            },
+            /**
+             * 回收站-还原数据
+             * @params params.url               响应地址
+             * @params params.packageType       套餐类型（位运算:1房建; 2基建; 4家装）
+             * @params params.projIds           删除的工程id
+             */
+            tableListRestore(params){
+                bimRecycleRest(params).then((data)=>{
+                    console.log(data.data.result);
+                    if(data.data.code==200){
+                        deletArray = [];
+                        this.getProjectList({url:baseUrl,param:this.tableParam});
+                        this.commonMessage('还原成功','success');
+                    }
+                })
+            },
+            /**
+             * bim库列表
+             * @params params
+             */
+            getProjectList(params){
+                deletArray = [];    //清空删除的projIds 防止影响
+                countIndex = 0;     //选中数量统计清空
+                this.allChecked = false;
+                getProjects(params).then((data)=>{
+                 // console.log(data.data.result.content,'表格列表结构')
+                    this.tableData = data.data.result.content;
+                    this.tableData.forEach((val,key)=>{
+                        this.$set(this.tableData[key],'checked',false)
+                    })
+                    this.pagesList = data.data.result;
+                })
+            },
+            //进入回收站
+            inRecycle(path,paramId){
+                deletArray =[];
+                this.isRecycle = true;
+                this.tableParam.latest = false;
+                this.$router.push({ path: path+'/recycle-bin/'+paramId});
+            },
+            //返回工程库
+            inProLib(path,paramId){
+                deletArray =[];
+                this.isRecycle = false;
+                this.tableParam.latest = true;
+                this.$router.push({ path: path+'/bim-lib/'+paramId});
+            },
+            //表格删除全选
+            allSelectChange(event){//全选
+                deletArray = [];
+                this.foreachs(this.allChecked,this.tableData);
+            },
+            //表格删除单选
+            singChecked(event){//逐个选中
 
-                console.log(type,'什么类型')
+                if(event.target.checked){
+                    countIndex++;
+                }else{
+                    if(this.delIndex!=-1){
+                        deletArray.splice(this.delIndex,1)
+                    }
+                    countIndex--;
+                }
+                if(this.tableData.length==countIndex){
+                    this.allChecked = true;
+                }else{
+                    this.allChecked = false;
+                }
+            },
+            /**
+             * 删除的元素
+             * @params item 删除的元素加入到projIds队列
+             **/
+            tableCheckedClick(item){
+                this.delIndex = deletArray.indexOf(item.projId)
+                if(deletArray.indexOf(item.projId)==-1 ){
+                    deletArray.push(item.projId);
+                }
+            },
+            /**
+             * bim库列表删除
+             * @params type ps('whileData':普通删除,'wipeData':永久删除)
+             * */
+            deletelibs(type){
                 if(!deletArray.length){
                     this.commonMessage('请选择要删除的文件','warning')
                     return false;
                 }
                 if(type=='whileData'){
                     this.commonConfirm('确定要删除吗',()=>{
-                        /* if(this.tableData.length===deletArray.length){
+                         if(this.tableData.length===deletArray.length){
                          //重新渲染数据
-                         }else*/if(deletArray.length){
-                        for(let i = 0;i<deletArray.length;i++){
-                            for(let j = 0;j<this.tableData.length;j++){
-                                if( this.tableData[j].index == deletArray[i]){
-                                    this.tableData.splice(j,1);
+                         }else if(deletArray.length){
+                            for(let i = 0;i<deletArray.length;i++){
+                                for(let j = 0;j<this.tableData.length;j++){
+                                    if( this.tableData[j].projId == deletArray[i]){
+                                        this.tableData.splice(j,1);
+                                    }
                                 }
                             }
-                        }
                     }
-                    this.allChecked = false;
-                    countIndex = 0;
-                    deletArray = [];//接口成功之后删除数据
-                },()=>{
-
-                    },'warning')
+                    this.delTableList({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}});
+                },()=>{},'warning')
                 }else if(type=='wipeData'){
-                    this.commonConfirm('删除后执行永久删除,不可恢复',()=>{
-
+                    this.commonConfirm('确认清空回收站所有内容吗？请谨慎操作！',()=>{
+                        this.delRecycle({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}})
                     },()=>{},'warning')
                 }
-
             },
-            //弹窗异步请求树结构
+            //回收站还原
+            dataRestore(){
+                this.tableListRestore({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}});
+                console.log('回收站还原')
+            },
+            //回收站清空
+            dataEmpty(){
+                console.log('回收站清空')
+            },
+            /**
+             * 添加创建功能
+             * */
+            //每次添加完成 数据清空
+            clearCreateParam(){
+                this.proManage.name= '';
+                this.proManage.major= this.majorOptions[0].value;
+                this.proManage.remark= "";
+                this.proManage.deptId = "";
+                this.proManage.userIds =[];
+                this.createDeptId = '';
+                this.proManageVal = ""
+            },
+            //创建弹窗专业change事件
+            proManageChange(val){
+                console.log(val,'valelll')
+            },
+            //添加弹窗授权项目部树结构
             getTree(){
                 getOrgTreeList({url:baseUrl}).then(res => {
 //                    console.log( res.data.result,'树结构')
@@ -670,6 +899,11 @@
                     $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
                 });
             },
+            /**
+             *创建工程
+             * @params url      响应地址
+             * @params param    参数
+             */
             newCreateProject(url,param){
                 createProject({url:url,param:param}).then((data)=>{
                     if(data.data.code==500){
@@ -678,7 +912,8 @@
                         //执行成功
                         this.ProjManageDialog = false;
                     }
-                    this.getProjectList({url:baseUrl,param:this.tableParam})
+                    this.clearCreateParam();
+                    this.getProjectList({url:baseUrl,param:this.tableParam});
                 },(error)=>{
                     this.commonMessage(error.data.msg)
                 })
@@ -702,7 +937,7 @@
                         this.filterParams.majorVal = this.majorOptions[0].value;
                     });
                 }else{
-//                this.getTree();
+                    //修改工程
                     this.proManageVal = 'SSSSSS';
                     this.proManage.name = '哈哈哈哈哈';
                     this.proManage.major = '哈哈哈哈哈';
@@ -716,134 +951,6 @@
                 }
                 this.getRootMan();
             },
-            /**
-             * @params type 批量监控还是监控
-             * **/
-            monitor(type){
-                if(!deletArray.length){
-                    this.commonMessage('请添加监控文件','warning');
-                    return false;
-                }else {
-                    if(type=='all'){
-                        this.monitorSeverVisible =true;
-                        this.monitorSever = {};
-                    }
-
-                }
-            },
-            //回收站还原
-            dataRestore(){
-                this.getProjGenreEvent()
-                console.log('回收站还原')
-            },
-            //回收站清空
-            dataEmpty(){
-                console.log('回收站清空')
-            },
-            //表格列表搜索
-            search(){
-                console.log(this.filterParams,'filterparams')
-            },
-            //获取地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
-            },
-            //获取属性
-            getProjGenreEvent(isDelete,packageType){
-                console.log(baseUrl,'baseUrl')
-                getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
-                    this.bimOptions = data.data.result;
-//                    if(this.bimOptions.length>0){
-//                        this.filterParams.bimVal = this.bimOptions[0].value;
-//                    }
-
-                });
-            },
-            //获取专业
-            getProjTypeEvent(isDelete,packageType){
-                getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
-                    this.majorOptions = data.data.result;
-                    if(this.majorOptions.length>0){
-                        this.filterParams.majorVal = this.majorOptions[0].value;
-                    }
-                })
-            },
-            //获取授权人员
-            getRootMan(){
-                /**
-                 * val.allaAuth  是否权限管理的全部权限 true 不可操作 false可操作
-                 *
-                 */
-
-                getProjAuthUserInfos({url:baseUrl,deptId:3}).then((data)=>{
-                    this.authUserInfoList = data.data.result;
-                    authUserInfoListCopy = data.data.result;
-                    this.authUserInfoList.forEach((val,key)=>{
-                        if(val.hasAuth){
-                            this.authUserListItem.push(val);
-                            this.authCount.push(val);
-                        }
-                        if(val.allAuth){
-                            this.authUserListItem.push(val);
-                            this.disableAuthList.push(val);
-                        }else if(!val.allAuth && !val.hasAuth){
-                            this.authCount.push(val);
-                        }
-                    });
-                    if(this.authUserInfoList.length== this.authUserListItem.length){
-                        this.checkAll = true;
-                    }else{
-                        this.checkAll = false;
-                    }
-                });
-
-            },
-            //默认加载数据
-            getData(name,id){
-                this.getBaseUrl();//获取基础路径
-                let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
-                if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
-                    this.isRecycle = false;
-                }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
-                    this.isRecycle = true;
-                }
-                //列表初始值
-                this.tableParam.delete = this.isRecycle;
-                this.tableParam.latest = true;
-                this.tableParam.deptIds[0] = "3"
-                this.tableParam.packageType = this.$route.params.typeId;
-                this.tableParam.pageParam.orders[0].property = "t1.createDate";
-                this.tableParam.pageParam.orders[0].direction = 0;
-                this.tableParam.pageParam.page = this.cur_page;
-                this.tableParam.pageParam.size = this.totalPages;
-                this.getProjectList({url:baseUrl,param:this.tableParam})
-                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);
-                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);
-                this.filterParams.versionsVal = this.versionsOptions[0].value;
-                if(currentRoute=="/bimlib/housing/bim-lib"||currentRoute=="/bimlib/BaseBuild/bim-lib" || currentRoute=="/bimlib/decoration/bim-lib"){
-                    //加载的是工作集的数据
-                    console.log('加载工作集数据'+this.$route.params.typeId)
-                }else if(currentRoute=="/bimlib/housing/recycle-bin"||currentRoute=="/bimlib/BaseBuild/recycle-bin" || currentRoute=="/bimlib/decoration/recycle-bin"){
-                    //加载回收站的数据
-                    console.log('加载回收站数据'+this.$route.params.typeId)
-                }
-                if(id && name){
-                    this.tableData.forEach((val,key)=>{
-                        this.$set(val,'updateUser',name)
-                    })
-                }
-                if(this.$refs.multipleTable){//勾选列表复选框存在清除勾选
-                    this.$refs.multipleTable.clearSelection();
-                    deletArray = [];
-                }
-                this.tableData.forEach((val,key)=>{
-                    this.$set(val,'checked',false)
-                });
-            },
-            proManageChange(val){
-                console.log(val,'valelll')
-            },
-            //添加和修改工程
             //全部删除授权人员
             delRootAll(){
                 this.checkAll = false;
@@ -938,6 +1045,7 @@
             //工程管理保存
             proManageSave(){
                 let newCreate ={
+//                    deptId:this.createDeptId,
                     deptId:this.createDeptId,
                     packageType: this.$route.params.typeId,
                     projMemo: this.proManage.remark,
@@ -949,7 +1057,7 @@
                     this.commonMessage('工程名称不能为空','warning');
                     return false;
                 }
-                if(!this.proManageVal){
+                if(!this.createDeptId){
                     this.commonMessage('所属项目部不能为空','warning');
                     return false;
                 }
@@ -964,9 +1072,24 @@
                     //执行修改的接口
                 }
             },
-            //列表中传过来初始状态
+            //列表中传过来处状态
             extractData(status){
                 this.extractStatus = status;
+            },
+            /**
+             * @params type 批量监控还是监控
+             * **/
+            monitor(type){
+                if(!deletArray.length){
+                    this.commonMessage('请添加监控文件','warning');
+                    return false;
+                }else {
+                    if(type=='all'){
+                        this.monitorSeverVisible =true;
+                        this.monitorSever = {};
+                    }
+
+                }
             },
             //抽取数据
             extractOk(){
@@ -991,89 +1114,27 @@
                  let pass= BASE64.encoder('123456');
                  console.log(pass,'pass')
             },
-            //进入回收站
-            inRecycle(path,paramId){
-                deletArray =[];
-                this.isRecycle = true;
-                this.$router.push({ path: path+'/recycle-bin/'+paramId});
-            },
-            //返回工程库
-            inProLib(path,paramId){
-                deletArray =[];
-                this.isRecycle = false;
-                this.$router.push({ path: path+'/bim-lib/'+paramId});
-            },
-            foreachs(allChecked,data){
-                if(allChecked){
-                    data.forEach((val,key)=>{
-                        val.checked = true;
-                })
-                }else{
-                    data.forEach((val,key)=>{
-                        val.checked = false;
-                })
-                }
-                if(this.allChecked){
-                    data.forEach((val,key)=>{
-                        deletArray.push(val.index)
-                })
-                }
 
-            },
-            allSelectChange(event){
-                deletArray = [];
-                this.foreachs(this.allChecked,this.tableData);
-                /*if(!this.allChecked){
-                 countIndex = 0;
-                 }*/
-            },
-            singChecked(event){
-                if(event.target.checked){
-                    countIndex++;
-                }else{
-                    if(this.delIndex!=-1){
-                        deletArray.splice(this.delIndex,1)
-                    }
-                    countIndex--;
-                }
-                if(this.tableData.length==countIndex){
-                    this.allChecked = true;
-                }else{
-                    this.allChecked = false;
-                }
-
-            },
-            isClick(item){
-                this.delIndex = deletArray.indexOf(item.index)
-                if(deletArray.indexOf(item.index)==-1 ){
-                    deletArray.push(item.index);
-                }
-            }
         },
         mounted() {
-            $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);
+            $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
         },
         created(){
-
-            this.activeIndex = this.$route.path,
-            this.filterParams.orgNodeVal = '根节点';
-            this.getData();
-            console.log(this.tableData)
+            this.activeIndex = this.$route.path,//当前路由也选中状态
+            this.getData();                     //初始化数据
         },
         components: { VueScrollbar },
         watch: {
             '$route' (to, from) {
-                this.tableParam.delete = this.isRecycle;
-                this.getProjectList({url:baseUrl,param:this.tableParam});//表格列表
-                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);//筛选属性
-                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);//筛选专业
+                this.tableParam.delete = this.isRecycle;                            //是否是回收站
+                this.tableParam.packageType = this.$route.params.typeId;            //套餐类型
+                this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //筛选属性
+                this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //筛选专业
+                this.getProjectList({url:baseUrl,param:this.tableParam});           //表格列表
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
                 }
 
-                this.allChecked = false;
-                deletArray = [];
-                countIndex = 0;
             }
         }
     }
