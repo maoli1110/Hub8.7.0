@@ -133,6 +133,9 @@
 </template>
 <script>
 import axios from "axios";
+import {getOrgTreeList} from '../../api/getData.js';
+import {basePath,transformToObjFormat} from "../../utils/common.js";
+let baseUrl;
 export default {
     data() {
         return {
@@ -150,7 +153,7 @@ export default {
             },
             // 树数据
             url: "../../../static/orgs-old.json",
-            // url: "../../../static/organization.json",
+            // url: "../../../static/orgs.json",
             setting: {
                 view: {
                   showIcon: true
@@ -178,40 +181,6 @@ export default {
     },
     mounted() {
         /**
-         * 简要数据转换为标准JSON数组
-         * @param  {obj} param          获取树结构需要的临时参数
-         * @param  {obj} simpleOrgNode  原始数据
-         * @return {obj}                返回生成树结构所需要的对象
-         */
-        function transformToObjFormat(param, simpleOrgNodes) {
-            var i,l;
-            var key = param.orgNodeKey;
-            var parentKey = param.orgNodeParentKey;
-            if (!key || key=="" || !simpleOrgNodes) return [];
-            
-            if ($.isArray(simpleOrgNodes)) {
-                var r = [];
-                var tmpMap = [];
-                for (i=0, l=simpleOrgNodes.length; i<l; i++) {
-                    tmpMap[simpleOrgNodes[i][key]] = simpleOrgNodes[i]; //引用赋值
-                }
-                for (i=0, l=simpleOrgNodes.length; i<l; i++) {
-                    if (tmpMap[simpleOrgNodes[i][parentKey]]) {
-                        if (!tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol]){
-                            tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol] = [];
-                        }
-                        tmpMap[simpleOrgNodes[i][parentKey]][param.nodesCol].push(simpleOrgNodes[i]);
-                    } else {
-                        r.push(simpleOrgNodes[i]);
-                    }
-                }
-                return r;
-            }else {
-                return [simpleOrgNodes];
-            }
-        }
-
-        /**
          * 根据生成的树结构计算总宽度
          */
         function getOrgTreeWidth() {
@@ -222,16 +191,24 @@ export default {
             return tempWidth;
         }
 
+        this.getBaseUrl();
+
+        //获取树节点--正式
+        // getOrgTreeList({url:baseUrl}).then((data) => {
+        //     consoloe.log('success')
+        // });
+
         //获取原始树结构
         axios.get(this.url).then(res => {
             // 组合树结构需要的参数
             var param = {
                 orgNodeKey: "id",
                 nodesCol:'children',
-                orgNodeParentKey: "pId"
+                orgNodeParentKey: "parentId"
             }
             // 处理原始树结构,返回生成树结构所需要的对象
-            var tempzNodes = transformToObjFormat(param,res.data);
+            var tempzNodes = transformToObjFormat(param,res.data.result);
+
             tempzNodes = tempzNodes[0].children;
             /**
              * 给数组添加key值
@@ -264,7 +241,10 @@ export default {
         });
     },
     methods: {
-        
+        //获取接口地址
+        getBaseUrl(){
+            baseUrl = basePath(this.$route.path);
+        }
     },
     watch:{
         'orgForm.resource' (val,oldVal){

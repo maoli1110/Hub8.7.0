@@ -38,7 +38,9 @@ export const getCitys = params => axios.get('../../static/js/citys.json')
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 export const router = params=> axios.get(`${route}`);
 // GET /order/manage/getEnterpriseServiceList/{currentPage}/{pageSize} 分页获取企业服务列表
-export const getOrderManagementList = params=> axios.get(`${basePath('cloud')}/order/manage/getEnterpriseServiceList/${params.currentPage}/${params.pageSize}`);
+export const getOrderManagementList = params=> axios.get(`${params.url}/order/manage/getEnterpriseServiceList/${params.currentPage}/${params.pageSize}`);
+// POST /order/manage/getBindingList 获取服务与硬件绑定列表
+export const getBindingList=params=>axios.post(`${params.url}/order/manage/getBindingList`)
 /**
  * bim库
  */
@@ -58,3 +60,8 @@ export const createProject = params=>axios.post(`${params.url}rs/bimRest/createP
  * */
 //构件树列表
 export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.version}/${params.productId}`);
+
+/**
+ * 组织结构
+ */
+export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
