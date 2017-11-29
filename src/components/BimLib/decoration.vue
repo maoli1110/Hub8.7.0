@@ -14,7 +14,7 @@
                 <span class="absol span-block" style="width:65px;">
                    BIM属性:
                 </span>
-                <el-select class="absol" v-model="filterParams.bimVal" placeholder="请选择"  style="left:72px">
+                <el-select class="absol" v-model="filterParams.bimVal" @change="BimParamChange" placeholder="请选择"  style="left:72px">
                     <el-option
                         v-for="item in bimOptions"
                         :key="item.value"
@@ -29,7 +29,7 @@
                     专业:
                 </span>
 
-                <el-select class="absol" v-model="filterParams.majorVal" placeholder="请选择" style="left:40px;">
+                <el-select class="absol" v-model="filterParams.majorVal" @change="majorParamChange" placeholder="请选择" style="left:40px;">
                     <el-option
                         v-for="item in majorOptions"
                         :key="item.value"
@@ -53,7 +53,7 @@
                 </el-select>
             </el-col>
             <el-col :span="4" class="relat" :class="[($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')?'left120':'left175']">
-                <el-input placeholder="搜索工程名称和上传人关键词" v-model="filterParams.searchVal" icon="search" :on-icon-click="search"></el-input>
+                <el-input placeholder="搜索工程名称和上传人关键词" v-model="filterParams.searchVal" icon="search" :on-icon-click="tableListSearch"></el-input>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-dev-toolbar" >
@@ -555,9 +555,23 @@
                 this.tableParam.pageParam.page = currentPage;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
-            //change
+            //tableList搜索功能
             versionChange(val){
                 this.tableParam.latest = val;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
+            },
+            BimParamChange(val){
+                this.tableParam.projGenre = val;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
+            },
+            majorParamChange(val){
+                this.tableParam.projType = val;
+                this.getProjectList({url:baseUrl,param:this.tableParam})
+            },
+            //表格列表搜索
+            tableListSearch(){
+                if(!this.filterParams.searchVal){return false;}
+                this.tableParam.searchKey = this.filterParams.searchVal;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
             //搜索条件树结构的单机事件
@@ -670,6 +684,15 @@
                     $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
                 });
             },
+            clearCreateParam(){
+                this.proManage.name= '';
+                this.proManage.major= "";
+                this.proManage.remark= "";
+                this.proManage.deptId = "";
+                this.proManage.userIds =[];
+                this.createDeptId = '';
+                this.proManageVal = ""
+            },
             newCreateProject(url,param){
                 createProject({url:url,param:param}).then((data)=>{
                     if(data.data.code==500){
@@ -678,7 +701,8 @@
                         //执行成功
                         this.ProjManageDialog = false;
                     }
-                    this.getProjectList({url:baseUrl,param:this.tableParam})
+                    this.clearCreateParam();
+                    this.getProjectList({url:baseUrl,param:this.tableParam});
                 },(error)=>{
                     this.commonMessage(error.data.msg)
                 })
@@ -740,10 +764,7 @@
             dataEmpty(){
                 console.log('回收站清空')
             },
-            //表格列表搜索
-            search(){
-                console.log(this.filterParams,'filterparams')
-            },
+
             //获取地址
             getBaseUrl(){
                 baseUrl = basePath(this.$route.path);
@@ -753,9 +774,9 @@
                 console.log(baseUrl,'baseUrl')
                 getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
                     this.bimOptions = data.data.result;
-//                    if(this.bimOptions.length>0){
-//                        this.filterParams.bimVal = this.bimOptions[0].value;
-//                    }
+                    if(this.bimOptions.length>0){
+                        this.filterParams.bimVal = this.bimOptions[0].value;
+                    }
 
                 });
             },
@@ -813,7 +834,7 @@
                 this.tableParam.deptIds[0] = "3"
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
-                this.tableParam.pageParam.orders[0].direction = 0;
+                this.tableParam.pageParam.orders[0].direction = 1;
                 this.tableParam.pageParam.page = this.cur_page;
                 this.tableParam.pageParam.size = this.totalPages;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
@@ -938,7 +959,8 @@
             //工程管理保存
             proManageSave(){
                 let newCreate ={
-                    deptId:this.createDeptId,
+//                    deptId:this.createDeptId,
+                    deptId:3,
                     packageType: this.$route.params.typeId,
                     projMemo: this.proManage.remark,
                     projName: this.proManage.name,
@@ -1064,9 +1086,10 @@
         watch: {
             '$route' (to, from) {
                 this.tableParam.delete = this.isRecycle;
-                this.getProjectList({url:baseUrl,param:this.tableParam});//表格列表
+                this.tableParam.packageType = this.$route.params.typeId;
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);//筛选属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);//筛选专业
+                this.getProjectList({url:baseUrl,param:this.tableParam});//表格列表
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
                 }
