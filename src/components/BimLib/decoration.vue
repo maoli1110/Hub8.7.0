@@ -114,7 +114,7 @@
                             {{item.createRealName}}</td>
                             <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
                             <td  v-if="$route.params.typeId !=4">{{item.drawSize}}</td>
-                            <td>{{item.deptName}}</td>
+                            <td class="relat" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
                             <td>{{item.projSize}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
                             <td>
@@ -167,9 +167,10 @@
                             <td v-if="$route.params.typeId !=3" class="bim-params">{{item.projGenre}}</td>
                             <td class="absol substr uploadPerson" :title="
                             item.createRealName+'\n'+item.createUserName">{{item.createRealName}}</td>
-                            <td class="times">{{item.createDate}}</td>
+                            <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
                             <td  v-if="$route.params.typeId !=3">{{item.drawSize}}</td>
-                            <td class="depart-pro">{{item.deptName}}</td>
+                            <!--<td class="depart-pro">{{item.deptName}}</td>-->
+                            <td class="relat depart-pro" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
                             <td>{{item.size}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
                             <td>item.version</td>
@@ -343,10 +344,9 @@
     import {basePath} from "../../utils/common.js";
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import {
-        cloudTree,getMajorsByCreate,getProjGenre,
-        getProjType,getProjAuthUserInfos,createProject,
-        getProjects,zTreeNodes,getOrgTreeList
-    } from '../../api/getData.js';
+        cloudTree,getMajorsByCreate,getProjGenre,getProjType,getProjAuthUserInfos,createProject,
+        getProjects,zTreeNodes,getOrgTreeList,deleteProjects,deleteProject,bimRecycleRest
+    } from '../../api/getData-yhj.js';
     let deletArray = [];
     let countIndex = 0;
     let baseUrl;
@@ -630,10 +630,13 @@
                 })
             },
             getProjectList(params){
-                console.log(params)
+                deletArray =[];//清空删除的projIds 防止影响
                 getProjects(params).then((data)=>{
 //                    console.log(data.data.result.content,'表格列表结构')
                     this.tableData = data.data.result.content;
+                    this.tableData.forEach((val,key)=>{
+                        this.$set(this.tableData[key],'checked',false)
+                    })
                     this.pagesList = data.data.result;
                 })
             },
@@ -642,39 +645,77 @@
                 this.tableParam.pageParam.orders[0].direction = parseInt(sort);
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
+            /**
+             * 删除接口
+             * @params params ps{url:响应地址前缀，param:携带参数}
+             */
+            delTableList(params){
+                deleteProjects(params).then((data)=>{
+                    console.log(data,'删除的状态');
+                    if(data.data.code==200){
+                        if(deletArray.length==this.tableData.length){
+                            this.getProjectList({url:baseUrl,param:this.tableParam})
+                        }
+                        $('table.bim-lib td span').removeClass('is-checked');
+                        countIndex = 0;
+                        deletArray = [];//接口成功之后删除数据
+                        this.allChecked = false;
+                        this.commonMessage('删除成功','success');
+                    }
+                })
+            },
+            /**
+             * 删除回收站数据
+             */
+            delRecycle(params){
+                deleteProject(params).then((data)=>{
+                    if(data.data.code==200){
+                        deletArray = [];
+                        this.getProjectList({url:baseUrl,param:this.tableParam});
+                        this.commonMessage('删除成功','success');
+                    }
+                })
+            },
+            /**
+             * 还原回收站数据
+             */
+            tableListRestore(params){
+                bimRecycleRest(params).then((data)=>{
+                    console.log(data.data.result);
+                    if(data.data.code==200){
+                        deletArray = [];
+                        this.getProjectList({url:baseUrl,param:this.tableParam});
+                        this.commonMessage('还原成功','success');
+                    }
+                })
+            },
             //列表删除
             deletelibs(type){
-
-                console.log(type,'什么类型')
                 if(!deletArray.length){
                     this.commonMessage('请选择要删除的文件','warning')
                     return false;
                 }
                 if(type=='whileData'){
                     this.commonConfirm('确定要删除吗',()=>{
-                        /* if(this.tableData.length===deletArray.length){
+                         if(this.tableData.length===deletArray.length){
                          //重新渲染数据
-                         }else*/if(deletArray.length){
-                        for(let i = 0;i<deletArray.length;i++){
-                            for(let j = 0;j<this.tableData.length;j++){
-                                if( this.tableData[j].index == deletArray[i]){
-                                    this.tableData.splice(j,1);
+                         }else if(deletArray.length){
+                            for(let i = 0;i<deletArray.length;i++){
+                                for(let j = 0;j<this.tableData.length;j++){
+                                    if( this.tableData[j].projId == deletArray[i]){
+                                        this.tableData.splice(j,1);
+                                    }
                                 }
                             }
-                        }
                     }
-                    this.allChecked = false;
-                    countIndex = 0;
-                    deletArray = [];//接口成功之后删除数据
+                    this.delTableList({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}});
                 },()=>{
-
                     },'warning')
                 }else if(type=='wipeData'){
                     this.commonConfirm('删除后执行永久删除,不可恢复',()=>{
-
+                        this.delRecycle({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}})
                     },()=>{},'warning')
                 }
-
             },
             //弹窗异步请求树结构
             getTree(){
@@ -757,7 +798,7 @@
             },
             //回收站还原
             dataRestore(){
-                this.getProjGenreEvent()
+                this.tableListRestore({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}});
                 console.log('回收站还原')
             },
             //回收站清空
@@ -795,8 +836,8 @@
                  * val.allaAuth  是否权限管理的全部权限 true 不可操作 false可操作
                  *
                  */
-
-                getProjAuthUserInfos({url:baseUrl,deptId:3}).then((data)=>{
+                console.log(this.createDeptId,'this.createDeptId')
+                getProjAuthUserInfos({url:baseUrl,deptId:"d68ceeb2d02043bd9ea5991ac44d649b"}).then((data)=>{
                     this.authUserInfoList = data.data.result;
                     authUserInfoListCopy = data.data.result;
                     this.authUserInfoList.forEach((val,key)=>{
@@ -825,13 +866,14 @@
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;
+                    this.tableParam.latest = true;
                 }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
                     this.isRecycle = true;
+                    this.tableParam.latest = false;
                 }
                 //列表初始值
                 this.tableParam.delete = this.isRecycle;
-                this.tableParam.latest = true;
-                this.tableParam.deptIds[0] = "3"
+                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b'
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
                 this.tableParam.pageParam.orders[0].direction = 1;
@@ -960,7 +1002,7 @@
             proManageSave(){
                 let newCreate ={
 //                    deptId:this.createDeptId,
-                    deptId:3,
+                    deptId:this.createDeptId,
                     packageType: this.$route.params.typeId,
                     projMemo: this.proManage.remark,
                     projName: this.proManage.name,
@@ -971,7 +1013,7 @@
                     this.commonMessage('工程名称不能为空','warning');
                     return false;
                 }
-                if(!this.proManageVal){
+                if(!this.createDeptId){
                     this.commonMessage('所属项目部不能为空','warning');
                     return false;
                 }
@@ -1017,39 +1059,39 @@
             inRecycle(path,paramId){
                 deletArray =[];
                 this.isRecycle = true;
+                this.tableParam.latest = false;
                 this.$router.push({ path: path+'/recycle-bin/'+paramId});
             },
             //返回工程库
             inProLib(path,paramId){
                 deletArray =[];
                 this.isRecycle = false;
+                this.tableParam.latest = true;
                 this.$router.push({ path: path+'/bim-lib/'+paramId});
             },
             foreachs(allChecked,data){
                 if(allChecked){
                     data.forEach((val,key)=>{
                         val.checked = true;
-                })
+                    })
                 }else{
                     data.forEach((val,key)=>{
                         val.checked = false;
-                })
+                    })
                 }
                 if(this.allChecked){
                     data.forEach((val,key)=>{
-                        deletArray.push(val.index)
-                })
+                        deletArray.push(val.projId)
+                    })
                 }
 
             },
-            allSelectChange(event){
+            allSelectChange(event){//全选
                 deletArray = [];
                 this.foreachs(this.allChecked,this.tableData);
-                /*if(!this.allChecked){
-                 countIndex = 0;
-                 }*/
             },
-            singChecked(event){
+            singChecked(event){//逐个选中
+
                 if(event.target.checked){
                     countIndex++;
                 }else{
@@ -1063,12 +1105,11 @@
                 }else{
                     this.allChecked = false;
                 }
-
             },
             isClick(item){
-                this.delIndex = deletArray.indexOf(item.index)
-                if(deletArray.indexOf(item.index)==-1 ){
-                    deletArray.push(item.index);
+                this.delIndex = deletArray.indexOf(item.projId)
+                if(deletArray.indexOf(item.projId)==-1 ){
+                    deletArray.push(item.projId);
                 }
             }
         },
@@ -1093,7 +1134,6 @@
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
                 }
-
                 this.allChecked = false;
                 deletArray = [];
                 countIndex = 0;
