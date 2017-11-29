@@ -146,7 +146,8 @@
 <script type="text/ecmascript-6">
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
     import {basePath} from '../../utils/common.js'
-    import {getOrderManagementList} from '../../api/getData.js';
+    import {getOrderManagementList} from '../../api/getData-cxx.js';
+    import {getBindingList} from '../../api/getData-cxx.js';
 
     export default {
         data (){
@@ -212,7 +213,7 @@
                 // 隐藏过期服务
             },
             checkDetail(listId) {
-                this.$router.push({path: '/system/order-management/orders-detail/' + listId + ''});
+
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -232,6 +233,12 @@
                     pageSize: this.pageSize
                 }
                 this.getOrderManagementList(params)
+            },
+            loadServiceBinding(packageServicesName,expirationTime,enterprisePackageId,type){
+debugger
+                console.log(packageServicesName,expirationTime,enterprisePackageId,type);
+                this.$router.push({path: '/system/order-management/orders-detail/1'});
+//                this.$router.push({path: '/system/order-management/orders-detail/' + enterprisePackageId + ''});
             },
             getOrderManagementList(params){
                 let packagefn = {};
@@ -374,7 +381,7 @@
                             }
                             //detailHtml += "已修改<span id=\"editBindingTimes"+this.enterprisePackageId+"\">"+this.editBindingTimes+"</span>次<br/>";
                             if (this.maxBinding > 0) {
-                                detailHtml += "<a href='javascript:void(0);' class =\"btn-common\" onclick=\"packagefn.loadServiceBinding('" + this.packageServicesName + "','";
+                                detailHtml += "<a class =\"btn-common\" @click=\"loadServiceBinding('" + this.packageServicesName + "','";
                                 detailHtml += " " + expirationTime + "','" + this.enterprisePackageId + "')\" >详细</a><div style='height: 10px;'></div>";
                             }
                         } else if (this.packageType == 3) {
@@ -450,7 +457,7 @@
                             //					(this.allModified[1]-this.modified[1])+"</span>次<br/>";
                             detailHtml += "已修改<span id=\"editBindingTimes" + this.enterprisePackageId + "create" + "\">" + this.modified[1] + "</span>次<br/>";
                             if (this.allBindings[1] > 0) {
-                                detailHtml += "<a href='javascript:void(0);' class =\"btn-common\" onclick=\"packagefn.loadServiceBinding('" + this.packageServicesName + "-制作','";
+                                detailHtml += "<a class =\"btn-common\" @click=\"loadServiceBinding('" + this.packageServicesName + "-制作','";
                                 detailHtml += " " + expirationTime + "','" + this.enterprisePackageId + "','create')\">详细</a>";
                             }
                             detailHtml += "使用:已绑定<span id=\"boundComputers" + this.enterprisePackageId + "use" + "\">" + this.bindings[0] + "</span>台&nbsp;还可绑定<span id=\"surplusBinding" + this.enterprisePackageId + "use" + "\">" +
@@ -459,20 +466,20 @@
                                 (this.allModified[0] - this.modified[0]) + "</span>次<br/>";
                             //detailHtml += "已修改<span id=\"editBindingTimes"+this.enterprisePackageId+"use"+"\">"+this.modified[0]+"</span>次<br/>";
                             if (this.allBindings[0] > 0) {
-                                detailHtml += "<a href='javascript:void(0);' class =\"btn-common\" onclick=\"packagefn.loadServiceBinding('" + this.packageServicesName + "-使用','";
+                                detailHtml += "<a class =\"btn-common\" @click=\"loadServiceBinding('" + this.packageServicesName + "-使用','";
                                 detailHtml += " " + expirationTime + "','" + this.enterprisePackageId + "','use')\">详细</a><div style='height: 5px;'></div>";
                             }
 
-                        }else {
-                            detailHtml +="<td width='150'></td>"+
-                                "<td width='150'></td>"+
+                        } else {
+                            detailHtml += "<td width='150'></td>" +
+                                "<td width='150'></td>" +
                                 "<td width='350'></td>"
                         }
                         detailHtml += "<td title='" + serviceContent + "' style='cursor: pointer;width: 150px;' align='center'>";
                         //detailHtml += content;
                         detailHtml += "<span class='remarks'>" + this.description ? this.description : ' ' + "</span>";
 
-                        detailHtml += "</td><td style='width: 150px;border-right: 1px solid #E6E6E6' align='center'><p>" + (this.outTradeId?this.outTradeId:' ') + "</p></td>"
+                        detailHtml += "</td><td style='width: 150px;border-right: 1px solid #E6E6E6' align='center'><p>" + (this.outTradeId ? this.outTradeId : ' ') + "</p></td>"
 //                    detailHtml += "<td style='border-right: 1px solid #E6E6E6;'>"++"</td>" +
 
                             + "</tr>";
