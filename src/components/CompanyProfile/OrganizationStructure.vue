@@ -3,46 +3,116 @@
         <div class="header">
             <!-- 负责人界面start -->
             <el-popover ref="popover4" placement="right"  width="400" trigger="click">
-                    <div class="pop-manager-dialog">
-                        <div class="pop-header">
-                            <p class="enterprise-name">企业名称</p>
-                            <p class="company-name">初始化公司名字</p>
-                        </div>
-                        <div class="pop-manager-list">
-                            <p class="name">负责人</p>
-                            <div class="list">
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                                <span><i class="el-icon-star-off"></i>吴凡吴凡</span>
-                            </div>
-                        </div>
-                        <div class="pop-operation">
-                            <el-button type="primary" class="basic-btn" icon="plus">添加</el-button>
-                            <el-button type="primary" class="basic-btn" icon="plus">删除</el-button>
-                            <el-button type="primary" class="basic-btn" icon="plus">编辑</el-button>
+                <div class="pop-manager-dialog">
+                    <div class="pop-header">
+                        <p class="enterprise-name">企业名称</p>
+                        <p class="company-name">初始化公司名字</p>
+                    </div>
+                    <div class="pop-manager-list">
+                        <p class="name">负责人</p>
+                        <div class="list">
+                            <span> <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span> <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
+                            <span>
+                                <i class="el-icon-star-off"></i>
+                                吴凡吴凡
+                            </span>
                         </div>
                     </div>
+                    <div class="pop-operation">
+                        <el-button type="primary" class="basic-btn" icon="plus">添加</el-button>
+                        <el-button type="primary" class="basic-btn" icon="plus">删除</el-button>
+                        <el-button type="primary" class="basic-btn" icon="plus">编辑</el-button>
+                    </div>
+                </div>
             </el-popover>
             <!-- 负责人界面end -->
             <el-button type="primary" class="basic-btn" icon="plus">全部展开</el-button>
@@ -54,8 +124,7 @@
             <div class="root-node">
                 <div>PDS没网测试公司</div>
             </div>
-            <div id="organization-tree" class="clearfix">
-            </div>
+            <div id="organization-tree" class="clearfix"></div>
         </div>
         <!-- 添加分公司界面start -->
         <el-dialog title="添加分公司" :visible.sync="dialogVisible" size="tiny">
@@ -119,7 +188,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="备注：">
-                         <el-input type="textarea" v-model="orgForm.desc"></el-input>
+                        <el-input type="textarea" v-model="orgForm.desc"></el-input>
                     </el-form-item>
                 </div>
             </el-form>
@@ -128,8 +197,7 @@
                 <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
-        <!-- 添加分公司界面end -->
-    </div>
+        <!-- 添加分公司界面end --> </div>
 </template>
 <script>
 import axios from "axios";
@@ -207,6 +275,8 @@ export default {
                 orgNodeParentKey: "parentId"
             }
             // 处理原始树结构,返回生成树结构所需要的对象
+            res.data.result[0].parentId = '0';
+
             var tempzNodes = transformToObjFormat(param,res.data.result);
 
             tempzNodes = tempzNodes[0].children;
@@ -332,7 +402,7 @@ export default {
     height: 1px;
     display: block;
     padding: 0px;
-    background: url(../../../static/img/line_conn2.jpg) no-repeat;
+    background: url(../../../static/img/line_conn2.jpg) repeat-x;
     font: 0px/0px tahoma,"微软雅黑";
     COLOR: #4778c7;
     overflow: hidden;
