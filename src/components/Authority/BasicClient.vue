@@ -72,7 +72,7 @@
                 <div class="el-transfer-panel">
                     <p class="el-transfer-panel__header">
                         <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                        <span style="float:right">全部账号人员 ({{cities.length}})</span>
+                        <span style="float:right">全部账号人员 ({{cities_Clone.length}})</span>
                     </p>
 
                         <div class="el-transfer-panel__body ">
@@ -80,8 +80,13 @@
                                 class="el-transfer-panel__filter"
                                 size="small"
                                 icon="search"
+                                v-model="searchVal"
+                                :on-icon-click="search"
+                                @keyup.enter.native="search"
                             ></el-input>
-                            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:245px;">
+                            <div style="height:246px;overflow:auto">
+
+                           
                                 
                                     <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange"
                                                                                 class="el-transfer-panel__list " style="height:auto;">
@@ -96,7 +101,7 @@
                             <p
                                 class="el-transfer-panel__empty"
                             ></p> -->                                
-                            </vue-scrollbar>
+                             </div>
                         </div>
 
                 </div>
@@ -109,16 +114,15 @@
                         <span style="float:right">已选择账号人员 ({{checkedCities.length}})</span>
                     </p>
                     <div class="el-transfer-panel__body">                     
-                        <ul class="el-transfer-item el-transfer-panel__list">
-                          <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
-                           <div>
+                        <ul class="el-transfer-item el-transfer-panel__list" style="overflow:auto">
+                        
                             <li class="el-transfer-panel__item" v-for="(item,index) in checkedCities" :key="index"
                                 @click="deleteItem(item)" :title="item">
                                 <span class="icon icon-remove" style="vertical-align:sub"> </span>
                                 <span style="margin-left:5px">  {{item}}</span>
                             </li>
-                          </div>
-                          </vue-scrollbar>
+                          
+                         
                         </ul>
                         <!-- <p
                             class="el-transfer-panel__empty"></p>
@@ -167,11 +171,11 @@
 
 <script>
 export default {
-  components: { VueScrollbar },
   data() {
     return {
       radio: "1",
       activeIndex: "",
+      searchVal: "",
       addAuthorizationDialogVisible: false,
       modifyDialogVisible: false,
       checkAll: false,
@@ -190,6 +194,21 @@ export default {
         "西安4",
         "成都5"
       ],
+      cities_Clone: [
+        "上海11111111111111111111111111111111111111111111111",
+        "北京",
+        "广州",
+        "深圳",
+        "南京",
+        "西安",
+        "成都",
+        "广州1",
+        "深圳2",
+        "南京3",
+        "西安4",
+        "成都5"
+      ],
+      searchTemp: [],
       roleTableData: [
         {
           name: "赵四",
@@ -301,9 +320,12 @@ export default {
       ]
     };
   },
-  watch:{
-    radio(new_,old_){
-       console.log(new_)
+  watch: {
+    radio(val, oldVal) {},
+    searchVal(val, oldVal) {
+      if (!val) {
+        this.search();
+      }
     }
   },
   methods: {
@@ -313,28 +335,23 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    handleSelectionChange(val) {
-    },
+    handleSelectionChange(val) {},
     handleSizeChange() {},
     handleCurrentChange() {},
     addAuthorization() {},
     handleCheckAllChange(event) {
-      // this.checkedCities = event.target.checked ? this.citys : [];
+      // this.checkedCities = event.target.checked ? this.cities_Clone : [];
       if (event.target.checked) {
-        this.checkedCities = [];
-        this.cities.forEach(item => {
-          this.checkedCities.push(item);
+        this.cities_Clone.forEach(val => {
+          this.checkedCities.push(val);
         });
       } else {
         this.checkedCities = [];
       }
-      // this.isIndeterminate = false;
     },
     handleCheckedCitiesChange(value) {
       let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.cities.length;
+      this.checkAll = checkedCount === this.cities_Clone.length;
     },
     deleteItem(item) {
       this.checkedCities.forEach((el, index) => {
@@ -346,11 +363,24 @@ export default {
       if (this.checkedCities.length == 0) {
         this.checkAll = false;
       }
-      this.checkAll = checkedCount === this.cities.length;
+      this.checkAll = checkedCount === this.cities_Clone.length;
     },
     deleteAll() {
       this.checkedCities = [];
       this.checkAll = false;
+    },
+    search() {
+      let searchTemp = [];
+      if (!this.searchVal) {
+        this.cities = this.cities_Clone;
+        return;
+      }
+      this.cities.forEach((val, key) => {
+        if (val.indexOf(this.searchVal) != -1) {
+          searchTemp.push(val);
+        }
+      });
+      this.cities = searchTemp;
     }
   }
 };
@@ -454,7 +484,7 @@ export default {
 
 .el-transfer-right .el-transfer-panel__list {
   padding-top: 10px;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .el-transfer-right .el-transfer-panel__item {
