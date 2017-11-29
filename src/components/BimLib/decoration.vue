@@ -345,7 +345,7 @@
     import {
         cloudTree,getMajorsByCreate,getProjGenre,
         getProjType,getProjAuthUserInfos,createProject,
-        getProjects,zTreeNodes
+        getProjects,zTreeNodes,getOrgTreeList
     } from '../../api/getData.js';
     let deletArray = [];
     let countIndex = 0;
@@ -388,6 +388,7 @@
                 proManageVal:"",        //弹窗项目部选中的值
                 bimDeleteArray:[],
                 ProjManageDialog:false, //工程管理弹窗的状态
+                createDeptId:"",//deptId
                 url: "../../../static/datasource.json",
                 filterParams:{
                     orgNodeVal:"",
@@ -409,7 +410,9 @@
                 proDepartSetting:{//工程管理默认树结构setting
                     data: {
                         simpleData: {
-                            enable: true
+                            enable: true,
+                            idKey:'id',
+                            pIdKey:'parentId'
                         }
                     },
                     callback: {
@@ -560,16 +563,30 @@
             //搜索条件树结构的单机事件
             onClick(event, treeId, treeNode) {
                 this.filterParams.orgNodeVal = treeNode.name;
+                if(treeNode.type!=1){
+                    treeNode.children.forEach((val,key)=>{//选择分公司遍历项目部下的数据
+                        this.tableParam.deptIds.push(val.id);
+                    })
+                }else {
+                    this.tableParam.deptIds.push(treeNode.id);//deptIds
+                }
+                //关闭树结构的窗口
                 setTimeout(function(event, treeId, treeNode) {
                     $(".el-select-dropdown__item.selected").click();
                 }, 100);
             },
             //工程管理树结构单机事件
             proDepartClick(event, treeId, treeNode){
-                this.proManageVal = treeNode.name;
-                setTimeout(function(event, treeId, treeNode) {
-                    $(".el-scrollbar .el-select-dropdown__item.selected").click();
-                }, 300);
+                if(treeNode.type==1){
+                    this.proManageVal = treeNode.name;
+                    this.createDeptId = treeNode.id;
+                    setTimeout(function(event, treeId, treeNode) {
+                        $(".el-scrollbar .el-select-dropdown__item.selected").click();
+                    }, 300);
+                }else{
+                    this.commonMessage('请选择项目部','warning')
+                }
+
             },
             /**
              * 全选
@@ -647,9 +664,9 @@
             },
             //弹窗异步请求树结构
             getTree(){
-                cloudTree().then(res => {
-                    this.proDepartNodes = res.data[0].result;
-                    console.log( this.proDepartNodes)
+                getOrgTreeList({url:baseUrl}).then(res => {
+//                    console.log( res.data.result,'树结构')
+                    this.proDepartNodes = res.data.result;
                     $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
                 });
             },
@@ -661,6 +678,7 @@
                         //执行成功
                         this.ProjManageDialog = false;
                     }
+                    this.getProjectList({url:baseUrl,param:this.tableParam})
                 },(error)=>{
                     this.commonMessage(error.data.msg)
                 })
@@ -756,6 +774,7 @@
                  * val.allaAuth  是否权限管理的全部权限 true 不可操作 false可操作
                  *
                  */
+
                 getProjAuthUserInfos({url:baseUrl,deptId:3}).then((data)=>{
                     this.authUserInfoList = data.data.result;
                     authUserInfoListCopy = data.data.result;
@@ -793,7 +812,8 @@
                 this.tableParam.latest = true;
                 this.tableParam.deptIds[0] = "3"
                 this.tableParam.packageType = this.$route.params.typeId;
-                this.tableParam.pageParam.orders[0].property = "t1.projSize";
+                this.tableParam.pageParam.orders[0].property = "t1.createDate";
+                this.tableParam.pageParam.orders[0].direction = 0;
                 this.tableParam.pageParam.page = this.cur_page;
                 this.tableParam.pageParam.size = this.totalPages;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
@@ -918,17 +938,20 @@
             //工程管理保存
             proManageSave(){
                 let newCreate ={
-                    "deptId": "3",
-                    "packageType": this.$route.params.typeId,
-                    "projMemo": this.proManage.remark,
-                    "projName": this.proManage.name,
-                    "projType": this.proManage.major,
-                    "userIds": []
+                    deptId:this.createDeptId,
+                    packageType: this.$route.params.typeId,
+                    projMemo: this.proManage.remark,
+                    projName: this.proManage.name,
+                    projType: this.proManage.major,
+                    userIds: []
                 };
                 if(!newCreate.projName){
-                    this.commonMessage('项目名称不能为空','warning')
-                }else if(!newCreate.packageType){
-                    this.commonMessage('所属项目部不能为空','warning')
+                    this.commonMessage('工程名称不能为空','warning');
+                    return false;
+                }
+                if(!this.proManageVal){
+                    this.commonMessage('所属项目部不能为空','warning');
+                    return false;
                 }
                 this.authUserListItem.forEach((val,key)=>{
                     if(!val.allAuth && val.hasAuth){
@@ -940,7 +963,6 @@
                 }else{
                     //执行修改的接口
                 }
-                console.log(this.proManage,'变了没有')
             },
             //列表中传过来初始状态
             extractData(status){
