@@ -678,6 +678,7 @@
                         //执行成功
                         this.ProjManageDialog = false;
                     }
+                    this.getProjectList({url:baseUrl,param:this.tableParam})
                 },(error)=>{
                     this.commonMessage(error.data.msg)
                 })
@@ -811,7 +812,8 @@
                 this.tableParam.latest = true;
                 this.tableParam.deptIds[0] = "3"
                 this.tableParam.packageType = this.$route.params.typeId;
-                this.tableParam.pageParam.orders[0].property = "t1.projSize";
+                this.tableParam.pageParam.orders[0].property = "t1.createDate";
+                this.tableParam.pageParam.orders[0].direction = 0;
                 this.tableParam.pageParam.page = this.cur_page;
                 this.tableParam.pageParam.size = this.totalPages;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
@@ -936,17 +938,20 @@
             //工程管理保存
             proManageSave(){
                 let newCreate ={
-                    "deptId":this.createDeptId,
-                    "packageType": this.$route.params.typeId,
-                    "projMemo": this.proManage.remark,
-                    "projName": this.proManage.name,
-                    "projType": this.proManage.major,
-                    "userIds": []
+                    deptId:this.createDeptId,
+                    packageType: this.$route.params.typeId,
+                    projMemo: this.proManage.remark,
+                    projName: this.proManage.name,
+                    projType: this.proManage.major,
+                    userIds: []
                 };
                 if(!newCreate.projName){
-                    this.commonMessage('项目名称不能为空','warning')
-                }else if(!newCreate.packageType){
-                    this.commonMessage('所属项目部不能为空','warning')
+                    this.commonMessage('工程名称不能为空','warning');
+                    return false;
+                }
+                if(!this.proManageVal){
+                    this.commonMessage('所属项目部不能为空','warning');
+                    return false;
                 }
                 this.authUserListItem.forEach((val,key)=>{
                     if(!val.allAuth && val.hasAuth){
@@ -958,7 +963,6 @@
                 }else{
                     //执行修改的接口
                 }
-                console.log(this.proManage,'变了没有')
             },
             //列表中传过来初始状态
             extractData(status){
