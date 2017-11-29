@@ -167,7 +167,6 @@
 
 <script>
 export default {
-  components: { VueScrollbar },
   data() {
     return {
       radio: "1",
