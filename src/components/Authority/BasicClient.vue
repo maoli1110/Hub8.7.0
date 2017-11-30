@@ -72,21 +72,19 @@
                 <div class="el-transfer-panel">
                     <p class="el-transfer-panel__header">
                         <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                        <span style="float:right">全部账号人员 ({{cities_Clone.length}})</span>
+                        <span style="float:right">全部账号人员 ({{cities.length}})</span>
                     </p>
 
                         <div class="el-transfer-panel__body ">
                             <el-input
                                 class="el-transfer-panel__filter"
                                 size="small"
-                                icon="search"
                                 v-model="searchVal"
+                                icon="search"
                                 :on-icon-click="search"
                                 @keyup.enter.native="search"
                             ></el-input>
-                            <div style="height:246px;overflow:auto">
-
-                           
+                            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:245px;">
                                 
                                     <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange"
                                                                                 class="el-transfer-panel__list " style="height:auto;">
@@ -101,7 +99,7 @@
                             <p
                                 class="el-transfer-panel__empty"
                             ></p> -->                                
-                             </div>
+                            </vue-scrollbar>
                         </div>
 
                 </div>
@@ -114,15 +112,16 @@
                         <span style="float:right">已选择账号人员 ({{checkedCities.length}})</span>
                     </p>
                     <div class="el-transfer-panel__body">                     
-                        <ul class="el-transfer-item el-transfer-panel__list" style="overflow:auto">
-                        
+                        <ul class="el-transfer-item el-transfer-panel__list">
+                          <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
+                           <div>
                             <li class="el-transfer-panel__item" v-for="(item,index) in checkedCities" :key="index"
                                 @click="deleteItem(item)" :title="item">
                                 <span class="icon icon-remove" style="vertical-align:sub"> </span>
                                 <span style="margin-left:5px">  {{item}}</span>
                             </li>
-                          
-                         
+                          </div>
+                          </vue-scrollbar>
                         </ul>
                         <!-- <p
                             class="el-transfer-panel__empty"></p>
@@ -170,15 +169,19 @@
 </template>
 
 <script>
+const contains = (() =>
+  Array.prototype.includes
+    ? (arr, value) => arr.includes(value)
+    : (arr, value) => arr.some(el => el === value))();
 export default {
   data() {
     return {
       radio: "1",
       activeIndex: "",
-      searchVal: "",
       addAuthorizationDialogVisible: false,
       modifyDialogVisible: false,
       checkAll: false,
+      searchVal: "",
       checkedCities: ["北京"],
       cities: [
         "上海11111111111111111111111111111111111111111111111",
@@ -194,7 +197,7 @@ export default {
         "西安4",
         "成都5"
       ],
-      cities_Clone: [
+      cities_clone: [
         "上海11111111111111111111111111111111111111111111111",
         "北京",
         "广州",
@@ -208,7 +211,6 @@ export default {
         "西安4",
         "成都5"
       ],
-      searchTemp: [],
       roleTableData: [
         {
           name: "赵四",
@@ -321,9 +323,11 @@ export default {
     };
   },
   watch: {
-    radio(val, oldVal) {},
-    searchVal(val, oldVal) {
-      if (!val) {
+    radio(new_, old_) {
+      console.log(new_);
+    },
+    searchVal(newVal, oldVal) {
+      if (!newVal) {
         this.search();
       }
     }
@@ -340,18 +344,55 @@ export default {
     handleCurrentChange() {},
     addAuthorization() {},
     handleCheckAllChange(event) {
-      // this.checkedCities = event.target.checked ? this.cities_Clone : [];
-      if (event.target.checked) {
-        this.cities_Clone.forEach(val => {
-          this.checkedCities.push(val);
-        });
+      // 非搜索状态下的全选
+      if (!this.searchVal) {
+        if (event.target.checked) {
+          this.checkedCities = [];
+          this.cities.forEach(item => {
+            this.checkedCities.push(item);
+          });
+        } else {
+          this.checkedCities = [];
+        }
+        // 搜索状态下的全选
       } else {
-        this.checkedCities = [];
+        if (event.target.checked) {
+          this.cities.forEach(el => {
+            if (this.checkedCities.indexOf(el) == -1) {
+              this.checkedCities.push(el);
+            }
+          });
+        } else {
+          this.cities.forEach(el => {
+            this.checkedCities.forEach((el_, i) => {
+              if (el == el_) {
+                this.checkedCities.splice(i, 1);
+              }
+            });
+          });
+        }
       }
+
+      // this.isIndeterminate = false;
     },
     handleCheckedCitiesChange(value) {
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities_Clone.length;
+      // 非搜索状态
+      let tempSearchResultChecked = 0;
+      if (!this.searchVal) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.cities.length;
+      } else {
+        // 搜索状态
+        console.log(value);
+        // 判断筛选中有没有选中状态
+        this.checkedCities.forEach(el => {
+          if (contains(this.cities, el)) {
+            tempSearchResultChecked++;
+          }
+        });
+        debugger;
+        this.checkAll = tempSearchResultChecked == this.cities.length;
+      }
     },
     deleteItem(item) {
       this.checkedCities.forEach((el, index) => {
@@ -363,24 +404,33 @@ export default {
       if (this.checkedCities.length == 0) {
         this.checkAll = false;
       }
-      this.checkAll = checkedCount === this.cities_Clone.length;
+      this.checkAll = checkedCount === this.cities.length;
     },
     deleteAll() {
       this.checkedCities = [];
       this.checkAll = false;
     },
     search() {
-      let searchTemp = [];
       if (!this.searchVal) {
-        this.cities = this.cities_Clone;
-        return;
+        this.cities = this.cities;
+        this.checkAll = this.checkedCities.length == this.cities.length;
       }
-      this.cities.forEach((val, key) => {
+      let tempSearchResult = []; //搜索展示数组
+      let tempSearchResultChecked = 0;
+      this.cities_clone.forEach((val, key) => {
+        //搜索匹配成功的加入到searchArr
         if (val.indexOf(this.searchVal) != -1) {
-          searchTemp.push(val);
+          tempSearchResult.push(val);
         }
       });
-      this.cities = searchTemp;
+      this.cities = tempSearchResult;
+      // 判断筛选中有没有选中状态
+      this.checkedCities.forEach(el => {
+        if (contains(this.cities, el)) {
+          tempSearchResultChecked++;
+        }
+      });
+      this.checkAll = tempSearchResultChecked == tempSearchResult.length;
     }
   }
 };
