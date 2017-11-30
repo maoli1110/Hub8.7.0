@@ -128,8 +128,8 @@
                             <td>{{item.projSize}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
                             <td style="padding:0 3px;">
-                                <div v-show="item.status===1" class="align-l"><span class="bim-icon" style="background-position: -18px 0;"></span>处理成功</div>
-                                <div v-show="item.status===-1" class="align-l"><span class="bim-icon" style="background-position: -36px 0;"></span>处理失败</div>
+                                <div v-show="item.status===1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -18px 0;"></span>处理成功</div>
+                                <div v-show="item.status===-1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -36px 0;"></span>处理失败</div>
                                 <div v-show="item.status===2 || item.status==3"   class="align-l"><span class="bim-icon" style="background-position: -54px 0;"></span>处理中</div>
                                 <div  v-show="item.status===4"  class="align-l"><span class="bim-icon" style="background-position: -72px 0;"></span>待处理</div>
                                 <div v-show="item.status===0"   class="align-l"><span class="bim-icon" style="background-position: -90px 0;"></span>未处理</div>
@@ -137,7 +137,7 @@
                             <td>{{item.version}}</td>
                             <td>
                                 <div class="handel-cotrol"><span class=" handel-icon " title="工程管理" @click="ProjManageDialog = true;addProject('modific',item)"></span></div>
-                                <div class="handel-cotrol"><span class=" handel-icon " title="抽取" @click="extractDialog=true;extractData('处理中',item)"></span></div><!--extractData(scope.row.status)"-->
+                                <div class="handel-cotrol"><span class=" handel-icon " title="抽取" @click="extractDialog=true;extractData(item.status,item)"></span></div><!--extractData(scope.row.status)"-->
                                 <div class="handel-cotrol"><span class=" handel-icon " title="修改名称" @click="modifyInfo=true"></span></div>
                                 <div class="handel-cotrol"><span class=" handel-icon " title="监控" @click="monitorSeverVisible=true" ></span></div>
                             </td>
@@ -1142,9 +1142,10 @@
              * getProjExtractInfo   抽取信息失败
              **/
             extractProject(url,param){
-                console.log(param)
                 extractProj({url:url,param:param}).then((data)=>{
-                    console.log(data)
+                    if(data.data.code==200){
+                        this.commonMessage('操作成功,该工程正在处理中,请稍后查看！','success');
+                    }
                 })
             },
             getProjExtractInfo(url,param){
@@ -1164,14 +1165,19 @@
                 console.log(item,'抽取信息')
                 //抽取状态为待处理或者是处理中
             },
+            //抽取失败
+            extractFailure(item){
+                let errorInfo ={
+                    packageType:this.$route.params.typeId,
+                    ppids:[]
+                }
+                errorInfo.ppids.push(item.ppid);
+                console.log(errorInfo)
+                this.getProjExtractInfo(baseUrl,errorInfo)
+            },
             //抽取数据
             extractOk(){
-                console.log(this.itemInfo.projId)
-                let param ={
-                    packageType:this.$route.params.typeId,
-                    projId:parseInt(this.itemInfo.projId)
-                }
-                this.extractProject({url:baseUrl,param:{ packageType:this.$route.params.typeId, projId:parseInt(this.itemInfo.projId)}})
+                this.extractProject(baseUrl,{ packageType:this.$route.params.typeId, projId:parseInt(this.itemInfo.projId)})
             },
             //抽取失败
             extractCancel(){
