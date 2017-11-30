@@ -147,13 +147,12 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
     import {basePath} from '../../utils/common.js'
     import {getOrderManagementList} from '../../api/getData-cxx.js';
-    import {getBindingList} from '../../api/getData-cxx.js';
 
     export default {
         data (){
 
             return {
-                imgUrl: '/static/img/dog.jpg',
+//                imgUrl: '/static/img/dog.jpg',
                 currentPage: 1,//当前页数
                 pageSize: 10,//每页多少条
                 orderManageTableData: [],
@@ -171,43 +170,43 @@
                 //序号
                 return index * 1;
             },
-            //到期时间
-            endDate(row, column){
-                var date = row[column.property];
-                if (date == undefined) {
-                    return "";
-                }
-                Date.prototype.toLocaleString = function () {
-                    return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日";
-                };
-                var date = new Date(parseInt(date) * 1000).toLocaleString();
-//                console.log(date);
-                return data.date;
-            },
-            formatDate(date) {
-//                console.log(date);
-                const now = new Date(parseInt(date)),
-                    year = now.getFullYear(),
-                    month = now.getMonth() + 1 > 10 ? now.getMonth() + 1 : '0' + (now.getMonth() + 1),
-                    udate = now.getDate()
-                return year + "年" + month + "月" + udate + "日"
-            },
+            /*//到期时间
+             endDate(row, column){
+             var date = row[column.property];
+             if (date == undefined) {
+             return "";
+             }
+             Date.prototype.toLocaleString = function () {
+             return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日";
+             };
+             var date = new Date(parseInt(date) * 1000).toLocaleString();
+             //                console.log(date);
+             return data.date;
+             },
+             //剩余天数
+             remainTime(date){
+             let currentTime = new Date().getTime();
+             let remainDays = (currentTime - date) / 1000 / 3600 / 24;
+             if (remainDays >= 0 && remainDays < 1) {
+             remainDays = parseInt((currentTime - date) / 1000 / 3600) + '小时';
+             } else if (remainDays >= 1 && remainDays < 30) {
+             remainDays = parseInt((currentTime - date) / 1000 / 3600 / 24) + '天';
+             } else if (remainDays >= 30) {
+             remainDays = Math.floor((currentTime - date) / 1000 / 3600 / 24 / 30) + '个月';
+             }
+             //                console.log(remainDays);
+             return remainDays;
+             },
+             formatDate(date) {
+             //                console.log(date);
+             const now = new Date(parseInt(date)),
+             year = now.getFullYear(),
+             month = now.getMonth() + 1 > 10 ? now.getMonth() + 1 : '0' + (now.getMonth() + 1),
+             udate = now.getDate()
+             return year + "年" + month + "月" + udate + "日"
+             },*/
             popperStyle(event){
                 console.log(event);
-            },
-            //剩余天数
-            remainTime(date){
-                let currentTime = new Date().getTime();
-                let remainDays = (currentTime - date) / 1000 / 3600 / 24;
-                if (remainDays >= 0 && remainDays < 1) {
-                    remainDays = parseInt((currentTime - date) / 1000 / 3600) + '小时';
-                } else if (remainDays >= 1 && remainDays < 30) {
-                    remainDays = parseInt((currentTime - date) / 1000 / 3600 / 24) + '天';
-                } else if (remainDays >= 30) {
-                    remainDays = Math.floor((currentTime - date) / 1000 / 3600 / 24 / 30) + '个月';
-                }
-//                console.log(remainDays);
-                return remainDays;
             },
             hideExpiredService (){
                 // 隐藏过期服务
@@ -234,11 +233,22 @@
                 }
                 this.getOrderManagementList(params)
             },
-            loadServiceBinding(packageServicesName,expirationTime,enterprisePackageId,type){
-debugger
-                console.log(packageServicesName,expirationTime,enterprisePackageId,type);
-                this.$router.push({path: '/system/order-management/orders-detail/1'});
-//                this.$router.push({path: '/system/order-management/orders-detail/' + enterprisePackageId + ''});
+            loadServiceBinding(packageServicesName, expirationTime, enterprisePackageId, type,modifyTimes,remainToModify){
+                debugger
+                let queryData = {
+                    packageServicesName: packageServicesName,
+                    expirationTime: expirationTime,
+                    packageId: enterprisePackageId,
+                    type: type,
+                    modifyTimes:modifyTimes,
+                    remainToModify:remainToModify
+                }
+//                console.log(packageServicesName, expirationTime, enterprisePackageId, type);
+                // this.$router.push({path: '/system/order-management/orders-detail/1'});
+                this.$router.push({
+                    path: '/system/order-management/orders-detail/' + enterprisePackageId + '',
+                    query: queryData
+                });
             },
             getOrderManagementList(params){
                 let packagefn = {};
@@ -261,6 +271,7 @@ debugger
                     $("#packageDetail").empty();
                     let res = data.data.result;
                     this.sum = res.pageInfo.sum;
+                    var vm = this;
                     // todo
 //                    let isEnterpriseBlackListMember='true';
                     $.each(res.enterpriseServiceResultList, function (index) {
@@ -287,7 +298,7 @@ debugger
                         //黑名单企业显示禁用信息
                         var blackMemberLimitStr = "<br/><br/><span style='color:#888'>已禁用线上服务</span>";
                         if (year >= 2099) {
-                            if (this.packageType == 2 && isEnterpriseBlackListMember == 'true') {//禁用线上服务
+                            if (this.packageType == 2 && res.isEnterpriseBlackListMember == 'true') {//禁用线上服务
                                 detailHtml += "<td align='center' style='width: 100px;'><font color=\"#40A640\">永久</font>" + blackMemberLimitStr + "</td>";
                                 expirationTime = "永久";
                             } else {
@@ -298,7 +309,7 @@ debugger
                             if (this.monthDayTO.dayNumber <= 0 && this.monthDayTO.monthNumber <= 0) {
                                 detailHtml += "<td align='center' style='width: 100px;'><font color=\"#ff9900\">" + this.expirationDateStr + "<br /><br />";
                                 detailHtml += "剩余0月0天</font>";
-                                if (this.packageType == 2 && isEnterpriseBlackListMember == 'true') {//禁用线上服务
+                                if (this.packageType == 2 && res.isEnterpriseBlackListMember == 'true') {//禁用线上服务
                                     detailHtml += blackMemberLimitStr;
                                 }
                                 status = "<font color=\"#ff9900\">已过期！</font></td>";
@@ -308,11 +319,11 @@ debugger
                                 detailHtml += "<td align='center' style='width: 100px'><font color=\"#40A640\">" + this.expirationDateStr + "</font><br />";
                                 if (this.monthDayTO.monthNumber == 0 && this.monthDayTO.dayNumber <= 30) {
                                     detailHtml += "<br /><font color=\"#ff9900\">剩余" + this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天</font>";
-                                    if (this.packageType == 2 && isEnterpriseBlackListMember == 'true') {//禁用线上服务
+                                    if (this.packageType == 2 && res.isEnterpriseBlackListMember == 'true') {//禁用线上服务
                                         detailHtml += blackMemberLimitStr;
                                     }
                                 } else {
-                                    if (this.packageType == 2 && isEnterpriseBlackListMember == 'true') {//禁用线上服务
+                                    if (this.packageType == 2 && res.isEnterpriseBlackListMember == 'true') {//禁用线上服务
                                         detailHtml += "<br /><font color=\"#40A640\">剩余" + this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天</font>" + blackMemberLimitStr + "</td>";
                                     } else {
                                         detailHtml += "<br /><font color=\"#40A640\">剩余" + this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天</font></td>";
@@ -381,8 +392,8 @@ debugger
                             }
                             //detailHtml += "已修改<span id=\"editBindingTimes"+this.enterprisePackageId+"\">"+this.editBindingTimes+"</span>次<br/>";
                             if (this.maxBinding > 0) {
-                                detailHtml += "<a class =\"btn-common\" @click=\"loadServiceBinding('" + this.packageServicesName + "','";
-                                detailHtml += " " + expirationTime + "','" + this.enterprisePackageId + "')\" >详细</a><div style='height: 10px;'></div>";
+                                detailHtml += "<a class =\"btn-common\" @click=\"vm.loadServiceBinding('" + this.packageServicesName + "','";
+                                detailHtml += " " + this.expirationDateStr + "','" + this.enterprisePackageId + "')\" >详细</a><div style='height: 10px;'></div>";
                             }
                         } else if (this.packageType == 3) {
                             var licensesStr2 = this.licensesStr;
@@ -457,8 +468,8 @@ debugger
                             //					(this.allModified[1]-this.modified[1])+"</span>次<br/>";
                             detailHtml += "已修改<span id=\"editBindingTimes" + this.enterprisePackageId + "create" + "\">" + this.modified[1] + "</span>次<br/>";
                             if (this.allBindings[1] > 0) {
-                                detailHtml += "<a class =\"btn-common\" @click=\"loadServiceBinding('" + this.packageServicesName + "-制作','";
-                                detailHtml += " " + expirationTime + "','" + this.enterprisePackageId + "','create')\">详细</a>";
+                                detailHtml += "<a class =\"btn-common\" @click=\"vm.loadServiceBinding('" + this.packageServicesName + "-制作','";
+                                detailHtml += " " + this.expirationDateStr + "','" + this.enterprisePackageId + "','create','"+this.modified[1]+"','"+(this.allModified[0] - this.modified[0])+"')\">详细</a>";
                             }
                             detailHtml += "使用:已绑定<span id=\"boundComputers" + this.enterprisePackageId + "use" + "\">" + this.bindings[0] + "</span>台&nbsp;还可绑定<span id=\"surplusBinding" + this.enterprisePackageId + "use" + "\">" +
                                 (this.allBindings[0] - this.bindings[0]) + "</span>台&nbsp;";
@@ -466,8 +477,8 @@ debugger
                                 (this.allModified[0] - this.modified[0]) + "</span>次<br/>";
                             //detailHtml += "已修改<span id=\"editBindingTimes"+this.enterprisePackageId+"use"+"\">"+this.modified[0]+"</span>次<br/>";
                             if (this.allBindings[0] > 0) {
-                                detailHtml += "<a class =\"btn-common\" @click=\"loadServiceBinding('" + this.packageServicesName + "-使用','";
-                                detailHtml += " " + expirationTime + "','" + this.enterprisePackageId + "','use')\">详细</a><div style='height: 5px;'></div>";
+                                detailHtml += "<a class =\"btn-common\" @click=\"vm.loadServiceBinding('" + this.packageServicesName + "-使用','";
+                                detailHtml += " " + this.expirationDateStr + "','" + this.enterprisePackageId + "','use','"+this.modified[0]+"','"+(this.allModified[0] - this.modified[0])+"')\">详细</a><div style='height: 5px;'></div>";
                             }
 
                         } else {
@@ -486,14 +497,15 @@ debugger
 
                         $("#packageDetail").append(detailHtml);
                     });
-
-                    console.log(this.orderManageTableData);
+                    $('.btn-common').click(function name(params) {
+                        console.log($(this).attr('@click'))
+                        eval($(this).attr('@click'))
+                    })
                 });
 
             }
         },
         mounted() {
-
             let baseUrl = basePath(this.$route.matched[3].path)
             //分页获取订单列表
             let params = {
@@ -504,6 +516,7 @@ debugger
             this.getOrderManagementList(params)
         },
         created(){
+//            this.loadServiceBinding()
         }
     }
 </script>
