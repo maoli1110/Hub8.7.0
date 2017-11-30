@@ -47,6 +47,6 @@ export const getEnterpriseOrderList = params=> axios.get(`${params.url}eds/order
 // GET /eds/order/generatePayUrl/{orderId}/{packageName} 生成支付宝付款地址
 export const generatePayUrl = params=> axios.get(`${params.url}eds/order/generatePayUrl/${params.orderId}/${params.packageName}`);
 // POST /eds/order/cancelOrder/{orderId} 取消EDS订单
-export const cancelOrder = params=> axios.get(`${params.url}eds/order/cancelOrder/${params.orderId}`);
+export const cancelOrder = params=> axios.post(`${params.url}eds/order/cancelOrder/${params.orderId}`);
 
 

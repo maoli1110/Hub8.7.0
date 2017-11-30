@@ -31,10 +31,14 @@
                                 <span>&yen;<span>{{scope.row.orderPrice}}</span></span>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="paymentWay" label="支付方式" width="200">
-                            <!--<template slot-scope="scope">-->
-                            <!--<span>{{scope.row.modeOfPayment}}</span>-->
-                            <!--</template>-->
+                        <el-table-column label="支付方式" width="200">
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.paymentWay=='ALIPAY'">支付宝支付</span>
+                                <span v-if="scope.row.paymentWay=='EBANK'">在线支付</span>
+                                <span v-if="scope.row.paymentWay=='CABLE'">银行电汇</span>
+                                <span v-if="scope.row.paymentWay=='MANPOWER'">人工订单</span>
+                                <span v-if="scope.row.paymentWay=='UNKNOWN'">未知</span>
+                            </template>
                         </el-table-column>
                         <el-table-column label="支付状态" width="200" class="paymentStatus">
                             <template slot-scope="scope">
@@ -43,12 +47,20 @@
                                 <span class="dark" v-if="scope.row.paymentStatus=='CANCEL'">已取消</span>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="invoiceType" label="发票类型" width="150"></el-table-column>
+                        <el-table-column label="发票类型" width="150">
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.invoiceType=='NONEEDINVOICE'">不需要发票</span>
+                                <span v-if="scope.row.invoiceType=='NORMALINVOICE'">普通发票</span>
+                                <span v-if="scope.row.invoiceType=='SPEICALINVOICE'">专用发票</span>
+                            </template>
+                        </el-table-column>
                         <el-table-column label="操作" width="185" class="operate">
                             <template slot-scope="scope">
-                                <i class="icon icon-alipay" @click="redirectToPay"></i>
-                                <i class="icon icon-BIM-delete" @click="deleteList"
-                                   v-if="scope.row.paymentStatus !== 'COMPLETED'"></i>
+                                <a class="icon icon-alipay" target="_blank" :href="linkUrl"
+                                   @click="dialogVisible = true;redirectToPay(scope.row.orderId)"
+                                   v-if="(scope.row.paymentStatus == 'UNPAID')"></a>
+                                <i class="icon icon-BIM-delete" @click="deleteList(scope.row.orderId)"
+                                   v-if="(scope.row.paymentStatus == 'UNPAID')"></i>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -64,10 +76,29 @@
                                    :total="sum">
                     </el-pagination>
                 </div>
-
             </div>
-
         </div>
+        <el-dialog
+            title="转到支付平台"
+            :visible.sync="dialogVisible" size="small" :close-on-click-modal="false" :close-on-press-escape="false">
+            <!--<span>这是一段信息</span>-->
+            <div style="height: auto;"
+                 class="panel-body panel-body-noborder window-body">
+                <div style="color:#FF9900;font-size: 14px;padding-bottom: 10px;border-bottom: 1px solid #e6e6e6;">
+                    重要提醒：请在下单后24小时内支付，否则订单将会自动取消！
+                </div>
+                <!--<hr style="height:1px;border:none;border-top: 1px solid #A9A9A9;">-->
+                <div style="vertical-align:middle;font-size: 14px;margin-top: 10px;color: #000">请在完成付款后选择:</div>
+                <div style="font-size: 14px;width: 160px;margin: 10px 0 12px 50px;"><span
+                    style="font-weight:700;color: #000">付款成功：</span>
+                    <a href="#" style="color: #84C7A8" @click="locationPage();dialogVisible = false">查看EDS订单</a>
+                </div>
+                <div style="margin: 10px 0 12px 50px;font-size: 14px;width: 180px;"><span
+                    style="font-weight:700;color: #000">付款失败：</span>
+                    <router-link to="/help" target="_blank" style="color: #84C7A8">查看在线支付帮助</router-link>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -77,6 +108,10 @@
 
     // 获取EDS订单列表
     import {getEnterpriseOrderList} from '../../api/getData-cxx.js';
+    // 生成支付宝付款地址
+    import {generatePayUrl} from '../../api/getData-cxx.js';
+    // 取消EDS订单
+    import {cancelOrder} from '../../api/getData-cxx.js';
 
     export default {
         data(){
@@ -88,6 +123,8 @@
                 recentMonth: 1,//最近几月
                 EDSOrdersTableData: [],//列表数据
                 sum: 0,//总计数据条数
+                dialogVisible: false,//弹框默认隐藏
+                linkUrl: 'javascript:;',
             }
         },
         methods: {
@@ -99,7 +136,7 @@
                 this.currentPage = val;
                 this.getEnterpriseOrderList()
             },
-            refreshList(e,val){
+            refreshList(e, val){
                 // 最近几月-更新列表
                 console.log(val);
                 this.recentMonth = val;
@@ -122,18 +159,29 @@
                     vm.sum = data.data.result.pageInfo.sum;
                 })
             },
-            deleteList(){
+            deleteList(orderId){
                 // 删除订单
+
+                let baseUrl = basePath(this.$route.matched[3].path)
+                let params = {
+                    url: baseUrl,
+                    orderId: orderId
+                }
+                var vm = this;
                 this.$confirm('是否删除订单记录?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
+                    console.log(orderId);
+                    cancelOrder(params).then(function () {
+                        vm.getEnterpriseOrderList()
+                        vm.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    })
 
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -141,9 +189,38 @@
                     });
                 });
             },
-            redirectToPay(){
+            redirectToPay(orderId){
                 // 支付跳转
-
+                let baseUrl = basePath(this.$route.matched[3].path)
+                let params = {
+                    url: baseUrl,
+                    orderId: orderId,
+                    packageName: '鲁班币充值'
+                }
+                var vm = this;
+                generatePayUrl(params).then(function (data) {
+                    let result = data.data.result;
+//                    let msg = data.data.msg;
+//                    if (!result) {
+//                        vm.linkUrl = 'javascript:;';
+//                        vm.dialogVisible = false;
+//                        vm.$alert(msg, '提示', {
+//                            confirmButtonText: '确定',
+//                            type: 'info'
+//                        });
+//                    } else {
+                    console.log(result);
+                    vm.linkUrl = result;
+                    window.open(result)
+//                    debugger
+//                    $('.icon-alipay').click()
+//                        vm.dialogVisible = true;
+//                    }
+                })
+            },
+            locationPage(){
+                // 查看eds订单列表
+                this.getEnterpriseOrderList()
             }
         },
         components: {
@@ -194,5 +271,9 @@
     .eds-orders .icon-alipay {
         margin-top: 10px;
         margin-right: 10px;
+    }
+
+    .el-dialog--small {
+        width: 30%;
     }
 </style>

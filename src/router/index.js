@@ -632,6 +632,10 @@ export default new Router({
             // 登录
             path: '/login',
             component: resolve => require(['../components/Login/Login.vue'], resolve)
+        },
+        {
+            path: '/help',
+            component: resolve => require(['../components/Authority-management/help1.vue'], resolve)
         }
 
     ]
