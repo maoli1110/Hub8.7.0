@@ -399,7 +399,7 @@ export default new Router({
                                 {
                                     // 表单管理
                                     path: 'form-management',
-                                    component: resolve => require(['../components/Configuration/HousingGovern.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/O-Govern.vue'], resolve)
                                 }
                             ]
                         },
@@ -416,7 +416,7 @@ export default new Router({
                         {
                             // govern
                             path: 'govern',
-                            component: resolve => require(['../components/Configuration/govern.vue'], resolve)
+                            component: resolve => require(['../components/Configuration/Govern.vue'], resolve)
                         },
                         {
                             // plan
@@ -461,7 +461,21 @@ export default new Router({
                         {
                             // o-govern
                             path: 'o-govern',
-                            component: resolve => require(['../components/Authority-management/BaseCharts.vue'], resolve)
+                            component: resolve => require(['../components/Configuration/O-Govern.vue'], resolve),
+                            redirect: 'o-govern/report-subscription',
+                            children: [
+                                {
+                                    // 报表订阅
+                                    path: 'report-subscription',
+                                    component: resolve => require(['../components/Configuration/ReportSubscription.vue'], resolve)
+                                },
+                                {
+                                    // 工程性质
+                                    path: 'engineering-nature',
+                                    component: resolve => require(['../components/Configuration/EngineeringNature.vue'], resolve)
+                                }]
+                               
+
                         },
                         {
                             // explorerCivil
@@ -618,6 +632,10 @@ export default new Router({
             // 登录
             path: '/login',
             component: resolve => require(['../components/Login/Login.vue'], resolve)
+        },
+        {
+            path: '/help',
+            component: resolve => require(['../components/Authority-management/help1.vue'], resolve)
         }
 
     ]
