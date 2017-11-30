@@ -65,6 +65,10 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .Bim-libs-bim .el-table.house-table{
     min-width: 1280px !important;
 }
+.Bim-libs-bim .pagination .total-info{
+    float: left;
+    margin-top: 11px;
+}
 .bim-icon{width:18px;height:18px;display:inline-block;background:url('../../static/img/icon-menu.png') 0 0 no-repeat}
 /*数据处理图标*/
 .align-l:nth-child(1) .bim-icon{
@@ -209,3 +213,8 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
     border-top:5px solid #ccc;
     display:inline-block;top:15px;left:0;
 }
+
+.el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover{
+    background:#84aaf5;
+}
+.el-pagination{text-align:center;}
