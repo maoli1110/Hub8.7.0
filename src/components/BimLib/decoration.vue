@@ -59,7 +59,7 @@
         <el-row class="bim-data bim-dev-toolbar" >
             <el-col class="bim-prj" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)" :span="17">
                 <el-button type="primary" class="basic-btn " @click="ProjManageDialog = true;addProject('add')"><i class="bim-icon-tool icon-plus "></i><span class="btn-text">添加</span></el-button>
-                <el-button type="primary" class="basic-btn " @click="deletelibs('whileData')"><i class="bim-icon-tool " ></i><span class="btn-text">删除</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="deletelibs('whileData')" :disabled="isTableDel"><i class="bim-icon-tool " ></i><span class="btn-text">删除</span></el-button>
                 <el-button type="primary" class="basic-btn " @click="monitor('all')"><i class="bim-icon-tool "></i><span class="btn-text">监控</span></el-button>
             </el-col>
             <el-col class="bim-recy" v-if="($route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId|| $route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId)" :span="17">
@@ -177,7 +177,8 @@
                     </table>
                 </vue-scrollbar>
                 <div class="pagination">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPages" layout="total, sizes, prev, pager, next, jumper" :total="pagesList.totalElements">
+                    <span class="total-info">共{{pagesList.totalElements}}个工程，共{{Math.ceil(pagesList.totalElements/totalPages)}}页</span>
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPages" layout=" sizes, prev, pager, next, jumper" :total="pagesList.totalElements">
                     </el-pagination>
                 </div>
             </el-col>
@@ -216,7 +217,7 @@
         <el-dialog :title="addPrjectTitle" custom-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
                 <el-form-item label="工程名称：" label-width="80">
-                    <el-input v-model="proManage.name" auto-complete="off"></el-input>
+                    <el-input v-model="proManage.name" :maxlength="50" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="专业：" label-width="80">
                     <!--newCreatmajor-->
@@ -412,6 +413,7 @@
                     {name:"显示全部",value:false}
                 ],  //版本
                 isRecycle:false,        //是否是回收站
+                isTableDel:true,         //删除是否可用
                 tableParam:{
                     delete: false,      //是否是回收站
                     deptIds: [],        //项目部deptIds
@@ -756,6 +758,11 @@
             },
             //表格删除全选
             allSelectChange(event){//全选
+                if(event.target.checked){
+                    this.isTableDel = false;
+                }else{
+                    this.isTableDel = true;
+                }
                 deletArray = [];
                 this.foreachs(this.allChecked,this.tableData);
             },
@@ -768,6 +775,11 @@
                         deletArray.splice(this.delIndex,1)
                     }
                     countIndex--;
+                }
+                if(countIndex>0){
+                    this.isTableDel = false;
+                }else{
+                    this.isTableDel = true;
                 }
                 if(this.tableData.length==countIndex){
                     this.allChecked = true;
@@ -791,7 +803,7 @@
              * */
             deletelibs(type){
                 if(!deletArray.length){
-                    this.commonMessage('请选择要删除的文件','warning')
+                    this.commonMessage('没有选中任何工程','warning')
                     return false;
                 }
                 if(type=='whileData'){
