@@ -45,6 +45,11 @@ export const deleteProjects = params =>axios.post(`${params.url}rs/bimRest/delet
 export const deleteProject = params =>axios.post(`${params.url}rs/bimRecycleRest/deleteProject/${params.param.packageType}`,params.param.projIds);
 //回收站清空
 export const bimRecycleRest = params =>axios.post(`${params.url}rs/bimRecycleRest/reductionProjs/${params.param.packageType}`,params.param.projIds)
+
+//bim-抽取
+export const extractProj = params =>axios.get(`${params.url}rs/bimRest/extractProj/${params.param.packageType}/${params.param.projId}`);
+//bim抽取信息失败
+export const getProjExtractInfo = params =>axios.post(`${params.url}rs/bimRest/getProjExtractInfo/${params.param.packageType}`,params.param);
 /**
  * 云构件库
  * */

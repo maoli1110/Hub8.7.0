@@ -71,7 +71,7 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 }
 .bim-icon{width:18px;height:18px;display:inline-block;background:url('../../static/img/icon-menu.png') 0 0 no-repeat}
 /*数据处理图标*/
-.align-l:nth-child(1) .bim-icon{
+/*.align-l:nth-child(1) .bim-icon{
     background-position: -18px 0;
 }
 .align-l:nth-child(2) .bim-icon{
@@ -85,7 +85,8 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 }
 .align-l:nth-child(5) .bim-icon{
     background-position: -90px 0;
-}
+}*/
+.icon-projType{width:16px;height:20px;display:inline-block;background:url('../../static/img/icon-projType.png') 0 0 no-repeat}
 /*数据操作图标*/
 .handel-cotrol{width:23px;height:23px;float:left;line-height:23px;border-radius:2px;}
 .handel-icon{width:20px;height:20px;background:pink;float:left;margin-right:10px;margin-left:1px;background:url('../../static/img/icon-menu.png') 0 0 no-repeat;background-size:144px;}

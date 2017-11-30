@@ -106,7 +106,18 @@
                                 </template>
                             </td>
                             <td>{{item.projName}}</td>
-                            <td>{{item.projType}}</td>
+                            <td>
+                                <span v-if="item.projType==1" title="土建预算" class="icon-projType" style="background-position: -52px -15px;"></span>
+                                <span v-if="item.projType==2" title="钢筋预算" class="icon-projType" style="background-position: -87px -15px;"></span>
+                                <span v-if="item.projType==3" title="造价"    class="icon-projType" style="background-position:-39px -15px;"></span>
+                                <span v-if="item.projType==4" title="安装预算" class="icon-projType" style="background-position:-69px -15px;"></span>
+                                <span v-if="item.projType==5" title="场布预算" class="icon-projType" style="background-position: -3px -15px;"></span>
+                                <!--<span v-if="item.projType==6" title="Remiz"   class="icon-projType"></span>-->
+                                <span v-if="item.projType==7" title="Tekla" class="icon-projType" style="background-position: -21px -15px;"></span>
+                                <span v-if="item.projType==8" title="Revit" class="icon-projType" style="background-position:-102px -15px;"></span>
+                                <span v-if="item.projType==9" title="班筑家装" class="icon-projType" style="background-position:-157px -15px"></span>
+                                <span v-if="item.projType==10" title="Civil3D" class="icon-projType" style="background-position:-139px -15px"></span>
+                            </td>
                             <td v-if="$route.params.typeId !=4" class="bim-params">{{item.projGenre }}</td>
                             <td class="absol substr uploadPerson" :title="
                             item.createRealName+'\n'+item.createUserName">
@@ -117,11 +128,11 @@
                             <td>{{item.projSize}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
                             <td>
-                                <div v-show="item.status==='处理成功'" class="align-l"><span class="bim-icon "></span>处理成功</div>
-                                <div v-show="item.status==='处理失败'" class="align-l"><span class="bim-icon "></span>处理失败</div>
-                                <div v-show="item.status==='处理中'"   class="align-l"><span class="bim-icon "></span>处理中</div>
-                                <div  v-show="item.status==='待处理'"  class="align-l"><span class="bim-icon "></span>待处理</div>
-                                <div v-show="item.status==='未处理'"   class="align-l"><span class="bim-icon "></span>未处理</div>
+                                <div v-show="item.status===1" class="align-l"><span class="bim-icon" style="background-position: -18px 0;"></span>处理成功</div>
+                                <div v-show="item.status===-1" class="align-l"><span class="bim-icon" style="background-position: -36px 0;"></span>处理失败</div>
+                                <div v-show="item.status===2 || item.status==3"   class="align-l"><span class="bim-icon" style="background-position: -54px 0;"></span>处理中</div>
+                                <div  v-show="item.status===4"  class="align-l"><span class="bim-icon" style="background-position: -72px 0;"></span>待处理</div>
+                                <div v-show="item.status===0"   class="align-l"><span class="bim-icon" style="background-position: -90px 0;"></span>未处理</div>
                             </td>
                             <td>{{item.version}}</td>
                             <td>
@@ -161,7 +172,18 @@
                                 </template>
                             </td>
                             <td class="project-name">{{item.projName}}</td>
-                            <td>{{item.projType}}</td>
+                            <td>
+                                <span v-if="item.projType==1" title="土建预算" class="icon-projType" style="background-position: -52px -15px;"></span>
+                                <span v-if="item.projType==2" title="钢筋预算" class="icon-projType" style="background-position: -87px -15px;"></span>
+                                <span v-if="item.projType==3" title="造价"    class="icon-projType" style="background-position:-39px -15px;"></span>
+                                <span v-if="item.projType==4" title="安装预算" class="icon-projType" style="background-position:-69px -15px;"></span>
+                                <span v-if="item.projType==5" title="场布预算" class="icon-projType" style="background-position: -3px -15px;"></span>
+                                <!--<span v-if="item.projType==6" title="Remiz"   class="icon-projType"></span>-->
+                                <span v-if="item.projType==7" title="Tekla" class="icon-projType" style="background-position: -21px -15px;"></span>
+                                <span v-if="item.projType==8" title="Revit" class="icon-projType" style="background-position:-102px -15px;"></span>
+                                <span v-if="item.projType==9" title="班筑家装" class="icon-projType" style="background-position:-157px -15px"></span>
+                                <span v-if="item.projType==10" title="Civil3D" class="icon-projType" style="background-position:-139px -15px"></span>
+                            </td>
                             <td v-if="$route.params.typeId !=3" class="bim-params">{{item.projGenre}}</td>
                             <td class="absol substr uploadPerson" :title="
                             item.createRealName+'\n'+item.createUserName">{{item.createRealName}}</td>
@@ -341,8 +363,21 @@
     import {basePath} from "../../utils/common.js";                         //基础路径返回
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';    //滚动组件
     import {
-        cloudTree,getMajorsByCreate,getProjGenre,getProjType,getProjAuthUserInfos,createProject,
-        getProjects,zTreeNodes,getOrgTreeList,deleteProjects,deleteProject,bimRecycleRest,updateProjShortInfo
+        cloudTree,
+        getMajorsByCreate,
+        getProjGenre,
+        getProjType,
+        getProjAuthUserInfos,
+        createProject,
+        getProjects,
+        zTreeNodes,
+        getOrgTreeList,
+        deleteProjects,
+        deleteProject,
+        bimRecycleRest,
+        updateProjShortInfo,
+        extractProj,
+        getProjExtractInfo
     } from '../../api/getData-yhj.js';                                      //接口数据
     let deletArray = [];        //删除projIds队列
     let countIndex = 0;         //表格选中状态个数统计
@@ -833,17 +868,20 @@
                     this.delTableList({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}});
                 },()=>{},'warning')
                 }else if(type=='wipeData'){
-                    this.commonConfirm('确认清空回收站所有内容吗？请谨慎操作！',()=>{
+                    this.commonConfirm('确认删除回收站工程？删除后不可恢复！',()=>{
                         this.delRecycle({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}})
                     },()=>{},'warning')
                 }
             },
             //回收站还原
             dataRestore(){
-                this.tableListRestore({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}});
+                this.tableListRestore({url:baseUrl,param:{packageType:this.$route.params.typeId,deleteAll:false,projIds:deletArray}});
             },
             //回收站清空
             dataEmpty(){
+                this.commonConfirm('确认清空回收站所有内容吗？请谨慎操作！',()=>{
+                    this.delRecycle({url:baseUrl,param:{packageType:this.$route.params.typeId,deleteAll:true,projIds:[]}})
+                },()=>{},'warning')
                 console.log('回收站清空')
             },
             /**
@@ -1096,6 +1134,21 @@
                     }
 
                 }
+            },
+            /**
+             * 抽取
+             * extractProject       抽取接口
+             * getProjExtractInfo   抽取信息失败
+             **/
+            extractProject(url,param){
+                extractProj({url:baseUrl,param:param}).then((data)=>{
+                    console.log(data)
+                })
+            },
+            getProjExtractInfo(url,param){
+                getProjExtractInfo({url:baseUrl,param:param}).then((data)=>{
+                    console.log(data)
+                })
             },
             //抽取数据
             extractOk(){
