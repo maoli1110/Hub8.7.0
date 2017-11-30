@@ -350,10 +350,10 @@ export default {
     width: 150px;
 }
 .org .ztree li span.button.ico_open,.org .ztree li span.button.ico_close{
-    background-position: -134px -20px;
+    background-position: -237px -18px;
 }
 .org .ztree li span.button.ico_docu {
-    background-position: -134px -37px;
+    background-position: -237px -36px;
 }
 .org ul.ztree{
     float: left;
@@ -364,7 +364,8 @@ export default {
 }
 .org .ztree li a {
     border: 2px solid #4778c7;
-    margin: 10px;
+    /*margin: 10px;*/
+    margin: 10px 0;
     height: 40px;
     line-height: 40px;
     width: 170px;
@@ -381,7 +382,7 @@ export default {
     height: 1px;
     display: block;
     padding: 0px;
-    background: url(../../../static/img/line_conn2.jpg) repeat-x;
+    background: url(../../../static/img/line_conn2.png) repeat-x;
     font: 0px/0px tahoma,"微软雅黑";
     COLOR: #4778c7;
     overflow: hidden;
@@ -391,18 +392,18 @@ export default {
     height: 1px;
     display: block;
     padding: 0px;
-    background: url(../../../static/img/line_conn2.jpg) repeat-x;
+    background: url(../../../static/img/line_conn2.png) repeat-x;
     font: 0px/0px tahoma,"微软雅黑";
     COLOR: #4778c7;
     overflow: hidden;
 }
 .org .noneHLine {
     margin: 0px;
-    margin-right: 101px;
+    margin-right: 126px;
     height: 1px;
     display: block;
     padding: 0px;
-    background: url(../../../static/img/line_conn2.jpg) repeat-x;
+    background: url(../../../static/img/line_conn2.png) repeat-x;
     font: 0px/0px tahoma,"微软雅黑";
     COLOR: #4778c7;
     overflow: hidden;
@@ -417,6 +418,43 @@ export default {
     font-size: 16px;
     font-weight: bold;
 }
+.org .ztree li ul.line {
+    background: url(../../../static/img/line_conn1.png) repeat-y;
+    background-position: 16px 0;
+}
+.org .ztree li span.button.switch {
+    width: 50px; 
+    height: 50px;
+}
+
+.org .ztree li span.button {
+    background-image: url(../../../static/img/org-tree-new.png);
+}
+.org .ztree li span.button.root_docu {
+    background-position: -6px -82px;
+}
+.org .ztree li span.button.root_close {
+    background-position: -6px -82px;
+}
+.org .ztree li span.button.root_open {
+    background-position: -13px -128px;
+}
+.org .ztree li span.button.center_open {
+    background-position: -186px -145px;
+}
+.org .ztree li span.button.center_docu {
+    background-position: -1px -194px;
+}
+.org .ztree li span.button.center_close {
+    background-position: -116px -145px;
+}
+.org .ztree li span.button.bottom_docu {
+    background-position: -1px -234px;
+}
+.org .ztree li span.button.bottom_open {
+    background-position: -185px -4px;
+}
+
 /*el-popover*/
 .el-popover {
     padding: 0;
