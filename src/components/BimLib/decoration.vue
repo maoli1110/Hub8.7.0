@@ -125,10 +125,10 @@
                             </td>
                             <td>{{item.version}}</td>
                             <td>
-                                <div class="handel-cotrol"><span class=" handel-icon " @click="ProjManageDialog = true;addProject('modific')"></span></div>
-                                <div class="handel-cotrol"><span class=" handel-icon " @click="extractDialog=true;extractData('处理中')"></span></div><!--extractData(scope.row.status)"-->
-                                <div class="handel-cotrol"><span class=" handel-icon " @click="modifyInfo=true"></span></div>
-                                <div class="handel-cotrol"><span class=" handel-icon " @click="monitorSeverVisible=true" ></span></div>
+                                <div class="handel-cotrol"><span class=" handel-icon " title="工程管理" @click="ProjManageDialog = true;addProject('modific',item)"></span></div>
+                                <div class="handel-cotrol"><span class=" handel-icon " title="抽取" @click="extractDialog=true;extractData('处理中')"></span></div><!--extractData(scope.row.status)"-->
+                                <div class="handel-cotrol"><span class=" handel-icon " title="修改名称" @click="modifyInfo=true"></span></div>
+                                <div class="handel-cotrol"><span class=" handel-icon " title="监控" @click="monitorSeverVisible=true" ></span></div>
                             </td>
                         </tr>
                         </tbody>
@@ -342,7 +342,7 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';    //滚动组件
     import {
         cloudTree,getMajorsByCreate,getProjGenre,getProjType,getProjAuthUserInfos,createProject,
-        getProjects,zTreeNodes,getOrgTreeList,deleteProjects,deleteProject,bimRecycleRest
+        getProjects,zTreeNodes,getOrgTreeList,deleteProjects,deleteProject,bimRecycleRest,updateProjShortInfo
     } from '../../api/getData-yhj.js';                                      //接口数据
     let deletArray = [];        //删除projIds队列
     let countIndex = 0;         //表格选中状态个数统计
@@ -442,6 +442,14 @@
                     userIds:[],
                     remark:""
                 },
+                UpdateParamInfo:{
+                    packageType:'', //套餐类型,
+                    projId:'',
+                    projMemo: '',        //备注
+                    projName: '',          //名称
+                    projType: '',         //专业
+                    userIds: []                            //授权人员名单
+                },
                 modifyInfoList:{        //修改弹窗数据
                     name:'初始项目部',
                     formatName:'我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家'
@@ -488,6 +496,7 @@
                     { id: 33, pId: 3, name: "叶子节点3" }
                 ],          //bim库组织结构zNodes
                 proDepartNodes:[],      //添加->所属项目部数据zNodes
+                modifyNodes:[],         //修改弹窗树结构数据匹配
             }
         },
         methods: {
@@ -504,7 +513,8 @@
                 }
                 //列表初始值
                 this.tableParam.delete = this.isRecycle;
-                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b'
+                this.tableParam.deptIds[0] ="d68ceeb2d02043bd9ea5991ac44d649b"
+//                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b'
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
                 this.tableParam.pageParam.orders[0].direction = 1;
@@ -629,9 +639,10 @@
             },
             //工程管理树结构单机事件
             proDepartClick(event, treeId, treeNode){
-                if(treeNode.type==1){       //项目部才有点击事件
+                if(treeNode.type==1 ||treeNode.type==0){       //项目部才有点击事件
                     this.proManageVal = treeNode.name;
-                    this.createDeptId = treeNode.id;
+//                    this.createDeptId = treeNode.id;
+                    this.createDeptId = "d68ceeb2d02043bd9ea5991ac44d649b";
                     setTimeout(function(event, treeId, treeNode) {
                         $(".el-scrollbar .el-select-dropdown__item.selected").click();
                     }, 300);
@@ -641,8 +652,9 @@
 
             },
             //创建->获取授权人员
-            getRootMan(){
-                getProjAuthUserInfos({url:baseUrl,deptId:"d68ceeb2d02043bd9ea5991ac44d649b"}).then((data)=>{
+            getRootMan(deptId){
+                deptId = !deptId?"d68ceeb2d02043bd9ea5991ac44d649b":deptId;
+                getProjAuthUserInfos({url:baseUrl,deptId:deptId}).then((data)=>{
                     this.authUserInfoList = data.data.result; //可授权人员列表
                     authUserInfoListCopy = data.data.result;  //可授权人员deep_copy
                     this.authUserInfoList.forEach((val,key)=>{
@@ -663,7 +675,6 @@
                         this.checkAll = false;
                     }
                 });
-
             },
             /**
              * bim列表-排序
@@ -853,12 +864,24 @@
 
             },
             //添加弹窗授权项目部树结构
-            getTree(){
+            getTree(type,deptId){
                 getOrgTreeList({url:baseUrl}).then(res => {
-//                    console.log( res.data.result,'树结构')
                     this.proDepartNodes = res.data.result;
+
+                    if(type=='modify' && deptId){
+                        this.proDepartNodes.forEach((val,key)=>{
+                            let keyIndex = val.id.indexOf(deptId);
+                            if(keyIndex){
+                                this.proManageVal =val.name;
+                            }
+                        })
+                    }else{
+                        this.proManageVal = '';
+                    }
                     $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
                 });
+
+
             },
             /**
              *创建工程
@@ -879,38 +902,55 @@
                     this.commonMessage(error.data.msg)
                 })
             },
+            updateProjInfo(url,param){
+                updateProjShortInfo({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        if(!data.data.result){
+                            this.ProjManageDialog = false;
+                        }
+                        this.commonMessage('修改成功','success');
+                    }
+                })
+            },
             //添加工程
-            addProject(type){
+            addProject(type,item){
                 this.authUserListItem = [];
+                //专业
+                getMajorsByCreate({url:baseUrl}).then((data)=>{
+                    this.majorOptions = data.data.result;
+                    this.newCreatmajor = data.data.result;
+                    this.proManage.major = this.newCreatmajor[0].value;
+                    this.filterParams.majorVal = this.majorOptions[0].value;
+                });
                 if(type=='add'){
-                    this.getTree();
                     this.isDisable = false;
                     if(!this.isDisable){
                         this.addPrjectTitle = '添加工程'
                     }else{
                         this.addPrjectTitle = '工程管理'
                     }
-                    //专业
-                    getMajorsByCreate({url:baseUrl}).then((data)=>{
-                        this.majorOptions = data.data.result;
-                        this.newCreatmajor = data.data.result;
-                        this.proManage.major = this.newCreatmajor[0].value;
-                        this.filterParams.majorVal = this.majorOptions[0].value;
-                    });
+                    this.clearCreateParam();
+                    this.getTree();
+                    this.getRootMan();
+
                 }else{
                     //修改工程
-                    this.proManageVal = 'SSSSSS';
-                    this.proManage.name = '哈哈哈哈哈';
-                    this.proManage.major = '哈哈哈哈哈';
+                    console.log(item.deptId,'deptId')
                     this.isDisable = true;
                     if(this.isDisable){
                         this.addPrjectTitle = '工程管理'
                     }else{
                         this.addPrjectTitle = '添加工程'
                     }
+                    this.getTree('modify',item.deptId);
+                    this.getRootMan(item.deptId);
+                    this.proManage.name = item.projName;
+                    this.proManage.remark = item.projMemo;
+                    this.UpdateParamInfo.projId = parseInt(item.projId);
+                    this.createDeptId = item.deptId;
+                    this.proManage.major = item.projType;
 
                 }
-                this.getRootMan();
             },
             //全部删除授权人员
             delRootAll(){
@@ -1012,6 +1052,7 @@
                     projType: this.proManage.major,         //专业
                     userIds: []                            //授权人员名单
                 };
+
                 if(!newCreate.projName){                    //工程名称不存在
                     this.commonMessage('工程名称不能为空','warning');
                     return false;
@@ -1023,12 +1064,18 @@
                 this.authUserListItem.forEach((val,key)=>{  //将选中结果里面可用值提取出来
                     if(!val.allAuth && val.hasAuth){
                         newCreate.userIds.push(val.userId)
+                        this.UpdateParamInfo.userIds.push(val.userId)
                     }
                 })
-                if(!this.proManage.length || this.isDisable){
+                if(!this.isDisable){
                     this.newCreateProject(baseUrl,newCreate)
                 }else{
+                    this.UpdateParamInfo.packageType = this.$route.params.typeId;//套餐类型,
+                    this.UpdateParamInfo.projMemo = this.proManage.remark;       //备注
+                    this.UpdateParamInfo.projName =  this.proManage.name;         //名称
+                    this.UpdateParamInfo.projType =  this.proManage.major;        //专业
                     //执行修改的接口
+                    this.updateProjInfo(baseUrl,this.UpdateParamInfo);
                 }
             },
             //列表中传过来处状态

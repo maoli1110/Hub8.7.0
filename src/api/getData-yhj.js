@@ -32,6 +32,8 @@ export const getProjType = params =>axios.get(`${params.url}rs/bimParamRest/getP
 export const getProjects = params =>axios.post(`${params.url}rs/bimRest/getProjects`,params.param)
 //bim创建工程
 export const createProject = params=>axios.post(`${params.url}rs/bimRest/createProject`,params.param);
+//bim修改工程
+export const updateProjShortInfo = params =>axios.post(`${params.url}rs/bimRest/updateProjShortInfo`,params.param)
 //bim创建->授权人员列表
 export const getProjAuthUserInfos = params =>axios.get(`${params.url}rs/bimParamRest/getProjAuthUserInfos/${params.deptId}`);
 //bim创建 项目部树结构
