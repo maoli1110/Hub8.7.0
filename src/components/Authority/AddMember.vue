@@ -676,7 +676,7 @@ export default {
   border-radius: 2px;
 }
 .back-list:hover {
-  box-shadow: 3px 3px 2px #d0dffb;
+  box-shadow: 1px 0px 7px #6595f2
 }
 </style>
 

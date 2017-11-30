@@ -65,9 +65,13 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .Bim-libs-bim .el-table.house-table{
     min-width: 1280px !important;
 }
+.Bim-libs-bim .pagination .total-info{
+    float: left;
+    margin-top: 11px;
+}
 .bim-icon{width:18px;height:18px;display:inline-block;background:url('../../static/img/icon-menu.png') 0 0 no-repeat}
 /*数据处理图标*/
-.align-l:nth-child(1) .bim-icon{
+/*.align-l:nth-child(1) .bim-icon{
     background-position: -18px 0;
 }
 .align-l:nth-child(2) .bim-icon{
@@ -81,7 +85,8 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 }
 .align-l:nth-child(5) .bim-icon{
     background-position: -90px 0;
-}
+}*/
+.icon-projType{width:16px;height:20px;display:inline-block;background:url('../../static/img/icon-projType.png') 0 0 no-repeat}
 /*数据操作图标*/
 .handel-cotrol{width:23px;height:23px;float:left;line-height:23px;border-radius:2px;}
 .handel-icon{width:20px;height:20px;background:pink;float:left;margin-right:10px;margin-left:1px;background:url('../../static/img/icon-menu.png') 0 0 no-repeat;background-size:144px;}
@@ -209,3 +214,8 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
     border-top:5px solid #ccc;
     display:inline-block;top:15px;left:0;
 }
+
+.el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover{
+    background:#84aaf5;
+}
+.el-pagination{text-align:center;}

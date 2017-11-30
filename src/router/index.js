@@ -399,7 +399,7 @@ export default new Router({
                                 {
                                     // 表单管理
                                     path: 'form-management',
-                                    component: resolve => require(['../components/Configuration/HousingGovern.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/O-Govern.vue'], resolve)
                                 }
                             ]
                         },
@@ -416,7 +416,7 @@ export default new Router({
                         {
                             // govern
                             path: 'govern',
-                            component: resolve => require(['../components/Authority-management/BaseCharts.vue'], resolve)
+                            component: resolve => require(['../components/Configuration/Govern.vue'], resolve)
                         },
                         {
                             // plan
@@ -438,12 +438,44 @@ export default new Router({
                         {
                             // o-bw
                             path: 'o-bw',
-                            component: resolve => require(['../components/Authority-management/BaseCharts.vue'], resolve)
+                            component: resolve => require(['../components/Configuration/BW.vue'], resolve),
+                            redirect: 'o-bw/projectLib',
+                            children: [
+                                {
+                                    // 项目库
+                                    path: 'projectLib',
+                                    component: resolve => require(['../components/Configuration/projectLib.vue'], resolve)
+                                },
+                                {
+                                    // 已完成
+                                    path: 'completed',
+                                    component: resolve => require(['../components/Configuration/completed.vue'], resolve)
+                                },
+                                {
+                                    // 回收站
+                                    path: 'recycle',
+                                    component: resolve => require(['../components/Configuration/recycle.vue'], resolve)
+                                }
+                            ]
                         },
                         {
                             // o-govern
                             path: 'o-govern',
-                            component: resolve => require(['../components/Authority-management/BaseCharts.vue'], resolve)
+                            component: resolve => require(['../components/Configuration/O-Govern.vue'], resolve),
+                            redirect: 'o-govern/report-subscription',
+                            children: [
+                                {
+                                    // 报表订阅
+                                    path: 'report-subscription',
+                                    component: resolve => require(['../components/Configuration/ReportSubscription.vue'], resolve)
+                                },
+                                {
+                                    // 工程性质
+                                    path: 'engineering-nature',
+                                    component: resolve => require(['../components/Configuration/EngineeringNature.vue'], resolve)
+                                }]
+                               
+
                         },
                         {
                             // explorerCivil
@@ -482,55 +514,55 @@ export default new Router({
                             ]
                         },
                         /*{
-                            //  权限管理(设置)-在线人数
-                            path: '/online',
-                            component: resolve => require(['../components/Authority-management/Online.vue'], resolve),
-                            redirect: '/online/all-clients',
-                            children: [
-                                {
-                                    //所有客户端
-                                    path: 'all-clients',
-                                    name: 'online',
-                                    component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
-                                },
-                                {
-                                    //MC在线人数
-                                    path: 'mc-online',
-                                    name: 'online?1',
-                                    component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
-                                },
-                                {
-                                    //BE在线人数
-                                    path: 'be-online',
-                                    name: 'online?2',
-                                    component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
-                                },
-                                {
-                                    //BW在线人数
-                                    path: 'bw-online',
-                                    name: 'online?3',
-                                    component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
-                                },
-                                {
-                                    //SP在线人数
-                                    path: 'sp-online',
-                                    name: 'online?4',
-                                    component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
-                                },
-                                {
-                                    //BV手机版在线人数
-                                    path: 'bv-online',
-                                    name: 'online?5',
-                                    component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
-                                },
-                                {
-                                    //BVHD版在线人数
-                                    path: 'bvhd-online',
-                                    name: 'online?6',
-                                    component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
-                                }
-                            ]
-                        },*/
+                         //  权限管理(设置)-在线人数
+                         path: '/online',
+                         component: resolve => require(['../components/Authority-management/Online.vue'], resolve),
+                         redirect: '/online/all-clients',
+                         children: [
+                         {
+                         //所有客户端
+                         path: 'all-clients',
+                         name: 'online',
+                         component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                         },
+                         {
+                         //MC在线人数
+                         path: 'mc-online',
+                         name: 'online?1',
+                         component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                         },
+                         {
+                         //BE在线人数
+                         path: 'be-online',
+                         name: 'online?2',
+                         component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                         },
+                         {
+                         //BW在线人数
+                         path: 'bw-online',
+                         name: 'online?3',
+                         component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                         },
+                         {
+                         //SP在线人数
+                         path: 'sp-online',
+                         name: 'online?4',
+                         component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                         },
+                         {
+                         //BV手机版在线人数
+                         path: 'bv-online',
+                         name: 'online?5',
+                         component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                         },
+                         {
+                         //BVHD版在线人数
+                         path: 'bvhd-online',
+                         name: 'online?6',
+                         component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
+                         }
+                         ]
+                         },*/
                         {
                             //  权限管理(设置)-系统日志
                             path: 'system-log',
@@ -600,6 +632,10 @@ export default new Router({
             // 登录
             path: '/login',
             component: resolve => require(['../components/Login/Login.vue'], resolve)
+        },
+        {
+            path: '/help',
+            component: resolve => require(['../components/Authority-management/help1.vue'], resolve)
         }
 
     ]

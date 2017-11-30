@@ -32,6 +32,8 @@ export const getProjType = params =>axios.get(`${params.url}rs/bimParamRest/getP
 export const getProjects = params =>axios.post(`${params.url}rs/bimRest/getProjects`,params.param)
 //bim创建工程
 export const createProject = params=>axios.post(`${params.url}rs/bimRest/createProject`,params.param);
+//bim修改工程
+export const updateProjShortInfo = params =>axios.post(`${params.url}rs/bimRest/updateProjShortInfo`,params.param)
 //bim创建->授权人员列表
 export const getProjAuthUserInfos = params =>axios.get(`${params.url}rs/bimParamRest/getProjAuthUserInfos/${params.deptId}`);
 //bim创建 项目部树结构
@@ -43,6 +45,11 @@ export const deleteProjects = params =>axios.post(`${params.url}rs/bimRest/delet
 export const deleteProject = params =>axios.post(`${params.url}rs/bimRecycleRest/deleteProject/${params.param.packageType}`,params.param.projIds);
 //回收站清空
 export const bimRecycleRest = params =>axios.post(`${params.url}rs/bimRecycleRest/reductionProjs/${params.param.packageType}`,params.param.projIds)
+
+//bim-抽取
+export const extractProj = params =>axios.get(`${params.url}rs/bimRest/extractProj/${params.param.projId}/${params.param.packageType}`);
+//bim抽取信息失败
+export const getProjExtractInfo = params =>axios.post(`${params.url}rs/bimRest/getProjExtractInfo/${params.param.packageType}`,params.param.ppids);
 /**
  * 云构件库
  * */

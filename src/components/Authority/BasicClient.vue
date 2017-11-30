@@ -79,7 +79,10 @@
                             <el-input
                                 class="el-transfer-panel__filter"
                                 size="small"
+                                v-model="searchVal"
                                 icon="search"
+                                :on-icon-click="search"
+                                @keyup.enter.native="search"
                             ></el-input>
                             <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:245px;">
                                 
@@ -166,8 +169,11 @@
 </template>
 
 <script>
+const contains = (() =>
+  Array.prototype.includes
+    ? (arr, value) => arr.includes(value)
+    : (arr, value) => arr.some(el => el === value))();
 export default {
-  components: { VueScrollbar },
   data() {
     return {
       radio: "1",
@@ -175,8 +181,23 @@ export default {
       addAuthorizationDialogVisible: false,
       modifyDialogVisible: false,
       checkAll: false,
+      searchVal: "",
       checkedCities: ["北京"],
       cities: [
+        "上海11111111111111111111111111111111111111111111111",
+        "北京",
+        "广州",
+        "深圳",
+        "南京",
+        "西安",
+        "成都",
+        "广州1",
+        "深圳2",
+        "南京3",
+        "西安4",
+        "成都5"
+      ],
+      cities_clone: [
         "上海11111111111111111111111111111111111111111111111",
         "北京",
         "广州",
@@ -301,9 +322,14 @@ export default {
       ]
     };
   },
-  watch:{
-    radio(new_,old_){
-       console.log(new_)
+  watch: {
+    radio(new_, old_) {
+      console.log(new_);
+    },
+    searchVal(newVal, oldVal) {
+      if (!newVal) {
+        this.search();
+      }
     }
   },
   methods: {
@@ -313,28 +339,60 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    handleSelectionChange(val) {
-    },
+    handleSelectionChange(val) {},
     handleSizeChange() {},
     handleCurrentChange() {},
     addAuthorization() {},
     handleCheckAllChange(event) {
-      // this.checkedCities = event.target.checked ? this.citys : [];
-      if (event.target.checked) {
-        this.checkedCities = [];
-        this.cities.forEach(item => {
-          this.checkedCities.push(item);
-        });
+      // 非搜索状态下的全选
+      if (!this.searchVal) {
+        if (event.target.checked) {
+          this.checkedCities = [];
+          this.cities.forEach(item => {
+            this.checkedCities.push(item);
+          });
+        } else {
+          this.checkedCities = [];
+        }
+        // 搜索状态下的全选
       } else {
-        this.checkedCities = [];
+        if (event.target.checked) {
+          this.cities.forEach(el => {
+            if (this.checkedCities.indexOf(el) == -1) {
+              this.checkedCities.push(el);
+            }
+          });
+        } else {
+          this.cities.forEach(el => {
+            this.checkedCities.forEach((el_, i) => {
+              if (el == el_) {
+                this.checkedCities.splice(i, 1);
+              }
+            });
+          });
+        }
       }
+
       // this.isIndeterminate = false;
     },
     handleCheckedCitiesChange(value) {
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.cities.length;
+      // 非搜索状态
+      let tempSearchResultChecked = 0;
+      if (!this.searchVal) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.cities.length;
+      } else {
+        // 搜索状态
+        console.log(value);
+        // 判断筛选中有没有选中状态
+        this.checkedCities.forEach(el => {
+          if (contains(this.cities, el)) {
+            tempSearchResultChecked++;
+          }
+        });
+        debugger;
+        this.checkAll = tempSearchResultChecked == this.cities.length;
+      }
     },
     deleteItem(item) {
       this.checkedCities.forEach((el, index) => {
@@ -351,6 +409,28 @@ export default {
     deleteAll() {
       this.checkedCities = [];
       this.checkAll = false;
+    },
+    search() {
+      if (!this.searchVal) {
+        this.cities = this.cities;
+        this.checkAll = this.checkedCities.length == this.cities.length;
+      }
+      let tempSearchResult = []; //搜索展示数组
+      let tempSearchResultChecked = 0;
+      this.cities_clone.forEach((val, key) => {
+        //搜索匹配成功的加入到searchArr
+        if (val.indexOf(this.searchVal) != -1) {
+          tempSearchResult.push(val);
+        }
+      });
+      this.cities = tempSearchResult;
+      // 判断筛选中有没有选中状态
+      this.checkedCities.forEach(el => {
+        if (contains(this.cities, el)) {
+          tempSearchResultChecked++;
+        }
+      });
+      this.checkAll = tempSearchResultChecked == tempSearchResult.length;
     }
   }
 };
@@ -454,7 +534,7 @@ export default {
 
 .el-transfer-right .el-transfer-panel__list {
   padding-top: 10px;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .el-transfer-right .el-transfer-panel__item {
