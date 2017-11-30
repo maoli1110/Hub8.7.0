@@ -46,7 +46,7 @@
                         <el-table-column prop="invoiceType" label="发票类型" width="150"></el-table-column>
                         <el-table-column label="操作" width="185" class="operate">
                             <template slot-scope="scope">
-                                <i class="icon icon-alipay" @click=""></i>
+                                <i class="icon icon-alipay" @click="redirectToPay"></i>
                                 <i class="icon icon-BIM-delete" @click="deleteList"
                                    v-if="scope.row.paymentStatus !== 'COMPLETED'"></i>
                             </template>
@@ -92,14 +92,15 @@
         },
         methods: {
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+//                console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+//                console.log(`当前页: ${val}`);
                 this.currentPage = val;
                 this.getEnterpriseOrderList()
             },
             refreshList(e,val){
+                // 最近几月-更新列表
                 console.log(val);
                 this.recentMonth = val;
                 this.getEnterpriseOrderList()
@@ -107,6 +108,7 @@
                 $(e.currentTarget).addClass('active').siblings().removeClass('active')
             },
             getEnterpriseOrderList(){
+                // 获取eds订单列表
                 var vm = this;
                 let baseUrl = basePath(vm.$route.matched[3].path)
                 let params = {
@@ -122,6 +124,26 @@
             },
             deleteList(){
                 // 删除订单
+                this.$confirm('是否删除订单记录?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            redirectToPay(){
+                // 支付跳转
+
             }
         },
         components: {
