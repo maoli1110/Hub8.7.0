@@ -127,7 +127,7 @@
                             <td class="relat" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
                             <td>{{item.projSize}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
-                            <td>
+                            <td style="padding:0 3px;">
                                 <div v-show="item.status===1" class="align-l"><span class="bim-icon" style="background-position: -18px 0;"></span>处理成功</div>
                                 <div v-show="item.status===-1" class="align-l"><span class="bim-icon" style="background-position: -36px 0;"></span>处理失败</div>
                                 <div v-show="item.status===2 || item.status==3"   class="align-l"><span class="bim-icon" style="background-position: -54px 0;"></span>处理中</div>
@@ -137,7 +137,7 @@
                             <td>{{item.version}}</td>
                             <td>
                                 <div class="handel-cotrol"><span class=" handel-icon " title="工程管理" @click="ProjManageDialog = true;addProject('modific',item)"></span></div>
-                                <div class="handel-cotrol"><span class=" handel-icon " title="抽取" @click="extractDialog=true;extractData('处理中')"></span></div><!--extractData(scope.row.status)"-->
+                                <div class="handel-cotrol"><span class=" handel-icon " title="抽取" @click="extractDialog=true;extractData('处理中',item)"></span></div><!--extractData(scope.row.status)"-->
                                 <div class="handel-cotrol"><span class=" handel-icon " title="修改名称" @click="modifyInfo=true"></span></div>
                                 <div class="handel-cotrol"><span class=" handel-icon " title="监控" @click="monitorSeverVisible=true" ></span></div>
                             </td>
@@ -330,7 +330,7 @@
                 <p class="dialog-tips-title">当前数据{{extractStatus}},</p>
                 <p class="dialog-tips-title">是否重新处理？</p>
             </div>
-            <span slot="footer" class="dialog-footer" style="text-align:center;">
+            <span slot="footer" class="dialog-footer" v-if="extractReadInfo" style="text-align:center;">
                 <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="extractDialog = false;extractOk()">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cacel" @click="extractDialog = false;extractCancel()">取 消</el-button>
             </span>
@@ -408,6 +408,7 @@
                 extractStatus:'',       //抽取状态
                 proManageVal:"",        //添加->弹窗项目部选中的值
                 createDeptId:"",        //添加->deptId
+                extractReadInfo:false,  //抽取信息状态
                 //分页的一些设置
                 cur_page:1,             //bim库分页当前页
                 totalPages:10,          //bim库分页显示条数
@@ -484,6 +485,9 @@
                     projName: '',          //名称
                     projType: '',         //专业
                     userIds: []                            //授权人员名单
+                },
+                itemInfo:{
+                    projId:''
                 },
                 modifyInfoList:{        //修改弹窗数据
                     name:'初始项目部',
@@ -1116,10 +1120,7 @@
                     this.updateProjInfo(baseUrl,this.UpdateParamInfo);
                 }
             },
-            //列表中传过来处状态
-            extractData(status){
-                this.extractStatus = status;
-            },
+
             /**
              * @params type 批量监控还是监控
              * **/
@@ -1141,18 +1142,36 @@
              * getProjExtractInfo   抽取信息失败
              **/
             extractProject(url,param){
-                extractProj({url:baseUrl,param:param}).then((data)=>{
+                console.log(param)
+                extractProj({url:url,param:param}).then((data)=>{
                     console.log(data)
                 })
             },
             getProjExtractInfo(url,param){
-                getProjExtractInfo({url:baseUrl,param:param}).then((data)=>{
+                getProjExtractInfo({url:url,param:param}).then((data)=>{
                     console.log(data)
                 })
             },
+            //列表中传过来处状态
+            extractData(status,item){
+                this.extractStatus = status;
+                if(item.status==2 ||item.status==3||item.status==4){
+                    this.extractReadInfo = false;
+                }else{
+                    this.extractReadInfo = true;
+                }
+                this.itemInfo.projId = item.projId;
+                console.log(item,'抽取信息')
+                //抽取状态为待处理或者是处理中
+            },
             //抽取数据
             extractOk(){
-
+                console.log(this.itemInfo.projId)
+                let param ={
+                    packageType:this.$route.params.typeId,
+                    projId:parseInt(this.itemInfo.projId)
+                }
+                this.extractProject({url:baseUrl,param:{ packageType:this.$route.params.typeId, projId:parseInt(this.itemInfo.projId)}})
             },
             //抽取失败
             extractCancel(){
@@ -1238,8 +1257,8 @@
     .bims-contents .dialog_body{width:175px;margin:0 auto;}
     .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;}
     .filter-bar>.el-select{width:100%;}
-    .align-l{text-align:left;padding-left:20px;}
-    .align-l>span{margin:0 10px;margin-top:15px;float:left}
+    .align-l{text-align:left;}
+    .align-l>span{margin:0 0 0 3px;margin-top:15px;float:left}
     .left85{left:85px;}
     .left140{left:119px}
     .left120{left:120px;}

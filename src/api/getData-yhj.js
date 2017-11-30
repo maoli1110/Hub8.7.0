@@ -47,7 +47,7 @@ export const deleteProject = params =>axios.post(`${params.url}rs/bimRecycleRest
 export const bimRecycleRest = params =>axios.post(`${params.url}rs/bimRecycleRest/reductionProjs/${params.param.packageType}`,params.param.projIds)
 
 //bim-抽取
-export const extractProj = params =>axios.get(`${params.url}rs/bimRest/extractProj/${params.param.packageType}/${params.param.projId}`);
+export const extractProj = params =>axios.get(`${params.url}rs/bimRest/extractProj/${params.param.projId}/${params.param.packageType}`);
 //bim抽取信息失败
 export const getProjExtractInfo = params =>axios.post(`${params.url}rs/bimRest/getProjExtractInfo/${params.param.packageType}`,params.param);
 /**
