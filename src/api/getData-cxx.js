@@ -33,37 +33,14 @@ export const getWorksetingList = params => axios.get(`${base}`);
 export const getCitys = params => axios.get('../../static/js/citys.json')
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 export const router = params=> axios.get(`${route}`);
+// 订单管理
 // GET /order/manage/getEnterpriseServiceList/{currentPage}/{pageSize} 分页获取企业服务列表
-export const getOrderManagementList = params=> axios.get(`${params.url}/order/manage/getEnterpriseServiceList/${params.currentPage}/${params.pageSize}`);
+export const getOrderManagementList = params=> axios.get(`${params.url}order/manage/getEnterpriseServiceList/${params.currentPage}/${params.pageSize}`);
 // POST /order/manage/getBindingList 获取服务与硬件绑定列表
-export const getBindingList=params=>axios.post(`${params.url}/order/manage/getBindingList`)
-/**
- * bim库
- */
-//Bim筛选条件->专业
-export const getMajorsByCreate = params =>axios.get(`${params.url}rs/bimParamRest/getMajorsByCreate`);
-//Bim筛选条件->专业
-export const getProjGenre = params =>axios.get(`${params.url}rs/bimParamRest/getProjGenre/${params.isDelete}/${params.packageType}`);
-//Bim筛选条件->专业
-export const getProjType = params =>axios.get(`${params.url}rs/bimParamRest/getProjType/${params.isDelete}/${params.packageType}`);
+export const getBindingList = params=>axios.post(`${params.url}order/manage/getBindingList`, params.getBindingListParam)
+// POST /order/manage/unbinding/{bindingId} 解除服务与硬件绑定
+export const unBindingList = params=>axios.post(`${params.url}order/manage/unbinding/${params.bindingId}`)
 
-
-//bim库列表
-export const getProjects = params =>axios.post(`${params.url}rs/bimRest/getProjects`,params.param)
-//bim创建工程
-export const createProject = params=>axios.post(`${params.url}rs/bimRest/createProject`,params.param);
-//bim创建->授权人员列表
-export const getProjAuthUserInfos = params =>axios.get(`${params.url}rs/bimParamRest/getProjAuthUserInfos/${params.deptId}`);
-//bim创建 项目部树结构
-export const zTreeNodes = params =>axios.get(`${params.url}org/admin/nodes`);
-/**
- * 云构件库
- * */
-//构件树列表
-export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.version}/${params.productId}`);
-
-
-/**
- * 组织结构
- */
-export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
+// EDS订单
+// GET /eds/order/getEnterpriseOrderList/{recentMonth}/{currentPage}/{pageSize} 获取EDS订单列表
+export const getEnterpriseOrderList = params=> axios.get(`${params.url}eds/order/getEnterpriseOrderList/${params.recentMonth}/${params.currentPage}/${params.pageSize}`);
