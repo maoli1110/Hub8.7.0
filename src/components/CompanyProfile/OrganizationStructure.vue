@@ -443,13 +443,13 @@ export default {
     background-position: -186px -145px;
 }
 .org .ztree li span.button.center_docu {
-    background-position: -1px -194px;
+    background-position: -4px -204px;
 }
 .org .ztree li span.button.center_close {
     background-position: -116px -145px;
 }
 .org .ztree li span.button.bottom_docu {
-    background-position: -1px -234px;
+    background-position: -4px -234px;
 }
 .org .ztree li span.button.bottom_open {
     background-position: -185px -4px;
