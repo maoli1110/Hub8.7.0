@@ -1599,10 +1599,10 @@ ul > li {
     margin-left: -192px;
 }
 
-.el-form-item__label {
+/* .el-form-item__label {
     width: 80px;
     text-align: right;
-}
+} */
 
 body .el-popover.remark-popper {
     height: 200px;
