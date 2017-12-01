@@ -42,7 +42,7 @@ export const zTreeNodes = params =>axios.get(`${params.url}org/admin/nodes`);
 export const deleteProjects = params =>axios.post(`${params.url}rs/bimRest/deleteProjects/${params.param.packageType}`,params.param.projIds)
 
 //回收站删除
-export const deleteProject = params =>axios.post(`${params.url}rs/bimRecycleRest/deleteProject/${params.param.packageType}`,params.param.projIds);
+export const deleteProject = params =>axios.post(`${params.url}rs/bimRecycleRest/deleteProject`,params.param);
 //回收站清空
 export const bimRecycleRest = params =>axios.post(`${params.url}rs/bimRecycleRest/reductionProjs/${params.param.packageType}`,params.param.projIds)
 
@@ -50,6 +50,11 @@ export const bimRecycleRest = params =>axios.post(`${params.url}rs/bimRecycleRes
 export const extractProj = params =>axios.get(`${params.url}rs/bimRest/extractProj/${params.param.projId}/${params.param.packageType}`);
 //bim抽取信息失败
 export const getProjExtractInfo = params =>axios.post(`${params.url}rs/bimRest/getProjExtractInfo/${params.param.packageType}`,params.param.ppids);
+
+//修改工程信息
+export const updateProjName = params =>axios.post(`${params.url}rs/bimRest/updateProjName`,params.param);
+//获取曾用名
+export const getProjUsedName = params =>axios.get(`${params.url}/rs/bimRest/getProjUsedName/${params.param.projId}/${params.param.packageType}`);
 /**
  * 云构件库
  * */

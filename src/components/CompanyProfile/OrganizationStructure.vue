@@ -128,55 +128,57 @@
         </div>
         <!-- 添加分公司界面start -->
         <el-dialog title="添加分公司" :visible.sync="dialogVisible" size="tiny">
-            <el-form ref="orgForm" :model="orgForm" label-width="100px">
+            <el-form :model="orgForm" :rules="rules" ref="orgForm" label-width="100px">
                 <el-radio-group v-model="orgForm.resource">
                     <el-radio label="分公司"></el-radio>
                     <el-radio label="项目部"></el-radio>
                 </el-radio-group>
                 <!-- 分公司 -->
                 <div class="branch-company">
-                    <el-form-item label="分公司名称：">
+                    <el-form-item label="分公司名称："  prop="company">
                         <el-input v-model="orgForm.company"></el-input>
                     </el-form-item>
-                    <el-form-item label="分公司负责人：">
+                    <el-form-item label="分公司负责人：" prop="responsible">
                         <el-input v-model="orgForm.responsible"></el-input>
                     </el-form-item>
                 </div>
                 <!-- 项目部 -->
                 <div class="project">
                     <el-form-item label="项目名称：">
-                        <el-input v-model="orgForm.name" placeholder="请输入公司名称"></el-input>
+                        <el-input v-model="orgForm.name" placeholder="请输入项目名称"></el-input>
                     </el-form-item>
                     <el-form-item label="项目负责人：">
-                        <el-input v-model="orgForm.name"></el-input>
+                        <el-input v-model="orgForm.managerName"></el-input>
                     </el-form-item>
-                    <el-form-item label="项目经理：">
-                        <el-input v-model="orgForm.name"></el-input>
+                    <el-form-item label="项目经理："> <!-- 暂定 -->
+                        <el-select v-model="orgForm.region" placeholder="请选择活动区域">
+                            <div>eeee</div>
+                        </el-select>
                     </el-form-item>
-                    <el-form-item label="手机号码：">
-                        <el-input v-model="orgForm.name"></el-input>
+                    <el-form-item label="手机号码：" prop="mobile">
+                        <el-input v-model="orgForm.mobile"></el-input>
                     </el-form-item>
                     <el-form-item label="项目开工日期：">
                         <el-form-item prop="date1">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="orgForm.date1" style="width: 100%;"></el-date-picker>
+                            <el-date-picker type="date" placeholder="选择日期" v-model="orgForm.startDate" style="width: 100%;"></el-date-picker>
                         </el-form-item>
                     </el-form-item>
                     <el-form-item label="项目竣工日期：">
                         <el-form-item prop="date2">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="orgForm.date2" style="width: 100%;"></el-date-picker>
+                            <el-date-picker type="date" placeholder="选择日期" v-model="orgForm.endDate" style="width: 100%;"></el-date-picker>
                         </el-form-item>
                     </el-form-item>
                     <el-form-item label="建筑面积(m2)">
-                        <el-input v-model="orgForm.name"></el-input>
+                        <el-input v-model="orgForm.area" placeholder="请输入建筑面积大小，例：8888.00"></el-input>
                     </el-form-item>
                     <el-form-item label="里程：">
-                        <el-input v-model="orgForm.name"></el-input>
+                        <el-input v-model="orgForm.mileage"></el-input>
                     </el-form-item>
                     <el-form-item label="所在地：">
-                        <el-input v-model="orgForm.name"></el-input>
+                        <el-input v-model="orgForm.location"></el-input>
                     </el-form-item>
                     <el-form-item label="合同类型：">
-                        <el-select v-model="orgForm.region" placeholder="请选择活动区域">
+                        <el-select v-model="orgForm.contractType" placeholder="请选择活动区域">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
@@ -187,8 +189,8 @@
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="备注：">
-                        <el-input type="textarea" v-model="orgForm.desc"></el-input>
+                    <el-form-item label="备注：" prop="remarks">
+                        <el-input type="textarea" v-model="orgForm.remarks"></el-input>
                     </el-form-item>
                 </div>
             </el-form>
@@ -203,21 +205,50 @@
 import axios from "axios";
 import {getOrgTreeList} from '../../api/getData.js';
 import {basePath,transformToObjFormat} from "../../utils/common.js";
+import {
+  validatephoneNumber,
+  validateEmail
+} from "../../utils/validate";
 let baseUrl;
+const validateMobile = (rule, value, callback) => {
+  if (validatephoneNumber(value)) {
+    callback();
+  } else {
+    callback(new Error("请输入正确的用户信息"));
+  }
+};
 export default {
     data() {
         return {
             //dialog属性
             dialogVisible: false,
             orgForm: {
-                name: '',
+                company: '',
+                mobile: '',
                 region: '',
                 date1: '',
                 date2: '',
                 delivery: false,
                 type: [],
                 resource: '分公司',
-                desc: ''
+                desc: '',
+                responsible:''
+            },
+            rules: {
+                company: [
+                    { required: true, message: '请输入公司名称', trigger: 'blur' },
+                    { min: 3, max: 25, message: '长度在 3-25个字符', trigger: 'blur' }
+                ],
+                responsible: [
+                    { required: true, message: '请输入活动名称', trigger: 'blur' },
+                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                ],
+                mobile: [
+                    { required: true, trigger: "blur", validator: validateMobile }
+                ],
+                remarks: [
+                    { max: 5, message: '最多150个字符', trigger: 'blur' }
+                ]
             },
             // 树数据
             url: "../../../static/orgs-old.json",
@@ -399,7 +430,7 @@ export default {
 }
 .org .noneHLine {
     margin: 0px;
-    margin-right: 126px;
+    margin-right: 106px;
     height: 1px;
     display: block;
     padding: 0px;
