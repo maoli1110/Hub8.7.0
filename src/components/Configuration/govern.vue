@@ -1,34 +1,44 @@
 <template>
     <div class="LubanCoinsManagementBox">
         <div class="order-management">
-            <div class="header" >
+            <div class="header">
                 <el-col :span="24">
-                    <span class="orders-text font-w-n font-s-14">时间：</span>
-                    <el-date-picker format="yyyy.MM.DD"
-                                    v-model="selectDate"
-                                    type="daterange"
-                                    placeholder="选择日期范围" class="absol" style="width:240px">
-                    </el-date-picker>
+                    <span class="orders-text">合同清单导入格式配置</span>
                 </el-col>
             </div>
             <div class="main">
-
-                <el-button type="primary" class="basic-btn"
-                           @click=""><i
-                    class="components-icon icon-update icon-map "></i><span class="btn-text">导出</span>
-                </el-button>
+                <el-input
+                    placeholder="搜索鲁班通行证或人员姓名"
+                    icon="search"
+                    v-model="staffName"
+                    :on-icon-click="searchContent" class="staffName">
+                </el-input>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                    <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
+                    <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border
+                              tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px">
-                        <el-table-column class="" type='index' label="序号" width="60" :index="indexSort"></el-table-column>
-                        <el-table-column class="table-tr" prop="date" label="通行证/账号名称" width="200"></el-table-column>
-                        <el-table-column class="table-tr" label="功能" show-overflow-tooltip>
+                        <el-table-column label="支持清单导入格式" width="200" show-overflow-tooltip></el-table-column>
+                        <el-table-column class="table-tr" prop="date" label="综合单价">
+                            <el-table-column class="table-tr" prop="date" label="对应综合单价分析表名称" width="250">
+
+                            </el-table-column>
+                            <el-table-column class="table-tr" prop="date" label="对应综合单价工料机分析表名称" width="250">
+
+                            </el-table-column>
+                        </el-table-column>
+                        <el-table-column class="table-tr" label="项目部" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 已分配{{scope.row.assignedAccount[0]}}账号，每个账号{{scope.row.assignedAccount[1]}}个
                             </template>
                         </el-table-column>
-                        <el-table-column class="table-tr" prop="revenue" label="操作对象" width="200"></el-table-column>
-                        <el-table-column class="table-tr" prop="disbursement" label="时间" width="200"></el-table-column>
+                        <el-table-column class="table-tr" prop="disbursement" label="更新时间"
+                                         width="200"></el-table-column>
+                        <el-table-column class="table-tr" prop="revenue" label="更新人" width="200"></el-table-column>
+                        <el-table-column class="table-tr" label="操作" width="100">
+                            <template slot-scope="scope">
+                                <i class="icon icon-allocation" @click="allocateDialogVisible=true;allocate()"></i>
+                            </template>
+                        </el-table-column>
                     </el-table>
                 </vue-scrollbar>
                 <div style="margin-top: 20px">
@@ -36,8 +46,7 @@
                     <el-pagination style="margin-left:30%"
                                    @size-change="handleSizeChange"
                                    @current-change="handleCurrentChange"
-                                   :current-page="4"
-                                   :page-sizes="[100, 200, 300, 400]"
+                                   :current-page="1"
                                    :page-size="100"
                                    layout="total, sizes, prev, pager, next, jumper"
                                    :total="400">
@@ -45,15 +54,25 @@
                 </div>
             </div>
         </div>
+        <el-dialog title="分配项目部导入格式" :visible.sync="allocateDialogVisible" size='project-authorize'>
+            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:400px;margin-top:20px">
+                <ul id="projectTree" class="ztree"></ul>
+            </vue-scrollbar>
+            <div slot="footer" class="dialog-footer" style="margin-top:54px">
+                <el-button type="primary" class="dialog-btn">确 定</el-button>
+                <el-button @click="allocateDialogVisible = false" class="dialog-btn">取消</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
-<script>
+<script type='text/ecmascript-6'>
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
     export default {
         data (){
 
             return {
+                url: "../../../static/tree1.json",
                 coinsManagementTableData: [
                     {
                         date: "2016-05-03 13:51",
@@ -62,11 +81,24 @@
                             201 //可分配
                         ],
                         revenue: 12,
-                        disbursement:22,
+                        disbursement: 22,
                         bindNumber: 22,
-                        balance:20,
+                        balance: 20,
                     }
-                ]
+                ],
+                staffName: '',
+                projectSetting: {
+                    check: {
+                        enable: true
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    }
+                },
+                projectNodes: [],
+                allocateDialogVisible:false
             }
         },
         components: {
@@ -82,6 +114,20 @@
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
+            },
+            searchContent(){
+
+            },
+            // 分配项目部导入格式
+            allocate() {
+                this.$axios.get(this.url).then(res => {
+                    this.projectNodes = res.data;
+                    $.fn.zTree.init(
+                        $("#projectTree"),
+                        this.projectSetting,
+                        this.projectNodes
+                    );
+                })
             }
         },
         mounted() {
@@ -100,28 +146,38 @@
     button.basic-btn {
         margin-top: 15px;
     }
-    .order-management .header .font-w-n{
-        font-weight:normal;
+
+    .order-management .header .font-w-n {
+        font-weight: normal;
     }
 
-    .span-bule{
-        color:#6694F2;
-        font-size:14px;
-        font-weight:bold;
+    .span-bule {
+        color: #6694F2;
+        font-size: 14px;
+        font-weight: bold;
     }
-    .pull-right-btn button{
+
+    .pull-right-btn button {
         float: right;
-        margin-left:20px;
-    }
-    .margin-r-20{
-        margin-right:20px;
-    }
-    .pull-r-f{
-        float:right;
+        margin-left: 20px;
     }
 
-    .LubanCoinsManagementBox .order-management .el-table__body-wrapper .cell{
+    .staffName {
+        margin-top: 20px;
+        width: 300px;
+    }
+
+    .LubanCoinsManagementBox .order-management .el-table__body-wrapper .cell {
         height: 40px;
         line-height: 40px;
+    }
+
+    .icon-allocation {
+        margin-top: 9px;
+    }
+
+    .project-authorize {
+        height: 700px;
+        width: 520px;
     }
 </style>

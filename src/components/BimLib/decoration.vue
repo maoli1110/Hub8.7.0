@@ -84,7 +84,7 @@
                                 </template>
                             </th>
                             <th>工程名称<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.oriFileName','0')"></span><span class="desc absol" @click="tableListSort('t1.oriFileName','1')"></span></div></th>
-                            <th>专业<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projType','0')"></span><span class="desc absol" @click="tableListSort('t1.projType','1')"></span></div></th>
+                            <th class="bim-projType">专业<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projType','0')"></span><span class="desc absol" @click="tableListSort('t1.projType','1')"></span></div></th>
                             <th v-if="$route.params.typeId!=4">BIM属性<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projGenre','0')"></span><span class="desc absol" @click="tableListSort('t1.projGenre','1  ')"></span></div></th>
                             <th class="uploadPerson">上传人</th>
                             <th>上传时间<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.createDate','0')"></span><span class="desc absol" @click="tableListSort('t1.createDate','1')"></span></div></th>
@@ -93,7 +93,7 @@
                             <th>所属项目部</th>
                             <th>大小<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projSize','0')"></span><span class="desc absol" @click="tableListSort('t1.projSize','1')"></span></div></th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
-                            <th>数据处理</th>
+                            <th style="min-width:88px;">数据处理</th>
                             <th>版本</th>
                             <th>操作</th>
                         </tr>
@@ -106,40 +106,49 @@
                                 </template>
                             </td>
                             <td>{{item.projName}}</td>
-                            <td>
-                                <span v-if="item.projType==1" title="土建预算" class="icon-projType" style="background-position: -52px -15px;"></span>
+                            <td class="bim-projType">
+                                <span v-if="item.projType==1" title="土建预算" class="icon-projType" style="background-position: -55px -15px;"></span>
                                 <span v-if="item.projType==2" title="钢筋预算" class="icon-projType" style="background-position: -87px -15px;"></span>
                                 <span v-if="item.projType==3" title="造价"    class="icon-projType" style="background-position:-39px -15px;"></span>
-                                <span v-if="item.projType==4" title="安装预算" class="icon-projType" style="background-position:-69px -15px;"></span>
-                                <span v-if="item.projType==5" title="场布预算" class="icon-projType" style="background-position: -3px -15px;"></span>
+                                <span v-if="item.projType==4" title="安装预算" class="icon-projType" style="background-position:-70px -15px;"></span>
+                                <span v-if="item.projType==5" title="场布预算" class="icon-projType" style="background-position: -7px -15px;"></span>
                                 <!--<span v-if="item.projType==6" title="Remiz"   class="icon-projType"></span>-->
-                                <span v-if="item.projType==7" title="Tekla" class="icon-projType" style="background-position: -21px -15px;"></span>
+                                <span v-if="item.projType==7" title="Tekla" class="icon-projType" style="background-position: -23px -15px;"></span>
                                 <span v-if="item.projType==8" title="Revit" class="icon-projType" style="background-position:-102px -15px;"></span>
                                 <span v-if="item.projType==9" title="班筑家装" class="icon-projType" style="background-position:-157px -15px"></span>
                                 <span v-if="item.projType==10" title="Civil3D" class="icon-projType" style="background-position:-139px -15px"></span>
                             </td>
                             <td v-if="$route.params.typeId !=4" class="bim-params">{{item.projGenre }}</td>
-                            <td class="absol substr uploadPerson" :title="
-                            item.createRealName+'\n'+item.createUserName">
-                            {{item.createRealName}}</td>
+                            <td class="absol substr uploadPerson" >
+                                <div v-if="item.projClassify==2" >-</div>
+                                <div v-else :title="item.createRealName+'\n'+item.createUserName"> {{item.createRealName}}</div>
+                            </td>
                             <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
                             <td  v-if="$route.params.typeId !=4">{{item.drawSize}}</td>
                             <td class="relat" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
                             <td>{{item.projSize}}</td>
-                            <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
-                            <td style="padding:0 3px;">
-                                <div v-show="item.status===1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -18px 0;"></span>处理成功</div>
-                                <div v-show="item.status===-1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -36px 0;"></span>处理失败</div>
-                                <div v-show="item.status===2 || item.status==3"   class="align-l"><span class="bim-icon" style="background-position: -54px 0;"></span>处理中</div>
-                                <div  v-show="item.status===4"  class="align-l"><span class="bim-icon" style="background-position: -72px 0;"></span>待处理</div>
-                                <div v-show="item.status===0"   class="align-l"><span class="bim-icon" style="background-position: -90px 0;"></span>未处理</div>
+                            <td  v-if="$route.params.typeId ==1">
+                                <div v-if="item.projClassify ==2">-</div>
+                                <div v-else> {{item.zjCount}}</div>
+                            </td>
+                            <td style="padding:0 3px;min-width:88px;" >
+                                <div v-if="item.projClassify ==2">-</div>
+                                <div v-else>
+                                    <div v-show="item.status===1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -18px 0;"></span>处理成功</div>
+                                    <div v-show="item.status===-1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -36px 0;"></span>处理失败</div>
+                                    <div v-show="item.status===2 || item.status==3"   class="align-l"><span class="bim-icon" style="background-position: -54px 0;"></span>处理中</div>
+                                    <div  v-show="item.status===4"  class="align-l"><span class="bim-icon" style="background-position: -72px 0;"></span>待处理</div>
+                                    <div v-show="item.status===0"   class="align-l"><span class="bim-icon" style="background-position: -90px 0;"></span>未处理</div>
+                                </div>
+
                             </td>
                             <td>{{item.version}}</td>
-                            <td>
-                                <div class="handel-cotrol"><span class=" handel-icon " title="工程管理" @click="ProjManageDialog = true;addProject('modific',item)"></span></div>
-                                <div class="handel-cotrol"><span class=" handel-icon " title="抽取" @click="extractDialog=true;extractData(item.status,item)"></span></div><!--extractData(scope.row.status)"-->
-                                <div class="handel-cotrol"><span class=" handel-icon " title="修改名称" @click="modifyInfo=true"></span></div>
-                                <div class="handel-cotrol"><span class=" handel-icon " title="监控" @click="monitorSeverVisible=true" ></span></div>
+                            <td style="min-width:120px;line-height:6px;">
+                                <div class="handel-cotrol"><span class=" handel-icon see" title="监控" @click="monitorSeverVisible=true" ></span></div>
+                                <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon extract" title="抽取" @click="extractDialog=true;extractData(item.status,item)"></span></div><!--extractData(scope.row.status)"-->
+                                <div class="handel-cotrol" v-if="item.projType!=3"><span class=" handel-icon rename" title="修改名称" @click="modifyInfo=true;projRename(item)"></span></div>
+                                <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon modify" title="工程管理" @click="ProjManageDialog = true;addProject('modific',item)"></span></div>
+
                             </td>
                         </tr>
                         </tbody>
@@ -153,13 +162,13 @@
                                 </template>
                             </th>
                             <th>工程名称<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.oriFileName','0')"></span><span class="desc absol" @click="tableListSort('t1.oriFileName','1')"></span></div></th>
-                            <th>专业<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projType','0')"></span><span class="desc absol" @click="tableListSort('t1.projType','1')"></span></div></th>
+                            <th class="bim-projType">专业<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projType','0')"></span><span class="desc absol" @click="tableListSort('t1.projType','1')"></span></div></th>
                             <th v-if="$route.params.typeId!=4">BIM属性<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projGenre','0')"></span><span class="desc absol" @click="tableListSort('t1.projGenre','1  ')"></span></div></th>
                             <th class="uploadPerson">上传人</th>
                             <th>上传时间<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.createDate','0')"></span><span class="desc absol" @click="tableListSort('t1.createDate','1')"></span></div></th>
-                            <th v-if="$route.params.typeId!=4">图纸</th>
+                            <th v-if="$route.params.typeId!=4" class="bim-projType">图纸</th>
                             <th class="depart-pro">所属项目部</th>
-                            <th>大小<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projSize','0')"></span><span class="desc absol" @click="tableListSort('t1.projSize','1')"></span></div></th>
+                            <th class="bim-projType">大小<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projSize','0')"></span><span class="desc absol" @click="tableListSort('t1.projSize','1')"></span></div></th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
                             <th>版本</th>
                         </tr>
@@ -172,7 +181,7 @@
                                 </template>
                             </td>
                             <td class="project-name">{{item.projName}}</td>
-                            <td>
+                            <td class="bim-projType">
                                 <span v-if="item.projType==1" title="土建预算" class="icon-projType" style="background-position: -52px -15px;"></span>
                                 <span v-if="item.projType==2" title="钢筋预算" class="icon-projType" style="background-position: -87px -15px;"></span>
                                 <span v-if="item.projType==3" title="造价"    class="icon-projType" style="background-position:-39px -15px;"></span>
@@ -190,10 +199,10 @@
                             <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
                             <td  v-if="$route.params.typeId !=3">{{item.drawSize}}</td>
                             <!--<td class="depart-pro">{{item.deptName}}</td>-->
-                            <td class="relat depart-pro" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
-                            <td>{{item.size}}</td>
+                            <td class="relat depart-pro" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px;left:0">{{item.deptName}}</span></td>
+                            <td class="bim-projType">{{item.size}}</td>
                             <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
-                            <td>item.version</td>
+                            <td>{{item.version}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -326,9 +335,19 @@
                    width="30%"
                    size="tiny">
             <div class="dialog_body">
-                <i class="el-icon-warning"></i>
-                <p class="dialog-tips-title">当前数据{{extractStatus}},</p>
-                <p class="dialog-tips-title">是否重新处理？</p>
+                <i v-if="extractReadInfo" class="el-icon-warning"></i>
+                <p  v-if="extractReadInfo" class="dialog-tips-title">当前数据
+                    <span v-if="extractStatus==-1">失败</span>
+                    <span v-if="extractStatus==0">未处理</span>
+                    <span v-if="extractStatus==1">成功</span>
+                </p>
+                <p v-if="extractReadInfo" class="dialog-tips-title">是否重新处理？</p>
+
+                <i v-if="!extractReadInfo" class="el-icon-warning ing-warning" ></i>
+                <p v-if="!extractReadInfo" class="dialog-tips-title" style="padding-bottom:7px;">工程
+                    <span v-if="extractStatus==3 || extractStatus==2">处理中</span>
+                    <span v-if="extractStatus==4">待处理</span>，请稍后重试！
+                </p>
             </div>
             <span slot="footer" class="dialog-footer" v-if="extractReadInfo" style="text-align:center;">
                 <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="extractDialog = false;extractOk()">确 定</el-button>
@@ -347,12 +366,12 @@
                 </el-form-item>
                 <el-form-item label="曾用名：">
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:150px;">
-                        <div contenteditable="true" class="scroll-me" style="display:block;text-align:left;background:#fff;">{{modifyInfoList.formatName}}</div>
+                        <div  class="scroll-me" style="display:block;text-align:left;background:#fff;">{{modifyInfoList.formatName}}</div>
                     </vue-scrollbar>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="modifyInfo = false;modifyUpdate()">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="modifyUpdate()">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="modifyInfo = false">取 消</el-button>
             </div>
         </el-dialog>
@@ -377,7 +396,10 @@
         bimRecycleRest,
         updateProjShortInfo,
         extractProj,
-        getProjExtractInfo
+        getProjExtractInfo,
+        testList,          //测试数据
+        updateProjName,
+        getProjUsedName
     } from '../../api/getData-yhj.js';                                      //接口数据
     let deletArray = [];        //删除projIds队列
     let countIndex = 0;         //表格选中状态个数统计
@@ -490,8 +512,9 @@
                     projId:''
                 },
                 modifyInfoList:{        //修改弹窗数据
-                    name:'初始项目部',
-                    formatName:'我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家我爱我家'
+                    name:'',
+                    formatName:'',
+                    projId:0
                 },
                 monitorSever:{          //监控弹窗数据
                     projectItem:'',
@@ -561,7 +584,7 @@
                 this.tableParam.pageParam.size = this.totalPages;
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
 
-                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+//                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //bim库bim属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
             },
@@ -691,11 +714,14 @@
 
             },
             //创建->获取授权人员
-            getRootMan(deptId){
-                deptId = !deptId?"d68ceeb2d02043bd9ea5991ac44d649b":deptId;
-                getProjAuthUserInfos({url:baseUrl,deptId:deptId}).then((data)=>{
+            getRootMan(baseUrl,param){
+//                deptId = !deptId?"d68ceeb2d02043bd9ea5991ac44d649b":deptId;
+                getProjAuthUserInfos({url:baseUrl,param:param}).then((data)=>{
                     this.authUserInfoList = data.data.result; //可授权人员列表
                     authUserInfoListCopy = data.data.result;  //可授权人员deep_copy
+                    if(this.authUserInfoList==null){
+                        return false;
+                    }
                     this.authUserInfoList.forEach((val,key)=>{
                         if(val.hasAuth){
                             this.authUserListItem.push(val);
@@ -791,6 +817,13 @@
                     })
                     this.pagesList = data.data.result;
                 })
+                /*testList().then((data)=>{
+                    this.tableData = data.data.result.content;
+                    this.tableData.forEach((val,key)=>{
+                        this.$set(this.tableData[key],'checked',false)
+                    })
+                    this.pagesList = data.data.result;
+                })*/
             },
             //进入回收站
             inRecycle(path,paramId){
@@ -873,7 +906,7 @@
                 },()=>{},'warning')
                 }else if(type=='wipeData'){
                     this.commonConfirm('确认删除回收站工程？删除后不可恢复！',()=>{
-                        this.delRecycle({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}})
+                        this.delRecycle({url:baseUrl,param:{deleteAll:false,packageType:this.$route.params.typeId,projIds:deletArray}})
                     },()=>{},'warning')
                 }
             },
@@ -973,7 +1006,7 @@
                     }
                     this.clearCreateParam();
                     this.getTree();
-                    this.getRootMan();
+                    this.getRootMan(baseUrl,{deptId:"d68ceeb2d02043bd9ea5991ac44d649b",packageType:this.$route.params.typeId,ppid:""});
 
                 }else{
                     //修改工程
@@ -985,12 +1018,12 @@
                         this.addPrjectTitle = '添加工程'
                     }
                     this.getTree('modify',item.deptId);
-                    this.getRootMan(item.deptId);
                     this.proManage.name = item.projName;
                     this.proManage.remark = item.projMemo;
                     this.UpdateParamInfo.projId = parseInt(item.projId);
                     this.createDeptId = item.deptId;
                     this.proManage.major = item.projType;
+                    this.getRootMan(baseUrl,{deptId:"d68ceeb2d02043bd9ea5991ac44d649b",packageType:this.$route.params.typeId,ppid:item.ppid})
 
                 }
             },
@@ -1105,8 +1138,8 @@
                 }
                 this.authUserListItem.forEach((val,key)=>{  //将选中结果里面可用值提取出来
                     if(!val.allAuth && val.hasAuth){
-                        newCreate.userIds.push(val.userId)
-                        this.UpdateParamInfo.userIds.push(val.userId)
+                        newCreate.userIds.push(val.userName)
+                        this.UpdateParamInfo.userIds.push(val.userName)
                     }
                 })
                 if(!this.isDisable){
@@ -1184,7 +1217,37 @@
 
             },
             //修改名称
+            updateProjRename(url,param){
+                updateProjName({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        this.modifyInfo = false;
+                        this.commonMessage('工程名称修改成功','success');
+                        this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+                    }
+                })
+            },
+            //获取曾用名
+            getProjUserSecondName(url,param){
+                getProjUsedName({url:url,param:param}).then((data)=>{
+                    if(data.data.result){
+                        this.modifyInfoList.formatName = data.data.result;
+                    }
+                })
+            },
+
+            projRename(item){
+                this.modifyInfoList.name = item.projName;
+                this.modifyInfoList.projId = item.projId
+                this.getProjUserSecondName(baseUrl,{projId:item.projId,packageType:this.$route.params.typeId})
+            },
             modifyUpdate(){
+                ///{projId}/{projName}/{packageType}
+                if(this.modifyInfoList.name){
+                    this.updateProjRename(baseUrl,{projId:parseInt(this.modifyInfoList.projId),projName:this.modifyInfoList.name,packageType:parseInt(this.$route.params.typeId)})
+
+                }else{
+                    this.commonMessage('工程名称不能为空')
+                }
                 console.log(this.modifyInfoList)
                 //执行完成清除状态
             },
@@ -1260,11 +1323,13 @@
     .bims-contents .el-input{
         width:84%;
     }
-    .bims-contents .dialog_body{width:175px;margin:0 auto;}
-    .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;}
+    .bims-contents .dialog_body{width:224px;margin:0 auto;}
+    .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;margin-left:38px;}
+    .bims-contents .dialog_body>i.ing-warning{color:orange ;margin:-4px 6px 0 0 ;}
+
     .filter-bar>.el-select{width:100%;}
     .align-l{text-align:left;}
-    .align-l>span{margin:0 0 0 3px;margin-top:15px;float:left}
+    .align-l>span{margin:0 6px 0 3px;margin-top:15px;float:left}
     .left85{left:85px;}
     .left140{left:119px}
     .left120{left:120px;}

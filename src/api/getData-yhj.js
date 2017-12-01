@@ -16,7 +16,7 @@ export const getWorksetingList = params => axios.get(`${base}`);
 export const getCitys = params => axios.get('../../static/js/citys.json')
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 
-
+export const testList = params =>axios.get('../../static/tableList.json')
 /**
  * bim库
  */
@@ -35,14 +35,14 @@ export const createProject = params=>axios.post(`${params.url}rs/bimRest/createP
 //bim修改工程
 export const updateProjShortInfo = params =>axios.post(`${params.url}rs/bimRest/updateProjShortInfo`,params.param)
 //bim创建->授权人员列表
-export const getProjAuthUserInfos = params =>axios.get(`${params.url}rs/bimParamRest/getProjAuthUserInfos/${params.deptId}`);
+export const getProjAuthUserInfos = params =>axios.post(`${params.url}rs/bimParamRest/getProjAuthUserInfos`,params.param);
 //bim创建 项目部树结构
 export const zTreeNodes = params =>axios.get(`${params.url}org/admin/nodes`);
 //列表删除
 export const deleteProjects = params =>axios.post(`${params.url}rs/bimRest/deleteProjects/${params.param.packageType}`,params.param.projIds)
 
 //回收站删除
-export const deleteProject = params =>axios.post(`${params.url}rs/bimRecycleRest/deleteProject/${params.param.packageType}`,params.param.projIds);
+export const deleteProject = params =>axios.post(`${params.url}rs/bimRecycleRest/deleteProject`,params.param);
 //回收站清空
 export const bimRecycleRest = params =>axios.post(`${params.url}rs/bimRecycleRest/reductionProjs/${params.param.packageType}`,params.param.projIds)
 
@@ -50,6 +50,11 @@ export const bimRecycleRest = params =>axios.post(`${params.url}rs/bimRecycleRes
 export const extractProj = params =>axios.get(`${params.url}rs/bimRest/extractProj/${params.param.projId}/${params.param.packageType}`);
 //bim抽取信息失败
 export const getProjExtractInfo = params =>axios.post(`${params.url}rs/bimRest/getProjExtractInfo/${params.param.packageType}`,params.param.ppids);
+
+//修改工程信息
+export const updateProjName = params =>axios.post(`${params.url}rs/bimRest/updateProjName`,params.param);
+//获取曾用名
+export const getProjUsedName = params =>axios.get(`${params.url}/rs/bimRest/getProjUsedName/${params.param.projId}/${params.param.packageType}`);
 /**
  * 云构件库
  * */

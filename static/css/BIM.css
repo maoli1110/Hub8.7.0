@@ -1,6 +1,6 @@
 /*==============================Bim-lib（bim库样式）=====================*/
 .Bim-libs .contents{position:relative}
-.Bim-libs table {border:0;cellspacing:0;cellpadding:0;width:100%;    min-width: 1296px;}
+.Bim-libs table {border:0;cellspacing:0;cellpadding:0;width:100%;min-width: 1390px;}
 .Bim-libs table thead{background:#f0f0f0;}
 .Bim-libs table thead>tr>th{padding:0px 7px;height:60px;line-height:60px;}
 /*table.bim-lib thead>tr>th:nth-child(1){width:20px;}
@@ -22,6 +22,8 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .Bim-libs table.bim-lib thead>tr>th.uploadPerson{width:58px;}
 .Bim-libs table.bim-lib thead>tr>th.bim-params{width:58px;}
 .Bim-libs table.bim-lib thead>tr>th:nth-child(6){width:200px;}
+.Bim-libs .bim-projType{min-width:62px;}
+.bim-libs .bim-lib .data-proce{min-width:88px;}
 /*回收站表格*/
 .Bim-libs table.recycle-bins tr th.uploadPerson{width:58px;}
 .Bim-libs table.recycle-bins tr th.depart-pro{width:230px;}
@@ -88,19 +90,19 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 }*/
 .icon-projType{width:16px;height:20px;display:inline-block;background:url('../../static/img/icon-projType.png') 0 0 no-repeat}
 /*数据操作图标*/
-.handel-cotrol{width:23px;height:23px;float:left;line-height:23px;border-radius:2px;}
+.handel-cotrol{width:23px;height:23px;display:inline-block;line-height:23px;border-radius:2px;}
 .handel-icon{width:20px;height:20px;background:pink;float:left;margin-right:10px;margin-left:1px;background:url('../../static/img/icon-menu.png') 0 0 no-repeat;background-size:144px;}
 .handel-cotrol:hover{background-color:lightskyblue;}
-.handel-cotrol:nth-child(1) .handel-icon{
+.handel-cotrol .handel-icon.see{
     background-position: -92px -212px;
 }
-.handel-cotrol:nth-child(2) .handel-icon{
+.handel-cotrol .handel-icon.extract{
     background-position: -93px -231px;
 }
-.handel-cotrol:nth-child(3) .handel-icon{
+.handel-cotrol .handel-icon.rename{
     background-position: -111px -212px;
 }
-.handel-cotrol:nth-child(4) .handel-icon{
+.handel-cotrol .handel-icon.modify{
     background-position: -74px -250px;
 }
 /*表格按钮的图标*/
@@ -142,8 +144,9 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 }
 .bims-contents  .extract-dialog .el-dialog__body{text-align:center;}
 .bims-contents  .extract-dialog .el-dialog__body .dialog-tips-title{
-    padding:3px;text-align:left;
+    padding:3px;text-align:left;font-size:14px;
 }
+.bims-contents  .extract-dialog .el-dialog__body .dialog-tips-title>span{font-size:14px;font-weight:bold;}
 .bims-contents .dialog-extract-status{padding:0 7px;}
 .bims-contents .dialog-extract-status i{
     color:orange;font-style:normal;

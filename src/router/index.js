@@ -635,7 +635,7 @@ export default new Router({
         },
         {
             path: '/help',
-            component: resolve => require(['../components/Authority-management/help1.vue'], resolve)
+            component: resolve => require(['../components/Authority-management/help.vue'], resolve)
         }
 
     ]

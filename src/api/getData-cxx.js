@@ -49,4 +49,7 @@ export const generatePayUrl = params=> axios.get(`${params.url}eds/order/generat
 // POST /eds/order/cancelOrder/{orderId} 取消EDS订单
 export const cancelOrder = params=> axios.post(`${params.url}eds/order/cancelOrder/${params.orderId}`);
 
+//GET /luban/bi/queryEnterpriseLubanBiList/{beginTime}/{endTime}/{currentPage}/{pageSize} 获取企业鲁班币列表
+export const queryEnterpriseLubanBiList = params=> axios.get(`${params.url}luban/bi/queryEnterpriseLubanBiList/${params.beginTime}/${params.endTime}/${params.currentPage}/${params.pageSize}`);
+
 
