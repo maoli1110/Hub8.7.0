@@ -119,27 +119,37 @@
                                 <span v-if="item.projType==10" title="Civil3D" class="icon-projType" style="background-position:-139px -15px"></span>
                             </td>
                             <td v-if="$route.params.typeId !=4" class="bim-params">{{item.projGenre }}</td>
-                            <td class="absol substr uploadPerson" :title="
-                            item.createRealName+'\n'+item.createUserName">
-                            {{item.createRealName}}</td>
+                            <td class="absol substr uploadPerson" >
+                                <div v-if="item.projClassify==2" >-</div>
+                                <div v-else :title="item.createRealName+'\n'+item.createUserName"> {{item.createRealName}}</div>
+                            </td>
                             <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
                             <td  v-if="$route.params.typeId !=4">{{item.drawSize}}</td>
                             <td class="relat" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
                             <td>{{item.projSize}}</td>
-                            <td  v-if="$route.params.typeId ==1">{{item.zjCount}}</td>
+                            <td  v-if="$route.params.typeId ==1">
+                                <div v-if="item.projClassify ==2">-</div>
+                                <div v-else> {{item.zjCount}}</div>
+
+                            </td>
                             <td style="padding:0 3px;">
-                                <div v-show="item.status===1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -18px 0;"></span>处理成功</div>
-                                <div v-show="item.status===-1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -36px 0;"></span>处理失败</div>
-                                <div v-show="item.status===2 || item.status==3"   class="align-l"><span class="bim-icon" style="background-position: -54px 0;"></span>处理中</div>
-                                <div  v-show="item.status===4"  class="align-l"><span class="bim-icon" style="background-position: -72px 0;"></span>待处理</div>
-                                <div v-show="item.status===0"   class="align-l"><span class="bim-icon" style="background-position: -90px 0;"></span>未处理</div>
+                                <div v-if="item.projClassify ==2">-</div>
+                                <div v-else>
+                                    <div v-show="item.status===1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -18px 0;"></span>处理成功</div>
+                                    <div v-show="item.status===-1" class="align-l" @click="extractFailure(item)"><span class="bim-icon" style="background-position: -36px 0;"></span>处理失败</div>
+                                    <div v-show="item.status===2 || item.status==3"   class="align-l"><span class="bim-icon" style="background-position: -54px 0;"></span>处理中</div>
+                                    <div  v-show="item.status===4"  class="align-l"><span class="bim-icon" style="background-position: -72px 0;"></span>待处理</div>
+                                    <div v-show="item.status===0"   class="align-l"><span class="bim-icon" style="background-position: -90px 0;"></span>未处理</div>
+                                </div>
+
                             </td>
                             <td>{{item.version}}</td>
-                            <td>
-                                <div class="handel-cotrol"><span class=" handel-icon " title="工程管理" @click="ProjManageDialog = true;addProject('modific',item)"></span></div>
-                                <div class="handel-cotrol"><span class=" handel-icon " title="抽取" @click="extractDialog=true;extractData(item.status,item)"></span></div><!--extractData(scope.row.status)"-->
-                                <div class="handel-cotrol"><span class=" handel-icon " title="修改名称" @click="modifyInfo=true"></span></div>
-                                <div class="handel-cotrol"><span class=" handel-icon " title="监控" @click="monitorSeverVisible=true" ></span></div>
+                            <td style="min-width:120px;line-height:6px;">
+                                <div class="handel-cotrol"><span class=" handel-icon see" title="监控" @click="monitorSeverVisible=true" ></span></div>
+                                <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon extract" title="抽取" @click="extractDialog=true;extractData(item.status,item)"></span></div><!--extractData(scope.row.status)"-->
+                                <div class="handel-cotrol" v-if="item.projType!=3"><span class=" handel-icon rename" title="修改名称" @click="modifyInfo=true"></span></div>
+                                <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon modify" title="工程管理" @click="ProjManageDialog = true;addProject('modific',item)"></span></div>
+
                             </td>
                         </tr>
                         </tbody>
@@ -377,7 +387,8 @@
         bimRecycleRest,
         updateProjShortInfo,
         extractProj,
-        getProjExtractInfo
+        getProjExtractInfo,
+        testList,          //测试数据
     } from '../../api/getData-yhj.js';                                      //接口数据
     let deletArray = [];        //删除projIds队列
     let countIndex = 0;         //表格选中状态个数统计
@@ -561,7 +572,7 @@
                 this.tableParam.pageParam.size = this.totalPages;
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
 
-                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+//                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //bim库bim属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
             },
@@ -691,11 +702,14 @@
 
             },
             //创建->获取授权人员
-            getRootMan(deptId){
-                deptId = !deptId?"d68ceeb2d02043bd9ea5991ac44d649b":deptId;
-                getProjAuthUserInfos({url:baseUrl,deptId:deptId}).then((data)=>{
+            getRootMan(baseUrl,param){
+//                deptId = !deptId?"d68ceeb2d02043bd9ea5991ac44d649b":deptId;
+                getProjAuthUserInfos({url:baseUrl,param:param}).then((data)=>{
                     this.authUserInfoList = data.data.result; //可授权人员列表
                     authUserInfoListCopy = data.data.result;  //可授权人员deep_copy
+                    if(this.authUserInfoList==null){
+                        return false;
+                    }
                     this.authUserInfoList.forEach((val,key)=>{
                         if(val.hasAuth){
                             this.authUserListItem.push(val);
@@ -784,7 +798,14 @@
                 deletArray = [];    //清空删除的projIds 防止影响
                 countIndex = 0;     //选中数量统计清空
                 this.allChecked = false;
-                getProjects(params).then((data)=>{
+                /*getProjects(params).then((data)=>{
+                    this.tableData = data.data.result.content;
+                    this.tableData.forEach((val,key)=>{
+                        this.$set(this.tableData[key],'checked',false)
+                    })
+                    this.pagesList = data.data.result;
+                })*/
+                testList().then((data)=>{
                     this.tableData = data.data.result.content;
                     this.tableData.forEach((val,key)=>{
                         this.$set(this.tableData[key],'checked',false)
@@ -973,7 +994,7 @@
                     }
                     this.clearCreateParam();
                     this.getTree();
-                    this.getRootMan();
+                    this.getRootMan(baseUrl,{deptId:"d68ceeb2d02043bd9ea5991ac44d649b",packageType:this.$route.params.typeId,ppid:""});
 
                 }else{
                     //修改工程
@@ -985,12 +1006,12 @@
                         this.addPrjectTitle = '添加工程'
                     }
                     this.getTree('modify',item.deptId);
-                    this.getRootMan(item.deptId);
                     this.proManage.name = item.projName;
                     this.proManage.remark = item.projMemo;
                     this.UpdateParamInfo.projId = parseInt(item.projId);
                     this.createDeptId = item.deptId;
                     this.proManage.major = item.projType;
+                    this.getRootMan(baseUrl,{deptId:"d68ceeb2d02043bd9ea5991ac44d649b",packageType:this.$route.params.typeId,ppid:item.ppid})
 
                 }
             },
@@ -1105,8 +1126,8 @@
                 }
                 this.authUserListItem.forEach((val,key)=>{  //将选中结果里面可用值提取出来
                     if(!val.allAuth && val.hasAuth){
-                        newCreate.userIds.push(val.userId)
-                        this.UpdateParamInfo.userIds.push(val.userId)
+                        newCreate.userIds.push(val.userName)
+                        this.UpdateParamInfo.userIds.push(val.userName)
                     }
                 })
                 if(!this.isDisable){

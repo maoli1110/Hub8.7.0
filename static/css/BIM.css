@@ -88,19 +88,19 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 }*/
 .icon-projType{width:16px;height:20px;display:inline-block;background:url('../../static/img/icon-projType.png') 0 0 no-repeat}
 /*数据操作图标*/
-.handel-cotrol{width:23px;height:23px;float:left;line-height:23px;border-radius:2px;}
+.handel-cotrol{width:23px;height:23px;display:inline-block;line-height:23px;border-radius:2px;}
 .handel-icon{width:20px;height:20px;background:pink;float:left;margin-right:10px;margin-left:1px;background:url('../../static/img/icon-menu.png') 0 0 no-repeat;background-size:144px;}
 .handel-cotrol:hover{background-color:lightskyblue;}
-.handel-cotrol:nth-child(1) .handel-icon{
+.handel-cotrol .handel-icon.see{
     background-position: -92px -212px;
 }
-.handel-cotrol:nth-child(2) .handel-icon{
+.handel-cotrol .handel-icon.extract{
     background-position: -93px -231px;
 }
-.handel-cotrol:nth-child(3) .handel-icon{
+.handel-cotrol .handel-icon.rename{
     background-position: -111px -212px;
 }
-.handel-cotrol:nth-child(4) .handel-icon{
+.handel-cotrol .handel-icon.modify{
     background-position: -74px -250px;
 }
 /*表格按钮的图标*/

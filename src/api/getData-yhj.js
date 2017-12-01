@@ -16,7 +16,7 @@ export const getWorksetingList = params => axios.get(`${base}`);
 export const getCitys = params => axios.get('../../static/js/citys.json')
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 
-
+export const testList = params =>axios.get('../../static/tableList.json')
 /**
  * bim库
  */
@@ -35,7 +35,7 @@ export const createProject = params=>axios.post(`${params.url}rs/bimRest/createP
 //bim修改工程
 export const updateProjShortInfo = params =>axios.post(`${params.url}rs/bimRest/updateProjShortInfo`,params.param)
 //bim创建->授权人员列表
-export const getProjAuthUserInfos = params =>axios.get(`${params.url}rs/bimParamRest/getProjAuthUserInfos/${params.deptId}`);
+export const getProjAuthUserInfos = params =>axios.post(`${params.url}rs/bimParamRest/getProjAuthUserInfos`,params.param);
 //bim创建 项目部树结构
 export const zTreeNodes = params =>axios.get(`${params.url}org/admin/nodes`);
 //列表删除
