@@ -144,7 +144,7 @@
                             </td>
                             <td>{{item.version}}</td>
                             <td style="min-width:120px;line-height:6px;">
-                                <div class="handel-cotrol"><span class=" handel-icon see" title="监控" @click="monitorSeverVisible=true" ></span></div>
+                                <div class="handel-cotrol"><span class=" handel-icon see" title="监控" @click="monitor('single',item)" ></span></div>
                                 <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon extract" title="抽取" @click="extractDialog=true;extractData(item.status,item)"></span></div><!--extractData(scope.row.status)"-->
                                 <div class="handel-cotrol" v-if="item.projType!=3"><span class=" handel-icon rename" title="修改名称" @click="modifyInfo=true;projRename(item)"></span></div>
                                 <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon modify" title="工程管理" @click="ProjManageDialog = true;addProject('modific',item)"></span></div>
@@ -218,11 +218,13 @@
         <el-dialog title="第三方监控服务设置" :visible.sync="monitorSeverVisible">
             <el-form >
                 <el-form-item label="对接平台：" >
-                    <el-select v-model="monitorSever.projectItem" placeholder="请选择" >
+                    <el-select v-model="monitorSever.projectItem" @change="monitorChange" placeholder="请选择" >
                         <el-option
                             v-for="item in monitorSever.projectList"
-                            :key="item.value"
-                            :value="item.name">
+                            :key="item.code"
+                            :value="item.code"
+                            :label="item.name"
+                        >
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -240,7 +242,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="monitorSeverVisible = false;monitorSeverOk()">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="monitorSeverOk()">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="monitorSeverVisible = false">取 消</el-button>
             </div>
         </el-dialog>
@@ -399,7 +401,11 @@
         getProjExtractInfo,
         testList,          //测试数据
         updateProjName,
-        getProjUsedName
+        getProjUsedName,
+        getMonitorInfo,     //监控信息
+        getMonitorInfos,
+        saveMonitorInfo,
+        checkMonitorSetInfo
     } from '../../api/getData-yhj.js';                                      //接口数据
     let deletArray = [];        //删除projIds队列
     let countIndex = 0;         //表格选中状态个数统计
@@ -518,17 +524,22 @@
                 },
                 monitorSever:{          //监控弹窗数据
                     projectItem:'',
-                    projectList:[
-                        {name:'列表元素1'},
-                        {name:'列表元素3'},
-                        {name:'列表元素2'},
-                    ],
-                    username:'yhj',
-                    pasword:11111,
-                    clientIp:"172.16.21.164",
-                    port:8080
+                    projectList:[],
+                    username:'',
+                    pasword:"",
+                    clientIp:"",
+                    port:"",
+                    remark:""
                 },
-
+                monitorParam:{
+                    code:"",
+                    ip:"",
+                    password:"",
+                    port:'',
+                    ppids:[],
+                    username:"",
+                    remark:""
+                },
                 pagesList:{},           //bim库列表的信息
                 tableData:[],           //bim库列表数据
                 zNodes: [
@@ -1157,17 +1168,68 @@
             /**
              * @params type 批量监控还是监控
              * **/
-            monitor(type){
-                if(!deletArray.length){
+            clearMonitorParma(){
+                this.monitorSever.username = "";
+                this.monitorSever.pasword = "";
+                this.monitorSever.clientIp = "";
+                this.monitorSever.port = "";
+                this.monitorSever.remark = "";
+                this.monitorSever.projectItem = "";
+            },
+            getMonitorInfoPart(url){
+                getMonitorInfos({url:url}).then((data)=>{
+                    this.monitorSever.projectList = data.data.result;
+                    this.monitorSever.projectItem = this.monitorSever.projectList[0].code;
+                })
+            },
+            //单个工程设置或者修改监控信息
+            getMonitorInfo(url,param){
+                getMonitorInfo({url:url,param:param}).then((data)=>{
+                    if(!data.data.result){
+
+                    }
+                })
+            },
+            //设置监控消息
+            setMonitorInfoAll(url,param){
+                saveMonitorInfo({url:url,param:param}).then((data)=>{
+                    if(data.data.code){
+                        this.commonMessage("批量监控成功",'sccess');
+                        this.monitorSeverVisible = false;
+                    }
+                })
+            },
+            monitorChange(val){
+                this.monitorSever.projectItem = val;
+            },
+            monitor(type,item){
+                if(!deletArray.length && !item){
                     this.commonMessage('请添加监控文件','warning');
                     return false;
                 }else {
+                    this.clearMonitorParma();
+                    this.monitorSeverVisible =true;
+                    this.getMonitorInfoPart(baseUrl);//获取第三方平台
                     if(type=='all'){
-                        this.monitorSeverVisible =true;
-                        this.monitorSever = {};
+//                        this.monitorSever = {};
+                    }else if(type=='single'){
+                        this.getMonitorInfo(baseUrl,{ppids:[item.ppid]})
                     }
 
                 }
+            },
+            //第三方监控
+            monitorSeverOk(){
+                //加密文件的基本用法
+//                 let pass= BASE64.encoder('123456');
+                this.monitorParam.code = this.monitorSever.projectItem;
+                this.monitorParam.ip = this.monitorSever.clientIp;
+                this.monitorParam.password = BASE64.encoder(this.monitorSever.pasword);
+                this.monitorParam.port = this.monitorSever.port;
+                this.monitorParam.ppids = deletArray;
+                this.monitorParam.username = this.monitorSever.username;
+                this.monitorParam.remark = this.monitorSever.remark;
+                this.setMonitorInfoAll(baseUrl,this.monitorParam)
             },
             /**
              * 抽取
@@ -1212,10 +1274,6 @@
             extractOk(){
                 this.extractProject(baseUrl,{ packageType:this.$route.params.typeId, projId:parseInt(this.itemInfo.projId)})
             },
-            //抽取失败
-            extractCancel(){
-
-            },
             //修改名称
             updateProjRename(url,param){
                 updateProjName({url:url,param:param}).then((data)=>{
@@ -1246,17 +1304,12 @@
                     this.updateProjRename(baseUrl,{projId:parseInt(this.modifyInfoList.projId),projName:this.modifyInfoList.name,packageType:parseInt(this.$route.params.typeId)})
 
                 }else{
-                    this.commonMessage('工程名称不能为空')
+                    this.commonMessage('工程名称不能为空','warning')
                 }
                 console.log(this.modifyInfoList)
                 //执行完成清除状态
             },
-            //第三方监控
-            monitorSeverOk(){
-                //加密文件的基本用法
-                 let pass= BASE64.encoder('123456');
-                 console.log(pass,'pass')
-            },
+
 
         },
         mounted() {

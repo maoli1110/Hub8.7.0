@@ -29,22 +29,22 @@ export const getProjType = params =>axios.get(`${params.url}rs/bimParamRest/getP
 
 
 //bim库列表
-export const getProjects = params =>axios.post(`${params.url}rs/bimRest/getProjects`,params.param)
+export const getProjects = params =>axios.post(`${params.url}rs/bimRest/getProjects`,params.param);
 //bim创建工程
 export const createProject = params=>axios.post(`${params.url}rs/bimRest/createProject`,params.param);
 //bim修改工程
-export const updateProjShortInfo = params =>axios.post(`${params.url}rs/bimRest/updateProjShortInfo`,params.param)
+export const updateProjShortInfo = params =>axios.post(`${params.url}rs/bimRest/updateProjShortInfo`,params.param);
 //bim创建->授权人员列表
 export const getProjAuthUserInfos = params =>axios.post(`${params.url}rs/bimParamRest/getProjAuthUserInfos`,params.param);
 //bim创建 项目部树结构
 export const zTreeNodes = params =>axios.get(`${params.url}org/admin/nodes`);
 //列表删除
-export const deleteProjects = params =>axios.post(`${params.url}rs/bimRest/deleteProjects/${params.param.packageType}`,params.param.projIds)
+export const deleteProjects = params =>axios.post(`${params.url}rs/bimRest/deleteProjects/${params.param.packageType}`,params.param.projIds);
 
 //回收站删除
 export const deleteProject = params =>axios.post(`${params.url}rs/bimRecycleRest/deleteProject`,params.param);
 //回收站清空
-export const bimRecycleRest = params =>axios.post(`${params.url}rs/bimRecycleRest/reductionProjs/${params.param.packageType}`,params.param.projIds)
+export const bimRecycleRest = params =>axios.post(`${params.url}rs/bimRecycleRest/reductionProjs/${params.param.packageType}`,params.param.projIds);
 
 //bim-抽取
 export const extractProj = params =>axios.get(`${params.url}rs/bimRest/extractProj/${params.param.projId}/${params.param.packageType}`);
@@ -54,7 +54,16 @@ export const getProjExtractInfo = params =>axios.post(`${params.url}rs/bimRest/g
 //修改工程信息
 export const updateProjName = params =>axios.post(`${params.url}rs/bimRest/updateProjName`,params.param);
 //获取曾用名
-export const getProjUsedName = params =>axios.get(`${params.url}/rs/bimRest/getProjUsedName/${params.param.projId}/${params.param.packageType}`);
+export const getProjUsedName = params =>axios.get(`${params.url}rs/bimRest/getProjUsedName/${params.param.projId}/${params.param.packageType}`);
+
+//代理工程信息
+export const getMonitorInfo = params =>axios.post(`${params.url}rs/bimMonitorRest/getMonitorInfo`,params.param.ppids);
+//获取第三方监控对接平台列表
+export const getMonitorInfos = params =>axios.get(`${params.url}rs/bimMonitorRest/getMonitorInfos`);
+//批量设置监控信息
+export const saveMonitorInfo = params =>axios.post(`${params.url}rs/bimMonitorRest/saveMonitorInfo`,params.param);
+//检测
+export const checkMonitorSetInfo = params =>axios.post(`${params.url}rs/bimMonitorRest/checkMonitorSetInfo`,params.param)
 /**
  * 云构件库
  * */
