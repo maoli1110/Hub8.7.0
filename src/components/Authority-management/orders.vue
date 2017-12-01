@@ -126,7 +126,23 @@
                     </ul>
                     <div id="packageDetail"></div>
                 </div>
-
+                <div class="el-table__body-wrapper" v-if="!orderManageTableData.length">
+                    <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 1535px;">
+                        <colgroup>
+                            <col name="el-table_1_column_65" width="200">
+                            <col name="el-table_1_column_66" width="200">
+                            <col name="el-table_1_column_67" width="200">
+                            <col name="el-table_1_column_68" width="200">
+                            <col name="el-table_1_column_69" width="200">
+                            <col name="el-table_1_column_70" width="200">
+                            <col name="el-table_1_column_71" width="150">
+                            <col name="el-table_1_column_72" width="185">
+                        </colgroup>
+                        <tbody></tbody>
+                    </table>
+                    <div class="el-table__empty-block" style="width: 1540px;border: 1px solid #e6e6e6"><span
+                        class="el-table__empty-text">暂无数据</span></div>
+                </div>
             </vue-scrollbar>
             <div style="margin-top: 20px">
                 <div style="float:left;height:40px;line-height:40px">共{{sum}}个结果</div>
@@ -158,7 +174,7 @@
                 orderManageTableData: [],
                 sum: 0,
                 checked: false,
-                remarks: '超长remark1456484684612323256526511111111111112'
+
             }
 
         },
@@ -233,15 +249,14 @@
                 }
                 this.getOrderManagementList(params)
             },
-            loadServiceBinding(packageServicesName, expirationTime, enterprisePackageId, type,modifyTimes,remainToModify){
-                debugger
+            loadServiceBinding(packageServicesName, expirationTime, enterprisePackageId, type, modifyTimes, remainToModify){
                 let queryData = {
                     packageServicesName: packageServicesName,
                     expirationTime: expirationTime,
                     packageId: enterprisePackageId,
                     type: type,
-                    modifyTimes:modifyTimes,
-                    remainToModify:remainToModify
+                    modifyTimes: modifyTimes,
+                    remainToModify: remainToModify
                 }
 //                console.log(packageServicesName, expirationTime, enterprisePackageId, type);
                 // this.$router.push({path: '/system/order-management/orders-detail/1'});
@@ -270,10 +285,9 @@
                 getOrderManagementList(params).then((data) => {
                     $("#packageDetail").empty();
                     let res = data.data.result;
+                    this.orderManageTableData = res.enterpriseServiceResultList;
                     this.sum = res.pageInfo.sum;
                     var vm = this;
-                    // todo
-//                    let isEnterpriseBlackListMember='true';
                     $.each(res.enterpriseServiceResultList, function (index) {
                         this.enterprisePackageId = this.heldId;
                         var detailHtml = "";
@@ -469,7 +483,7 @@
                             detailHtml += "已修改<span id=\"editBindingTimes" + this.enterprisePackageId + "create" + "\">" + this.modified[1] + "</span>次<br/>";
                             if (this.allBindings[1] > 0) {
                                 detailHtml += "<a class =\"btn-common\" @click=\"vm.loadServiceBinding('" + this.packageServicesName + "-制作','";
-                                detailHtml += " " + this.expirationDateStr + "','" + this.enterprisePackageId + "','create','"+this.modified[1]+"','"+(this.allModified[0] - this.modified[0])+"')\">详细</a>";
+                                detailHtml += " " + this.expirationDateStr + "','" + this.enterprisePackageId + "','create','" + this.modified[1] + "','" + (this.allModified[0] - this.modified[0]) + "')\">详细</a>";
                             }
                             detailHtml += "使用:已绑定<span id=\"boundComputers" + this.enterprisePackageId + "use" + "\">" + this.bindings[0] + "</span>台&nbsp;还可绑定<span id=\"surplusBinding" + this.enterprisePackageId + "use" + "\">" +
                                 (this.allBindings[0] - this.bindings[0]) + "</span>台&nbsp;";
@@ -478,7 +492,7 @@
                             //detailHtml += "已修改<span id=\"editBindingTimes"+this.enterprisePackageId+"use"+"\">"+this.modified[0]+"</span>次<br/>";
                             if (this.allBindings[0] > 0) {
                                 detailHtml += "<a class =\"btn-common\" @click=\"vm.loadServiceBinding('" + this.packageServicesName + "-使用','";
-                                detailHtml += " " + this.expirationDateStr + "','" + this.enterprisePackageId + "','use','"+this.modified[0]+"','"+(this.allModified[0] - this.modified[0])+"')\">详细</a><div style='height: 5px;'></div>";
+                                detailHtml += " " + this.expirationDateStr + "','" + this.enterprisePackageId + "','use','" + this.modified[0] + "','" + (this.allModified[0] - this.modified[0]) + "')\">详细</a><div style='height: 5px;'></div>";
                             }
 
                         } else {

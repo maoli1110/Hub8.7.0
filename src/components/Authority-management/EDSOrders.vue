@@ -56,7 +56,7 @@
                         </el-table-column>
                         <el-table-column label="操作" width="185" class="operate">
                             <template slot-scope="scope">
-                                <a class="icon icon-alipay" target="_blank" :href="linkUrl"
+                                <a class="icon icon-alipay" target="_blank"
                                    @click="dialogVisible = true;redirectToPay(scope.row.orderId)"
                                    v-if="(scope.row.paymentStatus == 'UNPAID')"></a>
                                 <i class="icon icon-BIM-delete" @click="deleteList(scope.row.orderId)"
@@ -80,14 +80,13 @@
         </div>
         <el-dialog
             title="转到支付平台"
-            :visible.sync="dialogVisible" size="small" :close-on-click-modal="false" :close-on-press-escape="false">
-            <!--<span>这是一段信息</span>-->
+            :visible.sync="dialogVisible" size="small" :close-on-click-modal="false" :close-on-press-escape="false"
+            class="modelwidth500px">
             <div style="height: auto;"
                  class="panel-body panel-body-noborder window-body">
                 <div style="color:#FF9900;font-size: 14px;padding-bottom: 10px;border-bottom: 1px solid #e6e6e6;">
                     重要提醒：请在下单后24小时内支付，否则订单将会自动取消！
                 </div>
-                <!--<hr style="height:1px;border:none;border-top: 1px solid #A9A9A9;">-->
                 <div style="vertical-align:middle;font-size: 14px;margin-top: 10px;color: #000">请在完成付款后选择:</div>
                 <div style="font-size: 14px;width: 160px;margin: 10px 0 12px 50px;"><span
                     style="font-weight:700;color: #000">付款成功：</span>
@@ -124,7 +123,7 @@
                 EDSOrdersTableData: [],//列表数据
                 sum: 0,//总计数据条数
                 dialogVisible: false,//弹框默认隐藏
-                linkUrl: 'javascript:;',
+                linkUrl: '',
             }
         },
         methods: {
@@ -198,8 +197,10 @@
                     packageName: '鲁班币充值'
                 }
                 var vm = this;
+//                window.open("https://www.baidu.com")
+
                 generatePayUrl(params).then(function (data) {
-                    let result = data.data.result;
+                    vm.linkUrl = data.data.result;
 //                    let msg = data.data.msg;
 //                    if (!result) {
 //                        vm.linkUrl = 'javascript:;';
@@ -209,14 +210,20 @@
 //                            type: 'info'
 //                        });
 //                    } else {
-                    console.log(result);
-                    vm.linkUrl = result;
-                    window.open(result)
+//                    console.log(result);
+//                    vm.linkUrl = result;
+
 //                    debugger
 //                    $('.icon-alipay').click()
 //                        vm.dialogVisible = true;
 //                    }
                 })
+                debugger
+                if (vm.linkUrl) {
+                    window.open(vm.linkUrl)
+                }
+
+
             },
             locationPage(){
                 // 查看eds订单列表
@@ -228,6 +235,14 @@
         },
         mounted(){
             this.getEnterpriseOrderList()
+        },
+        watch: {
+            linkUrl(valNew, valOld){
+                console.log(valNew);
+                if (valNew) {
+                    window.open(valNew)
+                }
+            }
         }
     }
 </script>
@@ -272,8 +287,9 @@
         margin-top: 10px;
         margin-right: 10px;
     }
-
-    .el-dialog--small {
-        width: 30%;
+</style>
+<style>
+    .modelwidth500px .el-dialog {
+        width: 500px;
     }
 </style>

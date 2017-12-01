@@ -221,7 +221,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     background-repeat: no-repeat;
 }
 
-.icon-unbind, .icon-unbind-software {
+.icon-unbind, .icon-unbind-software,.icon-allocation {
     display: inline-block;
     background-image: url("../img/icon-btn.png");
     background-repeat: no-repeat;
@@ -234,6 +234,11 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     background-position: -221px -28px;
 }
 
+.icon-allocation {
+    width: 25px;
+    height: 25px;
+    background-position: -219px 0;
+}
 /* 18px*18px */
 .icon-close, .icon-initial-branch-company, .icon-initial-user, .icon-initial-sub-company, .icon-initial-project, .icon-enterprise-info, .icon-personal-info, .icon-login-setting, .icon-logout-safe, .icon-tree-expand, .icon-tree-fold, .icon-tree-total-expand, .icon-tree-total-fold, .icon-tree-total-expand-dark, .icon-tree-total-fold-dark, .icon-export, .icon-delete, .icon-edit, .icon-export-dark, .icon-tips-success, .icon-tips-error, .icon-tips-processing, .icon-tips-pending, .icon-tips-untreated, .icon-file-open, .icon-file-fold, .icon-invoiceInfo-save, .icon-clear, .icon-structure-tree-prev, .icon-structure-tree-next, .icon-structure-tree-update, .icon-structure-tree-save, .icon-upload, .icon-upload-dark, .icon-btn-delete, .icon-btn-delete-dark, .icon-search, .icon-authorize, .icon-return, .icon-signature, .icon-unauthorized, .icon-send, .icon-pass, .icon-search-dark, .icon-authorize-dark, .icon-return-dark, .icon-signature-dark, .icon-unauthorized-dark, .icon-send-dark, .icon-pass-dark, .icon-info-update, .icon-info-update-dark, .icon-forbidden, .icon-remove, .icon-monitor, .icon-username, .icon-password, .icon-selectAll, .icon-calendar, .icon-forbidden-dark, .icon-remove-dark, .icon-monitor-dark, .icon-unbind {
     width: 18px;

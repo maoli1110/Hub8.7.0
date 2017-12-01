@@ -179,6 +179,9 @@
 
 <script type="text/ecmascript-6">
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
+    import {basePath} from '../../utils/common.js'
+    import {queryEnterpriseLubanBiList} from '../../api/getData-cxx.js';
+
     const accountOptions = [
         "曹相相1",
         "曹相相2",
@@ -271,8 +274,8 @@
                         show: false,
                     }, {
                         goldAmount: '3000个鲁班币',
-                        show: false,
-                    },
+                        show: false
+                    }
                 ],
             }
 
