@@ -249,9 +249,9 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     background-position: -457px 0;
 }
 
-.basic-btn i, .basic-btn span {
+/* .basic-btn i, .basic-btn span {
     vertical-align: middle;
-}
+} */
 
 /*企业概况-初始化分公司名称*/
 .icon-initial-branch-company {
