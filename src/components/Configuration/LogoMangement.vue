@@ -216,10 +216,10 @@ export default {
         .then(({ data }) => {
           if (data.hits.length) {
             this.list = this.list.concat(data.hits);
-            this.list.forEach(v =>{
+            this.list.forEach(v => {
               this.$set(v, "edit", false);
               this.$set(v, "editShow", false);
-            } )
+            });
             $state.loaded();
             if (this.list.length / 20 === 10) {
               $state.complete();
@@ -235,6 +235,28 @@ export default {
 };
 </script>
 <style scoped>
+/*滚动条 start*/
+::-webkit-scrollbar {
+  width: 6px;
+  height: 4px;
+  background-color: #f5f5f5;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background: #fff;
+}
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .main {
   height: calc(100vh - 358px);
   padding: 20px;

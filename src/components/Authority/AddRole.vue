@@ -23,9 +23,9 @@
                             <el-select v-model="roleType" placeholder="请选择" style="width:70%">
                         <el-option
                             v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            :key="item.roleTypeName"
+                            :label="item.roleTypeName"
+                            :value="item.roleTypeId">
                         </el-option>
                     </el-select>
                         </div>
@@ -46,17 +46,17 @@
             <div class="role-title">功能授权</div>
             <div style="border:1px solid #e6e6e6">
                 <el-carousel trigger="click" height="195px" arrow="always" :interval="99999999">
-                    <el-carousel-item v-for="item in 4" :key="item">
+                    <el-carousel-item v-for="(items,index) in clientInformation" :key="index">
                         <div style="padding:0 20px;margin-top:40px">
-                            <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in clientInformation"
-                                     @click.native="currentIndex=index;selectClient(index)"
+                            <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in items"
+                                     @click.native="currentIndex=index;selectClient(item)"
                                      :key="index" class="card" :class="{'client-checked':index==currentIndex}"
                             >
                                 <div style="text-align:center;margin-top:20px">
                                     <img src="http://www.lubansoft.com/uploads/1485221791.jpg"
                                          class="image"
                                          style="width:64px;height:64px;margin:0 auto">
-                                    <div style="height:35px;line-height:35px">{{item.productsName}}</div>
+                                    <div style="height:35px;line-height:35px">{{item.productName}}</div>
                                 </div>
                                 <div>
                                 </div>
@@ -121,7 +121,8 @@
     </div>
 </template>
 <script>
-import { mapGetters} from "vuex";
+import { mapGetters } from "vuex";
+import * as types from "../../api/getData-ppc";
 export default {
   computed: {
     ...mapGetters(["curEditRole"])
@@ -129,162 +130,16 @@ export default {
 
   data() {
     return {
-      url: "../../../static/tree1.json",
-      roleName:"",
-      roleType:'',
+      roleName: "",
+      roleType: "",
       currentIndex: 0,
       textarea: "",
-      orgValue: "",
-      role:'',
-      projectSetting: {
-        check: {
-          enable: true
-        },
-        data: {
-          simpleData: {
-            enable: true
-          }
-        }
-      },
-      projectNodes: [],
+      role: "",
+      carouselPage:'',
       authoritedTableData: [],
       clientInformation: [
-        {
-          hasAuthorited: true,
-          productsName: "lubanGovern",
-          allAuthorizations: 100,
-          availableAuthorizations: 50
-        },
-        {
-          hasAuthorited: false,
-          productsName: "lubanExplore",
-          allAuthorizations: 50,
-          availableAuthorizations: 20
-        },
-        {
-          hasAuthorited: true,
-          productsName: "lubanView",
-          allAuthorizations: 40,
-          availableAuthorizations: 10
-        },
-        {
-          hasAuthorited: false,
-          productsName: "lubanworks",
-          allAuthorizations: 30,
-          availableAuthorizations: 15
-        },
-        {
-          hasAuthorited: false,
-          productsName: "i Ban",
-          allAuthorizations: 90,
-          availableAuthorizations: 45
-        },
-        {
-          hasAuthorited: true,
-          productsName: "coorperation",
-          allAuthorizations: 60,
-          availableAuthorizations: 20
-        },
-        {
-          hasAuthorited: false,
-          productsName: "lubanworks",
-          allAuthorizations: 0,
-          availableAuthorizations: 0,
-          hasPurchased: true
-        },
-        {
-          hasAuthorited: false,
-          productsName: "lubanworks",
-          allAuthorizations: 0,
-          availableAuthorizations: 0,
-          hasPurchased: true
-        },
-        {
-          hasAuthorited: false,
-          productsName: "lubanworks",
-          allAuthorizations: 0,
-          availableAuthorizations: 0,
-          hasPurchased: true
-        },
-        {
-          hasAuthorited: false,
-          productsName: "lubanworks",
-          allAuthorizations: 0,
-          availableAuthorizations: 0,
-          hasPurchased: true
-        }
       ],
       options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
-      engineeringAuthorizationData: [
-        {
-          date: "2017.9.30 17:43:57",
-          name: "Explorer",
-          time: "81.8",
-          times: "1"
-        },
-        {
-          date: "2017.9.28 17:43:57",
-          name: "Govern",
-          time: "1.8",
-          times: "188"
-        },
-        {
-          date: "2017.9.31 17:43:57",
-          name: "View Pad",
-          time: "88",
-          times: "18"
-        },
-        {
-          date: "2017.10.31 16:43:57",
-          name: "View",
-          time: "18",
-          times: "88"
-        },
-        {
-          date: "2017.9.30 17:43:57",
-          name: "Explorer",
-          time: "81.8",
-          times: "1"
-        },
-        {
-          date: "2017.9.28 17:43:57",
-          name: "Govern",
-          time: "1.8",
-          times: "188"
-        },
-        {
-          date: "2017.9.31 17:43:57",
-          name: "View Pad",
-          time: "88",
-          times: "18"
-        },
-        {
-          date: "2017.10.31 16:43:57",
-          name: "View",
-          time: "18",
-          times: "88"
-        }
       ],
       isIndeterminate: true,
       checkAlls: false,
@@ -474,21 +329,31 @@ export default {
       this.isIndeterminate =
         checkedAllCount > 0 && checkedAllCount < allCities.length;
     },
-    selectClient(index) {
-      index == 0
+    selectClient(item) {
+      console.log(item)
+      item
         ? (this.authoritedTableData = this.tableData)
         : (this.authoritedTableData = this.tableData2);
     }
   },
-  created () {
+  created() {
+    types.getRoleClientAuthInfo().then(res=>{
+      this.clientInformation=this.split_array(res.data.result,10)
+      console.log( this.clientInformation)
+
+    })
   },
   mounted() {
     this.selectClient(0);
-    this.roleName=this.curEditRole.roleName;
-    this.textarea=this.curEditRole.remarks||'请输入';
-    if(!this.curEditRole.roleName){
-        this.$router.push('/authority/role-management')
-    }
+    this.roleName = this.curEditRole.roleName;
+    this.textarea = this.curEditRole.remarks || "请输入";
+    if (!this.curEditRole.roleName) {
+      this.$router.push("/authority/role-management");
+    };
+    types.getRoleType().then(res=>{
+      this.options=res.data.result;
+    });
+    
   }
 };
 </script>
@@ -533,7 +398,6 @@ export default {
   border: 1px solid #e6e6e6;
   border-top: none;
 }
-
 .card {
   width: 120px;
   height: 120px;
@@ -542,43 +406,28 @@ export default {
   border: none;
   box-shadow: none;
 }
-
 .card + .card {
   margin-left: 20px;
 }
-
 .card:nth-child(1) {
   margin-left: 40px;
 }
-
 .red_ {
   color: #e30000;
   font-family: "yahei";
   font-size: 14px;
 }
-
 .role-text {
   line-height: 40px;
   padding-left: 95px;
 }
-
 .role-describe {
   color: #6595f2;
   font-size: 14px;
 }
-
 .basic-btn {
   margin-left: -30px;
 }
-
-.el-form__ {
-  float: left;
-}
-
-.el-form__ + .el-form__ {
-  margin-left: 10px;
-}
-
 .client-checked {
   background-color: #f5f8fd;
   border: 1px solid #c8c8c8;

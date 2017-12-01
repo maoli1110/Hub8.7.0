@@ -2,8 +2,8 @@
     <div>
         <div class="main">
             <div>
-                <el-button type="primary" class="basic-btn" icon="plus" @click="addMember()">添加角色</el-button>
-                <el-button type="primary"  class="basic-btn" icon="delete" @click="deleteMember()"> 删除角色</el-button>
+                <el-button type="primary" class="basic-btn" icon="plus" @click="addRole()">添加角色</el-button>
+                <el-button type="primary"  class="basic-btn" icon="delete" @click="deleteRole()"> 删除角色</el-button>
                 <el-input placeholder="请选择日期" icon="search" style="float:right;width:210px"></el-input>
             </div>
             <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
@@ -47,74 +47,14 @@
 
 </template>
 <script>
-import "../../../static/zTree/js/jquery.ztree.core.min.js";
-import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
 import { mapActions } from "vuex";
+import * as types from "../../api/getData-ppc";
 export default {
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入通行证"));
-      } else {
-        console.log("后台验证中......");
-        this.ruleForm.phone = "18555524036";
-        this.ruleForm.email = "yunyinyue@163.com";
-        callback();
-      }
-    };
     return {
-      url: "../../../static/tree1.json",
-      cacheProjectTree: [],
-      addMemberDialogVisible: false,
+      addRoleDialogVisible: false,
       textarea: "",
-      orgValue: "",
       role: "",
-      orgSetting: {
-        data: {
-          simpleData: {
-            enable: true
-          }
-        },
-        callback: {
-          onClick: this.orgTreeClick
-        }
-      },
-      dialogOrgSetting: {
-        data: {
-          simpleData: {
-            enable: true
-          }
-        },
-        callback: {
-          onClick: this.dialogOrgTreeClick
-        }
-      },
-      zNodes: [
-        {
-          id: 1,
-          pId: 0,
-          name: "展开、折叠 自定义图标不同",
-          open: true,
-          iconSkin: "pIcon01"
-        },
-        { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-        { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-        { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-        {
-          id: 2,
-          pId: 0,
-          name: "展开、折叠 自定义图标相同",
-          open: true,
-          iconSkin: "pIcon02"
-        },
-        { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-        { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-        { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-        { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-        { id: 31, pId: 3, name: "叶子节点1" },
-        { id: 32, pId: 3, name: "叶子节点2" },
-        { id: 33, pId: 3, name: "叶子节点3" }
-      ],
       roleTableData: [
         {
           roleName: "赵四",
@@ -177,32 +117,6 @@ export default {
           remarks: "超长remark"
         }
       ],
-      weeklyActivityData: [
-        {
-          date: "2017.9.30 17:43:57",
-          name: "Explorer",
-          time: "81.8",
-          times: "1"
-        },
-        {
-          date: "2017.9.28 17:43:57",
-          name: "Govern",
-          time: "1.8",
-          times: "188"
-        },
-        {
-          date: "2017.9.31 17:43:57",
-          name: "View Pad",
-          time: "88",
-          times: "18"
-        },
-        {
-          date: "2017.10.31 16:43:57",
-          name: "View",
-          time: "18",
-          times: "88"
-        }
-      ],
       options: [
         {
           value: "选项1",
@@ -233,27 +147,6 @@ export default {
     ...mapActions([
       "curEditRole" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
     ]),
-    orgTreeClick(event, treeId, treeNode) {
-      this.orgValue = treeNode.name;
-      setTimeout(() => {
-        $(".el-select-dropdown__item.selected").click();
-      }, 100);
-    },
-    dialogOrgTreeClick(event, treeId, treeNode) {
-      this.ruleForm.attribution = treeNode.name;
-      setTimeout(() => {
-        $(".el-select-dropdown__item.selected").click();
-      }, 100);
-    },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
@@ -263,17 +156,23 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    addRole() {},
+    addRole() {
+      types.getRoleClientAuthInfo().then(res => {
+        console.log(res.data)
+      });
+    },
     editRole(row) {
       this.$router.push({ path: `/authority/edit-role/5` });
       this.curEditRole(row);
     },
-    searchRole(MemberId) {
-      this.$router.push({ path: `/authority/member-management` });
+    searchRole(RoleId) {
+      this.$router.push({ path: `/authority/Role-management`});
     },
     deleteRole() {}
   },
-  mounted() {}
+  mounted() {
+    console.log(types);
+  }
 };
 </script>
 <style scoped>
@@ -281,10 +180,6 @@ export default {
   height: 40px;
   background-color: #fff;
   padding: 10px 20px;
-}
-.ztree {
-  margin-top: 0px;
-  width: 205px;
 }
 .main {
   padding: 20px;
