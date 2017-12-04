@@ -13,10 +13,10 @@
             <div class="header">
                 <el-col :span="24">
                     <span class="orders-text font-w-n font-s-14">查询时间范围：</span>
-                    <el-date-picker format="yyyy.MM.DD"
-                                    v-model="selectDate"
+                    <el-date-picker format="yyyy-MM-dd"
+                                    v-model="date"
                                     type="daterange"
-                                    placeholder="选择日期范围" class="absol" style="width:240px">
+                                    placeholder="选择日期范围" class="absol" style="width:360px" @change="selectDate">
                     </el-date-picker>
                 </el-col>
             </div>
@@ -27,28 +27,36 @@
                               style="min-width: 1537px;margin-top:20px">
                         <el-table-column class="" type='index' label="序号" width="60"
                                          :index="indexSort"></el-table-column>
-                        <el-table-column class="table-tr" prop="date" label="时间" width="200"></el-table-column>
-                        <el-table-column class="table-tr" label="明细" show-overflow-tooltip>
+                        <el-table-column class="table-tr" prop="changeTime" label="时间" width="200"></el-table-column>
+                        <el-table-column class="table-tr" prop="changeDetail" label="明细"
+                                         show-overflow-tooltip></el-table-column>
+                        <el-table-column class="table-tr" label="收入（个）" width="200">
                             <template slot-scope="scope">
-                                已分配{{scope.row.assignedAccount[0]}}账号，每个账号{{scope.row.assignedAccount[1]}}个
+                                <span v-if="scope.row.changeType == 0">{{scope.row.golds}}</span>
+                                <span v-if="scope.row.changeType == 1">-</span>
+
                             </template>
                         </el-table-column>
-                        <el-table-column class="table-tr" prop="revenue" label="收入（个）" width="200"></el-table-column>
                         <el-table-column class="table-tr" prop="disbursement" label="支出（个）"
-                                         width="200"></el-table-column>
+                                         width="200">
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.changeType == 1">{{scope.row.golds}}</span>
+                                <span v-if="scope.row.changeType == 0">-</span>
+
+                            </template>
+                        </el-table-column>
                         <el-table-column class="table-tr" prop="balance" label="余额（个）" width="200"></el-table-column>
                     </el-table>
                 </vue-scrollbar>
                 <div style="margin-top: 20px">
-                    <div style="float:left;height:40px;line-height:40px">共1000个成员</div>
+                    <div style="float:left;height:40px;line-height:40px">共{{sum}}个成员</div>
                     <el-pagination style="margin-left:30%"
                                    @size-change="handleSizeChange"
                                    @current-change="handleCurrentChange"
-                                   :current-page="4"
-                                   :page-sizes="[100, 200, 300, 400]"
-                                   :page-size="100"
+                                   :current-page="1"
+                                   :page-size="10"
                                    layout="total, sizes, prev, pager, next, jumper"
-                                   :total="400">
+                                   :total="sum">
                     </el-pagination>
                 </div>
             </div>
@@ -125,7 +133,8 @@
                                           :on-icon-click="accountSearch" placeholder="搜索鲁班通行证/人员姓名"
                                 ></el-input>
                                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
-                                    <el-checkbox-group v-model="checkedAccounts" @change="addRootPerson" class="scroll-me"
+                                    <el-checkbox-group v-model="checkedAccounts" @change="addRootPerson"
+                                                       class="scroll-me"
                                                        style="background:#fff;">
                                         <el-checkbox class="el-transfer-panel__item" v-for="account in accounts"
                                                      :label="account" :key="account" :title="account">{{account}}
@@ -181,7 +190,6 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
     import {basePath} from '../../utils/common.js'
     import {queryEnterpriseLubanBiList} from '../../api/getData-cxx.js';
-
     const accountOptions = [
         "曹相相1",
         "曹相相2",
@@ -221,28 +229,19 @@
 //            };
 
             return {
-                coinsManagementTableData: [
-                    {
-                        date: "2016-05-03 13:51",
-                        assignedAccount: [
-                            120,//"已分配
-                            201 //可分配
-                        ],
-                        revenue: 12,
-                        disbursement: 22,
-                        bindNumber: 22,
-                        balance: 20,
-                    }
-                ],
-
+                coinsManagementTableData: [],// 列表数据
+                sum: '',//总记录条数
                 accounts: accountOptions,    //账号人员
                 assignLuban: {
                     name: 1111,
                     major: 222
-                }
-                ,
+                },
+                beginTime: '',//开始时间
+                endTime: '',//结束时间
+                currentPage: 1,//当前页数
+                pageSize: 10,//每页多少条
                 //时间搜索条件
-                selectDate: '',
+                date: '',
                 //立即充值弹框状态
                 dialogVisible: false,
                 //分配鲁班币弹框状态
@@ -289,10 +288,12 @@
                 return index * 1;
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+//                console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+//                console.log(`当前页: ${val}`);
+                this.currentPage = val;
+                this.queryEnterpriseLubanBiList()
             },
             //立即充值
             onSubmit() {
@@ -321,6 +322,34 @@
                 } else {
                     this.disabledfalse = true;
                 }
+            },
+            queryEnterpriseLubanBiList(){
+                // 分页获取鲁班币列表
+                var vm = this;
+                let baseUrl = basePath(vm.$route.matched[2].path)
+                let params = {
+                    url: baseUrl,
+                    currentPage: vm.currentPage,
+                    pageSize: vm.pageSize,
+                    beginTime: vm.beginTime,//开始时间
+                    endTime: vm.endTime//结束时间
+                }
+
+                queryEnterpriseLubanBiList(params).then(function (data) {
+                    console.log(data.data.result);
+                    let result = data.data.result;
+                    if (result) {
+                        vm.coinsManagementTableData = result.lbEnterpriseGoldChangeDetailList;
+                        vm.sum = result.pageInfo.sum;
+                    }
+                })
+            },
+            selectDate(val) {
+                // 选择时间范围
+                this.beginTime = val.split(' - ')[0];
+                this.endTime = val.split(' - ')[1];
+                this.queryEnterpriseLubanBiList()
+
             },
             //分配鲁班币
             //全部删除授权人员
@@ -388,6 +417,19 @@
             },
         },
         mounted() {
+            // 获取最近三个月的时间
+            let end = new Date().getTime();
+            let start = end - 3600 * 1000 * 24 * 90;
+            this.date = [start, end];
+
+            Date.prototype.toLocaleString = function () {
+                return this.getFullYear() + "-" + ((this.getMonth() + 1) > 10 ? this.getMonth() + 1 : '0' + (this.getMonth() + 1)) + "-" + (this.getDate() > 10 ? this.getDate() : '0' + (this.getDate()));
+            };
+
+            this.beginTime = new Date(start).toLocaleString();
+            this.endTime = new Date(end).toLocaleString();
+            // 分页获取鲁班币列表
+            this.queryEnterpriseLubanBiList()
         }
     }
 </script>
@@ -527,6 +569,7 @@
     .coin-count.el-form-item {
         margin-bottom: 15px;
     }
+
     .coin-count .el-form-item__label {
         width: 180px;
         margin-right: 10px;
@@ -536,6 +579,6 @@
     .coin-count .el-form-item__content span {
         font-size: 14px;
         font-weight: 700;
-        color:rgb(102, 148, 242);
+        color: rgb(102, 148, 242);
     }
 </style>

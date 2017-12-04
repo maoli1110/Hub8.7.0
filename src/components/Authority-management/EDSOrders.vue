@@ -57,7 +57,7 @@
                         <el-table-column label="操作" width="185" class="operate">
                             <template slot-scope="scope">
                                 <a class="icon icon-alipay" target="_blank"
-                                   @click="dialogVisible = true;redirectToPay(scope.row.orderId)"
+                                   @click="redirectToPay(scope.row.orderId,$event.target)"
                                    v-if="(scope.row.paymentStatus == 'UNPAID')"></a>
                                 <i class="icon icon-BIM-delete" @click="deleteList(scope.row.orderId)"
                                    v-if="(scope.row.paymentStatus == 'UNPAID')"></i>
@@ -188,7 +188,7 @@
                     });
                 });
             },
-            redirectToPay(orderId){
+            redirectToPay(orderId, target){
                 // 支付跳转
                 let baseUrl = basePath(this.$route.matched[3].path)
                 let params = {
@@ -197,33 +197,24 @@
                     packageName: '鲁班币充值'
                 }
                 var vm = this;
-//                window.open("https://www.baidu.com")
-
                 generatePayUrl(params).then(function (data) {
                     vm.linkUrl = data.data.result;
-//                    let msg = data.data.msg;
-//                    if (!result) {
-//                        vm.linkUrl = 'javascript:;';
-//                        vm.dialogVisible = false;
-//                        vm.$alert(msg, '提示', {
-//                            confirmButtonText: '确定',
-//                            type: 'info'
-//                        });
-//                    } else {
-//                    console.log(result);
-//                    vm.linkUrl = result;
+                    let msg = data.data.msg;
+                    if (vm.linkUrl) {
+                        vm.dialogVisible = true;
+                        var link = document.createElement('a');
+                        link.target = '_blank';
+                        link.href = vm.linkUrl;
+                        link.click();
+                    } else {
+                        vm.$alert(msg, '提示', {
+                            confirmButtonText: '确定',
+                            type: 'info'
+                        });
+                        vm.dialogVisible = false;
 
-//                    debugger
-//                    $('.icon-alipay').click()
-//                        vm.dialogVisible = true;
-//                    }
+                    }
                 })
-                debugger
-                if (vm.linkUrl) {
-                    window.open(vm.linkUrl)
-                }
-
-
             },
             locationPage(){
                 // 查看eds订单列表
@@ -236,14 +227,14 @@
         mounted(){
             this.getEnterpriseOrderList()
         },
-        watch: {
-            linkUrl(valNew, valOld){
-                console.log(valNew);
-                if (valNew) {
-                    window.open(valNew)
-                }
-            }
-        }
+//        watch: {
+//            linkUrl(valNew, valOld){
+//                console.log(valNew);
+//                if (valNew) {
+//                    window.open(valNew)
+//                }
+//            }
+//        }
     }
 </script>
 
