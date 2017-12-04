@@ -366,8 +366,8 @@
                 <el-form-item label="修改为：" >
                     <el-input v-model="modifyInfoList.name" auto-complete="off" style="width:73%"></el-input>
                 </el-form-item>
-                <el-form-item label="曾用名：">
-                    <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:150px;">
+                <el-form-item label="曾用名：" >
+                    <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="max-height:150px;">
                         <div  class="scroll-me" style="display:block;text-align:left;background:#fff;">{{modifyInfoList.formatName}}</div>
                     </vue-scrollbar>
                 </el-form-item>
@@ -834,20 +834,20 @@
                 deletArray = [];    //清空删除的projIds 防止影响
                 countIndex = 0;     //选中数量统计清空
                 this.allChecked = false;
-                getProjects(params).then((data)=>{
-                    this.tableData = data.data.result.content;
-                    this.tableData.forEach((val,key)=>{
-                        this.$set(this.tableData[key],'checked',false)
-                    })
-                    this.pagesList = data.data.result;
-                })
-                /*testList().then((data)=>{
+                /*getProjects(params).then((data)=>{
                     this.tableData = data.data.result.content;
                     this.tableData.forEach((val,key)=>{
                         this.$set(this.tableData[key],'checked',false)
                     })
                     this.pagesList = data.data.result;
                 })*/
+                testList().then((data)=>{
+                    this.tableData = data.data.result.content;
+                    this.tableData.forEach((val,key)=>{
+                        this.$set(this.tableData[key],'checked',false)
+                    })
+                    this.pagesList = data.data.result;
+                })
             },
             //进入回收站
             inRecycle(path,paramId){
@@ -1241,7 +1241,7 @@
                 this.monitorSever.projectItem = val;
             },
             monitor(type,item){
-                if(!deletArray.length && !item){
+                if(!monitorPpids.length && !item){
                     this.commonMessage('请添加监控文件','warning');
                     return false;
                 }else {

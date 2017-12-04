@@ -193,6 +193,14 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .monitor-setting{width:470px;}
 .monitor-setting>.el-dialog__body{padding:20px 40px 0px !important; }
 .monitor-setting>.el-dialog__footer{padding:0px 20px 26px !important; }
+/*修改工程名称弹窗*/
+.rename-data{width:470px;}
+.rename-data > .el-dialog__body{padding:20px 40px 0px !important; }
+.rename-data>.el-dialog__footer{padding:0px 20px 26px !important; }
+.bims-contents .rename-data .el-form-item label.el-form-item__label{width:58px !important;}
+.bims-contents .rename-data .el-input{width:85% !important;}
+/*抽取弹窗*/
+.extract-data{width:450px;}
 /*=======================pdfDrawing(pdf图纸页面)======================*/
 .pdfDrawing .el-table td:nth-child(8) div{
     text-align:left !important;padding:0 10px !important;
