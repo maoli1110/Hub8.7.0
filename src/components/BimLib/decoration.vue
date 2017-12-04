@@ -451,7 +451,9 @@
                 setting: {              //ztree setting
                     data: {
                         simpleData: {
-                            enable: true
+                            enable: true,
+                            idKey:'id',
+                            pIdKey:'parentId'
                         }
                     },
                     callback: {
@@ -550,40 +552,22 @@
                 },
                 pagesList:{},           //bim库列表的信息
                 tableData:[],           //bim库列表数据
-                zNodes: [
-                    {
-                        id: 1,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标不同",
-                        open: true,
-                        iconSkin: "pIcon01"
-                    },
-                    { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-                    { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-                    { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-                    {
-                        id: 2,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标相同",
-                        open: true,
-                        iconSkin: "pIcon02"
-                    },
-                    { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-                    { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-                    { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-                    { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-                    { id: 31, pId: 3, name: "叶子节点1" },
-                    { id: 32, pId: 3, name: "叶子节点2" },
-                    { id: 33, pId: 3, name: "叶子节点3" }
-                ],          //bim库组织结构zNodes
+                zNodes: [],          //bim库组织结构zNodes
                 proDepartNodes:[],      //添加->所属项目部数据zNodes
                 modifyNodes:[],         //修改弹窗树结构数据匹配
             }
         },
         methods: {
+            //组织结构树
+            getOrgzTreeList(params){
+                getOrgTreeList(params).then((data)=>{
+                    this.zNodes = data.data.result;
+                })
+            },
             //默认加载数据
             getData(name,id){
                 this.getBaseUrl();      //获取基础路径
+//                this.getOrgzTreeList({url:baseUrl});
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;         //回收站的状态
@@ -973,7 +957,6 @@
             getTree(type,deptId){
                 getOrgTreeList({url:baseUrl}).then(res => {
                     this.proDepartNodes = res.data.result;
-
                     if(type=='modify' && deptId){
                         this.proDepartNodes.forEach((val,key)=>{
                             let keyIndex = val.id.indexOf(deptId);
