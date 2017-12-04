@@ -129,10 +129,16 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .go-back{width:20px;height:20px;float:left;background:url('../../static/img/icon-menu.png') -107px -72px no-repeat;margin-top:-2px;}
 /*弹窗*/
 .project-manage{width:780px !important;}
+.project-manage .el-input,.bims-contents .project-manage .el-form-item .el-select{width:86% !important;}
+.project-manage .el-select>.el-input{width:100% !important;}
+
 .bims-contents .el-form-item label.el-form-item__label{
     width:97px ;text-align:right;
 }
-.bims-contents .el-form-item .el-select,.bims-contents .el-form-item .el-textarea{
+.bims-contents .el-form-item .el-select{
+    width:73% !important;
+}
+.bims-contents .el-form-item .el-textarea{
     width:84% !important;
 }
 /*projManage-remark(备注)*/
@@ -186,6 +192,18 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
     border: 1px solid #e6e6e6;
     margin: 9px 10px 10px 8px;
 }
+/*检测页面*/
+.monitor-setting{width:470px;}
+.monitor-setting>.el-dialog__body{padding:20px 40px 0px !important; }
+.monitor-setting>.el-dialog__footer{padding:0px 20px 26px !important; }
+/*修改工程名称弹窗*/
+.rename-data{width:470px;}
+.rename-data > .el-dialog__body{padding:20px 40px 0px !important; }
+.rename-data>.el-dialog__footer{padding:0px 20px 26px !important; }
+.bims-contents .rename-data .el-form-item label.el-form-item__label{width:58px !important;}
+.bims-contents .rename-data .el-input{width:85% !important;}
+/*抽取弹窗*/
+.extract-data{width:450px;}
 /*=======================pdfDrawing(pdf图纸页面)======================*/
 .pdfDrawing .el-table td:nth-child(8) div{
     text-align:left !important;padding:0 10px !important;

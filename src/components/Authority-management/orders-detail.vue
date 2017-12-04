@@ -24,10 +24,10 @@
             </div>
             <div class="header">
                 <el-col :span="18">
-                    <el-button type="primary" class="basic-btn" @click="unbindSoftware">
-                        <i class="icon-unbind icon"></i>
-                        <span>解绑软件</span>
-                    </el-button>
+                    <!--<el-button type="primary" class="basic-btn" @click="unbindSoftware">-->
+                        <!--<i class="icon-unbind icon"></i>-->
+                        <!--<span>解绑软件</span>-->
+                    <!--</el-button>-->
                 </el-col>
                 <el-col :span="6">
                     <el-input
@@ -44,7 +44,7 @@
                     <el-table class="scroll-me" ref="multipleTable" :data="bindManageTableData" border
                               tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
-                        <el-table-column type="selection" width="60"></el-table-column>
+                        <!--<el-table-column type="selection" width="60"></el-table-column>-->
                         <el-table-column type='index' label="序号" width="60"
                                          :index="indexSort"></el-table-column>
                         <el-table-column prop="computerName" label="电脑名称" width="200"></el-table-column>
