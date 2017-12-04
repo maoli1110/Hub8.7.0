@@ -834,20 +834,20 @@
                 deletArray = [];    //清空删除的projIds 防止影响
                 countIndex = 0;     //选中数量统计清空
                 this.allChecked = false;
-                /*getProjects(params).then((data)=>{
-                    this.tableData = data.data.result.content;
-                    this.tableData.forEach((val,key)=>{
-                        this.$set(this.tableData[key],'checked',false)
-                    })
-                    this.pagesList = data.data.result;
-                })*/
-                testList().then((data)=>{
+                getProjects(params).then((data)=>{
                     this.tableData = data.data.result.content;
                     this.tableData.forEach((val,key)=>{
                         this.$set(this.tableData[key],'checked',false)
                     })
                     this.pagesList = data.data.result;
                 })
+                /*testList().then((data)=>{
+                    this.tableData = data.data.result.content;
+                    this.tableData.forEach((val,key)=>{
+                        this.$set(this.tableData[key],'checked',false)
+                    })
+                    this.pagesList = data.data.result;
+                })*/
             },
             //进入回收站
             inRecycle(path,paramId){
@@ -997,13 +997,13 @@
             newCreateProject(url,param){
                 createProject({url:url,param:param}).then((data)=>{
                     if(data.data.code==500){
-//                        this.commonMessage(data.data.msg,'warning')
+                        this.commonMessage(data.data.msg,'warning')
                     }else if(data.data.code==200){
                         //执行成功
                         this.ProjManageDialog = false;
+                        this.clearCreateParam();
+                        this.getProjectList({url:baseUrl,param:this.tableParam});
                     }
-                    this.clearCreateParam();
-                    this.getProjectList({url:baseUrl,param:this.tableParam});
                 },(error)=>{
                     this.commonMessage(error.data.msg,'warning')
                 })
@@ -1160,14 +1160,14 @@
                     userIds: []                            //授权人员名单
                 };
 
-                /*if(!newCreate.projName){                    //工程名称不存在
+                if(!newCreate.projName){                    //工程名称不存在
                     this.commonMessage('工程名称不能为空','warning');
                     return false;
-                }*/
-                /*if(!this.createDeptId){                     //所属项目部
+                }
+                if(!this.createDeptId){                     //所属项目部
                     this.commonMessage('所属项目部不能为空','warning');
                     return false;
-                }*/
+                }
                 this.authUserListItem.forEach((val,key)=>{  //将选中结果里面可用值提取出来
                     if(!val.allAuth && val.hasAuth){
                         newCreate.userIds.push(val.userName)
@@ -1380,6 +1380,13 @@
         components: { VueScrollbar },
         watch: {
             '$route' (to, from) {
+                if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
+                    this.isRecycle = false;         //回收站的状态
+                    this.tableParam.latest = true;  //版本状态
+                }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
+                    this.isRecycle = true;
+                    this.tableParam.latest = false;
+                }
                 this.tableParam.delete = this.isRecycle;                            //是否是回收站
                 this.tableParam.packageType = this.$route.params.typeId;            //套餐类型
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //筛选属性
