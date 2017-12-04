@@ -320,31 +320,36 @@
                                 expirationTime = "永久";
                             }
                         } else {
-                            if (this.monthDayTO.dayNumber <= 0 && this.monthDayTO.monthNumber <= 0) {
-                                detailHtml += "<td align='center' style='width: 100px;'><font color=\"#ff9900\">" + this.expirationDateStr + "<br /><br />";
-                                detailHtml += "剩余0月0天</font>";
-                                if (this.packageType == 2 && res.isEnterpriseBlackListMember == 'true') {//禁用线上服务
-                                    detailHtml += blackMemberLimitStr;
-                                }
-                                status = "<font color=\"#ff9900\">已过期！</font></td>";
-                                isPastDue = true;
-                                expirationTime = "0月0天";
-                            } else {
-                                detailHtml += "<td align='center' style='width: 100px'><font color=\"#40A640\">" + this.expirationDateStr + "</font><br />";
-                                if (this.monthDayTO.monthNumber == 0 && this.monthDayTO.dayNumber <= 30) {
-                                    detailHtml += "<br /><font color=\"#ff9900\">剩余" + this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天</font>";
+                            if(this.monthDayTO){
+                                if (this.monthDayTO.dayNumber <= 0 && this.monthDayTO.monthNumber <= 0) {
+                                    detailHtml += "<td align='center' style='width: 100px;'><font color=\"#ff9900\">" + this.expirationDateStr + "<br /><br />";
+                                    detailHtml += "剩余0月0天</font>";
                                     if (this.packageType == 2 && res.isEnterpriseBlackListMember == 'true') {//禁用线上服务
                                         detailHtml += blackMemberLimitStr;
                                     }
+                                    status = "<font color=\"#ff9900\">已过期！</font></td>";
+                                    isPastDue = true;
+                                    expirationTime = "0月0天";
                                 } else {
-                                    if (this.packageType == 2 && res.isEnterpriseBlackListMember == 'true') {//禁用线上服务
-                                        detailHtml += "<br /><font color=\"#40A640\">剩余" + this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天</font>" + blackMemberLimitStr + "</td>";
+                                    detailHtml += "<td align='center' style='width: 100px'><font color=\"#40A640\">" + this.expirationDateStr + "</font><br />";
+                                    if (this.monthDayTO.monthNumber == 0 && this.monthDayTO.dayNumber <= 30) {
+                                        detailHtml += "<br /><font color=\"#ff9900\">剩余" + this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天</font>";
+                                        if (this.packageType == 2 && res.isEnterpriseBlackListMember == 'true') {//禁用线上服务
+                                            detailHtml += blackMemberLimitStr;
+                                        }
                                     } else {
-                                        detailHtml += "<br /><font color=\"#40A640\">剩余" + this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天</font></td>";
+                                        if (this.packageType == 2 && res.isEnterpriseBlackListMember == 'true') {//禁用线上服务
+                                            detailHtml += "<br /><font color=\"#40A640\">剩余" + this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天</font>" + blackMemberLimitStr + "</td>";
+                                        } else {
+                                            detailHtml += "<br /><font color=\"#40A640\">剩余" + this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天</font></td>";
+                                        }
                                     }
+                                    expirationTime = this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天";
                                 }
-                                expirationTime = this.monthDayTO.monthNumber + "个月" + this.monthDayTO.dayNumber + "天";
+                            }else {
+                                detailHtml += "<td align='center' style='width: 100px'>-</td>";
                             }
+
                         }
 
                         detailHtml += "<td align='center' style='width: 60px;'>";
@@ -500,10 +505,8 @@
                                 "<td width='150'></td>" +
                                 "<td width='350'></td>"
                         }
-                        detailHtml += "<td title='" + serviceContent + "' style='cursor: pointer;width: 150px;' align='center'>";
-                        //detailHtml += content;
-                        detailHtml += "<span class='remarks'>" + this.description ? this.description : ' ' + "</span>";
-
+                        detailHtml += "<td title='" + serviceContent + "' style='cursor: pointer;width: 150px;' align='center' class='service'>";
+                        detailHtml += "<span class='remarks'>" + (this.description ? this.description : ' ') + "</span><div class='descriptionDiv'>" + (this.description ? this.description : ' ') + "</div>";
                         detailHtml += "</td><td style='width: 150px;border-right: 1px solid #E6E6E6' align='center'><p>" + (this.outTradeId ? this.outTradeId : ' ') + "</p></td>"
 //                    detailHtml += "<td style='border-right: 1px solid #E6E6E6;'>"++"</td>" +
 

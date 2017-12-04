@@ -3,10 +3,10 @@
         <div class="order-management">
             <div class="header" style="margin-bottom:20px;box-shadow: 1px 1px 5px #ccc;">
                 <el-col :span="16">
-                    <span class="orders-text font-w-n font-s-14">您的EDS账号当前鲁班币：<span class="span-bule">53</span> 个</span>
+                    <span class="orders-text font-w-n font-s-14">您的EDS账号当前鲁班币：<span class="span-bule">{{count}}</span> 个</span>
                 </el-col>
                 <el-col :span="8" class="pull-right-btn">
-                    <el-button type="primary" class="basic-btn" @click="assignLubanCoinDialog=true">分配鲁班币</el-button>
+                    <el-button type="primary" class="basic-btn" @click="assignLubanCoinDialog=true;allocateLubanCoins">分配鲁班币</el-button>
                     <el-button type="primary" class="basic-btn" @click="dialogVisible=true">立即充值</el-button>
                 </el-col>
             </div>
@@ -28,8 +28,13 @@
                         <el-table-column class="" type='index' label="序号" width="60"
                                          :index="indexSort"></el-table-column>
                         <el-table-column class="table-tr" prop="changeTime" label="时间" width="200"></el-table-column>
-                        <el-table-column class="table-tr" prop="changeDetail" label="明细"
-                                         show-overflow-tooltip></el-table-column>
+                        <el-table-column class="table-tr"  label="明细"
+                                         show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.changeDetail.indexOf('鲁班币充值')">{{scope.row.changeDetail}}</span>
+                                <!--<span v-if="!scope.row.changeDetail.indexOf('鲁班币充值')">{{scope.row.changeDetail}}</span>-->
+                            </template>
+                        </el-table-column>
                         <el-table-column class="table-tr" label="收入（个）" width="200">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.changeType == 0">{{scope.row.golds}}</span>
@@ -190,6 +195,8 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
     import {basePath} from '../../utils/common.js'
     import {queryEnterpriseLubanBiList} from '../../api/getData-cxx.js';
+    import {getEnterpriseCurrentLubanBiCount} from '../../api/getData-cxx.js';
+    import {addLubanBiChargeOrder} from '../../api/getData-cxx.js';
     const accountOptions = [
         "曹相相1",
         "曹相相2",
@@ -230,7 +237,8 @@
 
             return {
                 coinsManagementTableData: [],// 列表数据
-                sum: '',//总记录条数
+                sum: '',// 总记录条数
+                count: '',// 获取企业当前鲁班币数量
                 accounts: accountOptions,    //账号人员
                 assignLuban: {
                     name: 1111,
@@ -297,6 +305,21 @@
             },
             //立即充值
             onSubmit() {
+                // 接受协议并支付
+                var vm = this;
+
+                let baseUrl = basePath(vm.$route.matched[2].path)
+                let params = {
+                    url: baseUrl,
+                    currentPage: vm.currentPage,
+                    pageSize: vm.pageSize,
+                    beginTime: vm.beginTime,//开始时间
+                    endTime: vm.endTime//结束时间
+                }
+                // 添加鲁班币充值订单
+                addLubanBiChargeOrder().then(function () {
+
+                })
                 console.log('submit!');
             },
             handleClose(done) {
@@ -322,6 +345,10 @@
                 } else {
                     this.disabledfalse = true;
                 }
+            },
+            allocateLubanCoins(){
+                // 分配鲁班币弹框
+
             },
             queryEnterpriseLubanBiList(){
                 // 分页获取鲁班币列表
@@ -430,6 +457,17 @@
             this.endTime = new Date(end).toLocaleString();
             // 分页获取鲁班币列表
             this.queryEnterpriseLubanBiList()
+
+            let baseUrl = basePath(this.$route.matched[2].path)
+            let params = {
+                url: baseUrl
+            }
+
+            var vm = this;
+            //  获取企业当前鲁班币数量
+            getEnterpriseCurrentLubanBiCount(params).then(function (result) {
+                vm.count = result.data.result;
+            })
         }
     }
 </script>
