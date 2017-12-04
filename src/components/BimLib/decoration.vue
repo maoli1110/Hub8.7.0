@@ -232,7 +232,7 @@
                     <el-input  v-model="monitorSever.username"></el-input>
                 </el-form-item>
                 <el-form-item label="密码：" >
-                    <el-input v-model="monitorSever.pasword"></el-input>
+                    <el-input type="password" v-model="monitorSever.pasword"></el-input>
                 </el-form-item>
                 <el-form-item label="服务器地址：" >
                     <el-input v-model="monitorSever.clientIp"></el-input>
@@ -540,6 +540,13 @@
                     username:"",
                     remark:""
                 },
+                checkMonitor:{
+                    code:"",
+                    ip:"",
+                    password:'',
+                    port:"",
+                    username:""
+                },
                 pagesList:{},           //bim库列表的信息
                 tableData:[],           //bim库列表数据
                 zNodes: [
@@ -586,7 +593,7 @@
                 }
                 //列表初始值
                 this.tableParam.delete = this.isRecycle;
-                this.tableParam.deptIds[0] ="d68ceeb2d02043bd9ea5991ac44d649b"
+                this.tableParam.deptIds[0] ="d68ceeb2d02043bd9ea5991ac44d649b";
 //                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b'
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
@@ -595,7 +602,7 @@
                 this.tableParam.pageParam.size = this.totalPages;
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
 
-//                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //bim库bim属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
             },
@@ -679,18 +686,18 @@
             },
             //获取属性
             getProjGenreEvent(isDelete,packageType){
-                getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
+                getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=> {
                     this.bimOptions = data.data.result;
-                    if(this.bimOptions.length>0){
+                    if (this.bimOptions != '' || this.bimOptions != null) {
                         this.filterParams.bimVal = this.bimOptions[0].value;
                     }
-                });
+                })
             },
             //获取专业
             getProjTypeEvent(isDelete,packageType){
                 getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
                     this.majorOptions = data.data.result;
-                    if(this.majorOptions.length>0){
+                    if(this.majorOptions!='' ||this.majorOptions!=null){
                         this.filterParams.majorVal = this.majorOptions[0].value;
                     }
                 })
@@ -977,7 +984,7 @@
             newCreateProject(url,param){
                 createProject({url:url,param:param}).then((data)=>{
                     if(data.data.code==500){
-                        this.commonMessage(data.data.msg,'warning')
+//                        this.commonMessage(data.data.msg,'warning')
                     }else if(data.data.code==200){
                         //执行成功
                         this.ProjManageDialog = false;
@@ -985,7 +992,7 @@
                     this.clearCreateParam();
                     this.getProjectList({url:baseUrl,param:this.tableParam});
                 },(error)=>{
-                    this.commonMessage(error.data.msg)
+                    this.commonMessage(error.data.msg,'warning')
                 })
             },
             updateProjInfo(url,param){
@@ -1131,7 +1138,8 @@
             //工程管理保存
             proManageSave(){
                 let newCreate ={    //创建工程param
-                    deptId:this.createDeptId,               //所属项目部
+//                    deptId:this.createDeptId,               //所属项目部
+                    deptId:'d68ceeb2d02043bd9ea5991ac44d649b',               //所属项目部
                     packageType: this.$route.params.typeId, //套餐类型
                     projMemo: this.proManage.remark,        //备注
                     projName: this.proManage.name,          //名称
@@ -1139,14 +1147,14 @@
                     userIds: []                            //授权人员名单
                 };
 
-                if(!newCreate.projName){                    //工程名称不存在
+                /*if(!newCreate.projName){                    //工程名称不存在
                     this.commonMessage('工程名称不能为空','warning');
                     return false;
-                }
-                if(!this.createDeptId){                     //所属项目部
+                }*/
+                /*if(!this.createDeptId){                     //所属项目部
                     this.commonMessage('所属项目部不能为空','warning');
                     return false;
-                }
+                }*/
                 this.authUserListItem.forEach((val,key)=>{  //将选中结果里面可用值提取出来
                     if(!val.allAuth && val.hasAuth){
                         newCreate.userIds.push(val.userName)
@@ -1185,18 +1193,35 @@
             //单个工程设置或者修改监控信息
             getMonitorInfo(url,param){
                 getMonitorInfo({url:url,param:param}).then((data)=>{
-                    if(!data.data.result){
-
+                    if(data.data.result){
+                        this.monitorSever.projectItem = data.data.result.code;
+                        this.monitorSever.username = data.data.result.username;
+                        this.monitorSever.pasword = data.data.result.password;
+                        this.monitorSever.clientIp = data.data.result.ip;
+                        this.monitorSever.port = data.data.result.port;
                     }
                 })
             },
             //设置监控消息
             setMonitorInfoAll(url,param){
                 saveMonitorInfo({url:url,param:param}).then((data)=>{
-                    if(data.data.code){
-                        this.commonMessage("批量监控成功",'sccess');
-                        this.monitorSeverVisible = false;
+                    if(data.data.code==200){
+                        this.getProjectList({url:baseUrl,param:this.tableParam});
+//                        this.commonMessage("批量监控成功",'success');
+
                     }
+                })
+            },
+            //检测
+            checkMonitorInfo(url,param){
+                checkMonitorSetInfo({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        this.commonMessage(data.data.result.errorMsg,'warning');
+                        if(data.data.result.success && data.data.result.errorMsg=='检测成功！'){
+                            this.monitorSeverVisible = false;
+                        }
+                    }
+
                 })
             },
             monitorChange(val){
@@ -1213,6 +1238,7 @@
                     if(type=='all'){
 //                        this.monitorSever = {};
                     }else if(type=='single'){
+                        deletArray.push(item.ppid);
                         this.getMonitorInfo(baseUrl,{ppids:[item.ppid]})
                     }
 
@@ -1222,6 +1248,13 @@
             monitorSeverOk(){
                 //加密文件的基本用法
 //                 let pass= BASE64.encoder('123456');
+               /* let checkMonitor = {
+                    code: "C09487EC-D85C-4F2B-8F0C-FD8B54993B7B",
+                    ip: "192.168.2.22",
+                    password: "admin12345",
+                    port: "80",
+                    username: "admin"
+                };*/
                 this.monitorParam.code = this.monitorSever.projectItem;
                 this.monitorParam.ip = this.monitorSever.clientIp;
                 this.monitorParam.password = BASE64.encoder(this.monitorSever.pasword);
@@ -1229,7 +1262,15 @@
                 this.monitorParam.ppids = deletArray;
                 this.monitorParam.username = this.monitorSever.username;
                 this.monitorParam.remark = this.monitorSever.remark;
-                this.setMonitorInfoAll(baseUrl,this.monitorParam)
+
+                this.checkMonitor.code = this.monitorSever.projectItem;
+                this.checkMonitor.ip = this.monitorSever.clientIp;
+                this.checkMonitor.password = BASE64.encoder(this.monitorSever.pasword)
+                this.checkMonitor.username = this.monitorSever.username
+                this.checkMonitor.port = this.monitorSever.port
+
+                this.checkMonitorInfo(baseUrl,this.checkMonitor);
+                this.setMonitorInfoAll(baseUrl,this.monitorParam);
             },
             /**
              * 抽取
