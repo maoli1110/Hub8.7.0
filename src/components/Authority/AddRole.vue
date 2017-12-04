@@ -3,9 +3,9 @@
         <div class="role-wrap">
             <div class="role-base">角色基本信息
             </div>
-            <div>
+            <!-- <div>
               {{curEditRole}}
-            </div>
+            </div> -->
             <el-row class="role-message" >
                 <el-col :span="8">
                     <div class="el-form-item el-form_">
@@ -46,10 +46,10 @@
             <div class="role-title">功能授权</div>
             <div style="border:1px solid #e6e6e6">
                 <el-carousel trigger="click" height="195px" arrow="always" :interval="99999999">
-                    <el-carousel-item v-for="(items,index) in clientInformation" :key="index">
+                    <el-carousel-item v-for="(items,index) in clientInformation_" :key="index">
                         <div style="padding:0 20px;margin-top:40px">
                             <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in items"
-                                     @click.native="currentIndex=index;selectClient(item)"
+                                     @click.native="currentIndex=index;selectClient(item)"                                     
                                      :key="index" class="card" :class="{'client-checked':index==currentIndex}"
                             >
                                 <div style="text-align:center;margin-top:20px">
@@ -66,7 +66,7 @@
                 </el-carousel>
                 <div style="padding:20px">
                     <div style="position:relative;">
-                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAlls"
+                        <el-checkbox  v-model="checkAlls"
                                      @change="handleCheckAlls"
                                      style="position:absolute;left:39px;top:22px;z-index:1000">全部
                         </el-checkbox>
@@ -83,7 +83,7 @@
                             width="150" 
                             >
                             <template slot-scope="scope">
-                                <el-checkbox :indeterminate="scope.row.isIndeterminate" v-model="scope.row.checkAll"
+                                <el-checkbox  v-model="scope.row.checkAll"
                                              @change="handleCheckAllChange($event,scope.row)">{{scope.row.name}}
                                 </el-checkbox>
                             </template>
@@ -97,10 +97,10 @@
                                 <div>
                                 <el-checkbox-group v-model="scope.row.checkedCities" style="padding:0 10px"
                                                    @change="handleCheckedCitiesChange(scope.row.checkedCities,scope.row)">
-                                    <el-checkbox  class="el-checked-wrap"   v-for="city in scope.row.cities" 
+                                    <el-checkbox  class="el-checked-wrap"   v-for="(city,i) in scope.row.cities" 
                                     :title="city"
-                                    :label="city" :key="city">                   
-                                       {{city}}               
+                                    :label="city" :key="i">                   
+                                       {{city.authName}}               
                                     </el-checkbox>
                                 </el-checkbox-group>
                                 </div>
@@ -113,7 +113,7 @@
             <div>
             </div>
             <div slot="footer" class="dialog-footer" style="text-align:center;padding-top:20px">
-                <el-button type="primary" class="dialog-btn">保存</el-button>
+                <el-button type="primary" class="dialog-btn" @click="save">保存</el-button>
                 <el-button  class="dialog-btn">取消</el-button>
             </div>
             
@@ -135,131 +135,17 @@ export default {
       currentIndex: 0,
       textarea: "",
       role: "",
-      carouselPage:'',
+      carouselPage: "",
       authoritedTableData: [],
-      clientInformation: [
-      ],
-      options: [
-      ],
-      isIndeterminate: true,
+      clientInformation: [],
+      clientInformation_: [],
+      options: [],
       checkAlls: false,
       tableData: [
-        {
-          name: "王小虎",
-          checkedCities: ["广州", "深圳5"],
-          cities: [
-            "上海",
-            "北京",
-            "广州",
-            "深圳5",
-            "上海6",
-            "北京7",
-            "广州8",
-            "深圳9",
-            "上海g",
-            "广d州",
-            "北京q",
-            "广州w",
-            "深圳qa",
-            "上海dfdasf",
-            "北京dsfsdafdasfasd",
-            "广dsgasdgas5555555555555d州",
-            "深圳f"
-          ],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "赵小虎",
-          checkedCities: ["南京", "武汉"],
-          cities: ["杭州", "合肥", "南京", "武汉"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "李小虎",
-          checkedCities: ["福建", "湖南"],
-          cities: ["兰州", "福建", "湖南", "湖北"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "孙小虎",
-          checkedCities: ["北京2", "广州3"],
-          cities: ["上海1", "北京2", "广州3", "深圳4"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "钱小虎",
-          checkedCities: ["北京2", "广州3"],
-          cities: ["上海1", "北京2", "广州3", "深圳4"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "周小虎",
-          checkedCities: ["北京2"],
-          cities: ["上海1", "北京2", "广州3", "深圳4"],
-          isIndeterminate: true,
-          checkAll: false
-        },
         {
           name: "杨小虎",
           checkedCities: ["广州3"],
           cities: ["上海1", "北京2", "广州3", "深圳4"],
-          isIndeterminate: true,
-          checkAll: false
-        }
-      ],
-      tableData2: [
-        {
-          name: "王小11虎",
-          checkedCities: ["广州", "深圳5"],
-          cities: ["上海", "北京", "广州", "深圳5", "上海6", "北京7"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "赵小22虎",
-          checkedCities: ["南京", "武汉"],
-          cities: ["杭州", "合肥", "南京", "武汉"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "李小22虎",
-          checkedCities: ["福建", "湖南"],
-          cities: ["兰州", "福建", "湖南", "湖北"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "孙22小虎",
-          checkedCities: ["北京2", "广州3"],
-          cities: ["上海1", "北京2", "广州3", "深圳4"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "钱小22虎",
-          checkedCities: ["北京2", "广州3"],
-          cities: ["上海1", "北京2", "广州3", "深圳4"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "周小3虎",
-          checkedCities: ["北京2"],
-          cities: ["上海1", "北京2", "广州3", "深圳4"],
-          isIndeterminate: true,
-          checkAll: false
-        },
-        {
-          name: "杨343小虎",
-          checkedCities: ["广州3"],
-          cities: ["上海1", "北京2", "广州3", "深圳4"],
-          isIndeterminate: true,
           checkAll: false
         }
       ]
@@ -274,6 +160,34 @@ export default {
       }
       return result;
     },
+    /**获取客户端所有信息*/
+    getRoleClientAuthInfo() {
+      types.getRoleClientAuthInfo().then(res => {
+        this.clientInformation = res.data.result;
+        this.clientInformation.forEach(items => {
+          // 重新定义数据结构
+          items.authInfoGroups_copy = [];
+          items.authInfoGroups.forEach((el, i) => {
+            items.authInfoGroups_copy.push({
+              name: el.authOrg,
+              checkedCities: [],
+              cities: el.authInfos,
+              checkAll: false
+            });
+          });
+        });
+        // 默认展示
+        this.selectClient(this.clientInformation[0]);
+        // 拆分成10个一组
+        this.clientInformation_ = this.split_array(this.clientInformation, 10);
+      });
+    },
+    /**获取角色类型*/
+    getRoleType() {
+      types.getRoleType().then(res => {
+        this.options = res.data.result;
+      });
+    },
     handleCheckAlls(event) {
       if (event.target.checked) {
         this.authoritedTableData.forEach((item, index) => {
@@ -283,7 +197,7 @@ export default {
             }
           });
           item.checkAll = true;
-          item.isIndeterminate = false;
+          // item.isIndeterminate = false;
         });
         this.checkAlls = true;
         this.isIndeterminate = false;
@@ -291,28 +205,25 @@ export default {
         this.authoritedTableData.forEach((item, index) => {
           item.checkedCities = [];
           item.checkAll = false;
-          item.isIndeterminate = false;
+          // item.isIndeterminate = false;
         });
-        this.isIndeterminate = false;
+        // this.isIndeterminate = false;
         this.checkAll = false;
         this.checkAlls = false;
       }
     },
     handleCheckAllChange(event, row) {
       row.checkedCities = event.target.checked ? row.cities : [];
-      row.isIndeterminate = false;
       this.isCheckedAll();
     },
 
     handleCheckedCitiesChange(value, row) {
       let checkedCount = value.length;
       row.checkAll = checkedCount === row.cities.length;
-      row.isIndeterminate =
-        checkedCount > 0 && checkedCount < row.cities.length;
       this.isCheckedAll();
     },
+    // 全部选项控制
     isCheckedAll() {
-      // 全部选项控制
       let checkedAllCount;
       let checkedAllCities = [];
       let allCities = [];
@@ -326,34 +237,40 @@ export default {
       });
       checkedAllCount = checkedAllCities.length;
       this.checkAlls = checkedAllCount === allCities.length;
-      this.isIndeterminate =
-        checkedAllCount > 0 && checkedAllCount < allCities.length;
     },
-    selectClient(item) {
-      console.log(item)
-      item
-        ? (this.authoritedTableData = this.tableData)
-        : (this.authoritedTableData = this.tableData2);
+    // 切换客户端
+    selectClient(items) {
+      this.authoritedTableData = items.authInfoGroups_copy;
+      this.isCheckedAll();
+    },
+    save() {
+      let authCode = [];
+      this.clientInformation.forEach(items => {
+        items.authInfoGroups_copy.forEach(item => {
+          item.checkedCities.forEach(el => {
+            authCode.push(el.authCode);
+          });
+        });
+      });
+      console.log(authCode);
     }
   },
   created() {
-    types.getRoleClientAuthInfo().then(res=>{
-      this.clientInformation=this.split_array(res.data.result,10)
-      console.log( this.clientInformation)
-
-    })
+    this.getRoleClientAuthInfo();
+    this.getRoleType();
   },
   mounted() {
-    this.selectClient(0);
-    this.roleName = this.curEditRole.roleName;
-    this.textarea = this.curEditRole.remarks || "请输入";
-    if (!this.curEditRole.roleName) {
-      this.$router.push("/authority/role-management");
-    };
-    types.getRoleType().then(res=>{
-      this.options=res.data.result;
-    });
-    
+    if (this.$route.path == "/authority/add-role") {
+      // 添加
+    } else {
+      // 编辑
+      this.roleName = this.curEditRole.roleName;
+      this.textarea = this.curEditRole.remarks;
+      this.roleType = this.curEditRole.roleTypeName;
+      if (!this.curEditRole.roleName) {
+        this.$router.push("/authority/role-management");
+      }
+    }
   }
 };
 </script>

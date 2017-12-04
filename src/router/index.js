@@ -111,8 +111,13 @@ export default new Router({
                             component: resolve => require(['../components/Authority/RoleManagement.vue'], resolve)
                         },
                         {
-                            // 角色管理(编辑/添加)
+                            // 角色管理(编辑)
                             path: 'edit-role/:id',
+                            component: resolve => require(['../components/Authority/AddRole.vue'], resolve)
+                        },
+                        {
+                            // 角色管理(添加)
+                            path: 'add-role',
                             component: resolve => require(['../components/Authority/AddRole.vue'], resolve)
                         },
                         {

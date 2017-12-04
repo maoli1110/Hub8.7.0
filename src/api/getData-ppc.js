@@ -9,7 +9,8 @@ let base = 'http://192.168.13.195:8989/builder/'
  * 获取角色列表
  */
 export const getRoleList = params => {
-    return axios.get(`${base}rs/testRest/findRoles`);
+    return axios.post(`${base}rs/testRest/findPageRoles`, params
+    );
 };
 /**
  * @param {*} params 

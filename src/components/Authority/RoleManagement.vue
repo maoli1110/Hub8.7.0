@@ -4,17 +4,21 @@
             <div>
                 <el-button type="primary" class="basic-btn" icon="plus" @click="addRole()">添加角色</el-button>
                 <el-button type="primary"  class="basic-btn" icon="delete" @click="deleteRole()"> 删除角色</el-button>
-                <el-input placeholder="请选择日期" icon="search" style="float:right;width:210px"></el-input>
+                <el-input placeholder="请输入" 
+                                v-model="pageParams.searchStr"
+                                icon="search"
+                                :on-icon-click="search"
+                                @keyup.enter.native="search" style="float:right;width:210px"></el-input>
             </div>
             <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
                       style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop="roleName" label="角色名" width="250" >
                 </el-table-column>
-                <el-table-column prop="roleNumber" label="角色人数" width="250">
+                <el-table-column prop="userCount" label="角色人数" width="250">
                 </el-table-column>
                 <el-table-column label="更新时间" width="250">
-                    <template slot-scope="scope">{{ scope.row.date }}</template>
+                    <template slot-scope="scope">{{ scope.row.updateDate}}</template>
                 </el-table-column>
                 <el-table-column label="备注" width="500">
                     <template slot-scope="scope">
@@ -31,15 +35,15 @@
                 </el-table-column>
             </el-table>
             <div style="margin-top: 20px">
-                <div style="float:left;height:40px;line-height:40px">共10个结果</div>
+                <!-- <div style="float:left;height:40px;line-height:40px">共10个结果</div> -->
                 <el-pagination style="margin-left:30%"
                                @size-change="handleSizeChange"
                                @current-change="handleCurrentChange"
-                               :current-page="4"
-                               :page-sizes="[100, 200, 300, 400]"
-                               :page-size="100"
+                               :current-page="curPage"
+                               :page-sizes="[10, 20, 30, 40]"
+                               :page-size="pageSize"
                                layout="total, sizes, prev, pager, next, jumper"
-                               :total="400">
+                               :total="total">
                 </el-pagination>
             </div>
         </div> 
@@ -55,68 +59,15 @@ export default {
       addRoleDialogVisible: false,
       textarea: "",
       role: "",
-      roleTableData: [
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长remark"
-        },
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长remark"
-        },
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长remark"
-        },
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长"
-        },
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长remark"
-        },
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长remark"
-        },
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长remark"
-        },
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长remark"
-        },
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长remark"
-        },
-        {
-          roleName: "赵四",
-          roleNumber: 15,
-          date: "2016-05-03 13:51",
-          remarks: "超长remark"
-        }
-      ],
+      roleTableData: [],
+      curPage: 1, // 当前页
+      total: 0, // 共多少条
+      pageSize: 10, // 每页展示多少条
+      pageParams: {
+        pageNum: 1,
+        pageSize: 10,
+        searchStr: null //搜索
+      },
       options: [
         {
           value: "选项1",
@@ -147,32 +98,51 @@ export default {
     ...mapActions([
       "curEditRole" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
     ]),
+    getRoleList() {
+      types.getRoleList(this.pageParams).then(res => {
+        this.roleTableData = res.data.result.result;
+        let pageInfo = res.data.result.pageInfo;
+        this.curPage = pageInfo.currentPage;
+        this.pageSize = pageInfo.pageSize;
+        this.total = pageInfo.totalNumber;
+      });
+    },
+    search() {
+      this.getRoleList();
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+      this.pageParams.pageSize = val;
+      this.getRoleList();
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.pageParams.pageNum = val;
+      this.getRoleList();
     },
     addRole() {
-      types.getRoleClientAuthInfo().then(res => {
-        console.log(res.data)
-      });
+      this.$router.push({ path: `/authority/add-role`});
+      // types.getRoleClientAuthInfo().then(res => {
+      //   console.log(res.data);
+      // });
     },
     editRole(row) {
-      this.$router.push({ path: `/authority/edit-role/5` });
+      console.log(row);
+      this.$router.push({ path: `/authority/edit-role/${row.roleId}` });
       this.curEditRole(row);
     },
     searchRole(RoleId) {
-      this.$router.push({ path: `/authority/Role-management`});
+      this.$router.push({ path: `/authority/Role-management` });
     },
     deleteRole() {}
   },
-  mounted() {
-    console.log(types);
-  }
+  created() {
+    this.getRoleList();
+  },
+  mounted() {}
 };
 </script>
 <style scoped>
