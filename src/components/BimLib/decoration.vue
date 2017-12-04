@@ -215,7 +215,7 @@
             </el-col>
         </el-row>
         <!--检测页面-->
-        <el-dialog title="第三方监控服务设置" :visible.sync="monitorSeverVisible">
+        <el-dialog title="第三方监控服务设置" custom-class="monitor-setting" :visible.sync="monitorSeverVisible" @close="updateList">
             <el-form >
                 <el-form-item label="对接平台：" >
                     <el-select v-model="monitorSever.projectItem" @change="monitorChange" placeholder="请选择" >
@@ -232,7 +232,7 @@
                     <el-input  v-model="monitorSever.username"></el-input>
                 </el-form-item>
                 <el-form-item label="密码：" >
-                    <el-input v-model="monitorSever.pasword"></el-input>
+                    <el-input type="password" v-model="monitorSever.pasword"></el-input>
                 </el-form-item>
                 <el-form-item label="服务器地址：" >
                     <el-input v-model="monitorSever.clientIp"></el-input>
@@ -241,7 +241,7 @@
                     <el-input v-model="monitorSever.port"></el-input>
                 </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
+            <div slot="footer" class="dialog-footer" style="padding-top:0">
                 <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="monitorSeverOk()">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="monitorSeverVisible = false">取 消</el-button>
             </div>
@@ -331,7 +331,7 @@
             </div>
         </el-dialog>
         <!--抽取数据弹窗-->
-        <el-dialog class="extract-dialog" :close-on-click-modal="false" :close-on-press-escape="false"
+        <el-dialog class="extract-dialog" custom-class="extract-data" :close-on-click-modal="false" :close-on-press-escape="false"
                    title="数据处理"
                    :visible.sync="extractDialog"
                    width="30%"
@@ -357,7 +357,7 @@
             </span>
         </el-dialog>
         <!--修改名称-->
-        <el-dialog class="modify-update" :close-on-click-modal="false" :close-on-press-escape="false"
+        <el-dialog class="modify-update" custom-class="rename-data" :close-on-click-modal="false" :close-on-press-escape="false"
                    title="修改名称"
                    :visible.sync="modifyInfo"
                    width="30%"
@@ -366,8 +366,8 @@
                 <el-form-item label="修改为：" >
                     <el-input v-model="modifyInfoList.name" auto-complete="off" style="width:73%"></el-input>
                 </el-form-item>
-                <el-form-item label="曾用名：">
-                    <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:150px;">
+                <el-form-item label="曾用名：" >
+                    <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="max-height:150px;">
                         <div  class="scroll-me" style="display:block;text-align:left;background:#fff;">{{modifyInfoList.formatName}}</div>
                     </vue-scrollbar>
                 </el-form-item>
@@ -408,6 +408,7 @@
         checkMonitorSetInfo
     } from '../../api/getData-yhj.js';                                      //接口数据
     let deletArray = [];        //删除projIds队列
+    let monitorPpids = [];
     let countIndex = 0;         //表格选中状态个数统计
     let baseUrl;                //基础路径
     let authUserInfoListCopy;   //授权人员搜索deepCopy数据
@@ -450,7 +451,9 @@
                 setting: {              //ztree setting
                     data: {
                         simpleData: {
-                            enable: true
+                            enable: true,
+                            idKey:'id',
+                            pIdKey:'parentId'
                         }
                     },
                     callback: {
@@ -540,42 +543,31 @@
                     username:"",
                     remark:""
                 },
+                checkMonitor:{
+                    code:"",
+                    ip:"",
+                    password:'',
+                    port:"",
+                    username:""
+                },
                 pagesList:{},           //bim库列表的信息
                 tableData:[],           //bim库列表数据
-                zNodes: [
-                    {
-                        id: 1,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标不同",
-                        open: true,
-                        iconSkin: "pIcon01"
-                    },
-                    { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-                    { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-                    { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-                    {
-                        id: 2,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标相同",
-                        open: true,
-                        iconSkin: "pIcon02"
-                    },
-                    { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-                    { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-                    { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-                    { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-                    { id: 31, pId: 3, name: "叶子节点1" },
-                    { id: 32, pId: 3, name: "叶子节点2" },
-                    { id: 33, pId: 3, name: "叶子节点3" }
-                ],          //bim库组织结构zNodes
+                zNodes: [],          //bim库组织结构zNodes
                 proDepartNodes:[],      //添加->所属项目部数据zNodes
                 modifyNodes:[],         //修改弹窗树结构数据匹配
             }
         },
         methods: {
+            //组织结构树
+            getOrgzTreeList(params){
+                getOrgTreeList(params).then((data)=>{
+                    this.zNodes = data.data.result;
+                })
+            },
             //默认加载数据
             getData(name,id){
                 this.getBaseUrl();      //获取基础路径
+//                this.getOrgzTreeList({url:baseUrl});
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;         //回收站的状态
@@ -586,7 +578,7 @@
                 }
                 //列表初始值
                 this.tableParam.delete = this.isRecycle;
-                this.tableParam.deptIds[0] ="d68ceeb2d02043bd9ea5991ac44d649b"
+                this.tableParam.deptIds[0] ="d68ceeb2d02043bd9ea5991ac44d649b";
 //                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b'
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
@@ -595,7 +587,7 @@
                 this.tableParam.pageParam.size = this.totalPages;
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
 
-//                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //bim库bim属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
             },
@@ -620,10 +612,15 @@
                 })
             },
             commonMessage(message,type){
+                if($('.message').css('display')=='block'){
+                    return false;
+                }
                 this.$message({
                     type: type,
-                    message: message
+                    message: message,
+                    customClass:"message"
                 })
+
             },
             //全选数据处理
             foreachs(allChecked,data){
@@ -679,18 +676,18 @@
             },
             //获取属性
             getProjGenreEvent(isDelete,packageType){
-                getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
+                getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=> {
                     this.bimOptions = data.data.result;
-                    if(this.bimOptions.length>0){
+                    if (this.bimOptions != '' || this.bimOptions != null) {
                         this.filterParams.bimVal = this.bimOptions[0].value;
                     }
-                });
+                })
             },
             //获取专业
             getProjTypeEvent(isDelete,packageType){
                 getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
                     this.majorOptions = data.data.result;
-                    if(this.majorOptions.length>0){
+                    if(this.majorOptions!='' ||this.majorOptions!=null){
                         this.filterParams.majorVal = this.majorOptions[0].value;
                     }
                 })
@@ -854,11 +851,17 @@
             allSelectChange(event){//全选
                 if(event.target.checked){
                     this.isTableDel = false;
+                    this.tableData.forEach((val,key)=>{
+                        monitorPpids.push(val.ppid);
+                    });
                 }else{
                     this.isTableDel = true;
+                    monitorPpids =[];
                 }
                 deletArray = [];
                 this.foreachs(this.allChecked,this.tableData);
+
+                console.log(monitorPpids,'选中ppid')
             },
             //表格删除单选
             singChecked(event){//逐个选中
@@ -889,6 +892,7 @@
                 this.delIndex = deletArray.indexOf(item.projId)
                 if(deletArray.indexOf(item.projId)==-1 ){
                     deletArray.push(item.projId);
+                    monitorPpids.push(item.ppid);
                 }
             },
             /**
@@ -953,7 +957,6 @@
             getTree(type,deptId){
                 getOrgTreeList({url:baseUrl}).then(res => {
                     this.proDepartNodes = res.data.result;
-
                     if(type=='modify' && deptId){
                         this.proDepartNodes.forEach((val,key)=>{
                             let keyIndex = val.id.indexOf(deptId);
@@ -981,11 +984,11 @@
                     }else if(data.data.code==200){
                         //执行成功
                         this.ProjManageDialog = false;
+                        this.clearCreateParam();
+                        this.getProjectList({url:baseUrl,param:this.tableParam});
                     }
-                    this.clearCreateParam();
-                    this.getProjectList({url:baseUrl,param:this.tableParam});
                 },(error)=>{
-                    this.commonMessage(error.data.msg)
+                    this.commonMessage(error.data.msg,'warning')
                 })
             },
             updateProjInfo(url,param){
@@ -1131,7 +1134,8 @@
             //工程管理保存
             proManageSave(){
                 let newCreate ={    //创建工程param
-                    deptId:this.createDeptId,               //所属项目部
+//                    deptId:this.createDeptId,               //所属项目部
+                    deptId:'d68ceeb2d02043bd9ea5991ac44d649b',               //所属项目部
                     packageType: this.$route.params.typeId, //套餐类型
                     projMemo: this.proManage.remark,        //备注
                     projName: this.proManage.name,          //名称
@@ -1185,25 +1189,42 @@
             //单个工程设置或者修改监控信息
             getMonitorInfo(url,param){
                 getMonitorInfo({url:url,param:param}).then((data)=>{
-                    if(!data.data.result){
-
+                    if(data.data.result){
+                        this.monitorSever.projectItem = data.data.result.code;
+                        this.monitorSever.username = data.data.result.username;
+                        this.monitorSever.pasword = data.data.result.password;
+                        this.monitorSever.clientIp = data.data.result.ip;
+                        this.monitorSever.port = data.data.result.port;
                     }
                 })
             },
             //设置监控消息
             setMonitorInfoAll(url,param){
                 saveMonitorInfo({url:url,param:param}).then((data)=>{
-                    if(data.data.code){
-                        this.commonMessage("批量监控成功",'sccess');
-                        this.monitorSeverVisible = false;
+                    if(data.data.code==200){
+//                        this.commonMessage("数据保存服务器成功",'success');
                     }
+                })
+            },
+            //检测
+            checkMonitorInfo(url,param){
+                checkMonitorSetInfo({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        this.commonMessage(data.data.result.errorMsg,'warning');
+                        if(data.data.result.success && data.data.result.errorMsg=='检测成功！'){
+                            this.monitorSeverVisible = false;
+                        }
+                    }else{
+                        this.commonMessage(data.data.msg,'warning');
+                    }
+
                 })
             },
             monitorChange(val){
                 this.monitorSever.projectItem = val;
             },
             monitor(type,item){
-                if(!deletArray.length && !item){
+                if(!monitorPpids.length && !item){
                     this.commonMessage('请添加监控文件','warning');
                     return false;
                 }else {
@@ -1213,6 +1234,7 @@
                     if(type=='all'){
 //                        this.monitorSever = {};
                     }else if(type=='single'){
+                        monitorPpids.push(item.ppid);
                         this.getMonitorInfo(baseUrl,{ppids:[item.ppid]})
                     }
 
@@ -1221,15 +1243,34 @@
             //第三方监控
             monitorSeverOk(){
                 //加密文件的基本用法
-//                 let pass= BASE64.encoder('123456');
+                // let pass= BASE64.encoder('123456');
+               /* let checkMonitor = {
+                    code: "C09487EC-D85C-4F2B-8F0C-FD8B54993B7B",
+                    ip: "192.168.2.22",
+                    password: "admin12345",
+                    port: "80",
+                    username: "admin"
+                };*/
                 this.monitorParam.code = this.monitorSever.projectItem;
                 this.monitorParam.ip = this.monitorSever.clientIp;
                 this.monitorParam.password = BASE64.encoder(this.monitorSever.pasword);
                 this.monitorParam.port = this.monitorSever.port;
-                this.monitorParam.ppids = deletArray;
+                this.monitorParam.ppids = monitorPpids;
                 this.monitorParam.username = this.monitorSever.username;
                 this.monitorParam.remark = this.monitorSever.remark;
-                this.setMonitorInfoAll(baseUrl,this.monitorParam)
+
+                this.checkMonitor.code = this.monitorSever.projectItem;
+                this.checkMonitor.ip = this.monitorSever.clientIp;
+                this.checkMonitor.password = BASE64.encoder(this.monitorSever.pasword)
+                this.checkMonitor.username = this.monitorSever.username
+                this.checkMonitor.port = this.monitorSever.port
+                this.checkMonitorInfo(baseUrl,this.checkMonitor);
+                this.setMonitorInfoAll(baseUrl,this.monitorParam);
+            },
+            //关闭弹窗
+            updateList(){
+                monitorPpids = [];
+                this.getProjectList({url:baseUrl,param:this.tableParam});
             },
             /**
              * 抽取
@@ -1322,6 +1363,13 @@
         components: { VueScrollbar },
         watch: {
             '$route' (to, from) {
+                if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
+                    this.isRecycle = false;         //回收站的状态
+                    this.tableParam.latest = true;  //版本状态
+                }else if(this.$route.path==`/bimlib/housing/recycle-bin/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/recycle-bin/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/recycle-bin/${this.$route.params.typeId}`){
+                    this.isRecycle = true;
+                    this.tableParam.latest = false;
+                }
                 this.tableParam.delete = this.isRecycle;                            //是否是回收站
                 this.tableParam.packageType = this.$route.params.typeId;            //套餐类型
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //筛选属性
@@ -1374,7 +1422,7 @@
         width:83px !important;
     }
     .bims-contents .el-input{
-        width:84%;
+        width:73%;
     }
     .bims-contents .dialog_body{width:224px;margin:0 auto;}
     .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;margin-left:38px;}
@@ -1387,5 +1435,6 @@
     .left140{left:119px}
     .left120{left:120px;}
     .left175{left:155px}
+    /*monitor-setting*/
 </style>
 
