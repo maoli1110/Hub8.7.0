@@ -144,17 +144,16 @@
                 </div>
                 <!-- 项目部 -->
                 <div class="project">
-                    <el-form-item label="项目名称：">
+                    <el-form-item label="项目名称：" prop="name">
                         <el-input v-model="orgForm.name" placeholder="请输入项目名称"></el-input>
                     </el-form-item>
                     <el-form-item label="项目负责人：">
-                        <el-input v-model="orgForm.managerName"></el-input>
+                        <multiple-select v-show="isMultiShow" v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select>
                     </el-form-item>
-                    <el-form-item label="项目经理："> <!-- 暂定 -->
-                        <el-select v-model="orgForm.region" placeholder="请选择活动区域">
-                            <div>eeee</div>
-                        </el-select>
+                    <el-form-item label="项目经理：">
+                        <multiple-select v-show="isMultiShow" v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select> 
                     </el-form-item>
+                    <!-- </el-form-item> -->
                     <el-form-item label="手机号码：" prop="mobile">
                         <el-input v-model="orgForm.mobile"></el-input>
                     </el-form-item>
@@ -199,9 +198,12 @@
                 <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
-        <!-- 添加分公司界面end --> </div>
+        <!-- 添加分公司界面end --> 
+        </div>
+         
 </template>
 <script>
+import '../../../static/css/select-vue-component.css';
 import axios from "axios";
 import {getOrgTreeList} from '../../api/getData.js';
 import {basePath,transformToObjFormat} from "../../utils/common.js";
@@ -220,9 +222,27 @@ const validateMobile = (rule, value, callback) => {
 export default {
     data() {
         return {
+            isMultiShow: false,
+            //测试multiple select2
+            single: {
+                originOptions: [],
+                selected: {}
+            },
+            multiple: {
+                originOptions: [],
+                selectedList: []
+            },
+            customMultiple: {
+                selectedList: []
+            },
+            multipleSimplify: {
+                originOptions: [],
+                selectedList: []
+            },
             //dialog属性
             dialogVisible: false,
             orgForm: {
+                name:'',
                 company: '',
                 mobile: '',
                 region: '',
@@ -242,6 +262,10 @@ export default {
                 responsible: [
                     { required: true, message: '请输入活动名称', trigger: 'blur' },
                     { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                ],
+                name: [
+                    { required: true, message: '请输入公司名称', trigger: 'blur' },
+                    { min: 3, max: 25, message: '长度在 3-25个字符', trigger: 'blur' }
                 ],
                 mobile: [
                     { required: true, trigger: "blur", validator: validateMobile }
@@ -279,6 +303,9 @@ export default {
         };
     },
     mounted() {
+        console.log(this.dialogVisible,'dialogVisible');
+        this.isMultiShow = true;
+        // this.queryData();
         /**
          * 根据生成的树结构计算总宽度
          */
@@ -342,6 +369,61 @@ export default {
         });
     },
     methods: {
+        //测试multiple select2
+        queryData: function(){
+            var mySelf = this;
+            //do ajax here
+
+            // 多选
+            mySelf.multiple.originOptions = [{"id":"1","name":"lemon"},{"id":"2","name":"mike"},{"id":"3","name":"lara"},{"id":"4","name":"zoe"},{"id":"5","name":"steve"},{"id":"6","name":"nolan"}];
+            mySelf.multiple.selectedList = [{"id":"1","name":"lemon"},{"id":"3","name":"lara"}]
+
+            mySelf.orgForm.originOptions = [{"id":"1","name":"lemon"},{"id":"2","name":"mike"},{"id":"3","name":"lara"},{"id":"4","name":"zoe"},{"id":"5","name":"steve"},{"id":"6","name":"nolan"}];
+            mySelf.orgForm.selectedList = [{"id":"1","name":"lemon"},{"id":"3","name":"lara"}]
+            // 多选（数据格式简化 非json）
+            mySelf.multipleSimplify.originOptions = ["lemon","mike","lara","steve","zoe","lion"];
+            mySelf.multipleSimplify.selectedList = ["lemon","lara"];
+
+            this.$nextTick(function(){
+
+            })
+        },
+        singleCallback: function(data){
+            this.single.selected = data;
+            // console.log('父级元素调用singleCallback 选中的是' + JSON.stringify(data))
+        },
+        multipleCallback: function(data){
+            debugger
+            this.multiple.selectedList = data;
+            console.log('父级元素调用multipleSelected 选中的是' + JSON.stringify(data))
+        },
+        customMultipleCallback: function(data){
+            this.customMultiple.selectedList = data;
+            console.log('父级元素调用customMultipleInputed 选中的是' + JSON.stringify(data))
+
+        },
+        multipleSimplifyCallback: function(data){
+            this.multipleSimplify.selectedList = data;
+            console.log('父级元素调用multipleSimplifySelected 选中的是' + JSON.stringify(data))
+
+        },
+
+
+        log: function(){
+            var mySelf = this
+            // console.log('单选输出结果' + JSON.stringify(this.single));
+            console.log('多选输出结果' + JSON.stringify(this.multiple));
+            // console.log('自定义输入输出结果' + JSON.stringify(this.customMultiple));
+            // console.log('多选（数据格式简化 非json）' + JSON.stringify(this.multipleSimplify));
+        },
+
+        change: function(){
+            var mySelf = this;
+
+            mySelf.multiple.originOptions = [{"id":"2","name":"mike"},{"id":"3","name":"lara"}]
+            mySelf.multiple.selectedList = [{"id":"4","name":"zoe"},{"id":"5","name":"steve"}]
+
+        },
         //获取接口地址
         getBaseUrl(){
             baseUrl = basePath(this.$route.path);
@@ -356,7 +438,15 @@ export default {
                 } else {
                     $(".branch-company").css('display','none');
                     $(".project").css('display','block');
+                     this.queryData();
+
                 }
+            }
+        },
+        'dialogVisible' (val,oldVal) {
+            console.log('dialogVisible',val, oldVal)
+            if(val !== oldVal){
+                this.queryData();
             }
         }
     }
