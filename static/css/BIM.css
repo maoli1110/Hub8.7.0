@@ -132,7 +132,10 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .bims-contents .el-form-item label.el-form-item__label{
     width:97px ;text-align:right;
 }
-.bims-contents .el-form-item .el-select,.bims-contents .el-form-item .el-textarea{
+.bims-contents .el-form-item .el-select{
+    width:73% !important;
+}
+.bims-contents .el-form-item .el-textarea{
     width:84% !important;
 }
 /*projManage-remark(备注)*/
@@ -186,6 +189,10 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
     border: 1px solid #e6e6e6;
     margin: 9px 10px 10px 8px;
 }
+/*检测页面*/
+.monitor-setting{width:470px;}
+.monitor-setting>.el-dialog__body{padding:20px 40px 0px !important; }
+.monitor-setting>.el-dialog__footer{padding:0px 20px 26px !important; }
 /*=======================pdfDrawing(pdf图纸页面)======================*/
 .pdfDrawing .el-table td:nth-child(8) div{
     text-align:left !important;padding:0 10px !important;

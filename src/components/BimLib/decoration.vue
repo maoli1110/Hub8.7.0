@@ -215,7 +215,7 @@
             </el-col>
         </el-row>
         <!--检测页面-->
-        <el-dialog title="第三方监控服务设置" :visible.sync="monitorSeverVisible">
+        <el-dialog title="第三方监控服务设置" custom-class="monitor-setting" :visible.sync="monitorSeverVisible" @close="updateList">
             <el-form >
                 <el-form-item label="对接平台：" >
                     <el-select v-model="monitorSever.projectItem" @change="monitorChange" placeholder="请选择" >
@@ -241,7 +241,7 @@
                     <el-input v-model="monitorSever.port"></el-input>
                 </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
+            <div slot="footer" class="dialog-footer" style="padding-top:0">
                 <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="monitorSeverOk()">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="monitorSeverVisible = false">取 消</el-button>
             </div>
@@ -331,7 +331,7 @@
             </div>
         </el-dialog>
         <!--抽取数据弹窗-->
-        <el-dialog class="extract-dialog" :close-on-click-modal="false" :close-on-press-escape="false"
+        <el-dialog class="extract-dialog" custom-class="extract-data" :close-on-click-modal="false" :close-on-press-escape="false"
                    title="数据处理"
                    :visible.sync="extractDialog"
                    width="30%"
@@ -357,7 +357,7 @@
             </span>
         </el-dialog>
         <!--修改名称-->
-        <el-dialog class="modify-update" :close-on-click-modal="false" :close-on-press-escape="false"
+        <el-dialog class="modify-update" custom-class="rename-data" :close-on-click-modal="false" :close-on-press-escape="false"
                    title="修改名称"
                    :visible.sync="modifyInfo"
                    width="30%"
@@ -408,6 +408,7 @@
         checkMonitorSetInfo
     } from '../../api/getData-yhj.js';                                      //接口数据
     let deletArray = [];        //删除projIds队列
+    let monitorPpids = [];
     let countIndex = 0;         //表格选中状态个数统计
     let baseUrl;                //基础路径
     let authUserInfoListCopy;   //授权人员搜索deepCopy数据
@@ -627,10 +628,15 @@
                 })
             },
             commonMessage(message,type){
+                if($('.message').css('display')=='block'){
+                    return false;
+                }
                 this.$message({
                     type: type,
-                    message: message
+                    message: message,
+                    customClass:"message"
                 })
+
             },
             //全选数据处理
             foreachs(allChecked,data){
@@ -861,11 +867,17 @@
             allSelectChange(event){//全选
                 if(event.target.checked){
                     this.isTableDel = false;
+                    this.tableData.forEach((val,key)=>{
+                        monitorPpids.push(val.ppid);
+                    });
                 }else{
                     this.isTableDel = true;
+                    monitorPpids =[];
                 }
                 deletArray = [];
                 this.foreachs(this.allChecked,this.tableData);
+
+                console.log(monitorPpids,'选中ppid')
             },
             //表格删除单选
             singChecked(event){//逐个选中
@@ -896,6 +908,7 @@
                 this.delIndex = deletArray.indexOf(item.projId)
                 if(deletArray.indexOf(item.projId)==-1 ){
                     deletArray.push(item.projId);
+                    monitorPpids.push(item.ppid);
                 }
             },
             /**
@@ -1206,9 +1219,7 @@
             setMonitorInfoAll(url,param){
                 saveMonitorInfo({url:url,param:param}).then((data)=>{
                     if(data.data.code==200){
-                        this.getProjectList({url:baseUrl,param:this.tableParam});
-//                        this.commonMessage("批量监控成功",'success');
-
+//                        this.commonMessage("数据保存服务器成功",'success');
                     }
                 })
             },
@@ -1220,6 +1231,8 @@
                         if(data.data.result.success && data.data.result.errorMsg=='检测成功！'){
                             this.monitorSeverVisible = false;
                         }
+                    }else{
+                        this.commonMessage(data.data.msg,'warning');
                     }
 
                 })
@@ -1238,7 +1251,7 @@
                     if(type=='all'){
 //                        this.monitorSever = {};
                     }else if(type=='single'){
-                        deletArray.push(item.ppid);
+                        monitorPpids.push(item.ppid);
                         this.getMonitorInfo(baseUrl,{ppids:[item.ppid]})
                     }
 
@@ -1247,7 +1260,7 @@
             //第三方监控
             monitorSeverOk(){
                 //加密文件的基本用法
-//                 let pass= BASE64.encoder('123456');
+                // let pass= BASE64.encoder('123456');
                /* let checkMonitor = {
                     code: "C09487EC-D85C-4F2B-8F0C-FD8B54993B7B",
                     ip: "192.168.2.22",
@@ -1259,7 +1272,7 @@
                 this.monitorParam.ip = this.monitorSever.clientIp;
                 this.monitorParam.password = BASE64.encoder(this.monitorSever.pasword);
                 this.monitorParam.port = this.monitorSever.port;
-                this.monitorParam.ppids = deletArray;
+                this.monitorParam.ppids = monitorPpids;
                 this.monitorParam.username = this.monitorSever.username;
                 this.monitorParam.remark = this.monitorSever.remark;
 
@@ -1268,9 +1281,13 @@
                 this.checkMonitor.password = BASE64.encoder(this.monitorSever.pasword)
                 this.checkMonitor.username = this.monitorSever.username
                 this.checkMonitor.port = this.monitorSever.port
-
                 this.checkMonitorInfo(baseUrl,this.checkMonitor);
                 this.setMonitorInfoAll(baseUrl,this.monitorParam);
+            },
+            //关闭弹窗
+            updateList(){
+                monitorPpids = [];
+                this.getProjectList({url:baseUrl,param:this.tableParam});
             },
             /**
              * 抽取
@@ -1415,7 +1432,7 @@
         width:83px !important;
     }
     .bims-contents .el-input{
-        width:84%;
+        width:73%;
     }
     .bims-contents .dialog_body{width:224px;margin:0 auto;}
     .bims-contents .dialog_body>i{float:left;font-size:35px;color:#e66a6a;margin-right:10px;margin-top:10px;margin-left:38px;}
@@ -1428,5 +1445,6 @@
     .left140{left:119px}
     .left120{left:120px;}
     .left175{left:155px}
+    /*monitor-setting*/
 </style>
 
