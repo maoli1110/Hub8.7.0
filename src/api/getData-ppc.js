@@ -49,9 +49,7 @@ export const getRoleClientAuthInfo = params => {
  * 删除角色
  */
 export const deleteRole = params => {
-    return axios.get(`${base}rs/testRest/deleteAuth/`, {
-        params: params
-    });
+    return axios.delete(`${base}rs/testRest/deleteAuth/${params}`);
 };
 /**
  * @param 

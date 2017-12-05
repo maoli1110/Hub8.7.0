@@ -37,7 +37,7 @@ export default {
         callback: {
           onClick: this.onClick
         }
-      },
+      }
     };
   },
   methods: {
@@ -45,21 +45,20 @@ export default {
       "curSelectedNode" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
     ]),
     handleOpen(key, keyPath) {
-       $('.default').click()
+      $(".default").click();
     },
-    handleClose(key, keyPath) {
-    },
+    handleClose(key, keyPath) {},
     onClick(event, treeId, treeNode) {
       this.curSelectedNode(treeNode);
     },
-    setRouterActive(){
-      $('.roleCome').click()
+    setRouterActive() {
+      $(".roleCome").click();
     }
   },
-  created () {
-    this.activeIndex=this.$route.path;
-    if(this.$route.path=='/authority/edit-role/'+this.$route.params.id){
-      this.activeIndex='/authority/role-management'
+  created() {
+    this.activeIndex = this.$route.path;
+    if (this.$route.path == "/authority/edit-role/" + this.$route.params.id) {
+      this.activeIndex = "/authority/role-management";
     }
   },
   mounted() {
