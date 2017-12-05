@@ -842,20 +842,20 @@
                 deletArray = [];    //清空删除的projIds 防止影响
                 countIndex = 0;     //选中数量统计清空
                 this.allChecked = false;
-                getProjects(params).then((data)=>{
-                    this.tableData = data.data.result.content;
-                    this.tableData.forEach((val,key)=>{
-                        this.$set(this.tableData[key],'checked',false)
-                    })
-                    this.pagesList = data.data.result;
-                })
-                /*testList().then((data)=>{
+                /*getProjects(params).then((data)=>{
                     this.tableData = data.data.result.content;
                     this.tableData.forEach((val,key)=>{
                         this.$set(this.tableData[key],'checked',false)
                     })
                     this.pagesList = data.data.result;
                 })*/
+                testList().then((data)=>{
+                    this.tableData = data.data.result.content;
+                    this.tableData.forEach((val,key)=>{
+                        this.$set(this.tableData[key],'checked',false)
+                    })
+                    this.pagesList = data.data.result;
+                })
             },
             //进入回收站
             inRecycle(path,paramId){
