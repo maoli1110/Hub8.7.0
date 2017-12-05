@@ -23,7 +23,7 @@ function transformToObjFormat(param, simpleOrgNodes) {
     var key = param.orgNodeKey;
     var parentKey = param.orgNodeParentKey;
     if (!key || key=="" || !simpleOrgNodes) return [];
-    
+
     if ($.isArray(simpleOrgNodes)) {
         var r = [];
         var tmpMap = [];
@@ -152,10 +152,10 @@ function basePath(localhost) {
 
         // builderCiVil
         case "/configuration/BaseBuild":           //应用配置->市政
-            baseUrl = 'http://192.168.13.195:8989/palace/';
+            baseUrl = 'http://192.168.13.195:8989/builderCiVil/';
             break;
         case "/configuration/explorerCivil":       //应用配置->explorerCivil
-            baseUrl = 'http://192.168.13.195:8989/palace/';
+            baseUrl = 'http://192.168.13.195:8989/builderCiVil/';
             break;
 
         // cloud

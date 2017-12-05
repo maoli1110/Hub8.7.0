@@ -26,7 +26,7 @@ export const getRoleType = params => {
  * 获取角色客户端权限码
  */
 export const getRoleAuthCodes = params => {
-    return axios.get(`${base}rs/testRest/findRoleAuthCodes/${params.roleId}`);
+    return axios.get(`${base}rs/testRest/findRoleAuthCodes/${params}`);
 };
 /**
  * @param {*
@@ -35,7 +35,7 @@ export const getRoleAuthCodes = params => {
  * 获取角色信息
  */
 export const getRoleInfo = params => {
-    return axios.get(`${base}rs/testRest/findRole/${params.roleId}`);
+    return axios.get(`${base}rs/testRest/findRole/${params}`);
 };
 /**
  * @param {*} params 
@@ -67,5 +67,5 @@ export const deleteRole = params => {
  * 更新保存角色信息
  */
 export const updateRoleAuth = params => {
-    return axios.get(`${base}rs/testRest/saveOrUpdateRoleAuth`, params);
+    return axios.post(`${base}rs/testRest/saveOrUpdateRoleAuth`, params);
 };
