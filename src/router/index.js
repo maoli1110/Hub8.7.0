@@ -255,17 +255,23 @@ export default new Router({
                             component: resolve => require(['../components/ComponentLib/LubanSteel.vue'], resolve)
                         },
                         {
-                            path: '/componentlib/remiz-comp',
-                            component: resolve => require(['../components/ComponentLib/remizComp.vue'], resolve)
-                        },
-                        {
-                            path: '/componentlib/remiz-temp',
-                            component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve)
-                        },
-                        {
-                            path: '/componentlib/remiz-mate',
-                            component: resolve => require(['../components/ComponentLib/remizMate.vue'], resolve)
-                        },
+                            path:"Remiz",
+                            component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve),
+                            children:[
+                                {
+                                    path: 'remiz-comp',
+                                    component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve)
+                                },
+                                {
+                                    path: 'remiz-temp',
+                                    component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve)
+                                },
+                                {
+                                    path: 'remiz-mate',
+                                    component: resolve => require(['../components/ComponentLib/remizMate.vue'], resolve)
+                                },
+                            ]
+                        }
                     ]
                 },
                 {

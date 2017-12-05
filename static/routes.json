@@ -140,25 +140,32 @@
 				"sever":"http://192.168.13.195:8989/cloud/"
 			},
 			{
-				"url":"/componentlib/luban-map",
+				"url":"/componentlib/luban-mep",
                 "name":"鲁班安装",
 				"sever":"http://192.168.13.195:8989/cloud/"
 			},
-			{
-				"url":"/componentlib/remiz-comp",
-                "name":"Remiz-构件库----*待定*",
-				"sever":"http://192.168.13.195:8989/palace/"
-			},
-			{
-				"url":"/componentlib/remiz-temp",
-                "name":"Remiz-模型库----*待定*",
-				"sever":"http://192.168.13.195:8989/palace/"
-			},
-			{
-				"url":"/componentlib/remiz-mate",
-                "name":"Remiz-材质库----*待定*",
-				"sever":"http://192.168.13.195:8989/palace/"
-			}
+            {
+                "url":"/componentlib/Remiz",
+                "name":"Remiz",
+                "sever":"",
+                "children":[
+                    {
+                        "url":"/componentlib/Remiz/remiz-comp",
+                        "name":"Remiz-构件库----*待定*",
+                        "sever":"http://192.168.13.195:8989/palace/"
+                    },
+                    {
+                        "url":"/componentlib/Remiz/remiz-temp",
+                        "name":"Remiz-模型库----*待定*",
+                        "sever":"http://192.168.13.195:8989/palace/"
+                    },
+                    {
+                        "url":"/componentlib/Remiz/remiz-mate",
+                        "name":"Remiz-材质库----*待定*",
+                        "sever":"http://192.168.13.195:8989/palace/"
+                    }
+                ]
+            }
 		]
 	},
 	{
