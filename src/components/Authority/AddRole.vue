@@ -3,9 +3,9 @@
         <div class="role-wrap">
             <div class="role-base">角色基本信息
             </div>
-            <div>
+            <!-- <div>
               {{curEditRole}}
-            </div>
+            </div> -->
             <el-row class="role-message" >
                 <el-col :span="8">
                     <div class="el-form-item el-form_">
@@ -53,8 +53,8 @@
                                      @click.native="currentIndex=i+index;selectClient(item)"                                     
                                      :key="i" class="card" :class="{'client-checked':i+index==currentIndex}"
                             >
-                                <div style="text-align:center;margin-top:20px">
-                                    <img src="http://www.lubansoft.com/uploads/1485221791.jpg"
+                                <div style="text-align:center;margin-top:20px"  >
+                                    <img :src="item.src"
                                          class="image"
                                          style="width:64px;height:64px;margin:0 auto">
                                     <div style="height:35px;line-height:35px">{{item.productName}}</div>
@@ -99,7 +99,7 @@
                                 <el-checkbox-group v-model="scope.row.checkedCities" style="padding:0 10px"
                                                    @change="handleCheckedCitiesChange(scope.row.checkedCities,scope.row)">
                                     <el-checkbox  class="el-checked-wrap"   v-for="(city,i) in scope.row.cities" 
-                                    :title="city"
+                                    :title="city.authName"
                                     :label="city" :key="i">                   
                                        {{city.authName}}               
                                     </el-checkbox>
@@ -115,7 +115,7 @@
             </div>
             <div slot="footer" class="dialog-footer" style="text-align:center;padding-top:20px">
                 <el-button type="primary" class="dialog-btn" @click="save">保存</el-button>
-                <el-button  class="dialog-btn">取消</el-button>
+                <el-button  class="dialog-btn" @click="cancle">取消</el-button>
             </div>
             
         </div>
@@ -130,6 +130,57 @@ export default {
   },
   data() {
     return {
+      clientImgSrc: [
+        {
+          productId: 0,
+          src: "../../../static/img/common.png"
+        },
+        {
+          productId: 38,
+          src: "../../../static/img/govern.jpg"
+        },
+        {
+          productId: 39,
+          src: "../../../static/img/plan.png"
+        },
+        {
+          productId: 23,
+          src: "../../../static/img/plan.png"
+        },
+        {
+          productId: 112,
+          src: "../../../static/img/civil.png"
+        },
+        {
+          productId: 40,
+          src: "../../../static/img/inspector.png"
+        },
+        {
+          productId: 27,
+          src: "../../../static/img/view.png"
+        },
+        {
+          productId: 11,
+          src: "../../../static/img/govern.jpg"
+        },
+        {
+          productId: 29,
+          src: "../../../static/img/works.jpg"
+        },
+        {
+          productId: 12,
+          src: "../../../static/img/explore.jpg"
+        },
+        {
+          productId: 13,
+          src: "../../../static/img/iban.png"
+        },
+        {
+          productId: 30,
+          src: "../../../static/img/remiz.png"
+        }
+      ],
+
       roleName: "",
       roleType: "",
       roleTypeId: "",
@@ -166,8 +217,14 @@ export default {
       types.getRoleClientAuthInfo().then(res => {
         this.clientInformation = res.data.result;
         // 添加角色
-        this.clientInformation.forEach(items => {
+        this.clientInformation.forEach((items, index) => {
           // 重新定义数据结构
+          // 客户端图片地址
+          this.clientImgSrc.forEach(el => {
+            if (el.productId == items.productId) {
+              items.src = el.src;
+            }
+          });
           items.authInfoGroups_copy = [];
           items.authInfoGroups.forEach((el, i) => {
             // 添加角色
@@ -277,11 +334,10 @@ export default {
     },
     /**保存修改*/
     save() {
-      debugger;
       if (!this.roleName) {
         this.$message({
           showClose: true,
-          message: "角色和角色类型不能为空",
+          message: "角色不能为空",
           type: "warning"
         });
         return;
@@ -311,7 +367,6 @@ export default {
           });
         });
       });
-      // console.log(params);
       types.updateRoleAuth(params).then(res => {
         if (res.data.code == 200) {
           this.$router.push({ path: `/authority/role-management` });
@@ -324,15 +379,17 @@ export default {
           });
         }
       });
+    },
+    /**取消修改*/
+    cancle() {
+      this.$router.push({ path: `/authority/role-management` });
     }
   },
   created() {
     this.getRoleClientAuthInfo();
     this.getRoleType();
-
-    debugger
     this.roleName = this.curEditRole.roleName;
-    this.textarea = this.curEditRole.remarks||'';
+    this.textarea = this.curEditRole.remarks || "";
     this.roleType = this.curEditRole.roleTypeId;
     this.roleId = this.curEditRole.roleId;
   },

@@ -112,6 +112,7 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      console.log(this.multipleSelection);
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -124,7 +125,7 @@ export default {
       this.getRoleList();
     },
     addRole() {
-      this.$router.push({ path: `/authority/add-role`});
+      this.$router.push({ path: `/authority/add-role` });
       // types.getRoleClientAuthInfo().then(res => {
       //   console.log(res.data);
       // });
@@ -135,9 +136,17 @@ export default {
       this.curEditRole(row);
     },
     searchRole(RoleId) {
-      this.$router.push({ path: `/authority/Role-management` });
+      this.$router.push({ path: `/authority/member-management` });
     },
-    deleteRole() {}
+    deleteRole() {
+      this.multipleSelection.forEach(item => {
+        types.deleteRole(item.roleId).then(res => {
+          if (res.data.code == 200) {
+            this.getRoleList();
+          }
+        });
+      });
+    }
   },
   created() {
     this.getRoleList();
