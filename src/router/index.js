@@ -274,7 +274,7 @@ export default new Router({
                         },
                         {
                             path: 'quota-lib',
-                            component: resolve => require(['../components/QuotaLib/AutomaticTemplate.vue'], resolve)
+                            component: resolve => require(['../components/QuotaLib/img.vue'], resolve)
                         },
                         {
                             path: 'list-lib',

@@ -7,7 +7,7 @@
                 </el-menu-item-group>
                 <el-menu-item-group title="企业定额">
                     <el-menu-item index="/quotalib/quota-lib">定额库</el-menu-item>
-                    <el-menu-item index="/quotalib/list-lib">清单库</el-menu-item>
+                    <!-- <el-menu-item index="/quotalib/list-lib">清单库</el-menu-item> -->
                 </el-menu-item-group>
             </el-menu>
         </div>
