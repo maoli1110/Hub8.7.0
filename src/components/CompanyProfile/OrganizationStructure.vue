@@ -2,7 +2,7 @@
     <div class="org">
         <div class="header">
             <!-- 负责人界面start -->
-            <el-popover ref="popover4" placement="right"  width="400" trigger="click">
+            <div class="el-popover" v-show="isPopover">
                 <div class="pop-manager-dialog">
                     <div class="pop-header">
                         <p class="enterprise-name">企业名称</p>
@@ -112,12 +112,13 @@
                         <el-button type="primary" class="basic-btn" icon="plus">删除</el-button>
                         <el-button type="primary" class="basic-btn" icon="plus">编辑</el-button>
                     </div>
+                    <div x-arrow="" class="popper__arrow" style="top: 112.5px;"></div>
                 </div>
-            </el-popover>
+            </div>
             <!-- 负责人界面end -->
             <el-button type="primary" class="basic-btn" icon="plus" @click="expandTree(true)">全部展开</el-button>
             <el-button type="primary" class="basic-btn" icon="minus" @click="expandTree(false)">全部收起</el-button>
-            <el-button type="primary" class="basic-btn" icon="plus" v-popover:popover4>负责人界面</el-button>
+            <!-- <el-button type="primary" style="display:none" class="basic-btn manager-popover" icon="plus" v-popover:popover4>负责人界面</el-button> -->
             <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加项目部</el-button>
         </div>
         <div class="org-wrap">
@@ -224,6 +225,7 @@ const validateMobile = (rule, value, callback) => {
 export default {
     data() {
         return {
+            isPopover: false,
             //测试multiple select2
             single: {
                 originOptions: [],
@@ -280,7 +282,9 @@ export default {
             // url: "../../../static/orgs.json",
             setting: {
                 view: {
-                  showIcon: true
+                  showIcon: true,
+                  addHoverDom: this.addHoverDom,
+                  removeHoverDom: this.removeHoverDom
                 }
             },
             zNodes: [],
@@ -430,14 +434,31 @@ export default {
         //组织结构全部展开，全部收起
         expandTree(source){
             console.log(this.zNodes.length,'length');
-            // var treeObj = $.fn.zTree.getZTreeObj("ztree-0");
-            // console.log(treeObj,'treeObj')
-            // treeObj.expandAll(source);
             for(let i=0;i<this.zNodes.length;i++){
                 let x= 'treeObj'+i;
                 x = $.fn.zTree.getZTreeObj("ztree-"+i);
                 x.expandAll(source);
             }
+        },
+        //mouseOn显示负责人信息
+        addHoverDom(treeId,treeNode) {
+            if($(".el-popover").css('display') === 'block') return;
+            console.log('add')
+            // 1.获取当前鼠标的位置
+            // 1.更改属性显示界面，获取数据
+            var aObj = $("#" + treeNode.tId + "_a");
+            var mX = aObj.offset().left,
+                mY = aObj.offset().top;
+            var left = function(){
+                 $(".el-popover").css('left',mX+185);
+                 $(".el-popover").css('top',mY-10);
+            }
+            this.isPopover = true;
+            window.setTimeout(left,100);
+        },
+        //mouseOff鼠标划过负责人信息
+        removeHoverDom(treeId,treeNode) {
+            this.isPopover = false;
         }
     },
     watch:{
@@ -590,6 +611,8 @@ export default {
 /*el-popover*/
 .el-popover {
     padding: 0;
+    width: 500px;
+    position: fixed;
 }
 .el-popover .pop-header {
     border-bottom: 1px solid #e6e6e6;
@@ -624,6 +647,26 @@ export default {
 .el-popover .pop-operation {
     padding: 20px 35px;
 }
+.el-popover:before{
+    content: '';
+    border-top: 9px solid transparent;/*方框上部分背景颜色为透明*/
+    border-bottom: 9px solid transparent;/*方框下部分背景为透明*/
+    border-right: 9px solid #eee;/*箭头背景颜色*/
+    position: absolute;/*绝对定位1*/
+    top: 25px;/*距离顶部位置偏移量2*/
+    left: -9px;/*距离左边位置偏移量3*/ /*123都是控制显示位置的*/
+}
+
+.el-popover:after{
+    content: '';
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 7px solid #fbfdfb;/*箭头背景颜色，覆盖前面的#eee颜色，使其颜色与整体颜色一致*/
+    position: absolute;
+    top: 27px;
+    left: -7px;
+}
+
 .selectStatus {
   position: absolute;
   left: 36px;
@@ -665,9 +708,8 @@ export default {
 .multi-textarea .el-button {
   width: 116px;
 }
-.el-popover[x-placement^=right] {
-    margin-left: 12px;
-}
+
+
 </style>
 <style scoped>
     .el-radio-group {
