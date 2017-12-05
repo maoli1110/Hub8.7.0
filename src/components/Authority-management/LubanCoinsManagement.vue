@@ -33,6 +33,8 @@
                             <template slot-scope="scope">
                                 <span v-if="scope.row.changeDetail.indexOf('鲁班币充值')">{{scope.row.changeDetail}}</span>
                                 <!--<span v-if="!scope.row.changeDetail.indexOf('鲁班币充值')">{{scope.row.changeDetail}}</span>-->
+
+                                <div class='descriptionDiv'></div>
                             </template>
                         </el-table-column>
                         <el-table-column class="table-tr" label="收入（个）" width="200">
