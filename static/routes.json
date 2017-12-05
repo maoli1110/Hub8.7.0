@@ -40,6 +40,7 @@
             {
                 "url":"/authority/application-allot",
                 "name":"应用分配",
+                "sever":"",
                 "children":[
                     {
                         "url":"/authority/application-allot/basic-client",
@@ -78,6 +79,7 @@
 			{
 				"url":"/bimlib/housing",
                 "name":"房建",
+                "sever":"",
 				"children":[
 					{
 						"url":"/bimlib/housing/bim-lib/1",
@@ -122,10 +124,6 @@
 						"url":"/bimlib/decoration/bim-lib/4",
                         "name":"工程库",
 						"sever":"http://192.168.13.195:8989/builder/"
-					},
-					{
-						"url":"/bimlib/decoration/recycle-bin/4",
-						"sever":"http://192.168.13.195:8989/builder/"
 					}
 				]
 			}
@@ -168,11 +166,18 @@
         "name":"定额库",
         "sever":"",
 		"children":[
-			{
-				"url":"/quotalib/automatic-template",
-                "name":"自动套模板",
-				"sever":"http://192.168.13.195:8989/cloud/"
-			}
+            {
+                "url":"/quotalib/automatic",
+                "name":"",
+                "children":[
+                    {
+                        "url":"/quotalib/automatic-template",
+                        "name":"自动套模板",
+                        "sever":"http://192.168.13.195:8989/cloud/"
+                    }
+                ]
+            }
+
 		]
 	},
 	{

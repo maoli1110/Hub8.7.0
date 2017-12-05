@@ -127,7 +127,7 @@ export default new Router({
                         },*/
                         {
                             path:"application-allot",
-                            component: resolve => require(['../components/Authority/MemberManagement.vue'], resolve),
+                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve),
                             children:[
                                 {
                                     // 基础客户端
@@ -272,11 +272,18 @@ export default new Router({
                     // 定额库
                     path: '/quotalib',
                     component: resolve => require(['../components/QuotaLib/QuotaLib.vue'], resolve),
-                    redirect: '/quotalib/automatic-template',
+                    redirect: '/quotalib/automatic/automatic-template',
                     children: [
                         {
-                            path: 'automatic-template',
-                            component: resolve => require(['../components/QuotaLib/AutomaticTemplate.vue'], resolve)
+                            path: 'automatic',
+                            component: resolve => require(['../components/QuotaLib/AutomaticTemplate.vue'], resolve),
+                            children:[
+                                {
+                                    path: 'automatic-template',
+                                    component: resolve => require(['../components/QuotaLib/AutomaticTemplate.vue'], resolve)
+                                }
+                            ]
+
                         },
                         {
                             path: 'quota-lib',
