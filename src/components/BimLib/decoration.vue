@@ -3,7 +3,7 @@
         <el-row class="bim-data bim-filter-toobar">
             <el-col :span="5" class="filter-bar relat">
                 <span class="absol span-block" style="width:80px;">组织结构: </span>
-                <el-select class="absol" v-model="filterParams.orgNodeVal" placeholder="请选择" style="left:72px">
+                <el-select class="absol" v-model="filterParams.orgNodeVal" placeholder="请选择"  style="left:72px">
                     <el-option v-show="false"
                                :value="filterParams.orgNodeVal">
                     </el-option>
@@ -14,7 +14,7 @@
                 <span class="absol span-block" style="width:65px;">
                    BIM属性:
                 </span>
-                <el-select class="absol" v-model="filterParams.bimVal" @change="BimParamChange" placeholder="请选择"  style="left:72px">
+                <el-select class="absol" v-model="filterParams.bimVal" placeholder="请选择"  style="left:72px">
                     <el-option
                         v-for="item in bimOptions"
                         :key="item.value"
@@ -446,7 +446,8 @@
                     majorVal:"",        //专业
                     bimVal:"",          //bim属性
                     versionsVal:"",     //版本
-                    searchVal:""        //搜索关键字
+                    searchVal:"",        //搜索关键字
+                    orgdeptId:""
                 },
                 setting: {              //ztree setting
                     data: {
@@ -559,16 +560,20 @@
         },
         methods: {
             //组织结构树
-            getOrgzTreeList(params){
-                getOrgTreeList(params).then((data)=>{
+            getOrgzTreeList(url){
+                getOrgTreeList({url:url}).then((data)=>{
                     this.zNodes = data.data.result;
+                    this.filterParams.orgdeptId = data.data.result[0].id;
+                    this.filterParams.orgNodeVal = data.data.result[0].name;
+                    this.tableParam.deptIds[0] = this.filterParams.orgdeptId;
                     $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
-                })
+                });
+                return
             },
             //默认加载数据
             getData(name,id){
                 this.getBaseUrl();      //获取基础路径
-                this.getOrgzTreeList({url:baseUrl});
+                this.getOrgzTreeList(baseUrl);
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;         //回收站的状态
@@ -579,7 +584,7 @@
                 }
                 //列表初始值
                 this.tableParam.delete = this.isRecycle;
-                this.tableParam.deptIds[0] ="d68ceeb2d02043bd9ea5991ac44d649b";
+
 //                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b'
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
@@ -695,17 +700,23 @@
             },
             //搜索条件树结构的单机事件
             onClick(event, treeId, treeNode) {
+                this.tableParam.deptIds =[];
                 this.filterParams.orgNodeVal = treeNode.name;
+                this.filterParams.orgdeptId = treeNode.id;
                 if(treeNode.type!=1){
-                    if(treeNode.children.length){
+                    console.log(treeNode,'treeNode');
+                    if(treeNode.children){
                         treeNode.children.forEach((val,key)=>{//选择分公司遍历项目部下的数据
                             this.tableParam.deptIds.push(val.id);
                         })
+                    }else{
+                        this.tableParam.deptIds.push(treeNode.id);
                     }
 
                 }else {
                     this.tableParam.deptIds.push(treeNode.id);//deptIds
                 }
+                this.getProjectList({url:baseUrl,param:this.tableParam})
                 //关闭树结构的窗口
                 setTimeout(function(event, treeId, treeNode) {
                     $(".el-select-dropdown__item.selected").click();
@@ -1138,8 +1149,8 @@
             //工程管理保存
             proManageSave(){
                 let newCreate ={    //创建工程param
-//                    deptId:this.createDeptId,               //所属项目部
-                    deptId:'d68ceeb2d02043bd9ea5991ac44d649b',               //所属项目部
+                    deptId:this.createDeptId,               //所属项目部
+//                    deptId:'d68ceeb2d02043bd9ea5991ac44d649b',               //所属项目部
                     packageType: this.$route.params.typeId, //套餐类型
                     projMemo: this.proManage.remark,        //备注
                     projName: this.proManage.name,          //名称
