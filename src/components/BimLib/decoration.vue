@@ -58,7 +58,7 @@
         </el-row>
         <el-row class="bim-data bim-dev-toolbar" >
             <el-col class="bim-prj" v-if="($route.path=='/bimlib/housing/bim-lib/'+$route.params.typeId ||$route.path=='/bimlib/BaseBuild/bim-lib/'+$route.params.typeId || $route.path=='/bimlib/decoration/bim-lib/'+$route.params.typeId)" :span="17">
-                <el-button type="primary" class="basic-btn " @click="ProjManageDialog = true;addProject('add')"><i class="bim-icon-tool icon-plus "></i><span class="btn-text">添加</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="addProject('add')"><i class="bim-icon-tool icon-plus "></i><span class="btn-text">添加</span></el-button>
                 <el-button type="primary" class="basic-btn " @click="deletelibs('whileData')" :disabled="isTableDel"><i class="bim-icon-tool " ></i><span class="btn-text">删除</span></el-button>
                 <el-button type="primary" class="basic-btn " @click="monitor('all')"><i class="bim-icon-tool "></i><span class="btn-text">监控</span></el-button>
             </el-col>
@@ -143,11 +143,11 @@
 
                             </td>
                             <td>{{item.version}}</td>
-                            <td style="min-width:120px;line-height:6px;">
-                                <div class="handel-cotrol"><span class=" handel-icon see" title="监控" @click="monitor('single',item)" ></span></div>
+                            <td style="min-width:120px;line-height:6px;"><!--item.projType!=3-->
+                                <div class="handel-cotrol"><span class=" handel-icon see" title="监控设置" @click="monitor('single',item)" ></span></div>
                                 <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon extract" title="抽取" @click="extractDialog=true;extractData(item.status,item)"></span></div><!--extractData(scope.row.status)"-->
-                                <div class="handel-cotrol" v-if="item.projType!=3"><span class=" handel-icon rename" title="修改名称" @click="modifyInfo=true;projRename(item)"></span></div>
-                                <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon modify" title="工程管理" @click="ProjManageDialog = true;addProject('modific',item)"></span></div>
+                                <div class="handel-cotrol" v-if="item.projClassify !=2 && item.projType!=3"><span class=" handel-icon rename" title="修改名称" @click="modifyInfo=true;projRename(item)"></span></div>
+                                <div class="handel-cotrol"><span class=" handel-icon modify" title="工程管理(编辑授权)" @click="addProject('modific',item)"></span></div>
 
                             </td>
                         </tr>
@@ -250,7 +250,7 @@
         <el-dialog :title="addPrjectTitle" custom-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
                 <el-form-item label="工程名称：" label-width="80">
-                    <el-input v-model="proManage.name" :maxlength="50" auto-complete="off"></el-input>
+                    <el-input v-model="proManage.name" :maxlength="50" auto-complete="off" :disabled="isEditProjName"></el-input>
                 </el-form-item>
                 <el-form-item label="专业：" label-width="80">
                     <!--newCreatmajor-->
@@ -438,6 +438,7 @@
                 proManageVal:"",        //添加->弹窗项目部选中的值
                 createDeptId:"",        //添加->deptId
                 extractReadInfo:false,  //抽取信息状态
+                isEditProjName:false,   //是否可编辑
                 //分页的一些设置
                 cur_page:1,             //bim库分页当前页
                 totalPages:10,          //bim库分页显示条数
@@ -565,10 +566,18 @@
                     this.zNodes = data.data.result;
                     this.filterParams.orgdeptId = data.data.result[0].id;
                     this.filterParams.orgNodeVal = data.data.result[0].name;
-                    this.tableParam.deptIds[0] = this.filterParams.orgdeptId;
-                    $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
+//                    this.tableParam.deptIds[0] = this.filterParams.orgdeptId;
+
+                    let treeObj = $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
+                    let nodes = treeObj.transformToArray(treeObj.getNodes());
+                    console.log(nodes,'nodes');
+                    this.zNodes.forEach((val,key)=>{
+                        if(val.id!=1){
+                            this.tableParam.deptIds.push(val.id)
+                        }
+                    })
+                    this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
                 });
-                return
             },
             //默认加载数据
             getData(name,id){
@@ -585,7 +594,7 @@
                 //列表初始值
                 this.tableParam.delete = this.isRecycle;
 
-//                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b'
+//                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b';
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
                 this.tableParam.pageParam.orders[0].direction = 1;
@@ -593,7 +602,7 @@
                 this.tableParam.pageParam.size = this.totalPages;
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
 
-                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+//                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //bim库bim属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
             },
@@ -726,8 +735,8 @@
             proDepartClick(event, treeId, treeNode){
                 if(treeNode.type==1 ||treeNode.type==0){       //项目部才有点击事件
                     this.proManageVal = treeNode.name;
-//                    this.createDeptId = treeNode.id;
-                    this.createDeptId = "d68ceeb2d02043bd9ea5991ac44d649b";
+                    this.createDeptId = treeNode.id;
+//                    this.createDeptId = "d68ceeb2d02043bd9ea5991ac44d649b";
                     setTimeout(function(event, treeId, treeNode) {
                         $(".el-scrollbar .el-select-dropdown__item.selected").click();
                     }, 300);
@@ -1013,12 +1022,14 @@
                             this.ProjManageDialog = false;
                         }
                         this.commonMessage('修改成功','success');
+                        this.getProjectList({url:baseUrl,param:this.tableParam});
                     }
                 })
             },
             //添加工程
             addProject(type,item){
                 this.authUserListItem = [];
+
                 //专业
                 getMajorsByCreate({url:baseUrl}).then((data)=>{
                     this.majorOptions = data.data.result;
@@ -1027,6 +1038,7 @@
                     this.filterParams.majorVal = this.majorOptions[0].value;
                 });
                 if(type=='add'){
+                    this.ProjManageDialog = true;
                     this.isDisable = false;
                     if(!this.isDisable){
                         this.addPrjectTitle = '添加工程'
@@ -1035,24 +1047,33 @@
                     }
                     this.clearCreateParam();
                     this.getTree();
-                    this.getRootMan(baseUrl,{deptId:"d68ceeb2d02043bd9ea5991ac44d649b",packageType:this.$route.params.typeId,ppid:""});
+                    this.getRootMan(baseUrl,{deptId:this.createDeptId,packageType:this.$route.params.typeId,ppid:""});
 
                 }else{
                     //修改工程
-                    console.log(item.deptId,'deptId')
                     this.isDisable = true;
+                    if(item.projClassify==2 || item.projType !=3){
+                        this.isEditProjName = false;
+                    }else{
+                        this.isEditProjName = true;
+                    }
                     if(this.isDisable){
                         this.addPrjectTitle = '工程管理'
                     }else{
                         this.addPrjectTitle = '添加工程'
                     }
+                    if(item.status==2 || item.status==3){//处理中
+                        this.commonMessage('工程正在处理中，请稍后修改！','warning')
+                        return false;
+                    }
+                    this.ProjManageDialog = true;
                     this.getTree('modify',item.deptId);
                     this.proManage.name = item.projName;
                     this.proManage.remark = item.projMemo;
                     this.UpdateParamInfo.projId = parseInt(item.projId);
                     this.createDeptId = item.deptId;
                     this.proManage.major = item.projType;
-                    this.getRootMan(baseUrl,{deptId:"d68ceeb2d02043bd9ea5991ac44d649b",packageType:this.$route.params.typeId,ppid:item.ppid})
+                    this.getRootMan(baseUrl,{deptId: this.createDeptId,packageType:this.$route.params.typeId,ppid:item.ppid})
 
                 }
             },
@@ -1337,6 +1358,8 @@
                         this.modifyInfo = false;
                         this.commonMessage('工程名称修改成功','success');
                         this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+                    }else{
+                        this.commonMessage(data.data.msg,'warning');
                     }
                 })
             },
