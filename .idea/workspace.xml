@@ -3,13 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="fb3a987b-e6fc-46f5-b67f-930193bd5d63" name="Default" comment="日历模板的复用">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-<<<<<<< Updated upstream
+
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/BimLib/decoration.vue" afterPath="$PROJECT_DIR$/src/components/BimLib/decoration.vue" />
-=======
+
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/api/getData.js" afterPath="$PROJECT_DIR$/src/api/getData.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Authority-management/orders.vue" afterPath="$PROJECT_DIR$/src/components/Authority-management/orders.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/common.css" afterPath="$PROJECT_DIR$/static/css/common.css" />
->>>>>>> Stashed changes
     </list>
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -30,7 +29,7 @@
     <favorites_list name="Hub8.7.0" />
   </component>
   <component name="FileEditorManager">
-<<<<<<< Updated upstream
+
     <splitter split-orientation="horizontal" split-proportion="0.17650159">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="277">
@@ -197,7 +196,6 @@
         </leaf>
       </split-second>
     </splitter>
-=======
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="190">
       <file leaf-file-name="orders.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Authority-management/orders.vue">
@@ -307,7 +305,6 @@
         </entry>
       </file>
     </leaf>
->>>>>>> Stashed changes
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -387,12 +384,11 @@
         <option value="$PROJECT_DIR$/src/components/IndicatorsLib/Indicator.vue" />
         <option value="$PROJECT_DIR$/src/components/IndicatorsLib/reinforcementIndex.vue" />
         <option value="$PROJECT_DIR$/src/components/IndicatorsLib/civilEngineeringIndex.vue" />
-<<<<<<< Updated upstream
-=======
+
         <option value="$PROJECT_DIR$/src/api/getData.js" />
         <option value="$USER_HOME$/Desktop/enterprisePackage(1).js" />
         <option value="$PROJECT_DIR$/static/css/common.css" />
->>>>>>> Stashed changes
+
         <option value="$PROJECT_DIR$/src/components/Authority-management/orders.vue" />
         <option value="$PROJECT_DIR$/src/components/ComponentLib/LubanMep.vue" />
         <option value="$PROJECT_DIR$/src/components/BimLib/BimLib.vue" />
@@ -494,8 +490,6 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
-<<<<<<< Updated upstream
-=======
             <PATH_ELEMENT USER_OBJECT="css">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
@@ -528,7 +522,7 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
->>>>>>> Stashed changes
+
             <PATH_ELEMENT USER_OBJECT="utils">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
@@ -547,8 +541,7 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
-<<<<<<< Updated upstream
-=======
+
             <PATH_ELEMENT USER_OBJECT="router">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
@@ -567,13 +560,12 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
->>>>>>> Stashed changes
+
             <PATH_ELEMENT USER_OBJECT="components">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
-<<<<<<< Updated upstream
-=======
+
           </PATH>
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
@@ -592,7 +584,7 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
->>>>>>> Stashed changes
+
           </PATH>
         </subPane>
       </pane>
@@ -836,14 +828,12 @@
       <workItem from="1511428701500" duration="11944000" />
       <workItem from="1511508685648" duration="3797000" />
       <workItem from="1511515642182" duration="122000" />
-<<<<<<< Updated upstream
       <workItem from="1511518806456" duration="5666000" />
       <workItem from="1511832239553" duration="18274000" />
-=======
+
       <workItem from="1511518806456" duration="11066000" />
       <workItem from="1511763019600" duration="496000" />
       <workItem from="1511763541507" duration="30483000" />
->>>>>>> Stashed changes
     </task>
     <task id="LOCAL-00001" summary="添加页面滚动条">
       <created>1511166345852</created>
@@ -940,11 +930,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-<<<<<<< Updated upstream
+
     <option name="totallyTimeSpent" value="118838000" />
-=======
+
     <option name="totallyTimeSpent" value="116706000" />
->>>>>>> Stashed changes
+
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -959,11 +949,11 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
-<<<<<<< Updated upstream
+
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10958904" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-=======
+
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
->>>>>>> Stashed changes
+
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.49367756" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1791531" sideWeight="0.50632244" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="NativeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.49367756" order="0" side_tool="false" content_ui="tabs" />
@@ -1276,7 +1266,6 @@
         </state>
       </provider>
     </entry>
-<<<<<<< Updated upstream
     <entry file="file://$USER_HOME$/Desktop/resources/resources/src/api/getData.js" />
     <entry file="file://$PROJECT_DIR$/static/css/common.css">
       <provider selected="true" editor-type-id="text-editor">
@@ -1285,8 +1274,6 @@
         </state>
       </provider>
     </entry>
-=======
->>>>>>> Stashed changes
     <entry file="file://$PROJECT_DIR$/src/components/IndicatorsLib/CivilEngineering.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1420,7 +1407,7 @@
         </state>
       </provider>
     </entry>
-<<<<<<< Updated upstream
+
     <entry file="file://$PROJECT_DIR$/static/css/theme-green/index.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="53250">
@@ -1445,7 +1432,6 @@
             <element signature="n#style#0;n#el-col#2;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#el-dialog#2;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="e#21722#21748#0" expanded="true" />
-=======
     <entry file="file://$USER_HOME$/Desktop/enterprisePackage(1).js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="829">

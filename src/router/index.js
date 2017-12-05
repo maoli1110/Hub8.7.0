@@ -120,27 +120,33 @@ export default new Router({
                             path: 'add-role',
                             component: resolve => require(['../components/Authority/AddRole.vue'], resolve)
                         },
-                        {
+                        /*{
                             // 应用分配
                             path: 'application-allot',
                             component: resolve => require(['../components/Authority/MemberManagement.vue'], resolve)
-                        },
+                        },*/
                         {
-                            // 基础客户端
-                            path: 'basic-client',
-                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
-                        }, {
-                            // 系统客户端
-                            path: 'system-client',
-                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
-                        }, {
-                            // BIM应用套餐
-                            path: 'bim-meal',
-                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
-                        }, {
-                            // 定额库
-                            path: 'quota-lib',
-                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                            path:"application-allot",
+                            component: resolve => require(['../components/Authority/BasicClient.vue'], resolve),
+                            children:[
+                                {
+                                    // 基础客户端
+                                    path: 'basic-client',
+                                    component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                                }, {
+                                    // 系统客户端
+                                    path: 'system-client',
+                                    component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                                }, {
+                                    // BIM应用套餐
+                                    path: 'bim-meal',
+                                    component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                                }, {
+                                    // 定额库
+                                    path: 'quota-lib',
+                                    component: resolve => require(['../components/Authority/BasicClient.vue'], resolve)
+                                },
+                            ]
                         },
                         {
                             // 管理员列表
@@ -170,7 +176,7 @@ export default new Router({
                                 },
                                 {
                                     name: 'housing?3',
-                                    path: 'working-set',// 基建
+                                    path: 'working-set/:typeId',// 基建
                                     component: resolve => require(['../components/BimLib/WorkingSet.vue'], resolve)
                                 },
                                 {
@@ -199,7 +205,7 @@ export default new Router({
                                 },
                                 {
                                     name: 'BaseBuild?6',
-                                    path: 'working-set',// 基建
+                                    path: 'working-set/:typeId',// 基建
                                     component: resolve => require(['../components/BimLib/WorkingSet.vue'], resolve)
                                 },
                                 {
@@ -249,32 +255,46 @@ export default new Router({
                             component: resolve => require(['../components/ComponentLib/LubanSteel.vue'], resolve)
                         },
                         {
-                            path: '/componentlib/remiz-comp',
-                            component: resolve => require(['../components/ComponentLib/remizComp.vue'], resolve)
-                        },
-                        {
-                            path: '/componentlib/remiz-temp',
-                            component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve)
-                        },
-                        {
-                            path: '/componentlib/remiz-mate',
-                            component: resolve => require(['../components/ComponentLib/remizMate.vue'], resolve)
-                        },
+                            path:"Remiz",
+                            redirect: '/componentlib/Remiz/remiz-comp',
+                            component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve),
+                            children:[
+                                {
+                                    path: 'remiz-comp',
+                                    component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve)
+                                },
+                                {
+                                    path: 'remiz-temp',
+                                    component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve)
+                                },
+                                {
+                                    path: 'remiz-mate',
+                                    component: resolve => require(['../components/ComponentLib/remizMate.vue'], resolve)
+                                },
+                            ]
+                        }
                     ]
                 },
                 {
                     // 定额库
                     path: '/quotalib',
                     component: resolve => require(['../components/QuotaLib/QuotaLib.vue'], resolve),
-                    redirect: '/quotalib/automatic-template',
+                    redirect: '/quotalib/automatic/automatic-template',
                     children: [
                         {
-                            path: 'automatic-template',
-                            component: resolve => require(['../components/QuotaLib/AutomaticTemplate.vue'], resolve)
+                            path: 'automatic',
+                            component: resolve => require(['../components/QuotaLib/AutomaticTemplate.vue'], resolve),
+                            children:[
+                                {
+                                    path: 'automatic-template',
+                                    component: resolve => require(['../components/QuotaLib/AutomaticTemplate.vue'], resolve)
+                                }
+                            ]
+
                         },
                         {
                             path: 'quota-lib',
-                            component: resolve => require(['../components/QuotaLib/AutomaticTemplate.vue'], resolve)
+                            component: resolve => require(['../components/QuotaLib/img.vue'], resolve)
                         },
                         {
                             path: 'list-lib',
@@ -410,7 +430,7 @@ export default new Router({
                         },
                         {
                             // 市政
-                            path: 'BaseBuild',
+                            path: 'Inspector',
                             component: resolve => require(['../components/Configuration/BaseBuild.vue'], resolve)
                         },
                         {
@@ -479,7 +499,7 @@ export default new Router({
                                     path: 'engineering-nature',
                                     component: resolve => require(['../components/Configuration/EngineeringNature.vue'], resolve)
                                 }]
-                               
+
 
                         },
                         {

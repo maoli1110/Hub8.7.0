@@ -28,6 +28,7 @@
                             :value="item.roleTypeId">
                         </el-option>
                     </el-select>
+
                         </div>
                     </div>
                 </el-col>
@@ -48,12 +49,12 @@
                 <el-carousel trigger="click" height="195px" arrow="always" :interval="99999999">
                     <el-carousel-item v-for="(items,index) in clientInformation_" :key="index">
                         <div style="padding:0 20px;margin-top:40px">
-                            <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in items"
-                                     @click.native="currentIndex=index;selectClient(item)"                                     
-                                     :key="index" class="card" :class="{'client-checked':index==currentIndex}"
+                            <el-card :body-style="{ padding: '0px' }" v-for="(item, i) in items"                                     
+                                     @click.native="currentIndex=i+index;selectClient(item)"                                     
+                                     :key="i" class="card" :class="{'client-checked':i+index==currentIndex}"
                             >
-                                <div style="text-align:center;margin-top:20px">
-                                    <img src="http://www.lubansoft.com/uploads/1485221791.jpg"
+                                <div style="text-align:center;margin-top:20px"  >
+                                    <img :src="item.src"
                                          class="image"
                                          style="width:64px;height:64px;margin:0 auto">
                                     <div style="height:35px;line-height:35px">{{item.productName}}</div>
@@ -98,7 +99,7 @@
                                 <el-checkbox-group v-model="scope.row.checkedCities" style="padding:0 10px"
                                                    @change="handleCheckedCitiesChange(scope.row.checkedCities,scope.row)">
                                     <el-checkbox  class="el-checked-wrap"   v-for="(city,i) in scope.row.cities" 
-                                    :title="city"
+                                    :title="city.authName"
                                     :label="city" :key="i">                   
                                        {{city.authName}}               
                                     </el-checkbox>
@@ -114,7 +115,7 @@
             </div>
             <div slot="footer" class="dialog-footer" style="text-align:center;padding-top:20px">
                 <el-button type="primary" class="dialog-btn" @click="save">保存</el-button>
-                <el-button  class="dialog-btn">取消</el-button>
+                <el-button  class="dialog-btn" @click="cancle">取消</el-button>
             </div>
             
         </div>
@@ -127,14 +128,65 @@ export default {
   computed: {
     ...mapGetters(["curEditRole"])
   },
-
   data() {
     return {
+      clientImgSrc: [
+        {
+          productId: 0,
+          src: "../../../static/img/common.png"
+        },
+        {
+          productId: 38,
+          src: "../../../static/img/govern.jpg"
+        },
+        {
+          productId: 39,
+          src: "../../../static/img/plan.png"
+        },
+        {
+          productId: 23,
+          src: "../../../static/img/plan.png"
+        },
+        {
+          productId: 112,
+          src: "../../../static/img/civil.png"
+        },
+        {
+          productId: 40,
+          src: "../../../static/img/inspector.png"
+        },
+        {
+          productId: 27,
+          src: "../../../static/img/view.png"
+        },
+        {
+          productId: 11,
+          src: "../../../static/img/govern.jpg"
+        },
+        {
+          productId: 29,
+          src: "../../../static/img/works.jpg"
+        },
+        {
+          productId: 12,
+          src: "../../../static/img/explore.jpg"
+        },
+        {
+          productId: 13,
+          src: "../../../static/img/iban.png"
+        },
+        {
+          productId: 30,
+          src: "../../../static/img/remiz.png"
+        }
+      ],
+
       roleName: "",
       roleType: "",
+      roleTypeId: "",
+      roleId: "",
       currentIndex: 0,
       textarea: "",
-      role: "",
       carouselPage: "",
       authoritedTableData: [],
       clientInformation: [],
@@ -164,10 +216,18 @@ export default {
     getRoleClientAuthInfo() {
       types.getRoleClientAuthInfo().then(res => {
         this.clientInformation = res.data.result;
-        this.clientInformation.forEach(items => {
+        // 添加角色
+        this.clientInformation.forEach((items, index) => {
           // 重新定义数据结构
+          // 客户端图片地址
+          this.clientImgSrc.forEach(el => {
+            if (el.productId == items.productId) {
+              items.src = el.src;
+            }
+          });
           items.authInfoGroups_copy = [];
           items.authInfoGroups.forEach((el, i) => {
+            // 添加角色
             items.authInfoGroups_copy.push({
               name: el.authOrg,
               checkedCities: [],
@@ -176,10 +236,40 @@ export default {
             });
           });
         });
-        // 默认展示
-        this.selectClient(this.clientInformation[0]);
-        // 拆分成10个一组
-        this.clientInformation_ = this.split_array(this.clientInformation, 10);
+        // 添加
+        if (this.$route.path == "/authority/add-role") {
+          // 默认展示
+          this.selectClient(this.clientInformation[0]);
+          // 客户端拆分10个一组
+          this.clientInformation_ = this.split_array(
+            this.clientInformation,
+            10
+          );
+        } else {
+          //编辑
+          types.getRoleAuthCodes(this.curEditRole.roleId).then(res => {
+            let authCode = res.data.result;
+            this.clientInformation.forEach(items => {
+              items.authInfoGroups_copy.forEach((item, i) => {
+                item.cities.forEach((el, i) => {
+                  if (authCode.indexOf(el.authCode) != -1) {
+                    item.checkedCities.push(el);
+                  }
+                });
+                item.checkAll =
+                  item.checkedCities.length === item.cities.length;
+              });
+            });
+            console.log(this.clientInformation);
+            // 默认展示
+            this.selectClient(this.clientInformation[0]);
+            // 客户端拆分10个一组
+            this.clientInformation_ = this.split_array(
+              this.clientInformation,
+              10
+            );
+          });
+        }
       });
     },
     /**获取角色类型*/
@@ -188,6 +278,7 @@ export default {
         this.options = res.data.result;
       });
     },
+    /**全选*/
     handleCheckAlls(event) {
       if (event.target.checked) {
         this.authoritedTableData.forEach((item, index) => {
@@ -200,7 +291,7 @@ export default {
           // item.isIndeterminate = false;
         });
         this.checkAlls = true;
-        this.isIndeterminate = false;
+        // this.isIndeterminate = false;
       } else {
         this.authoritedTableData.forEach((item, index) => {
           item.checkedCities = [];
@@ -208,23 +299,22 @@ export default {
           // item.isIndeterminate = false;
         });
         // this.isIndeterminate = false;
-        this.checkAll = false;
         this.checkAlls = false;
       }
     },
+    /**组内全选*/
     handleCheckAllChange(event, row) {
       row.checkedCities = event.target.checked ? row.cities : [];
       this.isCheckedAll();
     },
-
+    /**组内成员选择*/
     handleCheckedCitiesChange(value, row) {
       let checkedCount = value.length;
       row.checkAll = checkedCount === row.cities.length;
       this.isCheckedAll();
     },
-    // 全部选项控制
+    /**全选样式控制 */
     isCheckedAll() {
-      let checkedAllCount;
       let checkedAllCities = [];
       let allCities = [];
       this.authoritedTableData.forEach((item, index) => {
@@ -235,16 +325,41 @@ export default {
           allCities.push(el_);
         });
       });
-      checkedAllCount = checkedAllCities.length;
-      this.checkAlls = checkedAllCount === allCities.length;
+      this.checkAlls = checkedAllCities.length === allCities.length;
     },
-    // 切换客户端
+    /**切换客户端 */
     selectClient(items) {
       this.authoritedTableData = items.authInfoGroups_copy;
       this.isCheckedAll();
     },
+    /**保存修改*/
     save() {
+      if (!this.roleName) {
+        this.$message({
+          showClose: true,
+          message: "角色不能为空",
+          type: "warning"
+        });
+        return;
+      }
       let authCode = [];
+      let params = {};
+      this.$route.path == "/authority/add-role"
+        ? (params = {
+            authCodes: authCode,
+            remarks: this.textarea,
+            roleName: this.roleName,
+            roleTypeId: this.roleType
+          })
+        : (params = {
+            authCodes: authCode,
+            remarks: this.textarea,
+            roleId: this.roleId,
+            roleName: this.roleName,
+            roleTypeId: this.roleType || 0
+          });
+      /**权限码*/
+
       this.clientInformation.forEach(items => {
         items.authInfoGroups_copy.forEach(item => {
           item.checkedCities.forEach(el => {
@@ -252,24 +367,40 @@ export default {
           });
         });
       });
-      console.log(authCode);
+      types.updateRoleAuth(params).then(res => {
+        if (res.data.code == 200) {
+          this.$router.push({ path: `/authority/role-management` });
+        }
+        if (res.data.code == 500) {
+          this.$message({
+            showClose: true,
+            message: res.data.msg,
+            type: "warning"
+          });
+        }
+      });
+    },
+    /**取消修改*/
+    cancle() {
+      this.$router.push({ path: `/authority/role-management` });
     }
   },
   created() {
     this.getRoleClientAuthInfo();
     this.getRoleType();
+    this.roleName = this.curEditRole.roleName;
+    this.textarea = this.curEditRole.remarks || "";
+    this.roleType = this.curEditRole.roleTypeId;
+    this.roleId = this.curEditRole.roleId;
   },
   mounted() {
     if (this.$route.path == "/authority/add-role") {
       // 添加
     } else {
       // 编辑
-      this.roleName = this.curEditRole.roleName;
-      this.textarea = this.curEditRole.remarks;
-      this.roleType = this.curEditRole.roleTypeName;
-      if (!this.curEditRole.roleName) {
-        this.$router.push("/authority/role-management");
-      }
+      // if (!this.curEditRole.roleName) {
+      //   this.$router.push("/authority/role-management");
+      // }
     }
   }
 };
