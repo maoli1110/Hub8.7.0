@@ -146,7 +146,7 @@
                             <td style="min-width:120px;line-height:6px;"><!--item.projType!=3-->
                                 <div class="handel-cotrol"><span class=" handel-icon see" title="监控设置" @click="monitor('single',item)" ></span></div>
                                 <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon extract" title="抽取" @click="extractDialog=true;extractData(item.status,item)"></span></div><!--extractData(scope.row.status)"-->
-                                <div class="handel-cotrol" v-if="item.projClassify !=2 && item.projType!=3"><span class=" handel-icon rename" title="修改名称" @click="modifyInfo=true;projRename(item)"></span></div>
+                                <div class="handel-cotrol" v-if="item.projClassify !=2 || item.projType!=3"><span class=" handel-icon rename" title="修改名称" @click="modifyInfo=true;projRename(item)"></span></div>
                                 <div class="handel-cotrol"><span class=" handel-icon modify" title="工程管理(编辑授权)" @click="addProject('modific',item)"></span></div>
 
                             </td>
@@ -842,20 +842,20 @@
                 deletArray = [];    //清空删除的projIds 防止影响
                 countIndex = 0;     //选中数量统计清空
                 this.allChecked = false;
-                /*getProjects(params).then((data)=>{
-                    this.tableData = data.data.result.content;
-                    this.tableData.forEach((val,key)=>{
-                        this.$set(this.tableData[key],'checked',false)
-                    })
-                    this.pagesList = data.data.result;
-                })*/
-                testList().then((data)=>{
+                getProjects(params).then((data)=>{
                     this.tableData = data.data.result.content;
                     this.tableData.forEach((val,key)=>{
                         this.$set(this.tableData[key],'checked',false)
                     })
                     this.pagesList = data.data.result;
                 })
+               /* testList().then((data)=>{
+                    this.tableData = data.data.result.content;
+                    this.tableData.forEach((val,key)=>{
+                        this.$set(this.tableData[key],'checked',false)
+                    })
+                    this.pagesList = data.data.result;
+                })*/
             },
             //进入回收站
             inRecycle(path,paramId){
