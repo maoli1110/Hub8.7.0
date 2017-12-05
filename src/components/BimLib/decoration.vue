@@ -562,12 +562,13 @@
             getOrgzTreeList(params){
                 getOrgTreeList(params).then((data)=>{
                     this.zNodes = data.data.result;
+                    $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
                 })
             },
             //默认加载数据
             getData(name,id){
                 this.getBaseUrl();      //获取基础路径
-//                this.getOrgzTreeList({url:baseUrl});
+                this.getOrgzTreeList({url:baseUrl});
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;         //回收站的状态
@@ -696,9 +697,12 @@
             onClick(event, treeId, treeNode) {
                 this.filterParams.orgNodeVal = treeNode.name;
                 if(treeNode.type!=1){
-                    treeNode.children.forEach((val,key)=>{//选择分公司遍历项目部下的数据
-                        this.tableParam.deptIds.push(val.id);
-                    })
+                    if(treeNode.children.length){
+                        treeNode.children.forEach((val,key)=>{//选择分公司遍历项目部下的数据
+                            this.tableParam.deptIds.push(val.id);
+                        })
+                    }
+
                 }else {
                     this.tableParam.deptIds.push(treeNode.id);//deptIds
                 }
@@ -1354,7 +1358,7 @@
 
         },
         mounted() {
-            $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
+
         },
         created(){
             this.activeIndex = this.$route.path,//当前路由也选中状态
