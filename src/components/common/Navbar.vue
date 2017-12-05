@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
         <el-menu :default-active="activeIndex" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if="changeMenu">
-            <el-menu-item :index="menuItem.path" v-for='(menuItem,i) in mainMenu' :key="i">{{menuItem.menuName}}</el-menu-item>
+            <el-menu-item :index="menuItem.url" v-for='(menuItem,i) in mainMenu' :key="i">{{menuItem.name}}</el-menu-item>
         </el-menu>
         <el-menu :default-active="activeIndex2" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router v-if="!changeMenu">
             <el-menu-item :index="menuItem.path" v-for='(menuItem,i) in configurationMenu' :key="i">{{menuItem.menuName}}</el-menu-item>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+    import {route} from "../../api/getData-yhj"
 export default {
     data() {
         return {
@@ -18,7 +19,7 @@ export default {
             activeIndex2: '',
             changeMenu:false,
             mainMenu: [
-                {
+              /*  {
                     menuName: '企业概况',
                     path: '/companyprofile'
                 },
@@ -57,7 +58,7 @@ export default {
                 {
                     menuName: '系统',
                     path: '/system'
-                }
+                }*/
             ]
 //            ,
 //            configurationMenu: [
@@ -102,7 +103,10 @@ export default {
         }else{
             this.changeMenu = true;
         }
-
+        route().then((routes)=>{
+//            console.log(routes.data.list,'routes')
+           this.mainMenu =  routes.data.list;
+        })
     }
 
 }

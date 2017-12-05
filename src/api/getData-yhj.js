@@ -13,10 +13,11 @@ import axios from "axios";
 
 export const tests = params=> axios.get(`${params.url}` + "payment/alipay/alipayCloseTradeNotify");
 export const getWorksetingList = params => axios.get(`${base}`);
-export const getCitys = params => axios.get('../../static/js/citys.json')
+export const getCitys = params => axios.get('../../static/js/citys.json');
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 
-export const testList = params =>axios.get('../../static/tableList.json')
+export const testList = params =>axios.get('../../static/tableList.json');
+export const route = params =>axios.get('../../static/routes.json');
 /**
  * bim库
  */

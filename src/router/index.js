@@ -170,7 +170,7 @@ export default new Router({
                                 },
                                 {
                                     name: 'housing?3',
-                                    path: 'working-set',// 基建
+                                    path: 'working-set/:typeId',// 基建
                                     component: resolve => require(['../components/BimLib/WorkingSet.vue'], resolve)
                                 },
                                 {
@@ -199,7 +199,7 @@ export default new Router({
                                 },
                                 {
                                     name: 'BaseBuild?6',
-                                    path: 'working-set',// 基建
+                                    path: 'working-set/:typeId',// 基建
                                     component: resolve => require(['../components/BimLib/WorkingSet.vue'], resolve)
                                 },
                                 {
@@ -410,7 +410,7 @@ export default new Router({
                         },
                         {
                             // 市政
-                            path: 'BaseBuild',
+                            path: 'Inspector',
                             component: resolve => require(['../components/Configuration/BaseBuild.vue'], resolve)
                         },
                         {
@@ -479,7 +479,7 @@ export default new Router({
                                     path: 'engineering-nature',
                                     component: resolve => require(['../components/Configuration/EngineeringNature.vue'], resolve)
                                 }]
-                               
+
 
                         },
                         {
