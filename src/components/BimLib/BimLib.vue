@@ -2,7 +2,7 @@
     <div>
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-submenu index="/bimlib/housing/bim-lib/1">
+                <!--<el-submenu index="/bimlib/housing/bim-lib/1">
                     <template slot="title">房建</template>
                     <el-menu-item index="/bimlib/housing/bim-lib/1">工程库</el-menu-item>
                     <el-menu-item index="/bimlib/housing/working-set">工作集库</el-menu-item>
@@ -16,6 +16,10 @@
                 <el-submenu index="/bimlib/decoration/bim-lib/4">
                     <template slot="title">家装</template>
                     <el-menu-item index="/bimlib/decoration/bim-lib/4">工程库</el-menu-item>
+                </el-submenu>-->
+                <el-submenu  v-for="(menus,i) in submenus.children" :key="i" :index="`${menus.url}/bim-lib/${i==0?i=1:i*2}`">
+                    <template slot="title">{{menus.name}}</template>
+                    <el-menu-item v-for="(subMenus,key) in menus.children" :key="key" :index="subMenus.url">{{subMenus.name}}</el-menu-item>
                 </el-submenu>
             </el-menu>
 
@@ -37,7 +41,7 @@
 
 //js
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
-
+import {route} from "../../api/getData-yhj.js"
 export default {
     data: () => ({
         activeIndex: "",
@@ -68,7 +72,8 @@ export default {
             { id: 31, pId: 3, name: "叶子节点1" },
             { id: 32, pId: 3, name: "叶子节点2" },
             { id: 33, pId: 3, name: "叶子节点3" }
-        ]
+        ],
+        submenus:[]
     }),
     methods: {
         handleOpen(key, keyPath) {
@@ -112,6 +117,19 @@ export default {
 　　},
     created(){
         this.activeIndex =  this.$route.path;
+        console.log(this.$route.matched[1].path,'路由')
+        route().then((routes)=>{
+            let currentMenusKey = "";
+            let route = routes.data.list;
+            route.forEach((val,key)=>{
+               if((val.url).indexOf(this.$route.matched[1].path)!=-1){
+                   currentMenusKey =key;
+               };
+            });
+            if(currentMenusKey){
+                this.submenus = routes.data.list[currentMenusKey];
+            }
+        })
     }
 
 }

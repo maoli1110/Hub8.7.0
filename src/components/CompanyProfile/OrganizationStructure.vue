@@ -115,8 +115,8 @@
                 </div>
             </el-popover>
             <!-- 负责人界面end -->
-            <el-button type="primary" class="basic-btn" icon="plus">全部展开</el-button>
-            <el-button type="primary" class="basic-btn" icon="plus">全部收起</el-button>
+            <el-button type="primary" class="basic-btn" icon="plus" @click="expandTree(true)">全部展开</el-button>
+            <el-button type="primary" class="basic-btn" icon="minus" @click="expandTree(false)">全部收起</el-button>
             <el-button type="primary" class="basic-btn" icon="plus" v-popover:popover4>负责人界面</el-button>
             <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加项目部</el-button>
         </div>
@@ -148,10 +148,10 @@
                         <el-input v-model="orgForm.name" placeholder="请输入项目名称"></el-input>
                     </el-form-item>
                     <el-form-item label="项目负责人：">
-                        <multiple-select v-show="isMultiShow" v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select>
+                        <multiple-select  v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select>
                     </el-form-item>
                     <el-form-item label="项目经理：">
-                        <multiple-select v-show="isMultiShow" v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select> 
+                        <multiple-select  v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select> 
                     </el-form-item>
                     <!-- </el-form-item> -->
                     <el-form-item label="手机号码：" prop="mobile">
@@ -200,17 +200,18 @@
         </el-dialog>
         <!-- 添加分公司界面end --> 
         </div>
-         
 </template>
 <script>
-import '../../../static/css/select-vue-component.css';
+import '../../../static/css/select-vue-component.css'; // select2样式
 import axios from "axios";
-import {getOrgTreeList} from '../../api/getData.js';
-import {basePath,transformToObjFormat} from "../../utils/common.js";
+import {getOrgTreeList} from '../../api/getData.js';   // 接口
+import {basePath,transformToObjFormat} from "../../utils/common.js"; // 通用模块
 import {
   validatephoneNumber,
   validateEmail
 } from "../../utils/validate";
+
+//公用参数及常量定义
 let baseUrl;
 const validateMobile = (rule, value, callback) => {
   if (validatephoneNumber(value)) {
@@ -219,10 +220,10 @@ const validateMobile = (rule, value, callback) => {
     callback(new Error("请输入正确的用户信息"));
   }
 };
+
 export default {
     data() {
         return {
-            isMultiShow: false,
             //测试multiple select2
             single: {
                 originOptions: [],
@@ -303,9 +304,6 @@ export default {
         };
     },
     mounted() {
-        console.log(this.dialogVisible,'dialogVisible');
-        this.isMultiShow = true;
-        // this.queryData();
         /**
          * 根据生成的树结构计算总宽度
          */
@@ -347,7 +345,9 @@ export default {
                     yield [key, tempzNodes[key]];
                 }
             }
-           
+            
+            this.zNodes = tempzNodes;
+
             for(let [key,value] of entries(tempzNodes)){
                 var lineStyle = "";
                 if(key != 0 && key != tempzNodes.length-1){
@@ -393,7 +393,6 @@ export default {
             // console.log('父级元素调用singleCallback 选中的是' + JSON.stringify(data))
         },
         multipleCallback: function(data){
-            debugger
             this.multiple.selectedList = data;
             console.log('父级元素调用multipleSelected 选中的是' + JSON.stringify(data))
         },
@@ -427,6 +426,18 @@ export default {
         //获取接口地址
         getBaseUrl(){
             baseUrl = basePath(this.$route.path);
+        },
+        //组织结构全部展开，全部收起
+        expandTree(source){
+            console.log(this.zNodes.length,'length');
+            // var treeObj = $.fn.zTree.getZTreeObj("ztree-0");
+            // console.log(treeObj,'treeObj')
+            // treeObj.expandAll(source);
+            for(let i=0;i<this.zNodes.length;i++){
+                let x= 'treeObj'+i;
+                x = $.fn.zTree.getZTreeObj("ztree-"+i);
+                x.expandAll(source);
+            }
         }
     },
     watch:{

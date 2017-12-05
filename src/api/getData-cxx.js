@@ -51,5 +51,19 @@ export const cancelOrder = params=> axios.post(`${params.url}eds/order/cancelOrd
 
 //GET /luban/bi/queryEnterpriseLubanBiList/{beginTime}/{endTime}/{currentPage}/{pageSize} 获取企业鲁班币列表
 export const queryEnterpriseLubanBiList = params=> axios.get(`${params.url}luban/bi/queryEnterpriseLubanBiList/${params.beginTime}/${params.endTime}/${params.currentPage}/${params.pageSize}`);
+// GET /luban/bi/getEnterpriseCurrentLubanBiCount 获取企业当前鲁班币数量
+export const getEnterpriseCurrentLubanBiCount = params=> axios.get(`${params.url}luban/bi/getEnterpriseCurrentLubanBiCount`);
 
+// GET /luban/bi/getContactAddress 查询联系人地址信息
+export const getContactAddress = params=> axios.get(`${params.url}luban/bi/getContactAddress`);
+// POST /luban/bi/validateVouchers/{vouchersPassword} 验证代金券-加入可使用范围
+export const validateVouchers = params=> axios.get(`${params.url}luban/bi/validateVouchers/${params.vouchersPassword}`);
+// POST /luban/bi/addLubanBiChargeOrder 添加鲁班币充值订单
+export const addLubanBiChargeOrder = params=>axios.post(`${params.url}luban/bi/addLubanBiChargeOrder`, params.lubanBiChargeParam)
 
+// POST /luban/bi/getLubanBiMembers 查询待分配鲁班币名单
+export const getLubanBiMembers = params=>axios.post(`${params.url}luban/bi/getLubanBiMembers`, params.getLubanBiMembersParam)
+// GET /luban/bi/getLubanBiAllocateList/{historyId} 获取鲁班币分配名单
+export const getLubanBiAllocateList = params=> axios.get(`${params.url}luban/bi/getLubanBiAllocateList/${params.historyId}`);
+// POST /luban/bi/allocateLubanBi 分配鲁班币
+export const allocateLubanBi = params=>axios.post(`${params.url}luban/bi/allocateLubanBi`, params.allocateLubanBiParam)
