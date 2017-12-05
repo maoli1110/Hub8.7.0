@@ -697,9 +697,12 @@
             onClick(event, treeId, treeNode) {
                 this.filterParams.orgNodeVal = treeNode.name;
                 if(treeNode.type!=1){
-                    treeNode.children.forEach((val,key)=>{//选择分公司遍历项目部下的数据
-                        this.tableParam.deptIds.push(val.id);
-                    })
+                    if(treeNode.children.length){
+                        treeNode.children.forEach((val,key)=>{//选择分公司遍历项目部下的数据
+                            this.tableParam.deptIds.push(val.id);
+                        })
+                    }
+
                 }else {
                     this.tableParam.deptIds.push(treeNode.id);//deptIds
                 }

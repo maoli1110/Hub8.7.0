@@ -13,9 +13,9 @@
                 <el-menu-item v-for="(menusItem,index) in menusList.children" v-if="menusItem.url!='/componentlib/Remiz'" :key="index" :index="menusItem.url">
                     {{menusItem.name}}
                 </el-menu-item>
-                <el-submenu index="" v-for="(menusItem,index) in menusList.children"  v-if="menusItem.url=='/componentlib/Remiz'" :key="index" :index="menusList.children[0].url">
+                <el-submenu index="" v-for="(menusItem,index) in menusList.children"  v-if="menusItem.url=='/componentlib/Remiz'" :key="index" :index="`${ menusItem.children[0].url}`">
                     <template slot="title">{{menusItem.name}}</template>
-                    <el-menu-item v-for="(Item,index) in  menusItem.children" :index="Item.url">{{Item.name}}</el-menu-item>
+                    <el-menu-item v-for="(Item,i) in  menusItem.children" :index="Item.url" :key="i">{{Item.name}}</el-menu-item>
                 </el-submenu>
 
             </el-menu>

@@ -256,6 +256,7 @@ export default new Router({
                         },
                         {
                             path:"Remiz",
+                            redirect: '/componentlib/Remiz/remiz-comp',
                             component: resolve => require(['../components/ComponentLib/remizTemp.vue'], resolve),
                             children:[
                                 {
