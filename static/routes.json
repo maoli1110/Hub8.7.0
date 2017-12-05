@@ -37,26 +37,32 @@
                 "name":"角色管理",
 				"sever":"http://192.168.13.195:8989/builder/"
 			},
-			{
-				"url":"/authority/basic-client",
-                "name":"基础客户端",
-				"sever":"http://192.168.13.195:8989/cloud/"
-			},
-			{
-				"url":"/authority/system-client",
-                "name":"系统客户端",
-				"sever":"http://192.168.13.195:8989/cloud/"
-			},
-			{
-				"url":"/authority/bim-meal",
-                "name":"BIM应用套餐",
-				"sever":"http://192.168.13.195:8989/cloud/"
-			},
-			{
-				"url":"/authority/quota-lib",
-                "name":"定额库",
-				"sever":"http://192.168.13.195:8989/cloud/"
-			},
+            {
+                "url":"/authority/application-allot",
+                "name":"应用分配",
+                "children":[
+                    {
+                        "url":"/authority/application-allot/basic-client",
+                        "name":"基础客户端",
+                        "sever":"http://192.168.13.195:8989/cloud/"
+                    },
+                    {
+                        "url":"/authority/application-allot/system-client",
+                        "name":"系统客户端",
+                        "sever":"http://192.168.13.195:8989/cloud/"
+                    },
+                    {
+                        "url":"/authority/application-allot/bim-meal",
+                        "name":"BIM应用套餐",
+                        "sever":"http://192.168.13.195:8989/cloud/"
+                    },
+                    {
+                        "url":"/authority/application-allot/quota-lib",
+                        "name":"定额库",
+                        "sever":"http://192.168.13.195:8989/cloud/"
+                    }
+                ]
+            },
 			{
 				"url":"/authority/administrators-list",
                 "name":"管理员列表",
@@ -297,7 +303,7 @@
                 "children":[
                     {
                         "url":"",
-                        "sever":"http://192.168.13.195:8989/builderCiVil/"
+                        "sever":"http://192.168.13.195:8989/builderForCiVil/"
                     }
                 ]
             },
@@ -308,7 +314,7 @@
                 "children":[
                     {
                         "url":"",
-                        "sever":"http://192.168.13.195:8989/builderCiVil/"
+                        "sever":"http://192.168.13.195:8989/builderForCiVil/"
                     }
                 ]
             },
