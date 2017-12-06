@@ -81,7 +81,7 @@ function basePath(localhost) {
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
 
-        case '/bimlib/housing/working-set':               //Bim库->房建->工作集库
+        case '/bimlib/housing/working-set/1':               //Bim库->房建->工作集库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
         case '/bimlib/housing/pdf-drawing':               //Bim库->房建->PDF图纸
@@ -222,6 +222,16 @@ function basePath(localhost) {
     }
     return baseUrl;
 }
+function dateFormat(date){
+    date = new Date(date);
+    let getYear = date.getFullYear();
+    let getMonth = date.getMonth();
+    let getdate = date.getDate();
+    let getHou = date.getHours();
+    let getMin = date.getMinutes();
+    date = `${getYear}.${getMonth}.${getdate}  ${getHou}:${getMin}`;
+    return date;
+}
 /*function apiBase() {
  let hostname = window.location.hostname,
  API_BASE_URL = 'http://test2api.dunizb.com';//默认环境
@@ -237,5 +247,6 @@ function basePath(localhost) {
 export {
     FormIndex,
     basePath,
-    transformToObjFormat
+    transformToObjFormat,
+    dateFormat
 }

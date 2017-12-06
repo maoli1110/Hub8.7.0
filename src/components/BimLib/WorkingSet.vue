@@ -4,7 +4,6 @@
             <el-col  :span="24">
                 <span style="float:left;font-size:14px;margin-top:5px;">项目部：</span>
                 <el-col :span="6" >
-
                     <el-select v-model="workValue" placeholder="请选择" @change="changeProject" >
                         <el-option
                             v-for="item in projectList"
@@ -14,7 +13,7 @@
                     </el-select>
                 </el-col>
                 <el-col :span="5">
-                    <el-input icon="search" placeholder="请输入搜索关键字"></el-input>
+                    <el-input value="searchKey" icon="search" placeholder="请输入搜索关键字" :on-icon-click="searchClick"></el-input>
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
@@ -23,20 +22,20 @@
 
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class="house-table scroll-me"   :data="tableData" style="min-width: 900px;"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)"  @select-all="selectAll" @select="selectChecked">
+            <el-table class="work-set scroll-me"   :data="tableData.content" style="min-width:900px;"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked">
                 <el-table-column
                     type="selection"
                     width="40" >
                 </el-table-column>
-                <el-table-column label="序号" width="50" prop="index"><!--(cur_page-1)*10+index-->
+              <!--  <el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
+                </el-table-column>-->
+                <el-table-column prop="workSetName" width="" label="工程名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="processName" width="" label="工程名称" show-overflow-tooltip>
+                <el-table-column prop="createUsername" width="100" label="创建人" >
                 </el-table-column>
-                <el-table-column prop="updateUser" width="100" label="创建人" >
+                <el-table-column prop="createDate" width="160" label="创建时间" >
                 </el-table-column>
-                <el-table-column prop="updateTime" width="160" label="创建时间" >
-                </el-table-column>
-                <el-table-column prop="proDepartment" width="" label="所属项目部" show-overflow-tooltip>
+                <el-table-column prop="deptName" width="" label="所属项目部" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
@@ -46,7 +45,7 @@
             </el-table>
         </vue-scrollbar>
         <div class="pagination">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[2, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="tableData.totalElements">
             </el-pagination>
         </div>
         <el-dialog
@@ -109,17 +108,23 @@
 </template>
 
 <script>
-    import {FormIndex} from "../../utils/common.js";
-    import {getWorksetingList} from '../../api/getData.js'
+    import {
+        basePath,
+        dateFormat,//日期格式化
+    } from "../../utils/common.js";
+    import {
+        workList,//测试数据
+        getWorksetingList,
+        getWorkSets,
+    } from '../../api/getData-yhj.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import ElCol from "element-ui/packages/col/src/col";
     // import "../../utils/directive.js"
     let deletArray = [];
+    let baseUrl = '';
     export default {
         created(){
-            FormIndex(this.tableData,2,10);
-//            this.getData();
-
+            this.getData();
         },
         data: function(){
             return {
@@ -127,21 +132,41 @@
                     // something config
                 },
                 workInfoVisible:false,
-                workValue:"",
+                workValue:"",//项目部的值
+                searchKey:'',//搜索关键字
                 //分页的一些设置
                 cur_page:1,
-                totalPage:50,
-                totalNumber:300,
-                tableData:[
-                    {index:1,processName:'鲁班安装鲁班安装鲁班安装鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理成功",isRoot:'27人'},
-                    {index:2,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理失败",isRoot:'27人'},
-                    {index:3,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理中",isRoot:'27人'},
-                    {index:4,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"待处理",isRoot:'27人'},
-                    {index:5,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"未处理",isRoot:'27人'},
-                ],
+                totalPage:1,
+                tableData:{},//列表数据
+                tableListParam:{
+                    deptIds: [
+                        "dc090268e97741c089adcaa0489d60fa"
+                    ],
+                    packageType: 1,
+                    pageParam: {
+                        orders: [
+                            {
+                                direction: 0,
+                                ignoreCase: true,
+                                property: "createDate"
+                            }
+                        ],
+                        page: 1,
+                        size: 2
+                    },
+                    searchKey: "",
+                    skOnlyName: false
+                },//列表参数
                 dataInfo:[],
                 workInfo:{},
-                projectList:[{name:'初始项目部1'},{name:'初始项目部2'},{name:'初始项目部3'},{name:'初始项目部4'}]
+                projectList:[
+                    {name:'全部',id:""},
+                    {name:'茅台文化大厦项目'},
+                    {name:'上海中心项目'},
+                    {name:'某七星级酒店项目'},
+                    {name:'梅赛德斯奔驰文化馆项目'},
+                    {name:"亚特兰蒂斯七星级酒店项目"}
+                    ]
             }
         },
         components: {
@@ -149,20 +174,51 @@
             VueScrollbar
         },
         methods: {
-            onEditorChange({ editor, html, text }) {
-                this.content = html;
+
+            //获取地址
+            getBaseUrl(){
+                console.log(this.$route.path)
+                baseUrl = basePath(this.$route.path);
             },
-            submit(){
-                console.log(this.content);
-                this.$message.success('提交成功！');
+            //日期格式化
+            dateFormatter(data){
+               data = dateFormat(data);
+               return data;
             },
+//          //搜索功能
+            searchClick(){
+                console.log('click')
+            },
+            //获取工作集列表
+            getTableList(url,param){
+                getWorkSets({url:url,param:param}).then((data)=>{
+                    this.tableData = data.data.result;
+                    if (this.tableData.content.length) {
+                        this.tableData.content.forEach((val,key)=>{
+                            val.createDate = this.dateFormatter(val.createDate);
+                        })
+                    }
+                });
+               /* workList().then((data)=>{
+                    this.tableData = data.data.content;
+                    if (this.tableData.length) {
+                        this.tableData.forEach((val,key)=>{
+                            val.createDate = this.dateFormatter(val.createDate);
+                        })
+                    }
+                })*/
+            },
+
             getData(){
+                this.getBaseUrl();
+                this.getTableList(baseUrl,this.tableListParam);
                 for(let i = 0;i<this.tableData.length;i++){
                    this.tableData[i].index = 3*10+ this.tableData[i].index;
                 }
                 getWorksetingList().then((data)=>{
-                   this.dataInfo = data.data.gridData;
-                   this.workInfo = data.data.gridData[0];
+                    console.log(data.data.gridData,'data.data')
+//                   this.dataInfo = data.data.gridData;
+//                   this.workInfo = data.data.gridData[0];
                 })
             },
             /**common-message(公用消息框)
@@ -171,7 +227,7 @@
              * @params error    失败处理的
              * */
             commonConfirm(message,success,error,type){
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                this.$confirm(message, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: type
@@ -194,8 +250,14 @@
             //分页器事件
             handleSizeChange(size){
                 console.log(`每页显示多少条${size}`);
+                this.totalPage = size;
+                this.tableListParam.pageParam.size = size;
+                this.getTableList(baseUrl,this.tableListParam);
             },
             handleCurrentChange(currentPage){
+                this.cur_page = currentPage;
+                this.tableListParam.pageParam.page = currentPage;
+                this.getTableList(baseUrl,this.tableListParam);
                 console.log(`当前页${currentPage}`);
             },
             /**
@@ -271,9 +333,6 @@
         },
         computed: {
 
-            editor() {
-                return this.$refs.myTextEditor.quillEditor;
-            }
         },
 
 
@@ -282,6 +341,9 @@
 <style scoped>
     .editor-btn{
         margin-top: 20px;
+    }
+    .el-table__header{
+        min-width: 900px !important;
     }
     .workSeting .work-toobar .el-select{
         width:100%;
