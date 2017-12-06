@@ -4,15 +4,7 @@
             <el-col  :span="24">
                 <span style="float:left;font-size:14px;margin-top:5px;">项目部：</span>
                 <el-col :span="6" >
-                    <!--<el-select v-model="filterParm.workValue" placeholder="请选择" @change="changeProject">
-                        <el-option
-                            v-for="item in projectList"
-                            :key="item.value"
-                            :value="item.value"
-                            :label="item.name">
-                        </el-option>
-                    </el-select>-->
-                    <el-select  v-model="filterParm.workValue" placeholder="请选择" @change="changeVal">
+                    <el-select v-model="filterParm.workValue" placeholder="请选择" @change="changeProject">
                         <el-option
                             v-for="item in projectList"
                             :key="item.value"
@@ -48,7 +40,7 @@
                 </el-table-column>
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
-                        <span class="work-icon icon-priview" @click="workInfoVisible=true,workLibInfo(scope.row.index)" ></span>
+                        <span class="work-icon icon-priview" @click="workInfoVisible=true,workLibInfo(scope.row)" ></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -76,9 +68,9 @@
                             <el-col :span="4" class="table-item " >
                                 <div class="Bim-template" :style="{backgroundImage: 'url('+workInfo.templateImg+')'}"></div>
                             </el-col>
-                            <el-col :span="8" class="table-item">{{workInfo.tamplateName}}</el-col>
-                            <el-col :span="4" class="table-item">{{workInfo.updatauser}}</el-col>
-                            <el-col :span="8" class="table-item">{{workInfo.time}}</el-col>
+                            <el-col :span="8" class="table-item">{{workInfo.projName}}</el-col>
+                            <el-col :span="4" class="table-item">{{workInfo.createUsername}}</el-col>
+                            <el-col :span="8" class="table-item">{{workInfo.createDate}}</el-col>
                         </el-col>
                     </el-row>
                 </el-col>
@@ -94,13 +86,13 @@
                 <el-col class="table-body">
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:400px;">
                           <el-row class="scroll-me " style="background:transparent">
-                              <el-col v-for="(item,index) in dataInfo" :key="index" class="table-row">
+                              <el-col v-for="(item,index) in workInfo" :key="index" class="table-row">
                                 <el-col :span="4" class="table-item " >
                                     <div class="Bim-template" :style="{backgroundImage: 'url('+item.templateImg+')'}"></div>
                                 </el-col>
-                                <el-col :span="8" class="table-item">{{item.tamplateName}}</el-col>
-                                <el-col :span="4" class="table-item">{{item.updatauser}}</el-col>
-                                <el-col :span="8" class="table-item">{{item.time}}</el-col>
+                                <el-col :span="8" class="table-item">{{item.projName}}</el-col>
+                                <el-col :span="4" class="table-item">{{item.createUsername}}</el-col>
+                                <el-col :span="8" class="table-item">{{item.createDate}}</el-col>
                               </el-col>
                           </el-row>
                     </vue-scrollbar>
@@ -125,6 +117,8 @@
         workList,//测试数据
         getWorksetingList,
         getWorkSets,
+        delWorkSets,
+        getProjByWorkSet
     } from '../../api/getData-yhj.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import ElCol from "element-ui/packages/col/src/col";
@@ -187,7 +181,6 @@
 
             //获取地址
             getBaseUrl(){
-                console.log(this.$route.path)
                 baseUrl = basePath(this.$route.path);
             },
             //日期格式化
@@ -197,7 +190,7 @@
             },
 //
             //项目部change
-            changeVal(value){
+            changeProject(value){
                 this.tableListParam.deptIds =[];
                 if(value=="1"){
                     this.projectList.forEach((val,key)=>{
@@ -213,7 +206,6 @@
             },
             //搜索功能
             searchClick(){
-                console.log(this.tableListParam);
                 this.tableListParam.searchKey = this.filterParm.searchKey;
                 this.getTableList(baseUrl,this.tableListParam);
             },
@@ -223,8 +215,6 @@
                     if(data.data.code!=200){//读取数据失败
                        this.commonMessage(data.data.msg,'warning')
                        return false;
-                    } else{
-//                        this.tableListParam.deptIds = [];
                     }
                     if (data.data.result==null||data.data.result=="") {//值为空
                         this.tableData.content = [];
@@ -244,7 +234,42 @@
                     }
                 })*/
             },
-
+            delWorkSetting(url,param){
+                delWorkSets({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        deletArray = [];//接口成功之后删除数据
+                        this.commonMessage('删除工作集成功！','success');
+                        if(this.tableData.content.length===deletArray.length){
+                            this.getTableList(baseUrl,this.tableListParam);
+                        }else{
+                            for (let i = 0; i < deletArray.length; i++) {
+                                for (let j = 0; j < this.tableData.content.length; j++) {
+                                    if (this.tableData.content[j].workSetId==deletArray[i]) {
+                                        this.tableData.content.splice(j, 1);
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        this.commonMessage(data.data.msg,'warning');
+                    }
+                })
+            },
+            //查看工程
+            getProjByWorkInfo(url,param){
+                getProjByWorkSet({url:url,param:param}).then((data)=>{
+                    let  workList = data.data.result;
+                    for(let key in workList){
+                      this.workInfo =  workList[key];
+                    }
+                    this.workInfo.forEach((val,key)=>{
+                        if(!val.createDate){
+                            this.dateFormatter(val.createDate)
+                        }
+                    })
+                    console.log( this.workInfo,' this.workInfo')
+                })
+            },
             getData(){
                 this.getBaseUrl();
                 this.filterParm.workValue = this.projectList[0].value;
@@ -261,14 +286,7 @@
                 this.tableListParam.packageType = parseInt(this.$route.params.typeId);
                 this.tableListParam.pageParam.size = this.totalPage;
                 this.tableListParam.pageParam.page = this.cur_page;
-                console.log(this.tableListParam,'this.tableListParam');
-                console.log(this.$route.params.typeId,'TYPE');
                 this.getTableList(baseUrl,this.tableListParam);
-                getWorksetingList().then((data)=>{
-//                    console.log(data.data.gridData,'data.data')
-//                   this.dataInfo = data.data.gridData;
-//                   this.workInfo = data.data.gridData[0];
-                })
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -286,7 +304,6 @@
                 this.$alert(message, '提示', {
                     confirmButtonText: '确定',
                     callback: action => {
-                        console.log(1111)
                     }
                 })
             },
@@ -315,13 +332,13 @@
              */
 
             selectAll(selection){
-                this.commonAlert('全部选中了哦')
+                deletArray =[];
                 selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray.push(val.index)
+                    if( deletArray.indexOf(val.workSetId) ==-1){
+                        deletArray.push(val.workSetId)
                     }
                 });
-                console.log(deletArray,'selectionall')
+//                console.log(deletArray,'删除整页工作集');
             },
 
             /**
@@ -330,15 +347,13 @@
              * @params row 列
              */
             selectChecked(selection, row){
-                console.log(selection,'selection');
+                deletArray =[];
                 selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray = selection
+                    if( deletArray.indexOf(val.workSetId) ==-1){
+                        deletArray.push(val.workSetId);
                     }
                 })
-               /* if(deletArray.indexOf(val.index) ==-1){
-                    deletArray.splice(index,1)
-                }*/
+//                console.log(deletArray,'删除当个工作集');
             },
 
             //删除工作集
@@ -347,35 +362,21 @@
                     this.commonMessage('请选择要删除的文件','warning')
                     return false;
                 }
-                this.commonConfirm('确定要删除吗',()=> {
-                    /* if(this.tableData.length===deletArray.length){
-                     //重新渲染数据
-                     }else*/
-                    let deletArrayCopy = [];
-                    deletArray.forEach((val,key)=>{
-                        deletArrayCopy.push(val.index)
-                    })
-                    deletArray = deletArrayCopy;
-                    if (deletArray.length) {
-                        for (let i = 0; i < deletArray.length; i++) {
-                            for (let j = 0; j < this.tableData.length; j++) {
-                                if (this.tableData[j].index == deletArray[i]) {
-                                    this.tableData.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
 
-                    deletArray = [];//接口成功之后删除数据
+                this.commonConfirm('确定要删除吗',()=> {
+                    if(deletArray.length && this.tableData.content.length){
+                        this.delWorkSetting(baseUrl,{workSetId:deletArray,packageType:this.$route.params.typeId})
+                    }
                 })
             },
             //工作集信息展示
-            workLibInfo(id){
-                console.log(id,'id')
-                 getWorksetingList().then((data)=>{
-                    this.dataInfo = data.data.gridData;
-                    this.workInfo = data.data.gridData[0];
-                 })
+            workLibInfo(item){
+                let param = {
+                    deptId: "a001",
+                    packageType: 1,
+                    workSetId: 3
+                }
+                this.getProjByWorkInfo(baseUrl,param)
             },
         },
         computed: {

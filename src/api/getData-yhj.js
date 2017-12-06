@@ -79,3 +79,7 @@ export const treeList = params=> axios.get(`${params.url}component/tree/list/${p
 export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
 //bim->工作集库列表
 export const getWorkSets = params =>axios.post(`${params.url}rs/workSetRest/getWorkSets`,params.param);
+//bim->删除工作集
+export const delWorkSets = params =>axios.post(`${params.url}rs/workSetRest/delWorkSets`,params.param)
+//bim->工作集查看工程
+export const  getProjByWorkSet = params =>axios.post(`${params.url}rs/workSetRest/getProjByWorkSet`,params.param)
