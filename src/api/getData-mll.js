@@ -37,3 +37,5 @@ export const router = params=> axios.get(`${route}`);
  * 组织结构
  */
 export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
+debugger
+export const createBranchCompany = params=> axios.post(`${params.url}org/${params.params.orgId}/subs`,params.params.companyInfo);

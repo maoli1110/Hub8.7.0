@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div class="pop-operation">
-                        <el-button type="primary" class="basic-btn" icon="plus">添加</el-button>
+                        <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加</el-button>
                         <el-button type="primary" class="basic-btn" icon="plus">删除</el-button>
                         <el-button type="primary" class="basic-btn" icon="plus">编辑</el-button>
                     </div>
@@ -129,24 +129,26 @@
         </div>
         <!-- 添加分公司界面start -->
         <el-dialog title="添加分公司" :visible.sync="dialogVisible" size="tiny">
-            <el-form :model="orgForm" :rules="rules" ref="orgForm" label-width="100px">
-                <el-radio-group v-model="orgForm.resource">
-                    <el-radio label="分公司"></el-radio>
-                    <el-radio label="项目部"></el-radio>
-                </el-radio-group>
+            <el-radio-group v-model="orgForm.resource">
+                <el-radio label="分公司"></el-radio>
+                <el-radio label="项目部"></el-radio>
+            </el-radio-group>
+            <el-form :model="companyForm" :rules="companyRules" ref="companyForm" label-width="100px">
                 <!-- 分公司 -->
                 <div class="branch-company">
-                    <el-form-item label="分公司名称："  prop="company">
-                        <el-input v-model="orgForm.company"></el-input>
+                    <el-form-item label="分公司名称："  prop="name">
+                        <el-input v-model="companyForm.name"></el-input>
                     </el-form-item>
                     <el-form-item label="分公司负责人：" prop="responsible">
-                        <el-input v-model="orgForm.responsible"></el-input>
+                        <el-input v-model="companyForm.responsible"></el-input>
                     </el-form-item>
                 </div>
+            </el-form>
+            <el-form :model="projectForm" :rules="projectRules" ref="projectRules" label-width="100px">
                 <!-- 项目部 -->
                 <div class="project">
                     <el-form-item label="项目名称：" prop="name">
-                        <el-input v-model="orgForm.name" placeholder="请输入项目名称"></el-input>
+                        <el-input v-model="projectForm.name" placeholder="请输入项目名称"></el-input>
                     </el-form-item>
                     <el-form-item label="项目负责人：">
                         <multiple-select  v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select>
@@ -156,46 +158,46 @@
                     </el-form-item>
                     <!-- </el-form-item> -->
                     <el-form-item label="手机号码：" prop="mobile">
-                        <el-input v-model="orgForm.mobile"></el-input>
+                        <el-input v-model="projectForm.mobile"></el-input>
                     </el-form-item>
                     <el-form-item label="项目开工日期：">
                         <el-form-item prop="date1">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="orgForm.startDate" style="width: 100%;"></el-date-picker>
+                            <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.startDate" style="width: 100%;"></el-date-picker>
                         </el-form-item>
                     </el-form-item>
                     <el-form-item label="项目竣工日期：">
                         <el-form-item prop="date2">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="orgForm.endDate" style="width: 100%;"></el-date-picker>
+                            <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.endDate" style="width: 100%;"></el-date-picker>
                         </el-form-item>
                     </el-form-item>
                     <el-form-item label="建筑面积(m2)">
-                        <el-input v-model="orgForm.area" placeholder="请输入建筑面积大小，例：8888.00"></el-input>
+                        <el-input v-model="projectForm.area" placeholder="请输入建筑面积大小，例：8888.00"></el-input>
                     </el-form-item>
                     <el-form-item label="里程：">
-                        <el-input v-model="orgForm.mileage"></el-input>
+                        <el-input v-model="projectForm.mileage"></el-input>
                     </el-form-item>
                     <el-form-item label="所在地：">
-                        <el-input v-model="orgForm.location"></el-input>
+                        <el-input v-model="projectForm.location"></el-input>
                     </el-form-item>
                     <el-form-item label="合同类型：">
-                        <el-select v-model="orgForm.contractType" placeholder="请选择活动区域">
+                        <el-select v-model="projectForm.contractType" placeholder="请选择活动区域">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="状态：">
-                        <el-select v-model="orgForm.region" placeholder="请选择活动区域">
+                        <el-select v-model="projectForm.region" placeholder="请选择活动区域">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="备注：" prop="remarks">
-                        <el-input type="textarea" v-model="orgForm.remarks"></el-input>
+                        <el-input type="textarea" v-model="projectForm.remarks"></el-input>
                     </el-form-item>
                 </div>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" class="dialog-btn dialog-btn-ok" >确 定</el-button>
+                <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="createBranchSubmit">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
@@ -205,7 +207,7 @@
 <script>
 import '../../../static/css/select-vue-component.css'; // select2样式
 import axios from "axios";
-import {getOrgTreeList} from '../../api/getData-mll.js';   // 接口
+import {getOrgTreeList,createBranchCompany} from '../../api/getData-mll.js';   // 接口
 import {basePath,transformToObjFormat} from "../../utils/common.js"; // 通用模块
 import {
   validatephoneNumber,
@@ -214,6 +216,7 @@ import {
 
 //公用参数及常量定义
 let baseUrl;
+let selectedNode,selectedTreeId;
 const validateMobile = (rule, value, callback) => {
   if (validatephoneNumber(value)) {
     callback();
@@ -245,27 +248,40 @@ export default {
             //dialog属性
             dialogVisible: false,
             orgForm: {
-                name:'',
-                company: '',
-                mobile: '',
-                region: '',
-                date1: '',
-                date2: '',
-                delivery: false,
-                type: [],
-                resource: '分公司',
-                desc: '',
-                responsible:''
+                resource:'分公司'
             },
-            rules: {
-                company: [
+            companyForm: {
+                admins: [],
+                name:''
+            },
+            projectForm: {
+                name: "string",
+                admins: [
+                    {
+                      id: {},
+                      name: "string"
+                    }
+                ],
+                manager: "string",
+                managerId: "string",
+                managerName: "string",
+                mobile: "string",
+                startDate: "2017-12-06T07:50:54.471Z",
+                endDate: "2017-12-06T07:50:54.471Z",
+                area: 0,
+                mileage: 0,
+                location: 0,
+                contractType: 0,
+                status: 0,
+                remarks: "string"
+            },
+            companyRules: {
+                name: [
                     { required: true, message: '请输入公司名称', trigger: 'blur' },
                     { min: 3, max: 25, message: '长度在 3-25个字符', trigger: 'blur' }
-                ],
-                responsible: [
-                    { required: true, message: '请输入活动名称', trigger: 'blur' },
-                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-                ],
+                ]
+            },
+            projectRules: {
                 name: [
                     { required: true, message: '请输入公司名称', trigger: 'blur' },
                     { min: 3, max: 25, message: '长度在 3-25个字符', trigger: 'blur' }
@@ -285,6 +301,13 @@ export default {
                   showIcon: true,
                   addHoverDom: this.addHoverDom,
                   removeHoverDom: this.removeHoverDom
+                },
+                callback: {
+                    // beforeExpand: beforeExpand,
+                    onClick: this.ztreeOnclick
+                    // onRightClick: OnRightClick,
+                    // beforeRename: beforeRename,
+                    // onRename: onRename
                 }
             },
             zNodes: [],
@@ -326,8 +349,9 @@ export default {
         //     consoloe.log('success')
         // });
 
+
         //获取原始树结构
-        axios.get(this.url).then(res => {
+        getOrgTreeList({url:baseUrl}).then(res => {
             // 组合树结构需要的参数
             let param = {
                 orgNodeKey: "id",
@@ -442,6 +466,10 @@ export default {
         },
         //mouseOn显示负责人信息
         addHoverDom(treeId,treeNode) {
+            console.log(treeId,'treeId')
+            console.log(treeNode,'treeId')
+            selectedNode = treeNode;
+            selectedTreeId = treeId;
             console.log('add');
             /** 
              * 1.获取当前鼠标的位置
@@ -458,6 +486,7 @@ export default {
             this.isPopover = true;
             window.setTimeout(left,100);
         },
+        
         //mouseOff鼠标划过负责人信息
         removeHoverDom(treeId,treeNode) {
             console.log('remove')
@@ -466,6 +495,69 @@ export default {
             popDiv.mouseover(()=>{
                 this.isPopover = true;
             })
+        },
+
+        //创建分公司
+        createBranchSubmit() {
+            /**
+             * 创建树节点
+             * @param {obj} selectedNode 当前选中节点
+             * @param {obj} newNodes     新节点对象
+             */
+            function addTreeNode(selectedNode, newNodes) {
+                let treeNode = selectedNode;
+                let zTree = $.fn.zTree.getZTreeObj(selectedTreeId);
+                if (treeNode) {
+                    treeNode = zTree.addNodes(treeNode, newNodes);
+                } else {
+                    treeNode = zTree.addNodes(null, newNodes);
+                }
+                if (!treeNode) {
+                    layer.alert('未选择父节点，无法添加子节点', {
+                        area: ['200px', '160px'],
+                        title: '提示',
+                        closeBtn: 0,
+                        move: false
+                    });
+                }
+            }
+
+            let params = {
+                orgId: '7d7de9d10b604bb698915762b0de529d',
+                companyInfo: this.companyForm
+            };
+
+            /**
+             * 创建分公司
+             * @param  {[type]} {url:baseUrl,params}).then((data [description]
+             * @return {[type]}                                    [description]
+             */
+            createBranchCompany({url:baseUrl,params}).then((data)=>{
+                let tempNode = data.data.result;
+                addTreeNode(selectedNode, tempNode);
+            });
+           
+            
+            // var tempNode = {
+            //     id: "d825f58525a44cbdb9c9a181bb3e58d7",
+            //     createdBy: null,
+            //     createdDate: 1512548882539,
+            //     lastModifiedBy: null,
+            //     lastModifiedDate: null,
+            //     epid: 90001000,
+            //     parentId: "7d7de9d10b604bb698915762b0de529d",
+            //     level: 1,
+            //     pathId: "GfIHwAMq",
+            //     path: "null/GfIHwAMq",
+            //     name: "分公司节点",
+            //     remarks: null,
+            //     type: 0,
+            //     direct: false,
+            //     root: false,
+            //     new: false
+            // }
+
+
         }
     },
     watch:{
