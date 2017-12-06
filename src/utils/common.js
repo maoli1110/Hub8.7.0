@@ -94,7 +94,7 @@ function basePath(localhost) {
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
 
-        case '/bimlib/housing/working-set/2':              //Bim库->基建->工作集库
+        case '/bimlib/BaseBuild/working-set/2':              //Bim库->基建->工作集库
             baseUrl = 'http://192.168.13.195:8989/builder/';
             break;
         case '/bimlib/decoration/bim-lib/4':                  //Bim库->家装->工程库

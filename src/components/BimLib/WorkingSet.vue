@@ -4,16 +4,25 @@
             <el-col  :span="24">
                 <span style="float:left;font-size:14px;margin-top:5px;">项目部：</span>
                 <el-col :span="6" >
-                    <el-select v-model="workValue" placeholder="请选择" @change="changeProject" >
+                    <!--<el-select v-model="filterParm.workValue" placeholder="请选择" @change="changeProject">
                         <el-option
                             v-for="item in projectList"
-                            :key="item.name"
-                            :value="item.name">
+                            :key="item.value"
+                            :value="item.value"
+                            :label="item.name">
+                        </el-option>
+                    </el-select>-->
+                    <el-select  v-model="filterParm.workValue" placeholder="请选择" @change="changeVal">
+                        <el-option
+                            v-for="item in projectList"
+                            :key="item.value"
+                            :value="item.value"
+                            :label="item.name">
                         </el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="5">
-                    <el-input value="searchKey" icon="search" placeholder="请输入搜索关键字" :on-icon-click="searchClick"></el-input>
+                    <el-input v-model="filterParm.searchKey" icon="search" placeholder="请输入搜索关键字" :on-icon-click="searchClick"></el-input>
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
@@ -122,6 +131,7 @@
     // import "../../utils/directive.js"
     let deletArray = [];
     let baseUrl = '';
+    let deptIds= [];
     export default {
         created(){
             this.getData();
@@ -132,17 +142,17 @@
                     // something config
                 },
                 workInfoVisible:false,
-                workValue:"",//项目部的值
-                searchKey:'',//搜索关键字
+                filterParm:{
+                    workValue:"",//项目部的值
+                    searchKey:'',//搜索关键字
+                },
                 //分页的一些设置
                 cur_page:1,
-                totalPage:1,
+                totalPage:2,
                 tableData:{},//列表数据
                 tableListParam:{
-                    deptIds: [
-                        "dc090268e97741c089adcaa0489d60fa"
-                    ],
-                    packageType: 1,
+                    deptIds: [],//dc090268e97741c089adcaa0489d60fa
+                    packageType: 0,
                     pageParam: {
                         orders: [
                             {
@@ -152,7 +162,7 @@
                             }
                         ],
                         page: 1,
-                        size: 2
+                        size: 1
                     },
                     searchKey: "",
                     skOnlyName: false
@@ -160,13 +170,13 @@
                 dataInfo:[],
                 workInfo:{},
                 projectList:[
-                    {name:'全部',id:""},
-                    {name:'茅台文化大厦项目'},
-                    {name:'上海中心项目'},
-                    {name:'某七星级酒店项目'},
-                    {name:'梅赛德斯奔驰文化馆项目'},
-                    {name:"亚特兰蒂斯七星级酒店项目"}
-                    ]
+                    {name:'全部',value:"1"},
+                    {name:'茅台文化大厦项目',value:"dc090268e97741c089adcaa0489d60fa"},
+                    {name:'上海中心项目',value:"4"},
+                    {name:'某七星级酒店项目',value:"5"},
+                    {name:'梅赛德斯奔驰文化馆项目',value:"6"},
+                    {name:"亚特兰蒂斯七星级酒店项目",value:"7"}
+                ]
             }
         },
         components: {
@@ -185,19 +195,45 @@
                data = dateFormat(data);
                return data;
             },
-//          //搜索功能
+//
+            //项目部change
+            changeVal(value){
+                console.log(value,'val')
+                if(value=="1"){
+                    this.projectList.forEach((val,key)=>{
+                        this.tableListParam.deptIds.push(val.value)
+                    })
+                }else{
+                    if(this.tableListParam.deptIds.indexOf(value)==-1){
+                        this.tableListParam.deptIds.push(value);
+                    }
+                }
+
+                this.getTableList(baseUrl,this.tableListParam);
+            },
+            //搜索功能
             searchClick(){
-                console.log('click')
+                console.log(this.tableListParam);
+                this.tableListParam.searchKey = this.filterParm.searchKey;
+                this.getTableList(baseUrl,this.tableListParam);
             },
             //获取工作集列表
             getTableList(url,param){
                 getWorkSets({url:url,param:param}).then((data)=>{
-                    this.tableData = data.data.result;
-                    if (this.tableData.content.length) {
-                        this.tableData.content.forEach((val,key)=>{
-                            val.createDate = this.dateFormatter(val.createDate);
-                        })
+                    if(data.data.code!=200){//读取数据失败
+                       this.commonMessage(data.data.msg,'warning')
+                       return false;
+                    } else{
+                        this.tableListParam.deptIds = [];
                     }
+                    if (data.data.result==null||data.data.result=="") {//值为空
+                        this.tableData.content = [];
+                        return false;
+                    }
+                    this.tableData = data.data.result;
+                    this.tableData.content.forEach((val,key)=>{
+                        val.createDate = this.dateFormatter(val.createDate);
+                    });
                 });
                /* workList().then((data)=>{
                     this.tableData = data.data.content;
@@ -211,12 +247,26 @@
 
             getData(){
                 this.getBaseUrl();
-                this.getTableList(baseUrl,this.tableListParam);
-                for(let i = 0;i<this.tableData.length;i++){
-                   this.tableData[i].index = 3*10+ this.tableData[i].index;
+                this.filterParm.workValue = this.projectList[0].value;
+
+                if(this.filterParm.workValue=='1'){
+                    if(this.tableListParam.deptIds.indexOf(this.filterParm.workValue)==-1){
+                        this.projectList.forEach((val,key)=>{
+                            if(val.value!="1"){
+                                this.tableListParam.deptIds.push(val.value)
+                            }
+                        })
+                    }
                 }
+                this.tableListParam.searchKey = this.filterParm.searchKey;
+                this.tableListParam.packageType = parseInt(this.$route.params.typeId);
+                this.tableListParam.pageParam.size = this.totalPage;
+                this.tableListParam.pageParam.page = this.cur_page;
+                console.log(this.tableListParam,'this.tableListParam');
+                console.log(this.$route.params.typeId,'TYPE');
+                this.getTableList(baseUrl,this.tableListParam);
                 getWorksetingList().then((data)=>{
-                    console.log(data.data.gridData,'data.data')
+//                    console.log(data.data.gridData,'data.data')
 //                   this.dataInfo = data.data.gridData;
 //                   this.workInfo = data.data.gridData[0];
                 })
@@ -291,9 +341,7 @@
                     deletArray.splice(index,1)
                 }*/
             },
-            changeProject(value){
-                console.log(value)
-            },
+
             //删除工作集
             delWork(){
                 if(!deletArray.length){
@@ -334,7 +382,11 @@
         computed: {
 
         },
-
+        watch: {
+            '$route' (to, from) {
+                this.getTableList(baseUrl,this.tableListParam);
+            }
+        }
 
     }
 </script>

@@ -5,7 +5,9 @@
         remote
         placeholder="请输入关键词"
         :remote-method="remoteMethod"
-        :loading="loading">
+        :loading="loading"
+        @change="changeVal"
+    >
         <el-option
             v-for="item in options4"
             :key="item.value"
@@ -61,7 +63,13 @@
                 } else {
                     this.options4 = [];
                 }
-            }
+            },
+            changeVal(value){
+                console.log(value,'value')
+            },
+        },
+        created(){
+            this.value9 = this.options4[0].value
         }
     }
 </script>
