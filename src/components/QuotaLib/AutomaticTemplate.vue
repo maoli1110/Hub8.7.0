@@ -1,19 +1,19 @@
 <template>
 <vue-scrollbar ref="VueScrollbar">
-    <div class="main-shadow" style="min-width: 1366px;">
+    <div class="main-shadow AutomaticTemplate">
         <div class="header">
-            <el-form :model="filtrate" class="demo-form-inline" :inline="true">
+            <el-form :model="searchKeyParams" class="demo-form-inline" :inline="true">
               <el-form-item label="时间：">
                 <el-date-picker format="yyyy.MM.DD" @change="changeData"
-                                v-model="filtrate.selectDate"
+                                v-model="searchKeyParams.selectDate"
                                 type="daterange"
                                 placeholder="选择日期范围">
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="专业：">
-                 <el-select v-model="filtrate.xx.value" placeholder="不限" style="max-width: 140px;">
+                 <el-select v-model="searchKeyParams.majorVal" placeholder="不限" style="max-width: 140px;">
                     <el-option
-                      v-for="item in filtrate.xx"
+                      v-for="item in majorOptions"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
@@ -21,9 +21,9 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="版本：">
-                 <el-select v-model="filtrate.xx.value" placeholder="不限" style="max-width: 140px;">
+                 <el-select v-model="searchKeyParams.xx.value" placeholder="不限" style="max-width: 140px;">
                     <el-option
-                      v-for="item in filtrate.xx"
+                      v-for="item in searchKeyParams.xx"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
@@ -31,9 +31,9 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="地区：">
-                 <el-select v-model="filtrate.xx.value" placeholder="不限" style="max-width: 140px;">
+                 <el-select v-model="searchKeyParams.xx.value" placeholder="不限" style="max-width: 140px;">
                     <el-option
-                      v-for="item in filtrate.xx"
+                      v-for="item in searchKeyParams.xx"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
@@ -41,9 +41,9 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="省/直辖市：">
-                 <el-select v-model="filtrate.xx.value" placeholder="不限" style="max-width: 140px;">
+                 <el-select v-model="searchKeyParams.xx.value" placeholder="不限" style="max-width: 140px;">
                     <el-option
-                      v-for="item in filtrate.xx"
+                      v-for="item in searchKeyParams.xx"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
@@ -75,7 +75,9 @@
                 <el-col>
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                         <el-table class="house-table scroll-me" :fit="true" :data="tableData" style="width:100%;"
-                                  :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
+                                  :default-sort="{prop: 'date', order: 'descending'}"
+                                  @sort-change="shorChange"
+                                  @select-all="selectAll"
                                   @select="selectChecked">
                             <el-table-column
                                 type="selection"
@@ -83,23 +85,23 @@
                             </el-table-column>
                             <el-table-column type='index' label="序号" width="60">
                             </el-table-column>
-                            <el-table-column prop="data2" width="" label="自动套模板名称" show-overflow-tooltip>
+                            <el-table-column prop="title" width="" sortable="custom" label="自动套模板名称" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="data3" width="70" label="版本">
+                            <el-table-column prop="version" width="100" sortable="custom" label="版本">
                             </el-table-column>
-                            <el-table-column prop="data4" width="70" label="地区">
+                            <el-table-column prop="district" width="70" label="地区">
                             </el-table-column>
-                            <el-table-column prop="data5" width="70" label="专业">
+                            <el-table-column prop="major" width="100" sortable="custom" label="专业">
                             </el-table-column>
-                            <el-table-column prop="data6" width="70" label="模式">
+                            <el-table-column prop="mode" width="100" sortable="custom" label="模式">
                             </el-table-column>
-                            <el-table-column prop="data7" width="" label="清单库名称" show-overflow-tooltip>
+                            <el-table-column prop="listLibName" width="" sortable="custom" label="清单库名称" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="data8" width="" label="定额库名称" show-overflow-tooltip>
+                            <el-table-column prop="quotaLibName" width="" sortable="custom" label="定额库名称" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="data9" width="135" label="更新时间">
+                            <el-table-column prop="time" width="135" sortable="custom" label="更新时间">
                             </el-table-column>
-                            <el-table-column prop="data10" width="60" label="下载次数">
+                            <el-table-column prop="downloadTimes" width="60" label="下载次数">
                             </el-table-column>
                             <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
@@ -152,11 +154,15 @@
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">模板名称：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.product"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;">
+                                <el-input v-model="updateComList.product" placeholder="请输入内容"></el-input>
+                            </span>
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">地区：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.career"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;">
+                                <el-input v-model="updateComList.product" placeholder="请输入内容"></el-input>
+                            </span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
@@ -216,14 +222,61 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
                 cur_page: 1,
                 totalPage: 50,
                 totalNumber: 300,
-                tableData:[
-                {data2:"长沙平安消防设备有限公司",data3:"bbbb",data4:"ddd",data5:"ffff",data6:"hhhh",data7:"长沙平安消防设备有限公司",data8:"长沙平安消防设备有限公司",data9:"2017.01.01 12:12:12",data10:"12"},
-                {data2:"长沙平安消防设备有限公司",data3:"bbbb",data4:"ddd",data5:"ffff",data6:"hhhh",data7:"长沙平安消防设备有限公司",data8:"长沙平安消防设备有限公司",data9:"2017.01.01 12:12:12",data10:"12"}
-                ],
-                filtrate:{
+                tableData:[{
+                              "addUser": "string",
+                              "autoSetTemplateFileId": 0,
+                              "cityId": 0,
+                              "description": "string",
+                              "district": "string",
+                              "downloadTimes": 0,
+                              "fileName": "string",
+                              "listLibName": "string",
+                              "mode": "string",
+                              "productId": 0,
+                              "productName": "string",
+                              "provinceId": 0,
+                              "quotaLibName": "string",
+                              "time": "string",
+                              "title": "string",
+                              "version": "string",
+                              "major":"major"
+                            },{
+                              "addUser": "string1",
+                              "autoSetTemplateFileId": 0,
+                              "cityId": 0,
+                              "description": "string1",
+                              "district": "string1",
+                              "downloadTimes": 10,
+                              "fileName": "string1",
+                              "listLibName": "string1",
+                              "mode": "string1",
+                              "productId": 0,
+                              "productName": "string1",
+                              "provinceId": 0,
+                              "quotaLibName": "string1",
+                              "time": "string1",
+                              "title": "string1",
+                              "version": "string1",
+                              "major":"major1"
+                            }],
+                searchKeyParams:{
+                    xx:{label:"不限",value:"不限"},
                     selectDate:'',//时间范围
-                    xx:[{"label":"11","value":"aa"},{"label":"22","value":"bb"}]
+                    majorVal:'', //专业
                 },
+                majorOptions: [{    //专业选择框
+                    value: '不限',
+                    label: '不限'
+                }, {
+                    value: '鲁班土建',
+                    label: '鲁班土建'
+                }, {
+                    value: '鲁班安装',
+                    label: '鲁班安装'
+                }, {
+                    value: '鲁班钢筋',
+                    label: '鲁班钢筋'
+                }],
                 updateComponent:false,
                 override:false,     //是否覆盖
                 updateComList:{     //上传构件的一些文件信息
@@ -243,6 +296,9 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
             }
         },
         methods: {
+            shorChange(type){
+                console.log(type)
+            },
             handleRemove(){},
             handlePreview(){},
             updateError(){},
@@ -252,7 +308,6 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
             search(){},
             //日期插件日期改变触发
             changeData(val){
-                alert(val)
                 if (val) {
                     this.searchKeyParams.startTimer = val.split('-')[0];
                     this.searchKeyParams.endTime = val.split('-')[1]
@@ -364,6 +419,9 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 </script>
 
 <style scoped>
+    .AutomaticTemplate{
+        min-width: 1366px;
+    }
     .header {
         height: 40px;
         background-color: #fff;
@@ -379,5 +437,20 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
     }
     .header .el-form-item{
         margin-bottom: 0px;
+    }
+    .up-component .el-input{
+        width: 92%;
+    }
+    .up-component .simulate-input{
+        height: 38px;
+        line-height: 38px;
+    }
+</style>
+<style>
+    .el-table .sort-caret.descending {
+        border-top: 5px solid #ccc;
+    }
+    .el-table .sort-caret.ascending {
+        border-bottom: 5px solid #ccc;
     }
 </style>
