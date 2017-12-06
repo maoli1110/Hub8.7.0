@@ -51,7 +51,7 @@
         </div>
         <el-dialog
             title="工作集管理"
-            :visible.sync="workInfoVisible"
+            :visible.sync="workInfoVisible" custom-class="workSeting-dialog"
            >
 
             <el-row style="margin-bottom:20px;">
@@ -65,12 +65,12 @@
                 <el-col class="table-body">
                     <el-row  style="background:transparent">
                         <el-col class="table-row">
-                            <el-col :span="4" class="table-item " >
-                                <div class="Bim-template" :style="{backgroundImage: 'url('+workInfo.templateImg+')'}"></div>
+                            <el-col :span="4" class="table-item " ><!--:style="{backgroundImage: 'url('+workInfo[0].uuid+')'}"-->
+                                <div class="Bim-template" ></div>
                             </el-col>
-                            <el-col :span="8" class="table-item">{{workInfo.projName}}</el-col>
-                            <el-col :span="4" class="table-item">{{workInfo.createUsername}}</el-col>
-                            <el-col :span="8" class="table-item">{{workInfo.createDate}}</el-col>
+                            <el-col :span="8" class="table-item">{{descList.projName}}</el-col>
+                            <el-col :span="4" class="table-item" :title="descList.createRealName+'\n'+descList.createUserName">{{descList.createRealName}}</el-col>
+                            <el-col :span="8" class="table-item">{{descList.createDate}}</el-col>
                         </el-col>
                     </el-row>
                 </el-col>
@@ -91,7 +91,7 @@
                                     <div class="Bim-template" :style="{backgroundImage: 'url('+item.templateImg+')'}"></div>
                                 </el-col>
                                 <el-col :span="8" class="table-item">{{item.projName}}</el-col>
-                                <el-col :span="4" class="table-item">{{item.createUsername}}</el-col>
+                                <el-col :span="4" class="table-item" :title="item.createRealName+'\n'+item.createUserName">{{item.createRealName}}</el-col>
                                 <el-col :span="8" class="table-item">{{item.createDate}}</el-col>
                               </el-col>
                           </el-row>
@@ -161,7 +161,7 @@
                     searchKey: "",
                     skOnlyName: false
                 },//列表参数
-                dataInfo:[],
+                descList:[],
                 workInfo:{},
                 projectList:[
                     {name:'全部',value:"1"},
@@ -261,6 +261,7 @@
                     let  workList = data.data.result;
                     for(let key in workList){
                       this.workInfo =  workList[key];
+                      this.descList =  workList[key][0];
                     }
                     this.workInfo.forEach((val,key)=>{
                         if(!val.createDate){

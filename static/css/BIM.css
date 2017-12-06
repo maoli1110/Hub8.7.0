@@ -195,6 +195,7 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
     border: 1px solid #e6e6e6;
     margin: 9px 10px 10px 8px;
 }
+.workSeting-dialog{width:766px !important;}
 /*检测页面*/
 .monitor-setting{width:470px;}
 .monitor-setting>.el-dialog__body{padding:20px 40px 0px !important; }
