@@ -151,47 +151,43 @@
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
-                            <span class="absol span-block label-w">产品：</span>
+                            <span class="absol span-block label-w">模板名称：</span>
                             <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.product"></span>
                         </el-col>
                         <el-col :span="12" class="relat">
-                            <span class="absol span-block label-w">专业：</span>
+                            <span class="absol span-block label-w">地区：</span>
                             <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.career"></span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
-                            <span class="absol span-block label-w">构件大类：</span>
+                            <span class="absol span-block label-w">专业：</span>
                             <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.smallType"></span>
                         </el-col>
                         <el-col :span="12" class="relat">
-                            <span class="absol span-block label-w">构件小类：</span>
+                            <span class="absol span-block label-w">版本：</span>
                             <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.bigType"></span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
-                            <span class="absol span-block label-w">厂商：</span>
+                            <span class="absol span-block label-w">清单库：</span>
                             <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.facture"></span>
                         </el-col>
                         <el-col :span="12" class="relat">
-                            <span class="absol span-block label-w">型号：</span>
+                            <span class="absol span-block label-w">模式：</span>
                             <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.type"></span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
-                            <span class="absol span-block label-w">作者：</span>
+                            <span class="absol span-block label-w">定额库：</span>
                             <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.autor"></span>
-                            <!--<el-input placeholder="请输入模板名称" v-model="updateComList.autor"></el-input>-->
                         </el-col>
-                        <el-col :span="12" class="relat">
-                            <span class="absol span-block label-w">版本：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.version"></span>
-                        </el-col>
+
                     </el-col>
                     <el-col class="relat">
-                        <span class="absol span-block label-w">构件说明：</span>
+                        <span class="absol span-block label-w">模板说明：</span>
                         <el-input type="textarea" placeholder="请输入模板名称" class="projManage-remark" :maxlength="150" style="margin-left:80px;" :rows="4" v-model="updateComList.remark"></el-input>
                         <span class="info-pos absol" style="right:15px;bottom:3px;background:#fff;">{{!updateComList.remark?(0+"/"+150):(updateComList.remark.length+"/"+150)}}</span>
                     </el-col>
@@ -210,16 +206,22 @@
 <script>
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 
-
+    let deletArray = [];
     export default {
         data(){
             return {
                 title:"上传自动套模板",
+                fileList: [],      //上传的文件信息
+                //分页的一些设置
+                cur_page: 1,
+                totalPage: 50,
+                totalNumber: 300,
                 tableData:[
                 {data2:"长沙平安消防设备有限公司",data3:"bbbb",data4:"ddd",data5:"ffff",data6:"hhhh",data7:"长沙平安消防设备有限公司",data8:"长沙平安消防设备有限公司",data9:"2017.01.01 12:12:12",data10:"12"},
                 {data2:"长沙平安消防设备有限公司",data3:"bbbb",data4:"ddd",data5:"ffff",data6:"hhhh",data7:"长沙平安消防设备有限公司",data8:"长沙平安消防设备有限公司",data9:"2017.01.01 12:12:12",data10:"12"}
                 ],
                 filtrate:{
+                    selectDate:'',//时间范围
                     xx:[{"label":"11","value":"aa"},{"label":"22","value":"bb"}]
                 },
                 updateComponent:false,
@@ -236,11 +238,116 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
                     version:"",
                     remark:"",
                 },
+                searchContent:'',
 
             }
         },
         methods: {
-            
+            handleRemove(){},
+            handlePreview(){},
+            updateError(){},
+            updataSucess(){},
+            handleCurrentChange(){},
+            handleSizeChange(){},
+            search(){},
+            //日期插件日期改变触发
+            changeData(val){
+                alert(val)
+                if (val) {
+                    this.searchKeyParams.startTimer = val.split('-')[0];
+                    this.searchKeyParams.endTime = val.split('-')[1]
+                }
+            },
+            commonMessage(message, type){
+                this.$message({
+                    type: type,
+                    message: message
+                })
+            },
+            //修改构件默认数据
+            modifyCompData(){
+                if(this.override){
+                    this.title="修改自动套模板";
+                }else{
+                    this.title="上传自动套模板";
+                }
+                this.updateComList.templateFile= '消防-消防栓-消防栓箱-室内灭火消防栓箱.clm';
+                this.updateComList.product= '鲁班安装';
+                this.updateComList.career= '消防';
+                this.updateComList.bigType= '消防栓';
+                this.updateComList.smallType= '消灭栓箱';
+                this.updateComList.facture= "长沙保平消防设备有限公司";
+                this.updateComList.type= "123";
+                this.updateComList.autor= "不知道";
+                this.updateComList.version= "2.0.0";
+                this.updateComList.remark= "我爱我家租房啦我爱我家租房啦我爱我家租房啦";
+            },
+            //上传构件
+            uploadComp(){
+                if(!this.override){
+                    this.title="上传自动套模板"
+                }else{
+                    this.title="修改自动套模板"
+                }
+
+                this.fileList = [];
+                this.clearUploadInfo();
+            },
+            /**
+             * 全选
+             * @params [{type array}]  selection  选中的队列对象
+             */
+
+            selectAll(selection){
+                this.commonAlert('全部选中了哦')
+                selection.forEach(function (val, key) {
+                    if (deletArray.indexOf(val.index) == -1) {
+                        deletArray.push(val.index)
+                    }
+                });
+                console.log(deletArray, 'selectionall')
+            },
+
+            /**
+             * 单选
+             * @params [{type obj}] selection    选中的对象
+             * @params row 列
+             */
+            selectChecked(selection, row){
+                selection.forEach(function (val, key) {
+                    if (deletArray.indexOf(val.index) == -1) {
+                        deletArray.push(val.index)
+                    }
+                })
+            },
+           //列表删除
+            deleteComp(){
+                if (!deletArray.length) {
+                    this.commonMessage('请选择要删除的文件', 'warning')
+                    return false;
+                }
+
+                this.commonConfirm('确定要删除吗', () => {
+                    /* if(this.tableData.length===deletArray.length){
+                     //重新渲染数据
+                     }else*/
+                    if (deletArray.length) {
+                        for (let i = 0; i < deletArray.length; i++) {
+                            for (let j = 0; j < this.tableData.length; j++) {
+                                if (this.tableData[j].index == deletArray[i]) {
+                                    this.tableData.splice(j, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    deletArray = [];//接口成功之后删除数据
+                }, () => {
+
+                }, 'warning')
+
+
+            }, 
 
         },
         mounted(){

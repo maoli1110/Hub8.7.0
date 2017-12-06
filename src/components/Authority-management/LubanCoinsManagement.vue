@@ -22,19 +22,24 @@
             </div>
             <div class="main">
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                    <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border
+                    <el-table ref="multipleTable" class="scroll-me ovfllow-false" :data="coinsManagementTableData" border
                               tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px">
                         <el-table-column class="" type='index' label="序号" width="60"
                                          :index="indexSort"></el-table-column>
                         <el-table-column class="table-tr" prop="changeTime" label="时间" width="200"></el-table-column>
-                        <el-table-column class="table-tr"  label="明细"
-                                         show-overflow-tooltip>
+                        <el-table-column class="table-tr"  label="明细">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.changeDetail.indexOf('鲁班币充值')">{{scope.row.changeDetail}}</span>
-                                <!--<span v-if="!scope.row.changeDetail.indexOf('鲁班币充值')">{{scope.row.changeDetail}}</span>-->
-
-                                <div class='descriptionDiv'></div>
+                                <div class="service" v-if="scope.row.changeDetail.indexOf('鲁班币充值')"  @mouseover="getLubanBiList(scope.row.historyId)">{{scope.row.changeDetail}}
+                                    <div class='descriptionDivnew'>
+                                        <ul>
+                                            <li v-for="item in getBiAllocateList">{{item.realName}}({{item.username}})</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div v-if="!scope.row.changeDetail.indexOf('鲁班币充值')">
+                                    <span>{{scope.row.changeDetail}}</span>
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column class="table-tr" label="收入（个）" width="200">
@@ -94,7 +99,7 @@
                     <el-radio-group v-model="rechargeform.invoiceType" @change="removeDis">
                         <el-radio label="1">不需要发票</el-radio>
                         <el-radio label="-1">需要发票</el-radio>
-                        <el-button class="needrecharge" :disabled="disabledfalse">编辑</el-button>
+                        <el-button class="needrecharge" :disabled="disabledfalse" @click="needInvoiceDialog=true;getInvoice">编辑</el-button>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="代金券：">
@@ -190,15 +195,139 @@
                 <el-button class="dialog-btn dialog-btn-cancel" @click="assignLubanCoinDialog = false">取 消</el-button>
             </div>
         </el-dialog>
+        <!--需要发票-->
+        <el-dialog
+            title="发票信息"
+            :visible.sync="needInvoiceDialog"
+            width="30%"
+            :before-close="handleClose" class="modelwidth850px" :close-on-click-modal="false"
+            :close-on-press-escape="false">
+            <template>
+            <el-tabs v-model="activeNameInvoice" type="card" @tab-click="handleClick">
+                <el-tab-pane label="专用发票" name="first">
+                    <el-form :model="invoiceruleForm" :rules="invoicerules" ref="invoiceruleForm" label-width="70px" class="invoiceForm">
+                        <el-row style="padding-right: 20px;">
+                            <el-col :span="12">
+                                <el-form-item label="发票抬头：" prop="invoiceTitle">
+                                    <el-input  placeholder="请填写发票抬头" v-model="invoiceruleForm.invoiceTitle"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="开户账号：" prop="bankAccount">
+                                    <el-input  placeholder="请填写银行账户" v-model="invoiceruleForm.bankAccount"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="税号：" prop="taxNumber">
+                                    <el-input placeholder="请填写单位纳税人识别号" v-model="invoiceruleForm.taxNumber"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="地址：" prop="companyAddress">
+                                    <el-cascader
+                                        :clearable="true"
+                                        :change-on-select="true"
+                                        style="width: 100%;"
+                                        :options="options"
+                                        v-model="selectedOptions"
+                                        @change="handleChange">
+                                    </el-cascader>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="开户银行：" prop="depositBankName">
+                                    <el-input placeholder="请填写开户账号" v-model="invoiceruleForm.depositBankName"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="详细地址：" prop="companyAddress">
+                                    <el-input placeholder="请填写详细地址" v-model="invoiceruleForm.companyAddress"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="注册电话：" prop="companyPhone">
+                                    <el-input placeholder="请填写注册电话" v-model="invoiceruleForm.companyPhone"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            
+                        </el-row>
+                    </el-form>
+                </el-tab-pane>
+                <el-tab-pane label="普通发票" name="second">
+                    <el-form :model="normalinvoiceruleForm" :rules="normalinvoicerules" ref="normalinvoiceruleForm" label-width="70px" class="invoiceForm">
+                        <el-row style="padding-right: 20px;">
+                            <el-col :span="12">
+                                <el-form-item label="发票抬头：" prop="invoiceTitle">
+                                    <el-input  placeholder="请填写发票抬头" v-model="normalinvoiceruleForm.invoiceTitle"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="税号：" prop="taxNumber">
+                                    <el-input placeholder="请填写单位纳税人识别号" v-model="normalinvoiceruleForm.taxNumber"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
+                </el-tab-pane>
+                <el-tab-pane label="个人发票" name="third">
+                    <el-form :model="personinvoiceruleForm" :rules="personinvoicerules" ref="personinvoiceruleForm" label-width="70px" class="invoiceForm">
+                        <el-row style="padding-right: 20px;">
+                            <el-col :span="12">
+                                <el-form-item label="发票抬头：" prop="invoiceTitle">
+                                    <el-input  placeholder="请填写身份证号码" v-model="personinvoiceruleForm.invoiceTitle"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
+                </el-tab-pane>
+            </el-tabs>
+            <div class="invoice-header">
+                <span class="">收票人信息</span>
+            </div>
+            <el-form :model="invoiceContactAddress" :rules="invoiceContactAddressrules" ref="invoiceContactAddress" label-width="70px" class="invoiceForm">
+                <el-row style="padding-right: 20px;">
+                    <el-col :span="12">
+                        <el-form-item label="姓名：" prop="realName">
+                            <el-input placeholder="请输入收票人姓名" v-model="invoiceContactAddress.realName"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="邮编：" prop="zipCode">
+                            <el-input placeholder="请输入邮编" v-model="invoiceContactAddress.zipCode"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="地址：" prop="address">
+                            <el-input placeholder="请输入地址" v-model="invoiceContactAddress.address"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="固定电话：" prop="phone">
+                            <el-input placeholder="请输入收票人电话" v-model="invoiceContactAddress.phone"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="手机号：" prop="mobile">
+                            <el-input placeholder="请输入收票人手机号" v-model="invoiceContactAddress.mobile"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            </template>
+            <div slot="footer" class="dialog-footer">
+                <el-button class="dialog-btn dialog-btn-ok" type="primary">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="needInvoiceDialog=false;">取 消</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script >//type="text/ecmascript-6"
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
     import {basePath} from '../../utils/common.js'
     import {queryEnterpriseLubanBiList} from '../../api/getData-cxx.js';
     import {getEnterpriseCurrentLubanBiCount} from '../../api/getData-cxx.js';
-    import {addLubanBiChargeOrder} from '../../api/getData-cxx.js';
+    import {addLubanBiChargeOrder,getContactAddress,getLubanBiAllocateList} from '../../api/getData-cxx.js';
     const accountOptions = [
         "曹相相1",
         "曹相相2",
@@ -260,7 +389,8 @@
                 checkedAccounts: ["曹相相1"],  //授权人员默认选中
 //                data2: generateData(),  //组件公用数据
                 accountSearchKey: "",       //搜索关键字
-
+// 列表分配名单
+                getBiAllocateList:[],
 
                 rechargeform: {
                     goldAmount: '',
@@ -286,13 +416,159 @@
                         show: false
                     }
                 ],
+                needInvoiceDialog:false,//发票弹窗
+                activeNameInvoice: 'first',
+                options: [{
+                    value: 'zujian',
+                    label: '组件',
+                    children: [{
+                                value: 'axure',
+                                label: 'Axure Components'
+                        }, {
+                                value: 'sketch',
+                                label: 'Sketch Templates'
+                        }, {
+                                value: 'jiaohu',
+                                label: '组件交互文档'
+                    }]
+                }],
+                selectedOptions: [],
+                //专用发票
+                invoiceruleForm:{
+                    bankAccount:'' ,//银行账号 ,
+                    companyAddress:'',// 公司地址 ,
+                    companyCityId:null ,//市 ,
+                    companyPhone: '',//公司电话 ,
+                    companyProvinceId:null,// 省 ,
+                    depositBankName: '',//开户银行 ,
+                    invoiceTitle: '',//发票抬头，如果是个人发票则保存身份证号码 ,
+                    taxNumber: '',//税号 ,
+                    type: null,//发票类型 11 普通个人发票, 12普通企业发票
+                },
+                invoicerules: {
+                    bankAccount: [
+                        { required: true, message: '请填写银行账户', trigger: 'blur' },
+                    ],//银行账号 ,
+                    companyAddress: [
+                        { required: true, message: '请填写公司地址', trigger: 'blur' },
+                    ],// 公司地址 ,
+                    companyCityId: [
+                        { required: true, message: '请输入活动名称', trigger: 'blur' },
+                    ],//市 ,
+                    companyPhone: [
+                        { required: true, message: '请填写注册电话', trigger: 'blur' },
+                    ],//公司电话 ,
+                    companyProvinceId: [
+                        { required: true, message: '', trigger: 'blur' },
+                    ],// 省 ,
+                    depositBankName:  [
+                        { required: true, message: '请填写开户账号', trigger: 'blur' },
+                    ],//开户银行 ,
+                    invoiceTitle: [
+                        { required: true, message: '请填写发票抬头', trigger: 'blur' },
+                    ],//发票抬头，如果是个人发票则保存身份证号码 ,
+                    taxNumber: [
+                        { required: true, message: '请填写单位纳税人识别号', trigger: 'blur' },
+                    ],//税号 ,
+                },
+                //专用发票
+                normalinvoiceruleForm:{
+                    invoiceTitle: '',//发票抬头，如果是个人发票则保存身份证号码 ,
+                    taxNumber: '',//税号 ,
+                    type: null,//发票类型 11 普通个人发票, 12普通企业发票
+                },
+                normalinvoicerules: {
+                    invoiceTitle: [
+                        { required: true, message: '请填写发票抬头', trigger: 'blur' },
+                    ],//发票抬头，如果是个人发票则保存身份证号码 ,
+                    taxNumber: [
+                        { required: true, message: '请填写单位纳税人识别号', trigger: 'blur' },
+                    ],//税号 ,
+                },
+                //专用发票
+                personinvoiceruleForm:{
+                    invoiceTitle: '',//发票抬头，如果是个人发票则保存身份证号码 ,
+                    type: null,//发票类型 11 普通个人发票, 12普通企业发票
+                },
+                personinvoicerules: {
+                    invoiceTitle: [
+                        { required: true, message: '请填写身份证号码', trigger: 'blur' },
+                    ],//发票抬头，如果是个人发票则保存身份证号码 ,
+                },
+                //收票人信息
+                invoiceContactAddress: {
+                    address: '',//联系地址 ,
+                    city : '',//市信息 ,
+                    companyName : '',//公司名称 ,
+                    mobile : '',//移动电话 ,
+                    phone :'' ,//联系电话 ,
+                    province :'' ,//省，直辖市信息 ,
+                    qq :'' ,//联系QQ ,
+                    realName: '',//真实姓名 ,
+                    zipCode :'' ,//邮政编码
+                },
+                invoiceContactAddressrules:{
+                    address:[
+                        { required: true, message: '请填写地址', trigger: 'blur' },
+                    ],//联系地址 ,
+                    city : [
+                        { required: true, message: '请填写地址', trigger: 'blur' },
+                    ],//市信息 ,
+                    province :[
+                        { required: true, message: '请填写地址', trigger: 'blur' },
+                    ] ,//省，直辖市信息 ,
+                    mobile : [
+                        { required: true, message: '请填写收票人手机号', trigger: 'blur' },
+                    ],//移动电话 ,
+                    realName: [
+                        { required: true, message: '请填写收票人姓名', trigger: 'blur' },
+                    ],//真实姓名 
+                },
             }
-
         },
         components: {
             VueScrollbar
         },
         methods: {
+            //获取列表中肥培名单
+            getLubanBiList(historyId){
+                var vm = this;
+                vm.getBiAllocateList=[];
+                let baseUrl = basePath(vm.$route.matched[2].path)
+                let params = {
+                    url: baseUrl,
+                    historyId:historyId,
+                }
+                getLubanBiAllocateList(params).then(function (res) {
+                    if(res.data.code==200){
+                        vm.getBiAllocateList=res.data.result.allocationList;
+                    }
+                })
+            },
+            //发票
+            handleClick(tab, event) {
+            },
+            submitinvoiceForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    alert('submit!');
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+                });
+            },
+            handleChange(value) {
+                this.companyProvinceId=value[0];
+                this.companyCityIdcompanyProvinceId=value[1];
+            },
+            getInvoice(){
+
+            },
+
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
             indexSort(){
                 //序号
                 return index * 1;
@@ -343,7 +619,25 @@
             },
             removeDis(dis){
                 if (dis == "-1") {
+                    let vm = this;
+                    let baseUrl = basePath(this.$route.matched[2].path)
                     this.disabledfalse = false;
+                    let params = {
+                        url: baseUrl
+                    }
+                    getContactAddress(params).then(function (res) {
+                        vm.invoiceContactAddress={
+                            address: res.data.result.province.province+res.data.result.city.city+res.data.result.address,//联系地址 ,
+                            city : res.data.result.city.city,//市信息 ,
+                            companyName :res.data.result.companyName,//公司名称 ,
+                            mobile : res.data.result.mobile,//移动电话 ,
+                            phone :res.data.result.phone,//联系电话 ,
+                            province :res.data.result.province.province,//省，直辖市信息 ,
+                            qq :res.data.result.qq ,//联系QQ ,
+                            realName: res.data.result.realName,//真实姓名 ,
+                            zipCode :res.data.result.zipCode ,//邮政编码
+                        }
+                    })
                 } else {
                     this.disabledfalse = true;
                 }
@@ -354,7 +648,7 @@
             },
             queryEnterpriseLubanBiList(){
                 // 分页获取鲁班币列表
-                var vm = this;
+                let vm = this;
                 let baseUrl = basePath(vm.$route.matched[2].path)
                 let params = {
                     url: baseUrl,
@@ -368,6 +662,7 @@
                     console.log(data.data.result);
                     let result = data.data.result;
                     if (result) {
+
                         vm.coinsManagementTableData = result.lbEnterpriseGoldChangeDetailList;
                         vm.sum = result.pageInfo.sum;
                     }
@@ -621,4 +916,111 @@
         font-weight: 700;
         color: rgb(102, 148, 242);
     }
+    .LubanCoinsManagementBox .el-tabs__item{
+        height: 30px;
+        line-height: 30px;
+        width:138px;
+        margin:0px;
+        font-size:13px;
+    }
+    .LubanCoinsManagementBox .el-tabs__nav-scroll{
+        border:1px solid #6495F2;
+        border-radius:4px;
+        overflow: hidden;
+    }
+    .LubanCoinsManagementBox .el-tabs__nav-scroll{
+        width:414px;
+        margin:0 auto;
+    }
+    .LubanCoinsManagementBox .el-tabs--card .el-tabs__nav .el-tabs__item.is-active{
+        background: #6495F2;
+        border-radius: 0px;
+        font-size:13px;
+        font-weight:normal;
+    }
+   .LubanCoinsManagementBox .invoice-header{
+       width:850px;
+       box-sizing:border-box;
+       border-bottom:1px solid #e6e6e6;
+       border-top:1px solid #e6e6e6;
+       height: 50px;
+       line-height:50px;
+       padding:0px 20px;
+       margin:20px 0px 20px -40px;
+   }
+   .LubanCoinsManagementBox .invoice-header span{
+       font-size:16px !important;
+       font-weight:bold;
+   } 
+   .LubanCoinsManagementBox .invoiceForm{
+        margin-top:30px;
+   }
+   .LubanCoinsManagementBox .invoiceForm .el-row .el-form-item{
+       position: relative;
+       height:36px;
+   }
+   .LubanCoinsManagementBox .invoiceForm .el-row .el-col:nth-child(even){
+       padding-left:20px;
+   }
+   .LubanCoinsManagementBox .invoiceForm .el-row .el-col:nth-child(odd){
+       padding-right:20px;
+   }
+   .LubanCoinsManagementBox .el-form-item.is-required .el-form-item__label:before{
+       right: -20px;
+   }
+    .modelwidth726px .el-dialog .invoiceForm  .el-form-item__content{
+       border:0px;
+       padding-bottom:0px;
+   }
+   .modelwidth850px .el-dialog{
+        width:850px;
+   }
+   .LubanCoinsManagementBox .el-table.ovfllow-false .cell{
+        overflow: visible;
+   }
+   .LubanCoinsManagementBox .service:hover .descriptionDivnew{
+        width: 150px;
+        height: 150px;
+        right: 50px;
+        background-color: #fff;
+        overflow-y: auto;
+        display: block;
+        transition: all 1s;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        z-index: 222;
+        padding: 10px;
+   }
+   .descriptionDivnew{
+        position: absolute;
+        display: none;
+        transition: all 1s;
+        bottom: 20px;
+   }
+   .descriptionDivnew ul>li{
+        float:left;
+        width:100%;
+        line-height:24px;
+   }
+    .LubanCoinsManagementBox .el-table__body-wrapper table tbody tr:nth-of-type(1) .service div{
+       bottom:-150px;
+   }
+   .LubanCoinsManagementBox .el-table__body-wrapper table tbody tr:nth-of-type(2) .service div{
+       bottom:-150px;
+   }
+   .LubanCoinsManagementBox .el-table__body-wrapper table tbody tr:nth-of-type(3) .service div{
+       bottom:-150px;
+   }
+   .LubanCoinsManagementBox .el-table__body-wrapper table tbody tr:nth-of-type(4) .service div{
+       bottom:-150px;
+   }
+   .LubanCoinsManagementBox .el-table__body-wrapper table tbody tr:nth-of-type(5) .service div{
+       bottom:-100px;
+   }
+   .LubanCoinsManagementBox .el-table__body-wrapper table tbody tr:nth-of-type(6) .service div{
+       bottom:-50px;
+   }
+   .LubanCoinsManagementBox  .order-management .el-table__body-wrapper .el-table__row:nth-child(6) .cell{
+        line-height: 40px;
+   }
 </style>
