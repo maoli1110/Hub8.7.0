@@ -12,11 +12,12 @@
 import axios from "axios";
 
 export const tests = params=> axios.get(`${params.url}` + "payment/alipay/alipayCloseTradeNotify");
-export const getWorksetingList = params => axios.get(`${base}`);
+export const getWorksetingList = params => axios.get('../../static/workSeting.json');
 export const getCitys = params => axios.get('../../static/js/citys.json');
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 
 export const testList = params =>axios.get('../../static/tableList.json');
+export const workList = params=>axios.get('../../static/workSeting.json');
 export const route = params =>axios.get('../../static/routes.json');
 /**
  * bim库
@@ -76,3 +77,9 @@ export const treeList = params=> axios.get(`${params.url}component/tree/list/${p
  * 组织结构
  */
 export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
+//bim->工作集库列表
+export const getWorkSets = params =>axios.post(`${params.url}rs/workSetRest/getWorkSets`,params.param);
+//bim->删除工作集
+export const delWorkSets = params =>axios.post(`${params.url}rs/workSetRest/delWorkSets`,params.param)
+//bim->工作集查看工程
+export const  getProjByWorkSet = params =>axios.post(`${params.url}rs/workSetRest/getProjByWorkSet`,params.param)

@@ -116,8 +116,10 @@ export default {
      　　 }
 　　},
     created(){
+        console.log(this.$route.path,'path');
         this.activeIndex =  this.$route.path;
-        console.log(this.$route.matched[1].path,'路由')
+//        this.activeIndex =  this.$route.matched[3].path;
+//        console.log(this.$route.matched[3].path,'路由')
         route().then((routes)=>{
             let currentMenusKey = "";
             let route = routes.data.list;

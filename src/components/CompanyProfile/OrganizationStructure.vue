@@ -118,7 +118,7 @@
             <!-- 负责人界面end -->
             <el-button type="primary" class="basic-btn" icon="plus" @click="expandTree(true)">全部展开</el-button>
             <el-button type="primary" class="basic-btn" icon="minus" @click="expandTree(false)">全部收起</el-button>
-            <!-- <el-button type="primary" style="display:none" class="basic-btn manager-popover" icon="plus" v-popover:popover4>负责人界面</el-button> -->
+            <!-- <el-button type="primary" class="basic-btn manager-popover" icon="plus" v-popover:popover4>负责人界面</el-button> -->
             <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加项目部</el-button>
         </div>
         <div class="org-wrap">
@@ -205,7 +205,7 @@
 <script>
 import '../../../static/css/select-vue-component.css'; // select2样式
 import axios from "axios";
-import {getOrgTreeList} from '../../api/getData.js';   // 接口
+import {getOrgTreeList} from '../../api/getData-mll.js';   // 接口
 import {basePath,transformToObjFormat} from "../../utils/common.js"; // 通用模块
 import {
   validatephoneNumber,
@@ -329,7 +329,7 @@ export default {
         //获取原始树结构
         axios.get(this.url).then(res => {
             // 组合树结构需要的参数
-            var param = {
+            let param = {
                 orgNodeKey: "id",
                 nodesCol:'children',
                 orgNodeParentKey: "parentId"
@@ -337,7 +337,7 @@ export default {
             // 处理原始树结构,返回生成树结构所需要的对象
             res.data.result[0].parentId = '0';
 
-            var tempzNodes = transformToObjFormat(param,res.data.result);
+            let tempzNodes = transformToObjFormat(param,res.data.result);
 
             tempzNodes = tempzNodes[0].children;
             /**
@@ -353,7 +353,7 @@ export default {
             this.zNodes = tempzNodes;
 
             for(let [key,value] of entries(tempzNodes)){
-                var lineStyle = "";
+                let lineStyle = "";
                 if(key != 0 && key != tempzNodes.length-1){
                     lineStyle = 'middleHLine';
                 } else if (key == "0"){
@@ -361,9 +361,9 @@ export default {
                 } else if(key == tempzNodes.length-1) {
                     lineStyle = 'noneHLine';
                 }
-                var tree = '<ul id="ztree-'+key+'" class="ztree"></ul>';
-                var longLine ='<div class="'+lineStyle+'" style=""></div><div class="longitudinalLine2" style="height:25px;border-left:1px solid #4778c7;margin-left:120px"></div>';
-                var html = '<div style="float:left">'+longLine+''+tree+'</div>';
+                let tree = '<ul id="ztree-'+key+'" class="ztree"></ul>';
+                let longLine ='<div class="'+lineStyle+'" style=""></div><div class="longitudinalLine2" style="height:25px;border-left:1px solid #4778c7;margin-left:120px"></div>';
+                let html = '<div style="float:left">'+longLine+''+tree+'</div>';
                 $("#organization-tree").append(html);
                 $.fn.zTree.init($("#ztree-"+key), this.setting, value);
             }
@@ -375,7 +375,7 @@ export default {
     methods: {
         //测试multiple select2
         queryData: function(){
-            var mySelf = this;
+            let mySelf = this;
             //do ajax here
 
             // 多选
@@ -413,7 +413,7 @@ export default {
 
 
         log: function(){
-            var mySelf = this
+            let mySelf = this
             // console.log('单选输出结果' + JSON.stringify(this.single));
             console.log('多选输出结果' + JSON.stringify(this.multiple));
             // console.log('自定义输入输出结果' + JSON.stringify(this.customMultiple));
@@ -421,7 +421,7 @@ export default {
         },
 
         change: function(){
-            var mySelf = this;
+            let mySelf = this;
 
             mySelf.multiple.originOptions = [{"id":"2","name":"mike"},{"id":"3","name":"lara"}]
             mySelf.multiple.selectedList = [{"id":"4","name":"zoe"},{"id":"5","name":"steve"}]
@@ -442,14 +442,16 @@ export default {
         },
         //mouseOn显示负责人信息
         addHoverDom(treeId,treeNode) {
+            console.log('add');
+            /** 
+             * 1.获取当前鼠标的位置
+             * 2.更改属性显示界面，获取数据
+             */
             if($(".el-popover").css('display') === 'block') return;
-            console.log('add')
-            // 1.获取当前鼠标的位置
-            // 1.更改属性显示界面，获取数据
-            var aObj = $("#" + treeNode.tId + "_a");
-            var mX = aObj.offset().left,
+            let aObj = $("#" + treeNode.tId + "_a");
+            let mX = aObj.offset().left,
                 mY = aObj.offset().top;
-            var left = function(){
+            let left = function(){
                  $(".el-popover").css('left',mX+185);
                  $(".el-popover").css('top',mY-10);
             }
@@ -458,7 +460,12 @@ export default {
         },
         //mouseOff鼠标划过负责人信息
         removeHoverDom(treeId,treeNode) {
+            console.log('remove')
+            let popDiv = $(".el-popover");
             this.isPopover = false;
+            popDiv.mouseover(()=>{
+                this.isPopover = true;
+            })
         }
     },
     watch:{
