@@ -1,6 +1,8 @@
 /*==============================Bim-lib（bim库样式）=====================*/
 .Bim-libs .contents{position:relative}
-.Bim-libs table {border:0;cellspacing:0;cellpadding:0;width:100%;min-width: 1390px;}
+.Bim-libs  table.bim-lib,
+.Bim-libs  table.recycle-bins
+{border:0;cellspacing:0;cellpadding:0;width:100%;min-width: 1390px;}
 .Bim-libs table thead{background:#f0f0f0;}
 .Bim-libs table thead>tr>th{padding:0px 7px;height:60px;line-height:60px;}
 /*table.bim-lib thead>tr>th:nth-child(1){width:20px;}
@@ -47,6 +49,7 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
     padding-top:15px;
 }
 /*el-table(表格)*/
+.Bim-libs-bim .work-set .table{min-width:900px !important;}
 .bim-main{overflow:auto;}
 .Bim-libs-bim .el-table th > .cell,
 .Bim-libs-bim  .el-table .cell{
@@ -170,7 +173,7 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .workSeting .work-toobar{padding:10px 0;}
 .pagination{padding:10px 0}
 .work-icon{
-    width:20px;height:20px;float:left;margin-left:12px;background:url('../../static/img/icon-btn.png') -272px -0px  no-repeat;
+    width:20px;height:20px;float:left;background:url('../../static/img/icon-btn.png') -272px -0px  no-repeat;
 }
 /*=========================workSeting(弹窗自绘制表单)=====================*/
 .workSeting .table-row{height:100px;border-bottom:1px solid #e6e6e6;}
