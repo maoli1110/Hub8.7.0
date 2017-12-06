@@ -198,7 +198,7 @@
 //
             //项目部change
             changeVal(value){
-                console.log(value,'val')
+                this.tableListParam.deptIds =[];
                 if(value=="1"){
                     this.projectList.forEach((val,key)=>{
                         this.tableListParam.deptIds.push(val.value)
@@ -224,7 +224,7 @@
                        this.commonMessage(data.data.msg,'warning')
                        return false;
                     } else{
-                        this.tableListParam.deptIds = [];
+//                        this.tableListParam.deptIds = [];
                     }
                     if (data.data.result==null||data.data.result=="") {//值为空
                         this.tableData.content = [];
@@ -248,7 +248,6 @@
             getData(){
                 this.getBaseUrl();
                 this.filterParm.workValue = this.projectList[0].value;
-
                 if(this.filterParm.workValue=='1'){
                     if(this.tableListParam.deptIds.indexOf(this.filterParm.workValue)==-1){
                         this.projectList.forEach((val,key)=>{
