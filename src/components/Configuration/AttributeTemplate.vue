@@ -14,65 +14,55 @@
             </div>
         </div>
         <div class="main">
-            <el-table ref="multipleTable" :data="FolderTableData" border tooltip-effect="dark"
+            <el-table ref="multipleTable" :data="attrTemplateTableData" border tooltip-effect="dark"
                       style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="name" label="专业" width="300" align='left'>
+                <el-table-column prop="name" label="专业"  align='left'>
                     <template slot-scope="scope">
                         <div slot="reference" class="name-wrapper textcell">
-                            <span style="margin-right:5px" :title="scope.row.name">{{ scope.row.name }}</span>
+                            <span style="margin-right:5px" :title="scope.row.name">{{ scope.row.spec }}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="更新时间" width="380">
-                    <template slot-scope="scope">{{ scope.row.date }}</template>
+                <el-table-column label="更新时间">
+                    <template slot-scope="scope">{{ scope.row.updateTime }}</template>
                 </el-table-column>
-                <el-table-column prop="role" label="操作人" width="380"></el-table-column>
+                <el-table-column prop="updateUser" label="操作人"></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span type="primary" class="icon-edit_"
-                              @click="getTemplateInfo();editTemplateDialogVisible=true"></span>
+                              @click="getTemplateInfo(scope.row);editTemplateDialogVisible=true"></span>
                     </template>
                 </el-table-column>
             </el-table>
-            <div style="margin-top: 20px">
-                <div style="float:left;height:40px;line-height:40px">共10个结果</div>
-                <el-pagination style="margin-left:30%"
-                               @size-change="handleSizeChange"
-                               @current-change="handleCurrentChange"
-                               :current-page="4"
-                               :page-sizes="[100, 200, 300, 400]"
-                               :page-size="100"
-                               layout="total, sizes, prev, pager, next, jumper"
-                               :total="400">
-                </el-pagination>
-            </div>
         </div>
         <!-- 编辑模板 -->
         <el-dialog title="编辑模板" :visible.sync="editTemplateDialogVisible" size='edit-template'>
-            <el-table ref="multipleTable" :data="FolderTableData" border tooltip-effect="dark"
+            <el-table  :data="attrTemplateInfoTableData" border tooltip-effect="dark"
+                    ref="singleTable"
                     height='500'
+                    highlight-current-row
                     :row-class-name="tableRowClassName"
-                    style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="name" label="属性"  align='left'>
+                    style="width: 100%;margin-top:20px"@current-change="handleCurrentChange">
+                <!-- <el-table-column type="selection" width="55"></el-table-column> -->
+                <el-table-column  label="属性"  align='left'>
                     <template slot-scope="scope">
                         <div slot="reference" class="name-wrapper textcell">
-                            <span style="margin-right:5px" :title="scope.row.name">{{ scope.row.name }}</span>
+                            <span style="margin-right:5px" :title="scope.row.attrName">{{ scope.row.attrName }}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="值">
-                    <template slot-scope="scope">{{ scope.row.date }}</template>
+                    <template slot-scope="scope">{{ scope.row.attrValue }}</template>
                 </el-table-column>
             </el-table>
             <div style="margin-top:40px">
-            <el-button type="primary" @click="moveDataCatalogVisible = false" class="dialog-btn">增加一级</el-button>
-            <el-button type="primary" class="dialog-btn">增加二级</el-button>
+            <el-button type="primary" @click="addAttributeTemplateVisible=true;" class="dialog-btn">增加一级</el-button>
+            <el-button type="primary" class="dialog-btn" @click="addSubmit(2)">增加二级</el-button>
             <el-button type="primary" class="dialog-btn" @click="editTemplate()">编辑</el-button>
-            <el-button type="primary" class="dialog-btn">删除</el-button>
-            <el-button type="primary" class="dialog-btn">上移</el-button>
-            <el-button type="primary" class="dialog-btn">下移</el-button>
+            <el-button type="primary" class="dialog-btn" @click="deleteTemplate()" >删除</el-button>
+            <el-button type="primary" class="dialog-btn" @click="move('up')">上移</el-button>
+            <el-button type="primary" class="dialog-btn" @click="move('down')">下移</el-button>
             </div>
         </el-dialog>
         <!-- 编辑属性 -->
@@ -80,25 +70,56 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">属性名称：</label>
                 <div class="el-form-item__content" style="margin-left: 97px;">
-                    <el-input placeholder="请选择日期" ></el-input>
+                    <el-input placeholder="请输入" v-model="attributesName"></el-input>
                 </div>
             </div>
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">属性值：</label>
                 <div class="el-form-item__content" style="margin-left: 97px;">
-                    <el-input placeholder="请选择日期" ></el-input>
+                    <el-input placeholder="请输入" v-model="attributesValue"></el-input>
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="submitForm('ruleForm')" class="dialog-btn">确 定</el-button>
+            <el-button type="primary" @click="submit()" class="dialog-btn">确 定</el-button>
             <el-button @click="editAttributesDialogVisible = false;" class="dialog-btn">取 消</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="增加属性" :visible.sync="addAttributeTemplateVisible" size='tiny'>
+            <div class="el-form-item el-form_">
+                <label class="el-form-item__label">属性名称：</label>
+                <div class="el-form-item__content" style="margin-left: 97px;">
+                    <el-input placeholder="请输入" v-model="addAttributesName"></el-input>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="addSubmit(1)" class="dialog-btn">确 定</el-button>
+            <el-button @click="addAttributeTemplateVisible = false;" class="dialog-btn">取 消</el-button>
+            </span>
+        </el-dialog>
+        <!-- 编辑属性 -->
+        <el-dialog title="增加属性" :visible.sync="addAttributeTemplateVisible_" size='tiny'>
+            <div class="el-form-item el-form_">
+                <label class="el-form-item__label">属性名称：</label>
+                <div class="el-form-item__content" style="margin-left: 97px;">
+                    <el-input placeholder="请输入" v-model="addAttributesName_"></el-input>
+                </div>
+            </div>
+            <div class="el-form-item el-form_">
+                <label class="el-form-item__label">属性值：</label>
+                <div class="el-form-item__content" style="margin-left: 97px;">
+                    <el-input placeholder="请输入" v-model="addAttributesValue_"></el-input>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="addSubmit(2)" class="dialog-btn">确 定</el-button>
+            <el-button @click="addAttributeTemplateVisible_ = false;" class="dialog-btn">取 消</el-button>
             </span>
         </el-dialog>
     </div>
 </template>
 <style>
 .el-table .info-row {
-  background: #c9e5f5;
+  background: #f0f0f0;
 }
 
 .el-table .positive-row {
@@ -106,202 +127,248 @@
 }
 </style>
 <script>
+import * as types from "../../api/getData-ppc";
 export default {
   data() {
     return {
       url: "../../../static/tree1.json",
       editTemplateDialogVisible: false,
       editAttributesDialogVisible: false,
+      addAttributeTemplateVisible: false,
+      addAttributeTemplateVisible_: false,
       orgValue: "",
-      role: "",
-      FolderTableData: [
-        {
-          name: "赵四",
-          id: 1,
-          pass: "wulijjjj111111111111111111",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remark11111111111111111111111111111111111111111111111"
-        },
-        {
-          name: "赵四",
-          id: 2,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 3,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 4,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 5,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 6,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 7,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 8,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 9,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四111111111111111111111111111111111111111",
-          id: 10,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        }
-      ],
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
-      multipleSelection: []
+      orgType: 0,
+      orgid: "1",
+      attrTemplateTableData: [],
+      templateId: "", //模板id
+      attrTemplateInfoTableData: [],
+      attrTemplateParentInfo: [], //所有的父级模板
+      multipleSelection: [],
+      currentRow: [], //模板属性当前选中
+      attributesName: "", //编辑
+      attributesValue: "", //编辑
+      addAttributesName: "", //1级
+      addAttributesName_: "", //2级
+      addAttributesValue_: "", //2级,
+      sourceAttrId: ""
     };
   },
   methods: {
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
+    /**获取模板列表 */
+    getAttributeTemplateList() {
+      let params = {
+        orgType: this.orgType,
+        orgid: this.orgid
+      };
+      types.getAttributeTemplateList(params).then(res => {
+        this.attrTemplateTableData = res.data.result;
+        console.log(this.attrTemplateTableData);
+      });
     },
+    /**获取模板信息 */
+    getAttributeTemplateInfo() {
+      let params = {
+        orgType: this.orgType,
+        orgid: this.orgid,
+        templateId: this.templateId
+      };
+      types.getAttributeTemplateInfo(params).then(res => {
+        this.attrTemplateInfoTableData = res.data.result;
+        this.attrTemplateInfoTableData.forEach((el, i, arr) => {
+          if (el.parentId === 0) {
+            //父级模板单独抽出
+            this.attrTemplateParentInfo.push(el);
+            // 将该属性的子集放到该属性下
+            arr.forEach((el_, i_) => {
+              if (el.attrId == el_.parentId) {
+                let el_temp = arr.splice(i_, 1);
+                arr.splice(++i, 0, el_temp[0]);
+              }
+            });
+          }
+        });
+        // console.log(this.attrTemplateInfoTableData);
+        this.attrTemplateInfoTableData.forEach((item, i) => {
+          if (item.attrId == this.sourceAttrId) {
+            //  console.log(i)
+            this.setCurrent(this.attrTemplateInfoTableData[i]);
+          }
+        });
+      });
+    },
+    // 表格单选
+    handleCurrentChange(val) {
+      if (val) {
+        this.currentRow = val;
+        this.attributesName = this.currentRow.attrName;
+        this.attributesValue = this.currentRow.attrValue;
+      }
+      console.log(this.currentRow);
+    },
+    setCurrent(row) {
+      console.log(row);
+      this.$refs.singleTable.setCurrentRow(row);
+    },
+    //表格多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    getTemplateInfo(row) {
+      console.log(row);
+      this.templateId = row.templateId;
+      this.getAttributeTemplateInfo();
     },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    // 增加1级2级
+    addSubmit(type) {
+      if (
+        (this.currentRow.parentId != 0 && type == 2) ||
+        !this.currentRow.attrId
+      ) {
+        this.$alert("请选择一级属性", "提示", {
+          confirmButtonText: "确定",
+          type: "info"
+        });
+        return;
+      }
+      this.addAttributeTemplateVisible_ = true;
+      let params = {
+        attrName: type == 1 ? this.addAttributesName : this.addAttributesName_,
+        attrValue: type == 1 ? "" : this.addAttributesValue_,
+        orgType: this.orgType,
+        orgid: this.orgid,
+        parentId: type == 1 ? 0 : this.currentRow.attrId,
+        templateId: this.templateId
+      };
+      console.log(params);
+      types.addAttributeTemplateInfo(params).then(res => {
+        if (res.data.code == 200) {
+          this.addAttributeTemplateVisible = false;
+          this.addAttributeTemplateVisible_ = false;
+          this.getAttributeTemplateInfo();
+          this.getAttributeTemplateList();
+        }
+      });
     },
-    getTemplateInfo() {},
+    // 编辑
     editTemplate() {
-      if (this.multipleSelection.length > 0) {
+      if (this.currentRow.attrId) {
         this.editAttributesDialogVisible = true;
       } else {
-        this.$confirm("请选择要编辑的属性", "提示", {
-          type: "warning"
-        })
-          .then(() => {})
-          .catch(() => {});
+        this.$alert("请选择要编辑的属性", "提示", {
+          confirmButtonText: "确定",
+          type: "info"
+        });
       }
     },
-    tableRowClassName(row, index) {
-      if (index === 1) {
-        return "info-row";
-      } else if (index === 3) {
-        return "positive-row";
+    // 提交编辑属性模板信息
+    submit() {
+      let params = {
+        attrId: this.currentRow.attrId,
+        newAttrName: this.attributesName,
+        newAttrValue: this.attributesValue,
+        orgType: this.orgType,
+        orgid: this.orgid,
+        templateId: this.templateId
+      };
+      types.modAttributeTemplateInfo(params).then(res => {
+        if (res.data.code == 200) {
+          this.editAttributesDialogVisible = false;
+          this.getAttributeTemplateInfo();
+          this.getAttributeTemplateList();
+        }
+      });
+    },
+    // 删除
+    deleteTemplate() {
+      if (!this.currentRow.attrId) {
+        this.$alert("请选择要删除的属性", "提示", {
+          confirmButtonText: "确定",
+          type: "info"
+        });
+        return;
       }
-      return "";
+      let params = {
+        attrId: this.currentRow.attrId,
+        orgType: this.orgType,
+        orgid: this.orgid,
+        templateId: this.templateId
+      };
+      console.log(params);
+      types.delAttributeTemplateInfo(params).then(res => {
+        if (res.data.code == 200) {
+          this.getAttributeTemplateInfo();
+          this.getAttributeTemplateList();
+        }
+      });
+    },
+    //上移下移
+    move(type) {
+      if (!this.currentRow.attrId) {
+        this.$alert("请选择要移动的属性", "提示", {
+          confirmButtonText: "确定",
+          type: "info"
+        });
+        return;
+      }
+      let moveParams = {
+        orgType: this.orgType,
+        orgid: this.orgid,
+        sourceAttrId: 0,
+        targetAttrId: 0,
+        templateId: this.templateId
+      };
+      this.attrTemplateInfoTableData.forEach((item, i, arr) => {
+        // 上移
+        if (item.attrId == this.currentRow.attrId && type == "up") {
+          // 移动父级
+          if (item.parentId == 0) {
+            moveParams.sourceAttrId = item.attrId;
+            this.attrTemplateParentInfo.forEach((el, index, arr_) => {
+              if (item.attrId == el.attrId) {
+                moveParams.targetAttrId = arr_[index - 1].attrId;
+              }
+            });
+          } else {
+            // 子级
+            moveParams.sourceAttrId = item.attrId;
+            moveParams.targetAttrId = arr[i - 1].attrId;
+          }
+        } else if (item.attrId == this.currentRow.attrId && type == "down") {
+          // 下移
+          // 移动父级
+          if (item.parentId == 0) {
+            moveParams.sourceAttrId = item.attrId;
+            this.attrTemplateParentInfo.forEach((el, index, arr_) => {
+              if (item.attrId == el.attrId) {
+                moveParams.targetAttrId = arr_[index + 1].attrId;
+              }
+            });
+          } else {
+            // 子级
+            moveParams.sourceAttrId = item.attrId;
+            moveParams.targetAttrId = arr[i + 1].attrId;
+          }
+        }
+      });
+      this.sourceAttrId = moveParams.sourceAttrId;
+      // console.log(params);
+      types.moveAttributeTemplateInfo(moveParams).then(res => {
+        if (res.data.code == 200) {
+          this.getAttributeTemplateInfo();
+          this.getAttributeTemplateList();
+        }
+      });
+      // console.log(this.currentRow)
+    },
+    tableRowClassName(row, index) {
+      if (row.parentId === 0) {
+        return "info-row";
+      }
     }
   },
-  mounted() {}
+  mounted() {
+    this.getAttributeTemplateList();
+  }
 };
 </script>
 <style scoped>

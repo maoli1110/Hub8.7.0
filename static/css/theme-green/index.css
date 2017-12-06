@@ -2018,7 +2018,9 @@
     background-color: #fff
 }
 
-.el-table__body tr.current-row>td {}
+.el-table__body tr.current-row>td {
+    background: #edf7ff
+}
 
 .el-table__column-resize-proxy {
     position: absolute;
