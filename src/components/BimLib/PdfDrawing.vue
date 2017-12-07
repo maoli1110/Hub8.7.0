@@ -24,7 +24,7 @@
                     </el-select>
                 </el-col>
                 <el-col :span="5" class="relat" style="left:135px;" >
-                    <el-input icon="search" v-model="filterParam.searchKey" placeholder="请输入搜索关键字"></el-input>
+                    <el-input icon="search" v-model="filterParam.searchKey" placeholder="请输入搜索关键字" :on-icon-click="searchClick"></el-input>
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
@@ -154,9 +154,7 @@
                         size: 10
                     },
                     ppid: 0,
-                    searchKey: [
-                        ""
-                    ]
+                    searchKey: ""
                 },//获取表格参数
                 projectList:[],//工程列表
                 typeList:[],//分类列表
@@ -222,6 +220,8 @@
                 this.getTableList(baseUrl,this.tableListParams);
             },
             changeProject(value){
+                this.tableListParams.ppid = value;
+                this.getTableList(baseUrl,this.tableListParams);
             },
             editDrawChange(val){
                 this.drawInfoItem.classifyId = val;
@@ -301,6 +301,11 @@
                 }else if(column.prop=="classifyName"){
                     this.tableListParams.pageParam.orders[0].property = "classifyid";
                 };
+                this.getTableList(baseUrl,this.tableListParams);//排序刷新
+            },
+            //列表搜索
+            searchClick(){
+                this.tableListParams.searchKey = this.filterParam.searchKey;
                 this.getTableList(baseUrl,this.tableListParams);//排序刷新
             },
             /**
