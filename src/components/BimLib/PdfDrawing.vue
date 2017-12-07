@@ -4,7 +4,7 @@
             <el-col  :span="24">
                 <el-col :span="7"  class="relat">
                     <span class="absol span-block" style="width:80px;">所属工程：</span>
-                    <el-select class="absol" v-model="filterParam.proVal" placeholder="请选择" @change="changeProject" style="left:72px">
+                    <el-select class="absol" v-model="filterParam.proVal" placeholder="请选择" @change="projectChange" style="left:72px">
                         <el-option
                             v-for="item in projectList"
                             :key="item.ppid"
@@ -15,7 +15,7 @@
                 </el-col>
                 <el-col :span="5" class="relat" style="left:80px;">
                     <span  class="absol span-block" style="width:45px;">分类：</span>
-                    <el-select class="absol" v-model="filterParam.typeVal" placeholder="请选择" @change="changeProject" style="left:45px">
+                    <el-select class="absol" v-model="filterParam.typeVal" placeholder="请选择" @change="typeChange" style="left:45px">
                         <el-option
                             v-for="item in typeList"
                             :key="item.classifyName"
@@ -24,7 +24,8 @@
                     </el-select>
                 </el-col>
                 <el-col :span="5" class="relat" style="left:135px;" >
-                    <el-input icon="search" v-model="filterParam.searchKey" placeholder="请输入搜索关键字" :on-icon-click="searchClick"></el-input>
+                    <el-input icon="search" v-model="filterParam.searchKey" placeholder="搜索图纸名称和上传人关键词" :on-icon-click="searchClick"></el-input>
+                    <span class="absol icon-clear el-icon-circle-close" v-show="filterParam.searchKey.length" @click="clearSearchKey"></span>
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
@@ -43,12 +44,6 @@
                 <el-table-column prop="drawingName" width="" label="图纸名称" show-overflow-tooltip sortable>
                 </el-table-column>
                 <el-table-column prop="classifyName" width="100" label="分类" sortable>
-                    <!--<template slot-scope = "scope">
-                        <span v-show='scope.row.classifyId=="705"'>土建</span>
-                        <span v-show='scope.row.classifyId=="706"'>暖气</span>
-                        <span v-show='scope.row.classifyId=="707"'>大类</span>
-                        <span v-show='scope.row.classifyId=="708"'>小类</span>
-                    </template>-->
                 </el-table-column>
                 <el-table-column prop="size" width="90" label="大小" sortable>
                 </el-table-column>
@@ -131,9 +126,9 @@
         data: function(){
             return {
                 filterParam:{//搜索信息
-                    proVal:"",
+                    proVal:"",//工程value
                     typeVal:'',//分类value
-                    searchKey:""
+                    searchKey:""//搜索关键字
                 },
                 editDraw:false,//修改弹窗的显示状态
                 //分页的一些设置
@@ -141,7 +136,7 @@
                 totalPage:10,//每页多少条
                 tableData:{},//列表数据
                 tableListParams:{
-                    classifyId: false,
+                    classifyId: -1,
                     pageParam: {
                         orders: [
                             {
@@ -176,10 +171,6 @@
                 this.getProjGroup();//工程下拉
                 this.tableListParams.ppid = this.filterParam.proVal;
                 this.getTableList(baseUrl,this.tableListParams);
-                getWorksetingList().then((data)=>{
-                  /*  this.dataInfo = data.data.gridData;
-                    this.workInfo = data.data.gridData[0];*/
-                })
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -187,7 +178,7 @@
              * @params error    失败处理的
              * */
             commonConfirm(message,success,error,type){
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                this.$confirm(message, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: type
@@ -219,10 +210,21 @@
                 this.tableListParams.pageParam.page = currentPage;
                 this.getTableList(baseUrl,this.tableListParams);
             },
-            changeProject(value){
+            //清除搜索关键字
+            clearSearchKey(){
+                this.filterParam.searchKey = '';
+            },
+            //图纸项目工程change
+            projectChange(value){
                 this.tableListParams.ppid = value;
                 this.getTableList(baseUrl,this.tableListParams);
             },
+            //图纸分类change
+            typeChange(value){
+                this.tableListParams.classifyId = value;
+                this.getTableList(baseUrl,this.tableListParams);
+            },
+            //修改修改工程修改
             editDrawChange(val){
                 this.drawInfoItem.classifyId = val;
             },

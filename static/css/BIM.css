@@ -215,6 +215,7 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .pdf-icon{
     width:16px;height:16px;float:left;
 }
+.icon-clear{right:30px;top:10px;color:#e6e6e6;}
 .pdf-icon.icon-delete,.work-icon.icon-delete{
     background:url('../../static/img/icon-menu.png')  -58px -146px   no-repeat;margin-left:16px;
 }
