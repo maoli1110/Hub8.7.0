@@ -50,8 +50,8 @@
             </el-pagination>
         </div>
         <el-dialog
-            title="工作集管理"
-            :visible.sync="workInfoVisible" custom-class="workSeting-dialog"
+            title="工作集管理"  custom-class="workSeting-dialog"
+            :visible.sync="workInfoVisible"
            >
 
             <el-row style="margin-bottom:20px;">

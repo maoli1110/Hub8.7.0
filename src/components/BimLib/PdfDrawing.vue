@@ -27,27 +27,27 @@
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
-                <el-button class="basic-btn relat" type="primary" @click="delWork"><span class="pdf-icon icon-delete "></span><span class="btn-text">删除</span></el-button>
+                <el-button class="basic-btn relat" type="primary" @click="delDrawList"><span class="pdf-icon icon-delete "></span><span class="btn-text">删除</span></el-button>
             </el-col>
 
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class="house-table scroll-me"   :data="tableData.content" style="min-width: 1155px;"  :default-sort="{prop: 'date', order: 'descending'}"   @select-all="selectAll" @select="selectChecked">
+            <el-table class=" scroll-me" :data="tableData.content" style="min-width:1155px;" :default-sort="{prop: 'date', order: 'descending'}"   @select-all="selectAll" @select="selectChecked">
                 <el-table-column
                     type="selection"
                     width="40" >
                 </el-table-column>
                 <!--<el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
                 </el-table-column>-->
-                <el-table-column prop="drawingName" width="220" label="图纸名称" show-overflow-tooltip>
+                <el-table-column prop="drawingName" width="" label="图纸名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="classifyId" width="100" label="分类" >
-                    <template slot-scope = "scope">
+                <el-table-column prop="classifyName" width="100" label="分类" >
+                    <!--<template slot-scope = "scope">
                         <span v-show='scope.row.classifyId=="705"'>土建</span>
                         <span v-show='scope.row.classifyId=="706"'>暖气</span>
                         <span v-show='scope.row.classifyId=="707"'>大类</span>
                         <span v-show='scope.row.classifyId=="708"'>小类</span>
-                    </template>
+                    </template>-->
                 </el-table-column>
                 <el-table-column prop="size" width="90" label="大小" >
                 </el-table-column>
@@ -55,7 +55,7 @@
                 </el-table-column>
                 <el-table-column prop="uploadTime" width="135" label="上传时间" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="projName" width="220" label="所属工程" show-overflow-tooltip>
+                <el-table-column prop="projName" width="" label="所属工程" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="checkPtSize" width="80" label="检查单" show-overflow-tooltip>
                 </el-table-column>
@@ -65,7 +65,7 @@
                 </el-table-column>-->
                 <el-table-column label="操作" width="90" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
-                        <span class="pdf-icon icon-edit" @click="editDraw=true,editInfo(scope.row.index)" ></span>
+                        <span class="pdf-icon icon-edit" @click="editDraw=true,getDrawInfo(scope.row)" ></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -74,17 +74,15 @@
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[1, 50, 100, 150]" :page-size="totalPage" layout="sizes, prev, pager, next, jumper" :total="tableData.totalElements"><!--:total="tableData.totalElements"-->
             </el-pagination>
         </div>
-        <el-dialog custom-class="form-item"
+        <el-dialog custom-class="draw-info"
             title="修改图纸"
-            :visible.sync="editDraw"
-            size="tiny"
-        >
-            <el-form :model="drawInfo">
+            :visible.sync="editDraw" >
+            <el-form :model="drawInfoItem">
                 <el-form-item label="图纸名称：" >
-                    <el-input v-model="drawInfo.name" auto-complete="off"></el-input>
+                    <el-input v-model="drawInfoItem.drawingName" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="分类：" >
-                    <el-select v-model="drawInfo.value" placeholder="请选择活动区域">
+                    <el-select v-model="drawInfoItem.classifyId" placeholder="请选择活动区域" @change="editDrawChange">
                         <el-option  v-for="item in typeList"
                                     :key="item.classifyId"
                                     :value="item.classifyId"
@@ -97,14 +95,11 @@
                               type="textarea"
                               :rows="6"
                               placeholder="请输入内容"
-                              v-model="drawInfo.drawRemark" :maxlength=150>
+                              v-model="drawInfoItem.memo" :maxlength=150>
                     </el-input>
-                    <span class="info-pos">({{!drawInfo.drawRemark.length?(0+"/"+150):(drawInfo.drawRemark.length+"/"+150)}})</span>
+                    <span class="info-pos">({{!drawInfoItem.memo.length?(0+"/"+150):(drawInfoItem.memo.length+"/"+150)}})</span>
                 </el-form-item>
             </el-form>
-
-
-
             <span slot="footer" class="dialog-footer">
                 <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="editDraw = false;editDrawOk()">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="editDraw = false">取 消</el-button>
@@ -120,7 +115,9 @@
         getWorksetingList,
         getDrawingClassifyInfos,
         getProjHasPdfDraw,
-        getDrawingDetailInfos
+        getDrawingDetailInfos,
+        delDrawingInfos,
+        updateDrawingInfo,
     } from '../../api/getData-yhj.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import ElCol from "element-ui/packages/col/src/col";
@@ -166,11 +163,11 @@
                 workInfo:{},
                 projectList:[],
                 typeList:[],
-                drawInfo:{
-                    value:"",
-                    name:'元素1',
-                    drawRemark:'少画了一个页面一个页面，少画了一个页面一个页面，少画了一个页面一个页面少画了一个页面一个页面',
-                    option:[{name:'初始项目部1'},{name:'初始项目部2'},{name:'初始项目部3'},{name:'初始项目部4'}]
+                drawInfoItem:{
+                    drawingName :"",
+                    classifyId :'',
+                    drawingId:"",
+                    memo :'少画了一个页面一个页面，少画了一个页面一个页面，少画了一个页面一个页面少画了一个页面一个页面',
                 }
             }
         },
@@ -228,6 +225,12 @@
                 this.tableListParams.pageParam.page = currentPage;
                 this.getTableList(baseUrl,this.tableListParams);
             },
+            changeProject(value){
+                console.log(value)
+            },
+            editDrawChange(val){
+                this.drawInfoItem.classifyId = val;
+            },
             //获取动态匹配地址
             getBaseUrl(){
                 baseUrl = basePath(this.$route.path);
@@ -236,7 +239,7 @@
             getTypeGroup(){
                 getDrawingClassifyInfos({url:baseUrl}).then((type)=>{
                    this.typeList = type.data.result;
-                   this.typeVal = this.typeList[0].classifyId;
+                   this.filterParam.typeVal = this.typeList[0].classifyId;
                 })
             },
             //获取工程下拉框数据
@@ -270,18 +273,39 @@
                 })
             },
             /**
+             * 删除图纸列表
+             * **/
+            getDelArray(url,param){
+                delDrawingInfos({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200 && this.tableData.content.length){
+                         if(this.tableData.content.length===deletArray.length){//整页删除重新渲染数据
+                             this.getTableList(baseUrl,this.tableListParams);
+                         }else if (deletArray.length) {//单页删除手动个抽掉数据
+                            for (let i = 0; i < deletArray.length; i++) {
+                                for (let j = 0; j < this.tableData.content.length; j++) {
+                                    if (this.tableData.content[j].drawingId == deletArray[i]) {
+                                        this.tableData.content.splice(j, 1);
+                                    }
+                                }
+                            }
+                        }
+                        deletArray = [];
+                    }
+                })
+            },
+            /**
              * 全选
              * @params [{type array}]  selection  选中的队列对象
              */
 
             selectAll(selection){
-                this.commonAlert('全部选中了哦')
+                deletArray = [];
                 selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray.push(val.index)
+                    if( deletArray.indexOf(val.drawingId) ==-1){
+                        deletArray.push(val.drawingId)
                     }
                 });
-                console.log(deletArray,'selectionall')
+//                console.log(deletArray,'selectionall')
             },
 
             /**
@@ -290,54 +314,51 @@
              * @params row 列
              */
             selectChecked(selection, row){
+                deletArray = [];
                 selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray.push(val.index)
+                    if( deletArray.indexOf(val.drawingId) ==-1){
+                        deletArray.push(val.drawingId)
                     }
-                })
+                });
+                console.log(deletArray,'delArray')
             },
-            changeProject(value){
-                console.log(value)
-            },
-            //删除工作集
-            delWork(){
+            //删除Pdf图纸列表
+            delDrawList(){
                 if(!deletArray.length){
                     this.commonMessage('请选择要删除的文件','warning')
                     return false;
                 }
                 this.commonConfirm('确定要删除吗',()=> {
-                    /* if(this.tableData.length===deletArray.length){
-                     //重新渲染数据
-                     }else*/
-                    if (deletArray.length) {
-                        for (let i = 0; i < deletArray.length; i++) {
-                            for (let j = 0; j < this.tableData.length; j++) {
-                                if (this.tableData[j].index == deletArray[i]) {
-                                    this.tableData.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
-
-                    deletArray = [];//接口成功之后删除数据
+                    this.getDelArray(baseUrl,deletArray);
                 })
             },
-            //pdf图纸
-            editInfo(id){
-                //拿数据
+            /**PDF修改图纸信息
+             * @params url      响应地址
+             * @params param    响应参数
+             * **/
+            setDrawInfo(url,param){
+                updateDrawingInfo({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        this.getTableList(baseUrl,this.tableListParams);
+                    }
+                })
+            },
+            //获取每一条图纸信息
+            getDrawInfo(item){
+                this.drawInfoItem.drawingName = item.drawingName;
+                this.drawInfoItem.classifyId = item.classifyId;
+                this.drawInfoItem.drawingId = item.drawingId;
+                this.drawInfoItem.memo = item.memo;
             },
             editDrawOk(){
-                console.log(this.drawInfo,'需要提交的数据')
+                if(this.drawInfoItem.drawingName.length){
+                    this.setDrawInfo(baseUrl,this.drawInfoItem);
+                }else{
+                    this.commonMessage('工程名称不能为空','warning')
+                }
             },
         },
-        computed: {
-
-            editor() {
-                return this.$refs.myTextEditor.quillEditor;
-            }
-        },
-
-
+        computed: { },
     }
 </script>
 <style scoped>
