@@ -2019,7 +2019,7 @@
 }
 
 .el-table__body tr.current-row>td {
-    background: #edf7ff
+    background: rgb(183, 207, 224)
 }
 
 .el-table__column-resize-proxy {

@@ -14,7 +14,7 @@
             </div>
             <div class="el-form-item el-form_">
                 <div class="el-form-item__content">
-                    <el-input placeholder="请选择日期" icon="search" style="max-width:220px"></el-input>
+                    <el-input placeholder="名称" icon="search" style="max-width:220px"></el-input>
                 </div>
             </div>
         </div>
@@ -162,6 +162,7 @@
 <script>
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+import * as types from "../../api/getData-ppc";
 export default {
   data() {
     return {
@@ -179,7 +180,9 @@ export default {
       orgSetting: {
         data: {
           simpleData: {
-            enable: true
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId"
           }
         },
         callback: {
@@ -196,36 +199,13 @@ export default {
           onClick: this.dialogOrgTreeClick
         }
       },
-      zNodes: [
-        {
-          id: 1,
-          pId: 0,
-          name: "展开、折叠 自定义图标不同",
-          open: true,
-          iconSkin: "pIcon01"
-        },
-        { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-        { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-        { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-        {
-          id: 2,
-          pId: 0,
-          name: "展开、折叠 自定义图标相同",
-          open: true,
-          iconSkin: "pIcon02"
-        },
-        { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-        { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-        { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-        { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-        { id: 31, pId: 3, name: "叶子节点1" },
-        { id: 32, pId: 3, name: "叶子节点2" },
-        { id: 33, pId: 3, name: "叶子节点3" }
-      ],
+      zNodes: [],
       authorizedProjectSetting: {
         data: {
           simpleData: {
-            enable: true
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId"
           }
         },
         callback: {
@@ -233,32 +213,6 @@ export default {
           beforeClick: this.authorizedProjectBeforeClick
         }
       },
-      authorizedProjectNodes: [
-        {
-          id: 1,
-          pId: 0,
-          name: "展开、折叠 自定义图标不同",
-          open: true,
-          iconSkin: "pIcon01"
-        },
-        { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-        { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-        { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-        {
-          id: 2,
-          pId: 0,
-          name: "展开、折叠 自定义图标相同",
-          open: true,
-          iconSkin: "pIcon02"
-        },
-        { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-        { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-        { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-        { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-        { id: 31, pId: 3, name: "叶子节点1" },
-        { id: 32, pId: 3, name: "叶子节点2" },
-        { id: 33, pId: 3, name: "叶子节点3" }
-      ],
       folderSetting: {
         check: {
           enable: true,
@@ -435,6 +389,15 @@ export default {
   },
 
   methods: {
+    getOrgTreeList() {
+      types.getOrgTreeList().then(res => {
+        this.zNodes = res.data.result;
+        this.orgValue = res.data.result[0].name;
+        this.orgType = res.data.result[0].type;
+        this.orgid = res.data.result[0].id;
+        $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
+      });
+    },
     orgTreeClick(event, treeId, treeNode) {
       this.orgValue = treeNode.name;
       setTimeout(() => {
@@ -446,15 +409,6 @@ export default {
       setTimeout(() => {
         $(".el-select-dropdown__item.selected").click();
       }, 100);
-    },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -492,10 +446,10 @@ export default {
       console.log(this.cacheProjectTree);
       this.cacheProjectTree = [];
       setTimeout(() => {
-        let zTree = $.fn.zTree.init(
+        let zTree=$.fn.zTree.init(
           $("#authorizedProjectTree"),
           this.authorizedProjectSetting,
-          this.authorizedProjectNodes
+          this.zNodes
         );
         $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
         let nodes = zTree.getNodes();
@@ -585,7 +539,7 @@ export default {
     }
   },
   mounted() {
-    $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
+    this.getOrgTreeList();
   }
 };
 </script>
@@ -693,7 +647,7 @@ export default {
   border: 1px solid #e6e6e6;
   padding: 10px;
   box-sizing: border-box;
-  overflow: auto
+  overflow: auto;
 }
 </style>
 

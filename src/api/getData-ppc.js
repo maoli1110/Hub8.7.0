@@ -5,6 +5,12 @@ import axios from 'axios';
  */
 let builderUrl = 'http://192.168.13.195:8989/builder/'
 /**
+ * 组织树结构
+ */
+export const getOrgTreeList = params => {
+    return axios.get(`${builderUrl}org/nodes`);
+};
+/**
  * 权限管理-角色管理
  */
 /**
@@ -97,7 +103,7 @@ export const addAttributeTemplateInfo = params => {
  * 删除属性模板信息
  */
 export const delAttributeTemplateInfo = params => {
-    return axios.delete(`${builderUrl}appconfig/general/attribute/template/deleteAttributeTemplateInfo`, params);
+    return axios.post(`${builderUrl}appconfig/general/attribute/template/deleteAttributeTemplateInfo`, params);
 };
 /**
  * @param {*} params
@@ -107,5 +113,3 @@ export const moveAttributeTemplateInfo = params => {
     return axios.post(`${builderUrl}appconfig/general/attribute/template/moveAttributeTemplateInfo`, params);
 
 };
-
-

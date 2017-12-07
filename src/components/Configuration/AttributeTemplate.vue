@@ -57,8 +57,8 @@
                 </el-table-column>
             </el-table>
             <div style="margin-top:40px">
-            <el-button type="primary" @click="addAttributeTemplateVisible=true;" class="dialog-btn">增加一级</el-button>
-            <el-button type="primary" class="dialog-btn" @click="addSubmit(2)">增加二级</el-button>
+            <el-button type="primary" class="dialog-btn" @click="addDialogShow(1)" >增加一级</el-button>
+            <el-button type="primary" class="dialog-btn" @click="addDialogShow(2)">增加二级</el-button>
             <el-button type="primary" class="dialog-btn" @click="editTemplate()">编辑</el-button>
             <el-button type="primary" class="dialog-btn" @click="deleteTemplate()" >删除</el-button>
             <el-button type="primary" class="dialog-btn" @click="move('up')">上移</el-button>
@@ -122,7 +122,7 @@
   background: #f0f0f0;
 }
 
-.el-table .positive-row {
+.el-table .current-row {
   background: #e2f0e4;
 }
 </style>
@@ -131,17 +131,29 @@ import * as types from "../../api/getData-ppc";
 export default {
   data() {
     return {
-      url: "../../../static/tree1.json",
+      zNodes: [],
+      setting: {
+        data: {
+          simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId"
+          }
+        },
+        callback: {
+          onClick: this.orgTreeClick
+        }
+      },
       editTemplateDialogVisible: false,
       editAttributesDialogVisible: false,
       addAttributeTemplateVisible: false,
       addAttributeTemplateVisible_: false,
       orgValue: "",
-      orgType: 0,
-      orgid: "1",
-      attrTemplateTableData: [],
+      orgType: "",
+      orgid: "",
+      attrTemplateTableData: [], //模板数据
       templateId: "", //模板id
-      attrTemplateInfoTableData: [],
+      attrTemplateInfoTableData: [], //模板详细信息
       attrTemplateParentInfo: [], //所有的父级模板
       multipleSelection: [],
       currentRow: [], //模板属性当前选中
@@ -150,7 +162,7 @@ export default {
       addAttributesName: "", //1级
       addAttributesName_: "", //2级
       addAttributesValue_: "", //2级,
-      sourceAttrId: ""
+      sourceAttrId: "" //记忆当前模板
     };
   },
   methods: {
@@ -174,11 +186,13 @@ export default {
       };
       types.getAttributeTemplateInfo(params).then(res => {
         this.attrTemplateInfoTableData = res.data.result;
+        //初始化父级模板
+        this.attrTemplateParentInfo = [];
         this.attrTemplateInfoTableData.forEach((el, i, arr) => {
           if (el.parentId === 0) {
             //父级模板单独抽出
             this.attrTemplateParentInfo.push(el);
-            // 将该属性的子集放到该属性下
+            // 父级模板的子集放到该父级下
             arr.forEach((el_, i_) => {
               if (el.attrId == el_.parentId) {
                 let el_temp = arr.splice(i_, 1);
@@ -187,14 +201,37 @@ export default {
             });
           }
         });
-        // console.log(this.attrTemplateInfoTableData);
-        this.attrTemplateInfoTableData.forEach((item, i) => {
-          if (item.attrId == this.sourceAttrId) {
-            //  console.log(i)
-            this.setCurrent(this.attrTemplateInfoTableData[i]);
+        setTimeout(() => {
+          if (this.sourceAttrId) {
+            this.attrTemplateInfoTableData.forEach((item, i) => {
+              if (item.attrId == this.sourceAttrId) {
+                this.setCurrent(this.attrTemplateInfoTableData[i]);
+              }
+            });
           }
-        });
+        }, 100);
       });
+    },
+    getOrgTreeList() {
+      types.getOrgTreeList().then(res => {
+        this.zNodes = res.data.result;
+        this.orgValue = res.data.result[0].name;
+        this.orgType = res.data.result[0].type;
+        this.orgid = res.data.result[0].id;
+        let treeObj = $.fn.zTree.init($("#orgTree"), this.setting, this.zNodes);
+        this.getAttributeTemplateList();
+      });
+    },
+    // 组织树点击事件
+    orgTreeClick(event, treeId, treeNode) {
+      this.orgValue = treeNode.name;
+      this.orgType = treeNode.type;
+      this.orgid = treeNode.id;
+      this.getAttributeTemplateList();
+      //关闭树结构的窗口
+      setTimeout(() => {
+        $(".el-select-dropdown__item.selected").click();
+      }, 100);
     },
     // 表格单选
     handleCurrentChange(val) {
@@ -206,7 +243,6 @@ export default {
       console.log(this.currentRow);
     },
     setCurrent(row) {
-      console.log(row);
       this.$refs.singleTable.setCurrentRow(row);
     },
     //表格多选
@@ -214,23 +250,32 @@ export default {
       this.multipleSelection = val;
     },
     getTemplateInfo(row) {
-      console.log(row);
       this.templateId = row.templateId;
       this.getAttributeTemplateInfo();
     },
+    //判断弹框谈还是不谈
+    addDialogShow(type) {
+      if (type == 1) {
+        this.addAttributeTemplateVisible = true;
+        this.addAttributesName = "";
+      } else {
+        if (
+          (this.currentRow.parentId != 0 && type == 2) ||
+          !this.currentRow.attrId
+        ) {
+          this.$alert("请选择一级属性", "提示", {
+            confirmButtonText: "确定",
+            type: "info"
+          });
+          return;
+        }
+        this.addAttributeTemplateVisible_ = true;
+        this.addAttributesName_ = "";
+        this.addAttributesValue_ = "";
+      }
+    },
     // 增加1级2级
     addSubmit(type) {
-      if (
-        (this.currentRow.parentId != 0 && type == 2) ||
-        !this.currentRow.attrId
-      ) {
-        this.$alert("请选择一级属性", "提示", {
-          confirmButtonText: "确定",
-          type: "info"
-        });
-        return;
-      }
-      this.addAttributeTemplateVisible_ = true;
       let params = {
         attrName: type == 1 ? this.addAttributesName : this.addAttributesName_,
         attrValue: type == 1 ? "" : this.addAttributesValue_,
@@ -239,7 +284,7 @@ export default {
         parentId: type == 1 ? 0 : this.currentRow.attrId,
         templateId: this.templateId
       };
-      console.log(params);
+      this.sourceAttrId = this.currentRow.attrId;
       types.addAttributeTemplateInfo(params).then(res => {
         if (res.data.code == 200) {
           this.addAttributeTemplateVisible = false;
@@ -293,7 +338,6 @@ export default {
         orgid: this.orgid,
         templateId: this.templateId
       };
-      console.log(params);
       types.delAttributeTemplateInfo(params).then(res => {
         if (res.data.code == 200) {
           this.getAttributeTemplateInfo();
@@ -320,55 +364,61 @@ export default {
       this.attrTemplateInfoTableData.forEach((item, i, arr) => {
         // 上移
         if (item.attrId == this.currentRow.attrId && type == "up") {
-          // 移动父级
+          // 移动组
           if (item.parentId == 0) {
             moveParams.sourceAttrId = item.attrId;
             this.attrTemplateParentInfo.forEach((el, index, arr_) => {
               if (item.attrId == el.attrId) {
-                moveParams.targetAttrId = arr_[index - 1].attrId;
+                arr_[index - 1]
+                  ? (moveParams.targetAttrId = arr_[index - 1].attrId)
+                  : (moveParams.targetAttrId = arr_[index].attrId);
               }
             });
           } else {
-            // 子级
+            // 移动属性
             moveParams.sourceAttrId = item.attrId;
             moveParams.targetAttrId = arr[i - 1].attrId;
           }
         } else if (item.attrId == this.currentRow.attrId && type == "down") {
           // 下移
-          // 移动父级
+          // 移动组
           if (item.parentId == 0) {
             moveParams.sourceAttrId = item.attrId;
             this.attrTemplateParentInfo.forEach((el, index, arr_) => {
               if (item.attrId == el.attrId) {
-                moveParams.targetAttrId = arr_[index + 1].attrId;
+                arr_[index + 1]
+                  ? (moveParams.targetAttrId = arr_[index + 1].attrId)
+                  : (moveParams.targetAttrId = arr_[index].attrId);
               }
             });
           } else {
-            // 子级
+            // 移动属性
             moveParams.sourceAttrId = item.attrId;
-            moveParams.targetAttrId = arr[i + 1].attrId;
+            arr[i + 1]
+              ? (moveParams.targetAttrId = arr[i + 1].attrId)
+              : (moveParams.targetAttrId = arr[i].attrId);
           }
         }
       });
       this.sourceAttrId = moveParams.sourceAttrId;
-      // console.log(params);
       types.moveAttributeTemplateInfo(moveParams).then(res => {
         if (res.data.code == 200) {
           this.getAttributeTemplateInfo();
           this.getAttributeTemplateList();
         }
       });
-      // console.log(this.currentRow)
     },
     tableRowClassName(row, index) {
       if (row.parentId === 0) {
+        // 设置组样式
         return "info-row";
       }
     }
   },
-  mounted() {
-    this.getAttributeTemplateList();
-  }
+  created() {
+    this.getOrgTreeList();
+  },
+  mounted() {}
 };
 </script>
 <style scoped>
