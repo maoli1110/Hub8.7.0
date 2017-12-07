@@ -27,14 +27,14 @@
             </div>
             <div class="el-form-item el-form_">
                 <div class="el-form-item__content">
-                    <el-input placeholder="请选择日期" icon="search" style="max-width:220px"></el-input>
+                    <el-input placeholder="请输入通行证账号或备注" icon="search" style="max-width:220px"></el-input>
                 </div>
             </div>
         </div>
         <div class="main">
             <div>
                 <el-button type="primary" class="basic-btn" icon="plus"  @click="addMember()">添加人员</el-button>
-                <el-button type="primary" class="basic-btn"  @click='batchAddMember()'>
+                <el-button type="primary" class="basic-btn"  @click=' batchAddMemberDialogVisible=true'>
                      <i class="icon-batch-add pl-icon-batch-add"></i>
                      <span>批量添加 </span>                                                           
                 </el-button>
@@ -170,15 +170,15 @@
                 </div>
             </div>
             <div>
-                <el-input type="textarea" style="float:left;width:430px;height:300px" resize='none'
-                          :autosize="{ minRows: 14, maxRows: 14}" placeholder="请输入内容" v-model="textarea">
+                <el-input type="textarea" style="float:left;width:430px;height:315px" resize='none'
+                          :autosize="{ minRows: 15, maxRows: 15}" placeholder="请输入内容" v-model="textarea">
                 </el-input>
                 <div style="margin-left:480px">
-                    <h3>使用说明：</h3>
+                    <div style="margin-bottom:5px">使用说明：</div>
                     <ul class="contens-wrap">
                         <li>1.选择一个成员，复制他的角色和授权</li>
                         <li>2.每行请输入鲁班通行证、一个姓名</li>
-                        <li>3.通行证、姓名、使用空格隔开</li>
+                        <li>3.通行证、用户名、使用空格隔开</li>
                         <li>4.用户名限制11个字符</li>
                         <li>示例：布鲁斯123  布鲁斯</li>
                         <li>5.excel或者txt文本文件中按上面格式准备的帐号信息也可以直接复制到输入框中进行添加</li>
@@ -187,7 +187,7 @@
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="batchAddMemberDialogVisible= false" class="dialog-btn">确 定</el-button>
+                <el-button type="primary" @click="batchAddMember()" class="dialog-btn">确 定</el-button>
                 <el-button @click="batchAddMemberDialogVisible= false" class="dialog-btn">取 消</el-button>
             </span>
         </el-dialog>
@@ -259,557 +259,570 @@
 
 </template>
 <script>
-    import "../../../static/zTree/js/jquery.ztree.core.min.js";
-    import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
-    export default {
-        data() {
-            var validatePass = (rule, value, callback) => {
-                if (value === "") {
-                    callback(new Error("请输入通行证"));
-                } else {
-                    console.log("后台验证中......");
-                    this.ruleForm.phone = "18555524036";
-                    this.ruleForm.email = "yunyinyue@163.com";
-                    callback();
-                }
-            };
-            return {
-                url: "../../../static/tree1.json",
-                cacheProjectTree: [],
-                addMemberDialogVisible: false,
-                batchAddMemberDialogVisible: false,
-                weeklyActivityDialogVisible: false,
-                serviceDetailsDialogVisible: false,
-                authorizedDataCatalogVisible: false,
-                signDialogVisible: false,
-                textarea: "",
-                orgValue: "",
-                role: "",
-                ruleForm: {
-                    pass: "",
-                    name: "",
-                    role: "",
-                    attribution: "",
-                    phone: "",
-                    email: ""
-                },
-                rules: {
-                    pass: [{ required: true, validator: validatePass, trigger: "blur" }],
-                    name: [{ required: false, message: "请输入姓名", trigger: "blur" }],
-                    role: [{ required: true, message: "请输入角色", trigger: "blur" }],
-                    attribution: [{ required: true, message: "请输入归属", trigger: "blur" }]
-                },
-
-                orgSetting: {
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
-                    },
-                    callback: {
-                        onClick: this.orgTreeClick
-                    }
-                },
-                dialogOrgSetting: {
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
-                    },
-                    callback: {
-                        onClick: this.dialogOrgTreeClick
-                    }
-                },
-                zNodes: [
-                    {
-                        id: 1,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标不同",
-                        open: true,
-                        iconSkin: "pIcon01"
-                    },
-                    { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-                    { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-                    { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-                    {
-                        id: 2,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标相同",
-                        open: true,
-                        iconSkin: "pIcon02"
-                    },
-                    { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-                    { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-                    { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-                    { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-                    { id: 31, pId: 3, name: "叶子节点1" },
-                    { id: 32, pId: 3, name: "叶子节点2" },
-                    { id: 33, pId: 3, name: "叶子节点3" }
-                ],
-                authorizedProjectSetting: {
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
-                    },
-                    callback: {
-                        onClick: this.authorizedProjectClick,
-                        beforeClick: this.authorizedProjectBeforeClick
-                    }
-                },
-                authorizedProjectNodes: [
-                    {
-                        id: 1,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标不同",
-                        open: true,
-                        iconSkin: "pIcon01"
-                    },
-                    { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-                    { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-                    { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-                    {
-                        id: 2,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标相同",
-                        open: true,
-                        iconSkin: "pIcon02"
-                    },
-                    { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-                    { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-                    { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-                    { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-                    { id: 31, pId: 3, name: "叶子节点1" },
-                    { id: 32, pId: 3, name: "叶子节点2" },
-                    { id: 33, pId: 3, name: "叶子节点3" }
-                ],
-                folderSetting: {
-                    check: {
-                        enable: true
-                    },
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
-                    }
-                },
-                folderNodes: [
-                    { id: 1, pId: 0, name: "我是开始 1", open: true },
-                    { id: 11, pId: 1, name: "我是开始 1-1", open: true },
-                    { id: 111, pId: 11, name: "我是开始 1-1-1" },
-                    { id: 112, pId: 11, name: "我是开始 1-1-2" },
-                    { id: 12, pId: 1, name: "我是开始 1-2", open: true },
-                    { id: 121, pId: 12, name: "我是开始 1-2-1" },
-                    { id: 122, pId: 12, name: "我是开始 1-2-2" },
-                    { id: 2, pId: 0, name: "我是开始 2", checked: true, open: true },
-                    { id: 21, pId: 2, name: "我是开始 2-1" },
-                    { id: 22, pId: 2, name: "我是开始 2-2", open: true },
-                    { id: 221, pId: 22, name: "我是开始 2-2-1", checked: true },
-                    { id: 222, pId: 22, name: "我是开始 2-2-2" },
-                    { id: 23, pId: 2, name: "我是开始 2-3" }
-                ],
-                memberTableData: [
-                    {
-                        name: "赵四",
-                        id: 1,
-                        pass: "wulijjjj111111111111111111",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remark11111111111111111111111111111111111111111111111"
-                    },
-                    {
-                        name: "赵四",
-                        id: 2,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 3,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 4,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 5,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 6,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 7,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 8,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 9,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 10,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    }
-                ],
-                weeklyActivityData: [
-                    {
-                        date: "2017.9.30 17:43:57",
-                        name: "Explorer",
-                        time: "81.8",
-                        times: "1"
-                    },
-                    {
-                        date: "2017.9.28 17:43:57",
-                        name: "Govern",
-                        time: "1.8",
-                        times: "188"
-                    },
-                    {
-                        date: "2017.9.31 17:43:57",
-                        name: "View Pad",
-                        time: "88",
-                        times: "18"
-                    },
-                    {
-                        date: "2017.10.31 16:43:57",
-                        name: "View",
-                        time: "18",
-                        times: "88"
-                    }
-                ],
-                options: [
-                    {
-                        value: "选项1",
-                        label: "黄金糕"
-                    },
-                    {
-                        value: "选项2",
-                        label: "双皮奶"
-                    },
-                    {
-                        value: "选项3",
-                        label: "蚵仔煎"
-                    },
-                    {
-                        value: "选项4",
-                        label: "龙须面"
-                    },
-                    {
-                        value: "选项5",
-                        label: "北京烤鸭"
-                    }
-                ],
-                multipleSelection: []
-            };
-        },
-
-        methods: {
-            orgTreeClick(event, treeId, treeNode) {
-                this.orgValue = treeNode.name;
-                setTimeout(() => {
-                    $(".el-select-dropdown__item.selected").click();
-            }, 100);
-            },
-            dialogOrgTreeClick(event, treeId, treeNode) {
-                this.ruleForm.attribution = treeNode.name;
-                setTimeout(() => {
-                    $(".el-select-dropdown__item.selected").click();
-            }, 100);
-            },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            },
-            addMember() {
-                this.addMemberDialogVisible = true;
-                setTimeout(() => {
-                    $.fn.zTree.init(
-                    $("#dialogOrgTree"),
-                    this.dialogOrgSetting,
-                    this.zNodes
-                );
-            }, 100);
-            },
-            editMember(MemberId) {
-                this.$router.push({ path: `/authority/edit-member/${MemberId}` });
-            },
-            submitForm(formName) {
-                this.$refs[formName].validate(valid => {
-                    if (valid) {
-                        alert("提交中...........");
-                        console.log(this.ruleForm);
-                        this.addMemberDialogVisible = false;
-                    } else {
-                        console.log("error submit!!");
-                return false;
-            }
-            });
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            batchAddMember() {
-                this.batchAddMemberDialogVisible = true;
-            },
-            deleteMember() {},
-            submitUpload() {
-                this.$refs.upload.submit();
-            },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePreview(file) {
-                console.log(file);
-            },
-            authorizedDataCatalog() {
-                console.log(this.cacheProjectTree);
-                this.cacheProjectTree = [];
-                setTimeout(() => {
-                    let zTree = $.fn.zTree.init(
-                        $("#authorizedProjectTree"),
-                        this.authorizedProjectSetting,
-                        this.authorizedProjectNodes
-                    );
-                $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
-                let nodes = zTree.getNodes();
-                if (nodes.length > 0) {
-                    zTree.selectNode(nodes[0]);
-                }
-            }, 150);
-            },
-            authorizedProjectClick(event, treeId, treeNode) {
-                let exsistCacheProjectTreeItem = this.cacheProjectTree.find(
-                        el => el.id == treeNode.id
-            );
-                if (exsistCacheProjectTreeItem) {
-                    this.folderNodes = exsistCacheProjectTreeItem.preTreeInfo;
-                    $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
-                } else {
-                    console.log("后台请求数据");
-                    this.$axios.get(this.url).then(res => {
-                        this.folderNodes = res.data;
-                    $.fn.zTree.init(
-                        $("#folderTree"),
-                        this.folderSetting,
-                        this.folderNodes
-                    );
-                });
-                }
-            },
-            authorizedProjectBeforeClick() {
-                //  左侧组织树上次选中节点
-                let zTree = $.fn.zTree.getZTreeObj("authorizedProjectTree");
-                let preSelectNode = zTree.getSelectedNodes();
-                // 记录右侧文件夹树上次选中状态
-                let preTreeObj = $.fn.zTree.getZTreeObj("folderTree");
-                // let preNodes = preTreeObj.transformToArray(preTreeObj.getNodes());
-                let preNodes = preTreeObj.getNodes();
-                if (this.cacheProjectTree.length > 0) {
-                    let cacheProjectTreeItem = this.cacheProjectTree.find(
-                            el => el.id == preSelectNode[0].id
-                );
-                    cacheProjectTreeItem
-                        ? (cacheProjectTreeItem.preTreeInfo = preNodes)
-                        : this.cacheProjectTree.push({
-                        id: preSelectNode[0].id,
-                        preTreeInfo: preNodes
-                    });
-                } else {
-                    this.cacheProjectTree.push({
-                        id: preSelectNode[0].id,
-                        preTreeInfo: preNodes
-                    });
-                }
-            }
-        },
-        mounted() {
-            $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
-        },
-        created() {
-            this.$emit("routerActive");
-        }
+import "../../../static/zTree/js/jquery.ztree.core.min.js";
+import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+export default {
+  data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入通行证"));
+      } else {
+        console.log("后台验证中......");
+        this.ruleForm.phone = "18555524036";
+        this.ruleForm.email = "yunyinyue@163.com";
+        callback();
+      }
     };
+    return {
+      url: "../../../static/tree1.json",
+      cacheProjectTree: [],
+      addMemberDialogVisible: false,
+      batchAddMemberDialogVisible: false,
+      weeklyActivityDialogVisible: false,
+      serviceDetailsDialogVisible: false,
+      authorizedDataCatalogVisible: false,
+      signDialogVisible: false,
+      textarea: "布鲁斯123 布鲁斯",
+      orgValue: "",
+      role: "",
+      ruleForm: {
+        pass: "",
+        name: "",
+        role: "",
+        attribution: "",
+        phone: "",
+        email: ""
+      },
+      rules: {
+        pass: [{ required: true, validator: validatePass, trigger: "blur" }],
+        name: [{ required: false, message: "请输入姓名", trigger: "blur" }],
+        role: [{ required: true, message: "请输入角色", trigger: "blur" }],
+        attribution: [{ required: true, message: "请输入归属", trigger: "blur" }]
+      },
+
+      orgSetting: {
+        data: {
+          simpleData: {
+            enable: true
+          }
+        },
+        callback: {
+          onClick: this.orgTreeClick
+        }
+      },
+      dialogOrgSetting: {
+        data: {
+          simpleData: {
+            enable: true
+          }
+        },
+        callback: {
+          onClick: this.dialogOrgTreeClick
+        }
+      },
+      zNodes: [
+        {
+          id: 1,
+          pId: 0,
+          name: "展开、折叠 自定义图标不同",
+          open: true,
+          iconSkin: "pIcon01"
+        },
+        { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
+        { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
+        { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
+        {
+          id: 2,
+          pId: 0,
+          name: "展开、折叠 自定义图标相同",
+          open: true,
+          iconSkin: "pIcon02"
+        },
+        { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
+        { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
+        { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
+        { id: 3, pId: 0, name: "不使用自定义图标", open: true },
+        { id: 31, pId: 3, name: "叶子节点1" },
+        { id: 32, pId: 3, name: "叶子节点2" },
+        { id: 33, pId: 3, name: "叶子节点3" }
+      ],
+      authorizedProjectSetting: {
+        data: {
+          simpleData: {
+            enable: true
+          }
+        },
+        callback: {
+          onClick: this.authorizedProjectClick,
+          beforeClick: this.authorizedProjectBeforeClick
+        }
+      },
+      authorizedProjectNodes: [
+        {
+          id: 1,
+          pId: 0,
+          name: "展开、折叠 自定义图标不同",
+          open: true,
+          iconSkin: "pIcon01"
+        },
+        { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
+        { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
+        { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
+        {
+          id: 2,
+          pId: 0,
+          name: "展开、折叠 自定义图标相同",
+          open: true,
+          iconSkin: "pIcon02"
+        },
+        { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
+        { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
+        { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
+        { id: 3, pId: 0, name: "不使用自定义图标", open: true },
+        { id: 31, pId: 3, name: "叶子节点1" },
+        { id: 32, pId: 3, name: "叶子节点2" },
+        { id: 33, pId: 3, name: "叶子节点3" }
+      ],
+      folderSetting: {
+        check: {
+          enable: true
+        },
+        data: {
+          simpleData: {
+            enable: true
+          }
+        }
+      },
+      folderNodes: [
+        { id: 1, pId: 0, name: "我是开始 1", open: true },
+        { id: 11, pId: 1, name: "我是开始 1-1", open: true },
+        { id: 111, pId: 11, name: "我是开始 1-1-1" },
+        { id: 112, pId: 11, name: "我是开始 1-1-2" },
+        { id: 12, pId: 1, name: "我是开始 1-2", open: true },
+        { id: 121, pId: 12, name: "我是开始 1-2-1" },
+        { id: 122, pId: 12, name: "我是开始 1-2-2" },
+        { id: 2, pId: 0, name: "我是开始 2", checked: true, open: true },
+        { id: 21, pId: 2, name: "我是开始 2-1" },
+        { id: 22, pId: 2, name: "我是开始 2-2", open: true },
+        { id: 221, pId: 22, name: "我是开始 2-2-1", checked: true },
+        { id: 222, pId: 22, name: "我是开始 2-2-2" },
+        { id: 23, pId: 2, name: "我是开始 2-3" }
+      ],
+      memberTableData: [
+        {
+          name: "赵四",
+          id: 1,
+          pass: "wulijjjj111111111111111111",
+          role: "项目经理",
+          isAdmin: true,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remark11111111111111111111111111111111111111111111111"
+        },
+        {
+          name: "赵四",
+          id: 2,
+          pass: "wulijjjj",
+          role: "项目经理",
+          isAdmin: false,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remarks"
+        },
+        {
+          name: "赵四",
+          id: 3,
+          pass: "wulijjjj",
+          role: "项目经理",
+          isAdmin: false,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remarks"
+        },
+        {
+          name: "赵四",
+          id: 4,
+          pass: "wulijjjj",
+          role: "项目经理",
+          isAdmin: true,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remarks"
+        },
+        {
+          name: "赵四",
+          id: 5,
+          pass: "wulijjjj",
+          role: "项目经理",
+          isAdmin: false,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remarks"
+        },
+        {
+          name: "赵四",
+          id: 6,
+          pass: "wulijjjj",
+          role: "项目经理",
+          isAdmin: true,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remarks"
+        },
+        {
+          name: "赵四",
+          id: 7,
+          pass: "wulijjjj",
+          role: "项目经理",
+          isAdmin: false,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remarks"
+        },
+        {
+          name: "赵四",
+          id: 8,
+          pass: "wulijjjj",
+          role: "项目经理",
+          isAdmin: true,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remarks"
+        },
+        {
+          name: "赵四",
+          id: 9,
+          pass: "wulijjjj",
+          role: "项目经理",
+          isAdmin: true,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remarks"
+        },
+        {
+          name: "赵四",
+          id: 10,
+          pass: "wulijjjj",
+          role: "项目经理",
+          isAdmin: false,
+          phone: "18075240365",
+          email: "978648117@163.com",
+          date: "2016-05-03 13:51",
+          WAU: "5小时.5次",
+          remarks: "超长remarks"
+        }
+      ],
+      weeklyActivityData: [
+        {
+          date: "2017.9.30 17:43:57",
+          name: "Explorer",
+          time: "81.8",
+          times: "1"
+        },
+        {
+          date: "2017.9.28 17:43:57",
+          name: "Govern",
+          time: "1.8",
+          times: "188"
+        },
+        {
+          date: "2017.9.31 17:43:57",
+          name: "View Pad",
+          time: "88",
+          times: "18"
+        },
+        {
+          date: "2017.10.31 16:43:57",
+          name: "View",
+          time: "18",
+          times: "88"
+        }
+      ],
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕"
+        },
+        {
+          value: "选项2",
+          label: "双皮奶"
+        },
+        {
+          value: "选项3",
+          label: "蚵仔煎"
+        },
+        {
+          value: "选项4",
+          label: "龙须面"
+        },
+        {
+          value: "选项5",
+          label: "北京烤鸭"
+        }
+      ],
+      multipleSelection: []
+    };
+  },
+
+  methods: {
+    orgTreeClick(event, treeId, treeNode) {
+      this.orgValue = treeNode.name;
+      setTimeout(() => {
+        $(".el-select-dropdown__item.selected").click();
+      }, 100);
+    },
+    dialogOrgTreeClick(event, treeId, treeNode) {
+      this.ruleForm.attribution = treeNode.name;
+      setTimeout(() => {
+        $(".el-select-dropdown__item.selected").click();
+      }, 100);
+    },
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    addMember() {
+      this.addMemberDialogVisible = true;
+      setTimeout(() => {
+        $.fn.zTree.init(
+          $("#dialogOrgTree"),
+          this.dialogOrgSetting,
+          this.zNodes
+        );
+      }, 100);
+    },
+    editMember(MemberId) {
+      this.$router.push({ path: `/authority/edit-member/${MemberId}` });
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("提交中...........");
+          console.log(this.ruleForm);
+          this.addMemberDialogVisible = false;
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    batchAddMember() {
+      let textareaArray = this.textarea.split("\n");
+      let memberMessage = [];
+      textareaArray.forEach(el => {
+        let tempArr = el.split(" ");
+        if (tempArr[1].length > 11) {
+          this.$alert("用户名限制11个字符内", "提示", {
+            confirmButtonText: "确定",
+            type: "info"
+          });
+          return;
+        }
+        memberMessage.push({ pass: tempArr[0], name: tempArr[1] });
+      });
+      console.log(memberMessage);
+    },
+    deleteMember() {},
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    authorizedDataCatalog() {
+      console.log(this.cacheProjectTree);
+      this.cacheProjectTree = [];
+      setTimeout(() => {
+        let zTree = $.fn.zTree.init(
+          $("#authorizedProjectTree"),
+          this.authorizedProjectSetting,
+          this.authorizedProjectNodes
+        );
+        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
+        let nodes = zTree.getNodes();
+        if (nodes.length > 0) {
+          zTree.selectNode(nodes[0]);
+        }
+      }, 150);
+    },
+    authorizedProjectClick(event, treeId, treeNode) {
+      let exsistCacheProjectTreeItem = this.cacheProjectTree.find(
+        el => el.id == treeNode.id
+      );
+      if (exsistCacheProjectTreeItem) {
+        this.folderNodes = exsistCacheProjectTreeItem.preTreeInfo;
+        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
+      } else {
+        console.log("后台请求数据");
+        this.$axios.get(this.url).then(res => {
+          this.folderNodes = res.data;
+          $.fn.zTree.init(
+            $("#folderTree"),
+            this.folderSetting,
+            this.folderNodes
+          );
+        });
+      }
+    },
+    authorizedProjectBeforeClick() {
+      //  左侧组织树上次选中节点
+      let zTree = $.fn.zTree.getZTreeObj("authorizedProjectTree");
+      let preSelectNode = zTree.getSelectedNodes();
+      // 记录右侧文件夹树上次选中状态
+      let preTreeObj = $.fn.zTree.getZTreeObj("folderTree");
+      // let preNodes = preTreeObj.transformToArray(preTreeObj.getNodes());
+      let preNodes = preTreeObj.getNodes();
+      if (this.cacheProjectTree.length > 0) {
+        let cacheProjectTreeItem = this.cacheProjectTree.find(
+          el => el.id == preSelectNode[0].id
+        );
+        cacheProjectTreeItem
+          ? (cacheProjectTreeItem.preTreeInfo = preNodes)
+          : this.cacheProjectTree.push({
+              id: preSelectNode[0].id,
+              preTreeInfo: preNodes
+            });
+      } else {
+        this.cacheProjectTree.push({
+          id: preSelectNode[0].id,
+          preTreeInfo: preNodes
+        });
+      }
+    }
+  },
+  mounted() {
+    $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
+  },
+  created() {
+    this.$emit("routerActive");
+  }
+};
 </script>
 <style scoped>
-    .header {
-        height: 40px;
-        background-color: #fff;
-        padding: 10px 20px;
-    }
-    .header .el-form-item__label{
-        text-align: left
-    }
-    .ztree {
-        margin-top: 0px;
-        width: 205px;
-    }
+.header {
+  height: 40px;
+  background-color: #fff;
+  padding: 10px 20px;
+}
+.header .el-form-item__label {
+  text-align: left;
+}
+.ztree {
+  margin-top: 0px;
+  width: 205px;
+}
 
-    .el-form_ {
-        float: left;
-        width: 20%;
-        margin-bottom: 0px;
-    }
-    .el-form_+.el-form_{
-        margin-left: 20px
-    }
-    .main {
-        padding: 20px;
-        border-top: 1px solid #e6e6e6;
-        background-color: #fff;
-    }
+.el-form_ {
+  float: left;
+  width: 20%;
+  margin-bottom: 0px;
+}
+.el-form_ + .el-form_ {
+  margin-left: 20px;
+}
+.main {
+  padding: 20px;
+  border-top: 1px solid #e6e6e6;
+  background-color: #fff;
+}
 
-    .textcell {
-        height: 46px;
-        padding: 0 20px;
-        line-height: 46px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        box-sizing: border-box;
-        white-space: nowrap;
-    }
-    .contens-wrap > li {
-        padding: 9px 0;
-    }
+.textcell {
+  height: 46px;
+  padding: 0 20px;
+  line-height: 46px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.contens-wrap > li {
+  padding: 9px 0;
+}
 
-    .contens-wrap > li:nth-child(1) {
-        color: #e30000;
-    }
+.contens-wrap > li:nth-child(1) {
+  color: #e30000;
+}
 
-    .contens-wrap > li:nth-child(5) {
-        color: #e30000;
-    }
-    .el-upload-dragger {
-        margin-left: 20px;
-    }
-    .authorizedDataCatalog {
-        float: left;
-    }
-    .dataCatalog {
-        float: right;
-    }
-    .authorizedDataCatalog .ztree,
-    .dataCatalog .ztree {
-        width: 330px;
-        padding: 20px;
-        box-sizing: border-box;
-        border: 1px solid #e6e6e6;
-        overflow: auto
-    }
-    .authorizedDataCatalog .ztree {
-        height: 420px;
-    }
-    .dataCatalog .ztree {
-        height: 380px;
-    }
-    .demo-ruleForm {
-        margin-top: 20px;
-    }
-    .red_ {
-        color: #e30000;
-        font-family: "yahei";
-        font-size: 14px;
-    }
-    .authorized-item {
-        font-size: 16px;
-        font-weight: bold;
-        color: #444444;
-    }
-    .icon+.icon{
-         margin-left: 15px;
-    }
+.contens-wrap > li:nth-child(5) {
+  color: #e30000;
+}
+.el-upload-dragger {
+  margin-left: 20px;
+}
+.authorizedDataCatalog {
+  float: left;
+}
+.dataCatalog {
+  float: right;
+}
+.authorizedDataCatalog .ztree,
+.dataCatalog .ztree {
+  width: 330px;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #e6e6e6;
+  overflow: auto;
+}
+.authorizedDataCatalog .ztree {
+  height: 420px;
+}
+.dataCatalog .ztree {
+  height: 380px;
+}
+.demo-ruleForm {
+  margin-top: 20px;
+}
+.red_ {
+  color: #e30000;
+  font-family: "yahei";
+  font-size: 14px;
+}
+.authorized-item {
+  font-size: 16px;
+  font-weight: bold;
+  color: #444444;
+}
+.icon + .icon {
+  margin-left: 15px;
+}
 </style>
 
 

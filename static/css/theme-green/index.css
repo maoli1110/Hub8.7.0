@@ -1788,12 +1788,12 @@
 .el-table .sort-caret.ascending {
     top: 11px;
     border-top: none;
-    border-bottom: 5px solid #e6e6e6
+    border-bottom: 5px solid #ccc
 }
 
 .el-table .sort-caret.descending {
     bottom: 11px;
-    border-top: 5px solid #e6e6e6;
+    border-top: 5px solid #ccc;
     border-bottom: none
 }
 
@@ -2019,7 +2019,7 @@
 }
 
 .el-table__body tr.current-row>td {
-    background: #edf7ff
+    background: rgb(183, 207, 224)
 }
 
 .el-table__column-resize-proxy {

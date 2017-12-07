@@ -62,6 +62,8 @@ export const validateVouchers = params=> axios.post(`${params.url}luban/bi/valid
 // POST /luban/bi/addLubanBiChargeOrder 添加鲁班币充值订单
 export const addLubanBiChargeOrder = params=>axios.post(`${params.url}luban/bi/addLubanBiChargeOrder`, params.lubanBiChargeParam)
 
+//get 快递费计算相关
+export const getGoldInvoiceExpress = params=>axios.get(`${params.url}luban/bi/getGoldInvoiceExpress`)
 // POST /luban/bi/getLubanBiMembers 查询待分配鲁班币名单
 export const getLubanBiMembers = params=>axios.post(`${params.url}luban/bi/getLubanBiMembers`, params.getLubanBiMembersParam)
 // GET /luban/bi/getLubanBiAllocateList/{historyId} 获取鲁班币分配名单

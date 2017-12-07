@@ -35,7 +35,7 @@
                 </el-table-column>
             </el-table>
             <div style="margin-top: 20px">
-                <!-- <div style="float:left;height:40px;line-height:40px">共10个结果</div> -->
+                <div style="float:left;height:40px;line-height:40px">共{{total}}个结果</div>
                 <el-pagination style="margin-left:30%"
                                @size-change="handleSizeChange"
                                @current-change="handleCurrentChange"
@@ -68,28 +68,6 @@ export default {
         pageSize: 10,
         searchStr: null //搜索
       },
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
       multipleSelection: []
     };
   },
@@ -139,13 +117,23 @@ export default {
       this.$router.push({ path: `/authority/member-management` });
     },
     deleteRole() {
-      this.multipleSelection.forEach(item => {
-        types.deleteRole(item.roleId).then(res => {
-          if (res.data.code == 200) {
-            this.getRoleList();
-          }
+      this.$confirm("确认删除选中角色?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.multipleSelection.forEach(item => {
+            types.deleteRole(item.roleId).then(res => {
+              if (res.data.code == 200) {
+                this.getRoleList();
+              }
+            });
+          });
+        })
+        .catch(() => {
+          console.log(1);
         });
-      });
     }
   },
   created() {

@@ -215,6 +215,7 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .pdf-icon{
     width:16px;height:16px;float:left;
 }
+.draw-clear{right:30px;top:10px;color:#e6e6e6;}
 .pdf-icon.icon-delete,.work-icon.icon-delete{
     background:url('../../static/img/icon-menu.png')  -58px -146px   no-repeat;margin-left:16px;
 }
@@ -222,11 +223,20 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
    float:left;margin-left:30px; background:url('../../static/img/icon-menu.png')  -110px -216px   no-repeat;
 }
 /*form-item (修改图纸信息弹窗)*/
-.pdfDrawing .form-item .el-input,.pdfDrawing .form-item .el-select,.pdfDrawing .form-item .el-textarea{width:77%!important;}
-.pdfDrawing .form-item .el-select>.el-input{width:100% !important;}
-.pdfDrawing .form-item .el-form-item__label{width:90px !important;}
-.pdfDrawing .form-item .projManage-remark{position:relative;}
-.pdfDrawing .form-item .info-pos{position:absolute;right:4px !important;bottom:2px;background:#fff;height:30px;}
+.pdfDrawing .el-table td{padding:0!important;}
+.pdfDrawing .el-table .el-tooltip.cell{padding:0px 10px}
+.pdfDrawing .el-table td:nth-child(2) .el-tooltip.cell,
+.pdfDrawing .el-table td:nth-child(5) .el-tooltip.cell,
+.pdfDrawing .el-table td:nth-child(7) .el-tooltip.cell{
+text-align:left;}
+
+.pdfDrawing .el-table__body{}
+.draw-info{width:504px !important;}
+.pdfDrawing .draw-info .el-input,.pdfDrawing .draw-info .el-select,.pdfDrawing .draw-info .el-textarea{width:77%!important;}
+.pdfDrawing .draw-info .el-select>.el-input{width:100% !important;}
+.pdfDrawing .draw-info .el-form-item__label{width:90px !important;}
+.pdfDrawing .draw-info .projManage-remark{position:relative;}
+.pdfDrawing .draw-info .info-pos{position:absolute;right:13px !important;bottom:2px;background:#fff;height:30px;}
 /*排序样式*/
 .sort{width:12px;height:30px;display:inline-block;line-height:30px;top:10px;left:3px;}
 .sort .asc{

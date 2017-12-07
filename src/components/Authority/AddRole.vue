@@ -56,7 +56,7 @@
                                 <div style="text-align:center;margin-top:20px"  >
                                     <img :src="item.src"
                                          class="image"
-                                         style="width:64px;height:64px;margin:0 auto">
+                                         style="width:55%;height:55%;margin:0 auto">
                                     <div style="height:35px;line-height:35px">{{item.productName}}</div>
                                 </div>
                                 <div>
@@ -259,8 +259,7 @@ export default {
                 item.checkAll =
                   item.checkedCities.length === item.cities.length;
               });
-            });
-            console.log(this.clientInformation);
+            });            
             // 默认展示
             this.selectClient(this.clientInformation[0]);
             // 客户端拆分10个一组
@@ -388,19 +387,19 @@ export default {
   created() {
     this.getRoleClientAuthInfo();
     this.getRoleType();
-    this.roleName = this.curEditRole.roleName;
-    this.textarea = this.curEditRole.remarks || "";
-    this.roleType = this.curEditRole.roleTypeId;
-    this.roleId = this.curEditRole.roleId;
   },
   mounted() {
     if (this.$route.path == "/authority/add-role") {
       // 添加
     } else {
       // 编辑
-      // if (!this.curEditRole.roleName) {
-      //   this.$router.push("/authority/role-management");
-      // }
+      if (!this.curEditRole.roleName) {
+        this.$router.push("/authority/role-management");
+      }
+      this.roleName = this.curEditRole.roleName;
+      this.textarea = this.curEditRole.remarks || "";
+      this.roleType = this.curEditRole.roleTypeId;
+      this.roleId = this.curEditRole.roleId;
     }
   }
 };
@@ -419,7 +418,7 @@ export default {
 }
 
 .role-wrap {
-  min-width: 1089px;
+  /* min-width: 1089px; */
   padding: 20px;
   font-size: 16px;
   font-weight: bold;
@@ -447,8 +446,8 @@ export default {
   border-top: none;
 }
 .card {
-  width: 120px;
-  height: 120px;
+  width: 8%;
+  height: 8%;
   display: inline-block;
   box-sizing: border-box;
   border: none;
@@ -458,7 +457,7 @@ export default {
   margin-left: 20px;
 }
 .card:nth-child(1) {
-  margin-left: 40px;
+  margin-left: 57px;
 }
 .red_ {
   color: #e30000;

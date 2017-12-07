@@ -94,5 +94,9 @@ export const PDFtestList = params =>axios.get('../../static/pdfTableList.json');
 export const getDrawingClassifyInfos = params =>axios.get(`${params.url}rs/pdfDrawingRest/getDrawingClassifyInfos`);
 //pds图纸->获取工程下拉框
 export const getProjHasPdfDraw = params =>axios.get(`${params.url}rs/pdfDrawingRest/getProjHasPdfDraw`);
+//pdf图纸->删除
+export const delDrawingInfos = params=>axios.post(`${params.url}rs/pdfDrawingRest/delDrawingInfos`,params.param);
+//pdf图纸->修改PDF图纸
+export const updateDrawingInfo = params=>axios.post(`${params.url}rs/pdfDrawingRest/updateDrawingInfo`,params.param)
 //pds图纸->获取图纸详情
 export const getDrawingDetailInfos = params =>axios.post(`${params.url}rs/pdfDrawingRest/getDrawingDetailInfos`,params.param);
