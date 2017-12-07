@@ -43,9 +43,9 @@
                 </el-table-column>-->
                 <el-table-column prop="drawingName" width="" label="图纸名称" show-overflow-tooltip sortable>
                 </el-table-column>
-                <el-table-column prop="classifyName" width="100" label="分类" sortable>
+                <el-table-column prop="classifyName" width="100" label="分类" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="size" width="90" label="大小" sortable>
+                <el-table-column prop="size" width="90" label="大小" sortable show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="uploadUser" width="100" label="上传人" show-overflow-tooltip sortable>
                 </el-table-column>
