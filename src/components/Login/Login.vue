@@ -120,8 +120,13 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-            let comString = this.getComString();
-            console.log(comString,'comString')     
+            this.loading = true;
+            this.$router.push("/companyprofile/organization-structure");
+            /** 
+             * 正式版本代码如下
+             */
+            // let comString = this.getComString();
+            // console.log(comString,'comString')     
         } else {
           console.log("error submit!!");
           return false;
