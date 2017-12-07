@@ -7,8 +7,9 @@
                     <el-select class="absol" v-model="filterParam.proVal" placeholder="请选择" @change="changeProject" style="left:72px">
                         <el-option
                             v-for="item in projectList"
-                            :key="item.name"
-                            :value="item.name">
+                            :key="item.ppid"
+                            :label="item.projName"
+                            :value="item.ppid">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -32,16 +33,16 @@
 
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class=" scroll-me" :data="tableData.content" style="min-width:1155px;" :default-sort="{prop: 'date', order: 'descending'}"   @select-all="selectAll" @select="selectChecked">
+            <el-table class=" scroll-me" :data="tableData.content" style="min-width:1155px;" :default-sort="{prop: 'uploadTime', order: 'descending'}"   @select-all="selectAll" @select="selectChecked" @sort-change="tableSort">
                 <el-table-column
                     type="selection"
                     width="40" >
                 </el-table-column>
                 <!--<el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
                 </el-table-column>-->
-                <el-table-column prop="drawingName" width="" label="图纸名称" show-overflow-tooltip>
+                <el-table-column prop="drawingName" width="" label="图纸名称" show-overflow-tooltip sortable>
                 </el-table-column>
-                <el-table-column prop="classifyName" width="100" label="分类" >
+                <el-table-column prop="classifyName" width="100" label="分类" sortable>
                     <!--<template slot-scope = "scope">
                         <span v-show='scope.row.classifyId=="705"'>土建</span>
                         <span v-show='scope.row.classifyId=="706"'>暖气</span>
@@ -49,11 +50,11 @@
                         <span v-show='scope.row.classifyId=="708"'>小类</span>
                     </template>-->
                 </el-table-column>
-                <el-table-column prop="size" width="90" label="大小" >
+                <el-table-column prop="size" width="90" label="大小" sortable>
                 </el-table-column>
-                <el-table-column prop="uploadUser" width="100" label="上传人" show-overflow-tooltip>
+                <el-table-column prop="uploadUser" width="100" label="上传人" show-overflow-tooltip sortable>
                 </el-table-column>
-                <el-table-column prop="uploadTime" width="135" label="上传时间" show-overflow-tooltip>
+                <el-table-column prop="uploadTime" width="135" label="上传时间" show-overflow-tooltip sortable>
                 </el-table-column>
                 <el-table-column prop="projName" width="" label="所属工程" show-overflow-tooltip>
                 </el-table-column>
@@ -120,13 +121,11 @@
         updateDrawingInfo,
     } from '../../api/getData-yhj.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import ElCol from "element-ui/packages/col/src/col";
     // import "../../utils/directive.js"
     let deletArray = [];
     let baseUrl = '';
     export default {
         created(){
-//            FormIndex(this.tableData,2,10);
             this.getData();
         },
         data: function(){
@@ -136,7 +135,7 @@
                     typeVal:'',//分类value
                     searchKey:""
                 },
-                editDraw:false,
+                editDraw:false,//修改弹窗的显示状态
                 //分页的一些设置
                 cur_page:1, //当前页
                 totalPage:10,//每页多少条
@@ -148,7 +147,7 @@
                             {
                                 direction: 0,
                                 ignoreCase: true,
-                                property: "upload__time"
+                                property: ""
                             }
                         ],
                         page: 1,
@@ -158,21 +157,18 @@
                     searchKey: [
                         ""
                     ]
-                },
-                dataInfo:[],
-                workInfo:{},
-                projectList:[],
-                typeList:[],
-                drawInfoItem:{
+                },//获取表格参数
+                projectList:[],//工程列表
+                typeList:[],//分类列表
+                drawInfoItem:{//修改图纸
                     drawingName :"",
                     classifyId :'',
                     drawingId:"",
-                    memo :'少画了一个页面一个页面，少画了一个页面一个页面，少画了一个页面一个页面少画了一个页面一个页面',
+                    memo :''
                 }
             }
         },
         components: {
-            ElCol,
             VueScrollbar
         },
         methods: {
@@ -180,6 +176,7 @@
                 this.getBaseUrl();
                 this.getTypeGroup();//分类下拉
                 this.getProjGroup();//工程下拉
+                this.tableListParams.ppid = this.filterParam.proVal;
                 this.getTableList(baseUrl,this.tableListParams);
                 getWorksetingList().then((data)=>{
                   /*  this.dataInfo = data.data.gridData;
@@ -202,7 +199,6 @@
                 this.$alert(message, '提示', {
                     confirmButtonText: '确定',
                     callback: action => {
-                        console.log(1111)
                     }
                 })
             },
@@ -226,7 +222,6 @@
                 this.getTableList(baseUrl,this.tableListParams);
             },
             changeProject(value){
-                console.log(value)
             },
             editDrawChange(val){
                 this.drawInfoItem.classifyId = val;
@@ -246,7 +241,23 @@
             getProjGroup(){
                 getProjHasPdfDraw({url:baseUrl}).then((data)=>{
                     this.projectList = data.data.result;
-                    console.log(this.projectList,'projList');
+                    this.projectList = [
+                        {
+                            "ppid": 1,
+                            "projId": 0,
+                            "projName": "初始项目部1"
+                        },{
+                            "ppid": 2,
+                            "projId": 0,
+                            "projName": "初始项目部2"
+                        },{
+                            "ppid": 3,
+                            "projId": 0,
+                            "projName": "初始项目部3"
+                        }
+                    ];
+                    this.filterParam.proVal = this.projectList[0].ppid;
+//                    console.log(this.projectList,'projList');
                 })
             },
             /**
@@ -262,7 +273,7 @@
                         this.tableData.content =[];
                     }
                 })*/
-                console.log(param,'paramlist')
+                console.log(param,'tableListParam')
                 PDFtestList().then((data)=>{
                     this.tableData = data.data;
                     this.tableData.content.forEach((val,key)=>{
@@ -271,6 +282,26 @@
                         }
                     })
                 })
+            },
+            //表格的字段排序
+            tableSort(column){
+                if(column.order=='descending'){
+                    this.tableListParams.pageParam.orders[0].direction = 1;
+                }else{
+                    this.tableListParams.pageParam.orders[0].direction = 0;
+                };
+                if(column.prop=="uploadTime"){
+                    this.tableListParams.pageParam.orders[0].property = "upload__time";
+                }else if(column.prop=="uploadUser"){
+                    this.tableListParams.pageParam.orders[0].property = "uploaduser";
+                }else if(column.prop=="drawingName"){
+                    this.tableListParams.pageParam.orders[0].property = "pdfdrawingsname";
+                }else if(column.prop=="size"){
+                    this.tableListParams.pageParam.orders[0].property = "pdfsize";
+                }else if(column.prop=="classifyName"){
+                    this.tableListParams.pageParam.orders[0].property = "classifyid";
+                };
+                this.getTableList(baseUrl,this.tableListParams);//排序刷新
             },
             /**
              * 删除图纸列表
@@ -320,7 +351,7 @@
                         deletArray.push(val.drawingId)
                     }
                 });
-                console.log(deletArray,'delArray')
+//                console.log(deletArray,'delArray')
             },
             //删除Pdf图纸列表
             delDrawList(){
