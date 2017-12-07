@@ -27,6 +27,11 @@
                             <i class="iconfont icon-Password" style="position:absolute;left:10px;top:0;z-index:999"></i>
                             <el-input type="password" placeholder="密码" class="paddingPlaceholder" v-model="loginForm.password" @keyup.enter.native="submitForm('ruleForm')">
                             </el-input>
+                        </el-form-item> 
+                        <el-form-item label="选择企业：" label-width="80px"> 
+                            <el-select v-model="selectedCompany" placeholder="请选择">
+                                <el-option v-for="item in companyOptions" :key="item.companyOptions" :label="item.label" :value="item.value"></el-option>
+                            </el-select>
                         </el-form-item>
                         <div class="login-btn">
                             <el-button type="primary" @click="handleLogin" :loading="loading">登录</el-button>
@@ -45,18 +50,19 @@
             <div>Luban Hub Sevice</div>
             <div>2010-2017上海鲁班软件股份有限公司版权所有 沪ICP备</div>
         </div>
-
     </div>
 </template>
 
 <script>
+import axios from "axios";
+import md5 from "js-md5";
 import {
   isvalidUsername,
   validatephoneNumber,
   validateEmail
 } from "../../utils/validate";
 export default {
-  data: function() {
+  data() {
     const validateUsername = (rule, value, callback) => {
       if (validatephoneNumber(value) || validateEmail(value)) {
         callback();
@@ -72,54 +78,79 @@ export default {
       }
     };
     return {
-      isActive: false,
-      loading: false,
-      src: "../../../static/img/background.png",
-      loginForm: {
-        username: "987649118@163.com",
-        password: "123456"
-      },
-      loginRules: {
-        username: [
-          { required: true, trigger: "blur", validator: validateUsername }
-        ],
-        password: [
-          { required: true, trigger: "blur", validator: validatePassword }
-        ]
-      }
-    };
+        isActive: false,
+        loading: false,
+        src: "../../../static/img/background.png",
+        loginForm: {
+            username: "18788888888",
+            password: "111111"
+        },
+        loginRules: {
+            username: [
+              { required: true, trigger: "blur", validator: validateUsername }
+            ],
+            password: [
+              { required: true, trigger: "blur", validator: validatePassword }
+            ]
+        },
+        companyOptions: [{
+                value: '选项1',
+                label: '黄金糕'
+            }, {
+                value: '选项2',
+                label: '双皮奶'
+            }, {
+                value: '选项3',
+                label: '蚵仔煎'
+            }, {
+                value: '选项4',
+                label: '龙须面'
+            }, {
+                value: '选项5',
+                label: '北京烤鸭'
+        }],
+        selectedCompany:''
+    }
   },
   methods: {
+    /**
+     * 登录
+     * @return {[type]} [description]
+     */
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true;
-          // this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-          //     this.loading = false
-          //     this.$router.push({ path: '/' })
-          //     // this.showDialog = true
-          // }).catch(() => {
-          //     this.loading = false
-          // })
-          this.$router.push("/companyprofile/organization-structure");
+            let comString = this.getComString();
+            console.log(comString,'comString')     
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
-    // submitForm(formName) {
-    //     const self = this;
-    //     self.$refs[formName].validate((valid) => {
-    //         if (valid) {
-    //             localStorage.setItem('ms_username', self.ruleForm.username);
-    //             self.$router.push('/main');
-    //         } else {
-    //             console.log('error submit!!');
-    //             return false;
-    //         }
-    //     });
-    // },
+    /** 
+     * 获取登录所需的组合字段
+     * @return {string} [description]
+     */
+    getComString() {
+        let comString = '';//登录需要的字段
+        comString += 'username='+this.loginForm.username+'&password='+md5(this.loginForm.password)+'&productId=100&';
+        console.log(comString)
+        axios.get('http://172.16.21.158:8080/pds/login').then((data)=>{
+            let loginHtml = data.data;
+            let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
+            //遍历接口的html，获取键值
+            sectionHtml.each(function(key){
+                if(key>=0 && key <=2){
+                    comString += $(this).attr('name')+'='+$(this).val()+'&';
+                } else if (key === 3) {
+                    comString += $(this).attr('name')+'='+$(this).val();
+                }
+            });
+          console.log(comString)
+        });
+        return comString;
+    },
     selectCount(num) {}
   }
 };
@@ -162,9 +193,12 @@ export default {
   left: 65%;
   top: 16%;
   width: 385px;
-  height: 395px;
   border-radius: 5px;
   background: #fff;
+}
+
+.ms-login .el-form-item__label {
+    text-align: left;
 }
 
 .userSelect {
@@ -221,7 +255,7 @@ export default {
 
 .login-btn {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .login-btn button {

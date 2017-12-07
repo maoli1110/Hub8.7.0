@@ -144,7 +144,7 @@
                     </el-form-item>
                 </div>
             </el-form>
-            <el-form :model="projectForm" :rules="projectRules" ref="projectRules" label-width="100px">
+            <el-form :model="projectForm" :rules="projectRules" ref="projectForm" label-width="100px">
                 <!-- 项目部 -->
                 <div class="project">
                     <el-form-item label="项目名称：" prop="name">
@@ -256,12 +256,7 @@ export default {
             },
             projectForm: {
                 name: "新增项目部节点",
-                admins: [
-                    {
-                      id: {},
-                      name: "string"
-                    }
-                ],
+                admins: [],
                 manager: "string",
                 managerId: "string",
                 managerName: "string",
@@ -294,7 +289,7 @@ export default {
                     { required: true, trigger: "blur", validator: validateMobile }
                 ],
                 remarks: [
-                    { max: 5, message: '最多150个字符', trigger: 'blur' }
+                    { max: 150, message: '最多150个字符', trigger: 'blur' }
                 ]
             },
             // 树数据
@@ -491,6 +486,7 @@ export default {
 
         //创建分公司、项目部节点
         createOrgNode() {
+            let self = this;
             console.log(this.orgForm.resource)
             /**
              * 创建树节点
@@ -510,25 +506,41 @@ export default {
                     alert('当前节点，无法添加子节点');
                 }
             }
-
+            
             if(this.orgForm.resource === '分公司'){
-                let params = {
-                    orgId: selectedNode.id,
-                    companyInfo: this.companyForm
-                };
-                createBranchCompany({url:baseUrl,params}).then((data)=>{
-                    let tempNode = data.data.result;
-                    addTreeNode(selectedNode, tempNode);
+                this.$refs.companyForm.validate(valid => {
+                    if (valid) {
+                        let params = {
+                            orgId: selectedNode.id,
+                            companyInfo: this.companyForm
+                        };
+                        createBranchCompany({url:baseUrl,params}).then((data)=>{
+                            let tempNode = data.data.result;
+                            addTreeNode(selectedNode, tempNode);
+                            self.dialogVisible = false;
+                        });
+                    } else {
+                      console.log("error submit!!");
+                      return false;
+                    }
                 });
             } else {
-                let params = {
-                    parentId: selectedNode.id,
-                    companyInfo: this.projectForm
-                };
-                createProject({url:baseUrl,params}).then((data)=>{
-                    let tempNode = data.data.result;
-                    addTreeNode(selectedNode, tempNode);
+                this.$refs.projectForm.validate(valid => {
+                    if (valid) {
+                        let params = {
+                            parentId: selectedNode.id,
+                            projectInfo: this.projectForm
+                        };
+                        createProject({url:baseUrl,params}).then((data)=>{
+                            let tempNode = data.data.result;
+                            addTreeNode(selectedNode, tempNode);
+                        });
+                    } else {
+                      console.log("error submit!!");
+                      return false;
+                    }
                 });
+                
             }
         }
     },
