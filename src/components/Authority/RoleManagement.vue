@@ -35,7 +35,7 @@
                 </el-table-column>
             </el-table>
             <div style="margin-top: 20px">
-                <!-- <div style="float:left;height:40px;line-height:40px">共10个结果</div> -->
+                <div style="float:left;height:40px;line-height:40px">共{{total}}个结果</div>
                 <el-pagination style="margin-left:30%"
                                @size-change="handleSizeChange"
                                @current-change="handleCurrentChange"

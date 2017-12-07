@@ -315,6 +315,7 @@ export default {
         orgid: this.orgid,
         templateId: this.templateId
       };
+      this.sourceAttrId = this.currentRow.attrId;
       types.modAttributeTemplateInfo(params).then(res => {
         if (res.data.code == 200) {
           this.editAttributesDialogVisible = false;
