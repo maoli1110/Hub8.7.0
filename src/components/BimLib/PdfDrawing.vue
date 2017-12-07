@@ -25,7 +25,7 @@
                 </el-col>
                 <el-col :span="5" class="relat" style="left:135px;" >
                     <el-input icon="search" v-model="filterParam.searchKey" placeholder="搜索图纸名称和上传人关键词" :on-icon-click="searchClick"></el-input>
-                    <span class="absol icon-clear el-icon-circle-close" v-show="filterParam.searchKey.length" @click="clearSearchKey"></span>
+                    <span class="absol el-icon-circle-close draw-clear" v-show="filterParam.searchKey.length" @click="clearSearchKey" ></span>
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
@@ -116,7 +116,6 @@
         updateDrawingInfo,
     } from '../../api/getData-yhj.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    // import "../../utils/directive.js"
     let deletArray = [];
     let baseUrl = '';
     export default {
