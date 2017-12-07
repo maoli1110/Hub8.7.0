@@ -224,7 +224,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="地址：" prop="companyAddress">
+                                <el-form-item label="地址：" prop="companyCityId">
                                     <el-cascader
                                         :clearable="true"
                                         :change-on-select="true"
@@ -233,6 +233,7 @@
                                         v-model="selectedOptions"
                                         @change="handleChange">
                                     </el-cascader>
+                                    <el-input placeholder="请选择省/市" v-model="invoiceruleForm.companyCityId" style="position: absolute;top:0px;z-index:-1"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
@@ -486,13 +487,13 @@
                         { required: true, message: '请填写公司地址', trigger: 'blur' },
                     ],// 公司地址 ,
                     companyCityId: [
-                        { required: true, message: '请输入活动名称', trigger: 'blur' },
+                        { type: 'number',required: true, message: '请选择省/市', trigger: 'blur' },
                     ],//市 ,
                     companyPhone: [
                         { required: true, message: '请填写注册电话', trigger: 'blur' },
                     ],//公司电话 ,
                     companyProvinceId: [
-                        { required: true, message: '', trigger: 'blur' },
+                        { type: 'number',required: true, message: '请选择省/市', trigger: 'blur' },
                     ],// 省 ,
                     depositBankName:  [
                         { required: true, message: '请填写开户账号', trigger: 'blur' },
@@ -751,8 +752,14 @@
                 
             },
             handleChange(value) {
-                this.companyProvinceId=value[0];
-                this.companyCityIdcompanyProvinceId=value[1];
+
+                this.invoiceruleForm.companyProvinceId=value[0];
+                this.invoiceruleForm.companyCityId=value[1];
+                // if(value.length==2){
+                //     this.invoiceruleForm.companyCityId=value[1];
+                // }else{
+                //     this.invoiceruleForm.companyCityId=null;
+                // }
             },
             getInvoice(){
                 this.needInvoiceDialog=true;
