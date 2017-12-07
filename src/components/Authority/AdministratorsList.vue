@@ -74,7 +74,11 @@
                 </div>
                 <div style="margin-left:45px;border:1px solid #e6e6e6" class="select-dropdown" >
                     <div style="padding:10px">
-                        <el-input placeholder="请选择" icon="search"></el-input>
+                        <el-input placeholder="名称" icon="search" 
+                                v-model="searchVal"
+                                :on-icon-click="search"
+                                @keyup.enter.native="search"
+                        ></el-input>
                         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange"
 
                                            style="margin-top:22px">
@@ -183,336 +187,369 @@
 
 </template>
 <script>
-    import "../../../static/zTree/js/jquery.ztree.core.min.js";
-    import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
-    const cityOptions = [
-        "上海",
-        "北京",
-        "广州",
-        "深圳",
-        "合肥",
-        "上海111",
-        "北京22222222222222222222",
-        "广州2",
-        "深圳3",
-        "合肥4",
-        "上海3",
-        "北京7",
-        "广州5",
-        "深55圳",
-        "合555肥",
-        "广州21",
-        "深圳32",
-        "合肥42",
-        "上海32",
-        "北京72",
-        "广州52",
-        "深55圳2",
-        "合555肥2"
-    ];
-    export default {
-        data() {
-          var validatePass = (rule, value, callback) => {
-                if (value === "") {
-                    callback(new Error("请输入通行证"));
-                } else {
-                    console.log("后台验证中......");
-                    this.ruleForm.phone = "18555524036";
-                    this.ruleForm.email = "yunyinyue@163.com";
-                    callback();
-                }
-            };
-            return {
-                visible: true,
-                url: "../../../static/tree1.json",
-                cacheProjectTree: [],
-                addAdminDialogVisible: false,
-                addMemberDialogVisible:false,
-                textarea: "",
-                checkedCities: ["上海", "北京"],
-                cities: cityOptions,
-                permissions: ['组织结构1111111111111111111111111111111111111111111111111111111', '空间使用', '主数据库', '成员管理', '角色管理', '应用分配', '工程库', '工作集库', '回收站', 'PDF图纸', '构建库', '定额库', '价格库',],
-                roles: [],
-                checkedPermissions: ['组织结构', '空间使用', '主数据库'],
-                roleTableData: [
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长remark"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长remark55555555555555555555555555555555555"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长remark"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长remark"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长remark"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长remark"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长remark"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长remark"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 55556549894956,
-                        date: "2016-05-03 13:51",
-                        remarks: "超长remark"
-                    }
-                ],
-                role: "",
-                ruleForm: {
-                    pass: "",
-                    name: "",
-                    role: "",
-                    attribution: "",
-                    phone: "",
-                    email: ""
-                },
-                rules: {
-                    pass: [{ required: true, validator: validatePass, trigger: "blur" }],
-                    name: [{ required: false, message: "请输入姓名", trigger: "blur" }],
-                    role: [{ required: true, message: "请输入角色", trigger: "blur" }],
-                    attribution: [{ required: true, message: "请输入归属", trigger: "blur" }]
-                },
-                orgSetting: {
-                    check: {
-                        enable: true
-                    },
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
-                    }
-                },
-                orgNodes: [],
-                options: [
-                    {
-                        value: "选项1",
-                        label: "黄金糕"
-                    },
-                    {
-                        value: "选项2",
-                        label: "双皮奶"
-                    },
-                    {
-                        value: "选项3",
-                        label: "蚵仔煎"
-                    },
-                    {
-                        value: "选项4",
-                        label: "龙须面"
-                    },
-                    {
-                        value: "选项5",
-                        label: "北京烤鸭"
-                    }
-                ],
-                multipleSelection: []
-            };
-        },
-
-        methods: {
-            orgTreeClick(event, treeId, treeNode) {
-                this.orgValue = treeNode.name;
-                setTimeout(() => {
-                    $(".el-select-dropdown__item.selected").click();
-                }, 100);
-            },
-            dialogOrgTreeClick(event, treeId, treeNode) {
-                this.ruleForm.attribution = treeNode.name;
-                setTimeout(() => {
-                    $(".el-select-dropdown__item.selected").click();
-                }, 100);
-            },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            },
-            handleCheckedCitiesChange(value) {
-            },
-            cancleAdmin() {
-            },
-            addAdmin() {
-                this.$axios.get(this.url).then(res => {
-                    this.orgNodes = res.data;
-                    $.fn.zTree.init($("#orgTree"), this.orgSetting, this.orgNodes);
-                });
-            },
-            closeSelect() {
-                $(".select-dropdown").slideToggle("fast");
-            },
-            saveSelect() {
-                $(".select-dropdown").slideUp("fast");
-            },
-            cancleSelect() {
-                this.checkedCities = [];
-                $(".select-dropdown").slideUp("fast");
-            },
-            visibleChange(isVisible) {             
-            },
-            submitForm(formName) {
-                this.$refs[formName].validate(valid => {
-                    if (valid) {
-                        alert("提交中...........");
-                        console.log(this.ruleForm);
-                        this.addMemberDialogVisible = false;
-                    } else {
-                        console.log("error submit!!");
-                return false;
-            }
-            });
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-        },
-        mounted() {
-            $('.el-select__tags').click(()=>{
-              console.log(123)
-            })
-        }
+import "../../../static/zTree/js/jquery.ztree.core.min.js";
+import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+const cityOptions = [
+  "上海",
+  "北京",
+  "广州",
+  "深圳",
+  "合肥",
+  "上海111",
+  "北京22222222222222222222",
+  "广州2",
+  "深圳3",
+  "合肥4",
+  "上海3",
+  "北京7",
+  "广州5",
+  "深55圳",
+  "合555肥",
+  "广州21",
+  "深圳32",
+  "合肥42",
+  "上海32",
+  "北京72",
+  "广州52",
+  "深55圳2",
+  "合555肥2"
+];
+export default {
+  data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入通行证"));
+      } else {
+        console.log("后台验证中......");
+        this.ruleForm.phone = "18555524036";
+        this.ruleForm.email = "yunyinyue@163.com";
+        callback();
+      }
     };
+    return {
+      visible: true,
+      url: "../../../static/tree1.json",
+      cacheProjectTree: [],
+      addAdminDialogVisible: false,
+      addMemberDialogVisible: false,
+      searchVal: "",
+      textarea: "",
+      checkedCities: ["上海", "北京"],
+      cities: cityOptions,
+      cities_clone: cityOptions, //搜索展示数据
+      permissions: [
+        "组织结构1111111111111111111111111111111111111111111111111111111",
+        "空间使用",
+        "主数据库",
+        "成员管理",
+        "角色管理",
+        "应用分配",
+        "工程库",
+        "工作集库",
+        "回收站",
+        "PDF图纸",
+        "构建库",
+        "定额库",
+        "价格库"
+      ],
+      roles: [],
+      checkedPermissions: ["组织结构", "空间使用", "主数据库"],
+      roleTableData: [
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长remark"
+        },
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长remark55555555555555555555555555555555555"
+        },
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长remark"
+        },
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长"
+        },
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长remark"
+        },
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长remark"
+        },
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长remark"
+        },
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长remark"
+        },
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长remark"
+        },
+        {
+          name: "赵四",
+          pass: 55556549894956,
+          date: "2016-05-03 13:51",
+          remarks: "超长remark"
+        }
+      ],
+      role: "",
+      ruleForm: {
+        pass: "",
+        name: "",
+        role: "",
+        attribution: "",
+        phone: "",
+        email: ""
+      },
+      rules: {
+        pass: [{ required: true, validator: validatePass, trigger: "blur" }],
+        name: [{ required: false, message: "请输入姓名", trigger: "blur" }],
+        role: [{ required: true, message: "请输入角色", trigger: "blur" }],
+        attribution: [{ required: true, message: "请输入归属", trigger: "blur" }]
+      },
+      orgSetting: {
+        check: {
+          enable: true
+        },
+        data: {
+          simpleData: {
+            enable: true
+          }
+        }
+      },
+      orgNodes: [],
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕"
+        },
+        {
+          value: "选项2",
+          label: "双皮奶"
+        },
+        {
+          value: "选项3",
+          label: "蚵仔煎"
+        },
+        {
+          value: "选项4",
+          label: "龙须面"
+        },
+        {
+          value: "选项5",
+          label: "北京烤鸭"
+        }
+      ],
+      multipleSelection: []
+    };
+  },
+  watch: {
+    searchVal(newVal, oldVal) {
+      if (!newVal) {
+        this.search();
+      }
+    }
+  },
+  methods: {
+    orgTreeClick(event, treeId, treeNode) {
+      this.orgValue = treeNode.name;
+      setTimeout(() => {
+        $(".el-select-dropdown__item.selected").click();
+      }, 100);
+    },
+    dialogOrgTreeClick(event, treeId, treeNode) {
+      this.ruleForm.attribution = treeNode.name;
+      setTimeout(() => {
+        $(".el-select-dropdown__item.selected").click();
+      }, 100);
+    },
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    handleCheckedCitiesChange(value) {},
+    cancleAdmin() {},
+    search() {
+      if (!this.searchVal) {
+        this.cities = this.cities;
+      }
+      let tempSearchResult = []; //搜索展示数组
+      let tempSearchResultChecked = 0;
+      this.cities_clone.forEach((val, key) => {
+        //搜索匹配成功的加入到searchArr
+        if (val.indexOf(this.searchVal) != -1) {
+          tempSearchResult.push(val);
+        }
+      });
+      this.cities = tempSearchResult;
+    },
+    addAdmin() {
+      this.$axios.get(this.url).then(res => {
+        this.orgNodes = res.data;
+        $.fn.zTree.init($("#orgTree"), this.orgSetting, this.orgNodes);
+      });
+    },
+    closeSelect() {
+      $(".select-dropdown").slideToggle("fast");
+    },
+    saveSelect() {
+      $(".select-dropdown").slideUp("fast");
+    },
+    cancleSelect() {
+      this.checkedCities = [];
+      $(".select-dropdown").slideUp("fast");
+    },
+    visibleChange(isVisible) {},
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("提交中...........");
+          console.log(this.ruleForm);
+          this.addMemberDialogVisible = false;
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
+  },
+  mounted() {
+    $(".el-select__tags").click(() => {
+      console.log(123);
+    });
+  }
+};
 </script>
 <style scoped>
-    .header {
-        height: 40px;
-        background-color: #fff;
-        padding: 10px 20px;
-    }
+.header {
+  height: 40px;
+  background-color: #fff;
+  padding: 10px 20px;
+}
 
-    .ztree {
-        margin-top: 0px;
-        width: 205px;
-    }
+.ztree {
+  margin-top: 0px;
+  width: 205px;
+}
 
-    .admin-main {
-        padding: 20px;
-        background-color: #fff;
-    }
+.admin-main {
+  padding: 20px;
+  background-color: #fff;
+}
 
-    .textcell {
-        height: 50px;
-        padding: 0 20px;
-        line-height: 50px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+.textcell {
+  height: 50px;
+  padding: 0 20px;
+  line-height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-    .add-admin-group:nth-child(1) {
-        width: 120px;
-        height: 40px;
-    }
+.add-admin-group:nth-child(1) {
+  width: 120px;
+  height: 40px;
+}
 
-    .add-admin-group + .add-admin-group {
-        width: 120px;
-        height: 40px;
-        margin-left: 0px;
-    }
+.add-admin-group + .add-admin-group {
+  width: 120px;
+  height: 40px;
+  margin-left: 0px;
+}
 
-    .select-dialog-btn {
-        width: 90px;
-        height: 36px;
-        line-height: 0px;
-    }
+.select-dialog-btn {
+  width: 90px;
+  height: 36px;
+  line-height: 0px;
+}
 
-    .select-dropdown {
-        display: none;
-        width: 634px;
-        position: absolute;
-        background-color: #fff;
-        z-index: 999
-    }
+.select-dropdown {
+  display: none;
+  width: 634px;
+  position: absolute;
+  background-color: #fff;
+  z-index: 999;
+}
 
-    .el-transfer {
-        margin-top: 20px;
-    }
+.el-transfer {
+  margin-top: 20px;
+}
 
-    .el-transfer-panel__body {
-        width: 330px;
-        height: 420px;
-        padding: 20px;
-        box-sizing: border-box;
-        overflow: auto;
-    }
+.el-transfer-panel__body {
+  width: 330px;
+  height: 420px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: auto;
+}
 
-    .el-transfer-panel__header {
-        padding: 0px;
-        font-size: 16px;
-        font-weight: 700;
-    }
+.el-transfer-panel__header {
+  padding: 0px;
+  font-size: 16px;
+  font-weight: 700;
+}
 
-    .el-transfer-panel {
-        width: 280px;
-        box-shadow: none;
-    }
+.el-transfer-panel {
+  width: 280px;
+  box-shadow: none;
+}
 
-    .el-transfer-panel + .el-transfer-panel {
-        margin-left: 65px;
-    }
+.el-transfer-panel + .el-transfer-panel {
+  margin-left: 65px;
+}
 
-    .add-permission-group {
-        width: 300px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+.add-permission-group {
+  width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-    .add-permission-group + .add-permission-group {
-        margin-left: 0px;
-        margin-top: 5px
-    }
+.add-permission-group + .add-permission-group {
+  margin-left: 0px;
+  margin-top: 5px;
+}
 </style>
 
 

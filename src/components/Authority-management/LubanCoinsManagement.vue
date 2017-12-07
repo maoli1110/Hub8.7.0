@@ -7,7 +7,7 @@
                 </el-col>
                 <el-col :span="8" class="pull-right-btn">
                     <el-button type="primary" class="basic-btn" @click="assignLubanCoinDialog=true;allocateLubanCoins">分配鲁班币</el-button>
-                    <el-button type="primary" class="basic-btn" @click="dialogVisible=true">立即充值</el-button>
+                    <el-button type="primary" class="basic-btn" @click="needRechange">立即充值</el-button>
                 </el-col>
             </div>
             <div class="header">
@@ -80,16 +80,16 @@
             width="30%"
             :before-close="handleClose" class="modelwidth726px" :close-on-click-modal="false"
             :close-on-press-escape="false">
-            <el-form :model="rechargeform" label-width="100px" ref="rechargeruleForm">
-                <el-form-item label="充值数量：">
+            <el-form :model="rechargeform" label-width="100px" ref="rechargeform" :rules="rechargerulerules" class="rechargeFormBox">
+                <el-form-item label="充值数量："  prop="goldAmount">
                     <ul class="recharge-ul">
                         <li @click="showCover(rechargeCommon,item)" v-for="item in rechargeCommon"
-                            :class="{'icon-luban-coin-checked':item.show===true}">{{item.goldAmount}}
+                            :class="{'icon-luban-coin-checked':item.show===true}">{{item.goldAmount}}个鲁班币
                         </li>
                     </ul>
                     <div class="font-s-12 recharge-custom">
                         <el-input v-model="rechargeform.goldAmount" placeholder="自定义鲁班币" style="width:120px;"
-                                  @blur="rechargeCustom"></el-input>
+                                  @focus="rechargeCustom"></el-input>
                         个鲁班币
                     </div>
 
@@ -97,20 +97,21 @@
                 <el-form-item label="发票类型：">
                     <!--1:不需要发票,0:普通发票,3专用发票 ,  -->
                     <el-radio-group v-model="rechargeform.invoiceType" @change="removeDis">
-                        <el-radio label="1">不需要发票</el-radio>
-                        <el-radio label="-1">需要发票</el-radio>
-                        <el-button class="needrecharge" :disabled="disabledfalse" @click="needInvoiceDialog=true;getInvoice">编辑</el-button>
+                        <el-radio label="-1">不需要发票</el-radio>
+                        <el-radio label="1">需要发票</el-radio>
+                        <el-button class="needrecharge" :disabled="disabledfalse" @click="getInvoice">编辑</el-button>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item label="代金券：">
-                    <el-input v-model="rechargeform.voucherNo" placeholder="请输入代金券密码" style="width:220px"></el-input>
-                    <el-button class="normal-btn">应用</el-button>
+                <el-form-item label="代金券：" :class="{ voucherNoerrow: voucherNoshow }" >
+                    <el-input v-model="rechargeform.voucherNo" placeholder="请输入代金券密码" style="width:220px" ></el-input>
+                    <div class="voucherNoerrowMeg" v-show="voucherNoshow">{{voucherNoshowMeg}}</div>
+                    <el-button class="normal-btn" @click="getVouchers()">应用</el-button>
                 </el-form-item>
                 <el-form-item label="结算信息：">
-                    <span class="margin-r-20">总价：￥100.00</span>
-                    <span class="margin-r-20">快递费：￥0.00</span>
-                    <span>代金券：￥0.00</span>
-                    <span class="pull-r-f">总计：<span class="span-bule" style="font-size:12px">￥100.00</span></span>
+                    <span class="margin-r-20">总价：￥{{allCount}}</span>
+                    <span class="margin-r-20">快递费：￥{{deliveryCount}}</span>
+                    <span>代金券：￥{{voucherNoCount}}</span>
+                    <span class="pull-r-f">总计：<span class="span-bule" style="font-size:12px">￥{{newallCount}}</span></span>
                 </el-form-item>
                 <el-form-item class="text-a-c">
                     <div class="span-bule" style="font-weight:normal;font-size:12px">《鲁班软件鲁班币充值购买协议》</div>
@@ -200,11 +201,11 @@
             title="发票信息"
             :visible.sync="needInvoiceDialog"
             width="30%"
-            :before-close="handleClose" class="modelwidth850px" :close-on-click-modal="false"
+            :before-close="handleCloseinvoice" class="modelwidth850px" :close-on-click-modal="false"
             :close-on-press-escape="false">
             <template>
             <el-tabs v-model="activeNameInvoice" type="card" @tab-click="handleClick">
-                <el-tab-pane label="专用发票" name="first">
+                <el-tab-pane label="专用发票" name="3">
                     <el-form :model="invoiceruleForm" :rules="invoicerules" ref="invoiceruleForm" label-width="70px" class="invoiceForm">
                         <el-row style="padding-right: 20px;">
                             <el-col :span="12">
@@ -253,7 +254,7 @@
                         </el-row>
                     </el-form>
                 </el-tab-pane>
-                <el-tab-pane label="普通发票" name="second">
+                <el-tab-pane label="普通发票" name="12">
                     <el-form :model="normalinvoiceruleForm" :rules="normalinvoicerules" ref="normalinvoiceruleForm" label-width="70px" class="invoiceForm">
                         <el-row style="padding-right: 20px;">
                             <el-col :span="12">
@@ -269,7 +270,7 @@
                         </el-row>
                     </el-form>
                 </el-tab-pane>
-                <el-tab-pane label="个人发票" name="third">
+                <el-tab-pane label="个人发票" name="11">
                     <el-form :model="personinvoiceruleForm" :rules="personinvoicerules" ref="personinvoiceruleForm" label-width="70px" class="invoiceForm">
                         <el-row style="padding-right: 20px;">
                             <el-col :span="12">
@@ -315,8 +316,8 @@
             </el-form>
             </template>
             <div slot="footer" class="dialog-footer">
-                <el-button class="dialog-btn dialog-btn-ok" type="primary">确 定</el-button>
-                <el-button class="dialog-btn dialog-btn-cancel" @click="needInvoiceDialog=false;">取 消</el-button>
+                <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="saveInvoice">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="handleCloseinvoice">取 消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -327,7 +328,7 @@
     import {basePath} from '../../utils/common.js'
     import {queryEnterpriseLubanBiList} from '../../api/getData-cxx.js';
     import {getEnterpriseCurrentLubanBiCount} from '../../api/getData-cxx.js';
-    import {addLubanBiChargeOrder,getContactAddress,getLubanBiAllocateList} from '../../api/getData-cxx.js';
+    import {addLubanBiChargeOrder,getContactAddress,getLubanBiAllocateList,getNewCitys,validateVouchers} from '../../api/getData-cxx.js';
     const accountOptions = [
         "曹相相1",
         "曹相相2",
@@ -365,7 +366,18 @@
 //            });
 //                return data;
 //            };
-
+            let self = this;
+            var checklubanbi = (rule, value, callback) => {
+                if(!(/^\+?[1-9][0-9]*$/.test(value))){ 
+                    callback(new Error('格式错误')); 
+                }else{
+                    if(parseInt(value)<500){
+                        callback(new Error('鲁班币不能小于500')); 
+                    }else{
+                         callback(); 
+                    }
+                }  
+            };
             return {
                 coinsManagementTableData: [],// 列表数据
                 sum: '',// 总记录条数
@@ -391,50 +403,67 @@
                 accountSearchKey: "",       //搜索关键字
 // 列表分配名单
                 getBiAllocateList:[],
-
+//充值数量
                 rechargeform: {
                     goldAmount: '',
-                    invoiceType: '',
+                    invoiceType: '-1',
                     voucherNo: '',
                 },
+                //总计
+                allCount:'0.00',
+                deliveryCount:'0.00',
+                voucherNoCount:'0.00',
+                newallCount:'0.00',
+
+                voucherNoshow:false,
+                voucherNoshowMeg:'提示：请输入代金券密码',
+                rechargerulerules:{
+                    goldAmount: [
+                        { required: true, message: '请输入鲁班币', trigger: 'blur' },
+                        { validator: checklubanbi, trigger: 'blur'},
+                    ],//银行账号 ,
+                },
+                goldAmount:'',
+
                 disabledfalse: true,
                 rechargeradio1: '1',
                 rechargeradio2: '2',
                 rechargerules: {},
                 rechargeCommon: [
                     {
-                        goldAmount: '500个鲁班币',
+                        goldAmount: '500',
                         show: false,
                     }, {
-                        goldAmount: '1000个鲁班币',
+                        goldAmount: '1000',
                         show: false,
                     }, {
-                        goldAmount: '2000个鲁班币',
+                        goldAmount: '2000',
                         show: false,
                     }, {
-                        goldAmount: '3000个鲁班币',
-                        show: false
+                        goldAmount: '3000',
+                        show: true
                     }
                 ],
                 needInvoiceDialog:false,//发票弹窗
-                activeNameInvoice: 'first',
-                options: [{
-                    value: 'zujian',
-                    label: '组件',
-                    children: [{
-                                value: 'axure',
-                                label: 'Axure Components'
-                        }, {
-                                value: 'sketch',
-                                label: 'Sketch Templates'
-                        }, {
-                                value: 'jiaohu',
-                                label: '组件交互文档'
-                    }]
-                }],
+                activeNameInvoice: '3',
+                options: [],
                 selectedOptions: [],
+
+                invoiceInfoType:'',
                 //专用发票
                 invoiceruleForm:{
+                    bankAccount:'' ,//银行账号 ,
+                    companyAddress:'',// 公司地址 ,
+                    companyCityId:null ,//市 ,
+                    companyPhone: '',//公司电话 ,
+                    companyProvinceId:null,// 省 ,
+                    depositBankName: '',//开户银行 ,
+                    invoiceTitle: '',//发票抬头，如果是个人发票则保存身份证号码 ,
+                    taxNumber: '',//税号 ,
+                    type: null,//发票类型 11 普通个人发票, 12普通企业发票
+                },
+                //专用发票
+                newinvoiceruleForm:{
                     bankAccount:'' ,//银行账号 ,
                     companyAddress:'',// 公司地址 ,
                     companyCityId:null ,//市 ,
@@ -477,6 +506,12 @@
                     taxNumber: '',//税号 ,
                     type: null,//发票类型 11 普通个人发票, 12普通企业发票
                 },
+                //专用发票
+                newnormalinvoiceruleForm:{
+                    invoiceTitle: '',//发票抬头，如果是个人发票则保存身份证号码 ,
+                    taxNumber: '',//税号 ,
+                    type: null,//发票类型 11 普通个人发票, 12普通企业发票
+                },
                 normalinvoicerules: {
                     invoiceTitle: [
                         { required: true, message: '请填写发票抬头', trigger: 'blur' },
@@ -487,6 +522,11 @@
                 },
                 //专用发票
                 personinvoiceruleForm:{
+                    invoiceTitle: '',//发票抬头，如果是个人发票则保存身份证号码 ,
+                    type: null,//发票类型 11 普通个人发票, 12普通企业发票
+                },
+                //专用发票
+                newpersoninvoiceruleForm:{
                     invoiceTitle: '',//发票抬头，如果是个人发票则保存身份证号码 ,
                     type: null,//发票类型 11 普通个人发票, 12普通企业发票
                 },
@@ -529,7 +569,69 @@
         components: {
             VueScrollbar
         },
+        watch:{
+            goldAmount:{
+                deep:true,
+                handler:function(){
+                    if(this.goldAmount){
+                        this.allCount=parseInt(this.goldAmount)/10;
+                    }
+                }
+            },
+            'rechargeform.goldAmount':{
+                deep:true,
+                handler:function(){
+                    if(this.rechargeform.goldAmount){
+                        if(parseInt(this.rechargeform.goldAmount)%10==0){
+                            this.allCount=parseInt(this.rechargeform.goldAmount)/10+'.00';
+                        }else{
+                            this.allCount=parseInt(this.rechargeform.goldAmount)/10+'.0';
+                        }
+                    }
+                }
+            },
+            
+        },
         methods: {
+            //立即充值
+            needRechange(){
+                this.dialogVisible=true;
+                this.rechargeform.invoiceType='-1';
+                this.rechargeform.voucherNo='';
+                this.newinvoiceruleForm={};
+                this.newnormalinvoiceruleForm={};
+                this.newpersoninvoiceruleForm={};
+                this.invoiceruleForm={};
+                this.normalinvoiceruleForm={};
+                this.personinvoiceruleForm={};
+                this.rechargeCommon[3].show=true;
+                this.activeNameInvoice='3';
+                this.voucherNoshow=false;
+                this.invoiceInfoType='';
+            },
+            //验证代金券
+            getVouchers(){
+                let vm = this;
+                if (vm.rechargeform.voucherNo) {
+                    let baseUrl = basePath(vm.$route.matched[2].path)
+                    let params = {
+                        url: baseUrl,
+                        vouchersPassword:vm.rechargeform.voucherNo,
+                    }
+                    validateVouchers(params).then(function (res) {
+                        if(res.data.msg=='success'){
+                            vm.voucherNoshow=false;
+                        }else{
+                            vm.voucherNoshow=true;
+                            vm.voucherNoshowMeg=res.data.msg;
+                        }
+                    })
+                }else{
+                    vm.voucherNoshow=true;
+                    vm.voucherNoshowMeg="提示：请输入代金券密码";
+                }
+            },
+
             //获取列表中肥培名单
             getLubanBiList(historyId){
                 var vm = this;
@@ -547,15 +649,71 @@
             },
             //发票
             handleClick(tab, event) {
+                // if(this.activeNameInvoice==3){
+                //     this.rechargeform.invoiceType=3;
+                // }else{
+                //     this.rechargeform.invoiceType=0;
+                // }
+            },
+            //保存发票信息
+            saveInvoice(){
+                if(this.activeNameInvoice=='3'){//专用发票
+                    this.$refs['invoiceruleForm'].validate((valid) => {
+                        if (valid) {
+                            this.$refs['normalinvoiceruleForm'].resetFields();
+                            this.$refs['personinvoiceruleForm'].resetFields();
+                            this.newinvoiceruleForm=JSON.parse(JSON.stringify(this.invoiceruleForm))
+                            this.newnormalinvoiceruleForm=JSON.parse(JSON.stringify(this.normalinvoiceruleForm))
+                            this.newpersoninvoiceruleForm=JSON.parse(JSON.stringify(this.personinvoiceruleForm))
+                            this.needInvoiceDialog=false;
+                            this.invoiceInfoType=this.activeNameInvoice;
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                }else if(this.activeNameInvoice=='11'){//个人发票
+                    this.$refs['personinvoiceruleForm'].validate((valid) => {
+                        if (valid) {
+                            this.$refs['invoiceruleForm'].resetFields();
+                            this.$refs['normalinvoiceruleForm'].resetFields();
+                            this.newinvoiceruleForm=JSON.parse(JSON.stringify(this.invoiceruleForm))
+                            this.newnormalinvoiceruleForm=JSON.parse(JSON.stringify(this.normalinvoiceruleForm))
+                            this.newpersoninvoiceruleForm=JSON.parse(JSON.stringify(this.personinvoiceruleForm))
+                            this.needInvoiceDialog=false;
+                            this.invoiceInfoType=this.activeNameInvoice;
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                         
+                    });
+                }else if(this.activeNameInvoice=='12'){//普通发票
+                    this.$refs['normalinvoiceruleForm'].validate((valid) => {
+                        if (valid) {
+                            this.$refs['invoiceruleForm'].resetFields();
+                            this.$refs['personinvoiceruleForm'].resetFields();
+                            this.newinvoiceruleForm=JSON.parse(JSON.stringify(this.invoiceruleForm))
+                            this.newnormalinvoiceruleForm=JSON.parse(JSON.stringify(this.normalinvoiceruleForm))
+                            this.newpersoninvoiceruleForm=JSON.parse(JSON.stringify(this.personinvoiceruleForm))
+                            this.needInvoiceDialog=false;
+                            this.invoiceInfoType=this.activeNameInvoice;
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                }
+                
             },
             submitinvoiceForm(formName) {
                 this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    alert('submit!');
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
                 });
             },
             handleChange(value) {
@@ -563,7 +721,14 @@
                 this.companyCityIdcompanyProvinceId=value[1];
             },
             getInvoice(){
-
+                this.needInvoiceDialog=true;
+                if(this.invoiceInfoType){
+                    this.activeNameInvoice=this.invoiceInfoType;
+                }
+                this.invoiceruleForm=JSON.parse(JSON.stringify(this.newinvoiceruleForm));
+                this.normalinvoiceruleForm=JSON.parse(JSON.stringify(this.newnormalinvoiceruleForm));
+                this.personinvoiceruleForm=JSON.parse(JSON.stringify(this.newpersoninvoiceruleForm));
+                // console.log(this.newinvoiceruleForm,this.newnormalinvoiceruleForm,this.newpersoninvoiceruleForm)
             },
 
             resetForm(formName) {
@@ -581,27 +746,158 @@
                 this.currentPage = val;
                 this.queryEnterpriseLubanBiList()
             },
+            //对象判断是否为空
+            isNullObj(obj){
+                for(var i in obj){
+                    if(obj.hasOwnProperty(i)){
+                        return false;
+                    }
+                }
+                return true;
+            },
             //立即充值
             onSubmit() {
                 // 接受协议并支付
-                var vm = this;
-
+                let vm = this;
                 let baseUrl = basePath(vm.$route.matched[2].path)
                 let params = {
                     url: baseUrl,
-                    currentPage: vm.currentPage,
-                    pageSize: vm.pageSize,
-                    beginTime: vm.beginTime,//开始时间
-                    endTime: vm.endTime//结束时间
+                }
+                let invoiceType=null;
+                if(vm.rechargeform.invoiceType=='-1'){
+                    invoiceType=-1;
+                }else{
+                    if(vm.invoiceInfoType){
+                        if(vm.invoiceInfoType=='3'){
+                            invoiceType=3;
+                        }else{
+                            invoiceType=0;
+                        }
+                    }else{
+                        vm.needInvoiceDialog=true;
+                    }
+                }
+                
+                if(invoiceType!=null && invoiceType!=-1){
+                    if(invoiceType==0){//普通发票
+                        if(vm.invoiceInfoType=='11'){//个人
+                            if(!vm.isNullObj(vm.newpersoninvoiceruleForm)){
+                                let LubanBiChargeParam = {
+                                    "contactAddress": { // 联系信息
+                                        "address": "",//联系地址
+                                        "mobile": "", // 移动电话
+                                        "phone": "", //联系电话
+                                        "realName": "", //真实姓名
+                                        "zipCode": "" //邮政编码
+                                    },
+                                    "goldAmount": vm.goldAmount?vm.goldAmount:vm.rechargeform.goldAmount,//鲁班币数量
+                                    "invoiceInfo": {//发票信息
+                                        "invoiceTitle": vm.newpersoninvoiceruleForm.invoiceTitle, //发票抬头，如果是个人发票则保存身份证号码
+                                        "type": parseInt(vm.invoiceInfoType) //发票类型 11 普通个人发票, 12普通企业发票
+                                    },
+                                    "invoiceType":invoiceType,//发票类型-1:不需要发票,0:普通发票,3专用发票
+                                    "voucherNo": ""//代金券号
+                                }
+                                console.log(LubanBiChargeParam)
+                            }else{
+                                vm.needInvoiceDialog=true;
+                            }
+                        }else{//企业
+                            if(!vm.isNullObj(vm.newnormalinvoiceruleForm)){
+                                let LubanBiChargeParam = {
+                                    "contactAddress": { // 联系信息
+                                        "address": "",//联系地址
+                                        "mobile": "", // 移动电话
+                                        "phone": "", //联系电话
+                                        "realName": "", //真实姓名
+                                        "zipCode": "" //邮政编码
+                                    },
+                                    "goldAmount": vm.goldAmount?vm.goldAmount:vm.rechargeform.goldAmount,//鲁班币数量
+                                    "invoiceInfo": {//发票信息
+                                        "invoiceTitle": vm.newnormalinvoiceruleForm.invoiceTitle, //发票抬头，如果是个人发票则保存身份证号码
+                                        "taxNumber": vm.newnormalinvoiceruleForm.taxNumber,//税号
+                                        "type": parseInt(vm.invoiceInfoType) //发票类型 11 普通个人发票, 12普通企业发票
+                                    },
+                                    "invoiceType":invoiceType,//发票类型-1:不需要发票,0:普通发票,3专用发票
+                                    "voucherNo": ""//代金券号
+                                }
+                                console.log(LubanBiChargeParam)
+                            }else{
+                                vm.needInvoiceDialog=true;
+                            }
+                        }
+                    }else{//专用发票
+                        if(!vm.isNullObj(vm.newinvoiceruleForm)){
+                            let LubanBiChargeParam = {
+                                    "contactAddress": { // 联系信息
+                                        "address": "",//联系地址
+                                        "mobile": "", // 移动电话
+                                        "phone": "", //联系电话
+                                        "realName": "", //真实姓名
+                                        "zipCode": "" //邮政编码
+                                    },
+                                    "goldAmount": vm.goldAmount?vm.goldAmount:vm.rechargeform.goldAmount,//鲁班币数量
+                                    "invoiceInfo": {//发票信息
+                                        "bankAccount": vm.newinvoiceruleForm.bankAccount,//银行账号
+                                        "companyAddress": vm.newinvoiceruleForm.companyAddress, //公司地址
+                                        "companyCityId": vm.newinvoiceruleForm.companyCityId, //市
+                                        "companyPhone": vm.newinvoiceruleForm.companyPhone, //公司电话
+                                        "companyProvinceId": vm.newinvoiceruleForm.companyProvinceId, //省
+                                        "depositBankName": vm.newinvoiceruleForm.depositBankName, //开户银行 
+                                        "invoiceTitle": vm.newinvoiceruleForm.invoiceTitle, //发票抬头，如果是个人发票则保存身份证号码
+                                        "taxNumber": vm.newinvoiceruleForm.taxNumber,//税号
+                                        "type": parseInt(vm.invoiceInfoType) //发票类型 11 普通个人发票, 12普通企业发票
+                                    },
+                                    "invoiceType":invoiceType,//发票类型-1:不需要发票,0:普通发票,3专用发票
+                                    "voucherNo": ""//代金券号
+                                }
+                                console.log(LubanBiChargeParam)
+                        }else{
+                            vm.needInvoiceDialog=true;
+                        }
+                        
+                    }
+                }else if(invoiceType==-1){
+                    let LubanBiChargeParam = {
+                        "contactAddress": { // 联系信息
+                            "address": "",//联系地址
+                            "mobile": "", // 移动电话
+                            "phone": "", //联系电话
+                            "realName": "", //真实姓名
+                            "zipCode": "" //邮政编码
+                        },
+                        "goldAmount": vm.goldAmount?vm.goldAmount:vm.rechargeform.goldAmount,//鲁班币数量
+                        "invoiceType":invoiceType,//发票类型-1:不需要发票,0:普通发票,3专用发票
+                        "voucherNo": ""//代金券号
+                    }
+                    console.log(LubanBiChargeParam)
                 }
                 // 添加鲁班币充值订单
-                addLubanBiChargeOrder().then(function () {
+                // addLubanBiChargeOrder().then(function () {
 
-                })
-                console.log('submit!');
+                // })
             },
             handleClose(done) {
+                this.$refs['rechargeform'].resetFields();
+                // this.$refs['invoiceContactAddress'].resetFields();
                 done();
+            },
+            handleCloseinvoice(done){
+                if(this.invoiceInfoType=='3'){//专用发票
+                    this.$refs['normalinvoiceruleForm'].resetFields();
+                    this.$refs['personinvoiceruleForm'].resetFields();
+                }else if(this.invoiceInfoType=='11'){//个人发票
+                    this.$refs['invoiceruleForm'].resetFields();
+                    this.$refs['normalinvoiceruleForm'].resetFields();
+                }else if(this.invoiceInfoType=='12'){//普通发票
+                    this.$refs['invoiceruleForm'].resetFields();
+                    this.$refs['personinvoiceruleForm'].resetFields();
+                }else{
+                    this.$refs['invoiceruleForm'].resetFields();
+                    this.$refs['normalinvoiceruleForm'].resetFields();
+                    this.$refs['personinvoiceruleForm'].resetFields();
+                }
+                this.needInvoiceDialog=false;
             },
             showCover(rechargeCommon, item){
                 for (var i = 0; i < rechargeCommon.length; i++) {
@@ -609,25 +905,26 @@
                 }
                 item.show = !item.show;
                 this.rechargeform.goldAmount = '';
+                this.goldAmount=item.goldAmount;
+                this.$refs['rechargeform'].resetFields();
             },
             rechargeCustom(){
-                if (this.rechargeform.goldAmount) {
-                    for (var i = 0; i < this.rechargeCommon.length; i++) {
-                        this.rechargeCommon[i].show = false;
-                    }
+                for (var i = 0; i < this.rechargeCommon.length; i++) {
+                    this.rechargeCommon[i].show = false;
                 }
+                this.goldAmount='';
             },
             removeDis(dis){
-                if (dis == "-1") {
-                    let vm = this;
-                    let baseUrl = basePath(this.$route.matched[2].path)
-                    this.disabledfalse = false;
+                let vm = this;
+                if (dis == "1") {
+                    let baseUrl = basePath(vm.$route.matched[2].path)
+                    vm.disabledfalse = false;
                     let params = {
                         url: baseUrl
                     }
                     getContactAddress(params).then(function (res) {
                         vm.invoiceContactAddress={
-                            address: res.data.result.province.province+res.data.result.city.city+res.data.result.address,//联系地址 ,
+                            address: res.data.result.address,//联系地址 ,
                             city : res.data.result.city.city,//市信息 ,
                             companyName :res.data.result.companyName,//公司名称 ,
                             mobile : res.data.result.mobile,//移动电话 ,
@@ -638,6 +935,7 @@
                             zipCode :res.data.result.zipCode ,//邮政编码
                         }
                     })
+
                 } else {
                     this.disabledfalse = true;
                 }
@@ -659,7 +957,7 @@
                 }
 
                 queryEnterpriseLubanBiList(params).then(function (data) {
-                    console.log(data.data.result);
+                    // console.log(data.data.result);
                     let result = data.data.result;
                     if (result) {
 
@@ -765,6 +1063,10 @@
             getEnterpriseCurrentLubanBiCount(params).then(function (result) {
                 vm.count = result.data.result;
             })
+
+            getNewCitys().then((data) => {
+                this.options=data.data.result;
+            });
         }
     }
 </script>
@@ -854,6 +1156,10 @@
     .modelwidth726px .el-dialog {
         width: 726px;
     }
+    .modelwidth726px .el-dialog .rechargeFormBox .el-form-item__error{
+        top:84px;
+    }
+
 
     .text-a-c .el-form-item__content {
         text-align: center;
@@ -1023,4 +1329,6 @@
    .LubanCoinsManagementBox  .order-management .el-table__body-wrapper .el-table__row:nth-child(6) .cell{
         line-height: 40px;
    }
+   .voucherNoerrow input{border-color: #ff4949;}
+   .voucherNoerrow .voucherNoerrowMeg{position: absolute;top:32px;color: #ff4949;}
 </style>

@@ -31,6 +31,7 @@ let first, second, third;
 export const tests = params=> axios.get(`${params.url}` + "payment/alipay/alipayCloseTradeNotify");
 export const getWorksetingList = params => axios.get(`${base}`);
 export const getCitys = params => axios.get('../../static/js/citys.json')
+export const getNewCitys = params => axios.get('../../static/js/newcity.json')
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 export const router = params=> axios.get(`${route}`);
 // 订单管理
@@ -57,7 +58,7 @@ export const getEnterpriseCurrentLubanBiCount = params=> axios.get(`${params.url
 // GET /luban/bi/getContactAddress 查询联系人地址信息
 export const getContactAddress = params=> axios.get(`${params.url}luban/bi/getContactAddress`);
 // POST /luban/bi/validateVouchers/{vouchersPassword} 验证代金券-加入可使用范围
-export const validateVouchers = params=> axios.get(`${params.url}luban/bi/validateVouchers/${params.vouchersPassword}`);
+export const validateVouchers = params=> axios.post(`${params.url}luban/bi/validateVouchers/${params.vouchersPassword}`);
 // POST /luban/bi/addLubanBiChargeOrder 添加鲁班币充值订单
 export const addLubanBiChargeOrder = params=>axios.post(`${params.url}luban/bi/addLubanBiChargeOrder`, params.lubanBiChargeParam)
 

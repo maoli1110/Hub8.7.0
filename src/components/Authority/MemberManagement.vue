@@ -27,7 +27,7 @@
             </div>
             <div class="el-form-item el-form_">
                 <div class="el-form-item__content">
-                    <el-input placeholder="请选择日期" icon="search" style="max-width:220px"></el-input>
+                    <el-input placeholder="请输入通行证账号或备注" icon="search" style="max-width:220px"></el-input>
                 </div>
             </div>
         </div>

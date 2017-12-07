@@ -567,7 +567,6 @@
                     this.filterParams.orgdeptId = data.data.result[0].id;
                     this.filterParams.orgNodeVal = data.data.result[0].name;
 //                    this.tableParam.deptIds[0] = this.filterParams.orgdeptId;
-
                     let treeObj = $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
                     let nodes = treeObj.transformToArray(treeObj.getNodes());
                     console.log(nodes,'nodes');
