@@ -153,8 +153,8 @@
                     <el-form-item label="项目负责人：">
                         <multiple-select  v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select>
                     </el-form-item>
-                    <el-form-item label="项目经理：">
-                        <multiple-select  v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select> 
+                    <el-form-item label="项目经理：" prop="manager">
+                        <el-input v-model="projectForm.manager" placeholder="请输入项目经理"></el-input>
                     </el-form-item>
                     <!-- </el-form-item> -->
                     <el-form-item label="手机号码：" prop="mobile">
@@ -197,7 +197,7 @@
                 </div>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="createBranchSubmit">确 定</el-button>
+                <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="createOrgNode">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
@@ -207,7 +207,7 @@
 <script>
 import '../../../static/css/select-vue-component.css'; // select2样式
 import axios from "axios";
-import {getOrgTreeList,createBranchCompany} from '../../api/getData-mll.js';   // 接口
+import {getOrgTreeList,createBranchCompany,createProject} from '../../api/getData-mll.js';   // 接口
 import {basePath,transformToObjFormat} from "../../utils/common.js"; // 通用模块
 import {
   validatephoneNumber,
@@ -255,7 +255,7 @@ export default {
                 name:''
             },
             projectForm: {
-                name: "string",
+                name: "新增项目部节点",
                 admins: [
                     {
                       id: {},
@@ -284,6 +284,10 @@ export default {
             projectRules: {
                 name: [
                     { required: true, message: '请输入公司名称', trigger: 'blur' },
+                    { min: 3, max: 25, message: '长度在 3-25个字符', trigger: 'blur' }
+                ],
+                manager: [
+                    { required: true, message: '请输入项目经理', trigger: 'blur' },
                     { min: 3, max: 25, message: '长度在 3-25个字符', trigger: 'blur' }
                 ],
                 mobile: [
@@ -331,9 +335,10 @@ export default {
         };
     },
     mounted() {
-        /**
-         * 根据生成的树结构计算总宽度
-         */
+        // 根据路由地址获取baseUrl
+        this.getBaseUrl();
+
+        // 根据生成的树结构计算总宽度
         function getOrgTreeWidth() {
             let tempWidth = 0;
             $("#organization-tree > div").each(function(){
@@ -342,15 +347,7 @@ export default {
             return tempWidth;
         }
 
-        this.getBaseUrl();
-
-        //获取树节点--正式
-        // getOrgTreeList({url:baseUrl}).then((data) => {
-        //     consoloe.log('success')
-        // });
-
-
-        //获取原始树结构
+        // 获取原始树结构
         getOrgTreeList({url:baseUrl}).then(res => {
             // 组合树结构需要的参数
             let param = {
@@ -399,45 +396,39 @@ export default {
     methods: {
         //测试multiple select2
         queryData: function(){
-            let mySelf = this;
-            //do ajax here
-
+            let self = this;
+            // do ajax here
             // 多选
-            mySelf.multiple.originOptions = [{"id":"1","name":"lemon"},{"id":"2","name":"mike"},{"id":"3","name":"lara"},{"id":"4","name":"zoe"},{"id":"5","name":"steve"},{"id":"6","name":"nolan"}];
-            mySelf.multiple.selectedList = [{"id":"1","name":"lemon"},{"id":"3","name":"lara"}]
+            self.multiple.originOptions = [{"id":"1","name":"lemon"},{"id":"2","name":"mike"},{"id":"3","name":"lara"},{"id":"4","name":"zoe"},{"id":"5","name":"steve"},{"id":"6","name":"nolan"}];
+            self.multiple.selectedList = [{"id":"1","name":"lemon"},{"id":"3","name":"lara"}]
 
-            mySelf.orgForm.originOptions = [{"id":"1","name":"lemon"},{"id":"2","name":"mike"},{"id":"3","name":"lara"},{"id":"4","name":"zoe"},{"id":"5","name":"steve"},{"id":"6","name":"nolan"}];
-            mySelf.orgForm.selectedList = [{"id":"1","name":"lemon"},{"id":"3","name":"lara"}]
+            self.orgForm.originOptions = [{"id":"1","name":"lemon"},{"id":"2","name":"mike"},{"id":"3","name":"lara"},{"id":"4","name":"zoe"},{"id":"5","name":"steve"},{"id":"6","name":"nolan"}];
+            self.orgForm.selectedList = [{"id":"1","name":"lemon"},{"id":"3","name":"lara"}]
             // 多选（数据格式简化 非json）
-            mySelf.multipleSimplify.originOptions = ["lemon","mike","lara","steve","zoe","lion"];
-            mySelf.multipleSimplify.selectedList = ["lemon","lara"];
+            self.multipleSimplify.originOptions = ["lemon","mike","lara","steve","zoe","lion"];
+            self.multipleSimplify.selectedList = ["lemon","lara"];
 
+            // Dom发生变化之后的回调函数
             this.$nextTick(function(){
 
             })
         },
-        singleCallback: function(data){
-            this.single.selected = data;
-            // console.log('父级元素调用singleCallback 选中的是' + JSON.stringify(data))
-        },
+
+        // vue-multiple-select2 callback
         multipleCallback: function(data){
             this.multiple.selectedList = data;
             console.log('父级元素调用multipleSelected 选中的是' + JSON.stringify(data))
         },
-        customMultipleCallback: function(data){
-            this.customMultiple.selectedList = data;
-            console.log('父级元素调用customMultipleInputed 选中的是' + JSON.stringify(data))
 
-        },
+        // vue-multipleSimple-select2 callback
         multipleSimplifyCallback: function(data){
             this.multipleSimplify.selectedList = data;
             console.log('父级元素调用multipleSimplifySelected 选中的是' + JSON.stringify(data))
 
         },
 
-
         log: function(){
-            let mySelf = this
+            let self = this
             // console.log('单选输出结果' + JSON.stringify(this.single));
             console.log('多选输出结果' + JSON.stringify(this.multiple));
             // console.log('自定义输入输出结果' + JSON.stringify(this.customMultiple));
@@ -445,16 +436,16 @@ export default {
         },
 
         change: function(){
-            let mySelf = this;
-
-            mySelf.multiple.originOptions = [{"id":"2","name":"mike"},{"id":"3","name":"lara"}]
-            mySelf.multiple.selectedList = [{"id":"4","name":"zoe"},{"id":"5","name":"steve"}]
-
+            let self = this;
+            self.multiple.originOptions = [{"id":"2","name":"mike"},{"id":"3","name":"lara"}]
+            self.multiple.selectedList = [{"id":"4","name":"zoe"},{"id":"5","name":"steve"}]
         },
+
         //获取接口地址
         getBaseUrl(){
             baseUrl = basePath(this.$route.path);
         },
+
         //组织结构全部展开，全部收起
         expandTree(source){
             console.log(this.zNodes.length,'length');
@@ -464,27 +455,28 @@ export default {
                 x.expandAll(source);
             }
         },
+
         //mouseOn显示负责人信息
         addHoverDom(treeId,treeNode) {
-            console.log(treeId,'treeId')
-            console.log(treeNode,'treeId')
-            selectedNode = treeNode;
-            selectedTreeId = treeId;
-            console.log('add');
             /** 
              * 1.获取当前鼠标的位置
              * 2.更改属性显示界面，获取数据
              */
+            console.log('add');
+            console.log(treeId,'treeId')
+            console.log(treeNode,'treeId')
+            selectedNode = treeNode;
+            selectedTreeId = treeId;
             if($(".el-popover").css('display') === 'block') return;
             let aObj = $("#" + treeNode.tId + "_a");
             let mX = aObj.offset().left,
                 mY = aObj.offset().top;
-            let left = function(){
+            let changePosition = function(){
                  $(".el-popover").css('left',mX+185);
                  $(".el-popover").css('top',mY-10);
             }
             this.isPopover = true;
-            window.setTimeout(left,100);
+            window.setTimeout(changePosition,100);
         },
         
         //mouseOff鼠标划过负责人信息
@@ -497,14 +489,16 @@ export default {
             })
         },
 
-        //创建分公司
-        createBranchSubmit() {
+        //创建分公司、项目部节点
+        createOrgNode() {
+            console.log(this.orgForm.resource)
             /**
              * 创建树节点
              * @param {obj} selectedNode 当前选中节点
              * @param {obj} newNodes     新节点对象
              */
             function addTreeNode(selectedNode, newNodes) {
+                console.log(selectedNode,'selectedNode')
                 let treeNode = selectedNode;
                 let zTree = $.fn.zTree.getZTreeObj(selectedTreeId);
                 if (treeNode) {
@@ -513,51 +507,29 @@ export default {
                     treeNode = zTree.addNodes(null, newNodes);
                 }
                 if (!treeNode) {
-                    layer.alert('未选择父节点，无法添加子节点', {
-                        area: ['200px', '160px'],
-                        title: '提示',
-                        closeBtn: 0,
-                        move: false
-                    });
+                    alert('当前节点，无法添加子节点');
                 }
             }
 
-            let params = {
-                orgId: '7d7de9d10b604bb698915762b0de529d',
-                companyInfo: this.companyForm
-            };
-
-            /**
-             * 创建分公司
-             * @param  {[type]} {url:baseUrl,params}).then((data [description]
-             * @return {[type]}                                    [description]
-             */
-            createBranchCompany({url:baseUrl,params}).then((data)=>{
-                let tempNode = data.data.result;
-                addTreeNode(selectedNode, tempNode);
-            });
-           
-            
-            // var tempNode = {
-            //     id: "d825f58525a44cbdb9c9a181bb3e58d7",
-            //     createdBy: null,
-            //     createdDate: 1512548882539,
-            //     lastModifiedBy: null,
-            //     lastModifiedDate: null,
-            //     epid: 90001000,
-            //     parentId: "7d7de9d10b604bb698915762b0de529d",
-            //     level: 1,
-            //     pathId: "GfIHwAMq",
-            //     path: "null/GfIHwAMq",
-            //     name: "分公司节点",
-            //     remarks: null,
-            //     type: 0,
-            //     direct: false,
-            //     root: false,
-            //     new: false
-            // }
-
-
+            if(this.orgForm.resource === '分公司'){
+                let params = {
+                    orgId: selectedNode.id,
+                    companyInfo: this.companyForm
+                };
+                createBranchCompany({url:baseUrl,params}).then((data)=>{
+                    let tempNode = data.data.result;
+                    addTreeNode(selectedNode, tempNode);
+                });
+            } else {
+                let params = {
+                    parentId: selectedNode.id,
+                    companyInfo: this.projectForm
+                };
+                createProject({url:baseUrl,params}).then((data)=>{
+                    let tempNode = data.data.result;
+                    addTreeNode(selectedNode, tempNode);
+                });
+            }
         }
     },
     watch:{
