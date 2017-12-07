@@ -83,3 +83,16 @@ export const getWorkSets = params =>axios.post(`${params.url}rs/workSetRest/getW
 export const delWorkSets = params =>axios.post(`${params.url}rs/workSetRest/delWorkSets`,params.param)
 //bim->工作集查看工程
 export const  getProjByWorkSet = params =>axios.post(`${params.url}rs/workSetRest/getProjByWorkSet`,params.param)
+//根据uuid匹配缩略图列表
+
+/**
+ * pds图纸
+ * */
+//PDf 假数据
+export const PDFtestList = params =>axios.get('../../static/pdfTableList.json');
+//pds图纸->分类下拉框
+export const getDrawingClassifyInfos = params =>axios.get(`${params.url}rs/pdfDrawingRest/getDrawingClassifyInfos`);
+//pds图纸->获取工程下拉框
+export const getProjHasPdfDraw = params =>axios.get(`${params.url}rs/pdfDrawingRest/getProjHasPdfDraw`);
+//pds图纸->获取图纸详情
+export const getDrawingDetailInfos = params =>axios.post(`${params.url}rs/pdfDrawingRest/getDrawingDetailInfos`,params.param);
