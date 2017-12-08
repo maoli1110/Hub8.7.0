@@ -581,6 +581,18 @@
                     phone :'' ,//联系电话 ,
                     realName: '',//真实姓名 ,
                     zipCode :'' ,//邮政编码
+                    "realName": "周宁",
+                    "province": {
+                      "provinceId": null,
+                      "province": ""
+                    },
+                    "city": {
+                      "cityId": null,
+                      "provinceId": null,
+                      "city": ""
+                    },
+                    "companyName": "",
+                    "qq": null,
                 },
                 newinvoiceContactAddress: {
                     address: '',//联系地址 ,
@@ -588,6 +600,17 @@
                     phone :'' ,//联系电话 ,
                     realName: '',//真实姓名 ,
                     zipCode :'' ,//邮政编码
+                    "province": {
+                      "provinceId": null,
+                      "province": ""
+                    },
+                    "city": {
+                      "cityId": null,
+                      "provinceId": null,
+                      "city": ""
+                    },
+                    "companyName": "",
+                    "qq": null,
                 },
                 invoiceContactAddressrules:{
                     address:[
@@ -681,7 +704,11 @@
                         phone :res.data.result.phone,//联系电话 ,
                         realName: res.data.result.realName,//真实姓名 ,
                         zipCode :res.data.result.zipCode ,//邮政编码
-                    }
+                        "province":res.data.result.province ,
+                        "city": res.data.result.city,
+                        "companyName": res.data.result.companyName,
+                        "qq": res.data.result.qq,
+                        }
                     vm.newinvoiceContactAddress=JSON.parse(JSON.stringify(vm.invoiceContactAddress));
                 })
                 
@@ -952,6 +979,7 @@
                                 if(res.data.msg=='success'){
                                     vm.dialogVisible=false;
                                     //支付宝 eds订单
+                                    vm.redirectToPay(res.data.result);
                                 }else{
                                     alert("失败")
                                 }
@@ -966,6 +994,7 @@
                         if(res.data.msg=='success'){
                             vm.dialogVisible=false;
                             //支付宝 eds订单
+                             vm.redirectToPay(res.data.result);
                         }else{
                             alert("失败")
                         }
@@ -973,15 +1002,16 @@
                 }
                 
             },
+            //支付宝 eds订单
             redirectToPay(orderId){
                 // 支付跳转
-                let baseUrl = basePath(this.$route.matched[3].path)
+                let baseUrl = basePath(this.$route.matched[2].path)
                 let params = {
                     url: baseUrl,
                     orderId: orderId,
                     packageName: '鲁班币充值'
                 }
-                var vm = this;
+                let vm = this;
                 generatePayUrl(params).then(function (data) {
                     vm.linkUrl = data.data.result;
                     let msg = data.data.msg;
@@ -1069,6 +1099,7 @@
                 // 分配鲁班币弹框
                 this.checkAll = false;
                 this.checkedAccounts = [];
+                this.assignLuban.major=null;
                 this.getLubanBiMembersList();
             },
             //获取鲁班币分配名单
