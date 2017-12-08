@@ -27,7 +27,23 @@ export default new Router({
                         },
                         {
                             path: 'space-usage',
-                            component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve)
+                            redirect: 'space-usage/aa',
+                            component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve),
+                            children: [
+                            {
+                                path: 'aa',
+                                component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve)
+                            },
+                            {
+                                path: 'bb',
+                                component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve)
+                            },
+                            {
+                                path: 'cc',
+                                component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve)
+                            },
+
+                            ]
                         },
                     ]
                 },
