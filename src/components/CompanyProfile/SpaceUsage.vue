@@ -3,7 +3,26 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <div class="main-shadow org">
-                444
+                <div id="chartDoughnut" style="width:100%; height:340px;"></div>
+                <el-row class="capacity">
+                  <el-col :span="8">
+                    <b>1024GB</b>
+                    <span>全部容量</span>
+                  </el-col>
+                  <el-col :span="8">
+                    <b>324GB</b>
+                    <span>已用</span>
+                  </el-col>
+                  <el-col :span="8">
+                    <b>524GB</b>
+                    <span>可用</span>
+                  </el-col>
+                </el-row>
+                <div class="unfold">空间不够？<span>点击扩容</span></div>
+                <div class="capacity-text">
+                    工程文件包含：<br>
+                    工程原始文件、模型文件（KMZ）、BE上传资料文件（包含导入的图纸）、协作资料文件（包括照片和录音）、PDS节点文件。
+                </div>
             </div>
           </el-col>
           <el-col :span="18">
@@ -19,7 +38,7 @@
                     </el-menu>
                 </div>
                 <div class="main">
-                    <span class="orders-text">内容</span>
+                    <div id="chartColumn" style="width:100%; height:calc(100vh - 360px)"></div>
                 </div>
             </div>
           </el-col>
@@ -33,9 +52,7 @@ export default {
     data() {
         return {
             chartColumn: null,
-            chartBar: null,
-            chartLine: null,
-            chartPie: null,
+            chartDoughnut:null,
             activeIndex:""
         }
     },
@@ -43,160 +60,91 @@ export default {
         this.activeIndex = this.$route.path;
     },
     methods: {
+        //环状图
+        drawDoughnutChart() {
+            this.chartColumn = echarts.init(document.getElementById('chartDoughnut'));
+            this.chartColumn.setOption({
+                color:['#e78788' ,'#7dc15c'],
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                legend: {
+                    bottom: 10,
+                    left: 'center',
+                    data:['可使用','已用']
+                },
+                series: [
+                    {
+                        name:'空间使用情况',
+                        type:'pie',
+                        radius: ['40%', '60%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '20',
+                                    fontWeight: ''
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: true
+                            }
+                        },
+                        data:[
+                            {value:500, name:'可使用'},
+                            {value:222, name:'已用'},
+                        ]
+                    }
+                ]
+            });
+        },
         drawColumnChart() {
             this.chartColumn = echarts.init(document.getElementById('chartColumn'));
             this.chartColumn.setOption({
                 title: { text: 'Column Chart' },
                 tooltip: {},
                 xAxis: {
-                    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+                    data: ["第1分公司", "第2分公司", "第3分公司", "第4分公司", "第5分公司", "第6分公司","第7分公司","第8分公司","第9分公司","第10分公司"]
                 },
                 yAxis: {},
                 series: [{
-                    name: '销量',
+                    name: '哈哈哈哈哈哈哈哈哈哈',
                     type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20]
+                    barWidth : 30,
+                    data: [5, 20, 28, 10, 25, 20,14,5,14,3],
+                    itemStyle: {
+                    normal: {
+                        color: function(params) {
+                            // build a color map as your need.
+                            var colorList = [
+                              '#7dc15c' ,'#958bc8', '#36bdfd', '#8accda', '#6d95db', '#b46cb6', '#e7b01f', '#4b8970', '#b2cc9f', '#e68888'
+                            ];
+                            return colorList[params.dataIndex]
+                        },
+                        barBorderRadius:[4, 4, 4, 4],
+                        label: {
+                            show: true,
+                            position: 'top',
+                            formatter: '{b}\n{c}'
+                        }
+                    }
+                }
+
                 }]
             });
         },
-        drawBarChart() {
-            this.chartBar = echarts.init(document.getElementById('chartBar'));
-            this.chartBar.setOption({
-                title: {
-                    text: 'Bar Chart',
-                    subtext: '数据来自网络'
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                legend: {
-                    data: ['2011年', '2012年']
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: {
-                    type: 'value',
-                    boundaryGap: [0, 0.01]
-                },
-                yAxis: {
-                    type: 'category',
-                    data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
-                },
-                series: [
-                    {
-                        name: '2011年',
-                        type: 'bar',
-                        data: [18203, 23489, 29034, 104970, 131744, 630230]
-                    },
-                    {
-                        name: '2012年',
-                        type: 'bar',
-                        data: [19325, 23438, 31000, 121594, 134141, 681807]
-                    }
-                ]
-            });
-        },
-        drawLineChart() {
-            this.chartLine = echarts.init(document.getElementById('chartLine'));
-            this.chartLine.setOption({
-                title: {
-                    text: 'Line Chart'
-                },
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data: ['邮件营销', '联盟广告', '搜索引擎']
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [
-                    {
-                        name: '邮件营销',
-                        type: 'line',
-                        stack: '总量',
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: '联盟广告',
-                        type: 'line',
-                        stack: '总量',
-                        data: [220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name: '搜索引擎',
-                        type: 'line',
-                        stack: '总量',
-                        data: [820, 932, 901, 934, 1290, 1330, 1320]
-                    }
-                ]
-            });
-        },
-        drawPieChart() {
-            this.chartPie = echarts.init(document.getElementById('chartPie'));
-            this.chartPie.setOption({
-                title: {
-                    text: 'Pie Chart',
-                    subtext: '纯属虚构',
-                    x: 'center'
-                },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-                },
-                series: [
-                    {
-                        name: '访问来源',
-                        type: 'pie',
-                        radius: '55%',
-                        center: ['50%', '60%'],
-                        data: [
-                            { value: 335, name: '直接访问' },
-                            { value: 310, name: '邮件营销' },
-                            { value: 234, name: '联盟广告' },
-                            { value: 135, name: '视频广告' },
-                            { value: 1548, name: '搜索引擎' }
-                        ],
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
-                    }
-                ]
-            });
-        },
+
         drawCharts() {
+            this.drawDoughnutChart()
             this.drawColumnChart()
-            this.drawBarChart()
-            this.drawLineChart()
-            this.drawPieChart()
         },
     },
 
@@ -247,6 +195,40 @@ export default {
     margin-right: 50px;
     line-height: 40px;
     text-align: center
+}
+.capacity b,.capacity span{
+    display: block;
+    text-align: center;
+}
+.capacity b{
+    font-size: 16px;
+    padding: 55px 0 8px;
+}
+.capacity span{
+    color: #787878;
+}
+.unfold{
+    color: #4778c7;
+    font-size: 14px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    padding:100px 0 50px;
+    border-bottom: 1px solid #e6e6e6;
+}
+.unfold>span{
+    display: inline-block;
+    color: #fff;
+    background: #4778c7;
+    width: 80px;
+    border-radius: 3px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.capacity-text{
+    line-height: 24px;
+    padding: 20px;
+    font-size: 13px;
 }
 
 </style>
