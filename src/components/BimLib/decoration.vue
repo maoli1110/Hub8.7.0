@@ -565,13 +565,13 @@
                 getOrgTreeList({url:url}).then((data)=>{
                     this.zNodes = data.data.result;
                     this.filterParams.orgdeptId = data.data.result[0].id;
-                    this.filterParams.orgNodeVal = data.data.result[0].name;
-//                    this.tableParam.deptIds[0] = this.filterParams.orgdeptId;
                     let treeObj = $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
                     let nodes = treeObj.transformToArray(treeObj.getNodes());
-                    console.log(nodes,'nodes');
                     this.zNodes.forEach((val,key)=>{
-                        if(val.id!=1){
+                        if(val.id==1){
+                            this.filterParams.orgNodeVal = val.name;
+                        }
+                        if(val.type==1 || val.direct){
                             this.tableParam.deptIds.push(val.id)
                         }
                     })
