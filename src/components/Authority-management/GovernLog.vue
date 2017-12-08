@@ -1,5 +1,5 @@
 <template>
-    <div class="LubanCoinsManagementBox">
+    <div class="">
         <div class="order-management">
             <div class="header" >
                 <el-col :span="24">
@@ -14,21 +14,17 @@
             <div class="main">
 
                 <el-button type="primary" class="basic-btn"
-                           @click=""><i
+                           @click="downLoadLogs"><i
                     class="components-icon icon-update icon-map "></i><span class="btn-text">导出</span>
                 </el-button>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                    <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
+                    <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData.content" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px">
-                        <el-table-column class="" type='index' label="序号" width="60" :index="indexSort"></el-table-column>
-                        <el-table-column class="table-tr" prop="date" label="通行证/账号名称" width="200"></el-table-column>
-                        <el-table-column class="table-tr" label="功能" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                已分配{{scope.row.assignedAccount[0]}}账号，每个账号{{scope.row.assignedAccount[1]}}个
-                            </template>
-                        </el-table-column>
-                        <el-table-column class="table-tr" prop="revenue" label="操作对象" width="200"></el-table-column>
-                        <el-table-column class="table-tr" prop="disbursement" label="时间" width="200"></el-table-column>
+                        <el-table-column class="" type='index' label="序号" width="60"></el-table-column>
+                        <el-table-column class="table-tr" prop="ip" label="通行证/账号名称" width="200"></el-table-column>
+                        <el-table-column class="table-tr" prop="func" label="功能" width=""></el-table-column>
+                        <el-table-column class="table-tr" prop="operator" label="操作对象" width="200"></el-table-column>
+                        <el-table-column class="table-tr" :formatter="dateFormat" prop="operateTime" label="时间" width="200"></el-table-column>
                     </el-table>
                 </vue-scrollbar>
                 <div style="margin-top: 20px">
@@ -36,11 +32,11 @@
                     <el-pagination style="margin-left:30%"
                                    @size-change="handleSizeChange"
                                    @current-change="handleCurrentChange"
-                                   :current-page="4"
-                                   :page-sizes="[100, 200, 300, 400]"
-                                   :page-size="100"
+                                   current-page="1"
+                                   page-size="5"
+                                   page-sizes="[5, 10, 20, 50]"
                                    layout="total, sizes, prev, pager, next, jumper"
-                                   :total="400">
+                                   :total="coinsManagementTableData.totalElements">
                     </el-pagination>
                 </div>
             </div>
@@ -50,42 +46,121 @@
 
 <script>
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue'
+    import {getLogs} from '../../api/getData-cxx.js';
+    import {basePath} from '../../utils/common.js'
     export default {
+        props:["nowPath"],
         data (){
-
             return {
-                coinsManagementTableData: [
-                    {
-                        date: "2016-05-03 13:51",
-                        assignedAccount: [
-                            120,//"已分配
-                            201 //可分配
-                        ],
-                        revenue: 12,
-                        disbursement:22,
-                        bindNumber: 22,
-                        balance:20,
-                    }
-                ]
+                coinsManagementTableData: {totalElements:0},
+                selectDate:"",
+                pathType:{
+                            "govern-log":"govern",
+                            "explorer-log":"explorer",
+                            "civil-log":"",
+                            "works-log":"works",
+                            "plan-log":"plan",
+                            "prevbw-log":"old-works", //原BW
+                            "prevgovern-log":"old-govern", //原govern
+                            "remiz-log":"remiz"
+                        },
             }
         },
         components: {
             VueScrollbar
         },
         methods: {
-            indexSort(){
-                //序号
-                return index * 1;
+            downLoadLogs(){
+                let vm = this;
+                let baseUrl = basePath(this.$route.matched[3].path);
+                let args    = "?page="+ 1 +"&size="+ 2 +"&sort="+ 3 +"&start="+ 4 +"&end="+ 5;
+                let params  = {
+                                "url":baseUrl,
+                                "type":this.pathType[this.nowPath],
+                                "args":args
+                                }
+                //?page=1&size=2&sort=2&start=3&end=4
+                getLogsDownload(params).then(function (res) {
+                    if(res.data.msg == "success"){}
+                })
+            },
+            dateFormat(row, column) {  
+                var date = row[column.property];  
+                if (date == undefined) {  
+                    return "";  
+                }  
+                return moment(date).format("YYYY.MM.DD HH:mm:ss");  
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                console.log(val);
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            }
+                console.log(val);
+            },
+            getLogList(){
+                let vm = this;
+                let baseUrl = basePath(this.$route.matched[3].path)
+                let params = {
+                                "url":baseUrl,
+                                "type":this.pathType[this.nowPath],
+                                "args":"?page=&size=10"
+                                }
+                //?page=1&size=2&sort=2&start=3&end=4
+                getLogs(params).then(function (res) {
+                    if(res.data.msg == "success"){
+                        //vm.coinsManagementTableData = res.data.content;
+                        vm.coinsManagementTableData.totalElements = 5;
+                        vm.coinsManagementTableData.content = [{
+                          "epid": 1,
+                          "func": "string",
+                          "ip": "string",
+                          "operateTime": "2017-12-06T07:14:39.085Z",
+                          "operator": "string",
+                          "target": "string"
+                        },{
+                          "epid": 0,
+                          "func": "string",
+                          "ip": "string",
+                          "operateTime": "2017-12-06T07:14:39.085Z",
+                          "operator": "string",
+                          "target": "string"
+                        },
+                        {
+                          "epid": 1,
+                          "func": "strdddddddddddddddddddding",
+                          "ip": "string",
+                          "operateTime": "2017-12-06T07:14:39.085Z",
+                          "operator": "string",
+                          "target": "strinddddddddddddddddddddg"
+                        },{
+                          "epid": 0,
+                          "func": "strdddddddddddddddddddding",
+                          "ip": "string",
+                          "operateTime": "2017-12-06T07:14:39.085Z",
+                          "operator": "string",
+                          "target": "string"
+                        },
+                        {
+                          "epid": 1,
+                          "func": "string",
+                          "ip": "string",
+                          "operateTime": "2017-12-06T07:14:39.085Z",
+                          "operator": "string",
+                          "target": "string"
+                        }]
+                    } 
+                }) 
+            },
         },
         mounted() {
-        }
+            this.getLogList();   
+        },
+        watch:{
+            nowPath(){
+                this.getLogList();
+            },
+
+        },
     }
 </script>
 

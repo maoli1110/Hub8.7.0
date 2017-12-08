@@ -201,22 +201,23 @@ function basePath(localhost) {
             baseUrl = 'http://192.168.13.195:8989/cloud/';
         case "/system/order-management/eds-orders":
             baseUrl = 'http://192.168.13.195:8989/cloud/';
+
         case "/system/system-log/govern-log":
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/builder/';
         case "/system/system-log/explorer-log":
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/builder/';
         case "/system/system-log/civil-log":
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/builder/';
         case "/system/system-log/works-log":
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/builder/';
         case "/system/system-log/plan-log":
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/builder/';
         case "/system/system-log/prevbw-log":
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/builder/';
         case "/system/system-log/prevgovern-log":
-            baseUrl= 'http://192.168.13.195:8989/cloud/';
+            baseUrl= 'http://192.168.13.195:8989/builder/';
         case "/system/system-log/remiz-log":
-            baseUrl= 'http://192.168.13.195:8989/cloud/';
+            baseUrl= 'http://192.168.13.195:8989/builder/';
         default:
             break;
     }

@@ -48,3 +48,5 @@ export const treeList = params=> axios.get(`${params.url}component/tree/list/${p
  * 组织结构
  */
 export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
+
+

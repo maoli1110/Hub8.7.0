@@ -323,6 +323,27 @@
                 <el-button class="dialog-btn dialog-btn-cancel" @click="handleCloseinvoice">取 消</el-button>
             </div>
         </el-dialog>
+        <!-- 转到支付宝 -->
+        <el-dialog
+            title="转到支付平台"
+            :visible.sync="dialogVisiblezfb" size="small" :close-on-click-modal="false" :close-on-press-escape="false"
+            class="modelwidth500px">
+            <div style="height: auto;"
+                 class="panel-body panel-body-noborder window-body">
+                <div style="color:#FF9900;font-size: 14px;padding-bottom: 10px;border-bottom: 1px solid #e6e6e6;">
+                    重要提醒：请在下单后24小时内支付，否则订单将会自动取消！
+                </div>
+                <div style="vertical-align:middle;font-size: 14px;margin-top: 10px;color: #000">请在完成付款后选择:</div>
+                <div style="font-size: 14px;width: 160px;margin: 10px 0 12px 50px;"><span
+                    style="font-weight:700;color: #000">付款成功：</span>
+                    <a href="#" style="color: #84C7A8" @click="locationPage();dialogVisiblezfb = false">查看EDS订单</a>
+                </div>
+                <div style="margin: 10px 0 12px 50px;font-size: 14px;width: 180px;"><span
+                    style="font-weight:700;color: #000">付款失败：</span>
+                    <router-link to="/help" target="_blank" style="color: #84C7A8">查看在线支付帮助</router-link>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -331,7 +352,7 @@
     import {basePath} from '../../utils/common.js'
     import {queryEnterpriseLubanBiList} from '../../api/getData-cxx.js';
     import {getEnterpriseCurrentLubanBiCount} from '../../api/getData-cxx.js';
-    import {addLubanBiChargeOrder,getContactAddress,getLubanBiAllocateList,getNewCitys,validateVouchers,getGoldInvoiceExpress} from '../../api/getData-cxx.js';
+    import {addLubanBiChargeOrder,getContactAddress,getLubanBiAllocateList,getNewCitys,validateVouchers,getGoldInvoiceExpress,generatePayUrl} from '../../api/getData-cxx.js';
     const accountOptions = [
         "曹相相1",
         "曹相相2",
@@ -381,11 +402,22 @@
                     }
                 }  
             };
+            var checkIdentification = (rule, value, callback) => {
+                if(!(/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value))){ 
+                    callback(new Error('请输入正确的身份证号')); 
+                }else{
+                    callback(); 
+                }  
+            };
+            
             return {
+                //查看eds
+                dialogVisiblezfb:false,
+
                 goldInvoiceExpressFee:null,//鲁班币充值发票快递费 ,
                 goldInvoiceExpressFreeLimit:null,//鲁班币充值数量无快递费下限
                 coinsManagementTableData: [],// 列表数据
-                sum: '',// 总记录条数
+                sum: 0,// 总记录条数
                 count: '',// 获取企业当前鲁班币数量
                 accounts: accountOptions,    //账号人员
                 assignLuban: {
@@ -538,6 +570,7 @@
                 personinvoicerules: {
                     invoiceTitle: [
                         { required: true, message: '请填写身份证号码', trigger: 'blur' },
+                        { validator: checkIdentification, trigger: 'blur'},
                     ],//发票抬头，如果是个人发票则保存身份证号码 ,
                 },
                 //收票人信息
@@ -600,6 +633,11 @@
             
         },
         methods: {
+            
+            //跳转系统订单
+            locationPage(){
+                this.$router.push({path:'/system/order-management/eds-orders'});
+            },
             //保存收票人信息
             showSaveUserbtn(){
                 this.$refs['invoiceContactAddress'].validate((valid) => {
@@ -907,11 +945,59 @@
             addLubanBiCharge(lubanBiChargeParam){
                 // 添加鲁班币充值订单
                 let vm=this;
-                addLubanBiChargeOrder(lubanBiChargeParam).then(function (res) {
-                    if(res.data.msg=='success'){
-                        vm.dialogVisible=false;
-                    }else{
-                        alert("失败")
+                if(!vm.goldAmount){
+                    this.$refs['rechargeform'].validate((valid) => {
+                        if (valid) {
+                            addLubanBiChargeOrder(lubanBiChargeParam).then(function (res) {
+                                if(res.data.msg=='success'){
+                                    vm.dialogVisible=false;
+                                    //支付宝 eds订单
+                                }else{
+                                    alert("失败")
+                                }
+                            })
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                }else{
+                    addLubanBiChargeOrder(lubanBiChargeParam).then(function (res) {
+                        if(res.data.msg=='success'){
+                            vm.dialogVisible=false;
+                            //支付宝 eds订单
+                        }else{
+                            alert("失败")
+                        }
+                    })
+                }
+                
+            },
+            redirectToPay(orderId){
+                // 支付跳转
+                let baseUrl = basePath(this.$route.matched[3].path)
+                let params = {
+                    url: baseUrl,
+                    orderId: orderId,
+                    packageName: '鲁班币充值'
+                }
+                var vm = this;
+                generatePayUrl(params).then(function (data) {
+                    vm.linkUrl = data.data.result;
+                    let msg = data.data.msg;
+                    if (vm.linkUrl) {
+                        vm.dialogVisiblezfb = true;
+                        var link = document.createElement('a');
+                        link.target = '_blank';
+                        link.href = vm.linkUrl;
+                        link.click();
+                    } else {
+                        vm.$alert(msg, '提示', {
+                            confirmButtonText: '确定',
+                            type: 'info'
+                        });
+                        vm.dialogVisiblezfb= false;
+
                     }
                 })
             },
