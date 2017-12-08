@@ -82,8 +82,8 @@ export default {
         loading: false,
         src: "../../../static/img/background.png",
         loginForm: {
-            username: "18788888888",
-            password: "111111"
+            username: "1349047949@qq.com",
+            password: "123456"
         },
         loginRules: {
             username: [
@@ -118,15 +118,18 @@ export default {
      * @return {[type]} [description]
      */
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+        let self = this;
+        this.$refs.loginForm.validate(valid => {
         if (valid) {
+            /** 
+             * 非正式版本代码如下
+             */
             this.loading = true;
             this.$router.push("/companyprofile/organization-structure");
             /** 
              * 正式版本代码如下
              */
-            // let comString = this.getComString();
-            // console.log(comString,'comString')     
+            // this.getComString();
         } else {
           console.log("error submit!!");
           return false;
@@ -135,26 +138,38 @@ export default {
     },
     /** 
      * 获取登录所需的组合字段
-     * @return {string} [description]
      */
     getComString() {
-        let comString = '';//登录需要的字段
-        comString += 'username='+this.loginForm.username+'&password='+md5(this.loginForm.password)+'&productId=100&';
-        console.log(comString)
+        //登录所需字段组合
+        let comString = {
+            username: this.loginForm.username,
+            password: md5(this.loginForm.password),
+            productId: 100
+        };
+       
         axios.get('http://192.168.3.52:8080/pds/login').then((data)=>{
-            let loginHtml = data.data;
+            /**
+             * 1.获取登录页面html,截取登录所需字段
+             * 2.再次对接登录
+             */
+            let loginHtml = data.data; 
             let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
-            //遍历接口的html，获取键值
+            //遍历html，获取键值
             sectionHtml.each(function(key){
-                if(key>=0 && key <=2){
-                    comString += $(this).attr('name')+'='+$(this).val()+'&';
-                } else if (key === 3) {
-                    comString += $(this).attr('name')+'='+$(this).val();
+                if(key>=0 && key <=3){
+                    comString[$(this).attr('name')] = $(this).val();
                 }
             });
-          console.log(comString)
+            $.ajax({
+                url:'http://192.168.3.52:8080/pds/login',
+                type:'POST',
+                contentType:'application/x-www-form-urlencoded',
+                data:comString,
+                success: function(){
+                    console.log('login success')
+                }
+            })
         });
-        return comString;
     },
     selectCount(num) {}
   }
