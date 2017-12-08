@@ -13,9 +13,9 @@
                 </div>
                 <div class="bims-container">
                     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
-                        <el-menu-item index="/companyprofile/space-usage/aa">按组织</el-menu-item>
-                        <el-menu-item index="/companyprofile/space-usage/bb">按专业</el-menu-item>
-                        <el-menu-item index="/companyprofile/space-usage/cc">按项目</el-menu-item>
+                        <el-menu-item index="/companyprofile/space-usage/org">按组织</el-menu-item>
+                        <el-menu-item index="/companyprofile/space-usage/major">按专业</el-menu-item>
+                        <el-menu-item index="/companyprofile/space-usage/item">按项目</el-menu-item>
                     </el-menu>
                 </div>
                 <div class="main">
