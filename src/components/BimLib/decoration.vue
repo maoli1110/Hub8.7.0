@@ -269,7 +269,10 @@
                     </el-select>
                     <el-select v-model="proManageVal" placeholder="" v-show="!isDisable" style="width:100%" :disabled="false">
                         <el-option :value="proManageVal" v-show="false"></el-option>
-                        <ul id="projectDepart" class="ztree"></ul>
+                        <div>
+                            <el-input class="search-tree" icon="search" :on-icon-click="searchzTree"></el-input>
+                            <ul id="projectDepart" class="ztree"></ul>
+                        </div>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="工程授权：" label-width="80">
@@ -383,6 +386,7 @@
 <script>
     import {basePath} from "../../utils/common.js";                         //基础路径返回
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';    //滚动组件
+    import "../../../static/zTree/js/jquery.ztree.exhide.min.js";
     import {
         cloudTree,
         getMajorsByCreate,
@@ -668,14 +672,6 @@
                 this.tableParam.latest = val;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
-           /* BimParamChange(val){
-                this.tableParam.projGenre = val;
-                this.getProjectList({url:baseUrl,param:this.tableParam})
-            },*/
-           /* majorParamChange(val){
-                this.tableParam.projType = val;
-                this.getProjectList({url:baseUrl,param:this.tableParam})
-            },*/
             //表格列表搜索
             tableListSearch(){
                 if(!this.filterParams.searchVal){return false;}
@@ -982,6 +978,64 @@
             //创建弹窗专业change事件
             proManageChange(val){
 
+            },
+            //树结构的搜索功能
+            getZtreeParentNode(ztreeNode, nodes) {
+                var pNode = ztreeNode.getParentNode();
+                /*console.log(pNode);*/
+                if (pNode != null) {
+                    if (nodes.indexOf(pNode) < 0) {
+                        nodes.push(pNode);
+                    }
+                    this.getZtreeParentNode(pNode, nodes);
+                }
+            },
+            getZtreeChildNode(ztreeNode, nodes) {
+                if (!ztreeNode.isParent) {
+                    return;
+                }
+                var children = ztreeNode.children;
+                /* console.log(children);*/
+                if (children.length > 0) {
+                    for (var i = 0; i < children.length; i++) {
+                        var child = children[i];
+                        if (nodes.indexOf(child) < 0) {
+                            nodes.push(child);
+                        }
+                        this.getZtreeChildNode(child, nodes);
+                    }
+                }
+            },
+            searchzTree(event) {
+                console.log(event)
+                var treeObj = $.fn.zTree.getZTreeObj('projectDepart');
+                var nodes1 = treeObj.getNodesByParam("isHidden", true);
+                var searchVal = $('.search-tree').find('input').val();
+                /* 将之前隐藏的展示*/
+                if (nodes1.length > 0) {
+                    treeObj.showNodes(nodes1);
+                }
+                var treeNodes = treeObj.transformToArray(treeObj.getNodes());
+                console.log(treeNodes,'treeNodes');
+                console.log(treeObj,'treeObj');
+//                return false;
+                var otherNeedShowNodes = [];
+                // 隐藏不符合搜索条件的节点
+                if (event.type == 'click' || event.keyCode == 13) {
+                    for (var i = 0; i < treeNodes.length; i++) {
+                        if (treeNodes[i].name.indexOf(searchVal) < 0) {
+                            treeObj.hideNode(treeNodes[i]);
+                        } else {
+                            /*符合条件的父级*/
+                            this.getZtreeChildNode(treeNodes[i], otherNeedShowNodes);
+                            this.getZtreeParentNode(treeNodes[i], otherNeedShowNodes);
+                        }
+                    }
+                    if (otherNeedShowNodes.length > 0) {
+                        treeObj.showNodes(otherNeedShowNodes);
+                    }
+                    treeObj.expandAll(true);
+                }
             },
             //添加弹窗授权项目部树结构
             getTree(type,deptId){
@@ -1398,7 +1452,7 @@
 
         },
         mounted() {
-
+            $('.search-tree input').bind('keypress',this.searchzTree);
         },
         created(){
             this.activeIndex = this.$route.path,//当前路由也选中状态
