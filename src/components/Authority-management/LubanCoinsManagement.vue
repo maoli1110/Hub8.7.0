@@ -6,7 +6,7 @@
                     <span class="orders-text font-w-n font-s-14">您的EDS账号当前鲁班币：<span class="span-bule">{{count}}</span> 个</span>
                 </el-col>
                 <el-col :span="8" class="pull-right-btn">
-                    <el-button type="primary" class="basic-btn" @click="assignLubanCoinDialog=true;allocateLubanCoins">分配鲁班币</el-button>
+                    <el-button type="primary" class="basic-btn" @click="assignLubanCoinDialog=true;allocateLubanCoins();">分配鲁班币</el-button>
                     <el-button type="primary" class="basic-btn" @click="needRechange">立即充值</el-button>
                 </el-col>
             </div>
@@ -81,7 +81,7 @@
             :before-close="handleClose" class="modelwidth726px" :close-on-click-modal="false"
             :close-on-press-escape="false">
             <el-form :model="rechargeform" label-width="100px" ref="rechargeform" :rules="rechargerulerules" class="rechargeFormBox">
-                <el-form-item label="充值数量："  prop="goldAmount">
+                <el-form-item label="充值数量："  prop="goldAmount" class="rechargeformcount">
                     <ul class="recharge-ul">
                         <li @click="showCover(rechargeCommon,item)" v-for="item in rechargeCommon"
                             :class="{'icon-luban-coin-checked':item.show===true}">{{item.goldAmount}}个鲁班币
@@ -89,7 +89,7 @@
                     </ul>
                     <div class="font-s-12 recharge-custom">
                         <el-input v-model="rechargeform.goldAmount" placeholder="自定义鲁班币" style="width:120px;"
-                                  @focus="rechargeCustom" @blur="Courierfees"></el-input>
+                                  @focus="rechargeCustom" @blur="Courierfees" ></el-input>
                         个鲁班币
                     </div>
 
@@ -126,7 +126,7 @@
                    :close-on-click-modal="false" :close-on-press-escape="false" class="modelBorder">
             <el-form :model="assignLuban">
                 <el-form-item label="您的EDS账号当前鲁班币数:" class="coin-count">
-                    <span>2212</span>
+                    <span>{{count}}</span>
                 </el-form-item>
                 <el-form-item>
                     <el-row class="transfer">
@@ -134,7 +134,7 @@
                             <el-col :span="12">
                                 <el-checkbox v-model="checkAll" @change="addAllRootPerson">全选</el-checkbox>
                             </el-col>
-                            <el-col :span="12"><p offset="12">全部账号人员
+                            <el-col :span="12"><p offset="12">全部账号人员{{assignLubanMember}}
                                 <!--{{accounts.length}}-->
                             </p></el-col>
                             <el-col :span="24" class="border">
@@ -150,7 +150,7 @@
                                                        class="scroll-me"
                                                        style="background:#fff;">
                                         <el-checkbox class="el-transfer-panel__item" v-for="account in accounts"
-                                                     :label="account" :key="account" :title="account">{{account}}
+                                                     :label="account" :key="account" :title="account.realName">{{account.realName}}
                                         </el-checkbox>
                                     </el-checkbox-group>
                                 </vue-scrollbar>
@@ -170,11 +170,11 @@
                                                style="height:306px;padding:10px;">
                                     <ul class="scroll-me delete-rootPerson" style="background:#fff;">
                                         <li v-for="(item,index) in checkedAccounts" :key="index"
-                                            @click="delRootItem(item,index)" class="substr" :title=" item">
+                                            @click="delRootItem(item,index)" class="substr" :title="item.realName">
                                             <span class="radius">
                                                 <i class="radius-lines"></i>
                                             </span>
-                                            {{item}}
+                                            {{item.realName}}
                                         </li>
                                     </ul>
                                 </vue-scrollbar>
@@ -191,7 +191,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button class="dialog-btn dialog-btn-ok" type="primary"
-                           @click="assignLubanCoinDialog = false;assignLBSave">确 定
+                           @click="assignLBSave()">确 定
                 </el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="assignLubanCoinDialog = false">取 消</el-button>
             </div>
@@ -352,7 +352,7 @@
     import {basePath} from '../../utils/common.js'
     import {queryEnterpriseLubanBiList} from '../../api/getData-cxx.js';
     import {getEnterpriseCurrentLubanBiCount} from '../../api/getData-cxx.js';
-    import {addLubanBiChargeOrder,getContactAddress,getLubanBiAllocateList,getNewCitys,validateVouchers,getGoldInvoiceExpress,generatePayUrl} from '../../api/getData-cxx.js';
+    import {addLubanBiChargeOrder,getContactAddress,getLubanBiAllocateList,getNewCitys,validateVouchers,getGoldInvoiceExpress,generatePayUrl,getLubanBiMembers,allocateLubanBi} from '../../api/getData-cxx.js';
     const accountOptions = [
         "曹相相1",
         "曹相相2",
@@ -411,6 +411,8 @@
             };
             
             return {
+                //全部账号人员
+                assignLubanMember:'',
                 //查看eds
                 dialogVisiblezfb:false,
 
@@ -420,10 +422,8 @@
                 sum: 0,// 总记录条数
                 count: '',// 获取企业当前鲁班币数量
                 accounts: accountOptions,    //账号人员
-                assignLuban: {
-                    name: 1111,
-                    major: 222
-                },
+                //默认鲁班币
+                assignLuban: {major: null},
                 beginTime: '',//开始时间
                 endTime: '',//结束时间
                 currentPage: 1,//当前页数
@@ -435,7 +435,7 @@
                 //分配鲁班币弹框状态
                 assignLubanCoinDialog: false,
                 checkAll: false,        //是否选中
-                checkedAccounts: ["曹相相1"],  //授权人员默认选中
+                checkedAccounts: [],  //授权人员默认选中
 //                data2: generateData(),  //组件公用数据
                 accountSearchKey: "",       //搜索关键字
 // 列表分配名单
@@ -1067,7 +1067,24 @@
             },
             allocateLubanCoins(){
                 // 分配鲁班币弹框
-
+                this.checkAll = false;
+                this.checkedAccounts = [];
+                this.getLubanBiMembersList();
+            },
+            //获取鲁班币分配名单
+            getLubanBiMembersList(){
+                let vm =this;
+                let baseUrl = basePath(vm.$route.matched[2].path)
+                let params = {
+                    url: baseUrl,
+                    getLubanBiMembersParam:{
+                        realName:vm.accountSearchKey
+                    }
+                }
+                getLubanBiMembers(params).then(function (data) {
+                    vm.accounts=data.data.result.lubanBiMembersResults;
+                    vm.assignLubanMember=data.data.result.count;
+                })
             },
             queryEnterpriseLubanBiList(){
                 // 分页获取鲁班币列表
@@ -1145,22 +1162,39 @@
             },
             //搜索
             accountSearch(){
-                let searchArr = [];
-                this.accounts.forEach((val, key) => {
-                    if (this.accounts[key].indexOf(this.accountSearchKey) != -1) {
-                        searchArr.push(this.accountSearchKey);
-                    }
-                })
-                this.accounts = searchArr;
+                this.getLubanBiMembersList();
             },
             //确认分配鲁班币
             assignLBSave(){
-                if (this.assignLuban.length) {
-                    //执行添加的接口
+                let vm =this;
+                let allCount=parseInt(vm.assignLuban.major * vm.checkedAccounts.length);
+                if (vm.checkedAccounts.length) {
+                    if(vm.assignLuban.major){
+                        if(allCount<parseInt(vm.count)){
+                            let baseUrl = basePath(vm.$route.matched[2].path)
+                            let params = {
+                                url: baseUrl,
+                                allocateLubanBiParam:{
+                                  goldAmount: parseInt(vm.assignLuban.major),//分配鲁班币数量
+                                  members: vm.checkedAccounts
+                                }
+                            }
+                            //  获取企业当前鲁班币数量
+                            allocateLubanBi(params).then(function (res) {
+                                if(res.data.msg=='success'){
+                                    vm.assignLubanCoinDialog = false;
+                                }
+                            })
+                        }else{
+                            alert("超出预算")
+                        }
+                        
+                    }else{
+                        alert("请输入分配数量")
+                    }
                 } else {
-                    //执行修改的接口
+                    alert("分配人员不能为空")
                 }
-                console.log(this.assignLuban, '变了没有')
             },
         },
         mounted() {
@@ -1472,4 +1506,7 @@
    }
    .voucherNoerrow input{border-color: #ff4949;}
    .voucherNoerrow .voucherNoerrowMeg{position: absolute;top:32px;color: #ff4949;}
+   .LubanCoinsManagementBox .rechargeformcount.is-required .el-form-item__label:before{
+        content: '';
+   }
 </style>

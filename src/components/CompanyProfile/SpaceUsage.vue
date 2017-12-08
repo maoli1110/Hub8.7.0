@@ -1,23 +1,30 @@
 <template>
-    <section class="chart-container">
-        <el-row>
-            <el-col :span="12">
-                <div id="chartColumn" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="12">
-                <div id="chartBar" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="12">
-                <div id="chartLine" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="12">
-                <div id="chartPie" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="24">
-                <a href="http://echarts.baidu.com/examples.html" target="_blank" style="float: right;">more>></a>
-            </el-col>
+    <div>
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <div class="main-shadow org">
+                444
+            </div>
+          </el-col>
+          <el-col :span="18">
+            <div class="main-shadow org">
+                <div class="header">
+                    <span class="orders-text">空间使用情况</span>
+                </div>
+                <div class="bims-container">
+                    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
+                        <el-menu-item index="/companyprofile/space-usage/org">按组织</el-menu-item>
+                        <el-menu-item index="/companyprofile/space-usage/major">按专业</el-menu-item>
+                        <el-menu-item index="/companyprofile/space-usage/item">按项目</el-menu-item>
+                    </el-menu>
+                </div>
+                <div class="main">
+                    <span class="orders-text">内容</span>
+                </div>
+            </div>
+          </el-col>
         </el-row>
-    </section>
+    </div>
 </template>
 
 <script>
@@ -28,10 +35,13 @@ export default {
             chartColumn: null,
             chartBar: null,
             chartLine: null,
-            chartPie: null
+            chartPie: null,
+            activeIndex:""
         }
     },
-
+    created(){
+        this.activeIndex = this.$route.path;
+    },
     methods: {
         drawColumnChart() {
             this.chartColumn = echarts.init(document.getElementById('chartColumn'));
@@ -200,12 +210,43 @@ export default {
 </script>
 
 <style scoped>
+@import "../../../static/css/aside.css";
+.header {
+      height: 40px;
+      background-color: #fff;
+      padding: 10px 20px;
+      border-bottom: 1px solid #e6e6e6;
+}
+.main {
+      background-color: #fff;
+      padding: 10px 20px;
+}
+.orders-text{
+    line-height: 40px;
+    text-align: center;
+    font-size: 16px;
+    display: block;
+}
 .chart-container {
     width: 100%;
     float: left;
 }
-
-.el-col {
-    padding: 30px 20px;
+.container .is-active {
+    background-color: #f5f8fd;
+    font-size: 16px;
+    font-weight: 700;
 }
+.container .el-menu {
+    padding: 10px 20px;
+    border-bottom: 1px solid #e6e6e6;
+    border-top: none;
+}
+.container .el-menu .el-menu-item {
+    height: 40px;
+    width: 132px;
+    margin-right: 50px;
+    line-height: 40px;
+    text-align: center
+}
+
 </style>

@@ -27,7 +27,23 @@ export default new Router({
                         },
                         {
                             path: 'space-usage',
-                            component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve)
+                            redirect: 'space-usage/org',
+                            component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve),
+                            children: [
+                            {
+                                path: 'org',
+                                component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve)
+                            },
+                            {
+                                path: 'major',
+                                component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve)
+                            },
+                            {
+                                path: 'item',
+                                component: resolve => require(['../components/CompanyProfile/SpaceUsage.vue'], resolve)
+                            },
+
+                            ]
                         },
                     ]
                 },
