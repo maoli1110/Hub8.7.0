@@ -67,6 +67,7 @@
             </el-table>
         </vue-scrollbar>
         <div class="pagination">
+            <span class="total-info" v-show="tableData.totalElements">共{{tableData.totalElements}}个工程，共{{tableData.totalPages}}页</span>
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[1, 50, 100, 150]" :page-size="totalPage" layout="sizes, prev, pager, next, jumper" :total="tableData.totalElements"><!--:total="tableData.totalElements"-->
             </el-pagination>
         </div>
@@ -132,7 +133,7 @@
                 editDraw:false,//修改弹窗的显示状态
                 //分页的一些设置
                 cur_page:1, //当前页
-                totalPage:10,//每页多少条
+                totalPage:1,//每页多少条
                 tableData:{},//列表数据
                 tableListParams:{
                     classifyId: -1,

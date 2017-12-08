@@ -14,7 +14,7 @@
                 <span class="absol span-block" style="width:65px;">
                    BIM属性:
                 </span>
-                <el-select class="absol" v-model="filterParams.bimVal" placeholder="请选择"  style="left:72px">
+                <el-select class="absol" v-model="filterParams.bimVal" placeholder="请选择"   style="left:72px">
                     <el-option
                         v-for="item in bimOptions"
                         :key="item.value"
@@ -29,7 +29,7 @@
                     专业:
                 </span>
 
-                <el-select class="absol" v-model="filterParams.majorVal" @change="majorParamChange" placeholder="请选择" style="left:40px;">
+                <el-select class="absol" v-model="filterParams.majorVal"  placeholder="请选择" style="left:40px;">
                     <el-option
                         v-for="item in majorOptions"
                         :key="item.value"
@@ -208,7 +208,7 @@
                     </table>
                 </vue-scrollbar>
                 <div class="pagination">
-                    <span class="total-info">共{{pagesList.totalElements}}个工程，共{{Math.ceil(pagesList.totalElements/totalPages)}}页</span>
+                    <span class="total-info" v-show="tableData.totalElements">共{{tableData.totalElements}}个工程，共{{tableData.totalPages}}页</span>
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPages" layout=" sizes, prev, pager, next, jumper" :total="pagesList.totalElements">
                     </el-pagination>
                 </div>
@@ -412,7 +412,7 @@
     let countIndex = 0;         //表格选中状态个数统计
     let baseUrl;                //基础路径
     let authUserInfoListCopy;   //授权人员搜索deepCopy数据
-
+    let deptIds =[];
     export default {
 //    props: ['tableData'],
         data() {
@@ -565,13 +565,13 @@
                 getOrgTreeList({url:url}).then((data)=>{
                     this.zNodes = data.data.result;
                     this.filterParams.orgdeptId = data.data.result[0].id;
-                    this.filterParams.orgNodeVal = data.data.result[0].name;
-//                    this.tableParam.deptIds[0] = this.filterParams.orgdeptId;
                     let treeObj = $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
                     let nodes = treeObj.transformToArray(treeObj.getNodes());
-                    console.log(nodes,'nodes');
                     this.zNodes.forEach((val,key)=>{
-                        if(val.id!=1){
+                        if(val.id==1){
+                            this.filterParams.orgNodeVal = val.name;
+                        }
+                        if(val.type==1 || val.direct){
                             this.tableParam.deptIds.push(val.id)
                         }
                     })
@@ -592,7 +592,6 @@
                 }
                 //列表初始值
                 this.tableParam.delete = this.isRecycle;
-
 //                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b';
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
@@ -600,7 +599,6 @@
                 this.tableParam.pageParam.page = this.cur_page;
                 this.tableParam.pageParam.size = this.totalPages;
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
-
 //                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //bim库bim属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
@@ -670,14 +668,14 @@
                 this.tableParam.latest = val;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
-            BimParamChange(val){
+           /* BimParamChange(val){
                 this.tableParam.projGenre = val;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
-            },
-            majorParamChange(val){
+            },*/
+           /* majorParamChange(val){
                 this.tableParam.projType = val;
                 this.getProjectList({url:baseUrl,param:this.tableParam})
-            },
+            },*/
             //表格列表搜索
             tableListSearch(){
                 if(!this.filterParams.searchVal){return false;}
@@ -706,25 +704,34 @@
                     }
                 })
             },
+            getDeptIds(nodes,name){
+                for(let key = 0;key<nodes.length;key++){
+                    if(nodes[key].type==1 || nodes[key].direct){
+                        deptIds.push(nodes[key].id);
+                    };
+                    if(nodes[key].children){
+                        this.getDeptIds(nodes[key].children,nodes[key].name);
+                    }else{
+                        continue;
+                    }
+                }
+                return deptIds;
+            },
             //搜索条件树结构的单机事件
             onClick(event, treeId, treeNode) {
+                deptIds =[];
                 this.tableParam.deptIds =[];
                 this.filterParams.orgNodeVal = treeNode.name;
                 this.filterParams.orgdeptId = treeNode.id;
-                if(treeNode.type!=1){
-                    console.log(treeNode,'treeNode');
-                    if(treeNode.children){
-                        treeNode.children.forEach((val,key)=>{//选择分公司遍历项目部下的数据
-                            this.tableParam.deptIds.push(val.id);
-                        })
-                    }else{
-                        this.tableParam.deptIds.push(treeNode.id);
-                    }
-
-                }else {
-                    this.tableParam.deptIds.push(treeNode.id);//deptIds
-                }
-                this.getProjectList({url:baseUrl,param:this.tableParam})
+               if(treeNode.children){
+                   deptIds = this.getDeptIds(treeNode.children,treeNode.name);
+                   this.tableParam.deptIds = deptIds    ;
+               }else{
+                   if(treeNode.direct){
+                       this.tableParam.deptIds.push(treeNode.id);
+                   }
+               }
+                this.getProjectList({url:baseUrl,param:this.tableParam});
                 //关闭树结构的窗口
                 setTimeout(function(event, treeId, treeNode) {
                     $(".el-select-dropdown__item.selected").click();
@@ -732,7 +739,7 @@
             },
             //工程管理树结构单机事件
             proDepartClick(event, treeId, treeNode){
-                if(treeNode.type==1 ||treeNode.type==0){       //项目部才有点击事件
+                if(treeNode.type==1){       //项目部才有点击事件
                     this.proManageVal = treeNode.name;
                     this.createDeptId = treeNode.id;
 //                    this.createDeptId = "d68ceeb2d02043bd9ea5991ac44d649b";
@@ -1416,7 +1423,19 @@
                     return false
                 }
 
-            }
+            },
+            'filterParams.majorVal':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=""){
+                    this.tableParam.projType = newVal;
+                    this.getProjectList({url:baseUrl,param:this.tableParam})
+                }
+            },
+            'filterParams.bimVal':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=""){
+                    this.tableParam.projGenre = newVal;
+                    this.getProjectList({url:baseUrl,param:this.tableParam})
+                }
+            },
         }
     }
 </script>

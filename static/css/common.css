@@ -1601,7 +1601,10 @@ ul > li {
 .pagination {
     margin-top: 20px;
 }
-
+.pagination .total-info{
+    float: left;
+    margin-top: 11px;
+}
 /*日历插件*/
 ._citys {
     background: #fff;
