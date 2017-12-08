@@ -412,7 +412,7 @@
     let countIndex = 0;         //表格选中状态个数统计
     let baseUrl;                //基础路径
     let authUserInfoListCopy;   //授权人员搜索deepCopy数据
-
+    let deptIds =[];
     export default {
 //    props: ['tableData'],
         data() {
@@ -704,30 +704,34 @@
                     }
                 })
             },
+            getDeptIds(nodes,name){
+                for(let key = 0;key<nodes.length;key++){
+                    if(nodes[key].type==1 || nodes[key].direct){
+                        deptIds.push(nodes[key].id);
+                    };
+                    if(nodes[key].children){
+                        this.getDeptIds(nodes[key].children,nodes[key].name);
+                    }else{
+                        continue;
+                    }
+                }
+                return deptIds;
+            },
             //搜索条件树结构的单机事件
             onClick(event, treeId, treeNode) {
+                deptIds =[];
                 this.tableParam.deptIds =[];
                 this.filterParams.orgNodeVal = treeNode.name;
                 this.filterParams.orgdeptId = treeNode.id;
-                let treeObj = $.fn.zTree.getZTreeObj(treeId);
-                let nodes = treeObj.transformToArray(treeObj.getNodes());
-                console.log(nodes,'nodeslist');
-                nodes.forEach((val,key)=>{
-                    if(treeNode.id==1){
-                        if(val.type==1||val.direct){
-                            this.tableParam.deptIds.push(val.id);
-                        }
-                    }else if(treeNode.id ==val.parentId){
-                        if(val.type==1||val.direct){
-                            this.tableParam.deptIds.push(val.id);
-                        }
-                    }
-                })
-                if(treeNode.direct){
-                    this.tableParam.deptIds.push(treeNode.id);
-                }
-                console.log(this.tableParam.deptIds);
-                this.getProjectList({url:baseUrl,param:this.tableParam})
+               if(treeNode.children){
+                   deptIds = this.getDeptIds(treeNode.children,treeNode.name);
+                   this.tableParam.deptIds = deptIds    ;
+               }else{
+                   if(treeNode.direct){
+                       this.tableParam.deptIds.push(treeNode.id);
+                   }
+               }
+                this.getProjectList({url:baseUrl,param:this.tableParam});
                 //关闭树结构的窗口
                 setTimeout(function(event, treeId, treeNode) {
                     $(".el-select-dropdown__item.selected").click();
