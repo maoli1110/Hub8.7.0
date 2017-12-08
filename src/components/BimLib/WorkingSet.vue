@@ -46,6 +46,7 @@
             </el-table>
         </vue-scrollbar>
         <div class="pagination">
+            <span class="total-info" v-show="tableData.totalElements">共{{tableData.totalElements}}个工程，共{{tableData.totalPages}}页</span>
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[2, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="tableData.totalElements">
             </el-pagination>
         </div>
