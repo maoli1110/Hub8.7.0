@@ -1,49 +1,44 @@
 <template>
-    <div class="LubanCoinsManagementBox">
-        <div class="order-management">
-            <div class="header" >
-                <el-col :span="24">
-                    <span class="orders-text font-w-n font-s-14">时间：</span>
-                    <el-date-picker format="yyyy.MM.DD"
-                                    v-model="selectDate"
-                                    type="daterange"
-                                    placeholder="选择日期范围" class="absol" style="width:240px">
-                    </el-date-picker>
-                </el-col>
-            </div>
-            <div class="main">
+    <div class="main-shadow">
+        <div class="main" style="margin-top: 20px;">
+            <el-input
+                placeholder="搜索鲁班通行证或人员姓名"
+                icon="search"
+                v-model="xx"
+                :on-icon-click="searchContent"
+                style="width: 280px">
+            </el-input>
+            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
+                <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
+                          style="min-width: 1537px;margin-top:20px">
+                    <el-table-column class="" type='index' label="序号" width="60"></el-table-column>
+                    <el-table-column class="table-tr" prop="ip" label="项目名称" width="200"></el-table-column>
+                    <el-table-column class="table-tr" prop="func" label="创建人" width=""></el-table-column>
+                    <el-table-column class="table-tr" prop="operator" label="创建时间" width="200"></el-table-column>
+                    <el-table-column class="table-tr" prop="operator" label="更新人" width="200"></el-table-column>
+                    <el-table-column class="table-tr" :formatter="dateFormat" prop="operateTime" label="更新时间" width="200"></el-table-column>
+                    <el-table-column label="操作" width="60">
+                        <template slot-scope="scope">
+                            <i class="components-icon icon-edit" @click=" override = true;updateComponent = true;modifyCompData()"></i>
 
-                <el-button type="primary" class="basic-btn"
-                           @click=""><i
-                    class="components-icon icon-update icon-map "></i><span class="btn-text">导出</span>
-                </el-button>
-                <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                    <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
-                              style="min-width: 1537px;margin-top:20px">
-                        <el-table-column class="" type='index' label="序号" width="60" :index="indexSort"></el-table-column>
-                        <el-table-column class="table-tr" prop="date" label="通行证/账号名称" width="200"></el-table-column>
-                        <el-table-column class="table-tr" label="功能" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                已分配{{scope.row.assignedAccount[0]}}账号，每个账号{{scope.row.assignedAccount[1]}}个
-                            </template>
-                        </el-table-column>
-                        <el-table-column class="table-tr" prop="revenue" label="操作对象" width="200"></el-table-column>
-                        <el-table-column class="table-tr" prop="disbursement" label="时间" width="200"></el-table-column>
-                    </el-table>
-                </vue-scrollbar>
-                <div style="margin-top: 20px">
-                    <div style="float:left;height:40px;line-height:40px">共1000个成员</div>
-                    <el-pagination style="margin-left:30%"
-                                   @size-change="handleSizeChange"
-                                   @current-change="handleCurrentChange"
-                                   :current-page="4"
-                                   :page-sizes="[100, 200, 300, 400]"
-                                   :page-size="100"
-                                   layout="total, sizes, prev, pager, next, jumper"
-                                   :total="400">
-                    </el-pagination>
-                </div>
-            </div>
+                        </template>
+                    </el-table-column>
+                </el-table> 
+            </vue-scrollbar>
+            <div class="pagination">
+                        <div style="margin-top: 20px">
+                            <div style="float:left;height:40px;line-height:40px">共10个结果</div>
+                            <el-pagination style="margin-left:30%"
+                                           @size-change="handleSizeChange"
+                                           @current-change="handleCurrentChange"
+                                           :current-page="4"
+                                           :page-sizes="[100, 200, 300, 400]"
+                                           :page-size="100"
+                                           layout="total, sizes, prev, pager, next, jumper"
+                                           :total="400">
+                            </el-pagination>
+                        </div>
+                    </div>
         </div>
     </div>
 </template>
@@ -54,19 +49,22 @@
         data (){
 
             return {
-                coinsManagementTableData: [
-                    {
-                        date: "2016-05-03 13:51",
-                        assignedAccount: [
-                            120,//"已分配
-                            201 //可分配
-                        ],
-                        revenue: 12,
-                        disbursement:22,
-                        bindNumber: 22,
-                        balance:20,
-                    }
-                ]
+                coinsManagementTableData: [{
+                          "epid": 1,
+                          "func": "string",
+                          "ip": "string",
+                          "operateTime": "2017-12-06T07:14:39.085Z",
+                          "operator": "string",
+                          "target": "string"
+                        },
+                        {
+                          "epid": 1,
+                          "func": "string",
+                          "ip": "string",
+                          "operateTime": "2017-12-06T07:14:39.085Z",
+                          "operator": "string",
+                          "target": "string"
+                        }]
             }
         },
         components: {
@@ -91,37 +89,29 @@
 
 <style scoped>
     .header {
-        height: 40px;
-        background-color: #fff;
-        padding: 10px 20px;
-        line-height: 40px;
+      height: 40px;
+      background-color: #fff;
+      padding: 10px 20px;
+      margin-top: 20px;
     }
-
-    button.basic-btn {
-        margin-top: 15px;
+    .header .el-form-item__label {
+      text-align: left;
     }
-    .order-management .header .font-w-n{
-        font-weight:normal;
+    .ztree {
+      margin-top: 0px;
+      width: 205px;
     }
-
-    .span-bule{
-        color:#6694F2;
-        font-size:14px;
-        font-weight:bold;
+    .main {
+      padding: 20px;
+      background-color: #fff;
     }
-    .pull-right-btn button{
-        float: right;
-        margin-left:20px;
-    }
-    .margin-r-20{
-        margin-right:20px;
-    }
-    .pull-r-f{
-        float:right;
-    }
-
-    .LubanCoinsManagementBox .order-management .el-table__body-wrapper .cell{
-        height: 40px;
-        line-height: 40px;
+    .textcell {
+      height: 46px;
+      padding: 0 20px;
+      line-height: 46px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+      white-space: nowrap;
     }
 </style>

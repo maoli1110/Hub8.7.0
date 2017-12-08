@@ -70,3 +70,11 @@ export const getLubanBiMembers = params=>axios.post(`${params.url}luban/bi/getLu
 export const getLubanBiAllocateList = params=> axios.get(`${params.url}luban/bi/getLubanBiAllocateList/${params.historyId}`);
 // POST /luban/bi/allocateLubanBi 分配鲁班币
 export const allocateLubanBi = params=>axios.post(`${params.url}luban/bi/allocateLubanBi`, params.allocateLubanBiParam)
+
+
+
+/**
+ * 应用配置
+ */
+ export const getLogs = params=> axios.get(`${params.url}business/${params.type}/logs/${params.args}`);
+ export const getLogsDownload = params=> axios.get(`${params.url}business/${params.type}/logs/download/${params.args}`);

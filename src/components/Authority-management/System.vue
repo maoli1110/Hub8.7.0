@@ -29,6 +29,8 @@
 </template>
 
 <script>
+    import {getLogs} from '../../api/getData-cxx.js';
+    import {basePath} from '../../utils/common.js'
     export default {
         data() {
             return {
@@ -37,10 +39,23 @@
         },
         methods: {
             handleOpen(key, keyPath) {
-                console.log(key, keyPath);
+                //console.log(key, keyPath);
+                if(keyPath[0].indexOf("/govern-log")!=-1){
+
+                    let baseUrl = basePath(this.$route.matched[3].path)
+                    let params = {
+                                    "url":baseUrl,
+                                    "type":"govern",
+                                    "args":""
+                                    }
+                    //?page=1&size=2&sort=2&start=3&end=4
+                    getLogs(params).then(function (result) {
+                        
+                    })
+                }
             },
             handleClose(key, keyPath) {
-                console.log(key, keyPath);
+                //console.log(key, keyPath);
             }
         }
     }
