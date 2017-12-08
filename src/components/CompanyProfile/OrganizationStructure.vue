@@ -180,15 +180,23 @@
                         <el-input v-model="projectForm.location"></el-input>
                     </el-form-item>
                     <el-form-item label="合同类型：">
-                        <el-select v-model="projectForm.contractType" placeholder="请选择活动区域">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                        <el-select v-model="projectForm.contractType" placeholder="请选择">
+                            <el-option
+                              v-for="item in contractTypeOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="状态：">
-                        <el-select v-model="projectForm.region" placeholder="请选择活动区域">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                        <el-select v-model="projectForm.status" placeholder="请选择">
+                            <el-option
+                              v-for="item in statusOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="备注：" prop="remarks">
@@ -201,7 +209,7 @@
                 <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
-        <!-- 添加分公司界面end --> 
+        <!-- 添加分公司界面end -->
         </div>
 </template>
 <script>
@@ -266,8 +274,8 @@ export default {
                 area: 0,
                 mileage: 0,
                 location: 0,
-                contractType: 0,
-                status: 0,
+                contractType: '1',
+                status: '1',
                 remarks: "string"
             },
             companyRules: {
@@ -292,6 +300,26 @@ export default {
                     { max: 150, message: '最多150个字符', trigger: 'blur' }
                 ]
             },
+            contractTypeOptions:[{
+                value: '1',
+                label: '单价合同'
+                }, {
+                value: '2',
+                label: '总价合同'
+                }, {
+                value: '3',
+                label: '成本加酬金合同'
+            }],
+            statusOptions:[{
+                value: '0',
+                label: '未开工'
+                }, {
+                value: '1',
+                label: '在建'
+                }, {
+                value: '2',
+                label: '竣工'
+            }],
             // 树数据
             url: "../../../static/orgs-old.json",
             // url: "../../../static/orgs.json",
@@ -309,24 +337,7 @@ export default {
                     // onRename: onRename
                 }
             },
-            zNodes: [],
-            gridData: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }]
+            zNodes: []
         };
     },
     mounted() {

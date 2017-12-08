@@ -141,7 +141,7 @@ export default {
         let comString = '';//登录需要的字段
         comString += 'username='+this.loginForm.username+'&password='+md5(this.loginForm.password)+'&productId=100&';
         console.log(comString)
-        axios.get('http://172.16.21.158:8080/pds/login').then((data)=>{
+        axios.get('http://192.168.3.52:8080/pds/login').then((data)=>{
             let loginHtml = data.data;
             let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
             //遍历接口的html，获取键值
