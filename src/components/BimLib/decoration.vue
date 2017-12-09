@@ -1052,9 +1052,8 @@
                         this.proManageVal = '';
                     }
                     $.fn.zTree.init($("#projectDepart"), this.proDepartSetting, this.proDepartNodes);
+                    $('.search-tree input').bind('keypress',this.searchzTree);
                 });
-
-
             },
             /**
              *创建工程
@@ -1452,7 +1451,8 @@
 
         },
         mounted() {
-            $('.search-tree input').bind('keypress',this.searchzTree);
+            console.log('挂载');
+
         },
         created(){
             this.activeIndex = this.$route.path,//当前路由也选中状态
