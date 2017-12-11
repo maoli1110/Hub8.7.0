@@ -40,7 +40,6 @@ function transformToObjFormat(param, simpleOrgNodes) {
                 r.push(simpleOrgNodes[i]);
             }
         }
-        console.log(r)
         return r;
     }else {
         return [simpleOrgNodes];

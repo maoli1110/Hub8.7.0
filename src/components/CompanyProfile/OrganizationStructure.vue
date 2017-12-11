@@ -352,7 +352,7 @@ export default {
             })
             return tempWidth;
         }
-
+        // getOrgTreeList({url:baseUrl}).then(res => {
         // 获取原始树结构
         getOrgTreeList({url:baseUrl}).then(res => {
             // 组合树结构需要的参数
@@ -361,8 +361,12 @@ export default {
                 nodesCol:'children',
                 orgNodeParentKey: "parentId"
             }
-            // 处理原始树结构,返回生成树结构所需要的对象
-            res.data.result[0].parentId = '0';
+            // 处理原始树结构,返回生成树结构所需要的对象()
+            for(let i=0;i<res.data.result.length;i++){
+                if(res.data.result[i].root === true){
+                    res.data.result[i].parentId = '0';
+                }
+            }
 
             let tempzNodes = transformToObjFormat(param,res.data.result);
 
@@ -378,6 +382,7 @@ export default {
             }
             
             this.zNodes = tempzNodes;
+            debugger
 
             for(let [key,value] of entries(tempzNodes)){
                 let lineStyle = "";
@@ -612,13 +617,13 @@ export default {
 .org .ztree li a {
     border: 2px solid #4778c7;
     /*margin: 10px;*/
-    margin: 10px 0;
+    margin: 0;
     height: 40px;
     line-height: 40px;
     width: 170px;
 }
 .org .ztree li span.button {
-    margin-top: 9px;
+    margin-top: 0;
 }
 .org #organization-tree >ul {
     min-width: 230px;
@@ -646,7 +651,7 @@ export default {
 }
 .org .noneHLine {
     margin: 0px;
-    margin-right: 106px;
+    margin-right: 112px;
     height: 1px;
     display: block;
     padding: 0px;
@@ -667,41 +672,43 @@ export default {
 }
 .org .ztree li ul.line {
     background: url(../../../static/img/line_conn1.png) repeat-y;
-    background-position: 16px 0;
+    background-position: 17px 0;
 }
 .org .ztree li span.button.switch {
-    width: 50px; 
-    height: 50px;
+    width: 50px !important; 
+    height: 59px;
 }
 
 .org .ztree li span.button {
     background-image: url(../../../static/img/org-tree-new.png);
 }
 .org .ztree li span.button.root_docu {
-    background-position: -6px -82px;
+    background-position: -6px -84px;
 }
 .org .ztree li span.button.root_close {
-    background-position: -6px -82px;
+    background-position: -6px -84px;
 }
 .org .ztree li span.button.root_open {
-    background-position: -13px -128px;
+    background-position: -13px -130px;
 }
 .org .ztree li span.button.center_open {
-    background-position: -186px -145px;
+    background-position: -185px -144px;
 }
 .org .ztree li span.button.center_docu {
-    background-position: -4px -204px;
+    background-position: -2px -206px;
 }
 .org .ztree li span.button.center_close {
-    background-position: -116px -145px;
+    background-position: -117px -144px;
 }
 .org .ztree li span.button.bottom_docu {
-    background-position: -4px -234px;
+    background-position: -2px -245px;
 }
 .org .ztree li span.button.bottom_open {
-    background-position: -185px -4px;
+    background-position: -184px -6px;
 }
-
+.org .ztree li span.button.bottom_close {
+    background-position: -117px -6px;
+}
 /*el-popover*/
 .el-popover {
     padding: 0;

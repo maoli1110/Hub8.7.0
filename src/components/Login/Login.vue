@@ -30,7 +30,7 @@
                         </el-form-item> 
                         <el-form-item label="选择企业：" label-width="80px"> 
                             <el-select v-model="selectedCompany" placeholder="请选择">
-                                <el-option v-for="item in companyOptions" :key="item.companyOptions" :label="item.label" :value="item.value"></el-option>
+                                <el-option v-for="item in companyOptions" :key="item.epid" :label="item.enterpriseName" :value="item.epid"></el-option>
                             </el-select>
                         </el-form-item>
                         <div class="login-btn">
@@ -93,89 +93,150 @@ export default {
               { required: true, trigger: "blur", validator: validatePassword }
             ]
         },
-        companyOptions: [{
-                value: '选项1',
-                label: '黄金糕'
-            }, {
-                value: '选项2',
-                label: '双皮奶'
-            }, {
-                value: '选项3',
-                label: '蚵仔煎'
-            }, {
-                value: '选项4',
-                label: '龙须面'
-            }, {
-                value: '选项5',
-                label: '北京烤鸭'
-        }],
-        selectedCompany:''
-    }
-  },
-  methods: {
-    /**
-     * 登录
-     * @return {[type]} [description]
-     */
-    handleLogin() {
-        let self = this;
-        this.$refs.loginForm.validate(valid => {
-        if (valid) {
-            /** 
-             * 非正式版本代码如下
-             */
-            this.loading = true;
-            this.$router.push("/companyprofile/organization-structure");
-            /** 
-             * 正式版本代码如下
-             */
-            // this.getComString();
-        } else {
-          console.log("error submit!!");
-          return false;
+        companyOptions: [],
+        selectedCompany:'',
+        centerLoginSignal:false
         }
-      });
     },
-    /** 
-     * 获取登录所需的组合字段
-     */
-    getComString() {
-        //登录所需字段组合
-        let comString = {
-            username: this.loginForm.username,
-            password: md5(this.loginForm.password),
-            productId: 100
-        };
-       
-        axios.get('http://192.168.3.52:8080/pds/login').then((data)=>{
-            /**
-             * 1.获取登录页面html,截取登录所需字段
-             * 2.再次对接登录
+    methods: {
+        /**
+         * 登录
+         * @return {[type]} [description]
+         */
+        handleLogin() {
+            let self = this;
+            this.$refs.loginForm.validate(valid => {
+            if (valid) {
+                /** 
+                 * 非正式版本代码如下
+                 */
+                this.loading = true;
+                this.$router.push("/companyprofile/organization-structure");
+                /** 
+                 * 正式版本代码如下
+                 */
+                // if(!self.centerLoginSignal){
+                //     console.log('initLogin')
+                //     self.casLogin();
+                // } else {
+                //     console.log('lastLogin')
+                //     self.centerLogin();
+                // }
+            } else {
+              console.log("error submit!!");
+              return false;
+            }
+          });
+        },
+        /** 
+         * 获取登录所需的组合字段
+         */
+        casLogin() {
+            let self = this;
+            //登录所需字段组合
+            let comString = {
+                username: this.loginForm.username,
+                password: md5(this.loginForm.password),
+                productId: 100
+            };
+             /**
+             * 1.云部署登录：模仿客户端登录,走两次登录接口
+             * 2.第一步：调用pds/login获取登录页面html,取登录所需字段
+             * 3.第二步：调用pds/login(携带用户名、密码、截取到的信息)
+             * 4.第三步：获取企业列表信息
+             * 5.第四步：携带企业信息，调用center登录接口
              */
-            let loginHtml = data.data; 
-            let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
-            //遍历html，获取键值
-            sectionHtml.each(function(key){
-                if(key>=0 && key <=3){
-                    comString[$(this).attr('name')] = $(this).val();
-                }
-            });
-            $.ajax({
-                url:'http://192.168.3.52:8080/pds/login',
-                type:'POST',
-                contentType:'application/x-www-form-urlencoded',
-                data:comString,
-                success: function(){
-                    console.log('login success')
-                }
+            function step1 (resolve, reject){
+                self.centerLoginSignal = false;
+                axios.get('http://192.168.3.52:8080/pds/login').then((data)=>{
+                    let loginHtml = data.data; 
+                    let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
+                    //遍历html，获取键值
+                    sectionHtml.each(function(key){
+                        if(key>=0 && key <=3){
+                            comString[$(this).attr('name')] = $(this).val();
+                        }
+                    });
+                    resolve(comString);
+                });
+            }
+
+            function step2 (resolve, reject){
+                $.ajax({
+                    url:'http://192.168.3.52:8080/pds/login',
+                    type:'POST',
+                    contentType:'application/x-www-form-urlencoded',
+                    data:comString,
+                    success: function(){
+                        console.log('login success')
+                        resolve('step2Success')
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        // alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.responseJSON.message);
+                        // alert(XMLHttpRequest.readyState);
+                        // alert(textStatus);
+                    }
+                })
+            }
+
+            function step3 (resolve, reject){
+                axios.get('http://192.168.3.52:8080/pds/rs/centerLogin/companyList').then((res)=>{
+                    self.companyOptions = res.data;
+                    self.selectedCompany = res.data[0].epid;
+                    self.centerLoginSignal = true;
+                    resolve('step3Success')
+                    console.log(res);
+                })
+            }
+
+            function step4 (resolve, reject){
+                axios.post('http://192.168.3.52:8080/pds/rs/centerLogin/login',{"epid":90001000}).then((res)=>{
+                   
+                    resolve('step3Success')
+                    console.log(res)
+                })
+            }
+
+            new Promise(step1).then(function(val){
+                console.log(val,'val1');
+                new Promise(step2).then(function(val){
+                    console.log(val,'val2');
+                    new Promise(step3).then(function(val){
+                        console.log(val,'val3');
+                    })
+                })
             })
-        });
+        },
+        centerLogin() {
+            if(this.selectedCompany){
+                let param = {};
+                param.epid = this.selectedCompany;
+                // param = JSON.stringify(param);
+                axios.post('http://192.168.3.52:8080/pds/rs/centerLogin/login',param).then((res)=>{
+                    resolve('step3Success')
+                    console.log(res)
+                })
+            } else {
+                alert('请选择企业');
+            }
+        },
+        selectCount(num) {}
     },
-    selectCount(num) {}
-  }
+    watch:{
+        'loginForm.username' (val,oldVal){
+            if(val !== oldVal){
+                self.centerLoginSignal = false;
+            }
+        },
+        'loginForm.password' (val,oldVal) {
+            if(val !== oldVal){
+                self.centerLoginSignal = false;
+            }
+        }
+    }
 };
 </script>
-
 <style scoped>
 .login-wrap {
   position: relative;
@@ -183,7 +244,6 @@ export default {
   height: 837px;
 
 }
-
 .ms-title {
   padding: 150px 300px;
   box-sizing: border-box;
