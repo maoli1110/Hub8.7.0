@@ -250,6 +250,8 @@ export default {
       this.multipleSelection = val;
     },
     getTemplateInfo(row) {
+      this.currentRow=[];
+      this.sourceAttrId=[];
       this.templateId = row.templateId;
       this.getAttributeTemplateInfo();
     },
@@ -343,6 +345,7 @@ export default {
         if (res.data.code == 200) {
           this.getAttributeTemplateInfo();
           this.getAttributeTemplateList();
+          this.currentRow=[];
         }
       });
     },

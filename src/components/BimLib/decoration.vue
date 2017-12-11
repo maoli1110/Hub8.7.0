@@ -567,6 +567,19 @@
             //组织结构树
             getOrgzTreeList(url){
                 getOrgTreeList({url:url}).then((data)=>{
+                    data.data.result.forEach((val,key)=>{//添加icon
+                        console.log('进来多少次')
+//                        this.$set(val,'iconSkin',"");
+                        if(val.root){
+                            this.$set(val,'iconSkin','rootNode');
+                        }else if(!val.root && val.type==0 && !val.direct){
+                            this.$set(val,'iconSkin','subNode');
+                        }else if(val.type==1 ){
+                            this.$set(val,'iconSkin','projNode');
+                        }else if(val.direct){
+                            this.$set(val,'iconSkin','projNode');
+                        }
+                    })
                     this.zNodes = data.data.result;
                     this.filterParams.orgdeptId = data.data.result[0].id;
                     let treeObj = $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
