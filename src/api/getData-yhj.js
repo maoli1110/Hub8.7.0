@@ -109,6 +109,8 @@ export const smalltypes = params=>axios.post(`${params.url}component/az/smalltyp
 
 //安装->列表
 export const componentList = params=>axios.post(`${params.url}component/az/find`,params.param);
+//安装->列表下载次数
+export const countDownloadTimes = params=>axios.post(`${params.url}component/az/countDownloadTimes`,params.param);
 
 //安装->上传
 export const upload = params=>axios.post(`${params.url}component/az/upload/${params.param.productId}`);

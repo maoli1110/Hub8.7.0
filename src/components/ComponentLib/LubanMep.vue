@@ -16,8 +16,6 @@
                 <!--<input type="text" style="margin-left:47px;" id="provinLink" placeholder="请输入城市"/>-->
                 <!--</el-col>-->
                 <!--</el-col>-->
-
-
                 <el-col :span="3" class="filter-bar relat" style="padding-right:65px;">
                     <span class="absol span-block" style="width:60px;left:10px;">
                         专业:
@@ -61,7 +59,7 @@
                 </el-col>
                 <el-col :span="4" class="relat" :offset="1" style="left:35px">
                     <el-input placeholder="请输入要搜索的内容" icon="search" v-model="searchKeyParams.searchVal"
-                              :on-icon-click="searchComp"></el-input>
+                              :on-icon-click="searchComp" ></el-input>
                 </el-col>
                 <el-col :span="4" :offset="2" style="text-align:right;">
                     <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件树管理</el-button>
@@ -125,10 +123,11 @@
                             </el-table-column>
                         </el-table>
                     </vue-scrollbar>
-                    <div class="pagination">
+                    <div class="pagination" >
+                        <span v-show="tableData" style="float:left;line-height:42px;">共 {{tableData.totalRecords}} 条构件,共 {{tableData.totalPages}} 页,累计下载 {{downloadCount}} 次</span>
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                        :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
-                                       layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+                                       layout=" sizes, prev, pager, next, jumper" :total="tableData.totalRecords">
                         </el-pagination>
                     </div>
                 </el-col>
@@ -265,6 +264,7 @@
         upload,//上传
         componentAdd,//添加
         componentList,//构件列表
+        countDownloadTimes,//下载次数
     } from '../../api/getData-yhj.js';
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
     let deletArray = [];
@@ -297,7 +297,7 @@
                     endTime: "",    //结束时间
 
                 },
-                majorOptions: [],
+                majorOptions: ['不限'],
                 compTypeBig:['不限'],
                 compTypeSmall:['不限'],
                 versionsOptions: [{ //版本选择框
@@ -307,10 +307,9 @@
                 uploadUrl:"",
                 //分页的一些设置
                 cur_page: 1,
-                totalPage: 50,
-                totalNumber: 300,
-
-                tableData: [],  //列表数据
+                totalPage: 10,
+                downloadCount:0,
+                tableData: {},  //列表数据
                 tableParam:{
                     asc: true,
                     bigTypeName: "",
@@ -320,7 +319,7 @@
                     pageSize: 10,
                     productId: 5,
                     smallTypeName: "",
-                    sort: "addTime",
+                    sort: "",
                     startTime: "",
                     title: ""
                 },
@@ -340,6 +339,15 @@
                     componentFilePath:"",
                     pictureFilePath:"",
                     productId:"",
+                },
+                downloadSum:{
+                    bigTypeName: "",
+                    endTime: "",
+                    majorName: "",
+                    productId: 5,
+                    smallTypeName: "",
+                    startTime: "",
+                    title: ""
                 },
                 setting: {//搜索条件ztree setting
                     data: {
@@ -385,8 +393,14 @@
             //分页器事件
             handleSizeChange(size){
                 console.log(`每页显示多少条${size}`);
+                this.totalPage = size;
+                this.tableParam.pageSize = size;
+                this.getTableList(baseUrl,this.tableParam);
             },
             handleCurrentChange(currentPage){
+                this.cur_page = currentPage;
+                this.tableParam.currentPage = currentPage;
+                this.getTableList(baseUrl,this.tableParam);
                 console.log(`当前页${currentPage}`);
             },
 
@@ -425,7 +439,8 @@
             getMarjor(){
                 componentMajors({url:baseUrl}).then((data)=>{
                    this.majorOptions = data.data.result;
-                   if(this.majorOptions.length){
+                   if(data.data.result){
+                       this.majorOptions.unshift('不限');
                        this.searchKeyParams.majorVal = data.data.result[0];
                    }else{
                        this.majorOptions =[];
@@ -436,7 +451,8 @@
             getBigtypes(url,param){
                 bigtypes({url:url,param:param}).then((data)=>{
                     this.compTypeBig = data.data.result;
-                    if(this.compTypeBig.length){
+                    if(data.data.result){
+                        this.compTypeBig.unshift('不限');
                         this.searchKeyParams.bigType = data.data.result[0];
                     }
                 })
@@ -446,6 +462,7 @@
                 smalltypes({url:url,param:param}).then((data)=>{
                     this.compTypeSmall = data.data.result;
                     if(this.compTypeSmall.length){
+                        this.compTypeSmall.unshift('不限');
                         this.searchKeyParams.smallType = data.data.result[0];
                     }
                 })
@@ -464,8 +481,13 @@
                     if(data.data.result){
                         this.tableData = data.data.result;
                     }else{
-                        this.tableData =[];
+                        this.tableData ={};
                     }
+                })
+            },
+            getDownloadCount(url,param){
+                countDownloadTimes({url:url,param:param}).then((data)=>{
+                    this.downloadCount = data.data.result;
                 })
             },
             //上传构件清除数据
@@ -544,33 +566,57 @@
             //日期插件日期改变触发
             changeData(val){
                 if (val) {
-                    this.searchKeyParams.startTimer = val.split('-')[0];
+                    this.searchKeyParams.startTime = val.split('-')[0];
                     this.searchKeyParams.endTime = val.split('-')[1]
                 }
+                this.tableParam.startTime =  this.searchKeyParams.startTime;
+                this.tableParam.endTime =   this.searchKeyParams.endTime;
+                this.getTableList(baseUrl, this.tableParam);
             },
             majorChange(val){
                 console.log(val,'val');
                 if(val=='不限'){
-                    this.compTypeSmall = ['不限']
+                    this.compTypeBig = ['不限'];
+                    this.searchKeyParams.bigType = this.compTypeBig[0];
                 }else{
+                    this.tableParam.majorName =  val;
+                    this.downloadSum.majorName = val;
+                    this.getDownloadCount(baseUrl,this.downloadSum)
                     this.getBigtypes(baseUrl,{majorName:val})
+                    this.getTableList(baseUrl, this.tableParam);
                 }
+
             },
             typeBigChange(val){
                 console.log(val);
                 if(val=='不限'){
-                    this.compTypeSmall = ['不限']
+                    this.compTypeSmall = ['不限'];
+
+                    this.searchKeyParams.smallType = this.compTypeSmall[0];
                 }else{
+                    this.tableParam.bigTypeName =  val;
+                    this.downloadSum.bigTypeName = val;
+                    this.getDownloadCount(baseUrl,this.downloadSum)
+                    this.getTableList(baseUrl, this.tableParam);
                     this.getSmalltypes(baseUrl,{majorName:this.searchKeyParams.majorVal,bigType:val})
                 }
 
             },
             typeSmallChange(val){
-
+                this.tableParam.smallTypeName =  val;
+                this.downloadSum.smallTypeName = val;
+                this.getDownloadCount(baseUrl,this.downloadSum);
+                this.getTableList(baseUrl, this.tableParam);
             },
             //搜索功能
             searchComp(){
-                console.log(this.searchKeyParams, '执行搜索')
+                this.tableParam.startTime = this.searchKeyParams.startTime;
+                this.tableParam.endTime = this.searchKeyParams.endTime;
+                this.tableParam.majorName = this.searchKeyParams.majorName;
+                this.tableParam.title = this.searchKeyParams.searchVal;
+                this.tableParam.bigTypeName = this.searchKeyParams.bigType;
+                this.tableParam.smallTypeName = this.searchKeyParams.smallType;
+                this.getTableList(baseUrl,this.tableParam);
             },
             //列表删除
             deleteComp(){
@@ -613,20 +659,20 @@
                 console.log(this.updateComList,'222');
 //                this.updateComList = {};
                let base =  {
-                    author: this.updateComList.author,
-                    bigTypeName: this.updateComList.bigTypeName,
-                    company:this.updateComList.company,
-                    componentFilePath: this.updateComList.componentFilePath,
-                    description: this.updateComList.remark,
-                    fileName: this.updateComList.fileName,
-                    majorName: this.updateComList.majorName,
-                    pictureFilePath: this.updateComList.pictureFilePath,
-                    productModel: this.updateComList.productModel,
-                    smallTypeName:  this.updateComList.smallTypeName,
-                    summaryFilePath:  this.updateComList.summaryFilePath,
-                    title:  this.updateComList.name,
-                    token: "",
-                    version:  this.updateComList.version,
+                   author: this.updateComList.author,
+                   bigTypeName: this.updateComList.bigType,
+                   company:this.updateComList.company,
+                   componentFilePath: this.updateComList.componentFilePath,
+                   description: this.updateComList.remark,
+                   fileName: this.updateComList.fileName,
+                   majorName: this.updateComList.majorName,
+                   pictureFilePath: this.updateComList.pictureFilePath,
+                   productModel: this.updateComList.productModel,
+                   smallTypeName:  this.updateComList.smallType,
+                   summaryFilePath:  this.updateComList.summaryFilePath,
+                   title:  this.updateComList.name,
+                   token: "",
+                   version:  this.updateComList.version,
                 };
                 this.createComponent(baseUrl,{productId:this.updateComList.productId,base});
             },
@@ -853,9 +899,18 @@
                 //不用调用接口
             },
             getData(){
+                this.downloadSum.bigTypeName = this.searchKeyParams.bigType;
+                this.downloadSum.smallTypeName = this.searchKeyParams.smallType;
+                this.downloadSum.majorName  = this.searchKeyParams.majorVal;
+                this.downloadSum.endTime = this.searchKeyParams.endTime;
+                this.downloadSum.startTime = this.searchKeyParams.startTime;
+                this.downloadSum.title =  this.searchKeyParams.searchVal;
+
+
                 this.getBaseUrl();
                 this.getMarjor();
-                this.getTableList(baseUrl,this.tableParam)
+                this.getTableList(baseUrl,this.tableParam);
+                this.getDownloadCount(baseUrl,this.downloadSum)
             },
 
         },
@@ -882,6 +937,8 @@
             }
         },
         created(){
+            this.searchKeyParams.bigType = this.compTypeBig[0];
+            this.searchKeyParams.smallType = this.compTypeSmall[0];
             this.getData();
         },
     }

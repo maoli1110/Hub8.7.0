@@ -370,7 +370,7 @@
 
                 this.commonConfirm('确定要删除吗',()=> {
                     if(deletArray.length && this.tableData.content.length){
-                        this.delWorkSetting(baseUrl,{workSetId:deletArray,packageType:this.$route.params.typeId})
+                        this.delWorkSetting(baseUrl,{workSetIds:deletArray,packageType:parseInt(this.$route.params.typeId)})
                     }
                 })
             },
