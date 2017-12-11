@@ -65,13 +65,7 @@ export const getMonitorInfos = params =>axios.get(`${params.url}rs/bimMonitorRes
 //批量设置监控信息
 export const saveMonitorInfo = params =>axios.post(`${params.url}rs/bimMonitorRest/saveMonitorInfo`,params.param);
 //检测
-export const checkMonitorSetInfo = params =>axios.post(`${params.url}rs/bimMonitorRest/checkMonitorSetInfo`,params.param)
-/**
- * 云构件库
- * */
-//构件树列表
-export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.version}/${params.productId}`);
-
+export const checkMonitorSetInfo = params =>axios.post(`${params.url}rs/bimMonitorRest/checkMonitorSetInfo`,params.param);
 
 /**
  * 组织结构
@@ -100,3 +94,23 @@ export const delDrawingInfos = params=>axios.post(`${params.url}rs/pdfDrawingRes
 export const updateDrawingInfo = params=>axios.post(`${params.url}rs/pdfDrawingRest/updateDrawingInfo`,params.param)
 //pds图纸->获取图纸详情
 export const getDrawingDetailInfos = params =>axios.post(`${params.url}rs/pdfDrawingRest/getDrawingDetailInfos`,params.param);
+/**
+ * 云构件库
+ * */
+//构件树列表
+export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.version}/${params.productId}`);
+//鲁班安装筛选条件
+//安装->查询专业
+export const componentMajors = params=>axios.get(`${params.url}component/az/majors`);
+//安装->查询大类
+export const bigtypes = params=>axios.post(`${params.url}component/az/bigtypes?majorName=${params.param.majorName}`);
+//安装->查询小类
+export const smalltypes = params=>axios.post(`${params.url}component/az/smalltypes?majorName=${params.param.majorName}&bigType=${params.param.bigType}`);
+
+//安装->列表
+export const componentList = params=>axios.post(`${params.url}component/az/find`,params.param);
+
+//安装->上传
+export const upload = params=>axios.post(`${params.url}component/az/upload/${params.param.productId}`);
+//安装->添加
+export const componentAdd = params=>axios.put(`${params.url}component/az/add/${params.param.productId}`,params.param.base);
