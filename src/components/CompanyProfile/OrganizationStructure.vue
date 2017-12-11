@@ -651,7 +651,7 @@ export default {
 }
 .org .noneHLine {
     margin: 0px;
-    margin-right: 106px;
+    margin-right: 112px;
     height: 1px;
     display: block;
     padding: 0px;
@@ -675,7 +675,7 @@ export default {
     background-position: 17px 0;
 }
 .org .ztree li span.button.switch {
-    width: 50px; 
+    width: 50px !important; 
     height: 59px;
 }
 
