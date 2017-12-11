@@ -247,6 +247,7 @@ export default {
           );
         } else {
           //编辑
+          // 获取当前角色权限码
           types.getRoleAuthCodes(this.curEditRole.roleId).then(res => {
             let authCode = res.data.result;
             this.clientInformation.forEach(items => {

@@ -646,8 +646,15 @@ export default {
       let memberMessage = [];
       textareaArray.forEach(el => {
         let tempArr = el.split(" ");
-        if (tempArr[1].length > 11) {
+        if (tempArr[1] && tempArr[1].length > 11) {
           this.$alert("用户名限制11个字符内", "提示", {
+            confirmButtonText: "确定",
+            type: "info"
+          });
+          return;
+        }
+        if (!tempArr[1] || tempArr.length > 2) {
+          this.$alert("请输入正确的格式", "提示", {
             confirmButtonText: "确定",
             type: "info"
           });
