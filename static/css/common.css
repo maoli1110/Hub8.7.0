@@ -1714,13 +1714,26 @@ body .el-popover.remark-popper {
 .org .ztree li span.button {
     background-image: url('../img/zTreeStandard2.png');
 }
-.ztree li span.button{margin-right:6px !important;}
-.ztree li span.button.rootNode_ico_open, .ztree li span.button.rootNode_ico_close{
-    background:url('../img/org-tree-new.png')  -269px 0px  !important;
+.ztree li span.button.switch{
+    width:17px !important;
 }
-.ztree li span.button.subNode_ico_open{background:url('../img/org-tree-new.png')   -269px -20px !important;}
-.ztree li span.button.subNode_ico_close,.ztree li span.button.subNode_ico_docu{ background:url('../img/org-tree-new.png')  -269px -20px !important;}
-.ztree li span.button.projNode_ico_open,.ztree li span.button.projNode_ico_close,.ztree li span.button.projNode_ico_docu{background:url('../img/org-tree-new.png')  -269px -38px !important;}
+.ztree li span.button.switch.root_open,.ztree li span.button.switch.root_close{
+    width:20px !important;
+}
+.ztree li span.button[class^=level]{
+    width:17px !important;
+}
+.ztree li span.button.center_open{
+    width:16px !important;
+}
+
+ .ztree li span.button{margin-right:6px !important;}
+ .ztree li span.button.rootNode_ico_open, .ztree li span.button.rootNode_ico_close{
+    background:url('../img/org-tree-new.png')  -269px 0px  !important;margin-top:-3px;
+}
+ .ztree li span.button.subNode_ico_open{background:url('../img/org-tree-new.png')   -269px -20px !important;margin-top:-3px;}
+ .ztree li span.button.subNode_ico_close,.ztree li span.button.subNode_ico_docu{ background:url('../img/org-tree-new.png')  -269px -20px !important;margin-top:-3px;}
+ .ztree li span.button.projNode_ico_open,.ztree li span.button.projNode_ico_close,.ztree li span.button.projNode_ico_docu{background:url('../img/org-tree-new.png')  -269px -38px !important;margin-top:-3px;}
 #packageDetail tr td {
     border-left: 1px solid #E6E6E6;
     /*height: 90px;*/
