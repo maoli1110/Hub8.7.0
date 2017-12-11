@@ -255,6 +255,7 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import {basePath} from "../../utils/common.js"
     import {getCitys, cloudTree,tests} from '../../api/getData.js';
+    import {treeList} from '../../api/getData-yhj.js';
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
     let deletArray = [];
     //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
