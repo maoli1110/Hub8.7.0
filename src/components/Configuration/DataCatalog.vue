@@ -22,41 +22,41 @@
             <div>
                 <el-button type="primary" class="basic-btn" icon="plus" @click="addFolder();isAddFolder=true">添加</el-button>
                 <el-button type="primary" class="basic-btn" icon="delete" @click="deleteFolder()"> 删除</el-button>
-                <el-button type="primary" class="basic-btn" 
+                <!-- <el-button type="primary" class="basic-btn" 
                             @click='moveDataCatalog();moveDataCatalogVisible=true'>
                             <i class="icon-move pl-icon-s"></i>
                      <span>移动</span> 
-                </el-button>     
+                </el-button>      -->
             </div>
+            <span style="float:right;margin:35px 20px 0 0;color:#6595f2;cursor:pointer" v-show="subNum>0" @click="backPrevious()">返回上一级 >></span>
             <el-breadcrumb separator=">">
-                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-                <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+                <el-breadcrumb-item >全部文件</el-breadcrumb-item>
+                <el-breadcrumb-item v-for="item in subNum" :key="item">子文件夹{{item}}</el-breadcrumb-item>                                
             </el-breadcrumb>
-            <el-table ref="multipleTable" :data="FolderTableData" border tooltip-effect="dark"
+            
+            
+            <el-table ref="multipleTable" :data="folderTableData" border tooltip-effect="dark"
                       style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="name" label="文件夹名称" width="360" align='left'>
+                <el-table-column prop="pathName" label="文件夹名称" width="360" align='left'>
                     <template slot-scope="scope">
-                        <div slot="reference" class="name-wrapper textcell">
+                        <div slot="reference" class="name-wrapper textcell" style="cursor: pointer;" @click="getSubFolder(scope.row)">
                             <span style="height:15px;width:20px;display:inline-block" class="icon-file-fold"></span>
-                            <span style="margin-right:5px" :title="scope.row.name">{{ scope.row.name }}</span>
+                            <span style="margin-right:5px" :title="scope.row.pathName">{{ scope.row.pathName }}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="已授权" width="550">
                     <template slot-scope="scope">
-                        <div :title="scope.row.pass" class="textcell">
-                            {{ scope.row.pass }}
-
+                        <div :title="scope.row.authUsrs.join(',')" class="textcell">
+                            {{ scope.row.authUsrs.join(',') }}
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="更新时间" width="180">
-                    <template slot-scope="scope">{{ scope.row.date }}</template>
+                    <template slot-scope="scope">{{ scope.row.modifyTime }}</template>
                 </el-table-column>
-                <el-table-column prop="role" label="操作人" width="180"></el-table-column>
+                <el-table-column prop="modifyUser" label="操作人" width="180"></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span type="primary" class="icon-edit_"
@@ -105,15 +105,15 @@
                 </div>
             </div>
             <div style="margin-top: 20px">
-                <div style="float:left;height:40px;line-height:40px">共10个结果</div>
+                <!-- <div style="float:left;height:40px;line-height:40px">共{{pageSize}}个结果</div> -->
                 <el-pagination style="margin-left:30%"
                                @size-change="handleSizeChange"
                                @current-change="handleCurrentChange"
-                               :current-page="4"
-                               :page-sizes="[100, 200, 300, 400]"
-                               :page-size="100"
+                               :current-page="curPage"
+                               :page-sizes="[10, 20, 30, 40]"
+                               :page-size="pageSize"
                                layout="total, sizes, prev, pager, next, jumper"
-                               :total="400">
+                               :total="total">
                 </el-pagination>
             </div>
         </div>
@@ -171,9 +171,18 @@ export default {
       addFolderDialogVisible: false,
       moveDataCatalogVisible: false,
       modifyDataCatalogVisible: false,
+      curPage: 1,
+      pageSize: 10,
+      total: 0,
+      previousParentId: [""], //记录上一级的parentId
+      currentParentId: "", //当前文件(获取当前分页内容需要)，
+      pageCacheInfo: [{ curPage: 1, pageSize: 10, currentParentId: "" }], //记录每一个层级的curpage
       isAddFolder: false,
+      preventHandleChange: false,
       isSaveFolderName: false,
-      folderName: "新建文件夹",
+      folderNameIndex: 1,
+      folderName: ``,
+      subNum: 0,
       textarea: "",
       orgValue: "",
       role: "",
@@ -240,155 +249,13 @@ export default {
         { id: 222, pId: 22, name: "我是开始 2-2-2" },
         { id: 23, pId: 2, name: "我是开始 2-3" }
       ],
-      FolderTableData: [
-        {
-          name: "赵四",
-          id: 1,
-          pass: "wulijjjj111111111111111111",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remark11111111111111111111111111111111111111111111111"
-        },
-        {
-          name: "赵四",
-          id: 2,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 3,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 4,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 5,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 6,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 7,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 8,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四",
-          id: 9,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: true,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        },
-        {
-          name: "赵四111111111111111111111111111111111111111",
-          id: 10,
-          pass: "wulijjjj",
-          role: "项目经理",
-          isAdmin: false,
-          phone: "18075240365",
-          email: "978648117@163.com",
-          date: "2016-05-03 13:51",
-          WAU: "5小时.5次",
-          remarks: "超长remarks"
-        }
-      ],
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
+      folderTableData: [],
       multipleSelection: []
     };
   },
 
   methods: {
+    /**组织树 */
     getOrgTreeList() {
       types.getOrgTreeList().then(res => {
         this.zNodes = res.data.result;
@@ -396,6 +263,32 @@ export default {
         this.orgType = res.data.result[0].type;
         this.orgid = res.data.result[0].id;
         $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
+      });
+    },
+    /**获取资料目录*/
+    getDataDirectoryInfoWrapper() {
+      if (this.preventHandleChange==1) {
+        alert(2)
+        return;
+      }
+      console.log("到底谁先1");
+      let params = {
+        orgType: 0,
+        orgid: "string",
+        pageParam: {
+          page: this.curPage,
+          size: this.pageSize
+        },
+        parentPathId: this.currentParentId
+      };
+
+      types.getDataDirectoryInfoWrapper(params).then(res => {
+        this.folderTableData = [];
+        if (res.data.result.dataDirectoryInfoList.length > 0) {
+          this.folderTableData = res.data.result.dataDirectoryInfoList;
+        }
+        this.total = res.data.result.lbPageInfo.totalNumber;
+        this.preventHandleChange=true;
       });
     },
     orgTreeClick(event, treeId, treeNode) {
@@ -414,39 +307,135 @@ export default {
       this.multipleSelection = val;
     },
     handleSizeChange(val) {
+      this.preventHandleChange = false;
       console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+      this.pageCacheInfo.forEach(item => {
+        if (item.currentParentId == this.currentParentId) {
+          item.pageSize = this.pageSize;
+        }
+      });
+      this.getDataDirectoryInfoWrapper();
     },
     handleCurrentChange(val) {
+      this.preventHandleChange = false;
       console.log(`当前页: ${val}`);
+      this.curPage = val;
+      this.pageCacheInfo.forEach(item => {
+        if (item.currentParentId == this.currentParentId) {
+          item.curPage = this.curPage;
+        }
+      });
+      this.getDataDirectoryInfoWrapper();
+    },
+    //获取子文件夹
+    getSubFolder(row) {
+      this.preventHandleChange = true; //阻止handleCurrentChange再次出发
+      this.subNum++;
+      let params = {
+        orgType: 0,
+        orgid: "string",
+        pageParam: {
+          page: 1,
+          size: 10
+        },
+        parentPathId: row.pathId
+      };
+      types.getDataDirectoryInfoWrapper(params).then(res => {
+        this.folderTableData = [];
+        if (res.data.result.dataDirectoryInfoList.length > 0) {
+          this.folderTableData = res.data.result.dataDirectoryInfoList;
+          this.previousParentId.push(this.folderTableData[0].parentId);
+          this.currentParentId = this.folderTableData[0].parentId;
+        } else {
+          this.previousParentId.push("");
+          this.currentParentId = row.pathId; //添加时;
+        }
+        this.pageCacheInfo.push({
+          curPage: 1,
+          pageSize: 10,
+          currentParentId: this.currentParentId
+        });
+        this.total = res.data.result.lbPageInfo.totalNumber;
+        this.curPage = res.data.result.lbPageInfo.currentPage;
+        this.pageSize = res.data.result.lbPageInfo.pageSize;
+        console.log("到底谁先2");
+      });
+    },
+    // 返回上一级
+    backPrevious() {
+      this.preventHandleChange = true; //阻止handleCurrentChange再次出发
+      this.subNum--;
+      this.previousParentId.pop();
+      this.pageCacheInfo.pop();
+      let params = {
+        orgType: 0,
+        orgid: "string",
+        pageParam: {
+          page: 1,
+          size: 10
+        },
+        parentPathId: this.previousParentId[this.previousParentId.length - 1]
+      };
+      //找到上一层级的页码
+      this.pageCacheInfo.forEach((item, i) => {
+        if (
+          this.previousParentId[this.previousParentId.length - 1] ==
+          item.currentParentId
+        ) {
+          params.pageParam.page = item.curPage;
+          params.pageParam.size = item.pageSize;
+        } else {
+          params.pageParam.page = 1;
+          params.pageParam.size = 10;
+        }
+      });
+
+      types.getDataDirectoryInfoWrapper(params).then(res => {
+        this.folderTableData = [];
+        this.folderTableData = res.data.result.dataDirectoryInfoList;
+        this.folderTableData[0].parentId == "0"
+          ? (this.currentParentId = "")
+          : (this.currentParentId = this.folderTableData[0].parentId);
+        this.total = res.data.result.lbPageInfo.totalNumber;
+        this.curPage = res.data.result.lbPageInfo.currentPage;
+        this.pageSize = res.data.result.lbPageInfo.pageSize;
+        console.log("到底谁先3");
+      });
     },
     addFolder() {
       this.addFolderDialogVisible = true;
+      $(".el-table__empty-block").hide();
+      this.folderName = `新建文件夹${this.folderNameIndex++}`;
     },
     deleteFolder() {
-      this.$confirm("确认删除该记录吗?", "提示", {
-        type: "warning"
-      })
-        .then(() => {
-          this.listLoading = true;
-          //NProgress.start();
-          let para = { id: row.id };
-          removeUser(para).then(res => {
-            this.listLoading = false;
-            //NProgress.done();
-            this.$message({
-              message: "删除成功",
-              type: "success"
-            });
-            this.getUsers();
-          });
+      if (this.multipleSelection.length > 0) {
+        this.$confirm("确认删除该记录吗?", "提示", {
+          type: "warning"
         })
-        .catch(() => {});
+          .then(() => {
+            let params = {
+              orgType: 0,
+              orgid: "string",
+              pathIds: []
+            };
+            this.multipleSelection.forEach(item => {
+              params.pathIds.push(item.pathId);
+            });
+            types.delDataDirectoryInfo(params).then(res => {
+              if (res.data.code == 200) {
+                this.getDataDirectoryInfoWrapper();
+              }
+            });
+          })
+          .catch(() => {});
+      }
     },
     moveDataCatalog() {
       console.log(this.cacheProjectTree);
       this.cacheProjectTree = [];
       setTimeout(() => {
-        let zTree=$.fn.zTree.init(
+        let zTree = $.fn.zTree.init(
           $("#authorizedProjectTree"),
           this.authorizedProjectSetting,
           this.zNodes
@@ -504,22 +493,24 @@ export default {
     },
     saveFolderName() {
       this.isSaveFolderName = true;
-      this.FolderTableData.push({
-        name: this.folderName,
-        id: 1,
-        pass: "wulijjjj111111111111111111",
-        role: "项目经理",
-        isAdmin: true,
-        phone: "18075240365",
-        email: "978648117@163.com",
-        date: "2016-05-03 13:51",
-        WAU: "5小时.5次",
-        remarks: "新加的"
+      console.log(this.currentParentId);
+      console.log(this.folderName);
+      let params = {
+        orgType: 0,
+        orgid: "string",
+        parentPathId: this.currentParentId,
+        pathName: this.folderName
+      };
+      types.createDataDirectoryInfo(params).then(res => {
+        if (res.data.code == 200) {
+          this.getDataDirectoryInfoWrapper();
+        }
       });
       this.isAddFolder = false;
       this.isSaveFolderName = false;
     },
     cancleFolderName() {
+      this.folderNameIndex--;
       this.isAddFolder = false;
       this.isSaveFolderName = false;
     },
@@ -540,6 +531,7 @@ export default {
   },
   mounted() {
     this.getOrgTreeList();
+    this.getDataDirectoryInfoWrapper();
   }
 };
 </script>
@@ -634,7 +626,6 @@ export default {
   font-family: "yahei";
   font-size: 14px;
 }
-
 .authorized-item {
   font-size: 16px;
   font-weight: bold;

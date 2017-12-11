@@ -67,6 +67,32 @@ export const updateRoleAuth = params => {
     return axios.post(`${builderUrl}rs/testRest/saveOrUpdateRoleAuth`, params);
 };
 /**
+ * 应用配置-通用-资料目录
+ * baseUrl = 'http://192.168.13.195:8989/builder/';
+ */
+/**
+ * @param {*} params
+ * 获取组织节点的资料目录
+ */
+export const getDataDirectoryInfoWrapper = params => {
+    return axios.post(`${builderUrl}appconfig/general/data/directory/getDataDirectoryInfoWrapper`, params);
+};
+/**
+ * @param {*} params
+ * 删除组织节点的资料目录
+ */
+export const delDataDirectoryInfo = params => {
+    return axios.post(`${builderUrl}appconfig/general/data/directory/delDataDirectoryInfo`, params);
+};
+/**
+ * @param {*} params
+ * 创建组织节点的资料目录
+ */
+export const createDataDirectoryInfo = params => {
+    return axios.post(`${builderUrl}appconfig/general/data/directory/createDataDirectory`, params);
+};
+/**
+/**
  * 应用配置-通用-属性模板
  * baseUrl = 'http://192.168.13.195:8989/builder/';
  */
