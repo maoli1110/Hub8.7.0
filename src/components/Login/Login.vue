@@ -149,8 +149,9 @@ export default {
        
         axios.get('http://192.168.3.52:8080/pds/login').then((data)=>{
             /**
-             * 1.获取登录页面html,截取登录所需字段
-             * 2.再次对接登录
+             * 1.模仿客户端登录,走两次登录接口
+             * 2.第一步骤：获取登录页面html,取登录所需字段
+             * 3.第二步骤：携带用户名、密码、截取到的信息再次调用登录接口
              */
             let loginHtml = data.data; 
             let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
@@ -166,7 +167,15 @@ export default {
                 contentType:'application/x-www-form-urlencoded',
                 data:comString,
                 success: function(){
-                    console.log('login success')
+                    // console.log('login success')
+                    this.loading = true;
+                    this.$router.push("/companyprofile/organization-structure");
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    // alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.responseJSON.message);
+                    // alert(XMLHttpRequest.readyState);
+                    // alert(textStatus);
                 }
             })
         });
@@ -175,7 +184,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .login-wrap {
   position: relative;
@@ -183,7 +191,6 @@ export default {
   height: 837px;
 
 }
-
 .ms-title {
   padding: 150px 300px;
   box-sizing: border-box;
