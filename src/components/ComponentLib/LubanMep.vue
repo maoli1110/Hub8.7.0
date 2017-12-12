@@ -257,6 +257,7 @@
     import {getCitys,cloudTree} from '../../api/getData.js';
     import {
         treeList,               //构件树
+        treeSave,               //保存构件树
         componentMajors,        //查询专业
         bigtypes,               //查询大类
         smalltypes,             //查询小类
@@ -359,12 +360,18 @@
                 setting: {//搜索条件ztree setting
                     data: {
                         simpleData: {
-                            enable: true
+                            enable: true,
+                            idKey:'parentNodeCode',
+                            pIdKey:'nodeCode'
+                        },
+                        key:{
+                            name:'nodeName'
                         }
                     },
                     callback: {
-//                        onClick: this.onClick
-                    }
+                        onClick: this.ztreeClick
+                    },
+
                 },
                 zNodes:[]   //树结构的初始值
             }
@@ -742,37 +749,12 @@
             },
             //取消上传
             updateCancel(){
-                this.clearCreateParam();
+//                this.clearCreateParam();
             },
             //加载树结构
-            getZtree(){
-                cloudTree().then(res => {
-                    //this.zNodes = res.data[0].result;
-                    this.zNodes = [ {
-                        id: 1,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标不同",
-                        open: true,
-                        iconSkin: "pIcon01"
-                    },
-                        { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-                        { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-                        { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-                        {
-                            id: 2,
-                            pId: 0,
-                            name: "展开、折叠 自定义图标相同",
-                            open: true,
-                            iconSkin: "pIcon02"
-                        },
-                        { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-                        { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-                        { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-                        { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-                        { id: 31, pId: 3, name: "叶子节点1" },
-                        { id: 32, pId: 3, name: "叶子节点2" },
-                        { id: 33, pId: 3, name: "叶子节点3" }]
-                    console.log(this.zNodes)
+            getZtree(url,param){
+                treeList({url:url,param:param}).then((data)=>{
+                    this.zNodes = data.data.result;
                     let zTree = $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
                     let nodes = zTree.getNodes();
                     if (nodes.length > 0) {
@@ -792,20 +774,21 @@
                     level = 1;
                 });
             },
-
-            //获取树结构
-            getZtreeList(params){
-                treeList(params).then((data)=>{
-                    console.log(data)
+            //保存构件树
+            setZtree(url,param){
+                treeSave({url:url,param:param}).then((data)=>{
+                    console.log(data.data.result,'保存成功了？')
                 })
             },
             //加载树结构
             getCloudTree(){
-               this.getZtreeList({url:baseUrl,version:1.5,productId:5})
+               this.getZtree(baseUrl,{version:'1.0.0',productId:5})
                this.cloudComTree = true;
-               this.getZtree();
             },
             //ztree  插件的事件
+            ztreeClick(event, treeId, treeNode){
+                console.log(treeNode.nodeCode)
+            },
             //展开、收起树节点
             expandNode(e) {
                 let type = e.type;
@@ -942,25 +925,24 @@
             },
             //重置
             resetZtree(){
-                this.getZtree();
+                this.getZtree(baseUrl,{version:"1.0.0",productId:5});
             },
             //保存
             ztreeSave(){
-                let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
-                let nodes = treeObj.transformToArray(treeObj.getNodes());
-                let treeNodes = [];
-                nodes.forEach((val,key)=>{
-                    treeNodes.push({ nodeId: val.id, pid: val.pId, nodeName: val.name })
-                });
-                console.log(treeNodes,'保存更改')
+                this.cloudComTreeOk();
             },
             //构件树保存
             cloudComTreeOk(){
                 //掉保存的接口
-            },
-            //构件树取消保存
-            cloudComTreeCancel(){
-                //不用调用接口
+                let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
+                let nodes = treeObj.transformToArray(treeObj.getNodes());
+
+                let treeNodes = [];
+                nodes.forEach((val,key)=>{
+                    treeNodes.push({description:val.description,nodeCode:val.nodeCode, nodeName:val.nodeName,parentNodeCode:val.parentNodeCode,productId:val.productId,sortIndex:val.sortIndex,version:val.version})
+                });
+                console.log(treeNodes,'changeNodes')
+                this.setZtree(baseUrl,{version:"1.0.0",productId:5,componentTree:treeNodes})
             },
             getData(){
                 this.downloadSum.bigTypeName = this.searchKeyParams.bigType;

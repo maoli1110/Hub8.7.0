@@ -98,7 +98,9 @@ export const getDrawingDetailInfos = params =>axios.post(`${params.url}rs/pdfDra
  * 云构件库
  * */
 //构件树列表
-export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.version}/${params.productId}`);
+export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.param.version}/${params.param.productId}`);
+//构件树保存
+export const treeSave = params=>axios.post(`${params.url}component/tree/save/${params.param.version}/${params.param.productId}`,params.param.componentTree)
 //鲁班安装筛选条件
 //安装->查询专业
 export const componentMajors = params=>axios.get(`${params.url}component/az/majors`);
