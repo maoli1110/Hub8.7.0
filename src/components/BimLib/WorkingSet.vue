@@ -18,7 +18,10 @@
                 </el-col>
             </el-col>
             <el-col :span="24" style="padding-top:20px;">
-                <el-button class="basic-btn relat" type="primary" @click="delWork"><span class="work-icon icon-delete " style="width:11px;margin-left:0;"></span><span class="btn-text">删除</span></el-button>
+                <el-button class="basic-btn relat" type="primary" @click="delWork">
+                    <span class="work-icon icon-delete " style="width:11px;margin-left:20px;"></span>
+                    <span class="btn-text">删除</span>
+                </el-button>
             </el-col>
 
         </el-row>
@@ -85,7 +88,7 @@
                     <el-col :span="8">上传时间</el-col>
                 </el-col>
                 <el-col class="table-body">
-                    <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:400px;">
+                    <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="max-height:400px;">
                           <el-row class="scroll-me " style="background:transparent">
                               <el-col v-for="(item,index) in workInfo" :key="index" class="table-row">
                                 <el-col :span="4" class="table-item " >
@@ -367,16 +370,16 @@
 
                 this.commonConfirm('确定要删除吗',()=> {
                     if(deletArray.length && this.tableData.content.length){
-                        this.delWorkSetting(baseUrl,{workSetId:deletArray,packageType:this.$route.params.typeId})
+                        this.delWorkSetting(baseUrl,{workSetIds:deletArray,packageType:parseInt(this.$route.params.typeId)})
                     }
                 })
             },
             //工作集信息展示
             workLibInfo(item){
                 let param = {
-                    deptId: "a001",
-                    packageType: 1,
-                    workSetId: 3
+                    deptId: item.deptId,
+                    packageType: this.$route.params.typeId,
+                    workSetId: item.workSetId
                 }
                 this.getProjByWorkInfo(baseUrl,param)
             },

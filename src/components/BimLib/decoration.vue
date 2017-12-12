@@ -102,7 +102,7 @@
                         <tr v-for="(item,index) in tableData" :key="index">
                             <td @click="tableCheckedClick(item)">
                                 <template >
-                                    <el-checkbox v-model="item.checked" @change="singChecked" ></el-checkbox>
+                                    <el-checkbox v-model="item.checked" @change="singChecked" :disabled="item.disabled"></el-checkbox>
                                 </template>
                             </td>
                             <td>{{item.projName}}</td>
@@ -443,6 +443,7 @@
                 createDeptId:"",        //添加->deptId
                 extractReadInfo:false,  //抽取信息状态
                 isEditProjName:false,   //是否可编辑
+                disEdit:false,
                 //分页的一些设置
                 cur_page:1,             //bim库分页当前页
                 totalPages:10,          //bim库分页显示条数
@@ -748,7 +749,7 @@
             },
             //工程管理树结构单机事件
             proDepartClick(event, treeId, treeNode){
-                if(treeNode.type==1){       //项目部才有点击事件
+                if(treeNode.type==1 || treeNode.direct){       //项目部才有点击事件
                     this.proManageVal = treeNode.name;
                     this.createDeptId = treeNode.id;
 //                    this.createDeptId = "d68ceeb2d02043bd9ea5991ac44d649b";
@@ -860,14 +861,24 @@
                 getProjects(params).then((data)=>{
                     this.tableData = data.data.result.content;
                     this.tableData.forEach((val,key)=>{
-                        this.$set(this.tableData[key],'checked',false)
+                        this.$set(this.tableData[key],'checked',false);
+                        if(val.status==2||val.status==3){
+                            this.$set(this.tableData[key],'disabled',true);
+                        }else{
+                            this.$set(this.tableData[key],'disabled',false);
+                        }
                     })
                     this.pagesList = data.data.result;
                 })
                /* testList().then((data)=>{
                     this.tableData = data.data.result.content;
                     this.tableData.forEach((val,key)=>{
-                        this.$set(this.tableData[key],'checked',false)
+                        this.$set(this.tableData[key],'checked',false);
+                        if(val.status==2||val.status==3){
+                            this.$set(this.tableData[key],'disabled',true);
+                        }else{
+                            this.$set(this.tableData[key],'disabled',false);
+                        }
                     })
                     this.pagesList = data.data.result;
                 })*/

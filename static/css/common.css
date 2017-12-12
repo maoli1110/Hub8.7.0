@@ -1600,6 +1600,7 @@ ul > li {
 
 .pagination {
     margin-top: 20px;
+    text-align:center;
 }
 .pagination .total-info{
     float: left;

@@ -16,8 +16,6 @@
                 <!--<input type="text" style="margin-left:47px;" id="provinLink" placeholder="请输入城市"/>-->
                 <!--</el-col>-->
                 <!--</el-col>-->
-
-
                 <el-col :span="3" class="filter-bar relat" style="padding-right:65px;">
                     <span class="absol span-block" style="width:60px;left:10px;">
                         专业:
@@ -25,9 +23,9 @@
                     <el-select  v-model="searchKeyParams.majorVal" placeholder="请选择" style="left:50px;" @change="majorChange">
                         <el-option
                             v-for="item in majorOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            :key="item"
+                            :label="item"
+                            :value="item">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -39,9 +37,9 @@
                     <el-select  v-model="searchKeyParams.bigType" placeholder="请选择" style="left:80px;" @change="typeBigChange">
                         <el-option
                             v-for="item in compTypeBig"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            :key="item"
+                            :label="item"
+                            :value="item">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -53,15 +51,15 @@
                     <el-select  v-model="searchKeyParams.smallType" placeholder="请选择" style="left:120px;" @change="typeSmallChange">
                         <el-option
                             v-for="item in compTypeSmall"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            :key="item"
+                            :label="item"
+                            :value="item">
                         </el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="4" class="relat" :offset="1" style="left:35px">
                     <el-input placeholder="请输入要搜索的内容" icon="search" v-model="searchKeyParams.searchVal"
-                              :on-icon-click="searchComp"></el-input>
+                              :on-icon-click="searchComp" ></el-input>
                 </el-col>
                 <el-col :span="4" :offset="2" style="text-align:right;">
                     <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件树管理</el-button>
@@ -78,43 +76,44 @@
             <el-row>
                 <el-col>
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                        <el-table class="house-table scroll-me" :fit="true" :data="tableData" style="width: 100%"
+                        <el-table class="house-table scroll-me" :fit="true" :data="tableData.list" style="width: 100%"
                                   :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
                                   @select="selectChecked">
                             <el-table-column
                                 type="selection"
                                 width="40">
                             </el-table-column>
+                            <!---->
                             <!--<el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
                             </el-table-column>-->
-                            <el-table-column prop="compName" width="" label="构件名称" show-overflow-tooltip>
+                            <el-table-column prop="fileName" width="" label="构件名称" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="img" width="80" label="缩略图">
+                            <el-table-column prop="imgUrl " width="80" label="缩略图">
                                 <template slot-scope="scope">
                                     <!--<span v-show="scope.row.speciality==='土建'" class="el-icon-date"></span>
                                     <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>-->
                                     <img :src="scope.row.img" alt="" style="width:44px;">
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="version" width="70" label="版本">
+                            <el-table-column prop="version" width="70" label="版本" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="major" width="70" label="专业">
+                            <el-table-column prop="majorName" width="70" label="专业" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="typeBig" width="70" label="构件大类">
+                            <el-table-column prop="bigTypeName" width="70" label="构件大类" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="typeSmall" width="70" label="构件小类">
+                            <el-table-column prop="smallTypeName" width="70" label="构件小类" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="factrue" width="" label="厂商" show-overflow-tooltip>
+                            <el-table-column prop="company" width="" label="厂商" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="fav" width="80" label="型号">
+                            <el-table-column prop="productModel" width="80" label="型号" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="autor" width="80" label="作者">
+                            <el-table-column prop="author" width="80" label="作者" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="updatePeson" width="80" label="上传人">
+                            <el-table-column prop="addUser" width="80" label="上传人" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="updateTime" width="135" label="更新时间">
+                            <el-table-column prop="addTime " width="135" label="更新时间" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="uploadTime" width="60" label="下载次数">
+                            <el-table-column prop="downloadTimes" width="60" label="下载次数" show-overflow-tooltip>
                             </el-table-column>
                             <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
@@ -124,10 +123,11 @@
                             </el-table-column>
                         </el-table>
                     </vue-scrollbar>
-                    <div class="pagination">
+                    <div class="pagination" >
+                        <span v-show="tableData" style="float:left;line-height:42px;">共 {{tableData.totalRecords}} 条构件,共 {{tableData.totalPages}} 页,累计下载 {{downloadCount}} 次</span>
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                        :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
-                                       layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+                                       layout=" sizes, prev, pager, next, jumper" :total="tableData.totalRecords">
                         </el-pagination>
                     </div>
                 </el-col>
@@ -144,13 +144,13 @@
 
                                 <el-button slot="append">上传</el-button>
                             </el-input>-->
-                        <div class="simulate-label" v-text="updateComList.templateFile"></div>
+                        <div class="simulate-label" v-text="updateComList.fileName"></div>
                         <el-upload :on-success = "updataSucess" :on-error = "updateError" :multiple ='true' :show-file-list="false"
                                    class="upload-demo"
-                                   action="https://jsonplaceholder.typicode.com/posts/"
+                                   :action="uploadUrl"
                                    :on-preview="handlePreview"
                                    :on-remove="handleRemove"
-                                   :file-list="fileList">
+                                   :file-list="fileList" >
                             <el-button type="primary" class="basic-btn update-btn" @click="overUpdate('update')" v-show="!override">上传</el-button>
                             <el-button type="primary" class="basic-btn update-btn" @click="overUpdate('cover')" v-show="override">替换</el-button>
                         </el-upload>
@@ -159,37 +159,37 @@
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">产品：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.product"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.productName"></span>
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">专业：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.career"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.majorName"></span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">构件大类：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.smallType"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.bigType"></span>
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">构件小类：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.bigType"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.smallType"></span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">厂商：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.facture"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.company"></span>
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">型号：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.type"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.productModel"></span>
                         </el-col>
                     </el-col>
                     <el-col :span="24">
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">作者：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.autor"></span>
+                            <span class="simulate-input substr " style="margin-left:80px;" v-text="updateComList.author"></span>
                             <!--<el-input placeholder="请输入模板名称" v-model="updateComList.autor"></el-input>-->
                         </el-col>
                         <el-col :span="12" class="relat">
@@ -255,11 +255,20 @@
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import {basePath} from "../../utils/common.js";
-    import {getCitys,cloudTree,treeList} from '../../api/getData.js';
+    import {getCitys,cloudTree} from '../../api/getData.js';
+    import {
+        treeList,//构件树
+        componentMajors,//查询专业
+        bigtypes,//查询大类
+        smalltypes,//查询小类
+        upload,//上传
+        componentAdd,//添加
+        componentList,//构件列表
+        countDownloadTimes,//下载次数
+    } from '../../api/getData-yhj.js';
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
     let deletArray = [];
-    //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
-    let level;
+    let level;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     //预览状态模板树的深度
     let maxLevel = -1;
     let baseUrl;
@@ -288,135 +297,57 @@
                     endTime: "",    //结束时间
 
                 },
-                majorOptions: [{    //专业选择框
-                    value: '不限',
-                    label: '不限'
-                },{    //专业选择框
-                    value: '土建',
-                    label: '土建'
-                }, {
-                    value: '钢筋',
-                    label: '钢筋'
-                }, {
-                    value: '安装',
-                    label: '安装'
-                }, {
-                    value: 'Revit',
-                    label: 'Revit'
-                }, {
-                    value: 'Tekla',
-                    label: 'Tekla'
-                }, {
-                    value: '场布',
-                    label: '场布'
-                }],
-                compTypeBig:[{
-                    value:'不限',
-                    label:"不限"
-                }],
-                compTypeSmall:[{
-                    value:'不限',
-                    label:"不限"
-                }],
+                majorOptions: ['不限'],
+                compTypeBig:['不限'],
+                compTypeSmall:['不限'],
                 versionsOptions: [{ //版本选择框
                     value: '1.0.0',
-
                 }],
                 fileList: [],      //上传的文件信息
+                uploadUrl:"",
                 //分页的一些设置
                 cur_page: 1,
-                totalPage: 50,
-                totalNumber: 300,
-
-                tableData: [
-                    {
-                        index: 1,
-                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        major: "消防",
-                        typeBig: '消火栓',
-                        typeSmall: "消火栓箱",
-                        factrue: "长沙平安消防设备有限公司",
-                        fav: '123123',
-                        autor: '陈翔',
-                        updatePeson: "陈翔陈翔陈翔",
-                        updateTime: '2017.11.18 12:12:12',
-                        uploadTime:15
-                    },
-                    {
-                        index: 2,
-                        compName: '鲁班安装',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        major: "消防",
-                        typeBig: '消火栓',
-                        typeSmall: "消火栓箱",
-                        factrue: "长沙平安消防设备有限公司",
-                        fav: '123123',
-                        autor: '陈翔',
-                        updatePeson: "陈翔陈翔陈翔",
-                        updateTime: '2017.11.18 12:12:12',
-                        uploadTime:15
-                    },
-                    {
-                        index: 3,
-                        compName: '鲁班',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        major: "消防",
-                        typeBig: '消火栓',
-                        typeSmall: "消火栓箱",
-                        factrue: "长沙",
-                        fav: '123123',
-                        autor: '陈翔',
-                        updatePeson: "陈翔陈翔陈翔",
-                        updateTime: '2017.11.18 12:12:12',
-                        uploadTime:15
-                    },
-                    {
-                        index: 4,
-                        compName: '安装',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        major: "消防",
-                        typeBig: '消火栓',
-                        typeSmall: "消火栓箱",
-                        factrue: "长沙平安消防设备有限公司",
-                        fav: '123123',
-                        autor: '陈翔',
-                        updatePeson: "陈翔陈翔陈翔",
-                        updateTime: '2017.11.18 12:12:12',
-                        uploadTime:15
-                    },
-                    {
-                        index: 5,
-                        compName: '鲁班安装',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        major: "消防",
-                        typeBig: '消火栓',
-                        typeSmall: "消火栓箱",
-                        factrue: "长沙平安",
-                        fav: '123123',
-                        autor: '陈翔',
-                        updatePeson: "陈翔陈翔陈翔",
-                        updateTime: '2017.11.18 12:12:12',
-                        uploadTime:15
-                    },
-                ],  //模拟列表数据
-
+                totalPage: 10,
+                downloadCount:0,
+                tableData: {},  //列表数据
+                tableParam:{
+                    asc: true,
+                    bigTypeName: "",
+                    currentPage: 1,
+                    endTime: "",
+                    majorName: "",
+                    pageSize: 10,
+                    productId: 5,
+                    smallTypeName: "",
+                    sort: "",
+                    startTime: "",
+                    title: ""
+                },
                 updateComList:{     //上传构件的一些文件信息
-                    templateFile:"",
-                    product:"",
-                    career:"",
+                    fileName:"",
+                    productName:"",
+                    majorName:"",
                     smallType:'',
                     bigType:"",
-                    facture:"",
-                    type:"",
-                    autor:"",
+                    company:"",
+                    productModel:"",
+                    author:"",
                     version:"",
                     remark:"",
+                    title:"",
+                    summaryFilePath:"",
+                    componentFilePath:"",
+                    pictureFilePath:"",
+                    productId:"",
+                },
+                downloadSum:{
+                    bigTypeName: "",
+                    endTime: "",
+                    majorName: "",
+                    productId: 5,
+                    smallTypeName: "",
+                    startTime: "",
+                    title: ""
                 },
                 setting: {//搜索条件ztree setting
                     data: {
@@ -462,8 +393,14 @@
             //分页器事件
             handleSizeChange(size){
                 console.log(`每页显示多少条${size}`);
+                this.totalPage = size;
+                this.tableParam.pageSize = size;
+                this.getTableList(baseUrl,this.tableParam);
             },
             handleCurrentChange(currentPage){
+                this.cur_page = currentPage;
+                this.tableParam.currentPage = currentPage;
+                this.getTableList(baseUrl,this.tableParam);
                 console.log(`当前页${currentPage}`);
             },
 
@@ -482,9 +419,8 @@
             **/
 
             updataSucess(response, file, fileList){
-                this.updateComList.templateFile = fileList[0].name
-                console.log(response,'response')
-                console.log(file,'上传文件上传成功')
+//                console.log(file,'上传文件上传成功')
+                this.updateComList = response.result;
             },
             /**
              *上传失败回调的函数
@@ -494,6 +430,65 @@
              **/
             updateError(err, file, fileList){
                 this.commonMessage('上传失败哦。。。。','warning')
+            },
+            //获取接口地址
+            getBaseUrl(){
+                baseUrl = basePath(this.$route.path);
+            },
+            //安装->专业
+            getMarjor(){
+                componentMajors({url:baseUrl}).then((data)=>{
+                   this.majorOptions = data.data.result;
+                   if(data.data.result){
+                       this.majorOptions.unshift('不限');
+                       this.searchKeyParams.majorVal = data.data.result[0];
+                   }else{
+                       this.majorOptions =[];
+                   }
+                })
+            },
+            //安装->大类
+            getBigtypes(url,param){
+                bigtypes({url:url,param:param}).then((data)=>{
+                    this.compTypeBig = data.data.result;
+                    if(data.data.result){
+                        this.compTypeBig.unshift('不限');
+                        this.searchKeyParams.bigType = data.data.result[0];
+                    }
+                })
+            },
+            //安装->小类
+            getSmalltypes(url,param){
+                smalltypes({url:url,param:param}).then((data)=>{
+                    this.compTypeSmall = data.data.result;
+                    if(this.compTypeSmall.length){
+                        this.compTypeSmall.unshift('不限');
+                        this.searchKeyParams.smallType = data.data.result[0];
+                    }
+                })
+            },
+            //添加功能
+            createComponent(url,param){
+                componentAdd({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        this.getTableList(baseUrl,this.tableParam)
+                    }
+                })
+            },
+            //获取列表数据
+            getTableList(url,param){
+                componentList({url:url,param:param}).then((data)=>{
+                    if(data.data.result){
+                        this.tableData = data.data.result;
+                    }else{
+                        this.tableData ={};
+                    }
+                })
+            },
+            getDownloadCount(url,param){
+                countDownloadTimes({url:url,param:param}).then((data)=>{
+                    this.downloadCount = data.data.result;
+                })
             },
             //上传构件清除数据
             clearUploadInfo(){
@@ -536,10 +531,9 @@
                 }else{
                     this.title="修改构件文件"
                 }
-
+                this.uploadUrl = `${baseUrl}component/az/upload/${5}`;//上传接口
                 this.fileList = [];
                 this.clearUploadInfo();
-                console.log('我看看谁先执行的')
             },
 
             /**
@@ -572,79 +566,57 @@
             //日期插件日期改变触发
             changeData(val){
                 if (val) {
-                    this.searchKeyParams.startTimer = val.split('-')[0];
+                    this.searchKeyParams.startTime = val.split('-')[0];
                     this.searchKeyParams.endTime = val.split('-')[1]
                 }
+                this.tableParam.startTime =  this.searchKeyParams.startTime;
+                this.tableParam.endTime =   this.searchKeyParams.endTime;
+                this.getTableList(baseUrl, this.tableParam);
             },
             majorChange(val){
                 console.log(val,'val');
                 if(val=='不限'){
-                    this.compTypeSmall = [{
-                        value:'不限',
-                        label:"不限"
-                    }]
+                    this.compTypeBig = ['不限'];
+                    this.searchKeyParams.bigType = this.compTypeBig[0];
                 }else{
-                    this.compTypeBig = [{
-                        value:'不限',
-                        label:"不限"
-                    },{
-                        value:'初始大类',
-                        label:"初始大类"
-                    },{
-                        value:'土建大类',
-                        label:"土建大类"
-                    },{
-                        value:'房建大类',
-                        label:"家装大类"
-                    },{
-                        value:'家装大类',
-                        label:"家装大类"
-                    },{
-                        value:'中关村',
-                        label:"中关村"
-                    }
-                    ]
+                    this.tableParam.majorName =  val;
+                    this.downloadSum.majorName = val;
+                    this.getDownloadCount(baseUrl,this.downloadSum)
+                    this.getBigtypes(baseUrl,{majorName:val})
+                    this.getTableList(baseUrl, this.tableParam);
                 }
-
 
             },
             typeBigChange(val){
                 console.log(val);
                 if(val=='不限'){
-                    this.compTypeSmall = [{
-                        value:'不限',
-                        label:"不限"
-                    }]
+                    this.compTypeSmall = ['不限'];
+
+                    this.searchKeyParams.smallType = this.compTypeSmall[0];
                 }else{
-                    this.compTypeSmall = [{
-                        value:'不限',
-                        label:"不限"
-                    },{
-                        value:'初始大类',
-                        label:"初始大类"
-                    },{
-                        value:'土建大类',
-                        label:"土建大类"
-                    },{
-                        value:'房建大类',
-                        label:"家装大类"
-                    },{
-                        value:'家装大类',
-                        label:"家装大类"
-                    },{
-                        value:'中关村',
-                        label:"中关村"
-                    }
-                    ]
+                    this.tableParam.bigTypeName =  val;
+                    this.downloadSum.bigTypeName = val;
+                    this.getDownloadCount(baseUrl,this.downloadSum)
+                    this.getTableList(baseUrl, this.tableParam);
+                    this.getSmalltypes(baseUrl,{majorName:this.searchKeyParams.majorVal,bigType:val})
                 }
 
             },
             typeSmallChange(val){
-
+                this.tableParam.smallTypeName =  val;
+                this.downloadSum.smallTypeName = val;
+                this.getDownloadCount(baseUrl,this.downloadSum);
+                this.getTableList(baseUrl, this.tableParam);
             },
             //搜索功能
             searchComp(){
-                console.log(this.searchKeyParams, '执行搜索')
+                this.tableParam.startTime = this.searchKeyParams.startTime;
+                this.tableParam.endTime = this.searchKeyParams.endTime;
+                this.tableParam.majorName = this.searchKeyParams.majorName;
+                this.tableParam.title = this.searchKeyParams.searchVal;
+                this.tableParam.bigTypeName = this.searchKeyParams.bigType;
+                this.tableParam.smallTypeName = this.searchKeyParams.smallType;
+                this.getTableList(baseUrl,this.tableParam);
             },
             //列表删除
             deleteComp(){
@@ -684,8 +656,25 @@
                     console.log('上传构件库接口')
                 }
                 //保存修改
-                console.log(this.updateComList)
-                this.updateComList = {};
+                console.log(this.updateComList,'222');
+//                this.updateComList = {};
+               let base =  {
+                   author: this.updateComList.author,
+                   bigTypeName: this.updateComList.bigType,
+                   company:this.updateComList.company,
+                   componentFilePath: this.updateComList.componentFilePath,
+                   description: this.updateComList.remark,
+                   fileName: this.updateComList.fileName,
+                   majorName: this.updateComList.majorName,
+                   pictureFilePath: this.updateComList.pictureFilePath,
+                   productModel: this.updateComList.productModel,
+                   smallTypeName:  this.updateComList.smallType,
+                   summaryFilePath:  this.updateComList.summaryFilePath,
+                   title:  this.updateComList.name,
+                   token: "",
+                   version:  this.updateComList.version,
+                };
+                this.createComponent(baseUrl,{productId:this.updateComList.productId,base});
             },
             //取消上传
             updateCancel(){
@@ -739,10 +728,7 @@
                     level = 1;
                 });
             },
-            //获取接口地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
-            },
+
             //获取树结构
             getZtreeList(params){
                 treeList(params).then((data)=>{
@@ -913,10 +899,18 @@
                 //不用调用接口
             },
             getData(){
+                this.downloadSum.bigTypeName = this.searchKeyParams.bigType;
+                this.downloadSum.smallTypeName = this.searchKeyParams.smallType;
+                this.downloadSum.majorName  = this.searchKeyParams.majorVal;
+                this.downloadSum.endTime = this.searchKeyParams.endTime;
+                this.downloadSum.startTime = this.searchKeyParams.startTime;
+                this.downloadSum.title =  this.searchKeyParams.searchVal;
+
+
                 this.getBaseUrl();
-                this.searchKeyParams.majorVal = this.majorOptions[0].value;
-                this.searchKeyParams.smallType = this.compTypeSmall[0].value;
-                this.searchKeyParams.bigType = this.compTypeBig[0].value;
+                this.getMarjor();
+                this.getTableList(baseUrl,this.tableParam);
+                this.getDownloadCount(baseUrl,this.downloadSum)
             },
 
         },
@@ -943,6 +937,8 @@
             }
         },
         created(){
+            this.searchKeyParams.bigType = this.compTypeBig[0];
+            this.searchKeyParams.smallType = this.compTypeSmall[0];
             this.getData();
         },
     }
