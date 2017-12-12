@@ -140,7 +140,7 @@
              <label class="el-form-item__label">修改名称：</label>
              <div class="el-form-item">
                 <div class="el-form-item__content" style="margin-left: 85px;">
-                    <el-input placeholder="请选择日期"></el-input>
+                    <el-input placeholder="请输入名称"></el-input>
                 </div>
             </div>
              <div>
@@ -163,6 +163,7 @@
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
 import * as types from "../../api/getData-ppc";
+let cacheParams = {};
 export default {
   data() {
     return {
@@ -178,7 +179,6 @@ export default {
       currentParentId: "", //当前文件(获取当前分页内容需要)，
       pageCacheInfo: [{ curPage: 1, pageSize: 10, currentParentId: "" }], //记录每一个层级的curpage
       isAddFolder: false,
-      preventHandleChange: false,
       isSaveFolderName: false,
       folderNameIndex: 1,
       folderName: ``,
@@ -255,10 +255,66 @@ export default {
   },
 
   methods: {
+    //判断2次参数是否相同 阻止2次提交
+    isObjectValueEqual(obj1, obj2) {
+      var o1 = obj1 instanceof Object;
+      var o2 = obj2 instanceof Object;
+      if (!o1 || !o2) {
+        return obj1 === obj2;
+      }
+      if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+        return false;
+        //Object.keys() 返回一个由对象的自身可枚举属性(key值)组成的数组,例如：数组返回下表：let arr = ["a", "b", "c"];console.log(Object.keys(arr))->0,1,2;
+      }
+      for (var attr in obj1) {
+        var t1 = obj1[attr] instanceof Object;
+        var t2 = obj2[attr] instanceof Object;
+        if (t1 && t2) {
+          return this.isObjectValueEqual(obj1[attr], obj2[attr]);
+        } else if (obj1[attr] !== obj2[attr]) {
+          return false;
+        }
+      }
+      return true;
+      // var aProps = Object.getOwnPropertyNames(a);
+      // var bProps = Object.getOwnPropertyNames(b);
+      // if (aProps.length != bProps.length) {
+      //   return false;
+      // }
+      // for (var i = 0; i < aProps.length; i++) {
+      //   var propName = aProps[i];
+      //   debugger
+      //   if (typeof a[propName] !== "object") {
+      //     if (a[propName] !== b[propName]) {
+      //       return false;
+      //     }
+      //   } else {
+      //     console.log(a[propName])
+      //     console.log(b[propName])
+
+      //     // debugger
+      //     // this.isObjectValueEqual(a[propName], b[propName]);
+      //   }
+      // }
+      // return true;
+    },
     /**组织树 */
     getOrgTreeList() {
       types.getOrgTreeList().then(res => {
         this.zNodes = res.data.result;
+        this.zNodes.forEach((val, key) => {
+          //添加icon
+          //this.$set(val,'iconSkin',"");
+          if (val.root) {
+            this.$set(val, "iconSkin", "rootNode");
+          } else if (!val.root && val.type == 0 && !val.direct) {
+            this.$set(val, "iconSkin", "subNode");
+          } else if (val.type == 1) {
+            this.$set(val, "iconSkin", "projNode");
+          } else if (val.direct) {
+            this.$set(val, "iconSkin", "projNode");
+          }
+        });
         this.orgValue = res.data.result[0].name;
         this.orgType = res.data.result[0].type;
         this.orgid = res.data.result[0].id;
@@ -267,11 +323,6 @@ export default {
     },
     /**获取资料目录*/
     getDataDirectoryInfoWrapper() {
-      if (this.preventHandleChange==1) {
-        alert(2)
-        return;
-      }
-      console.log("到底谁先1");
       let params = {
         orgType: 0,
         orgid: "string",
@@ -281,14 +332,17 @@ export default {
         },
         parentPathId: this.currentParentId
       };
-
+      //阻止handleSelectionChange handleSizeChange 参数改变触发回调 再次请求数据
+      debugger;
+      if (this.isObjectValueEqual(params, cacheParams)) {
+        return;
+      }
       types.getDataDirectoryInfoWrapper(params).then(res => {
         this.folderTableData = [];
         if (res.data.result.dataDirectoryInfoList.length > 0) {
           this.folderTableData = res.data.result.dataDirectoryInfoList;
         }
         this.total = res.data.result.lbPageInfo.totalNumber;
-        this.preventHandleChange=true;
       });
     },
     orgTreeClick(event, treeId, treeNode) {
@@ -307,30 +361,27 @@ export default {
       this.multipleSelection = val;
     },
     handleSizeChange(val) {
-      this.preventHandleChange = false;
-      console.log(`每页 ${val} 条`);
       this.pageSize = val;
       this.pageCacheInfo.forEach(item => {
         if (item.currentParentId == this.currentParentId) {
           item.pageSize = this.pageSize;
         }
       });
+      // cacheParams.pageParam.size=val;
       this.getDataDirectoryInfoWrapper();
     },
     handleCurrentChange(val) {
-      this.preventHandleChange = false;
-      console.log(`当前页: ${val}`);
       this.curPage = val;
       this.pageCacheInfo.forEach(item => {
         if (item.currentParentId == this.currentParentId) {
           item.curPage = this.curPage;
         }
       });
+      // cacheParams.pageParam.page=val;
       this.getDataDirectoryInfoWrapper();
     },
     //获取子文件夹
     getSubFolder(row) {
-      this.preventHandleChange = true; //阻止handleCurrentChange再次出发
       this.subNum++;
       let params = {
         orgType: 0,
@@ -351,20 +402,23 @@ export default {
           this.previousParentId.push("");
           this.currentParentId = row.pathId; //添加时;
         }
+        //记录子文件夹页码信息
         this.pageCacheInfo.push({
           curPage: 1,
           pageSize: 10,
           currentParentId: this.currentParentId
         });
+        cacheParams = params;
         this.total = res.data.result.lbPageInfo.totalNumber;
         this.curPage = res.data.result.lbPageInfo.currentPage;
         this.pageSize = res.data.result.lbPageInfo.pageSize;
+
         console.log("到底谁先2");
       });
     },
     // 返回上一级
     backPrevious() {
-      this.preventHandleChange = true; //阻止handleCurrentChange再次出发
+      //阻止handleCurrentChange再次出发
       this.subNum--;
       this.previousParentId.pop();
       this.pageCacheInfo.pop();
@@ -397,9 +451,11 @@ export default {
         this.folderTableData[0].parentId == "0"
           ? (this.currentParentId = "")
           : (this.currentParentId = this.folderTableData[0].parentId);
+        cacheParams = params; //缓存参数 阻止2次提交
         this.total = res.data.result.lbPageInfo.totalNumber;
         this.curPage = res.data.result.lbPageInfo.currentPage;
         this.pageSize = res.data.result.lbPageInfo.pageSize;
+
         console.log("到底谁先3");
       });
     },

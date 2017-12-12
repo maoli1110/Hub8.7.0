@@ -215,6 +215,19 @@ export default {
     getOrgTreeList() {
       types.getOrgTreeList().then(res => {
         this.zNodes = res.data.result;
+        this.zNodes.forEach((val, key) => {
+          //添加icon
+          //this.$set(val,'iconSkin',"");
+          if (val.root) {
+            this.$set(val, "iconSkin", "rootNode");
+          } else if (!val.root && val.type == 0 && !val.direct) {
+            this.$set(val, "iconSkin", "subNode");
+          } else if (val.type == 1) {
+            this.$set(val, "iconSkin", "projNode");
+          } else if (val.direct) {
+            this.$set(val, "iconSkin", "projNode");
+          }
+        });
         this.orgValue = res.data.result[0].name;
         this.orgType = res.data.result[0].type;
         this.orgid = res.data.result[0].id;
@@ -250,8 +263,8 @@ export default {
       this.multipleSelection = val;
     },
     getTemplateInfo(row) {
-      this.currentRow=[];
-      this.sourceAttrId=[];
+      this.currentRow = [];
+      this.sourceAttrId = [];
       this.templateId = row.templateId;
       this.getAttributeTemplateInfo();
     },
@@ -345,7 +358,7 @@ export default {
         if (res.data.code == 200) {
           this.getAttributeTemplateInfo();
           this.getAttributeTemplateList();
-          this.currentRow=[];
+          this.currentRow = [];
         }
       });
     },
