@@ -598,12 +598,18 @@
 }
 
 .icon-bar-chart {
+    background-position: 0 -370px;
+}
+.icon-bar-chart:hover{
     background-position: 0 -317px;
 }
 
 /*企业概况-柱状图激活状态*/
 .icon-bar-chart.active {
     background-position: 0 -477px;
+}
+.icon-bar-chart.active:hover {
+    background-position: 0 -424px;
 }
 
 .icon-pay-success,.icon-modal-alert, .icon-modal-success, .icon-modal-error, .icon-modal-delete, .icon-modal-email {
