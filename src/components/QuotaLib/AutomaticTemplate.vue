@@ -105,7 +105,7 @@
                             </el-table-column>
                             <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
-                                    <i class="components-icon icon-edit" @click=" override = true;updateComponent = true;modifyCompData()"></i>
+                                    <i class="components-icon icon-edit" @click=" override = true;updateComponent = true;modifyCompData(scope.row)"></i>
 
                                 </template>
                             </el-table-column>
@@ -320,7 +320,7 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
                 })
             },
             //修改构件默认数据
-            modifyCompData(){
+            modifyCompData(item){
                 if(this.override){
                     this.title="修改自动套模板";
                 }else{
@@ -402,14 +402,14 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
                 }, 'warning')
 
 
-            }, 
+            },
 
         },
         mounted(){
 
         },
         watch: {
-            
+
         },
         components: {
             VueScrollbar

@@ -115,7 +115,11 @@ export const countDownloadTimes = params=>axios.post(`${params.url}component/az/
 export const componentDelete = params=>axios.put(`${params.url}component/az/delete/${params.param.productId}`,params.param.del)
 //获取重复提交验证token
 export const generate = params=>axios.get(`${params.url}component/az/token/generate`);
+//判断鲁班安装构件是否存在
+export const componentExist = params=>axios.post(`${params.url}component/az/exist`,params.param)
 //安装->上传
 export const upload = params=>axios.post(`${params.url}component/az/upload/${params.param.productId}`);
 //安装->添加
 export const componentAdd = params=>axios.put(`${params.url}component/az/add/${params.param.productId}`,params.param.base);
+//安装->更新
+export const componentUpdate = params=>axios.put(`${params.url}component/az/update/${params.param.productId}`,params.param.modify);

@@ -117,8 +117,7 @@
                             </el-table-column>
                             <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
-                                    <i class="components-icon icon-edit" @click=" override = true;updateComponent = true;modifyCompData()"></i>
-
+                                    <i class="components-icon icon-edit" @click=" override = true;updateComponent = true;modifyCompData(scope.row)"></i>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -263,9 +262,13 @@
         smalltypes,             //查询小类
         upload,                 //上传
         componentAdd,           //添加
+        componentUpdate,        //更新
         componentList,          //构件列表
         countDownloadTimes,     //下载次数
         componentDelete,        //删除
+        generate,               //获取重复提交验证token
+        componentExist,         //判断构件文件是否存在
+
     } from '../../api/getData-yhj.js';
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
     let deletArray = [];
@@ -273,6 +276,7 @@
     //预览状态模板树的深度
     let maxLevel = -1;
     let baseUrl;
+    let updateToken = '';
     export default {
         data(){
             return {
@@ -340,7 +344,9 @@
                     componentFilePath:"",
                     pictureFilePath:"",
                     productId:"",
+                    componentFileId:""
                 },
+                token:"",
                 downloadSum:{
                     bigTypeName: "",
                     endTime: "",
@@ -370,7 +376,7 @@
              * @params error    失败处理的
              * */
             commonConfirm(message, success, error, type){
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                this.$confirm(message, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: type
@@ -479,16 +485,66 @@
                     }
                 })
             },
+             getPromise(ms) {
+                return new Promise((resolve) => {
+                    setTimeout(resolve, ms);
+                });
+            },
+
             //添加功能
             createComponent(url,param){
                 componentAdd({url:url,param:param}).then((data)=>{
-                    console.log(data.data.code,'1');
-                    if(data.data.result){
-                        this.getTableList(baseUrl,this.tableParam)
+                    if(data.data.code==200){
+                        this.commonMessage('添加成功','warning');
+                       setTimeout(()=>{
+                           this.getTableList(baseUrl,this.tableParam)
+                       },1100)
                     }
                 })
             },
-
+            modifyComponent(url,param){
+                componentUpdate({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        this.commonMessage('更新成功','warning');
+                        setTimeout(()=>{
+                            this.getTableList(baseUrl,this.tableParam)
+                        },2000)
+                    }
+                })
+            },
+            getTokenId(){
+               generate({url:baseUrl}).then((data)=>{
+                    this.token = data.data.result;
+                })
+            },
+            getComponetExit(url,param){
+                componentExist({url:url,param:param}).then((data)=>{
+                    let base =  {
+                        author: this.updateComList.author,
+                        bigTypeName: this.updateComList.bigType,
+                        company:this.updateComList.company,
+                        componentFilePath: this.updateComList.componentFilePath,
+                        description: this.updateComList.remark,
+                        fileName: this.updateComList.fileName,
+                        majorName: this.updateComList.majorName,
+                        pictureFilePath: this.updateComList.pictureFilePath,
+                        productModel: this.updateComList.productModel,
+                        smallTypeName:  this.updateComList.smallType,
+                        summaryFilePath:  this.updateComList.summaryFilePath,
+                        title:  this.updateComList.name,
+                        token: this.token,
+                        version:  this.updateComList.version,
+                    };
+                    if(data.data.result){
+                        this.commonConfirm('构件已经存在是否替换', () => {
+                            this.modifyComponent(baseUrl,{productId:this.updateComList.productId,modify:{compntFileId:this.updateComList.componentFileId,componentFilePath:this.updateComList.componentFilePath,description:this.updateComList.remark,fileChanged:true,fileName:this.updateComList.fileName,pictureFilePath:this.updateComList.pictureFilePath,summaryFilePath:this.updateComList.summaryFilePath,title:this.updateComList.title}});
+                        }, () => {
+                        }, 'warning')
+                    }else{
+                        this.createComponent(baseUrl,{productId:this.updateComList.productId,base});
+                    }
+                })
+            },
             getDownloadCount(url,param){
                 countDownloadTimes({url:url,param:param}).then((data)=>{
                     this.downloadCount = data.data.result;
@@ -507,8 +563,8 @@
                                      }
                                  }
                              }
+                             this.tableData.totalRecords -=deletArray.length;
                          }
-                        this.getTableList(baseUrl,this.tableParam);
                         deletArray =[];
                     }
                 })
@@ -531,22 +587,26 @@
                 this.updateComList.fileName= '';
             },
             //修改构件默认数据
-            modifyCompData(){
+            modifyCompData(item){
                 if(this.override){
                     this.title="修改构件文件";
                 }else{
                     this.title="上传构件文件";
                 }
-                this.updateComList.templateFile= '消防-消防栓-消防栓箱-室内灭火消防栓箱.clm';
-                this.updateComList.product= '鲁班安装';
-                this.updateComList.career= '消防';
-                this.updateComList.bigType= '消防栓';
-                this.updateComList.smallType= '消灭栓箱';
-                this.updateComList.facture= "长沙保平消防设备有限公司";
-                this.updateComList.type= "123";
-                this.updateComList.autor= "不知道";
-                this.updateComList.version= "2.0.0";
-                this.updateComList.remark= "我爱我家租房啦我爱我家租房啦我爱我家租房啦";
+
+                this.updateComList.fileName = item.fileName;
+                this.updateComList.productName= item.title;
+                this.updateComList.majorName= item.majorName;
+                this.updateComList.smallType= item.smallTypeName;
+                this.updateComList.bigType= item.bigTypeName;
+                this.updateComList.productModel= item.productModel;
+                this.updateComList.company= item.company;
+                this.updateComList.author= item.author;
+                this.updateComList.version= item.version;
+                this.updateComList.remark= item.description;
+                this.updateComList.productId = 5;
+                this.updateComList.componentFileId = item.componentFileId;
+                console.log( this.updateComList,'item')
             },
             //上传构件
             uploadComp(){
@@ -556,6 +616,7 @@
                     this.title="修改构件文件"
                 }
                 this.fileList = [];
+                this.getTokenId();
                 this.clearUploadInfo();
             },
 
@@ -652,32 +713,36 @@
             },
             //上传构件到服务器
             updateOk(){
+                console.log( this.token,' this.token')
                 //保存上传到数据库
-                let base =  {
-                    author: this.updateComList.author,
-                    bigTypeName: this.updateComList.bigType,
-                    company:this.updateComList.company,
+
+                console.log(this.updateComList)
+                let modify = {
+                    compntFileId: this.updateComList.componentFileId,
                     componentFilePath: this.updateComList.componentFilePath,
                     description: this.updateComList.remark,
+                    fileChanged: false,
                     fileName: this.updateComList.fileName,
-                    majorName: this.updateComList.majorName,
                     pictureFilePath: this.updateComList.pictureFilePath,
-                    productModel: this.updateComList.productModel,
-                    smallTypeName:  this.updateComList.smallType,
                     summaryFilePath:  this.updateComList.summaryFilePath,
-                    title:  this.updateComList.name,
-                    token: "",
-                    version:  this.updateComList.version,
+                    title: this.updateComList.name
+                };
+
+
+                if(this.updateComList.componentFilePath ||  this.updateComList.summaryFilePath || this.updateComList.pictureFilePath){
+                    modify.fileChanged = true;
+                }else{
+                    modify.fileChanged = false;
                 };
                 if(this.override){
-                    console.log('修改构件库接口');
+                    this.modifyComponent(baseUrl,{productId:this.updateComList.productId,modify})
                 }else {
-                    this.createComponent(baseUrl,{productId:this.updateComList.productId,base});
+                    this.getComponetExit(baseUrl,{bigTypeName:this.updateComList.bigType,company:this.updateComList.company,majorName:this.updateComList.majorName,productModel:this.updateComList.productModel,smallTypeName:this.updateComList.smallType,title:this.updateComList.title,version:this.updateComList.version})
                 }
             },
             //取消上传
             updateCancel(){
-                this.updateComList = {};
+                this.clearCreateParam();
             },
             //加载树结构
             getZtree(){
