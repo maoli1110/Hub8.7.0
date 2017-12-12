@@ -121,6 +121,9 @@ export default {
                 // } else {
                 //     console.log('lastLogin')
                 //     self.centerLogin();
+                //     axios.get('http://192.168.3.52:8080/builder/org/nodes').then(()=>{
+                //         console.log('success_____')
+                //     })
                 // }
             } else {
               console.log("error submit!!");
