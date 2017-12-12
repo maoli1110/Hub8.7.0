@@ -257,14 +257,15 @@
     import {basePath} from "../../utils/common.js";
     import {getCitys,cloudTree} from '../../api/getData.js';
     import {
-        treeList,//构件树
-        componentMajors,//查询专业
-        bigtypes,//查询大类
-        smalltypes,//查询小类
-        upload,//上传
-        componentAdd,//添加
-        componentList,//构件列表
-        countDownloadTimes,//下载次数
+        treeList,               //构件树
+        componentMajors,        //查询专业
+        bigtypes,               //查询大类
+        smalltypes,             //查询小类
+        upload,                 //上传
+        componentAdd,           //添加
+        componentList,          //构件列表
+        countDownloadTimes,     //下载次数
+        componentDelete,        //删除
     } from '../../api/getData-yhj.js';
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
     let deletArray = [];
@@ -467,17 +468,10 @@
                     }
                 })
             },
-            //添加功能
-            createComponent(url,param){
-                componentAdd({url:url,param:param}).then((data)=>{
-                    if(data.data.code==200){
-                        this.getTableList(baseUrl,this.tableParam)
-                    }
-                })
-            },
             //获取列表数据
             getTableList(url,param){
                 componentList({url:url,param:param}).then((data)=>{
+                    console.log('刷新列表')
                     if(data.data.result){
                         this.tableData = data.data.result;
                     }else{
@@ -485,9 +479,38 @@
                     }
                 })
             },
+            //添加功能
+            createComponent(url,param){
+                componentAdd({url:url,param:param}).then((data)=>{
+                    console.log(data.data.code,'1');
+                    if(data.data.result){
+                        this.getTableList(baseUrl,this.tableParam)
+                    }
+                })
+            },
+
             getDownloadCount(url,param){
                 countDownloadTimes({url:url,param:param}).then((data)=>{
                     this.downloadCount = data.data.result;
+                })
+            },
+            deleteComponent(url,param){
+                componentDelete({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                         if(this.tableData.list.length===deletArray.length){
+                            this.getTableList(baseUrl,this.tableParam)
+                         }else{
+                             for (let i = 0; i < deletArray.length; i++) {
+                                 for (let j = 0; j < this.tableData.list.length; j++) {
+                                     if (this.tableData.list[j].componentFileId == deletArray[i].componentId) {
+                                         this.tableData.list.splice(j, 1);
+                                     }
+                                 }
+                             }
+                         }
+                        this.getTableList(baseUrl,this.tableParam);
+                        deletArray =[];
+                    }
                 })
             },
             //上传构件清除数据
@@ -503,8 +526,9 @@
              * @param type  1.update上传 2.cover修改页面
              **/
             overUpdate(){
+                this.uploadUrl = `${baseUrl}component/az/upload/${5}`;//上传接口
                 this.fileList = [];
-                this.updateComList.templateFile= '';
+                this.updateComList.fileName= '';
             },
             //修改构件默认数据
             modifyCompData(){
@@ -531,7 +555,6 @@
                 }else{
                     this.title="修改构件文件"
                 }
-                this.uploadUrl = `${baseUrl}component/az/upload/${5}`;//上传接口
                 this.fileList = [];
                 this.clearUploadInfo();
             },
@@ -542,24 +565,23 @@
              */
 
             selectAll(selection){
-                this.commonAlert('全部选中了哦')
+                deletArray =[];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,'title':val.title})
                     }
                 });
-                console.log(deletArray, 'selectionall')
             },
-
             /**
              * 单选
              * @params [{type obj}] selection    选中的对象
              * @params row 列
              */
             selectChecked(selection, row){
+                deletArray = [];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,'title':val.title})
                     }
                 })
             },
@@ -588,7 +610,6 @@
 
             },
             typeBigChange(val){
-                console.log(val);
                 if(val=='不限'){
                     this.compTypeSmall = ['不限'];
 
@@ -624,57 +645,35 @@
                     this.commonMessage('请选择要删除的文件', 'warning')
                     return false;
                 }
-
                 this.commonConfirm('确定要删除吗', () => {
-                    /* if(this.tableData.length===deletArray.length){
-                     //重新渲染数据
-                     }else*/
-                    if (deletArray.length) {
-                        for (let i = 0; i < deletArray.length; i++) {
-                            for (let j = 0; j < this.tableData.length; j++) {
-                                if (this.tableData[j].index == deletArray[i]) {
-                                    this.tableData.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
-
-                    deletArray = [];//接口成功之后删除数据
+                    this.deleteComponent(baseUrl,{productId:5,del:deletArray})
                 }, () => {
-
                 }, 'warning')
-
-
             },
             //上传构件到服务器
             updateOk(){
                 //保存上传到数据库
+                let base =  {
+                    author: this.updateComList.author,
+                    bigTypeName: this.updateComList.bigType,
+                    company:this.updateComList.company,
+                    componentFilePath: this.updateComList.componentFilePath,
+                    description: this.updateComList.remark,
+                    fileName: this.updateComList.fileName,
+                    majorName: this.updateComList.majorName,
+                    pictureFilePath: this.updateComList.pictureFilePath,
+                    productModel: this.updateComList.productModel,
+                    smallTypeName:  this.updateComList.smallType,
+                    summaryFilePath:  this.updateComList.summaryFilePath,
+                    title:  this.updateComList.name,
+                    token: "",
+                    version:  this.updateComList.version,
+                };
                 if(this.override){
                     console.log('修改构件库接口');
                 }else {
-
-                    console.log('上传构件库接口')
+                    this.createComponent(baseUrl,{productId:this.updateComList.productId,base});
                 }
-                //保存修改
-                console.log(this.updateComList,'222');
-//                this.updateComList = {};
-               let base =  {
-                   author: this.updateComList.author,
-                   bigTypeName: this.updateComList.bigType,
-                   company:this.updateComList.company,
-                   componentFilePath: this.updateComList.componentFilePath,
-                   description: this.updateComList.remark,
-                   fileName: this.updateComList.fileName,
-                   majorName: this.updateComList.majorName,
-                   pictureFilePath: this.updateComList.pictureFilePath,
-                   productModel: this.updateComList.productModel,
-                   smallTypeName:  this.updateComList.smallType,
-                   summaryFilePath:  this.updateComList.summaryFilePath,
-                   title:  this.updateComList.name,
-                   token: "",
-                   version:  this.updateComList.version,
-                };
-                this.createComponent(baseUrl,{productId:this.updateComList.productId,base});
             },
             //取消上传
             updateCancel(){
