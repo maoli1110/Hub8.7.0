@@ -113,6 +113,8 @@ export const componentList = params=>axios.post(`${params.url}component/az/find`
 export const countDownloadTimes = params=>axios.post(`${params.url}component/az/countDownloadTimes`,params.param);
 //安装列表->删除
 export const componentDelete = params=>axios.put(`${params.url}component/az/delete/${params.param.productId}`,params.param.del)
+//获取重复提交验证token
+export const generate = params=>axios.get(`${params.url}component/az/token/generate`);
 //安装->上传
 export const upload = params=>axios.post(`${params.url}component/az/upload/${params.param.productId}`);
 //安装->添加
