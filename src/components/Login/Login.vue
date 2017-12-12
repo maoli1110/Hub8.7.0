@@ -110,21 +110,21 @@ export default {
                 /** 
                  * 非正式版本代码如下
                  */
-                this.loading = true;
-                this.$router.push("/companyprofile/organization-structure");
+                // this.loading = true;
+                // this.$router.push("/companyprofile/organization-structure");
                 /** 
                  * 正式版本代码如下
                  */
-                // if(!self.centerLoginSignal){
-                //     console.log('initLogin')
-                //     self.casLogin();
-                // } else {
-                //     console.log('lastLogin')
-                //     self.centerLogin();
-                //     axios.get('http://192.168.3.52:8080/builder/org/nodes').then(()=>{
-                //         console.log('success_____')
-                //     })
-                // }
+                if(!self.centerLoginSignal){
+                    console.log('initLogin')
+                    self.casLogin();
+                } else {
+                    console.log('lastLogin')
+                    self.centerLogin();
+                    axios.get('http://192.168.3.52:8080/builder/org/nodes').then(()=>{
+                        console.log('success_____')
+                    })
+                }
             } else {
               console.log("error submit!!");
               return false;
@@ -151,7 +151,7 @@ export default {
              */
             function step1 (resolve, reject){
                 self.centerLoginSignal = false;
-                axios.get('http://192.168.3.52:8080/pds/login').then((data)=>{
+                axios.get('http://192.168.13.195:8989/pds/login').then((data)=>{
                     let loginHtml = data.data; 
                     let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
                     //遍历html，获取键值
@@ -166,7 +166,7 @@ export default {
 
             function step2 (resolve, reject){
                 $.ajax({
-                    url:'http://192.168.3.52:8080/pds/login',
+                    url:'http://192.168.13.195:8989/pds/login',
                     type:'POST',
                     contentType:'application/x-www-form-urlencoded',
                     data:comString,
@@ -184,7 +184,7 @@ export default {
             }
 
             function step3 (resolve, reject){
-                axios.get('http://192.168.3.52:8080/pds/rs/centerLogin/companyList').then((res)=>{
+                axios.get('http://192.168.13.195:8989/pds/rs/centerLogin/companyList').then((res)=>{
                     self.companyOptions = res.data;
                     self.selectedCompany = res.data[0].epid;
                     self.centerLoginSignal = true;
@@ -194,7 +194,7 @@ export default {
             }
 
             function step4 (resolve, reject){
-                axios.post('http://192.168.3.52:8080/pds/rs/centerLogin/login',{"epid":90001000}).then((res)=>{
+                axios.post('http://192.168.13.195:8989/pds/rs/centerLogin/login',{"epid":90001000}).then((res)=>{
                    
                     resolve('step3Success')
                     console.log(res)
