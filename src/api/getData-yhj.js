@@ -111,7 +111,8 @@ export const smalltypes = params=>axios.post(`${params.url}component/az/smalltyp
 export const componentList = params=>axios.post(`${params.url}component/az/find`,params.param);
 //安装->列表下载次数
 export const countDownloadTimes = params=>axios.post(`${params.url}component/az/countDownloadTimes`,params.param);
-
+//安装列表->删除
+export const componentDelete = params=>axios.put(`${params.url}component/az/delete/${params.param.productId}`,params.param.del)
 //安装->上传
 export const upload = params=>axios.post(`${params.url}component/az/upload/${params.param.productId}`);
 //安装->添加
