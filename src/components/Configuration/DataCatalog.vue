@@ -14,7 +14,10 @@
             </div>
             <div class="el-form-item el-form_">
                 <div class="el-form-item__content">
-                    <el-input placeholder="名称" icon="search" style="max-width:220px"></el-input>
+                    <el-input placeholder="名称" icon="search"  v-model="searchStr"
+                    :on-icon-click="search"
+                    @keyup.enter.native="search"
+                    style="max-width:220px"></el-input>
                 </div>
             </div>
         </div>
@@ -60,7 +63,7 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span type="primary" class="icon-edit_"
-                              @click="modifyDataCatalog();modifyDataCatalogVisible=true;"></span>
+                              @click="modifyDataCatalog(scope.row);modifyDataCatalogVisible=true;"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -90,7 +93,7 @@
                                         style="height: 15px; width: 20px; display: inline-block;"></span> 
                                         <span title="赵四" style="margin-right: 5px;" v-show="isSaveFolderName">{{folderName}}</span>                                        
                                         <el-input placeholder="新建文件夹" style="width:240px" v-model="folderName" v-show="!isSaveFolderName" autofocus></el-input>
-                                        <span class="icon-tips-success" style="vertical-align:sub;cursor:pointer;display:inline-block" @click="saveFolderName()"></span>
+                                        <span class="icon-tips-success" style="vertical-align:sub;cursor:pointer;display:inline-block" @keyup.enter.native="saveFolderName()" @click="saveFolderName()"></span>
                                         <span class="icon-tips-error" style="vertical-align:sub;cursor:pointer;display:inline-block" @click="cancleFolderName()"></span>
                                     </div>
                                 </div>
@@ -118,7 +121,7 @@
             </div>
         </div>
         <!-- 移动资料目录 -->
-        <el-dialog title="移动文件夹" :visible.sync="moveDataCatalogVisible" size='authorized-data-catalog'>
+        <!-- <el-dialog title="移动文件夹" :visible.sync="moveDataCatalogVisible" size='authorized-data-catalog'>
             <div style="position:relative;padding-top:40px">
                 <div class="authorizedDataCatalog">
                     <div style="padding-bottom:15px" class="authorized-item">组织树：</div>
@@ -134,26 +137,26 @@
             <el-button type="primary" @click="moveDataCatalogVisible = false" class="dialog-btn">确 定</el-button>
             <el-button @click="moveDataCatalogVisible = false" class="dialog-btn">取消</el-button>
             </span>
-        </el-dialog>
+        </el-dialog> -->
         <!-- 修改资料目录 -->
         <el-dialog title="修改" :visible.sync="modifyDataCatalogVisible" size='modify-data-catalog'>
              <label class="el-form-item__label">修改名称：</label>
              <div class="el-form-item">
                 <div class="el-form-item__content" style="margin-left: 85px;">
-                    <el-input placeholder="请输入名称"></el-input>
+                    <el-input placeholder="请输入名称" v-model="modifyFolderName"></el-input>
                 </div>
             </div>
              <div>
                 <label class="el-form-item__label">修改层级：</label>
                 <div class="el-form-item">
                 <div class="el-form-item__content" style="margin-left: 85px;">
-                    <ul id="authorizedProjectTree_" class="ztree "></ul>
+                    <ul id="folderTree" class="ztree "></ul>
                 </div>
                 </div>
             </div> 
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="moveDataCatalogVisible = false" class="dialog-btn">确 定</el-button>
-            <el-button @click="moveDataCatalogVisible = false" class="dialog-btn">取消</el-button>
+            <el-button type="primary"  class="dialog-btn" @click="saveModifyInfo">确 定</el-button>
+            <el-button @click="modifyDataCatalogVisible = false" class="dialog-btn">取消</el-button>
             </span>
         </el-dialog>
     </div>
@@ -163,7 +166,6 @@
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
 import * as types from "../../api/getData-ppc";
-let cacheParams = {};
 export default {
   data() {
     return {
@@ -180,9 +182,10 @@ export default {
       pageCacheInfo: [{ curPage: 1, pageSize: 10, currentParentId: "" }], //记录每一个层级的curpage
       isAddFolder: false,
       isSaveFolderName: false,
+      searchStr: "",
       folderNameIndex: 1,
       folderName: ``,
-      subNum: 0,
+      subNum: 0, //层级
       textarea: "",
       orgValue: "",
       role: "",
@@ -198,106 +201,36 @@ export default {
           onClick: this.orgTreeClick
         }
       },
-      dialogOrgSetting: {
-        data: {
-          simpleData: {
-            enable: true
-          }
-        },
-        callback: {
-          onClick: this.dialogOrgTreeClick
-        }
-      },
       zNodes: [],
-      authorizedProjectSetting: {
+      // 文件夹树设置
+      modifyFolderName: "",
+      newParentPathId: "",
+      oldParentPathId: "",
+      newPathName: "",
+      oldPathName: "",
+      pathId:'',
+      folderSetting: {
         data: {
           simpleData: {
             enable: true,
-            idKey: "id",
-            pIdKey: "parentId"
+            idKey: "id"
+          },
+          key: {
+            name: "text"
           }
         },
         callback: {
-          onClick: this.authorizedProjectClick,
-          beforeClick: this.authorizedProjectBeforeClick
+          onClick: this.folderTreeClick
         }
       },
-      folderSetting: {
-        check: {
-          enable: true,
-          chkStyle: "radio",
-          radioType: "all"
-        },
-        data: {
-          simpleData: {
-            enable: true
-          }
-        }
-      },
-      folderNodes: [
-        { id: 1, pId: 0, name: "我是开始 1", open: true },
-        { id: 11, pId: 1, name: "我是开始 1-1", open: true },
-        { id: 111, pId: 11, name: "我是开始 1-1-1" },
-        { id: 112, pId: 11, name: "我是开始 1-1-2" },
-        { id: 12, pId: 1, name: "我是开始 1-2", open: true },
-        { id: 121, pId: 12, name: "我是开始 1-2-1" },
-        { id: 122, pId: 12, name: "我是开始 1-2-2" },
-        { id: 2, pId: 0, name: "我是开始 2", checked: true, open: true },
-        { id: 21, pId: 2, name: "我是开始 2-1" },
-        { id: 22, pId: 2, name: "我是开始 2-2", open: true },
-        { id: 221, pId: 22, name: "我是开始 2-2-1", checked: true },
-        { id: 222, pId: 22, name: "我是开始 2-2-2" },
-        { id: 23, pId: 2, name: "我是开始 2-3" }
-      ],
+      //文件夹树信息
+      folderNodes: [],
       folderTableData: [],
       multipleSelection: []
     };
   },
-
+  watch: {},
   methods: {
-    //判断2次参数是否相同 阻止2次提交
-    isObjectValueEqual(obj1, obj2) {
-      var o1 = obj1 instanceof Object;
-      var o2 = obj2 instanceof Object;
-      if (!o1 || !o2) {
-        return obj1 === obj2;
-      }
-      if (Object.keys(obj1).length !== Object.keys(obj2).length) {
-        return false;
-        //Object.keys() 返回一个由对象的自身可枚举属性(key值)组成的数组,例如：数组返回下表：let arr = ["a", "b", "c"];console.log(Object.keys(arr))->0,1,2;
-      }
-      for (var attr in obj1) {
-        var t1 = obj1[attr] instanceof Object;
-        var t2 = obj2[attr] instanceof Object;
-        if (t1 && t2) {
-          return this.isObjectValueEqual(obj1[attr], obj2[attr]);
-        } else if (obj1[attr] !== obj2[attr]) {
-          return false;
-        }
-      }
-      return true;
-      // var aProps = Object.getOwnPropertyNames(a);
-      // var bProps = Object.getOwnPropertyNames(b);
-      // if (aProps.length != bProps.length) {
-      //   return false;
-      // }
-      // for (var i = 0; i < aProps.length; i++) {
-      //   var propName = aProps[i];
-      //   debugger
-      //   if (typeof a[propName] !== "object") {
-      //     if (a[propName] !== b[propName]) {
-      //       return false;
-      //     }
-      //   } else {
-      //     console.log(a[propName])
-      //     console.log(b[propName])
-
-      //     // debugger
-      //     // this.isObjectValueEqual(a[propName], b[propName]);
-      //   }
-      // }
-      // return true;
-    },
     /**组织树 */
     getOrgTreeList() {
       types.getOrgTreeList().then(res => {
@@ -330,13 +263,9 @@ export default {
           page: this.curPage,
           size: this.pageSize
         },
-        parentPathId: this.currentParentId
+        parentPathId: this.currentParentId,
+        pathName: this.searchStr
       };
-      //阻止handleSelectionChange handleSizeChange 参数改变触发回调 再次请求数据
-      debugger;
-      if (this.isObjectValueEqual(params, cacheParams)) {
-        return;
-      }
       types.getDataDirectoryInfoWrapper(params).then(res => {
         this.folderTableData = [];
         if (res.data.result.dataDirectoryInfoList.length > 0) {
@@ -367,7 +296,6 @@ export default {
           item.pageSize = this.pageSize;
         }
       });
-      // cacheParams.pageParam.size=val;
       this.getDataDirectoryInfoWrapper();
     },
     handleCurrentChange(val) {
@@ -377,7 +305,10 @@ export default {
           item.curPage = this.curPage;
         }
       });
-      // cacheParams.pageParam.page=val;
+      this.getDataDirectoryInfoWrapper();
+    },
+    // 搜索
+    search() {
       this.getDataDirectoryInfoWrapper();
     },
     //获取子文件夹
@@ -390,7 +321,8 @@ export default {
           page: 1,
           size: 10
         },
-        parentPathId: row.pathId
+        parentPathId: row.pathId,
+        pathName: this.searchStr
       };
       types.getDataDirectoryInfoWrapper(params).then(res => {
         this.folderTableData = [];
@@ -408,7 +340,6 @@ export default {
           pageSize: 10,
           currentParentId: this.currentParentId
         });
-        cacheParams = params;
         this.total = res.data.result.lbPageInfo.totalNumber;
         this.curPage = res.data.result.lbPageInfo.currentPage;
         this.pageSize = res.data.result.lbPageInfo.pageSize;
@@ -418,7 +349,7 @@ export default {
     },
     // 返回上一级
     backPrevious() {
-      //阻止handleCurrentChange再次出发
+      this.searchStr = "";
       this.subNum--;
       this.previousParentId.pop();
       this.pageCacheInfo.pop();
@@ -429,7 +360,8 @@ export default {
           page: 1,
           size: 10
         },
-        parentPathId: this.previousParentId[this.previousParentId.length - 1]
+        parentPathId: this.previousParentId[this.previousParentId.length - 1],
+        pathName: this.searchStr
       };
       //找到上一层级的页码
       this.pageCacheInfo.forEach((item, i) => {
@@ -451,11 +383,9 @@ export default {
         this.folderTableData[0].parentId == "0"
           ? (this.currentParentId = "")
           : (this.currentParentId = this.folderTableData[0].parentId);
-        cacheParams = params; //缓存参数 阻止2次提交
         this.total = res.data.result.lbPageInfo.totalNumber;
         this.curPage = res.data.result.lbPageInfo.currentPage;
         this.pageSize = res.data.result.lbPageInfo.pageSize;
-
         console.log("到底谁先3");
       });
     },
@@ -487,8 +417,77 @@ export default {
           .catch(() => {});
       }
     },
+    saveFolderName() {
+      this.isSaveFolderName = true;
+      console.log(this.currentParentId);
+      console.log(this.folderName);
+      let params = {
+        orgType: 0,
+        orgid: "string",
+        parentPathId: this.currentParentId,
+        pathName: this.folderName
+      };
+      types.createDataDirectoryInfo(params).then(res => {
+        if (res.data.code == 200) {
+          this.getDataDirectoryInfoWrapper();
+        }
+      });
+      this.isAddFolder = false;
+      this.isSaveFolderName = false;
+    },
+    cancleFolderName() {
+      this.folderNameIndex--;
+      this.isAddFolder = false;
+      this.isSaveFolderName = false;
+    },
+    //文件夹树点击回调
+    folderTreeClick(event, treeId, treeNode) {
+      console.log(treeNode);
+      this.newParentPathId = treeNode.id;
+      this.newPathName = treeNode.text;
+    },
+    //获取当前文件夹树信息
+    modifyDataCatalog(row) {
+      console.log(row)
+      this.modifyFolderName = row.pathName;
+      this.oldPathName = row.pathName;
+      this.oldParentPathId=row.parentId
+      this.pathId = row.pathId;
+      let params = {
+        filterDirectoryIds: [row.pathId],
+        orgType: 0,
+        orgid: "string",
+        parentId: "0"
+      };
+      types.getDirectoryTreeInfo(params).then(res => {
+        this.folderNodes = res.data.result;
+        let zTree = $.fn.zTree.init(
+          $("#folderTree"),
+          this.folderSetting,
+          this.folderNodes
+        );
+      });
+    },
+    //保存修改组织节点的目录数据
+    saveModifyInfo() {
+      if (!this.newParentPathId || !this.newPathName) {
+        alert("选择移动的位置");
+      }
+      let params = {
+        newParentPathId: this.newParentPathId,
+        newPathName: this.newPathName,
+        oldParentPathId: this.oldParentPathId,
+        orgType: 0,
+        orgid: "string",
+        pathId: this.pathId
+      };
+      types.modDirectoryInfo(params).then(res => {
+        console.log(res)
+      });
+    },
     moveDataCatalog() {
       console.log(this.cacheProjectTree);
+
       this.cacheProjectTree = [];
       setTimeout(() => {
         let zTree = $.fn.zTree.init(
@@ -546,43 +545,6 @@ export default {
           preTreeInfo: preNodes
         });
       }
-    },
-    saveFolderName() {
-      this.isSaveFolderName = true;
-      console.log(this.currentParentId);
-      console.log(this.folderName);
-      let params = {
-        orgType: 0,
-        orgid: "string",
-        parentPathId: this.currentParentId,
-        pathName: this.folderName
-      };
-      types.createDataDirectoryInfo(params).then(res => {
-        if (res.data.code == 200) {
-          this.getDataDirectoryInfoWrapper();
-        }
-      });
-      this.isAddFolder = false;
-      this.isSaveFolderName = false;
-    },
-    cancleFolderName() {
-      this.folderNameIndex--;
-      this.isAddFolder = false;
-      this.isSaveFolderName = false;
-    },
-    modifyDataCatalog() {
-      setTimeout(() => {
-        let zTree = $.fn.zTree.init(
-          $("#authorizedProjectTree_"),
-          this.authorizedProjectSetting,
-          this.authorizedProjectNodes
-        );
-        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
-        let nodes = zTree.getNodes();
-        if (nodes.length > 0) {
-          zTree.selectNode(nodes[0]);
-        }
-      }, 150);
     }
   },
   mounted() {
@@ -687,8 +649,7 @@ export default {
   font-weight: bold;
   color: #444444;
 }
-
-#authorizedProjectTree_ {
+#folderTree {
   width: 100%;
   height: 500px;
   border: 1px solid #e6e6e6;
