@@ -382,7 +382,6 @@ export default {
             }
             
             this.zNodes = tempzNodes;
-            debugger
 
             for(let [key,value] of entries(tempzNodes)){
                 let lineStyle = "";

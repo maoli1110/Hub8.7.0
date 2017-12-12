@@ -37,7 +37,7 @@
                             <el-button type="primary" @click="handleLogin" :loading="loading">登录</el-button>
                         </div>
                         <div class="rempass">
-                            <el-checkbox class="rembtn">记住密码</el-checkbox>
+                            <el-checkbox class="rembtn"  v-model="isRemember">记住密码</el-checkbox>
                             <span style="float: right;font-size: 14px;margin-top:7px;cursor:pointer">忘记密码？</span>
                         </div>
                     </el-form>
@@ -78,24 +78,39 @@ export default {
       }
     };
     return {
+        isRemember: '',
         isActive: false,
         loading: false,
         src:  require('../../../static/img/background.png'),
+        // loginForm: {
+        //     username: "1349047949@qq.com",
+        //     password: "123456"
+        // },
         loginForm: {
-            username: "1349047949@qq.com",
-            password: "123456"
+            username: "",
+            password: ""
         },
         loginRules: {
             username: [
-              { required: true, trigger: "blur", validator: validateUsername }
+                { required: true, trigger: "blur", validator: validateUsername }
             ],
             password: [
-              { required: true, trigger: "blur", validator: validatePassword }
+                { required: true, trigger: "blur", validator: validatePassword }
             ]
         },
         companyOptions: [],
         selectedCompany:'',
         centerLoginSignal:false
+        }
+    },
+    created() {
+        console.log(Cookies.get("username"));
+        if(Cookies.get("username")) {
+            this.loginForm.username = Cookies.get("username");
+        }
+        if (Cookies.get("username") && Cookies.get("password")) {
+            this.isRemember = true;
+            this.loginForm.password = Cookies.get("password");
         }
     },
     methods: {
@@ -206,13 +221,21 @@ export default {
             })
         },
         centerLogin() {
+            let self = this;
             if(this.selectedCompany){
                 let param = {};
                 param.epid = this.selectedCompany;
                 // param = JSON.stringify(param);
                 axios.post('http://192.168.13.195:8080/pds/rs/centerLogin/login',param).then((res)=>{
-                    resolve('step3Success')
-                    console.log(res)
+                    if (this.isRemember) {     //记住密码
+                        Cookies.set("username", self.loginForm.username);
+                        Cookies.set("password", self.loginForm.password);
+                        console.log(Cookies.get("username"),Cookies.get("password"));
+                    } else {                   //不记住密码
+                        Cookies.set("username",self.loginForm.username);
+                        Cookies.set("password","");
+                    }
+                    console.log(res);
                 })
             } else {
                 alert('请选择企业');
