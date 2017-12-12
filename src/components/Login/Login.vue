@@ -80,7 +80,7 @@ export default {
     return {
         isActive: false,
         loading: false,
-        src: "../../../static/img/background.png",
+        src:  require('../../../static/img/background.png'),
         loginForm: {
             username: "1349047949@qq.com",
             password: "123456"
@@ -121,9 +121,11 @@ export default {
                 } else {
                     console.log('lastLogin')
                     self.centerLogin();
-                    axios.get('http://192.168.3.52:8080/builder/org/nodes').then(()=>{
-                        console.log('success_____')
-                    })
+                    this.loading = true;
+                    this.$router.push("/companyprofile/organization-structure");
+                    // axios.get('http://192.168.3.52:8080/builder/org/nodes').then(()=>{
+                    //     console.log('success_____')
+                    // })
                 }
             } else {
               console.log("error submit!!");
@@ -151,7 +153,7 @@ export default {
              */
             function step1 (resolve, reject){
                 self.centerLoginSignal = false;
-                axios.get('http://192.168.13.195:8989/pds/login').then((data)=>{
+                axios.get('http://192.168.13.195:8080/pds/login').then((data)=>{
                     let loginHtml = data.data; 
                     let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
                     //遍历html，获取键值
@@ -166,7 +168,7 @@ export default {
 
             function step2 (resolve, reject){
                 $.ajax({
-                    url:'http://192.168.13.195:8989/pds/login',
+                    url:'http://192.168.13.195:8080/pds/login',
                     type:'POST',
                     contentType:'application/x-www-form-urlencoded',
                     data:comString,
@@ -184,22 +186,14 @@ export default {
             }
 
             function step3 (resolve, reject){
-                axios.get('http://192.168.13.195:8989/pds/rs/centerLogin/companyList').then((res)=>{
+                axios.get('http://192.168.13.195:8080/pds/rs/centerLogin/companyList').then((res)=>{
                     self.companyOptions = res.data;
                     self.selectedCompany = res.data[0].epid;
                     self.centerLoginSignal = true;
-                    resolve('step3Success')
+                    resolve('step3Success') 
                     console.log(res);
                 })
-            }
-
-            function step4 (resolve, reject){
-                axios.post('http://192.168.13.195:8989/pds/rs/centerLogin/login',{"epid":90001000}).then((res)=>{
-                   
-                    resolve('step3Success')
-                    console.log(res)
-                })
-            }
+            } 
 
             new Promise(step1).then(function(val){
                 console.log(val,'val1');
@@ -216,7 +210,7 @@ export default {
                 let param = {};
                 param.epid = this.selectedCompany;
                 // param = JSON.stringify(param);
-                axios.post('http://192.168.3.52:8080/pds/rs/centerLogin/login',param).then((res)=>{
+                axios.post('http://192.168.13.195:8080/pds/rs/centerLogin/login',param).then((res)=>{
                     resolve('step3Success')
                     console.log(res)
                 })
