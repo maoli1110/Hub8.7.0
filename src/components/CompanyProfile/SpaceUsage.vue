@@ -37,8 +37,20 @@
                         <el-menu-item index="/companyprofile/space-usage/item">按项目</el-menu-item>
                     </el-menu>
                 </div>
+
                 <div class="main">
-                    <div id="chartColumn" style="width:100%; height:calc(100vh - 360px)"></div>
+                    <div class="chartBtn">
+                        <div class="icon icon-bar-chart">
+                            <span @click="isColumn = true; drawCharts()"></span>
+                            <span @click="isColumn = false; drawCharts()"></span>
+                        </div>
+                    </div>
+                    <div v-if="isColumn">
+                        <div id="chartColumn" style="width:100%; height:calc(100vh - 390px)"></div>
+                    </div>
+                    <div v-else>
+                        <div id="chartPie" style="width:100%; height:calc(100vh - 390px)"></div>
+                    </div>
                 </div>
             </div>
           </el-col>
@@ -51,16 +63,58 @@ import echarts from 'echarts'
 export default {
     data() {
         return {
+            isColumn:true,
             chartColumn: null,
             chartDoughnut:null,
-            activeIndex:""
+            chartPie: null,
+            activeIndex:"",
         }
     },
     created(){
         this.activeIndex = this.$route.path;
     },
-    methods: {
-        //环状图
+    methods: { 
+        drawPieChart() {
+            this.chartPie = echarts.init(document.getElementById('chartPie'));
+            this.chartPie.setOption({
+                title: {
+                    text: 'Pie Chart',
+                    subtext: '´¿ÊôÐé¹¹',
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['Ö±½Ó·ÃÎÊ', 'ÓÊ¼þÓªÏú', 'ÁªÃË¹ã¸æ', 'ÊÓÆµ¹ã¸æ', 'ËÑË÷ÒýÇæ']
+                },
+                series: [
+                    {
+                        name: '·ÃÎÊÀ´Ô´',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: [
+                            { value: 335, name: 'Ö±½Ó·ÃÎÊ' },
+                            { value: 310, name: 'ÓÊ¼þÓªÏú' },
+                            { value: 234, name: 'ÁªÃË¹ã¸æ' },
+                            { value: 135, name: 'ÊÓÆµ¹ã¸æ' },
+                            { value: 1548, name: 'ËÑË÷ÒýÇæ' }
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            });
+        },
         drawDoughnutChart() {
             this.chartColumn = echarts.init(document.getElementById('chartDoughnut'));
             this.chartColumn.setOption({
@@ -143,8 +197,14 @@ export default {
         },
 
         drawCharts() {
+            if(this.isColumn){
+                this.drawColumnChart();
+                $(".chartBtn>div").removeClass("active")
+            }else{
+                this.drawPieChart();
+                $(".chartBtn>div").addClass("active")
+            }
             this.drawDoughnutChart()
-            this.drawColumnChart()
         },
     },
 
@@ -159,6 +219,7 @@ export default {
 
 <style scoped>
 @import "../../../static/css/aside.css";
+@import "../../../static/css/icon-menu.css";
 .header {
       height: 40px;
       background-color: #fff;
@@ -230,5 +291,17 @@ export default {
     padding: 20px;
     font-size: 13px;
 }
-
+.chartBtn{
+    text-align: right;
+}
+.chartBtn>div{
+    height: 52px;
+    width: 103px;
+}
+.chartBtn span{
+    float: left;
+    width: 50%;
+    height: 100%;
+    display: inline-block;
+}
 </style>
