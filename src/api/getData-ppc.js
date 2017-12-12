@@ -92,6 +92,20 @@ export const createDataDirectoryInfo = params => {
     return axios.post(`${builderUrl}appconfig/general/data/directory/createDataDirectory`, params);
 };
 /**
+ * @param {*} params
+ * 查询组织节点的目录树(修改树使用)
+ */
+export const getDirectoryTreeInfo = params => {
+    return axios.post(`${builderUrl}appconfig/general/data/directory/getDirectoryTreeInfos`, params);
+};
+/**
+ * @param {*} params
+ * 修改组织节点的目录数据
+ */
+export const modDirectoryInfo= params => {
+    return axios.post(`${builderUrl}appconfig/general/data/directory/modifyDirectoryInfo`, params);
+};
+/**
 /**
  * 应用配置-通用-属性模板
  * baseUrl = 'http://192.168.13.195:8989/builder/';

@@ -569,7 +569,6 @@
             getOrgzTreeList(url){
                 getOrgTreeList({url:url}).then((data)=>{
                     data.data.result.forEach((val,key)=>{//添加icon
-                        console.log('进来多少次')
 //                        this.$set(val,'iconSkin',"");
                         if(val.root){
                             this.$set(val,'iconSkin','rootNode');
