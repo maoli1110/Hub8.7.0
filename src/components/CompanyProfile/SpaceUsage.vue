@@ -18,7 +18,7 @@
                     <span>可用</span>
                   </el-col>
                 </el-row>
-                <div class="unfold">空间不够？<span>点击扩容</span></div>
+                <div class="unfold">空间不够？<span @click="dialogVisible=true">点击扩容</span></div>
                 <div class="capacity-text">
                     工程文件包含：<br>
                     工程原始文件、模型文件（KMZ）、BE上传资料文件（包含导入的图纸）、协作资料文件（包括照片和录音）、PDS节点文件。
@@ -55,6 +55,61 @@
             </div>
           </el-col>
         </el-row>
+
+
+        <!--购买云空间-->
+        <el-dialog
+            title="购买云空间"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :before-close="handleClose" class="modelwidth752px" :close-on-click-modal="false"
+            :close-on-press-escape="false">
+
+            <el-row class="el-form-item">
+                <el-col :span="24" class="relat">
+                    <span class="label">企业名称：</span>
+                    <span class="" style="margin-left:20px;" v-text="">上海鲁班软件有限公司</span>
+                </el-col>
+                <el-col :span="24" class="relat">
+                    <span class="label">扩容：</span>
+                    <span class="" style="margin-left:20px;" v-text="">1024GB</span>
+                </el-col>
+                <el-col :span="24" class="relat">
+                    <span class="label">有效期至：</span>
+                    <span class="" style="margin-left:20px;" v-text="">2012年12月12日</span>
+                </el-col>
+            </el-row>
+
+
+            <el-form :model="xxx" label-width="80px" ref="rechargeform" :rules="rechargerulerules" class="rechargeFormBox">
+                
+                <el-form-item label="发票类型：">
+                    <!--1:不需要发票,0:普通发票,3专用发票 ,  -->
+                    <el-radio-group v-model="xxx" @change="removeDis">
+                        <el-radio label="-1">不需要发票</el-radio>
+                        <el-radio label="1">需要发票</el-radio>
+                        <el-button class="needrecharge" :disabled="disabledfalse" @click="">编辑</el-button>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="代金券：" :class="{ voucherNoerrow: voucherNoshow }" >
+                    <el-input v-model="xx" placeholder="请输入代金券密码" style="width:220px" ></el-input>
+                    <div class="voucherNoerrowMeg" v-show="voucherNoshow">333</div>
+                    <el-button class="normal-btn" @click="">应用</el-button>
+                </el-form-item>
+                <el-form-item label="结算信息：">
+                    <span class="margin-r-20">总价：￥111</span>
+                    <span class="margin-r-20">快递费：￥111</span>
+                    <span>代金券：￥{{voucherNoCount}}</span>
+                    <span class="pull-r-f">总计：<span class="span-bule" style="font-size:12px">￥{{newallCount}}</span></span>
+                </el-form-item>
+                <el-form-item class="text-a-c">
+                    <el-button type="primary" @click="">
+                        确认订单并支付
+                    </el-button>
+                </el-form-item>
+            </el-form>
+            
+        </el-dialog>
     </div>
 </template>
 
@@ -63,61 +118,100 @@ import echarts from 'echarts'
 export default {
     data() {
         return {
+            disabledfalse: true,
             isColumn:true,
             chartColumn: null,
             chartDoughnut:null,
             chartPie: null,
             activeIndex:"",
+            //购买云空间
+            dialogVisible: false,
         }
     },
     created(){
         this.activeIndex = this.$route.path;
     },
-    methods: { 
+    methods: {
+        removeDis(dis){
+                let vm = this;
+                if (dis == "1") {
+                    vm.disabledfalse = false;
+                } else {
+                    this.disabledfalse = true;
+                }
+            },
+        getInvoice(){
+            //发票类型
+            },
         drawPieChart() {
             this.chartPie = echarts.init(document.getElementById('chartPie'));
             this.chartPie.setOption({
-                title: {
-                    text: 'Pie Chart',
-                    subtext: '´¿ÊôÐé¹¹',
-                    x: 'center'
-                },
+                title: { text: 'asdf11' },
+                xAxis:[
+                        {
+                            show:false, 
+                        }
+                ],
+                yAxis:[
+                        {
+                            show:false, 
+                        }
+                ],
+                color:[ '#c04e4e', '#958bc8', '#4b618a', '#cac4c4','#e5b189','#6d95db' ,'#66bced', '#7dc15c', '#8accda', '#e7b01f', '#eab0eb',],
                 tooltip: {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    trigger: 'itemaaa11',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
                 },
                 legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: ['Ö±½Ó·ÃÎÊ', 'ÓÊ¼þÓªÏú', 'ÁªÃË¹ã¸æ', 'ÊÓÆµ¹ã¸æ', 'ËÑË÷ÒýÇæ']
+                    orient:'vertical',
+                    top: '30',
+                    right: '100',
+                    data:["第1分公司", "第2分公司", "第3分公司", "第4分公司", "第5分公司", "第6分公司","第7分公司","第8分公司","第9分公司","第10分公司"]
                 },
                 series: [
                     {
-                        name: '·ÃÎÊÀ´Ô´',
-                        type: 'pie',
-                        radius: '55%',
-                        center: ['50%', '60%'],
-                        data: [
-                            { value: 335, name: 'Ö±½Ó·ÃÎÊ' },
-                            { value: 310, name: 'ÓÊ¼þÓªÏú' },
-                            { value: 234, name: 'ÁªÃË¹ã¸æ' },
-                            { value: 135, name: 'ÊÓÆµ¹ã¸æ' },
-                            { value: 1548, name: 'ËÑË÷ÒýÇæ' }
-                        ],
-                        itemStyle: {
+                        name:'111',
+                        type:'pie',
+                        radius: ['40%','70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
                             emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                show: true,
+                                textStyle: {
+                                    fontSize: '20',
+                                    fontWeight: ''
+                                }
                             }
-                        }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: true
+                            }
+                        },
+                        data:[
+                            {value:111, name:'第1分公司'},
+                            {value:111, name:'第2分公司'},
+                            {value:111, name:'第3分公司'},
+                            {value:111, name:'第4分公司'},
+                            {value:111, name:'第5分公司'},
+                            {value:111, name:'第6分公司'},
+                            {value:111, name:'第7分公司'},
+                            {value:111, name:'第8分公司'},
+                            {value:111, name:'第9分公司'},
+                            {value:66, name:'第10分公司'},
+                        ]
                     }
                 ]
             });
         },
         drawDoughnutChart() {
-            this.chartColumn = echarts.init(document.getElementById('chartDoughnut'));
-            this.chartColumn.setOption({
+            this.chartDoughnut = echarts.init(document.getElementById('chartDoughnut'));
+            this.chartDoughnut.setOption({
+                title: { text: 'asdf' },
                 color:['#e78788' ,'#7dc15c'],
                 tooltip: {
                     trigger: 'item',
@@ -166,9 +260,12 @@ export default {
                 title: { text: 'Column Chart' },
                 tooltip: {},
                 xAxis: {
+                    show:true,
                     data: ["第1分公司", "第2分公司", "第3分公司", "第4分公司", "第5分公司", "第6分公司","第7分公司","第8分公司","第9分公司","第10分公司"]
                 },
-                yAxis: {},
+                yAxis: {
+                    show:true,
+                },
                 series: [{
                     name: '哈哈哈哈哈哈哈哈哈哈',
                     type: 'bar',
@@ -303,5 +400,37 @@ export default {
     width: 50%;
     height: 100%;
     display: inline-block;
+}
+.modelwidth752px span{
+    font-size: 14px;
+    color: rgb(31, 61, 60);
+}
+.modelwidth752px .label{
+    width: 80px;
+    line-height: 30px;
+    text-align: right;
+    display: inline-block;
+}
+</style>
+<style>
+.modelwidth752px .el-dialog .el-form-item__content {
+    margin-left: 100px !important;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.modelwidth752px .el-dialog .el-dialog__header {
+    border-bottom: 1px solid #e6e6e6;
+    padding-bottom: 20px;
+}
+
+.modelwidth752px .el-dialog .el-form-item__label {
+    color: rgb(31, 61, 60);
+}
+.text-a-c .el-form-item__content {
+    text-align: center;
+    margin-left: 0px !important;
+    padding-bottom: 0px !important;
+    border-bottom: none !important;
 }
 </style>
