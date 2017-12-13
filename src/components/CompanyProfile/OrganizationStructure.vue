@@ -6,105 +6,12 @@
                 <div class="pop-manager-dialog">
                     <div class="pop-header">
                         <p class="enterprise-name">企业名称</p>
-                        <p class="company-name">初始化公司名字</p>
+                        <p class="company-name">{{orgNodeInfo.org.name}}</p>
                     </div>
                     <div class="pop-manager-list">
                         <p class="name">负责人</p>
                         <div class="list">
-                            <span> <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span> <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
-                            <span>
-                                <i class="el-icon-star-off"></i>
-                                吴凡吴凡
-                            </span>
+                            <span v-for="item in orgNodeInfo.admins"><i class="iconfont icon-user"></i>{{item.id}}</span>
                         </div>
                     </div>
                     <div class="pop-operation">
@@ -215,7 +122,7 @@
 <script>
 import '../../../static/css/select-vue-component.css'; // select2样式
 import axios from "axios";
-import {getOrgTreeList,createBranchCompany,createProject} from '../../api/getData-mll.js';   // 接口
+import {getOrgTreeList,createBranchCompany,createProject,getOrgNodeInfo,editBranchCompany,editProject,deleteNode} from '../../api/getData-mll.js';   // 接口
 import {basePath,transformToObjFormat} from "../../utils/common.js"; // 通用模块
 import {
   validatephoneNumber,
@@ -261,6 +168,10 @@ export default {
             companyForm: {
                 admins: [],
                 name:''
+            },
+            orgNodeInfo: {
+                org:{},
+                admins:[]
             },
             projectForm: {
                 name: "新增项目部节点",
@@ -470,16 +381,25 @@ export default {
         },
         //mouseOn显示负责人信息
         addHoverDom(treeId,treeNode) {
+            console.log('add');
+            console.log(treeId,'treeId')
+            console.log(treeNode,'treeId')
             /** 
              * 1.获取当前鼠标的位置
              * 2.更改属性显示界面，获取数据
              */
-            console.log('add');
-            console.log(treeId,'treeId')
-            console.log(treeNode,'treeId')
             selectedNode = treeNode;
             selectedTreeId = treeId;
+            //获取对应节点的信息
+            getOrgNodeInfo({url:baseUrl,params:params}).then((res)=>{
+                this.orgNodeInfo.admins = res.data.result.admins;
+                this.orgNodeInfo.org = res.data.result.org;
+                console.log(this.orgNodeInfo.admins,'admins')
+            });
             if($(".el-popover").css('display') === 'block') return;
+            let params = {
+                orgId: selectedNode.id,
+            };
             let aObj = $("#" + treeNode.tId + "_a");
             let mX = aObj.offset().left,
                 mY = aObj.offset().top;
@@ -489,7 +409,6 @@ export default {
             }
             this.isPopover = true;
             changePosition();
-            // window.setTimeout(changePosition,100);
         },
         //mouseOff鼠标划过负责人信息
         removeHoverDom(treeId,treeNode) {
@@ -631,7 +550,7 @@ export default {
     width: 170px;
 }
 .org .ztree li span.button {
-    margin-top: 0;
+    margin: 0 !important;
 }
 .org #organization-tree > ul {
     min-width: 230px;

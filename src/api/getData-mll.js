@@ -36,6 +36,17 @@ export const router = params=> axios.get(`${route}`);
 /**
  * 组织结构
  */
+//查询组织机构树
 export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
+//查询有组织机构信息，携带管理员信息
+export const getOrgNodeInfo = params=> axios.get(`${params.url}org/${params.params.orgId}`);
+//创建新的组织机构
 export const createBranchCompany = params=> axios.post(`${params.url}org/${params.params.orgId}/subs`,params.params.companyInfo);
+//创建新的项目部
 export const createProject = params=> axios.post(`${params.url}org/${params.params.parentId}/depts`,params.params.projectInfo);
+//编辑组织机构
+export const editBranchCompany = params=> axios.put(`${params.url}org/${params.params.orgId}`,params.params.companyInfo);
+//编辑项目部信息
+export const editProject = params=> axios.put(`${params.url}org/${params.params.orgId}/depts/${params.params.deptId}`,params.params.projectInfo)
+//删除节点
+export const deleteNode = params=> axios.delete(`${params.url}org/${params.params.orgId}`);
