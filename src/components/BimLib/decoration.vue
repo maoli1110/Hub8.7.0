@@ -698,8 +698,9 @@
             //获取属性
             getProjGenreEvent(isDelete,packageType){
                 getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=> {
-                    this.bimOptions = data.data.result;
-                    if (this.bimOptions != '' || this.bimOptions != null) {
+
+                    if (data.data.result.length>0) {
+                        this.bimOptions = data.data.result;
                         this.filterParams.bimVal = this.bimOptions[0].value;
                     }
                 })
@@ -707,8 +708,8 @@
             //获取专业
             getProjTypeEvent(isDelete,packageType){
                 getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
-                    this.majorOptions = data.data.result;
-                    if(this.majorOptions!='' ||this.majorOptions!=null){
+                    if(data.data.result){
+                        this.majorOptions = data.data.result;
                         this.filterParams.majorVal = this.majorOptions[0].value;
                     }
                 })

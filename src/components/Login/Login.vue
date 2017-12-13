@@ -2,7 +2,7 @@
     <div class="login-wrap">
         <!-- <div class="ms-title">企业基础数据管理后台</div> -->
         <div class="ms-logo">
-            <img :src="src" alt="">
+            <img v-bind:src="src" alt="">
             <div class="ms-login">
                 <div class="userSelect">
                     欢迎您登陆
@@ -28,7 +28,7 @@
                             <el-input type="password" placeholder="密码" class="paddingPlaceholder" v-model="loginForm.password" @keyup.enter.native="submitForm('ruleForm')">
                             </el-input>
                         </el-form-item> 
-                        <el-form-item label="选择企业：" label-width="80px"> 
+                        <el-form-item label="选择企业：" label-width="80px" label-position="left" v-show="isShowCompany">
                             <el-select v-model="selectedCompany" placeholder="请选择">
                                 <el-option v-for="item in companyOptions" :key="item.epid" :label="item.enterpriseName" :value="item.epid"></el-option>
                             </el-select>
@@ -45,7 +45,6 @@
 
             </div>
         </div>
-
         <div class="footer">
             <div>Luban Hub Sevice</div>
             <div>2010-2017上海鲁班软件股份有限公司版权所有 沪ICP备</div>
@@ -78,7 +77,8 @@ export default {
       }
     };
     return {
-        isRemember: '',
+        isShowCompany:false,
+        isRemember: false,
         isActive: false,
         loading: false,
         src:  require('../../../static/img/background.png'),
@@ -205,6 +205,7 @@ export default {
                     self.companyOptions = res.data;
                     self.selectedCompany = res.data[0].epid;
                     self.centerLoginSignal = true;
+                    self.isShowCompany = true;
                     resolve('step3Success') 
                     console.log(res);
                 })
@@ -297,10 +298,6 @@ export default {
   background: #fff;
 }
 
-.ms-login .el-form-item__label {
-    text-align: left;
-}
-
 .userSelect {
   border-radius: 5px;
   margin-top: 25px;
@@ -383,4 +380,5 @@ export default {
 .rembtn {
   float: left;
 }
+
 </style>
