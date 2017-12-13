@@ -50,8 +50,8 @@
                     <el-carousel-item v-for="(items,index) in clientInformation_" :key="index">
                         <div style="padding:0 20px;margin-top:40px">
                             <el-card :body-style="{ padding: '0px' }" v-for="(item, i) in items"                                     
-                                     @click.native="currentIndex=i+index;selectClient(item)"                                     
-                                     :key="i" class="card" :class="{'client-checked':i+index==currentIndex}"
+                                     @click.native="selectClient(item)"                                     
+                                     :key="i" class="card" 
                             >
                                 <div style="text-align:center;margin-top:20px"  >
                                     <img :src="item.src"
@@ -185,7 +185,6 @@ export default {
       roleType: "",
       roleTypeId: "",
       roleId: "",
-      currentIndex: 0,
       textarea: "",
       carouselPage: "",
       authoritedTableData: [],
@@ -204,6 +203,7 @@ export default {
     };
   },
   methods: {
+    /**一拆三*/
     split_array(arr, len) {
       let a_len = arr.length;
       let result = [];
@@ -216,10 +216,9 @@ export default {
     getRoleClientAuthInfo() {
       types.getRoleClientAuthInfo().then(res => {
         this.clientInformation = res.data.result;
-        // 添加角色
         this.clientInformation.forEach((items, index) => {
           // 重新定义数据结构
-          // 客户端图片地址
+          // 添加客户端本地图片地址
           this.clientImgSrc.forEach(el => {
             if (el.productId == items.productId) {
               items.src = el.src;
@@ -227,7 +226,6 @@ export default {
           });
           items.authInfoGroups_copy = [];
           items.authInfoGroups.forEach((el, i) => {
-            // 添加角色
             items.authInfoGroups_copy.push({
               name: el.authOrg,
               checkedCities: [],
@@ -260,7 +258,7 @@ export default {
                 item.checkAll =
                   item.checkedCities.length === item.cities.length;
               });
-            });            
+            });
             // 默认展示
             this.selectClient(this.clientInformation[0]);
             // 客户端拆分10个一组
@@ -276,6 +274,7 @@ export default {
     getRoleType() {
       types.getRoleType().then(res => {
         this.options = res.data.result;
+        this.roleType = this.options[0].roleTypeId;
       });
     },
     /**全选*/
@@ -359,7 +358,6 @@ export default {
             roleTypeId: this.roleType || 0
           });
       /**权限码*/
-
       this.clientInformation.forEach(items => {
         items.authInfoGroups_copy.forEach(item => {
           item.checkedCities.forEach(el => {
@@ -402,6 +400,19 @@ export default {
       this.roleType = this.curEditRole.roleTypeId;
       this.roleId = this.curEditRole.roleId;
     }
+    //动态绑定:class="{'client-checked':i+index==currentIndex}"
+    setTimeout(() => {
+      $(".el-carousel__item")
+        .find(".card")
+        .eq(0)
+        .addClass("client-checked");
+    }, 150);
+    $(document).on("click", ".card", function() {
+      $(".el-carousel__item")
+        .find(".card")
+        .removeClass("client-checked");
+      $(this).addClass("client-checked");
+    });
   }
 };
 </script>

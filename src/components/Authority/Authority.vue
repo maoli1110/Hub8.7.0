@@ -57,7 +57,7 @@ export default {
   },
   created() {
     this.activeIndex = this.$route.path;
-    if (this.$route.path == "/authority/edit-role/" + this.$route.params.id) {
+    if (this.$route.path == "/authority/edit-role/" + this.$route.params.id||this.$route.path == "/authority/add-role") {
       this.activeIndex = "/authority/role-management";
     }
   },

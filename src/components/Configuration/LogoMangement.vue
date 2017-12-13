@@ -15,23 +15,19 @@
                             <span
                                 class="logo-color"
                                 :style="{ backgroundColor: scope.row.logoColor }"
-                            >{{scope.row.created_at_i}}</span>
+                            ></span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column prop="name" label="标识名称" width="280" align='left'>
                     <template slot-scope="scope">
+
                         <div slot="reference" class="name-wrapper textcell" 
-                        @mouseenter='scope.row.editShow=!scope.row.editShow'
-                        @mouseleave='scope.row.editShow=!scope.row.editShow'
+                        @mouseenter='mouseEnter(scope.row)'
+                        @mouseleave='mouseLeave(scope.row)'
                         style="position:relative">
-                            <span  
-                            v-show="!scope.row.edit"                          
-                            >{{ scope.row.title }}</span>
-                            <el-input                             
-                            v-show="scope.row.edit" size="small" 
-                            @keyup.enter.native="scope.row.edit=!scope.row.edit"
-                            v-model="scope.row.title"></el-input>
+                            <span  v-show="!scope.row.edit">{{ scope.row.title }}</span>
+                            <el-input v-show="scope.row.edit" size="small" @keyup.enter.native="scope.row.edit=!scope.row.edit"v-model="scope.row.title"></el-input>
                             <span  
                             v-show="scope.row.editShow"
                             :class="scope.row.edit?'el-icon-document':'el-icon-edit'" style="position:absolute;right:2px;top:18px;color:#6595f2;cursor:pointer;font-size:14px"
@@ -50,13 +46,13 @@
                 <el-table-column label="显示" width="250">
                     <template slot-scope="scope">
                         <!-- v-model="scope.row.show" -->
-                        <el-checkbox>{{scope.row.title}}</el-checkbox>
+                        <el-checkbox></el-checkbox>
                     </template>
                 </el-table-column>
                 <el-table-column label="LuBan Boss问题配置">
                     <template slot-scope="scope">
                         <!-- v-model="scope.row.lubanboss" -->
-                        <el-checkbox>{{scope.row.objectID}}</el-checkbox>
+                        <el-checkbox></el-checkbox>
                     </template>
                 </el-table-column>
             </el-table>
@@ -106,106 +102,31 @@ export default {
           date: "2016-05-03 13:51",
           show: true,
           lubanboss: true
-        },
-        {
-          logoColor: "#ecd556",
-          logoName: "质量",
-          updater: "wuli",
-          date: "2016-05-03 13:51",
-          show: true,
-          lubanboss: false
-        },
-        {
-          logoColor: "#27a9e6",
-          logoName: "质量",
-          updater: "wuli",
-          date: "2016-05-03 13:51",
-          show: false,
-          lubanboss: true
-        },
-        {
-          logoColor: "#faab3b",
-          logoName: "质量",
-          updater: "wuli",
-          date: "2016-05-03 13:51",
-          show: false,
-          lubanboss: false
-        },
-        {
-          logoColor: "#808080",
-          logoName: "质量",
-          updater: "wuli",
-          date: "2016-05-03 13:51",
-          show: true,
-          lubanboss: true
-        },
-        {
-          logoColor: "#4bab4b",
-          logoName: "质量",
-          updater: "wuli",
-          date: "2016-05-03 13:51",
-          show: true,
-          lubanboss: true
-        },
-        {
-          logoColor: "#ec8952",
-          logoName: "质量111111111111111111111111111111111111",
-          updater: "wuli",
-          date: "2016-05-03 13:51",
-          show: false,
-          lubanboss: true
-        },
-        {
-          logoColor: "#f88fb2",
-          logoName: "质量",
-          updater: "wuli",
-          date: "2016-05-03 13:51",
-          show: true,
-          lubanboss: false
-        },
-        {
-          logoColor: "#89d5e9",
-          logoName: "质量",
-          updater: "wulikkkk",
-          date: "2016-05-03 13:51",
-          show: true,
-          lubanboss: true
-        },
-        {
-          logoColor: "#da4f64",
-          logoName: "质量",
-          updater: "wuli",
-          date: "2016-05-03 13:51",
-          show: true,
-          lubanboss: false
         }
       ],
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
+      options: [],
       multipleSelection: []
     };
   },
   methods: {
+    getRandomColor() {
+      return (
+        "#" +
+        ("00000" + ((Math.random() * 16777215 + 0.5) >> 0).toString(16)).slice(
+          -6
+        )
+      );
+    },
+    mouseEnter(row) {
+      if (!row.editShow) {
+        row.editShow = !row.editShow;
+      }
+    },
+    mouseLeave(row) {
+      if (row.editShow) {
+        row.editShow = !row.editShow;
+      }
+    },
     infiniteHandler($state) {
       this.$axios
         .get(api, {
@@ -219,6 +140,7 @@ export default {
             this.list.forEach(v => {
               this.$set(v, "edit", false);
               this.$set(v, "editShow", false);
+              this.$set(v, "logoColor", this.getRandomColor());
             });
             $state.loaded();
             if (this.list.length / 20 === 10) {
@@ -231,7 +153,8 @@ export default {
       $(".main").scrollTop($(".main")[0].scrollHeight - 720);
     }
   },
-  mounted() {}
+  mounted() {
+  }
 };
 </script>
 <style scoped>

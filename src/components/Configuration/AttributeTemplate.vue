@@ -190,7 +190,7 @@ export default {
         this.attrTemplateParentInfo = [];
         this.attrTemplateInfoTableData.forEach((el, i, arr) => {
           if (el.parentId === 0) {
-            //父级模板单独抽出
+            //父级模板单独抽出来另处理
             this.attrTemplateParentInfo.push(el);
             // 父级模板的子集放到该父级下
             arr.forEach((el_, i_) => {
@@ -212,6 +212,7 @@ export default {
         }, 100);
       });
     },
+    //获取组织树
     getOrgTreeList() {
       types.getOrgTreeList().then(res => {
         this.zNodes = res.data.result;
@@ -255,6 +256,7 @@ export default {
       }
       console.log(this.currentRow);
     },
+    //当前选中行
     setCurrent(row) {
       this.$refs.singleTable.setCurrentRow(row);
     },
@@ -262,13 +264,14 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    //获取模板信息
     getTemplateInfo(row) {
       this.currentRow = [];
       this.sourceAttrId = [];
       this.templateId = row.templateId;
       this.getAttributeTemplateInfo();
     },
-    //判断弹框谈还是不谈
+    //添加弹框
     addDialogShow(type) {
       if (type == 1) {
         this.addAttributeTemplateVisible = true;
@@ -425,6 +428,7 @@ export default {
         }
       });
     },
+    //区分属性和组
     tableRowClassName(row, index) {
       if (row.parentId === 0) {
         // 设置组样式
