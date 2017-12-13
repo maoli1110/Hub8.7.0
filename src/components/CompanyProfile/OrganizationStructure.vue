@@ -327,9 +327,10 @@ export default {
                 view: {
                   showIcon: true,
                   addHoverDom: this.addHoverDom,
-                  removeHoverDom: this.removeHoverDom
+                  removeHoverDom: this.removeHoverDom,
                 },
                 callback: {
+                    onExpand: this.zTreeOnExpand,
                     // beforeExpand: beforeExpand,
                     onClick: this.ztreeOnclick
                     // onRightClick: OnRightClick,
@@ -343,15 +344,6 @@ export default {
     mounted() {
         // 根据路由地址获取baseUrl
         this.getBaseUrl();
-
-        // 根据生成的树结构计算总宽度
-        function getOrgTreeWidth() {
-            let tempWidth = 0;
-            $("#organization-tree > div").each(function(){
-                tempWidth += $(this).width();
-            })
-            return tempWidth;
-        }
         // getOrgTreeList({url:baseUrl}).then(res => {
         // 获取原始树结构
         getOrgTreeList({url:baseUrl}).then(res => {
@@ -398,9 +390,7 @@ export default {
                 $("#organization-tree").append(html);
                 $.fn.zTree.init($("#ztree-"+key), this.setting, value);
             }
-            $("#organization-tree").width(getOrgTreeWidth()+300);
-            $(".org .org-wrap .root-node > div").css("margin-left",(getOrgTreeWidth()+300)/2);
-
+            $("#organization-tree").width(this.getOrgTreeWidth());
         });
     },
     methods: {
@@ -450,12 +440,24 @@ export default {
             self.multiple.originOptions = [{"id":"2","name":"mike"},{"id":"3","name":"lara"}]
             self.multiple.selectedList = [{"id":"4","name":"zoe"},{"id":"5","name":"steve"}]
         },
-
+        // 根据生成的树结构计算总宽度
+        getOrgTreeWidth() {
+            let tempWidth = 0;
+            if($("#organization-tree > div").length){
+                $("#organization-tree > div").each(function(){
+                tempWidth += $(this).width();
+                });
+                return tempWidth;
+            }
+        },
         //获取接口地址
         getBaseUrl(){
             baseUrl = basePath(this.$route.path);
         },
-
+        //监控树节点展开
+        zTreeOnExpand() {
+            $("#organization-tree").width(this.getOrgTreeWidth());
+        },
         //组织结构全部展开，全部收起
         expandTree(source){
             console.log(this.zNodes.length,'length');
@@ -464,8 +466,8 @@ export default {
                 x = $.fn.zTree.getZTreeObj("ztree-"+i);
                 x.expandAll(source);
             }
+            $("#organization-tree").width(this.getOrgTreeWidth());
         },
-
         //mouseOn显示负责人信息
         addHoverDom(treeId,treeNode) {
             /** 
@@ -486,9 +488,9 @@ export default {
                  $(".el-popover").css('top',mY-10);
             }
             this.isPopover = true;
-            window.setTimeout(changePosition,100);
+            changePosition();
+            // window.setTimeout(changePosition,100);
         },
-        
         //mouseOff鼠标划过负责人信息
         removeHoverDom(treeId,treeNode) {
             console.log('remove')
@@ -520,6 +522,7 @@ export default {
                 if (!treeNode) {
                     alert('当前节点，无法添加子节点');
                 }
+                $("#organization-tree").width(this.getOrgTreeWidth());
             }
             
             if(this.orgForm.resource === '分公司'){
@@ -613,6 +616,12 @@ export default {
   margin-top: 10px;
   margin: 0 auto;
 }
+.org #organization-tree {
+    margin: 0 auto;
+}
+.org .org-wrap .root-node > div {
+    margin: 0 auto;
+}
 .org .ztree li a {
     border: 2px solid #4778c7;
     /*margin: 10px;*/
@@ -624,7 +633,7 @@ export default {
 .org .ztree li span.button {
     margin-top: 0;
 }
-.org #organization-tree >ul {
+.org #organization-tree > ul {
     min-width: 230px;
 }
 .org .firstHLine {
