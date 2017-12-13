@@ -5,11 +5,13 @@
                 <span style="float:left;font-size:14px;margin-top:5px;">项目部：</span>
                 <el-col :span="6" >
                     <el-select v-model="filterParm.workValue" placeholder="请选择" @change="changeProject">
+                        <!-- :key="item.deptId"
+                            :value="item.deptId"-->
                         <el-option
                             v-for="item in projectList"
-                            :key="item.value"
-                            :value="item.value"
-                            :label="item.name">
+                            :key="item.projName"
+                            :value="item.projName"
+                            :label="item.projName">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -26,7 +28,7 @@
 
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class="work-set scroll-me"   :data="tableData.content" style="min-width:900px;"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked">
+            <el-table class="work-set scroll-me" :data="tableData.content" style="min-width:900px;"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked">
                 <el-table-column
                     type="selection"
                     width="40" >
@@ -35,9 +37,9 @@
                 </el-table-column>-->
                 <el-table-column prop="workSetName" width="" label="工程名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="createUsername" width="100" label="创建人" >
+                <el-table-column prop="createUsername" width="100" label="创建人" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="createDate" width="160" label="创建时间" >
+                <el-table-column prop="createDate" width="160" label="创建时间" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="deptName" width="" label="所属项目部" show-overflow-tooltip>
                 </el-table-column>
@@ -123,7 +125,10 @@
         getWorkSets,
         delWorkSets,
         getProjByWorkSet,
-        getFileViewUrl      //uuid缩略图列表
+        getFileViewUrl,      //uuid缩略图列表
+        getProjsHasWorkSet,   //所属工程
+        getProjectInfo,         //假数据
+        getViewUrl              //假数据
     } from '../../api/getData-yhj.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import ElCol from "element-ui/packages/col/src/col";
@@ -169,14 +174,7 @@
                 descList:[],
                 workInfo:{},
                 worksList:[],
-                projectList:[
-                    {name:'全部',value:"1"},
-                    {name:'茅台文化大厦项目',value:"dc090268e97741c089adcaa0489d60fa"},
-                    {name:'上海中心项目',value:"4"},
-                    {name:'某七星级酒店项目',value:"5"},
-                    {name:'梅赛德斯奔驰文化馆项目',value:"6"},
-                    {name:"亚特兰蒂斯七星级酒店项目",value:"7"}
-                ]
+                projectList:[]
             }
         },
         components: {
@@ -215,9 +213,19 @@
                 this.tableListParam.searchKey = this.filterParm.searchKey;
                 this.getTableList(baseUrl,this.tableListParam);
             },
+            //所属工程
+            getHasWorkList(){
+                getProjsHasWorkSet({url:baseUrl}).then((data)=>{
+                    if(data.data.result){
+                        this.projectList = data.data.result;
+                    }else{
+                        this.projectList =[];
+                    }
+                })
+            },
             //获取工作集列表
             getTableList(url,param){
-                getWorkSets({url:url,param:param}).then((data)=>{
+                /*getWorkSets({url:url,param:param}).then((data)=>{
                     if(data.data.code!=200){//读取数据失败
                        this.commonMessage(data.data.msg,'warning')
                        return false;
@@ -230,15 +238,15 @@
                     this.tableData.content.forEach((val,key)=>{
                         val.createDate = this.dateFormatter(val.createDate);
                     });
-                });
-               /* workList().then((data)=>{
-                    this.tableData = data.data.content;
-                    if (this.tableData.length) {
-                        this.tableData.forEach((val,key)=>{
+                });*/
+                workList().then((data)=>{
+                    this.tableData = data.data;
+                    if (this.tableData.content.length>0) {
+                        this.tableData.content.forEach((val,key)=>{
                             val.createDate = this.dateFormatter(val.createDate);
                         })
                     }
-                })*/
+                })
             },
             delWorkSetting(url,param){
                 delWorkSets({url:url,param:param}).then((data)=>{
@@ -262,20 +270,47 @@
                 })
             },
             //获取预览地址 整合
-            getFileUrl(url,param){
-                getFileViewUrl({url:url,param:param}).then((data)=>{
-                    console.log(data.data.result)
+            getFileUrl(url,param,workList){
+                /*getFileViewUrl({url:url,param:param}).then((data)=>{
+                    if(data.data.result){
+                        data.data.result.forEach((val,key)=>{
+                            workList.forEach((val1,key1)=>{
+                                if(val.uuid==val1.uuid){
+                                    this.$set(val1,'viewUrl',val.viewUrl);
+                                }
+                            })
+                        })
+                    }
+                })*/
+                getViewUrl().then((data)=>{
+                    data.data.result.forEach((val,key)=>{
+                        let list = {};
+                        for(let key1 in workList){
+                            if(val.uuid==key1){
+                                workList[key1].viewUrl = val.urlList
+                            }
+                            for(let key2 in workList[key1]){
+                                if(val.uuid==workList[key1][key2].uuid){
+                                    workList[key1][key2].viewUrl = val.urlList;
+                                }
+                            }
+                        }
+                        list = workList
+                        console.log(list,'123');
+                    });
+
                 })
             },
             //查看工程
             getProjByWorkInfo(url,param){
-                getProjByWorkSet({url:url,param:param}).then((data)=>{
+                /*getProjByWorkSet({url:url,param:param}).then((data)=>{
                     this.worksList = data.data.result;
                     let uuidArray = [];
                     console.log(this.worksList,'list');
                     this.worksList.forEach((val,key)=>{
 
                     })
+                    this.getFileUrl(baseUrl,uuidArray,workList);
                     for(let key in workList){
                       this.workInfo =  workList[key];
                       this.descList =  workList[key][0];
@@ -286,12 +321,28 @@
                         }
                     })
                     console.log( this.workInfo,' this.workInfo')
+                })*/
+                getProjectInfo().then((data)=>{
+                    let uuidArr = [];
+                    this.workList = data.data.result;
+                    for(let key in data.data.result){
+                        uuidArr.push(key);
+                        if(data.data.result[key].length>0){
+                            for(let key1 in data.data.result[key]){
+                                if(data.data.result[key][key1].uuid){
+                                    uuidArr.push(data.data.result[key][key1].uuid);
+                                }
+                            }
+                        }
+                    }
+                    this.getFileUrl(baseUrl,uuidArr,this.workList);
                 })
             },
             getData(){
                 this.getBaseUrl();
-                this.filterParm.workValue = this.projectList[0].value;
-                if(this.filterParm.workValue=='1'){
+                this.getHasWorkList();
+//                this.filterParm.workValue = this.projectList[0].value;
+                /*if(this.filterParm.workValue=='1'){
                     if(this.tableListParam.deptIds.indexOf(this.filterParm.workValue)==-1){
                         this.projectList.forEach((val,key)=>{
                             if(val.value!="1"){
@@ -299,7 +350,9 @@
                             }
                         })
                     }
-                }
+                }*/
+                this.tableListParam.deptIds =["dc090268e97741c089adcaa0489d60fa"]
+                /**/
                 this.tableListParam.searchKey = this.filterParm.searchKey;
                 this.tableListParam.packageType = parseInt(this.$route.params.typeId);
                 this.tableListParam.pageParam.size = this.totalPage;
