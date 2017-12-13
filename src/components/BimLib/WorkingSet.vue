@@ -122,7 +122,8 @@
         getWorksetingList,
         getWorkSets,
         delWorkSets,
-        getProjByWorkSet
+        getProjByWorkSet,
+        getFileViewUrl      //uuid缩略图列表
     } from '../../api/getData-yhj.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import ElCol from "element-ui/packages/col/src/col";
@@ -167,6 +168,7 @@
                 },//列表参数
                 descList:[],
                 workInfo:{},
+                worksList:[],
                 projectList:[
                     {name:'全部',value:"1"},
                     {name:'茅台文化大厦项目',value:"dc090268e97741c089adcaa0489d60fa"},
@@ -259,10 +261,21 @@
                     }
                 })
             },
+            //获取预览地址 整合
+            getFileUrl(url,param){
+                getFileViewUrl({url:url,param:param}).then((data)=>{
+                    console.log(data.data.result)
+                })
+            },
             //查看工程
             getProjByWorkInfo(url,param){
                 getProjByWorkSet({url:url,param:param}).then((data)=>{
-                    let  workList = data.data.result;
+                    this.worksList = data.data.result;
+                    let uuidArray = [];
+                    console.log(this.worksList,'list');
+                    this.worksList.forEach((val,key)=>{
+
+                    })
                     for(let key in workList){
                       this.workInfo =  workList[key];
                       this.descList =  workList[key][0];

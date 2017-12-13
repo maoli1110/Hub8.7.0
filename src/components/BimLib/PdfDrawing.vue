@@ -235,8 +235,11 @@
             //获取分类下拉框数据
             getTypeGroup(){
                 getDrawingClassifyInfos({url:baseUrl}).then((type)=>{
-                   this.typeList = type.data.result;
-                   this.filterParam.typeVal = this.typeList[0].classifyId;
+                    if(type.data.result){
+                        this.typeList = type.data.result;
+                        this.filterParam.typeVal = this.typeList[0].classifyId;
+                    }
+
                 })
             },
             //获取工程下拉框数据

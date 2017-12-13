@@ -78,7 +78,7 @@ export const delWorkSets = params =>axios.post(`${params.url}rs/workSetRest/delW
 //bim->工作集查看工程
 export const  getProjByWorkSet = params =>axios.post(`${params.url}rs/workSetRest/getProjByWorkSet`,params.param)
 //根据uuid匹配缩略图列表
-
+export const getFileViewUrl = params =>axios.post(`${params.url}rs/workSetRest/getFileViewUrl`,params.param);
 /**
  * pds图纸
  * */
