@@ -92,7 +92,7 @@
                 <el-col class="table-body">
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="max-height:400px;">
                           <el-row class="scroll-me " style="background:transparent">
-                              <el-col v-for="item in subWorkList" :key="item" class="table-row">
+                              <el-col v-for="(item,index) in subWorkList" :key="index" class="table-row">
                                 <el-col :span="4" class="table-item">
                                     <div class="Bim-template" :style="{backgroundImage: 'url('+item.viewUrl+')'}"></div>
                                 </el-col>
@@ -104,12 +104,10 @@
                     </vue-scrollbar>
                 </el-col>
             </el-row>
-
-
-            <span slot="footer" class="dialog-footer">
+            <!--<span slot="footer" class="dialog-footer">
                 <el-button class="dialog-btn dialog-btn-ok" type="primary" @click="workInfoVisible = false">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="workInfoVisible = false">取 消</el-button>
-            </span>
+            </span>-->
         </el-dialog>
     </div>
 </template>

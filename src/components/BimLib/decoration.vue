@@ -698,8 +698,7 @@
             //获取属性
             getProjGenreEvent(isDelete,packageType){
                 getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=> {
-
-                    if (data.data.result.length>0) {
+                    if (data.data.result!=null) {
                         this.bimOptions = data.data.result;
                         this.filterParams.bimVal = this.bimOptions[0].value;
                     }
@@ -859,16 +858,19 @@
                 countIndex = 0;     //选中数量统计清空
                 this.allChecked = false;
                 getProjects(params).then((data)=>{
-                    this.tableData = data.data.result.content;
-                    this.tableData.forEach((val,key)=>{
-                        this.$set(this.tableData[key],'checked',false);
-                        if(val.status==2||val.status==3){
-                            this.$set(this.tableData[key],'disabled',true);
-                        }else{
-                            this.$set(this.tableData[key],'disabled',false);
-                        }
-                    })
-                    this.pagesList = data.data.result;
+                    if(data.data.result!=null){
+                        this.tableData = data.data.result.content;
+                        this.tableData.forEach((val,key)=>{
+                            this.$set(this.tableData[key],'checked',false);
+                            if(val.status==2||val.status==3){
+                                this.$set(this.tableData[key],'disabled',true);
+                            }else{
+                                this.$set(this.tableData[key],'disabled',false);
+                            }
+                        })
+                        this.pagesList = data.data.result;
+                    }
+
                 })
                /* testList().then((data)=>{
                     this.tableData = data.data.result.content;
@@ -992,12 +994,15 @@
             //每次添加完成 数据清空
             clearCreateParam(){
                 this.proManage.name= '';
-                this.proManage.major= this.majorOptions[0].value;
+
                 this.proManage.remark= "";
                 this.proManage.deptId = "";
                 this.proManage.userIds =[];
                 this.createDeptId = '';
-                this.proManageVal = ""
+                this.proManageVal = "";
+                if( this.proManage.major.length>0){
+                    this.proManage.major= this.majorOptions[0].value;
+                }
             },
             //创建弹窗专业change事件
             proManageChange(val){
