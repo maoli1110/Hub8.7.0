@@ -16,6 +16,8 @@ import '../static/js/jbase64';
 Vue.use(ElementUI);
 Vue.component('vue-scrollbar', VueScrollbar)
 Vue.prototype.$axios = axios;
+import global_ from './global.vue'//引用config文件
+Vue.prototype.GLOBAL = global_//挂载到Vue实例上面
 new Vue({
     router,
     store,

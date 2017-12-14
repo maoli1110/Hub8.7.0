@@ -55,11 +55,8 @@
 <script>
 import axios from "axios";
 import md5 from "js-md5";
-import {
-  isvalidUsername,
-  validatephoneNumber,
-  validateEmail
-} from "../../utils/validate";
+import {isvalidUsername,validatephoneNumber,validateEmail} from "../../utils/validate";
+import {casLogin,getCompanyList,centerRealLogin} from "../../api/getData-mll.js"
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -81,11 +78,8 @@ export default {
         isRemember: false,
         isActive: false,
         loading: false,
+        loginUrl: this.GLOBAL.serverPath.casUrl,
         src:  require('../../../static/img/background.png'),
-        // loginForm: {
-        //     username: "1349047949@qq.com",
-        //     password: "123456"
-        // },
         loginForm: {
             username: "",
             password: ""
@@ -104,7 +98,6 @@ export default {
         }
     },
     created() {
-        console.log(Cookies.get("username"));
         if(Cookies.get("username")) {
             this.loginForm.username = Cookies.get("username");
         }
@@ -112,12 +105,12 @@ export default {
             this.isRemember = true;
             this.loginForm.password = Cookies.get("password");
         }
-
-        axios.get('http://192.168.13.195:8080/pds/login').then((data)=>{
+        //调用登录接口查看时候已经登录
+        casLogin({url:this.loginUrl}).then((data)=>{
             let loginHtml = data.data; 
             let sectionHtml = $(loginHtml).find("#msg h2").html();
             let sectionHtmlArr = sectionHtml.split(' ');
-            //遍历html，获取键值
+            //根据获取的字符串判断是否成功登录
             if(sectionHtmlArr.indexOf('Successful')!=-1) {
                 this.loading = true;
                 this.$router.push("/companyprofile/organization-structure");
@@ -149,9 +142,6 @@ export default {
                     self.centerLogin();
                     this.loading = true;
                     this.$router.push("/companyprofile/organization-structure");
-                    // axios.get('http://192.168.3.52:8080/builder/org/nodes').then(()=>{
-                    //     console.log('success_____')
-                    // })
                 }
             } else {
               console.log("error submit!!");
@@ -179,7 +169,7 @@ export default {
              */
             function step1 (resolve, reject){
                 self.centerLoginSignal = false;
-                axios.get('http://192.168.13.195:8080/pds/login').then((data)=>{
+                casLogin({url:self.loginUrl}).then((data)=>{
                     let loginHtml = data.data; 
                     let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
                     //遍历html，获取键值
@@ -194,7 +184,7 @@ export default {
 
             function step2 (resolve, reject){
                 $.ajax({
-                    url:'http://192.168.13.195:8080/pds/login',
+                    url:self.loginUrl+'pds/login',
                     type:'POST',
                     contentType:'application/x-www-form-urlencoded',
                     data:comString,
@@ -212,7 +202,7 @@ export default {
             }
 
             function step3 (resolve, reject){
-                axios.get('http://192.168.13.195:8080/pds/rs/centerLogin/companyList').then((res)=>{
+                getCompanyList({url:self.loginUrl}).then((res)=>{
                     self.companyOptions = res.data;
                     self.selectedCompany = res.data[0].epid;
                     self.centerLoginSignal = true;
@@ -235,15 +225,14 @@ export default {
         centerLogin() {
             let self = this;
             if(this.selectedCompany){
-                let param = {};
-                param.epid = this.selectedCompany;
-                // param = JSON.stringify(param);
-                axios.post('http://192.168.13.195:8080/pds/rs/centerLogin/login',param).then((res)=>{
-                    if (this.isRemember) {     //记住密码
+                let params = {};
+                params.epid = this.selectedCompany;
+                centerRealLogin({url:self.loginUrl,params:params}).then((res)=>{
+                    if (this.isRemember) {   // 记住密码
                         Cookies.set("username", self.loginForm.username);
                         Cookies.set("password", self.loginForm.password);
                         console.log(Cookies.get("username"),Cookies.get("password"));
-                    } else {                   //不记住密码
+                    } else {                  // 不记住密码
                         Cookies.set("username",self.loginForm.username);
                         Cookies.set("password","");
                     }
