@@ -242,7 +242,7 @@ export default {
                 },
                 callback: {
                     onExpand: this.zTreeOnExpand,
-                    // beforeExpand: beforeExpand,
+                    beforeExpand: this.zTreeBeforeExpand,
                     onClick: this.ztreeOnclick
                     // onRightClick: OnRightClick,
                     // beforeRename: beforeRename,
@@ -365,8 +365,15 @@ export default {
         getBaseUrl(){
             baseUrl = basePath(this.$route.path);
         },
+        zTreeBeforeExpand() {
+            $("#organization-tree").width(this.getOrgTreeWidth()+300);
+        },
         //监控树节点展开
         zTreeOnExpand() {
+            // $("#organization-tree").width(this.getOrgTreeWidth()+300);
+            // setTimeout(()=>{
+            //     $("#organization-tree").width(this.getOrgTreeWidth());
+            // },100)
             $("#organization-tree").width(this.getOrgTreeWidth());
         },
         //组织结构全部展开，全部收起
@@ -534,6 +541,7 @@ export default {
 .org ul.ztree {
   margin-top: 10px;
   margin: 0 auto;
+  min-width: 260px;
 }
 .org #organization-tree {
     margin: 0 auto;
