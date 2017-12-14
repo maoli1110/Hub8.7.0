@@ -27,6 +27,7 @@
     </div>
 </template>
 <script>
+import axios from "axios";
 export default {
     data() {
         return {
@@ -44,7 +45,11 @@ export default {
         handleCommand(command) {
             if (command == 'loginout') {
                 localStorage.removeItem('ms_username')
-                this.$router.push('/login');
+                // this.$router.push('/login');
+                axios.get('http://192.168.13.195:8080/pds/logout').then((res)=>{
+                    console.log('logoutSuccess');
+                    this.$router.push('/login');
+                })
             }
         },
         setting(){
