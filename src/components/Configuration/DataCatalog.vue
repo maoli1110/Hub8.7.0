@@ -91,9 +91,9 @@
                                     <div class="name-wrapper textcell"><span
                                         class="icon-file-fold"
                                         style="height: 15px; width: 20px; display: inline-block;"></span> 
-                                        <span title="赵四" style="margin-right: 5px;" v-show="isSaveFolderName">{{folderName}}</span>                                        
-                                        <el-input placeholder="新建文件夹" style="width:240px" v-model="folderName" v-show="!isSaveFolderName" autofocus></el-input>
-                                        <span class="icon-tips-success" style="vertical-align:sub;cursor:pointer;display:inline-block" @keyup.enter.native="saveFolderName()" @click="saveFolderName()"></span>
+                                        <!-- <span title="赵四" style="margin-right: 5px;" v-show="isSaveFolderName">{{folderName}}</span>                                         -->
+                                        <el-input placeholder="新建文件夹" style="width:240px" v-model="folderName"  autofocus></el-input>
+                                        <span class="icon-tips-success" style="vertical-align:sub;cursor:pointer;display:inline-block" @keyup.enter="saveFolderName()" @click="saveFolderName()"></span>
                                         <span class="icon-tips-error" style="vertical-align:sub;cursor:pointer;display:inline-block" @click="cancleFolderName()"></span>
                                     </div>
                                 </div>
@@ -188,6 +188,8 @@ export default {
       subNum: 0, //层级
       textarea: "",
       orgValue: "",
+      orgid: "",
+      orgType: 0,
       role: "",
       orgSetting: {
         data: {
@@ -205,10 +207,7 @@ export default {
       // 文件夹树设置
       modifyFolderName: "",
       newParentPathId: "",
-      oldParentPathId: "",
-      newPathName: "",
-      oldPathName: "",
-      pathId:'',
+      pathId: "",
       folderSetting: {
         data: {
           simpleData: {
@@ -231,13 +230,11 @@ export default {
   },
   watch: {},
   methods: {
-    /**组织树 */
+    /**获取组织树 */
     getOrgTreeList() {
       types.getOrgTreeList().then(res => {
         this.zNodes = res.data.result;
         this.zNodes.forEach((val, key) => {
-          //添加icon
-          //this.$set(val,'iconSkin',"");
           if (val.root) {
             this.$set(val, "iconSkin", "rootNode");
           } else if (!val.root && val.type == 0 && !val.direct) {
@@ -252,13 +249,14 @@ export default {
         this.orgType = res.data.result[0].type;
         this.orgid = res.data.result[0].id;
         $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
+        this.getDataDirectoryInfoWrapper();
       });
     },
     /**获取资料目录*/
     getDataDirectoryInfoWrapper() {
       let params = {
-        orgType: 0,
-        orgid: "string",
+        orgType: this.orgType,
+        orgid: this.orgid,
         pageParam: {
           page: this.curPage,
           size: this.pageSize
@@ -274,21 +272,23 @@ export default {
         this.total = res.data.result.lbPageInfo.totalNumber;
       });
     },
+    //组织树点击
     orgTreeClick(event, treeId, treeNode) {
+      this.currentParentId = "";
+      this.subNum = 0;
       this.orgValue = treeNode.name;
+      this.orgType = treeNode.type;
+      this.orgid = treeNode.id;
       setTimeout(() => {
         $(".el-select-dropdown__item.selected").click();
       }, 100);
+      this.getDataDirectoryInfoWrapper();
     },
-    dialogOrgTreeClick(event, treeId, treeNode) {
-      this.ruleForm.attribution = treeNode.name;
-      setTimeout(() => {
-        $(".el-select-dropdown__item.selected").click();
-      }, 100);
-    },
+    //当前选中的文件夹
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    //每页显示数据条数
     handleSizeChange(val) {
       this.pageSize = val;
       this.pageCacheInfo.forEach(item => {
@@ -298,6 +298,7 @@ export default {
       });
       this.getDataDirectoryInfoWrapper();
     },
+    //跳转到 x 页
     handleCurrentChange(val) {
       this.curPage = val;
       this.pageCacheInfo.forEach(item => {
@@ -315,8 +316,8 @@ export default {
     getSubFolder(row) {
       this.subNum++;
       let params = {
-        orgType: 0,
-        orgid: "string",
+        orgType: this.orgType,
+        orgid: this.orgid,
         pageParam: {
           page: 1,
           size: 10
@@ -334,7 +335,7 @@ export default {
           this.previousParentId.push("");
           this.currentParentId = row.pathId; //添加时;
         }
-        //记录子文件夹页码信息
+        //记录子文件夹页码信息 用于返回时 记忆所在页
         this.pageCacheInfo.push({
           curPage: 1,
           pageSize: 10,
@@ -343,8 +344,6 @@ export default {
         this.total = res.data.result.lbPageInfo.totalNumber;
         this.curPage = res.data.result.lbPageInfo.currentPage;
         this.pageSize = res.data.result.lbPageInfo.pageSize;
-
-        console.log("到底谁先2");
       });
     },
     // 返回上一级
@@ -354,8 +353,8 @@ export default {
       this.previousParentId.pop();
       this.pageCacheInfo.pop();
       let params = {
-        orgType: 0,
-        orgid: "string",
+        orgType: this.orgType,
+        orgid: this.orgid,
         pageParam: {
           page: 1,
           size: 10
@@ -363,7 +362,7 @@ export default {
         parentPathId: this.previousParentId[this.previousParentId.length - 1],
         pathName: this.searchStr
       };
-      //找到上一层级的页码
+      //找到上一层级的缓存的页码信息
       this.pageCacheInfo.forEach((item, i) => {
         if (
           this.previousParentId[this.previousParentId.length - 1] ==
@@ -386,14 +385,15 @@ export default {
         this.total = res.data.result.lbPageInfo.totalNumber;
         this.curPage = res.data.result.lbPageInfo.currentPage;
         this.pageSize = res.data.result.lbPageInfo.pageSize;
-        console.log("到底谁先3");
       });
     },
+    // 添加文件夹
     addFolder() {
       this.addFolderDialogVisible = true;
       $(".el-table__empty-block").hide();
       this.folderName = `新建文件夹${this.folderNameIndex++}`;
     },
+    //删除文件夹
     deleteFolder() {
       if (this.multipleSelection.length > 0) {
         this.$confirm("确认删除该记录吗?", "提示", {
@@ -401,8 +401,8 @@ export default {
         })
           .then(() => {
             let params = {
-              orgType: 0,
-              orgid: "string",
+              orgType: this.orgType,
+              orgid: this.orgid,
               pathIds: []
             };
             this.multipleSelection.forEach(item => {
@@ -417,30 +417,38 @@ export default {
           .catch(() => {});
       }
     },
+    // 保存新建文件夹
     saveFolderName() {
       this.isSaveFolderName = true;
       console.log(this.currentParentId);
       console.log(this.folderName);
       let params = {
-        orgType: 0,
-        orgid: "string",
+        orgType: this.orgType,
+        orgid: this.orgid,
         parentPathId: this.currentParentId,
         pathName: this.folderName
       };
       types.createDataDirectoryInfo(params).then(res => {
         if (res.data.code == 200) {
           this.getDataDirectoryInfoWrapper();
+          this.isAddFolder = false;
+          this.isSaveFolderName = false;
+        } else if (res.data.code == 500) {
+          this.$alert(res.data.msg, "提示", {
+            confirmButtonText: "确定",
+            type: "info"
+          });
+          return;
         }
       });
-      this.isAddFolder = false;
-      this.isSaveFolderName = false;
     },
+    // 取消新建文件夹
     cancleFolderName() {
       this.folderNameIndex--;
       this.isAddFolder = false;
       this.isSaveFolderName = false;
     },
-    //文件夹树点击回调
+    //文件夹树点击
     folderTreeClick(event, treeId, treeNode) {
       console.log(treeNode);
       this.newParentPathId = treeNode.id;
@@ -448,18 +456,19 @@ export default {
     },
     //获取当前文件夹树信息
     modifyDataCatalog(row) {
-      console.log(row)
+      console.log(row);
       this.modifyFolderName = row.pathName;
-      this.oldPathName = row.pathName;
-      this.oldParentPathId=row.parentId
+      // this.oldPathName = row.pathName;
+      // this.oldParentPathId = row.parentId;
       this.pathId = row.pathId;
       let params = {
         filterDirectoryIds: [row.pathId],
-        orgType: 0,
-        orgid: "string",
-        parentId: "0"
+        orgType: this.orgType,
+        orgid: this.orgid,
+        parentId: ""
       };
       types.getDirectoryTreeInfo(params).then(res => {
+        console.log(res)
         this.folderNodes = res.data.result;
         let zTree = $.fn.zTree.init(
           $("#folderTree"),
@@ -468,26 +477,27 @@ export default {
         );
       });
     },
-    //保存修改组织节点的目录数据
+    //保存修改文件夹的目录数据
     saveModifyInfo() {
-      if (!this.newParentPathId || !this.newPathName) {
-        alert("选择移动的位置");
-      }
+      // if (!this.newParentPathId || !this.newPathName) {
+      //   alert("选择移动的位置");
+      // }
       let params = {
         newParentPathId: this.newParentPathId,
-        newPathName: this.newPathName,
-        oldParentPathId: this.oldParentPathId,
-        orgType: 0,
-        orgid: "string",
+        newPathName: this.modifyFolderName,
+        orgType: this.orgType,
+        orgid: this.orgid,
         pathId: this.pathId
       };
       types.modDirectoryInfo(params).then(res => {
-        console.log(res)
+        if (res.data.code == 200) {
+          this.modifyDataCatalogVisible = false;
+          this.getDataDirectoryInfoWrapper();
+        }
       });
     },
     moveDataCatalog() {
       console.log(this.cacheProjectTree);
-
       this.cacheProjectTree = [];
       setTimeout(() => {
         let zTree = $.fn.zTree.init(
@@ -549,7 +559,6 @@ export default {
   },
   mounted() {
     this.getOrgTreeList();
-    this.getDataDirectoryInfoWrapper();
   }
 };
 </script>

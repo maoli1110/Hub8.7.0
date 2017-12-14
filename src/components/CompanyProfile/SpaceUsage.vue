@@ -46,10 +46,10 @@
                         </div>
                     </div>
                     <div v-if="isColumn">
-                        <div id="chartColumn" style="width:100%; height:calc(100vh - 390px)"></div>
+                        <div id="chartColumn" style="width:100%; height:calc(100vh - 450px)"></div>
                     </div>
                     <div v-else>
-                        <div id="chartPie" style="width:100%; height:calc(100vh - 390px)"></div>
+                        <div id="chartPie" style="width:100%; height:calc(100vh - 450px)"></div>
                     </div>
                 </div>
             </div>
@@ -159,8 +159,8 @@ export default {
                 ],
                 color:[ '#c04e4e', '#958bc8', '#4b618a', '#cac4c4','#e5b189','#6d95db' ,'#66bced', '#7dc15c', '#8accda', '#e7b01f', '#eab0eb',],
                 tooltip: {
-                    trigger: 'itemaaa11',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    trigger: 'item',
+                    formatter: "已使用：{c}GB<br/>占比：{d}%"
                 },
                 legend: {
                     orient:'vertical',
@@ -172,7 +172,7 @@ export default {
                     {
                         name:'111',
                         type:'pie',
-                        radius: ['40%','70%'],
+                        radius: ['55%','85%'],
                         avoidLabelOverlap: false,
                         label: {
                             normal: {
@@ -193,15 +193,15 @@ export default {
                             }
                         },
                         data:[
-                            {value:111, name:'第1分公司'},
-                            {value:111, name:'第2分公司'},
-                            {value:111, name:'第3分公司'},
-                            {value:111, name:'第4分公司'},
-                            {value:111, name:'第5分公司'},
-                            {value:111, name:'第6分公司'},
-                            {value:111, name:'第7分公司'},
-                            {value:111, name:'第8分公司'},
-                            {value:111, name:'第9分公司'},
+                            {value:33, name:'第1分公司'},
+                            {value:13, name:'第2分公司'},
+                            {value:53, name:'第3分公司'},
+                            {value:42, name:'第4分公司'},
+                            {value:44, name:'第5分公司'},
+                            {value:38, name:'第6分公司'},
+                            {value:28, name:'第7分公司'},
+                            {value:14, name:'第8分公司'},
+                            {value:31, name:'第9分公司'},
                             {value:66, name:'第10分公司'},
                         ]
                     }
@@ -215,12 +215,15 @@ export default {
                 color:['#e78788' ,'#7dc15c'],
                 tooltip: {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    formatter: "{a} <br/>{b}: {c}GB ({d}%)"
                 },
                 legend: {
                     bottom: 10,
                     left: 'center',
-                    data:['可使用','已用']
+                    data:['可使用','已用'],
+                    itemWidth: 10,             // 图例图形宽度
+                    itemHeight: 10,            // 图例图形高度
+                    itemGap: 100,               // 各个item之间的间隔，单位px，默认为10，
                 },
                 series: [
                     {
@@ -237,7 +240,7 @@ export default {
                                 show: true,
                                 textStyle: {
                                     fontSize: '20',
-                                    fontWeight: ''
+                                    fontWeight: '',
                                 }
                             }
                         },
@@ -258,7 +261,10 @@ export default {
             this.chartColumn = echarts.init(document.getElementById('chartColumn'));
             this.chartColumn.setOption({
                 title: { text: 'Column Chart' },
-                tooltip: {},
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{b} <br/> 已使用：{c}GB <br/> 占比：22%"
+                },
                 xAxis: {
                     show:true,
                     data: ["第1分公司", "第2分公司", "第3分公司", "第4分公司", "第5分公司", "第6分公司","第7分公司","第8分公司","第9分公司","第10分公司"]
@@ -267,10 +273,10 @@ export default {
                     show:true,
                 },
                 series: [{
-                    name: '哈哈哈哈哈哈哈哈哈哈',
+                    name: '哈哈哈哈哈哈22222哈',
                     type: 'bar',
                     barWidth : 30,
-                    data: [5, 20, 28, 10, 25, 20,14,5,14,3],
+                    data: [12,23,4,22,56,8,44,12,4,6],
                     itemStyle: {
                     normal: {
                         color: function(params) {
@@ -284,7 +290,7 @@ export default {
                         label: {
                             show: true,
                             position: 'top',
-                            formatter: '{b}\n{c}'
+                            formatter: '{c}GB  {d}%'
                         }
                     }
                 }
