@@ -118,7 +118,7 @@ export default {
             let sectionHtml = $(loginHtml).find("#msg h2").html();
             let sectionHtmlArr = sectionHtml.split(' ');
             //遍历html，获取键值
-            if(sectionHtmlArr.indexOf('Successful')) {
+            if(sectionHtmlArr.indexOf('Successful')!=-1) {
                 this.loading = true;
                 this.$router.push("/companyprofile/organization-structure");
             }
