@@ -112,6 +112,18 @@ export default {
             this.isRemember = true;
             this.loginForm.password = Cookies.get("password");
         }
+
+        axios.get('http://192.168.13.195:8080/pds/login').then((data)=>{
+            debugger
+            let loginHtml = data.data; 
+            let sectionHtml = $(loginHtml).find("#msg h2").html();
+            let sectionHtmlArr = sectionHtml.split(' ');
+            //遍历html，获取键值
+            if(sectionHtmlArr.indexOf('Successful')) {
+                this.loading = true;
+                this.$router.push("/companyprofile/organization-structure");
+            }
+        });
     },
     methods: {
         /**

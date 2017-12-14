@@ -28,10 +28,18 @@ let first, second, third;
 
 export const tests = params=> axios.get(`${params.url}` + "payment/alipay/alipayCloseTradeNotify");
 export const getWorksetingList = params => axios.get(`${base}`);
-export const getCitys = params => axios.get('../../static/js/citys.json')
+export const getCitys = params => axios.get('../../static/js/citys.json');
 export const cloudTree = params=> axios.get("../../static/datasource.json");
 export const router = params=> axios.get(`${route}`);
 
+/**
+ * 登录
+ */
+//cas登录
+
+//获取企业列表
+
+//center登录
 
 /**
  * 组织结构
