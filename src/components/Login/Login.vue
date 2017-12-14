@@ -114,7 +114,6 @@ export default {
         }
 
         axios.get('http://192.168.13.195:8080/pds/login').then((data)=>{
-            debugger
             let loginHtml = data.data; 
             let sectionHtml = $(loginHtml).find("#msg h2").html();
             let sectionHtmlArr = sectionHtml.split(' ');
