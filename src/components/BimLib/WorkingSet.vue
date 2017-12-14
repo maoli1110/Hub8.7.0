@@ -229,7 +229,7 @@
             },
             //获取工作集列表
             getTableList(url,param){
-                /*getWorkSets({url:url,param:param}).then((data)=>{
+                getWorkSets({url:url,param:param}).then((data)=>{
                     if(data.data.code!=200){//读取数据失败
                        this.commonMessage(data.data.msg,'warning')
                        return false;
@@ -242,15 +242,15 @@
                     this.tableData.content.forEach((val,key)=>{
                         val.createDate = this.dateFormatter(val.createDate);
                     });
-                });*/
-                workList().then((data)=>{
+                });
+               /* workList().then((data)=>{
                     this.tableData = data.data;
                     if (this.tableData.content.length>0) {
                         this.tableData.content.forEach((val,key)=>{
                             val.createDate = this.dateFormatter(val.createDate);
                         })
                     }
-                })
+                })*/
             },
             delWorkSetting(url,param){
                 delWorkSets({url:url,param:param}).then((data)=>{
@@ -275,7 +275,7 @@
             },
             //获取预览地址 整合
             getFileUrl(url,param,workList){
-                /*getFileViewUrl({url:url,param:param}).then((data)=>{
+                getFileViewUrl({url:url,param:param}).then((data)=>{
                     if(data.data.result){
                         data.data.result.forEach((val,key)=>{
                             workList.forEach((val1,key1)=>{
@@ -285,8 +285,8 @@
                             })
                         })
                     }
-                })*/
-                getViewUrl().then((data)=>{
+                })
+               /* getViewUrl().then((data)=>{
                     data.data.result.forEach((val,key)=>{
                         for(let key1 in workList){
                             if(val.uuid==key1){
@@ -305,30 +305,26 @@
                             this.subWorkList = this.worksList[key];
                         }
                     }
-                })
+                })*/
             },
             //查看工程
             getProjByWorkInfo(url,param){
-                /*getProjByWorkSet({url:url,param:param}).then((data)=>{
+                getProjByWorkSet({url:url,param:param}).then((data)=>{
+                    let uuidArr = [];
                     this.worksList = data.data.result;
-                    let uuidArray = [];
-                    console.log(this.worksList,'list');
-                    this.worksList.forEach((val,key)=>{
-
-                    })
-                    this.getFileUrl(baseUrl,uuidArray,workList);
-                    for(let key in workList){
-                      this.workInfo =  workList[key];
-                      this.descList =  workList[key][0];
-                    }
-                    this.workInfo.forEach((val,key)=>{
-                        if(!val.createDate){
-                            this.dateFormatter(val.createDate)
+                    for(let key in data.data.result){
+                        uuidArr.push(key);
+                        if(data.data.result[key].length>0){
+                            for(let key1 in data.data.result[key]){
+                                if(data.data.result[key][key1].uuid){
+                                    uuidArr.push(data.data.result[key][key1].uuid);
+                                }
+                            }
                         }
-                    })
-                    console.log( this.workInfo,' this.workInfo')
-                })*/
-                getProjectInfo().then((data)=>{
+                    }
+                    this.getFileUrl(baseUrl,uuidArr,this.worksList);
+                })
+               /* getProjectInfo().then((data)=>{
                     let uuidArr = [];
                     this.workList = data.data.result;
                     for(let key in data.data.result){
@@ -342,7 +338,7 @@
                         }
                     }
                     this.getFileUrl(baseUrl,uuidArr,this.workList);
-                })
+                })*/
             },
             getData(){
                 this.getBaseUrl();
