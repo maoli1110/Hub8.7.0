@@ -73,7 +73,7 @@ export const checkMonitorSetInfo = params =>axios.post(`${params.url}rs/bimMonit
 
 export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
 //项目部数据
-export const getProjsHasWorkSet = params=>axios.get(`${params.url}rs/workSetRest/getProjsHasWorkSet`);
+export const getDeptsHasWorkSet = params=>axios.get(`${params.url}rs/workSetRest/getDeptsHasWorkSet`);
 //bim->工作集库列表
 export const getWorkSets = params =>axios.post(`${params.url}rs/workSetRest/getWorkSets`,params.param);
 //bim->删除工作集

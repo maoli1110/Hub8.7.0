@@ -9,9 +9,9 @@
                             :value="item.deptId"-->
                         <el-option
                             v-for="item in projectList"
-                            :key="item.projName"
-                            :value="item.projName"
-                            :label="item.projName">
+                            :key="item.deptId"
+                            :value="item.deptId"
+                            :label="item.deptName">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -70,13 +70,13 @@
                 </el-col>
                 <el-col class="table-body">
                     <el-row  style="background:transparent">
-                        <el-col class="table-row">
+                        <el-col class="table-row" >
                             <el-col :span="4" class="table-item " ><!--:style="{backgroundImage: 'url('+workInfo[0].uuid+')'}"-->
-                                <div class="Bim-template" ></div>
+                                <div class="Bim-template" :style="{backgroundImage: 'url('+worksList.viewUrl+')'}"></div>
                             </el-col>
-                            <el-col :span="8" class="table-item">{{descList.projName}}</el-col>
-                            <el-col :span="4" class="table-item" :title="descList.createRealName+'\n'+descList.createUserName">{{descList.createRealName}}</el-col>
-                            <el-col :span="8" class="table-item">{{descList.createDate}}</el-col>
+                            <el-col :span="8" class="table-item">{{workInfo.workSetName}}</el-col>
+                            <el-col :span="4" class="table-item" :title="workInfo.createRealName+'\n'+workInfo.createUserName">{{workInfo.createRealName}}</el-col>
+                            <el-col :span="8" class="table-item">{{workInfo.createDate}}</el-col>
                         </el-col>
                     </el-row>
                 </el-col>
@@ -92,11 +92,11 @@
                 <el-col class="table-body">
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="max-height:400px;">
                           <el-row class="scroll-me " style="background:transparent">
-                              <el-col v-for="(item,index) in workInfo" :key="index" class="table-row">
-                                <el-col :span="4" class="table-item " >
-                                    <div class="Bim-template" :style="{backgroundImage: 'url('+item.templateImg+')'}"></div>
+                              <el-col v-for="item in subWorkList" :key="item" class="table-row">
+                                <el-col :span="4" class="table-item">
+                                    <div class="Bim-template" :style="{backgroundImage: 'url('+item.viewUrl+')'}"></div>
                                 </el-col>
-                                <el-col :span="8" class="table-item">{{item.projName}}</el-col>
+                                <el-col :span="8" class="table-item">{{item.name}}</el-col>
                                 <el-col :span="4" class="table-item" :title="item.createRealName+'\n'+item.createUserName">{{item.createRealName}}</el-col>
                                 <el-col :span="8" class="table-item">{{item.createDate}}</el-col>
                               </el-col>
@@ -126,7 +126,7 @@
         delWorkSets,
         getProjByWorkSet,
         getFileViewUrl,      //uuid缩略图列表
-        getProjsHasWorkSet,   //所属工程
+        getDeptsHasWorkSet,   //所属工程
         getProjectInfo,         //假数据
         getViewUrl              //假数据
     } from '../../api/getData-yhj.js'
@@ -172,8 +172,14 @@
                     skOnlyName: false
                 },//列表参数
                 descList:[],
-                workInfo:{},
-                worksList:[],
+                workInfo:{
+                    workSetName:"",
+                    createUsername:"",
+                    createRealname:"",
+                    createDate:"",
+                },
+                worksList:{},
+                subWorkList:[],
                 projectList:[]
             }
         },
@@ -215,7 +221,7 @@
             },
             //所属工程
             getHasWorkList(){
-                getProjsHasWorkSet({url:baseUrl}).then((data)=>{
+                getDeptsHasWorkSet({url:baseUrl}).then((data)=>{
                     if(data.data.result){
                         this.projectList = data.data.result;
                     }else{
@@ -284,10 +290,9 @@
                 })*/
                 getViewUrl().then((data)=>{
                     data.data.result.forEach((val,key)=>{
-                        let list = {};
                         for(let key1 in workList){
                             if(val.uuid==key1){
-                                workList[key1].viewUrl = val.urlList
+                                workList.viewUrl = val.urlList
                             }
                             for(let key2 in workList[key1]){
                                 if(val.uuid==workList[key1][key2].uuid){
@@ -295,10 +300,13 @@
                                 }
                             }
                         }
-                        list = workList
-                        console.log(list,'123');
                     });
-
+                    this.worksList = workList;
+                    for(let key in this.worksList){
+                        if(key!='viewUrl'){
+                            this.subWorkList = this.worksList[key];
+                        }
+                    }
                 })
             },
             //查看工程
@@ -447,6 +455,10 @@
                     packageType: this.$route.params.typeId,
                     workSetId: item.workSetId
                 }
+                this.workInfo.workSetName = item.workSetName;
+                this.workInfo.createUsername = item.createUsername;
+                this.workInfo.createRealname = item.createRealname;
+                this.workInfo.createDate = item.createDate;
                 this.getProjByWorkInfo(baseUrl,param)
             },
         },
