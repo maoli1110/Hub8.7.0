@@ -96,8 +96,8 @@
                                 <el-col :span="4" class="table-item">
                                     <div class="Bim-template" :style="{backgroundImage: 'url('+item.viewUrl+')'}"></div>
                                 </el-col>
-                                <el-col :span="8" class="table-item">{{item.name}}</el-col>
-                                <el-col :span="4" class="table-item" :title="item.createRealName+'\n'+item.createUserName">{{item.createRealName}}</el-col>
+                                <el-col :span="8" class="table-item">{{item.projName}}</el-col>
+                                <el-col :span="4" class="table-item" :title="item.createRealname+'\n'+item.createUsername">{{item.createRealname}}</el-col>
                                 <el-col :span="8" class="table-item">{{item.createDate}}</el-col>
                               </el-col>
                           </el-row>
@@ -278,12 +278,23 @@
                 getFileViewUrl({url:url,param:param}).then((data)=>{
                     if(data.data.result){
                         data.data.result.forEach((val,key)=>{
-                            workList.forEach((val1,key1)=>{
-                                if(val.uuid==val1.uuid){
-                                    this.$set(val1,'viewUrl',val.viewUrl);
+                            for(let key1 in workList){
+                                if(val.uuid==key1){
+                                    workList.urlList = val.urlList
                                 }
-                            })
-                        })
+                                for(let key2 in workList[key1]){
+                                    if(val.uuid==workList[key1][key2].uuid){
+                                        workList[key1][key2].urlList = val.urlList;
+                                    }
+                                }
+                            }
+                        });
+                        this.worksList = workList;
+                        for(let key in this.worksList){
+                            if(key!='urlList'){
+                                this.subWorkList = this.worksList[key];
+                            }
+                        }
                     }
                 })
                /* getViewUrl().then((data)=>{
