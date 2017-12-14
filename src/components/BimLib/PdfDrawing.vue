@@ -4,7 +4,7 @@
             <el-col  :span="24">
                 <el-col :span="7"  class="relat">
                     <span class="absol span-block" style="width:80px;">所属工程：</span>
-                    <el-select class="absol" v-model="filterParam.proVal" placeholder="请选择" @change="projectChange" style="left:72px">
+                    <el-select class="absol" v-model="filterParam.proVal" placeholder="请选择" style="left:72px">
                         <el-option
                             v-for="item in projectList"
                             :key="item.ppid"
@@ -15,7 +15,7 @@
                 </el-col>
                 <el-col :span="5" class="relat" style="left:80px;">
                     <span  class="absol span-block" style="width:45px;">分类：</span>
-                    <el-select class="absol" v-model="filterParam.typeVal" placeholder="请选择" @change="typeChange" style="left:45px">
+                    <el-select class="absol" v-model="filterParam.typeVal" placeholder="请选择"  style="left:45px">
                         <el-option
                             v-for="item in typeList"
                             :key="item.classifyName"
@@ -68,7 +68,7 @@
         </vue-scrollbar>
         <div class="pagination">
             <span class="total-info" v-show="tableData.totalElements">共{{tableData.totalElements}}个工程，共{{tableData.totalPages}}页</span>
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[1, 50, 100, 150]" :page-size="totalPage" layout="sizes, prev, pager, next, jumper" :total="tableData.totalElements"><!--:total="tableData.totalElements"-->
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[2, 50, 100, 150]" :page-size="totalPage" layout="sizes, prev, pager, next, jumper" :total="tableData.totalElements"><!--:total="tableData.totalElements"-->
             </el-pagination>
         </div>
         <el-dialog custom-class="draw-info"
@@ -119,6 +119,7 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     let deletArray = [];
     let baseUrl = '';
+    let FirstIn = false;
     export default {
         created(){
             this.getData();
@@ -142,13 +143,13 @@
                             {
                                 direction: 0,
                                 ignoreCase: true,
-                                property: ""
+                                property: "uploadTime"
                             }
                         ],
                         page: 1,
-                        size: 10
+                        size: 2
                     },
-                    ppid: 0,
+                    ppid: -1,
                     searchKey: ""
                 },//获取表格参数
                 projectList:[],//工程列表
@@ -170,7 +171,8 @@
                 this.getBaseUrl();
                 this.getTypeGroup();//分类下拉
                 this.getProjGroup();//工程下拉
-                this.tableListParams.ppid = this.filterParam.proVal;
+//                this.tableListParams.ppid = this.filterParam.proVal;
+                this.tableListParams.ppid = -1;
                 this.getTableList(baseUrl,this.tableListParams);
             },
             /**common-message(公用消息框)
@@ -215,16 +217,6 @@
             clearSearchKey(){
                 this.filterParam.searchKey = '';
             },
-            //图纸项目工程change
-            projectChange(value){
-                this.tableListParams.ppid = value;
-                this.getTableList(baseUrl,this.tableListParams);
-            },
-            //图纸分类change
-            typeChange(value){
-                this.tableListParams.classifyId = value;
-                this.getTableList(baseUrl,this.tableListParams);
-            },
             //修改修改工程修改
             editDrawChange(val){
                 this.drawInfoItem.classifyId = val;
@@ -249,7 +241,7 @@
                     this.projectList = data.data.result;
                     this.projectList = [
                         {
-                            "ppid": 1,
+                            "ppid": -1,
                             "projId": 0,
                             "projName": "初始项目部1"
                         },{
@@ -272,42 +264,41 @@
              * @params param    路径参数
              * */
             getTableList(url,param){
-                /*getDrawingDetailInfos({url:url,param:param}).then((data)=>{
+                getDrawingDetailInfos({url:url,param:param}).then((data)=>{
                     if(data.data.result!=null){
                         this.tableData = data.data.result;
                     }else{
                         this.tableData.content =[];
                     }
-                })*/
-                console.log(param,'tableListParam')
-                PDFtestList().then((data)=>{
+                })
+               /* PDFtestList().then((data)=>{
                     this.tableData = data.data;
                     this.tableData.content.forEach((val,key)=>{
                         if(val.uploadTime){
                             val.uploadTime = dateFormat(val.uploadTime)
                         }
                     })
-                })
+                })*/
             },
             //表格的字段排序
             tableSort(column){
+
                 if(column.order=='descending'){
                     this.tableListParams.pageParam.orders[0].direction = 1;
                 }else{
                     this.tableListParams.pageParam.orders[0].direction = 0;
                 };
-                if(column.prop=="uploadTime"){
-                    this.tableListParams.pageParam.orders[0].property = "upload__time";
-                }else if(column.prop=="uploadUser"){
-                    this.tableListParams.pageParam.orders[0].property = "uploaduser";
-                }else if(column.prop=="drawingName"){
-                    this.tableListParams.pageParam.orders[0].property = "pdfdrawingsname";
-                }else if(column.prop=="size"){
-                    this.tableListParams.pageParam.orders[0].property = "pdfsize";
-                }else if(column.prop=="classifyName"){
-                    this.tableListParams.pageParam.orders[0].property = "classifyid";
-                };
-                this.getTableList(baseUrl,this.tableListParams);//排序刷新
+                if(column.prop!="classifyName"){
+                    this.tableListParams.pageParam.orders[0].property = column.prop;
+                }else{
+                    this.tableListParams.pageParam.orders[0].property = "classifyId";
+                }
+                if(FirstIn){//判断是不是第一次进来
+                    this.getTableList(baseUrl,this.tableListParams);//排序刷新
+                }else{
+                    FirstIn  = true;
+                }
+
             },
             //列表搜索
             searchClick(){
@@ -318,7 +309,6 @@
              * 删除图纸列表
              * **/
             getDelArray(url,param){
-                console.log(param,'要删除的元素')
                 delDrawingInfos({url:url,param:param}).then((data)=>{
                     if(data.data.code==200 && this.tableData.content.length){
                          if(this.tableData.content.length===deletArray.length){//整页删除重新渲染数据
@@ -326,7 +316,7 @@
                          }else if (deletArray.length) {//单页删除手动个抽掉数据
                             for (let i = 0; i < deletArray.length; i++) {
                                 for (let j = 0; j < this.tableData.content.length; j++) {
-                                    if (this.tableData.content[j].drawingId == deletArray[i]) {
+                                    if (this.tableData.content[j].drawingId == deletArray[i].drawingId) {
                                         this.tableData.content.splice(j, 1);
                                     }
                                 }
@@ -400,6 +390,20 @@
                     this.setDrawInfo(baseUrl,this.drawInfoItem);
                 }else{
                     this.commonMessage('工程名称不能为空','warning')
+                }
+            },
+        },
+        watch:{
+            'filterParam.proVal':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=""){
+                    this.tableListParams.ppid = newVal;
+                    this.getTableList(baseUrl,this.tableListParams);//排序刷新
+                }
+            },
+            'filterParam.typeVal':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=""){
+                    this.tableListParams.classifyId = newVal;
+                    this.getTableList(baseUrl,this.tableListParams);//排序刷新
                 }
             },
         },

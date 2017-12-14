@@ -255,9 +255,8 @@
             delWorkSetting(url,param){
                 delWorkSets({url:url,param:param}).then((data)=>{
                     if(data.data.code==200){
-                        deletArray = [];//接口成功之后删除数据
                         this.commonMessage('删除工作集成功！','success');
-                        if(this.tableData.content.length===deletArray.length){
+                        if(this.tableData.content.length==deletArray.length){
                             this.getTableList(baseUrl,this.tableListParam);
                         }else{
                             for (let i = 0; i < deletArray.length; i++) {
@@ -271,6 +270,7 @@
                     }else{
                         this.commonMessage(data.data.msg,'warning');
                     }
+                    deletArray = [];//接口成功之后删除数据
                 })
             },
             //获取预览地址 整合
