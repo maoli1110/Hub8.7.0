@@ -157,7 +157,8 @@
                     drawingName :"",
                     classifyId :'',
                     drawingId:"",
-                    memo :''
+                    memo :'',
+                    ppid:""
                 }
             }
         },
@@ -317,6 +318,7 @@
              * 删除图纸列表
              * **/
             getDelArray(url,param){
+                console.log(param,'要删除的元素')
                 delDrawingInfos({url:url,param:param}).then((data)=>{
                     if(data.data.code==200 && this.tableData.content.length){
                          if(this.tableData.content.length===deletArray.length){//整页删除重新渲染数据
@@ -343,7 +345,7 @@
                 deletArray = [];
                 selection.forEach(function(val,key){
                     if( deletArray.indexOf(val.drawingId) ==-1){
-                        deletArray.push(val.drawingId)
+                        deletArray.push({drawingId:val.drawingId,ppid:val.ppid})
                     }
                 });
 //                console.log(deletArray,'selectionall')
@@ -358,13 +360,14 @@
                 deletArray = [];
                 selection.forEach(function(val,key){
                     if( deletArray.indexOf(val.drawingId) ==-1){
-                        deletArray.push(val.drawingId)
+                        deletArray.push({drawingId:val.drawingId,ppid:val.ppid})
                     }
                 });
 //                console.log(deletArray,'delArray')
             },
             //删除Pdf图纸列表
             delDrawList(){
+                console.log(deletArray,'del');
                 if(!deletArray.length){
                     this.commonMessage('请选择要删除的文件','warning')
                     return false;
@@ -390,6 +393,7 @@
                 this.drawInfoItem.classifyId = item.classifyId;
                 this.drawInfoItem.drawingId = item.drawingId;
                 this.drawInfoItem.memo = item.memo;
+                this.drawInfoItem.ppid = item.ppid;
             },
             editDrawOk(){
                 if(this.drawInfoItem.drawingName.length){
