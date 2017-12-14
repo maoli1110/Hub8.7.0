@@ -9,6 +9,17 @@
                     <el-menu-item index="/system/order-management/eds-orders">系统订单</el-menu-item>
                 </el-submenu>
                 <el-menu-item index="/system/lubancoins-management">鲁班币</el-menu-item>
+
+                <el-submenu index="/online/all-clients">
+                    <template slot="title">在线人数统计</template>
+                    <el-menu-item index="/online/all-clients">所有客户端</el-menu-item>
+                    <el-menu-item index="/online/mc-online">MC在线人数</el-menu-item>
+                    <el-menu-item index="/online/be-online">BE在线人数</el-menu-item>
+                    <el-menu-item index="/online/bw-online">BW在线人数</el-menu-item>
+                    <el-menu-item index="/online/sp-online">SP在线人数</el-menu-item>
+                    <el-menu-item index="/online/bv-online">BV手机版在线人数</el-menu-item>
+                    <el-menu-item index="/online/bvhd-online">BVHD版在线人数</el-menu-item>
+                </el-submenu>
                 <el-submenu index="/system/system-log/govern-log">
                     <template slot="title">系统日志</template>
                     <el-menu-item index="/system/system-log/govern-log">Govern应用日志</el-menu-item>

@@ -554,7 +554,7 @@ export default new Router({
                                 }
                             ]
                         },
-                        /*{
+                        {
                          //  权限管理(设置)-在线人数
                          path: '/online',
                          component: resolve => require(['../components/Authority-management/Online.vue'], resolve),
@@ -603,7 +603,7 @@ export default new Router({
                          component: resolve => require(['../components/Authority-management/AllClients.vue'], resolve)
                          }
                          ]
-                         },*/
+                         },
                         {
                             //  权限管理(设置)-系统日志
                             path: 'system-log',

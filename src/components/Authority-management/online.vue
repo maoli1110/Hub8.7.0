@@ -1,81 +1,98 @@
 <template>
-    <div>
-        <div class="aside">
-            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                     router>
-                <el-submenu index="/online/all-clients">
-                    <template slot="title">在线人数统计</template>
-                    <el-menu-item index="/online/all-clients">所有客户端</el-menu-item>
-                    <el-menu-item index="/online/mc-online">MC在线人数</el-menu-item>
-                    <el-menu-item index="/online/be-online">BE在线人数</el-menu-item>
-                    <el-menu-item index="/online/bw-online">BW在线人数</el-menu-item>
-                    <el-menu-item index="/online/sp-online">SP在线人数</el-menu-item>
-                    <el-menu-item index="/online/bv-online">BV手机版在线人数</el-menu-item>
-                    <el-menu-item index="/online/bvhd-online">BVHD版在线人数</el-menu-item>
-                </el-submenu>
-            </el-menu>
-        </div>
-        <div class="container">
-            <div class="contents">
-                <transition :name="transitionName">
-                    <router-view class="Router"></router-view>
-                </transition>
-            </div>
+    <div class="bims-container">
+        <div class="bims-contents Bim-libs shadow-style">
+            <transition :name="transitionName">
+                <router-view class="main-shadow" :nowPath="nowPath"></router-view><!--:tableData="tableData"-->
+            </transition>
         </div>
     </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
+    //样式载入
+    import '../../../static/css/BIM.css';
+    //js
+    import {IndexCumsum} from "../../utils/validate.js"
+    
     export default {
-        data: () => ({
-            ///online/all-clients
-            activeIndex: '',
-            transitionName: 'slide-right' // 默认动态路由变化为slide-right
-        }),
+        data() {
+            return {
+                transitionName: 'slide-right' , // 默认动态路由变化为slide-right
+                nowPath:"govern-log", //传给子页面的参数
+            }
+        },
         methods: {
             handleOpen(key, keyPath) {
-                this.activeIndex = key;
-                this.$router.push({path: key});
-                console.log(key, keyPath);
+                //console.log(key, keyPath);
             },
             handleClose(key, keyPath) {
-                console.log(key, keyPath);
-            }
-        },
-        beforeRouteUpdate (to, from, next) {
-            let isBack = this.$router.isBack
+                //console.log(key, keyPath);
+            },
+            /**页签形式菜单 重新渲染问题
+             * @params pathIndex  选中的路径
+             **/
+            handleSelect(index,path){
 
-            if (isBack) {
-                this.transitionName = 'slide-right'
-            } else {
-                this.transitionName = 'slide-left'
-            }
-            this.$router.isBack = false
-            next()
+            },
         },
+
         watch: {
             '$route' (to, from) {
-                console.log(this.$route.name);
-                if (!this.$route.name || this.$route.name.length <= 0) {
-                    return false
-                }
-                if (!to.name || !from.name) {
-                    return false
-                }
-                let toName = to.name;//路由跳转到信息
-                let fromName = from.name;//路由跳转前的信息
-                toName = toName.split("?")[1];
-                fromName = fromName.split("?")[1];
-                this.transitionName = toName < fromName ? 'slide-right' : 'slide-left';//判断动画是向前还是
+                console.log(this.$route.query.typeId,this.$route.path);
+                this.nowPath = this.$route.path.split("/")[3];  
             }
-        },
-        created(){
-            this.activeIndex = this.$route.path;
         }
     }
 </script>
 
 <style scoped>
-    /* 左侧导航菜单样式 */
-    @import "../../../static/css/aside.css";
+    .wrapper{
+        height: 300px;
+        width: 300px
+    }
+    .container .el-menu {
+        padding: 10px 20px;
+        border: 1px solid #e6e6e6;
+        border-top: none;
+    }
+
+    .container .el-menu .el-menu-item {
+        height: 40px;
+        width: 132px;
+        margin-right: 50px;
+        line-height: 40px;
+        text-align: center
+    }
+
+    .container .is-active {
+        background-color: #f5f8fd;
+        font-size: 16px;
+        font-weight: 700;
+    }
+    .contents{
+        -webkit-box-shadow:  1px 0px 7px #eee;
+        -moz-box-shadow:  1px 0px 7px #eee;
+        box-shadow:  1px 0px 7px #eee;}
+    .container .el-menu .el-menu-item:hover {
+        background-color: #f5f8fd;
+    }
+    .Router{
+        transition: all .8s ease;
+        position: absolute;
+        top: 20px;
+    }
+    .slide-left-enter,
+    .slide-right-leave-active {
+        opacity: 0;
+        -webkit-transform: translate(100%, 0);
+        transform: translate(100%, 0);
+    }
+
+    .slide-left-leave-active,
+    .slide-right-enter {
+        opacity: 0;
+        -webkit-transform: translate(-100%, 0);
+        transform: translate(-100% 0);
+    }
+    .bims-contents>.bim {position:static !important;}
 </style>
