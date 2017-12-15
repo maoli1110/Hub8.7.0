@@ -40,8 +40,9 @@ export const casLogin = params=> axios.get(`${params.url}pds/login`);
 //获取企业列表
 export const getCompanyList = params=> axios.get(`${params.url}pds/rs/centerLogin/companyList`);
 //center登录
-debugger
 export const centerRealLogin = params=> axios.post(`${params.url}pds/rs/centerLogin/login`,params.params);
+//获取菜单
+export const getMenusList = params=> axios.get(`${params.url}pds/rs/centerLogin/menu/-1`)
 /**
  * 组织结构
  */
