@@ -818,6 +818,7 @@
                         deletArray = [];//接口成功之后删除数据
                         this.allChecked = false;
                         this.commonMessage('删除成功','success');
+                        this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                     }
                 })
             },
@@ -833,6 +834,7 @@
                         deletArray = [];
                         this.getProjectList({url:baseUrl,param:this.tableParam});
                         this.commonMessage('删除成功','success');
+                        this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                     }
                 })
             },
@@ -1100,6 +1102,7 @@
                         //执行成功
                         this.ProjManageDialog = false;
                         this.clearCreateParam();
+                        this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                         setTimeout(()=>{
                             this.getProjectList({url:baseUrl,param:this.tableParam});
                         },1000)
@@ -1115,6 +1118,7 @@
                             this.ProjManageDialog = false;
                         }
                         this.commonMessage('修改成功','success');
+                        this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                         this.getProjectList({url:baseUrl,param:this.tableParam});
                     }
                 })
@@ -1274,7 +1278,6 @@
                     projType: this.proManage.major,         //专业
                     userNames: []                            //授权人员名单
                 };
-
                 if(!newCreate.projName){                    //工程名称不存在
                     this.commonMessage('工程名称不能为空','warning');
                     return false;
@@ -1517,11 +1520,11 @@
             },
             'filterParams.bimVal':function(newVal,oldVal){
                 this.tableParam.projGenre = this.filterParams.bimVal;
-                if(newVal!=oldVal && oldVal!=""){
+                if(newVal!=oldVal && oldVal!="" ){
                     this.tableParam.projGenre = newVal;
                     this.getProjectList({url:baseUrl,param:this.tableParam})
                 }
-            },
+            }
         }
     }
 </script>
