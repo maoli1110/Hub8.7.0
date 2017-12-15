@@ -56,7 +56,7 @@
 import axios from "axios";
 import md5 from "js-md5";
 import {isvalidUsername,validatephoneNumber,validateEmail} from "../../utils/validate";
-import {casLogin,getCompanyList,centerRealLogin} from "../../api/getData-mll.js"
+import {casLogin,getCompanyList,centerRealLogin,getMenusList} from "../../api/getData-mll.js";
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -79,7 +79,7 @@ export default {
         isActive: false,
         loading: false,
         loginUrl: this.GLOBAL.serverPath.casUrl,
-        src:  require('../../../static/img/background.png'),
+        src: './static/img/background.png',
         loginForm: {
             username: "",
             password: ""
@@ -237,6 +237,12 @@ export default {
                         Cookies.set("password","");
                     }
                     console.log(res);
+                    //获取导航菜单
+                    getMenusList({url:self.loginUrl}).then((res)=>{
+                        debugger
+                        console.log(res)
+                    })
+                    
                 })
             } else {
                 alert('请选择企业');
