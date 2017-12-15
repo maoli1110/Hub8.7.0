@@ -24,7 +24,7 @@
                 </el-select>
 
             </el-col>
-            <el-col :span="2" class="filter-bar relat"  style="left:82px"  v-if="($route.path==`/bimlib/housing/bim-lib/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/bim-lib/${$route.params.typeId}` || $route.path==`/bimlib/decoration/bim-lib/${$route.params.typeId}`)">
+            <el-col :span="2" class="filter-bar relat"  style="left:82px"  >
                 <span class="absol span-block" style="width:40px;">
                     专业:
                 </span>
@@ -39,7 +39,7 @@
                 </el-select>
 
             </el-col>
-            <el-col :span="2" class="filter-bar relat" :class="[($route.path==`/bimlib/housing/recycle-bin/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/recycle-bin/${$route.params.typeId}` || $route.path==`/bimlib/decoration/recycle-bin/${$route.params.typeId}`)?'left85':'left140']">
+            <el-col :span="2" class="filter-bar relat" :class="[($route.path==`/bimlib/housing/recycle-bin/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/recycle-bin/${$route.params.typeId}` || $route.path==`/bimlib/decoration/recycle-bin/${$route.params.typeId}`)?'left85':'left140']" v-if="($route.path==`/bimlib/housing/bim-lib/${$route.params.typeId}` ||$route.path==`/bimlib/BaseBuild/bim-lib/${$route.params.typeId}` || $route.path==`/bimlib/decoration/bim-lib/${$route.params.typeId}`)">
                 <span class="absol span-block" style="width:40px;">
                     版本:
                 </span>
@@ -522,7 +522,7 @@
                     projMemo: '',        //备注
                     projName: '',          //名称
                     projType: '',         //专业
-                    userIds: []                            //授权人员名单
+                    userNames: []                            //授权人员名单
                 },
                 itemInfo:{
                     projId:''
@@ -609,6 +609,7 @@
                 }
                 //列表初始值
                 this.tableParam.delete = this.isRecycle;
+
 //                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b';
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
@@ -817,6 +818,7 @@
                         deletArray = [];//接口成功之后删除数据
                         this.allChecked = false;
                         this.commonMessage('删除成功','success');
+                        this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                     }
                 })
             },
@@ -832,6 +834,7 @@
                         deletArray = [];
                         this.getProjectList({url:baseUrl,param:this.tableParam});
                         this.commonMessage('删除成功','success');
+                        this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                     }
                 })
             },
@@ -1099,6 +1102,7 @@
                         //执行成功
                         this.ProjManageDialog = false;
                         this.clearCreateParam();
+                        this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                         setTimeout(()=>{
                             this.getProjectList({url:baseUrl,param:this.tableParam});
                         },1000)
@@ -1114,21 +1118,24 @@
                             this.ProjManageDialog = false;
                         }
                         this.commonMessage('修改成功','success');
+                        this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                         this.getProjectList({url:baseUrl,param:this.tableParam});
                     }
                 })
             },
+            //创建能够创建的专业类型
+            newGetType(){
+                getMajorsByCreate({url: baseUrl}).then((data) => {
+                    this.newCreatmajor = data.data.result;
+                    if (!this.isDisable) {
+                        this.proManage.major = this.newCreatmajor[0].value;
+                    }
+                });
+            },
             //添加工程
             addProject(type,item){
                 this.authUserListItem = [];
-
-                //专业
-                getMajorsByCreate({url:baseUrl}).then((data)=>{
-                    this.majorOptions = data.data.result;
-                    this.newCreatmajor = data.data.result;
-                    this.proManage.major = this.newCreatmajor[0].value;
-                    this.filterParams.majorVal = this.majorOptions[0].value;
-                });
+                this.newGetType();
                 if(type=='add'){
                     this.ProjManageDialog = true;
                     this.isDisable = false;
@@ -1144,6 +1151,7 @@
                 }else{
                     //修改工程
                     this.isDisable = true;
+                    this.proManage.major = item.projType;
                     if(item.projClassify==2 || item.projType !=3){
                         this.isEditProjName = false;
                     }else{
@@ -1264,13 +1272,12 @@
                 let newCreate ={    //创建工程param
                     deptId:this.createDeptId,               //所属项目部
 //                    deptId:'d68ceeb2d02043bd9ea5991ac44d649b',               //所属项目部
-                    packageType: this.$route.params.typeId, //套餐类型
+                    packageType: parseInt(this.$route.params.typeId), //套餐类型
                     projMemo: this.proManage.remark,        //备注
                     projName: this.proManage.name,          //名称
                     projType: this.proManage.major,         //专业
-                    userIds: []                            //授权人员名单
+                    userNames: []                            //授权人员名单
                 };
-
                 if(!newCreate.projName){                    //工程名称不存在
                     this.commonMessage('工程名称不能为空','warning');
                     return false;
@@ -1288,7 +1295,7 @@
                 if(!this.isDisable){
                     this.newCreateProject(baseUrl,newCreate)
                 }else{
-                    this.UpdateParamInfo.packageType = this.$route.params.typeId;//套餐类型,
+                    this.UpdateParamInfo.packageType = parseInt(this.$route.params.typeId);//套餐类型,
                     this.UpdateParamInfo.projMemo = this.proManage.remark;       //备注
                     this.UpdateParamInfo.projName =  this.proManage.name;         //名称
                     this.UpdateParamInfo.projType =  this.proManage.major;        //专业
@@ -1372,13 +1379,6 @@
             monitorSeverOk(){
                 //加密文件的基本用法
                 // let pass= BASE64.encoder('123456');
-               /* let checkMonitor = {
-                    code: "C09487EC-D85C-4F2B-8F0C-FD8B54993B7B",
-                    ip: "192.168.2.22",
-                    password: "admin12345",
-                    port: "80",
-                    username: "admin"
-                };*/
                 this.monitorParam.code = this.monitorSever.projectItem;
                 this.monitorParam.ip = this.monitorSever.clientIp;
                 this.monitorParam.password = BASE64.encoder(this.monitorSever.pasword);
@@ -1503,26 +1503,28 @@
                 }
                 this.tableParam.delete = this.isRecycle;                            //是否是回收站
                 this.tableParam.packageType = this.$route.params.typeId;            //套餐类型
+
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //筛选属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //筛选专业
                 this.getProjectList({url:baseUrl,param:this.tableParam});           //表格列表
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
                 }
-
             },
             'filterParams.majorVal':function(newVal,oldVal){
+                this.tableParam.projType = this.filterParams.majorVal;
                 if(newVal!=oldVal && oldVal!=""){
                     this.tableParam.projType = newVal;
                     this.getProjectList({url:baseUrl,param:this.tableParam})
                 }
             },
             'filterParams.bimVal':function(newVal,oldVal){
-                if(newVal!=oldVal && oldVal!=""){
+                this.tableParam.projGenre = this.filterParams.bimVal;
+                if(newVal!=oldVal && oldVal!="" ){
                     this.tableParam.projGenre = newVal;
                     this.getProjectList({url:baseUrl,param:this.tableParam})
                 }
-            },
+            }
         }
     }
 </script>

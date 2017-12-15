@@ -21,13 +21,13 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .Bim-libs table.bim-lib tbody>tr>td.uploadPerson{width:58px;}
 .Bim-libs table.bim-lib tbody>tr>td.bim-params{width:58px;}
 .Bim-libs table.bim-lib thead>tr>th:nth-child(2){width:200px;}
-.Bim-libs table.bim-lib thead>tr>th.uploadPerson{width:58px;}
+.Bim-libs table.bim-lib thead>tr>th.uploadPerson{width:64px;}
 .Bim-libs table.bim-lib thead>tr>th.bim-params{width:58px;}
 .Bim-libs table.bim-lib thead>tr>th:nth-child(6){width:200px;}
 .Bim-libs .bim-projType{min-width:62px;}
 .bim-libs .bim-lib .data-proce{min-width:88px;}
 /*回收站表格*/
-.Bim-libs table.recycle-bins tr th.uploadPerson{width:58px;}
+.Bim-libs table.recycle-bins tr th.uploadPerson{width:64px;}
 .Bim-libs table.recycle-bins tr th.depart-pro{width:230px;}
 .Bim-libs table.recycle-bins tr td.project-name{text-align:left;}
 .Bim-libs table.recycle-bins tr td.uploadPerson{width:58px;}
