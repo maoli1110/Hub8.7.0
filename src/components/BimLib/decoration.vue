@@ -53,7 +53,7 @@
                 </el-select>
             </el-col>
             <el-col :span="4" class="relat" :class="[($route.path=='/bimlib/housing/recycle-bin' ||$route.path=='/bimlib/BaseBuild/recycle-bin' || $route.path=='/bimlib/decoration/recycle-bin')?'left120':'left175']">
-                <el-input placeholder="搜索工程名称和上传人关键词" v-model="filterParams.searchVal" icon="search" :on-icon-click="tableListSearch"></el-input>
+                <el-input placeholder="搜索工程名称和上传人关键词" class="bim-search" v-model="filterParams.searchVal" icon="search" :on-icon-click="tableListSearch"></el-input>
             </el-col>
         </el-row>
         <el-row class="bim-data bim-dev-toolbar" >
@@ -63,8 +63,8 @@
                 <el-button type="primary" class="basic-btn " @click="monitor('all')"><i class="bim-icon-tool "></i><span class="btn-text">监控</span></el-button>
             </el-col>
             <el-col class="bim-recy" v-if="($route.path=='/bimlib/decoration/recycle-bin/'+$route.params.typeId || $route.path=='/bimlib/BaseBuild/recycle-bin/'+$route.params.typeId|| $route.path=='/bimlib/housing/recycle-bin/'+$route.params.typeId)" :span="17">
-                <el-button type="primary" class="basic-btn " @click="dataRestore"><i class="bim-icon-tool "></i><span class="btn-text">还原</span></el-button>
-                <el-button type="primary" class="basic-btn " @click="deletelibs('wipeData')"><i class="bim-icon-tool  " ></i><span class="btn-text">删除</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="dataRestore" :disabled="isTableDel"><i class="bim-icon-tool "></i><span class="btn-text">还原</span></el-button>
+                <el-button type="primary" class="basic-btn " @click="deletelibs('wipeData')" :disabled="isTableDel"><i class="bim-icon-tool  " ></i><span class="btn-text">删除</span></el-button>
                 <el-button type="primary" class="basic-btn " @click="dataEmpty"><i class="bim-icon-tool "></i><span class="btn-text">清空</span></el-button>
             </el-col>
             <el-col :span="3" :offset="4" class="">
@@ -126,7 +126,7 @@
                             <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
                             <td  v-if="$route.params.typeId !=4">{{item.drawSize}}</td>
                             <td class="relat" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
-                            <td>{{item.projSize}}</td>
+                            <td>{{item.projSize>1024?item.projSize+'GB':item.projSize+'MB'}}</td>
                             <td  v-if="$route.params.typeId ==1">
                                 <div v-if="item.projClassify ==2">-</div>
                                 <div v-else> {{item.zjCount}}</div>
@@ -208,7 +208,7 @@
                     </table>
                 </vue-scrollbar>
                 <div class="pagination">
-                    <span class="total-info" v-show="tableData.totalElements">共{{tableData.totalElements}}个工程，共{{tableData.totalPages}}页</span>
+                    <span class="total-info" v-show="pagesList.totalElements">共{{pagesList.totalElements}}个工程，共{{pagesList.totalPages}}页</span>
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPages" layout=" sizes, prev, pager, next, jumper" :total="pagesList.totalElements">
                     </el-pagination>
                 </div>
@@ -250,9 +250,10 @@
         <el-dialog :title="addPrjectTitle" custom-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
                 <el-form-item label="工程名称：" label-width="80">
-                    <el-input v-model="proManage.name" :maxlength="50" auto-complete="off" :disabled="isEditProjName"></el-input>
+                    <span v-show="!isEditProjName">{{proManage.name}}</span>
+                    <el-input v-model="proManage.name" v-show="isEditProjName" :maxlength="50" auto-complete="off" :disabled="isEditProjName"></el-input>
                 </el-form-item>
-                <el-form-item label="专业：" label-width="80">
+                <el-form-item label="专业：" label-width="80" v-show="!isDisable">
                     <!--newCreatmajor-->
                     <el-select v-model="proManage.major" placeholder=""  style="width:100%" @change="proManageChange">
                         <el-option
@@ -264,9 +265,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="所属项目：" label-width="80">
-                    <el-select v-model="proManageVal" placeholder="" v-show="isDisable" style="width:100%" :disabled="true">
-                        <el-option :value="proManageVal"></el-option>
-                    </el-select>
+                    <span v-show="isDisable">{{proManageVal}}</span>
                     <el-select v-model="proManageVal" placeholder="" v-show="!isDisable" style="width:100%" :disabled="false">
                         <el-option :value="proManageVal" v-show="false"></el-option>
                         <div>
@@ -569,7 +568,6 @@
             getOrgzTreeList(url){
                 getOrgTreeList({url:url}).then((data)=>{
                     data.data.result.forEach((val,key)=>{//添加icon
-//                        this.$set(val,'iconSkin',"");
                         if(val.root){
                             this.$set(val,'iconSkin','rootNode');
                         }else if(!val.root && val.type==0 && !val.direct){
@@ -627,7 +625,7 @@
              * @params error    失败处理的
              * */
             commonConfirm(message,success,error,type){
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                this.$confirm(message, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: type
@@ -687,10 +685,12 @@
                 this.getProjectList({url:baseUrl,param:this.tableParam})
             },
             //表格列表搜索
-            tableListSearch(){
-                if(!this.filterParams.searchVal){return false;}
-                this.tableParam.searchKey = this.filterParams.searchVal;
-                this.getProjectList({url:baseUrl,param:this.tableParam})
+            tableListSearch(event){
+                if(event.type=='click' ||event.keyCode==13){
+//                    if(!this.filterParams.searchVal){return false;}
+                    this.tableParam.searchKey = this.filterParams.searchVal;
+                    this.getProjectList({url:baseUrl,param:this.tableParam})
+                }
             },
             //获取地址
             getBaseUrl(){
@@ -797,6 +797,8 @@
              * @params sort         ps(0:asc(降序),1:desc(升序))
              */
             tableListSort(fileName,sort){
+//                $($(event.target)).css('color','red');
+                console.log($($(event.target)),'12313');
                 this.tableParam.pageParam.orders[0].property = fileName;
                 this.tableParam.pageParam.orders[0].direction = parseInt(sort);
                 this.getProjectList({url:baseUrl,param:this.tableParam})
@@ -812,6 +814,15 @@
                     if(data.data.code==200){
                         if(deletArray.length==this.tableData.length){      //删除整页重新渲染数据
                             this.getProjectList({url:baseUrl,param:this.tableParam})
+                        }else if(deletArray.length){
+                            for(let i = 0;i<deletArray.length;i++){     //逐个删除的时候手动抽取
+                                for(let j = 0;j<this.tableData.length;j++){
+                                    if( this.tableData[j].projId == deletArray[i]){
+                                        this.tableData.splice(j,1);
+                                    }
+                                }
+                            }
+                            this.pagesList.totalElements-=deletArray.length;
                         }
                         $('table.bim-lib td span').removeClass('is-checked');
                         countIndex = 0;
@@ -962,18 +973,7 @@
                     return false;
                 }
                 if(type=='whileData'){
-                    this.commonConfirm('确定要删除吗',()=>{
-                         if(this.tableData.length===deletArray.length){
-                         //重新渲染数据
-                         }else if(deletArray.length){
-                            for(let i = 0;i<deletArray.length;i++){     //逐个删除的时候手动抽取
-                                for(let j = 0;j<this.tableData.length;j++){
-                                    if( this.tableData[j].projId == deletArray[i]){
-                                        this.tableData.splice(j,1);
-                                    }
-                                }
-                            }
-                    }
+                    this.commonConfirm('删除选中工程?',()=>{
                     this.delTableList({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}});
                 },()=>{},'warning')
                 }else if(type=='wipeData'){
@@ -984,7 +984,12 @@
             },
             //回收站还原
             dataRestore(){
-                this.tableListRestore({url:baseUrl,param:{packageType:this.$route.params.typeId,deleteAll:false,projIds:deletArray}});
+                if(!deletArray.length){
+                    this.commonMessage('没有选中工程','warning');return false;
+                }
+                this.commonConfirm('还原选中工程?',()=>{
+                    this.tableListRestore({url:baseUrl,param:{packageType:this.$route.params.typeId,deleteAll:false,projIds:deletArray}});
+                },()=>{},'warning')
             },
             //回收站清空
             dataEmpty(){
@@ -1485,15 +1490,19 @@
         },
         mounted() {
             console.log('挂载');
-
+            $('.bim-search input').bind('keypress',this.tableListSearch)
         },
         created(){
+            console.log(this.$route.path,'this.$route.path')
             this.activeIndex = this.$route.path,//当前路由也选中状态
             this.getData();                     //初始化数据
         },
         components: { VueScrollbar },
         watch: {
+
             '$route' (to, from) {
+                deletArray =[];
+                console.log(deletArray,'delet')
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;         //回收站的状态
                     this.tableParam.latest = true;  //版本状态
@@ -1501,6 +1510,7 @@
                     this.isRecycle = true;
                     this.tableParam.latest = false;
                 }
+                this.isTableDel = deletArray.length>0?false:true;
                 this.tableParam.delete = this.isRecycle;                            //是否是回收站
                 this.tableParam.packageType = this.$route.params.typeId;            //套餐类型
 
