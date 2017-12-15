@@ -266,11 +266,25 @@ export default {
                     formatter: "{b} <br/> 已使用：{c}GB <br/> 占比：22%"
                 },
                 xAxis: {
+                    axisLine:{
+                        lineStyle:{
+                            color:'#ccc',
+                        }
+                    },
                     show:true,
-                    data: ["第1分公司", "第2分公司", "第3分公司", "第4分公司", "第5分公司", "第6分公司","第7分公司","第8分公司","第9分公司","第10分公司"]
+                    data: ["第1分公司", "第2分公司", "第3分公司", "第4分公司", "第5分公司", "第6分公司","第7分公司","第8分公司","第9分公司","第10分公司"],
                 },
+                textStyle: {
+                                fontSize: 12,
+                                color: '#000'
+                            },
                 yAxis: {
                     show:true,
+                    axisLine:{
+                        lineStyle:{
+                            color:'#fff',
+                        }
+                    },
                 },
                 series: [{
                     name: '哈哈哈哈哈哈22222哈',

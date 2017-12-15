@@ -11,8 +11,8 @@
  */
 import axios from "axios";
 
-let base = '../../static/workSeting.json';
-let route = '../../static/routes.json';
+let base = './static/workSeting.json';
+let route = './static/routes.json';
 let first, second, third;
 //egg
 // let base = 'http:192.168.13.215:8080/main';
@@ -30,9 +30,9 @@ let first, second, third;
 //    http://192.168.13.195:8989/cloud/payment/alipay/alipayCloseTradeNotify
 export const tests = params=> axios.get(`${params.url}` + "payment/alipay/alipayCloseTradeNotify");
 export const getWorksetingList = params => axios.get(`${base}`);
-export const getCitys = params => axios.get('../../static/js/citys.json')
-export const getNewCitys = params => axios.get('../../static/js/newcity.json')
-export const cloudTree = params=> axios.get("../../static/datasource.json");
+export const getCitys = params => axios.get('./static/js/citys.json')
+export const getNewCitys = params => axios.get('./static/js/newcity.json')
+export const cloudTree = params=> axios.get("./static/datasource.json");
 export const router = params=> axios.get(`${route}`);
 // 订单管理
 // GET /order/manage/getEnterpriseServiceList/{currentPage}/{pageSize} 分页获取企业服务列表

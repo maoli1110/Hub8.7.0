@@ -30,7 +30,14 @@
                     </el-option>
                 </el-select>
               </el-form-item>
+
               <el-form-item label="地区：">
+                  <input type="text" id="provinLink" placeholder="请输入城市" />
+              </el-form-item>
+              
+ 
+              
+              <!-- <el-form-item label="省/直辖市：">
                  <el-select v-model="searchKeyParams.xx.value" placeholder="不限" style="max-width: 140px;">
                     <el-option
                       v-for="item in searchKeyParams.xx"
@@ -39,17 +46,7 @@
                       :value="item.value">
                     </el-option>
                 </el-select>
-              </el-form-item>
-              <el-form-item label="省/直辖市：">
-                 <el-select v-model="searchKeyParams.xx.value" placeholder="不限" style="max-width: 140px;">
-                    <el-option
-                      v-for="item in searchKeyParams.xx"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                </el-select>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item style="float: right; margin:0;">
                 <el-input
                     style="max-width: 209px;"
@@ -160,8 +157,8 @@
                         </el-col>
                         <el-col :span="12" class="relat">
                             <span class="absol span-block label-w">地区：</span>
-                            <span class="simulate-input substr " style="margin-left:80px;">
-                                <el-input v-model="updateComList.product" placeholder="请输入内容"></el-input>
+                            <span class="simulate-input substr " style="margin-left:80px;">  
+                            <el-input id="provinLinkDialog" placeholder="请输入城市"/></el-input>
                             </span>
                         </el-col>
                     </el-col>
@@ -211,11 +208,22 @@
 
 <script>
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
-
+import {getCitys} from '../../api/getData.js'
     let deletArray = [];
     export default {
         data(){
             return {
+                cities: [],         //三级联动城市
+                province: [],       //三级联动省
+                counties: [],       //三级联动区
+                ruleForm: {         //关闭三级联动 选择的省、市、区的id和name
+                    location: "",
+                    countyId: ""
+                },
+                ruleFormDialog: {         //关闭三级联动 选择的省、市、区的id和name
+                    location: "",
+                    countyId: ""
+                },
                 title:"上传自动套模板",
                 fileList: [],      //上传的文件信息
                 //分页的一些设置
@@ -321,6 +329,12 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
             },
             //修改构件默认数据
             modifyCompData(item){
+                let vThis = this;
+                setTimeout(()=>{
+                        $("#provinLinkDialog").click(function (e) {
+                            SelCity(this, e, vThis, vThis.cities, vThis.counties, vThis.province);
+                        });
+                    },300)
                 if(this.override){
                     this.title="修改自动套模板";
                 }else{
@@ -339,14 +353,23 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
             },
             //上传构件
             uploadComp(){
+                let vThis = this;
+                this.ruleFormDialog = {         //关闭三级联动 选择的省、市、区的id和name
+                    location: "",
+                    countyId: ""
+                }
+                setTimeout(()=>{
+                    $("#provinLinkDialog").click(function (e) {
+                        SelCity(this, e, vThis, vThis.cities, vThis.counties, vThis.province);
+                    });
+                },300)
                 if(!this.override){
                     this.title="上传自动套模板"
                 }else{
                     this.title="修改自动套模板"
                 }
-
                 this.fileList = [];
-                this.clearUploadInfo();
+                //this.clearUploadInfo();
             },
             /**
              * 全选
@@ -403,13 +426,45 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 
 
             },
+            remoteMethod(query) {
+                if (query !== '') {
+                    this.loading = true;
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.options4 = this.list.filter(item => {
+                            return item.label.toLowerCase()
+                                    .indexOf(query.toLowerCase()) > -1;
+                        });
+                    }, 200);
+                } else {
+                    this.options4 = [];
+                }
+            },
 
         },
         mounted(){
-
+            let vThis = this;
+            getCitys().then((data)=>{
+                this.cities = data.data.cities;
+                this.province = data.data.provice;
+                this.counties = data.data.counties;
+            })
+            //三级联动加载数据
+            $("#provinLink").click(function (e) {
+                SelCity(this, e, vThis, vThis.cities, vThis.counties, vThis.province);
+            });
         },
         watch: {
-
+            'ruleForm.countyId': function (val, old) {//三级联动countryId发生变化的时候触发
+                if (val != old) {
+                    console.log(this.ruleForm.countyId, '有延迟吗');
+                }
+            },
+            'ruleFormDialog.countyId': function (val, old) {//三级联动countryId发生变化的时候触发
+                if (val != old) {
+                    console.log(this.ruleFormDialog.countyId, '有延迟吗');
+                }
+            },
         },
         components: {
             VueScrollbar
