@@ -233,7 +233,6 @@
                 }
                 var newObj = obj.constructor === Array ? [] : {};
                 for (var key in obj) {
-                    debugger;
                     if (obj[key]) {
                         if (obj[key] && typeof obj[key] === "object") {
                             newObj[key] = obj[key].constructor === Array ? [] : {};
