@@ -1119,18 +1119,19 @@
                     }
                 })
             },
-            //添加工程
-            addProject(type,item){
-                this.authUserListItem = [];
-
-                //专业
-                getMajorsByCreate({url:baseUrl}).then((data)=>{
-                    this.majorOptions = data.data.result;
+            //创建能够创建的专业类型
+            newGetType(){
+                getMajorsByCreate({url: baseUrl}).then((data) => {
                     this.newCreatmajor = data.data.result;
-                    if(!this.isDisable){
+                    if (!this.isDisable) {
                         this.proManage.major = this.newCreatmajor[0].value;
                     }
                 });
+            },
+            //添加工程
+            addProject(type,item){
+                this.authUserListItem = [];
+                this.newGetType();
                 if(type=='add'){
                     this.ProjManageDialog = true;
                     this.isDisable = false;
@@ -1375,13 +1376,6 @@
             monitorSeverOk(){
                 //加密文件的基本用法
                 // let pass= BASE64.encoder('123456');
-               /* let checkMonitor = {
-                    code: "C09487EC-D85C-4F2B-8F0C-FD8B54993B7B",
-                    ip: "192.168.2.22",
-                    password: "admin12345",
-                    port: "80",
-                    username: "admin"
-                };*/
                 this.monitorParam.code = this.monitorSever.projectItem;
                 this.monitorParam.ip = this.monitorSever.clientIp;
                 this.monitorParam.password = BASE64.encoder(this.monitorSever.pasword);
