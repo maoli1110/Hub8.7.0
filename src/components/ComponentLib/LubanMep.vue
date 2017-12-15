@@ -10,12 +10,12 @@
                                     placeholder="选择日期范围" class="absol" style="left:50px;">
                     </el-date-picker>
                 </el-col>
-                <!--<el-col :span="4" class="relat" style="padding-right:50px;">-->
-                <!--<span class="absol span-block" style="width:50px;margin-right:47px;">地区：</span>-->
-                <!--<el-col :span="24">-->
-                <!--<input type="text" style="margin-left:47px;" id="provinLink" placeholder="请输入城市"/>-->
-                <!--</el-col>-->
-                <!--</el-col>-->
+              <!--  <el-col :span="4" class="relat" style="padding-right:50px;">
+                <span class="absol span-block" style="width:50px;margin-right:47px;">地区：</span>
+                <el-col :span="24">
+                <input type="text" style="margin-left:47px;" id="provinLink" placeholder="请输入城市"/>
+                </el-col>
+                </el-col>-->
                 <el-col :span="3" class="filter-bar relat" style="padding-right:65px;">
                     <span class="absol span-block" style="width:60px;left:10px;">
                         专业:
