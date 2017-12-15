@@ -12,13 +12,13 @@
 import axios from "axios";
 
 export const tests = params=> axios.get(`${params.url}` + "payment/alipay/alipayCloseTradeNotify");
-export const getWorksetingList = params => axios.get('../../static/workSeting.json');
-export const getCitys = params => axios.get('../../static/js/citys.json');
-export const cloudTree = params=> axios.get("../../static/datasource.json");
+export const getWorksetingList = params => axios.get('./static/workSeting.json');
+export const getCitys = params => axios.get('./static/js/citys.json');
+export const cloudTree = params=> axios.get("./static/datasource.json");
 
-export const testList = params =>axios.get('../../static/tableList.json');
-export const workList = params=>axios.get('../../static/workSeting.json');
-export const route = params =>axios.get('../../static/routes.json');
+export const testList = params =>axios.get('./static/tableList.json');
+export const workList = params=>axios.get('./static/workSeting.json');
+export const route = params =>axios.get('./static/routes.json');
 /**
  * bim库
  */
@@ -83,14 +83,14 @@ export const  getProjByWorkSet = params =>axios.post(`${params.url}rs/workSetRes
 //根据uuid匹配缩略图列表
 export const getFileViewUrl = params =>axios.post(`${params.url}rs/workSetRest/getFileViewUrl`,params.param);
 /*模拟uuid*/
-export const getProjectInfo = params =>axios.get("../../static/projectLook.json");
-export const getViewUrl = params=>axios.get('../../static/viewUrl.json');
+export const getProjectInfo = params =>axios.get("./static/projectLook.json");
+export const getViewUrl = params=>axios.get('./static/viewUrl.json');
 /*模拟uuid*/
 /**
  * pds图纸
  * */
 //PDf 假数据
-export const PDFtestList = params =>axios.get('../../static/pdfTableList.json');
+export const PDFtestList = params =>axios.get('./static/pdfTableList.json');
 //pds图纸->分类下拉框
 export const getDrawingClassifyInfos = params =>axios.get(`${params.url}rs/pdfDrawingRest/getDrawingClassifyInfos`);
 //pds图纸->获取工程下拉框
