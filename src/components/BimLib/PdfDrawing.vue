@@ -238,24 +238,11 @@
             //获取工程下拉框数据
             getProjGroup(){
                 getProjHasPdfDraw({url:baseUrl}).then((data)=>{
-                    this.projectList = data.data.result;
-                    this.projectList = [
-                        {
-                            "ppid": -1,
-                            "projId": 0,
-                            "projName": "初始项目部1"
-                        },{
-                            "ppid": 2,
-                            "projId": 0,
-                            "projName": "初始项目部2"
-                        },{
-                            "ppid": 3,
-                            "projId": 0,
-                            "projName": "初始项目部3"
-                        }
-                    ];
-                    this.filterParam.proVal = this.projectList[0].ppid;
-//                    console.log(this.projectList,'projList');
+                    console.log(data.data.result,'list');
+                    if(data.data.result.length>0){
+                        this.projectList = data.data.result;
+                        this.filterParam.proVal = this.projectList[0].ppid;
+                    }
                 })
             },
             /**

@@ -472,6 +472,7 @@
         },
         watch: {
             '$route' (to, from) {
+                this.tableListParam.packageType = this.$route.params.typeId;
                 this.getTableList(baseUrl,this.tableListParam);
             }
         }

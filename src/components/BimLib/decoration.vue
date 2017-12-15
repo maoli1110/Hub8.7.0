@@ -734,10 +734,11 @@
                 this.filterParams.orgdeptId = treeNode.id;
                if(treeNode.children){
                    deptIds = this.getDeptIds(treeNode.children,treeNode.name);
-                   this.tableParam.deptIds = deptIds    ;
+                   this.tableParam.deptIds = deptIds;
                }else{
                    if(treeNode.direct){
                        this.tableParam.deptIds.push(treeNode.id);
+                       console.log(treeNode.id,'first')
                    }
                }
                 this.getProjectList({url:baseUrl,param:this.tableParam});
@@ -751,6 +752,7 @@
                 if(treeNode.type==1 || treeNode.direct){       //项目部才有点击事件
                     this.proManageVal = treeNode.name;
                     this.createDeptId = treeNode.id;
+                    console.log(treeNode.id,'second')
 //                    this.createDeptId = "d68ceeb2d02043bd9ea5991ac44d649b";
                     setTimeout(function(event, treeId, treeNode) {
                         $(".el-scrollbar .el-select-dropdown__item.selected").click();
@@ -1097,7 +1099,9 @@
                         //执行成功
                         this.ProjManageDialog = false;
                         this.clearCreateParam();
-                        this.getProjectList({url:baseUrl,param:this.tableParam});
+                        setTimeout(()=>{
+                            this.getProjectList({url:baseUrl,param:this.tableParam});
+                        },1000)
                     }
                 },(error)=>{
                     this.commonMessage(error.data.msg,'warning')
