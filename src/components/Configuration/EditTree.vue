@@ -6,10 +6,8 @@
                     <label class="el-form-item__label">模板名称：</label>
                     <div class="el-form-item__content" style="margin-left: 80px;">
                         <el-input placeholder="请输入模板名称" style="width:83%"></el-input>
-                        <span class="icon-expand" style="vertical-align:middle"
-                              @click="expandNode({type:'expand',operObj:'tree_edit'})" size='small'></span>
-                        <span class="icon-collapse" style="vertical-align:middle"
-                              @click="expandNode({type:'collapse',operObj:'tree_edit'})" size='small'></span>
+                        <span class="icon-expand" style="vertical-align:middle" @click="expandNode({type:'expand',operObj:'tree_edit'})" size='small'></span>
+                        <span class="icon-collapse" style="vertical-align:middle" @click="expandNode({type:'collapse',operObj:'tree_edit'})" size='small'></span>
                     </div>
                 </div>
             </div>
@@ -95,20 +93,21 @@
             </div>
         </el-dialog> -->
         <div class="el-dialog el-dialog--small" style="top: 15%;width:84%;z-index:3000" v-show="textAreaVisible">
-            <div class="el-dialog__header"><span class="el-dialog__title">{{textTittle}}</span>
-                <button type="button" aria-label="Close" class="el-dialog__headerbtn" @click="textAreaVisible = false;cancleMultiNodeState()"><i
-                    class="el-dialog__close el-icon el-icon-close" ></i></button>
+            <div class="el-dialog__header">
+                <span class="el-dialog__title">{{textTittle}}</span>
+                <button type="button" aria-label="Close" class="el-dialog__headerbtn" @click="textAreaVisible = false;cancleMultiNodeState()">
+                    <i class="el-dialog__close el-icon el-icon-close"></i>
+                </button>
             </div>
             <div class="el-dialog__body">
-                <el-input type="textarea" :rows="10" v-model="textareaValue" placeholder="一行视为一个节点，支持多行复制粘贴"
-                      :maxlength='297'>
+                <el-input type="textarea" :rows="10" v-model="textareaValue" placeholder="一行视为一个节点，支持多行复制粘贴" :maxlength='297'>
                 </el-input>
             </div>
             <div class="el-dialog__footer">
                 <div data-v-00b3f388="" class="dialog-footer">
                     <el-button type="primary" @click="textAreaVisible = false,addMultiNodeState()">确 定
-                </el-button>
-                <el-button @click="textAreaVisible = false;cancleMultiNodeState()">取 消</el-button>
+                    </el-button>
+                    <el-button @click="textAreaVisible = false;cancleMultiNodeState()">取 消</el-button>
                 </div>
             </div>
         </div>
@@ -607,8 +606,7 @@
                             //选中的是节点,创建子状态
                             var childNodes = treeNode.children;
                             for (var i = 0; i < childNodes.length; i++) {
-                                if (
-                                    !childNodes[i].isParent &&
+                                if (!childNodes[i].isParent &&
                                     childNodes[i].name == contentArray[k]
                                 ) {
                                     illegalNodeState.push(contentArray[k]);
@@ -621,8 +619,7 @@
                             var parentNode = treeNode.getParentNode();
                             var childNodes = parentNode.children;
                             for (var i = 0; i < childNodes.length; i++) {
-                                if (
-                                    !childNodes[i].isParent &&
+                                if (!childNodes[i].isParent &&
                                     childNodes[i].name == contentArray[k]
                                 ) {
                                     illegalNodeState.push(contentArray[k]);
@@ -728,12 +725,12 @@
                     //   message: "至少选择一个节点或状态",
                     //   type: "warning"
                     // });
-                     this.$message({
-                                    showClose: true,
-                                    message: message,
-                                    type: "error"
-                                });
-                   
+                    this.$message({
+                        showClose: true,
+                        message: message,
+                        type: "error"
+                    });
+
                 }
             },
             //取消
@@ -747,7 +744,7 @@
                 var childNodes = treeNode.children;
                 var name;
                 if (!directCreateName) {
-                    outer: for (var i = 0; ; i++) {
+                    outer: for (var i = 0;; i++) {
                         if (i == 0) {
                             name = node.name;
                         } else {
@@ -767,7 +764,8 @@
                         }
                         break;
                     }
-                } else {
+                }
+                else {
                     name = node.name;
                 }
                 newNode = zTree.addNodes(treeNode, {
@@ -884,10 +882,10 @@
                     return;
                 }
                 this.$confirm("确认删除选中的节点和状态？删除后：所属节点的状态将被一同删除?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
+                        confirmButtonText: "确定",
+                        cancelButtonText: "取消",
+                        type: "warning"
+                    })
                     .then(() => {
                         for (let i = 0; i < nodes.length; i++) {
                             if (nodes[i].level == 0) {
@@ -1033,7 +1031,7 @@
                     if (nameRepeatFlag) {
                         var name;
                         //升级后有重复的节点/状态，自动重命名
-                        outer: for (k = 0; ; k++) {
+                        outer: for (k = 0;; k++) {
                             if (k == 0) {
                                 name = nodes[i].name;
                             } else {
@@ -1194,7 +1192,7 @@
                         if (nameRepeatFlag) {
                             var name;
                             //降级后有重复的节点，自动重命名
-                            outer: for (k = 0; ; k++) {
+                            outer: for (k = 0;; k++) {
                                 if (k == 0) {
                                     name = nodes[i].name;
                                 } else {
@@ -1262,7 +1260,7 @@
                         if (nameRepeatFlag) {
                             var name;
                             //降级后有重复的节点，自动重命名
-                            outer: for (k = 0; ; k++) {
+                            outer: for (k = 0;; k++) {
                                 if (k == 0) {
                                     name = nodes[i].name;
                                 } else {
@@ -1304,12 +1302,13 @@
                 if (!nodes[0].isParent && type == "node") {
                     return;
                 }
-                type == "node"
-                    ? $(".selcetNodes ul").slideToggle('fast')
-                    : $(".selectStatus ul").slideToggle('fast');
+                type == "node" ?
+                    $(".selcetNodes ul").slideToggle('fast') :
+                    $(".selectStatus ul").slideToggle('fast');
             }
         }
     };
+
 </script>
 <style scoped>
     .wrap ul.ztree {
@@ -1323,30 +1322,37 @@
         overflow-y: auto;
         overflow-x: auto;
     }
+
     .el-form-item__label {
         text-align: left;
     }
+
     .el-select-dropdown__item.selected {
         color: rgb(72, 106, 106);
         background-color: #fff;
     }
+
     .selectStatus {
         position: absolute;
         left: 26px;
         top: 3px;
     }
+
     .selcetNodes {
         position: absolute;
         left: 80px;
         top: 3px;
     }
+
     .el-icon-caret-bottom {
         color: #6595f2 !important;
         cursor: pointer;
     }
+
     .icon {
         margin-left: 5px;
     }
+
     .select-dropdown ul {
         position: absolute;
         width: 120px;
@@ -1359,6 +1365,7 @@
         display: none;
         z-index: 999;
     }
+
     .select-dropdown ul li {
         font-size: 14px;
         padding: 8px 10px;
@@ -1372,21 +1379,27 @@
         cursor: pointer;
         list-style: none;
     }
+
     .tree-operate {
         margin-top: 35px;
     }
+
     .tree-operate li {
         float: left;
         margin-right: 30px;
         cursor: pointer;
     }
-    .tree-operate li:nth-of-type(3){
-      margin-right: 22px
+
+    .tree-operate li:nth-of-type(3) {
+        margin-right: 22px
     }
+
     .dialog-footer {
         text-align: center;
     }
+
     .multi-textarea .el-button {
         width: 116px;
     }
+
 </style>

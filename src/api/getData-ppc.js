@@ -102,7 +102,7 @@ export const getDirectoryTreeInfo = params => {
  * @param {*} params
  * 修改组织节点的目录数据
  */
-export const modDirectoryInfo= params => {
+export const modDirectoryInfo = params => {
     return axios.post(`${builderUrl}appconfig/general/data/directory/modifyDirectoryInfo`, params);
 };
 /**

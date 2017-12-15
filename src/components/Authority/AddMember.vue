@@ -2,11 +2,10 @@
     <div>
         <div class="member-wrap">
             <div class="member-title">用户基本信息
-              <span class="el-icon-edit" style="margin-left:20px;font-size:14px;cursor:pointer;color:#6595f2"
-                    @click="isEdit=true"
-                    v-show="!isEdit"> 编辑</span>
-                <span class="el-icon-document" style="margin-left:20px;font-size:14px;cursor:pointer;color:#6595f2"
-                      @click="isEdit=false" v-show="isEdit"> 保存</span>
+                <span class="el-icon-edit" style="margin-left:20px;font-size:14px;cursor:pointer;color:#6595f2" @click="isEdit=true" v-show="!isEdit">
+                编辑</span>
+                <span class="el-icon-document" style="margin-left:20px;font-size:14px;cursor:pointer;color:#6595f2" @click="isEdit=false"
+                    v-show="isEdit"> 保存</span>
             </div>
             <el-row class="member-message">
                 <el-col :span="8">
@@ -74,8 +73,7 @@
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label" style="width:55px">备注：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;position:relative">
-                            <el-input type="textarea" resize='none' :maxlength='100'
-                                      :autosize="{ minRows: 6, maxRows: 6}" placeholder="请输入内容" v-model="textarea">
+                            <el-input type="textarea" resize='none' :maxlength='100' :autosize="{ minRows: 6, maxRows: 6}" placeholder="请输入内容" v-model="textarea">
                             </el-input>
                             <span style="position:absolute;right:10px;bottom:0">({{textarea.length}}/100)</span>
                         </div>
@@ -93,46 +91,32 @@
                     <el-carousel trigger="click" height="270px" arrow="always" :interval="99999999">
                         <el-carousel-item v-for="item in 4" :key="item">
                             <div style="padding:25px">
-                                <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in clientInformation"
-                                         :key="index" class="card">
+                                <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in clientInformation" :key="index" class="card">
                                     <div style="height:20px;padding:2% 8px 23px 0 ">
-                                        <el-button type="text" style="float:right" class="cart"
-                                                   v-show="item.hasAuthorited"
-                                                   @click="toggleAuthorited(item)">
-                                            <span class="el-icon-star-on authorited"                                                                                                 
-                                            >已授权</span>
-                                            <span class="el-icon-star-on cancle-authorited"
-                                            >取消授权</span>
+                                        <el-button type="text" style="float:right" class="cart" v-show="item.hasAuthorited" @click="toggleAuthorited(item)">
+                                            <span class="el-icon-star-on authorited">已授权</span>
+                                            <span class="el-icon-star-on cancle-authorited">取消授权</span>
                                         </el-button>
-                                        <el-button type="text" style="float:right" class="cart_"
-                                                   v-show="!item.hasAuthorited&&!item.hasPurchased"
-                                                   @click="toggleAuthorited(item)">
-                                            <span class="el-icon-star-on unauthorited"
-                                            > 未授权</span>
-                                            <span class="el-icon-star-on authorte"
-                                            >授权</span>
+                                        <el-button type="text" style="float:right" class="cart_" v-show="!item.hasAuthorited&&!item.hasPurchased" @click="toggleAuthorited(item)">
+                                            <span class="el-icon-star-on unauthorited"> 未授权</span>
+                                            <span class="el-icon-star-on authorte">授权</span>
                                         </el-button>
-                                        <el-button type="text" style="float:right"
-                                                   v-show="item.hasPurchased"
-                                        >
-                                            <span class="el-icon-star-on" style="float:right;color:#e6e6e6;"
-                                            > 未购买</span>
+                                        <el-button type="text" style="float:right" v-show="item.hasPurchased">
+                                            <span class="el-icon-star-on" style="float:right;color:#e6e6e6;"> 未购买</span>
                                         </el-button>
 
                                     </div>
                                     <div style="text-align: center;border-bottom: 1px solid #e6e6e6;">
-                                        <img src="http://www.lubansoft.com/uploads/1497256436.png"
-                                             class="image"
-                                             style="width:64px;height:64px;margin:0 auto">
+                                        <img src="http://www.lubansoft.com/uploads/1497256436.png" class="image" style="width:64px;height:64px;margin:0 auto">
                                         <div style="height:35px;line-height:35px">{{item.productsName}}</div>
                                     </div>
                                     <div>
                                         <div class="bottom clearfix" style="padding:5px 0 ">
                                             <p style="text-align:center;">全部授权数:
-												   <span>{{item.allAuthorizations}}</span>
+                                                <span>{{item.allAuthorizations}}</span>
                                             </p>
                                             <p style="text-align:center;padding-top:5px">可用授权数:
-												   <span>{{item.availableAuthorizations}}</span>
+                                                <span>{{item.availableAuthorizations}}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -151,8 +135,7 @@
                             <span class="member-describe">为用户授权客户端中查看哪些项目部，点击授权可操作</span>
                         </el-col>
                         <el-col :span="12">
-                            <el-button type="primary" class="basic-btn"
-                                       @click="projectAuthorizationDialogVisible=true;projectAuthorize()">授权
+                            <el-button type="primary" class="basic-btn" @click="projectAuthorizationDialogVisible=true;projectAuthorize()">授权
 
 
 
@@ -166,8 +149,7 @@
                             <span class="member-describe">为用户工程分配项目下的工程权限，包含iBan和监控的工程，点击授权操作</span>
                         </el-col>
                         <el-col :span="12">
-                            <el-button type="primary" class="basic-btn"
-                                       @click="engineeringAuthorizationDialogVisible=true;engineeringAuthorize()">授权
+                            <el-button type="primary" class="basic-btn" @click="engineeringAuthorizationDialogVisible=true;engineeringAuthorize()">授权
 
 
 
@@ -181,8 +163,7 @@
                             <span class="member-describe">为用户授权Explorer 和 Works中的工作集，点击授权操作</span>
                         </el-col>
                         <el-col :span="12">
-                            <el-button type="primary" class="basic-btn"
-                                       @click="workSetAuthorizationDialogVisible=true;workSetAuthorize()">授权
+                            <el-button type="primary" class="basic-btn" @click="workSetAuthorizationDialogVisible=true;workSetAuthorize()">授权
 
 
 
@@ -195,8 +176,7 @@
                             <span class="member-describe">为用户授权GoVern 组织结构，点击授权操作</span>
                         </el-col>
                         <el-col :span="12">
-                            <el-button type="primary" class="basic-btn"
-                                       @click="governAuthorizationDialogVisible=true;governAuthorize()">授权
+                            <el-button type="primary" class="basic-btn" @click="governAuthorizationDialogVisible=true;governAuthorize()">授权
 
 
 
@@ -209,8 +189,7 @@
                             <span class="member-describe">为用户授权筑业资料模板库，点击授权操作</span>
                         </el-col>
                         <el-col :span="12">
-                            <el-button type="primary" class="basic-btn"
-                                       @click="templateAuthorizationDialogVisible=true;templateAuthorize()">授权
+                            <el-button type="primary" class="basic-btn" @click="templateAuthorizationDialogVisible=true;templateAuthorize()">授权
 
 
 
@@ -223,8 +202,7 @@
                             <span class="member-describe">为用户授权客户端中查看哪些项目部，点击授权可操作</span>
                         </el-col>
                         <el-col :span="12">
-                            <el-button type="primary" class="basic-btn"
-                                       @click="engineeringAuthorizationDialogVisible=true;engineeringAuthorize('bw')">授权
+                            <el-button type="primary" class="basic-btn" @click="engineeringAuthorizationDialogVisible=true;engineeringAuthorize('bw')">授权
 
 
 
@@ -271,11 +249,7 @@
                     <label class="el-form-item__label" style="width: 63px;">工程专业:</label>
                     <div class="el-form-item__content" style="margin-left: 63px;">
                         <el-select v-model="profession" placeholder="请选择" style="width:105px">
-                            <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
                     </div>
@@ -284,11 +258,7 @@
                     <label class="el-form-item__label" style="width: 63px;">BIM属性:</label>
                     <div class="el-form-item__content" style="margin-left: 63px;">
                         <el-select v-model="profession" placeholder="请选择" style="width:95px;">
-                            <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
                     </div>
@@ -300,8 +270,11 @@
                 </div>
             </div>
             <div>
-                <el-checkbox><span style="color:#6595f2">全部分配</span></el-checkbox>
-                <span style="margin-left:20px"><span class="red_"> * </span> 勾选全部分配后，项目新增加的工程自动授权</span>
+                <el-checkbox>
+                    <span style="color:#6595f2">全部分配</span>
+                </el-checkbox>
+                <span style="margin-left:20px">
+                    <span class="red_"> * </span> 勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div>
                 <el-table :data="engineeringAuthorizationData" height="400" style="margin-top:15px">
@@ -340,8 +313,11 @@
                 </div>
             </div>
             <div>
-                <el-checkbox><span style="color:#6595f2">全部分配</span></el-checkbox>
-                <span style="margin-left:22px"> <span class="red_"> * </span> 勾选全部分配后，项目新增加的工程自动授权</span>
+                <el-checkbox>
+                    <span style="color:#6595f2">全部分配</span>
+                </el-checkbox>
+                <span style="margin-left:22px">
+                    <span class="red_"> * </span> 勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div>
                 <el-table :data="engineeringAuthorizationData" height="400" style="margin-top:15px">
@@ -362,8 +338,11 @@
         <!-- Govern组织结构授权： -->
         <el-dialog title="编辑govern权限" :visible.sync="governAuthorizationDialogVisible" size='project-authorize'>
             <div style="padding:20px 0px">
-                <el-checkbox><span style="color:#6595f2">全部分配</span></el-checkbox>
-                <span style="margin-left:22px"><span class="red_"> * </span>勾选全部分配后，项目新增加的工程自动授权</span>
+                <el-checkbox>
+                    <span style="color:#6595f2">全部分配</span>
+                </el-checkbox>
+                <span style="margin-left:22px">
+                    <span class="red_"> * </span>勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div style="height:420px">
                 <ul id="projectTree" class="ztree"></ul>
@@ -378,7 +357,7 @@
             <div style="height:40px;padding:0px 0">
                 <div style="float:left">
                     <div class="el-form-item__content">
-                        <span>  账号总数：40 个</span>
+                        <span> 账号总数：40 个</span>
                         <span style="margin-left:11px"> 可用：20个</span>
                     </div>
                 </div>
@@ -389,8 +368,11 @@
                 </div>
             </div>
             <div style="margin-top:20px">
-                <el-checkbox style=""><span style="color:#6595f2">全部分配</span></el-checkbox>
-                <span style="margin-left:22px;"><span class="red_"> * </span>勾选全部分配后，项目新增加的工程自动授权</span>
+                <el-checkbox style="">
+                    <span style="color:#6595f2">全部分配</span>
+                </el-checkbox>
+                <span style="margin-left:22px;">
+                    <span class="red_"> * </span>勾选全部分配后，项目新增加的工程自动授权</span>
             </div>
             <div>
                 <el-table :data="engineeringAuthorizationData" height="420" style="margin-top:15px">
@@ -435,8 +417,7 @@
                     }
                 },
                 projectNodes: [],
-                clientInformation: [
-                    {
+                clientInformation: [{
                         hasAuthorited: true,
                         productsName: "lubanGovern",
                         allAuthorizations: 100,
@@ -485,8 +466,7 @@
                         hasPurchased: true
                     }
                 ],
-                options: [
-                    {
+                options: [{
                         value: "选项1",
                         label: "黄金糕"
                     },
@@ -507,8 +487,7 @@
                         label: "北京烤鸭"
                     }
                 ],
-                engineeringAuthorizationData: [
-                    {
+                engineeringAuthorizationData: [{
                         date: "2017.9.30 17:43:57",
                         name: "Explorer",
                         time: "81.8",
@@ -562,7 +541,7 @@
         methods: {
             handleClick(tab, event) {
                 console.log(tab);
-            },           
+            },
             toggleAuthorited(item) {
                 if (item.hasPurchased) return;
                 item.hasAuthorited = !item.hasAuthorited;
@@ -586,10 +565,8 @@
                     );
                 });
             },
-            engineeringAuthorize() {
-            },
-            workSetAuthorize() {
-            },
+            engineeringAuthorize() {},
+            workSetAuthorize() {},
             governAuthorize() {
                 this.$axios.get(this.url).then(res => {
                     this.projectNodes = res.data;
@@ -600,13 +577,15 @@
                     );
                 });
             },
-            templateAuthorize() {
-            },
+            templateAuthorize() {},
             backList() {
-                this.$router.push({path: `/authority/member-management`});
+                this.$router.push({
+                    path: `/authority/member-management`
+                });
             }
         }
     };
+
 </script>
 <style scoped>
     .member-title {
@@ -651,7 +630,7 @@
         box-sizing: border-box;
     }
 
-    .card + .card {
+    .card+.card {
         margin-left: 30px;
     }
 
@@ -672,13 +651,16 @@
     .cart:hover .authorited {
         display: none;
         color: red;
-    }    
-    .authorte{
+    }
+
+    .authorte {
         display: none;
     }
+
     .cart_:hover .unauthorited {
         display: none;
     }
+
     .cart_:hover .authorte {
         display: block;
         color: #7fc977;
@@ -711,7 +693,7 @@
         padding-left: 95px;
     }
 
-    .member-contents + .member-contents {
+    .member-contents+.member-contents {
         margin-top: 20px;
     }
 
@@ -733,7 +715,7 @@
         float: left;
     }
 
-    .el-form__ + .el-form__ {
+    .el-form__+.el-form__ {
         margin-left: 10px;
     }
 
@@ -747,5 +729,5 @@
     .back-list:hover {
         box-shadow: 1px 0px 7px #6595f2;
     }
-</style>
 
+</style>
