@@ -146,7 +146,7 @@
                             <td style="min-width:120px;line-height:6px;"><!--item.projType!=3-->
                                 <div class="handel-cotrol"><span class=" handel-icon see" title="监控设置" @click="monitor('single',item)" ></span></div>
                                 <div class="handel-cotrol" v-if="item.projClassify !=2"><span class=" handel-icon extract" title="抽取" @click="extractDialog=true;extractData(item.status,item)"></span></div><!--extractData(scope.row.status)"-->
-                                <div class="handel-cotrol" v-if="item.projClassify !=2 || item.projType!=3"><span class=" handel-icon rename" title="修改名称" @click="modifyInfo=true;projRename(item)"></span></div>
+                                <div class="handel-cotrol" v-if="item.projClassify !=2 && item.projType!=3"><span class=" handel-icon rename" title="修改名称" @click="modifyInfo=true;projRename(item)"></span></div>
                                 <div class="handel-cotrol"><span class=" handel-icon modify" title="工程管理(编辑授权)" @click="addProject('modific',item)"></span></div>
 
                             </td>
@@ -250,8 +250,8 @@
         <el-dialog :title="addPrjectTitle" custom-class="project-manage" size="project" :visible.sync="ProjManageDialog" :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form :model="proManage">
                 <el-form-item label="工程名称：" label-width="80">
-                    <span v-show="!isEditProjName">{{proManage.name}}</span>
-                    <el-input v-model="proManage.name" v-show="isEditProjName" :maxlength="50" auto-complete="off" :disabled="isEditProjName"></el-input>
+                    <span v-show="isEditProjName">{{proManage.name}}</span>
+                    <el-input v-model="proManage.name" v-show="!isEditProjName" :maxlength="50" auto-complete="off" :disabled="isEditProjName"></el-input>
                 </el-form-item>
                 <el-form-item label="专业：" label-width="80" v-show="!isDisable">
                     <!--newCreatmajor-->
