@@ -1099,7 +1099,7 @@
                         //执行成功
                         this.ProjManageDialog = false;
                         this.clearCreateParam();
-                        setTimeout(function(){
+                        setTimeout(()=>{
                             this.getProjectList({url:baseUrl,param:this.tableParam});
                         },1000)
                     }
