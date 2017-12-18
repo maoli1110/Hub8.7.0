@@ -4,18 +4,12 @@
             <el-row class="filter-toolbar">
                 <el-col :span="4" style="padding-right:50px;">
                     <span class="absol span-block" style="width:50px;">日期：</span>
-                    <el-date-picker format="yyyy.MM.DD" @change="changeData"
+                    <el-date-picker format="yyyy.MM.dd" @change="changeData"
                                     v-model="selectDate"
                                     type="daterange"
                                     placeholder="选择日期范围" class="absol" style="left:50px;">
                     </el-date-picker>
                 </el-col>
-              <!--  <el-col :span="4" class="relat" style="padding-right:50px;">
-                <span class="absol span-block" style="width:50px;margin-right:47px;">地区：</span>
-                <el-col :span="24">
-                <input type="text" style="margin-left:47px;" id="provinLink" placeholder="请输入城市"/>
-                </el-col>
-                </el-col>-->
                 <el-col :span="3" class="filter-bar relat" style="padding-right:65px;">
                     <span class="absol span-block" style="width:60px;left:10px;">
                         专业:
@@ -90,9 +84,7 @@
                             </el-table-column>
                             <el-table-column prop="imgUrl " width="80" label="缩略图">
                                 <template slot-scope="scope">
-                                    <!--<span v-show="scope.row.speciality==='土建'" class="el-icon-date"></span>
-                                    <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>-->
-                                    <img :src="scope.row.img" alt="" style="width:44px;">
+                                    <div class="imgUrl" :style="{backgroundImage: 'url('+scope.row.imgUrl+')'}"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="version" width="70" label="版本" show-overflow-tooltip>
@@ -133,16 +125,9 @@
             </el-row>
             <!--上传构件-->
             <el-dialog  :visible.sync="updateComponent" custom-class="up-component" :title="title">
-                <!--<span v-show="!override" class="dialog-title">上传构件文件</span>-->
-                <!--<span v-show="override" class="dialog-title">修改构件文件</span>-->
                 <el-row>
                     <el-col :span="24" class="relat">
                         <span class="absol span-block label-w">模板文件：</span>
-                          <!--  <el-input style="margin-left:80px;" v-model="updateComList.templateFile" placeholder="模板名称">
-
-
-                                <el-button slot="append">上传</el-button>
-                            </el-input>-->
                         <div class="simulate-label" v-text="updateComList.fileName"></div>
                         <el-upload :on-success = "updataSucess" :on-error = "updateError" :multiple ='true' :show-file-list="false"
                                    class="upload-demo"
@@ -287,13 +272,6 @@
                 updateComponent: false,//上传构件弹窗
                 cloudComTree:false,   //构件树修改弹窗
                 override:false,     //是否覆盖
-                cities: [],         //三级联动城市
-                province: [],       //三级联动省
-                counties: [],       //三级联动区
-                ruleForm: {         //关闭三级联动 选择的省、市、区的id和name
-                    location: "",
-                    countyId: ""
-                },
                 searchKeyParams: {     //筛选栏的条件
                     majorVal: "",//版本
                     bigType: "",    //大类
@@ -310,7 +288,7 @@
                     value: '1.0.0',
                 }],
                 fileList: [],      //上传的文件信息
-                uploadUrl:"",
+                uploadUrl:"",       //上传地址
                 //分页的一些设置
                 cur_page: 1,
                 totalPage: 10,
@@ -492,12 +470,6 @@
                     }
                 })
             },
-             getPromise(ms) {
-                return new Promise((resolve) => {
-                    setTimeout(resolve, ms);
-                });
-            },
-
             //添加功能
             createComponent(url,param){
                 componentAdd({url:url,param:param}).then((data)=>{
@@ -960,27 +932,10 @@
             },
 
         },
-        mounted(){
-            let vThis = this;
-            //后端返回省级结构进行赋值
-            getCitys().then((data) => {
-                this.cities = data.data.cities;
-                this.province = data.data.provice;
-                this.counties = data.data.counties;
-            });
-            //三级联动加载数据
-            $("#provinLink").click(function (e) {
-                SelCity(this, e, vThis, vThis.cities, vThis.counties, vThis.province);
-            });
-
-        },
+        mounted(){ },
         components: {VueScrollbar},
         watch: {
-            'ruleForm.countyId': function (val, old) {//三级联动countryId发生变化的时候触发
-                if (val != old) {
-                    console.log(this.ruleForm.countyId, '有延迟吗');
-                }
-            }
+
         },
         created(){
             this.searchKeyParams.bigType = this.compTypeBig[0];

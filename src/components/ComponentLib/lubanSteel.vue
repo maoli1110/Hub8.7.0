@@ -4,7 +4,7 @@
             <el-row class="filter-toolbar">
                 <el-col :span="4" style="padding-right:50px;">
                     <span class="absol span-block" style="width:50px;">日期：</span>
-                    <el-date-picker format="yyyy.MM.DD" @change="changeData"
+                    <el-date-picker format="yyyy.MM.dd" @change="changeData"
                                     v-model="selectDate"
                                     type="daterange"
                                     placeholder="选择日期范围" class="absol" style="left:50px;">
@@ -68,22 +68,23 @@
                             </el-table-column>
                             <el-table-column prop="title" width="" label="构件名称" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="img" width="80" label="缩略图">
+                            <el-table-column prop="imgUrl" width="80" label="缩略图">
                                 <template slot-scope="scope">
-                                    <img :src="scope.row.img" alt="" style="width:44px;">
+                                    <div class="imgUrl" :style="{backgroundImage: 'url('+scope.row.imgUrl+')'}"></div>
+                                    <!--<img :src="scope.row.imgUrl" alt="" style="width:44px;">-->
                                 </template>
                             </el-table-column>
                             <el-table-column prop="version" width="70" label="版本">
                             </el-table-column>
                             <el-table-column prop="coding" width="100" label="构件编码">
                             </el-table-column>
-                            <el-table-column prop="typeBigName" width="100" label="构件大类">
+                            <el-table-column prop="bigTypeName" width="100" label="构件大类">
                             </el-table-column>
-                            <el-table-column prop="typeSmallName" width="100" label="构件小类">
+                            <el-table-column prop="smallTypeName" width="100" label="构件小类">
                             </el-table-column>
-                            <el-table-column prop="autor" width="100" label="作者" show-overflow-tooltip>
+                            <el-table-column prop="author" width="100" label="作者" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="updatePerson" width="130" label="上传人">
+                            <el-table-column prop="addUser" width="130" label="上传人">
                             </el-table-column>
                             <el-table-column prop="addTime" width="" label="时间">
                             </el-table-column>
@@ -116,7 +117,7 @@
                         <el-upload :on-success="updataSucess" :on-error="updateError" :multiple='true'
                                    :show-file-list="false"
                                    class="upload-demo"
-                                   action="https://jsonplaceholder.typicode.com/posts/"
+                                   :action="uploadUrl"
                                    :on-preview="handlePreview"
                                    :on-remove="handleRemove"
                                    :file-list="fileList">
@@ -241,6 +242,8 @@
         treeList,           //测试数据列表
         SteelBigtypes,      //构件大类
         SteelSmalltypes,    //构件小类
+        SteelAdd,           //钢筋添加
+        SteelList,          //钢筋列表
     } from '../../api/getData-yhj.js';
 
     let deletArray = [];    //删除数组
@@ -275,6 +278,19 @@
                 cur_page: 1,            //第几页
                 totalPage: 10,          //每页多少条
                 tableData: [],          //模拟列表数据
+                tableParam:{
+                    asc: true,
+                    bigTypeName: "",
+                    currentPage: 1,
+                    endTime: "",
+                    pageSize: 10,
+                    productId: 2,
+                    smallTypeName:"" ,
+                    sort: "",
+                    startTime:"" ,
+                    title: ""
+                },
+                uploadUrl:"",           //上传地址
                 updateComList: {     //上传构件的一些文件信息
                     templateFile: "",
                     product: "",
@@ -353,7 +369,7 @@
              **/
 
             updataSucess(response, file, fileList){
-                this.updateParams.templateFile = fileList[0].name
+//                this.updateParams.templateFile = fileList[0].name
                 console.log(response, 'response')
                 console.log(file, '上传文件上传成功')
             },
@@ -379,8 +395,9 @@
              * @param type  1.update上传 2.cover修改页面
              **/
             overUpdate(){
+                this.uploadUrl = `${baseUrl}component/gj/upload/2`;
                 this.fileList = [];
-                this.updateComList.templateFile = '';
+//                this.updateComList.templateFile = '';
             },
             //获取接口地址
             getBaseUrl(){
@@ -413,6 +430,18 @@
                         this.compTypeSmall.unshift('不限');
                     }
                     this.searchKeyParams.smallType = this.compTypeSmall[0];
+                })
+            },
+            /**
+             *钢筋数据列表
+             * @param url       //响应地址
+             * @param param     //响应参数
+             **/
+            getTableList(url,param){
+                SteelList({url:url,param:param}).then((data)=>{
+                    if( data.data.result!=null){
+                        this.tableData = data.data.result.list;
+                    }
                 })
             },
             //修改构件默认数据
@@ -474,8 +503,11 @@
             //日期插件日期改变触发
             changeData(val){
                 if (val) {
-                    this.searchKeyParams.startTimer = val.split('-')[0];
-                    this.searchKeyParams.endTime = val.split('-')[1]
+                    this.searchKeyParams.startTime = val.split('-')[0];
+                    this.searchKeyParams.endTime = val.split('-')[1];
+                    this.tableParam.startTime = this.searchKeyParams.startTime;
+                    this.tableParam.endTime = this.searchKeyParams.endTime;
+                    this.getTableList(baseUrl,this.tableParam);
                 }
             },
 
@@ -494,6 +526,8 @@
             },
             //搜索功能
             searchComp(){
+                 this.tableParam.title = this.searchKeyParams.searchVal;
+                 this.getTableList(baseUrl,this.tableParam);
                 console.log(this.searchKeyParams, '执行搜索')
             },
             //列表删除
@@ -753,6 +787,7 @@
             getData(){
                 this.getBaseUrl();                      //基础地址
                 this.getBigType(baseUrl,{productId:2}); //构件大类
+                this.getTableList(baseUrl,this.tableParam)
                 this.searchKeyParams.bigType = this.compTypeBig[0]; //构件大类初始值
                 this.searchKeyParams.smallType = this.compTypeSmall[0]; //构件小类初始值
             },
@@ -761,11 +796,6 @@
         mounted(){},
         components: {VueScrollbar},
         watch: {
-            'ruleForm.countyId': function (val, old) {//三级联动countryId发生变化的时候触发
-                if (val != old) {
-                    console.log(this.ruleForm.countyId, '有延迟吗');
-                }
-            },
             //查询大类
             'searchKeyparams.bigType':function(newVal,oldVal){
                 if(newVal!=oldVal && newVal!=''){
@@ -775,6 +805,8 @@
                     } else {
                         this.getSmallType(baseUrl,{productId:2,bigType:val})
                     }
+                    this.tableParam.bigTypeName = newVal;
+                    this.getTableList(baseUrl,this.tableParam);
                 }
             },
             //查询小类
@@ -786,6 +818,8 @@
                     } else {
                         this.getSmallType(baseUrl,{productId:2,bigType:val})
                     }
+                    this.tableParam.smallTypeName = newVal;
+                    this.getTableList(baseUrl,this.tableParam);
                 }
             }
         },

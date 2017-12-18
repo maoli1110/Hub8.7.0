@@ -36,6 +36,10 @@
 .up-component .relat{
     margin:8px 0;
 }
+/*imgUrl*/
+.imgUrl{width:40px;height:40px;background-size: cover;text-align:center;text-align: center;
+    vertical-align: middle;
+    margin: 0 auto;}
 .up-component .el-input-group.el-input{width:86.5%;}
 .up-component .el-input-group{width:90%;}
 .up-component .el-input{width:73%;}

@@ -140,3 +140,7 @@ export const componentUpdate = params=>axios.put(`${params.url}component/az/upda
 export const SteelBigtypes = params=>axios.get(`${params.url}component/gj/bigtypes/${params.param.productId}`);
 //钢筋->查询小类
 export const SteelSmalltypes = params=>axios.post(`${params.url}/component/gj/smalltypes/${params.param.productId}/?bigType=${params.param.bigType}`);
+//钢筋->添加
+export const SteelAdd = params=>axios.post(`${params.url}component/gj/add/${params.param.productId}`,params.param)
+//钢筋列表
+export const SteelList = params=>axios.post(`${params.url}component/gj/find`,params.param);
