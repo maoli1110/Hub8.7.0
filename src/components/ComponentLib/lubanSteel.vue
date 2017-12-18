@@ -10,24 +10,17 @@
                                     placeholder="选择日期范围" class="absol" style="left:50px;">
                     </el-date-picker>
                 </el-col>
-              <!--  <el-col :span="4" class="relat" style="padding-right:50px;">
-                    <span class="absol span-block" style="width:50px;margin-right:47px;">地区：</span>
-                    <el-col :span="24">
-                        <input type="text" style="margin-left:47px;" id="provinLink" placeholder="请输入城市"/>
-                    </el-col>
-                </el-col>-->
                 <el-col :span="3" class="relat" style="padding-right:50px;margin-left:20px;">
                      <span class="absol span-block" style="width:80px;">
                         构件大类:
                     </span>
 
-                    <el-select v-model="searchKeyParams.bigType" placeholder="请选择" style="left:80px;"
-                               @change="typeBigChange">
+                    <el-select v-model="searchKeyParams.bigType" placeholder="请选择" style="left:80px;">
                         <el-option
-                            v-for="item in compTypeBig"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            v-for="(item,index) in compTypeBig"
+                            :key="item.index"
+                            :label="item"
+                            :value="item">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -36,13 +29,12 @@
                         构件小类:
                     </span>
 
-                    <el-select v-model="searchKeyParams.smallType" placeholder="请选择" style="left:120px;"
-                               @change="typeSmallChange">
+                    <el-select v-model="searchKeyParams.smallType" placeholder="请选择" style="left:120px;">
                         <el-option
                             v-for="item in compTypeSmall"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            :key="item"
+                            :label="item"
+                            :value="item">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -74,14 +66,10 @@
                                 type="selection"
                                 width="40">
                             </el-table-column>
-                            <!--<el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
-                            </el-table-column>-->
                             <el-table-column prop="title" width="" label="构件名称" show-overflow-tooltip>
                             </el-table-column>
                             <el-table-column prop="img" width="80" label="缩略图">
                                 <template slot-scope="scope">
-                                    <!--<span v-show="scope.row.speciality==='土建'" class="el-icon-date"></span>
-                                    <span v-show="scope.row.speciality==='钢筋'" class="el-icon-picture"></span>-->
                                     <img :src="scope.row.img" alt="" style="width:44px;">
                                 </template>
                             </el-table-column>
@@ -110,11 +98,11 @@
                         </el-table>
                     </vue-scrollbar>
                     <div class="pagination" style="text-align:center">
-                        <span
-                            style="float:left;line-height:42px;">共 {{totalNumber}} 条构件,共 {{size}} 页,累计下载 {{12000}} 次</span>
+                        <!--<span
+                            style="float:left;line-height:42px;">共 {{}} 条构件,共 {{}} 页,累计下载 {{}} 次</span>-->
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                        :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
-                                       layout="sizes, prev, pager, next, jumper" :total="totalNumber">
+                                       layout="sizes, prev, pager, next, jumper" :total="300">
                         </el-pagination>
                     </div>
                 </el-col>
@@ -124,11 +112,6 @@
                 <el-row>
                     <el-col :span="24" class="relat">
                         <span class="absol span-block label-w">构件文件：</span>
-                        <!--  <el-input style="margin-left:80px;" v-model="updateParams.templateFile" placeholder="模板名称">
-
-
-                              <el-button slot="append">上传</el-button>
-                          </el-input>-->
                         <div class="simulate-label" v-text="updateComList.templateFile"></div>
                         <el-upload :on-success="updataSucess" :on-error="updateError" :multiple='true'
                                    :show-file-list="false"
@@ -182,7 +165,6 @@
                             <span class="absol span-block label-w">作者：</span>
                             <span class="simulate-input substr " style="margin-left:80px;"
                                   v-text="updateComList.autor"></span>
-                            <!--<el-input placeholder="请输入模板名称" v-model="updateParams.autor"></el-input>-->
                         </el-col>
 
                     </el-col>
@@ -255,166 +237,44 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import {basePath} from "../../utils/common.js"
     import {getCitys, cloudTree,tests} from '../../api/getData.js';
-    import {treeList} from '../../api/getData-yhj.js';
-    import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
-    let deletArray = [];
-    //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
-    let level;
-    //预览状态模板树的深度
-    let maxLevel = -1;
+    import {
+        treeList,           //测试数据列表
+        SteelBigtypes,      //构件大类
+        SteelSmalltypes,    //构件小类
+    } from '../../api/getData-yhj.js';
+
+    let deletArray = [];    //删除数组
+    let level;              //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
+    let maxLevel = -1;      //最大层级
+    let baseUrl = '';       //响应地址
     export default {
         data(){
             return {
-                val: "",
-                title: "上传构件文件",
-                selectDate: "",     //日期插件选择的日期
+                title: "上传构件文件",   //构件信息标题
+                selectDate: "",        //日期插件选择的日期
                 uploadCompDialog: false,//上传构件弹窗
-                ModifyTree: false,   //构件树修改弹窗
-                override: false,     //是否覆盖
-                cities: [],         //三级联动城市
-                province: [],       //三级联动省
-                counties: [],       //三级联动区
-                size: '',
-                ruleForm: {         //关闭三级联动 选择的省、市、区的id和name
-                    location: "",
-                    countyId: ""
-                },
-                searchKeyParams: {     //筛选栏的条件
-                    majorVal: "",//版本
-                    bigType: "",    //大类
-                    smallType: '',  //小类
-                    searchVal: '',  //关键字
-                    startTime: "",  //开始时间
-                    endTime: "",    //结束时间
+                ModifyTree: false,      //构件树修改弹窗
+                override: false,        //是否覆盖
+                searchKeyParams: {      //筛选栏的条件
+                    majorVal: "",       //版本
+                    bigType: "",        //大类
+                    smallType: '',      //小类
+                    searchVal: '',      //关键字
+                    startTime: "",      //开始时间
+                    endTime: "",        //结束时间
 
                 },
-                compTypeBig: [{
-                    value: '不限',
-                    label: "不限"
-                }, {
-                    value: '初始大类',
-                    label: "初始大类"
-                }, {
-                    value: '土建大类',
-                    label: "土建大类"
-                }, {
-                    value: '房建大类',
-                    label: "家装大类"
-                }, {
-                    value: '家装大类',
-                    label: "家装大类"
-                }, {
-                    value: '中关村',
-                    label: "中关村"
-                }],
-                compTypeSmall: [{
-                    value: '不限',
-                    label: "不限"
-                }],
-                versionsOptions: [{ //版本选择框
+                compTypeBig: ["不限"],    //构件大类
+                compTypeSmall: ["不限"],  //构件小类
+                versionsOptions: [{     //版本选择框
                     value: '1.0.0',
 
                 }],
-                fileList: [],      //上传的文件信息
+                fileList: [],           //上传的文件信息
                 //分页的一些设置
-                cur_page: 1,
-                totalPage: 50,
-                totalNumber: 300,
-
-                tableData: [
-                    {
-                        index: 1,
-                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        coding: "LX001",
-                        typeBigName: '消火栓',
-                        typeSmallName: "消火栓箱",
-                        factrue: "长沙平安消防设备有限公司",
-                        fav: '123123',
-                        autor: '陈翔',
-                        editTime: "2018.01.01 13:14:21",
-                        addTime: '2017.11.18 12:12:12',
-                        addUser: '',
-                        downloadTimes: 0,
-                        title: 'LX',
-                        updatePerson: "陈翔"
-
-                    },
-                    {
-                        index: 2,
-                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        coding: "LX001",
-                        typeBigName: '消火栓',
-                        typeSmallName: "消火栓箱",
-                        factrue: "长沙平安消防设备有限公司",
-                        fav: '123123',
-                        autor: '陈翔',
-                        editTime: "2018.01.01 13:14:21",
-                        addTime: '2017.11.18 12:12:12',
-                        addUser: '',
-                        downloadTimes: 0,
-                        title: 'LX',
-                        updatePerson: "杨洋"
-                    },
-                    {
-                        index: 3,
-                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        coding: "LX001",
-                        typeBigName: '消火栓',
-                        typeSmallName: "消火栓箱",
-                        factrue: "长沙平安消防设备有限公司",
-                        fav: '123123',
-                        autor: '陈翔',
-                        editTime: "2018.01.01 13:14:21",
-                        addTime: '2017.11.18 12:12:12',
-                        addUser: '',
-                        downloadTimes: 0,
-                        title: 'LX',
-                        updatePerson: "陈翔"
-                    },
-                    {
-                        index: 4,
-                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        coding: "LX001",
-                        typeBigName: '消火栓',
-                        typeSmallName: "消火栓箱",
-                        factrue: "长沙平安消防设备有限公司",
-                        fav: '123123',
-                        autor: '陈翔',
-                        editTime: "2018.01.01 13:14:21",
-                        addTime: '2017.11.18 12:12:12',
-                        addUser: '',
-                        downloadTimes: 0,
-                        title: 'LX',
-                        updatePerson: "杨洋"
-                    },
-                    {
-                        index: 5,
-                        compName: '鲁班安装鲁班安装鲁班安装鲁班安装',
-                        img: "../../../static/img/wavebrak519400.jpg",
-                        version: "2.0.0",
-                        coding: "LX001",
-                        typeBigName: '消火栓',
-                        typeSmallName: "消火栓箱",
-                        factrue: "长沙平安消防设备有限公司",
-                        fav: '123123',
-                        autor: '陈翔',
-                        editTime: "2018.01.01 13:14:21",
-                        addTime: '2017.11.18 12:12:12',
-                        addUser: '',
-                        downloadTimes: 0,
-                        title: 'LX',
-                        updatePerson: "羊羊羊羊羊"
-                    },
-                ],  //模拟列表数据
-
+                cur_page: 1,            //第几页
+                totalPage: 10,          //每页多少条
+                tableData: [],          //模拟列表数据
                 updateComList: {     //上传构件的一些文件信息
                     templateFile: "",
                     product: "",
@@ -427,7 +287,7 @@
                     version: "",
                     remark: "",
                 },
-                setting: {//搜索条件ztree setting
+                setting: {          //搜索条件ztree setting
                     data: {
                         simpleData: {
                             enable: true
@@ -522,6 +382,39 @@
                 this.fileList = [];
                 this.updateComList.templateFile = '';
             },
+            //获取接口地址
+            getBaseUrl(){
+                baseUrl = basePath(this.$route.path);
+            },
+            /**
+             * 获取构件大类
+             * @params url  响应地址
+             * @params param   响应参数
+             * */
+            getBigType(url,param){
+                SteelBigtypes({url:url,param:param}).then((data)=>{
+                    if(data.data.result!=null){
+                        this.compTypeBig = data.data.result;
+                        this.compTypeBig.unshift('不限');
+                        this.getSmallType(baseUrl,{productId:2,bigType:this.searchKeyParams.bigType})
+                    }
+                    this.searchKeyParams.bigType = this.compTypeBig[0];
+                })
+            },
+            /**
+             * 获取构件小类
+             * @params url  响应地址
+             * @params param   响应参数
+             * */
+            getSmallType(url,param){
+                SteelSmalltypes({url:url,param:param}).then((data)=>{
+                    if(data.data.result!=null){
+                        this.compTypeSmall = data.data.result;
+                        this.compTypeSmall.unshift('不限');
+                    }
+                    this.searchKeyParams.smallType = this.compTypeSmall[0];
+                })
+            },
             //修改构件默认数据
             modifyCompData(){
                 if (this.override) {
@@ -576,9 +469,6 @@
                     if (deletArray.indexOf(val.index) == -1) {
                         deletArray.push(val.index)
                     }
-                    /*else{
-                     deletArray.splice(index,1)
-                     }*/
                 })
             },
             //日期插件日期改变触发
@@ -592,31 +482,10 @@
             typeBigChange(val){
                 console.log(val);
                 if (val == '不限') {
-                    this.compTypeSmall = [{
-                        value: '不限',
-                        label: "不限"
-                    }]
+                    this.compTypeSmall = ['不限'];
+                    this.searchKeyParams.smallType = this.compTypeSmall[0]
                 } else {
-                    this.compTypeSmall = [{
-                        value: '不限',
-                        label: "不限"
-                    }, {
-                        value: '初始大类',
-                        label: "初始大类"
-                    }, {
-                        value: '土建大类',
-                        label: "土建大类"
-                    }, {
-                        value: '房建大类',
-                        label: "家装大类"
-                    }, {
-                        value: '家装大类',
-                        label: "家装大类"
-                    }, {
-                        value: '中关村',
-                        label: "中关村"
-                    }
-                    ]
+                    this.getSmallType(baseUrl,{productId:2,bigType:val})
                 }
 
             },
@@ -872,7 +741,6 @@
                 nodes.forEach((val, key) => {
                     treeNodes.push({nodeId: val.id, pid: val.pId, nodeName: val.name})
                 });
-                console.log(treeNodes, '保存更改')
             },
             //构件树保存
             ModifyOk(){
@@ -883,39 +751,41 @@
                 //不用调用接口
             },
             getData(){
-                this.searchKeyParams.bigType = this.compTypeBig[0].value;
-                this.searchKeyParams.smallType = this.compTypeSmall[0].value;
-                this.size = parseInt(this.totalNumber / 50);
-                console.log(this.$route,'22222');
-                let baseUrl= basePath(this.$route.matched[2].path);
-                let params = {
-                    url:baseUrl,
-                }
-                tests(params).then((data)=>{
-                    console.log(data)
-                })
+                this.getBaseUrl();                      //基础地址
+                this.getBigType(baseUrl,{productId:2}); //构件大类
+                this.searchKeyParams.bigType = this.compTypeBig[0]; //构件大类初始值
+                this.searchKeyParams.smallType = this.compTypeSmall[0]; //构件小类初始值
             },
 
         },
-        mounted(){
-            let vThis = this;
-            //后端返回省级结构进行赋值
-            getCitys().then((data) => {
-                this.cities = data.data.cities;
-                this.province = data.data.provice;
-                this.counties = data.data.counties;
-            });
-            //三级联动加载数据
-            $("#provinLink").click(function (e) {
-                SelCity(this, e, vThis, vThis.cities, vThis.counties, vThis.province);
-            });
-
-        },
+        mounted(){},
         components: {VueScrollbar},
         watch: {
             'ruleForm.countyId': function (val, old) {//三级联动countryId发生变化的时候触发
                 if (val != old) {
                     console.log(this.ruleForm.countyId, '有延迟吗');
+                }
+            },
+            //查询大类
+            'searchKeyparams.bigType':function(newVal,oldVal){
+                if(newVal!=oldVal && newVal!=''){
+                    if (val == '不限') {
+                        this.compTypeSmall = ['不限'];
+                        this.searchKeyParams.smallType = this.compTypeSmall[0]
+                    } else {
+                        this.getSmallType(baseUrl,{productId:2,bigType:val})
+                    }
+                }
+            },
+            //查询小类
+            'searchKeyparams.smallType':function(newVal,oldVal){
+                if(newVal!=oldVal && newVal!=''){
+                    if (val == '不限') {
+                        this.compTypeSmall = ['不限'];
+                        this.searchKeyParams.smallType = this.compTypeSmall[0]
+                    } else {
+                        this.getSmallType(baseUrl,{productId:2,bigType:val})
+                    }
                 }
             }
         },

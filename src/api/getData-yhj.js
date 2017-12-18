@@ -132,3 +132,11 @@ export const upload = params=>axios.post(`${params.url}component/az/upload/${par
 export const componentAdd = params=>axios.put(`${params.url}component/az/add/${params.param.productId}`,params.param.base);
 //安装->更新
 export const componentUpdate = params=>axios.put(`${params.url}component/az/update/${params.param.productId}`,params.param.modify);
+
+/**
+ * 钢筋
+ * */
+//钢筋->查询大类
+export const SteelBigtypes = params=>axios.get(`${params.url}component/gj/bigtypes/${params.param.productId}`);
+//钢筋->查询小类
+export const SteelSmalltypes = params=>axios.post(`${params.url}/component/gj/smalltypes/${params.param.productId}/?bigType=${params.param.bigType}`);
