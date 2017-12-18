@@ -485,7 +485,7 @@ export default new Router({
                                 {
                                     // 项目库
                                     path: 'projectLib',
-                                    component: resolve => require(['../components/Configuration/projectLib.vue'], resolve)
+                                    component: resolve => require(['../components/Configuration/projectLib.vue'], resolve),
                                 },
                                 {
                                     // 已完成
@@ -496,7 +496,12 @@ export default new Router({
                                     // 回收站
                                     path: 'recycle',
                                     component: resolve => require(['../components/Configuration/recycle.vue'], resolve)
+                                },
+                                {
+                                    path: ':type/:index',
+                                    component: resolve => require(['../components/Configuration/BWTemplate.vue'], resolve)
                                 }
+                                           
                             ]
                         },
                         {
