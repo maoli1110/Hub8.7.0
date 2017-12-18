@@ -23,23 +23,25 @@
 <style scoped>
     @import "../../../static/css/aside.css";
     .container .el-menu {
-        padding: 10px 20px;
+        -padding: 10px 20px;
         border: 1px solid #e6e6e6;
         border-top: none;
     }
 
     .container .el-menu .el-menu-item {
-        height: 40px;
-        width: 132px;
-        margin-right: 50px;
-        line-height: 40px;
-        text-align: center
+        height: 60px;
+        width: 180px;
+        -margin-right: 50px;
+        line-height: 60px;
+        text-align: center;
+        border-right: 1px solid #e6e6e6;
     }
 
     .container .is-active {
-        background-color: #f5f8fd;
+        -background-color: #f5f8fd;
         font-size: 16px;
         font-weight: 700;
+        border-bottom: 3px solid #6595f2;
     }
 
     .container .el-menu .el-menu-item:hover {
