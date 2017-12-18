@@ -523,8 +523,19 @@
              deleteItem(url,param){
                 SteelDelete({url:url,param:param}).then((data)=>{
                    if(data.data.code==200){
-                       this.commonMessage('删除成功','success')
-                       this.getTableList(baseUrl,this.tableParam)
+                       this.commonMessage('删除成功','success');
+                       if(this.tableData.list.length===deletArray.length){
+                           this.getTableList(baseUrl,this.tableParam);
+                       }else if (deletArray.length) {
+                           for (let i = 0; i < deletArray.length; i++) {
+                               for (let j = 0; j < this.tableData.list.length; j++) {
+                                   if (this.tableData.list[j].componentFileId  == deletArray[i].componentId) {
+                                       this.tableData.list.splice(j, 1);
+                                   }
+                               }
+                           }
+                       }
+                       deletArray = [];
                    }
                 })
             },
@@ -627,18 +638,7 @@
                 }
 
                 this.commonConfirm('确定要删除吗', () => {
-                    /* if(this.tableData.length===deletArray.length){
-                     //重新渲染数据
-                     }else*/
-                    if (deletArray.length) {
-                        for (let i = 0; i < deletArray.length; i++) {
-                            for (let j = 0; j < this.tableData.length; j++) {
-                                if (this.tableData[j].index == deletArray[i]) {
-                                    this.tableData.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
+
 
                   this.deleteItem(baseUrl,{productId:2,del:deletArray});
                 }, () => {

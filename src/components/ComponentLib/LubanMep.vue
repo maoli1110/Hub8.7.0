@@ -14,7 +14,7 @@
                     <span class="absol span-block" style="width:60px;left:10px;">
                         专业:
                     </span>
-                    <el-select  v-model="searchKeyParams.majorVal" placeholder="请选择" style="left:50px;" @change="majorChange">
+                    <el-select  v-model="searchKeyParams.majorVal" placeholder="请选择" style="left:50px;" >
                         <el-option
                             v-for="item in majorOptions"
                             :key="item"
@@ -28,7 +28,7 @@
                         构件大类:
                     </span>
 
-                    <el-select  v-model="searchKeyParams.bigType" placeholder="请选择" style="left:80px;" @change="typeBigChange">
+                    <el-select  v-model="searchKeyParams.bigType" placeholder="请选择" style="left:80px;" >
                         <el-option
                             v-for="item in compTypeBig"
                             :key="item"
@@ -42,7 +42,7 @@
                         构件小类:
                     </span>
 
-                    <el-select  v-model="searchKeyParams.smallType" placeholder="请选择" style="left:120px;" @change="typeSmallChange">
+                    <el-select  v-model="searchKeyParams.smallType" placeholder="请选择" style="left:120px;" >
                         <el-option
                             v-for="item in compTypeSmall"
                             :key="item"
@@ -462,12 +462,12 @@
             //获取列表数据
             getTableList(url,param){
                 componentList({url:url,param:param}).then((data)=>{
-                    console.log('刷新列表')
                     if(data.data.result){
                         this.tableData = data.data.result;
                     }else{
                         this.tableData ={};
                     }
+                    this.getDownloadCount(baseUrl,this.downloadSum)
                 })
             },
             //添加功能
@@ -632,44 +632,13 @@
                     this.searchKeyParams.endTime = val.split('-')[1];
                     this.searchKeyParams.startTime = new Date(this.searchKeyParams.startTime).toLocaleDateString();
                     this.searchKeyParams.endTime = new Date(this.searchKeyParams.endTime).toLocaleDateString();
-                }
-                this.tableParam.startTime =  this.searchKeyParams.startTime;
-                this.tableParam.endTime =  this.searchKeyParams.endTime;
-                this.getTableList(baseUrl, this.tableParam);
-            },
-            majorChange(val){
-                console.log(val,'val');
-                if(val=='不限'){
-                    this.compTypeBig = ['不限'];
-                    this.searchKeyParams.bigType = this.compTypeBig[0];
-                }else{
-                    this.tableParam.majorName =  val;
-                    this.downloadSum.majorName = val;
-                    this.getDownloadCount(baseUrl,this.downloadSum)
-                    this.getBigtypes(baseUrl,{majorName:val})
+                    this.tableParam.startTime =  this.searchKeyParams.startTime;
+                    this.tableParam.endTime =  this.searchKeyParams.endTime;
+                    this.downloadSum.startTime =  this.searchKeyParams.startTime;
+                    this.downloadSum.endTime =  this.searchKeyParams.endTime;
                     this.getTableList(baseUrl, this.tableParam);
                 }
 
-            },
-            typeBigChange(val){
-                if(val=='不限'){
-                    this.compTypeSmall = ['不限'];
-
-                    this.searchKeyParams.smallType = this.compTypeSmall[0];
-                }else{
-                    this.tableParam.bigTypeName =  val;
-                    this.downloadSum.bigTypeName = val;
-                    this.getDownloadCount(baseUrl,this.downloadSum)
-                    this.getTableList(baseUrl, this.tableParam);
-                    this.getSmalltypes(baseUrl,{majorName:this.searchKeyParams.majorVal,bigType:val})
-                }
-
-            },
-            typeSmallChange(val){
-                this.tableParam.smallTypeName =  val;
-                this.downloadSum.smallTypeName = val;
-                this.getDownloadCount(baseUrl,this.downloadSum);
-                this.getTableList(baseUrl, this.tableParam);
             },
             //搜索功能
             searchComp(){
@@ -928,14 +897,45 @@
                 this.getBaseUrl();
                 this.getMarjor();
                 this.getTableList(baseUrl,this.tableParam);
-                this.getDownloadCount(baseUrl,this.downloadSum)
             },
 
         },
         mounted(){ },
         components: {VueScrollbar},
         watch: {
-
+            'searchKeyParams.majorVal':function(newVal,oldVal){
+                if(newVal !=oldVal && oldVal!=""){
+                    if(newVal=='不限'){
+                        this.compTypeBig = ['不限'];
+                        this.searchKeyParams.bigType = this.compTypeBig[0];
+                    }else{
+                        this.tableParam.majorName =  newVal;
+                        this.downloadSum.majorName = newVal;
+                        this.getBigtypes(baseUrl,{majorName:newVal})
+                        this.getTableList(baseUrl, this.tableParam);
+                    }
+                }
+            },
+            'searchKeyParams.bigType':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=""){
+                    if(newVal=='不限'){
+                        this.compTypeSmall = ['不限'];
+                        this.searchKeyParams.smallType = this.compTypeSmall[0];
+                    }else{
+                        this.tableParam.bigTypeName =  newVal;
+                        this.downloadSum.bigTypeName = newVal;
+                        this.getTableList(baseUrl, this.tableParam);
+                        this.getSmalltypes(baseUrl,{majorName:this.searchKeyParams.majorVal,bigType:newVal})
+                    }
+                }
+            },
+            'searchKeyParams.smallType':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=""){
+                    this.tableParam.smallTypeName =  newVal;
+                    this.downloadSum.smallTypeName = newVal;
+                    this.getTableList(baseUrl, this.tableParam);
+                }
+            }
         },
         created(){
             this.searchKeyParams.bigType = this.compTypeBig[0];
