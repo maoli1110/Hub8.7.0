@@ -102,7 +102,7 @@
                         <span
                             style="float:left;line-height:42px;">共 {{tableData.totalRecords}} 条构件,共 {{tableData.totalPages}} 页,累计下载 {{downloadSum}} 次</span>
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                       :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
+                                       :current-page="cur_page" :page-sizes="[1, 50, 100, 150]" :page-size="totalPage"
                                        layout="sizes, prev, pager, next, jumper" :total="tableData.totalRecords">
                         </el-pagination>
                     </div>
@@ -281,36 +281,35 @@
                 fileList: [],           //上传的文件信息
                 //分页的一些设置
                 cur_page: 1,            //第几页
-                totalPage: 10,          //每页多少条
+                totalPage: 1,          //每页多少条
                 downloadSum:0,          //下载次数
                 tableData: {},          //模拟列表数据
                 tableParam:{
-                    asc:false,
-                    bigTypeName:"",
-                    currentPage:1,
-                    endTime:"",
-                    pageSize:10,
-                    productId:2,
-                    smallTypeName:"",
-                    sort:"",
-                    startTime:"",
-                    title:""
+                    asc:false,          //排序
+                    bigTypeName:"",     //大类
+                    currentPage:1,      //当前页
+                    endTime:"",         //结束时间
+                    pageSize:1,         //每页显示多少条
+                    productId:2,        //产品id
+                    smallTypeName:"",   //小类
+                    sort:"",            //排序
+                    startTime:"",       //开始时间
+                    title:""            //构件名称
                 },
                 uploadUrl:"",           //上传地址
                 updateComList: {     //上传构件的一些文件信息
-                    fileName: "",
-                    productName: "",
-                    componentCoding: "",
-                    smallType: '',
-                    bigType: "",
-                    type: "",
-                    author: "",
-                    version: "",
-                    componentFilePath:"",
-                    pictureFilePath:"",
-                    summaryFilePath:"",
-                    name:'',
-                    remark: "",
+                    fileName: "",       //文件名称
+                    productName: "",    //产品名称
+                    componentCoding: "",//code编码
+                    smallType: '',      //小类
+                    bigType: "",        //大类
+                    author: "",         //作者
+                    version: "",        //版本
+                    componentFilePath:"",//构建文件路径
+                    pictureFilePath:"", //构建图片路径 ,
+                    summaryFilePath:"",//构建概要文件路径 ,
+                    name:'',            //构件名称
+                    remark: "",         //备注
                 },
                 setting: {          //搜索条件ztree setting
                     data: {
@@ -342,7 +341,7 @@
                 this.$alert(message, '提示', {
                     confirmButtonText: '确定',
                     callback: action => {
-                        console.log(1111)
+
                     }
                 })
             },
@@ -357,10 +356,14 @@
             handleSizeChange(size){
                 console.log(`每页显示多少条${size}`);
                 this.totalPage = size;
-                this.size = parseInt(this.totalNumber / size);
+                this.tableParam.pageSize = size;
+                this.getTableList(baseUrl,this.tableParam);
             },
             handleCurrentChange(currentPage){
-                console.log(`当前页${currentPage}`);
+                this.cur_page = currentPage;
+                this.tableParam.currentPage = currentPage;
+                this.getTableList(baseUrl,this.tableParam);
+//                console.log(`当前页${currentPage}`);
             },
 
             //上传
@@ -379,8 +382,6 @@
 
             updataSucess(response, file, fileList){
                 this.updateComList = response.result;
-//                console.log( this.updateComList,'upload')
-//                console.log(file, '上传文件上传成功')
             },
             /**
              *上传失败回调的函数
@@ -406,7 +407,6 @@
             overUpdate(){
                 this.uploadUrl = `${baseUrl}component/gj/upload/2`;
                 this.fileList = [];
-//                this.updateComList.templateFile = '';
             },
             //获取接口地址
             getBaseUrl(){
@@ -502,7 +502,7 @@
             setAddInfo(url,param){
                 SteelAdd({url:url,param:param}).then((data)=>{
                     if(data.data.code==200){
-                        this.commonMessage('添加构件成功','warning');
+                        this.commonMessage('添加构件成功','success');
                         this.getTableList(baseUrl,this.tableParam);
                     }
                 })
@@ -510,9 +510,22 @@
             updateInfo(url,param){
                 SteelUpdate({url:url,param:param}).then((data)=>{
                     if(data.data.code==200){
-                        this.commonMessage('更新构件成功','warning');
+                        this.commonMessage('更新构件成功','success');
                         this.getTableList(baseUrl,this.tableParam);
                     };
+                })
+            },
+            /**
+             * 删除构件信息
+             * @param url       响应地址
+             * @param param     响应参数
+             **/
+             deleteItem(url,param){
+                SteelDelete({url:url,param:param}).then((data)=>{
+                   if(data.data.code==200){
+                       this.commonMessage('删除成功','success')
+                       this.getTableList(baseUrl,this.tableParam)
+                   }
                 })
             },
             /**
@@ -565,13 +578,13 @@
              */
 
             selectAll(selection){
-                this.commonAlert('全部选中了哦')
+                deletArray =[];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,title:val.title})
                     }
                 });
-                console.log(deletArray, 'selectionall')
+//                console.log(deletArray, 'selectionall')
             },
 
             /**
@@ -580,12 +593,13 @@
              * @params row 列
              */
             selectChecked(selection, row){
-                console.log(row, selection, 'selection')
+                deletArray =[];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,title:val.title})
                     }
                 })
+//                console.log(deletArray, 'selection')
             },
             //日期插件日期改变触发
             changeData(val){
@@ -600,25 +614,10 @@
                 this.tableParam.endTime = this.searchKeyParams.endTime;
                 this.getTableList(baseUrl,this.tableParam);
             },
-
-            typeBigChange(val){
-                console.log(val);
-                if (val == '不限') {
-                    this.compTypeSmall = ['不限'];
-                    this.searchKeyParams.smallType = this.compTypeSmall[0]
-                } else {
-                    this.getSmallType(baseUrl,{productId:2,bigType:val})
-                }
-
-            },
-            typeSmallChange(val){
-
-            },
             //搜索功能
             searchComp(){
                  this.tableParam.title = this.searchKeyParams.searchVal;
                  this.getTableList(baseUrl,this.tableParam);
-                console.log(this.searchKeyParams, '执行搜索')
             },
             //列表删除
             deleteComp(){
@@ -641,7 +640,7 @@
                         }
                     }
 
-                    deletArray = [];//接口成功之后删除数据
+                  this.deleteItem(baseUrl,{productId:2,del:deletArray});
                 }, () => {
 
                 }, 'warning')
