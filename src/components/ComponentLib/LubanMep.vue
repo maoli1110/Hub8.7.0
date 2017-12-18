@@ -27,7 +27,6 @@
                      <span class="absol span-block" style="width:80px;">
                         构件大类:
                     </span>
-
                     <el-select  v-model="searchKeyParams.bigType" placeholder="请选择" style="left:80px;" >
                         <el-option
                             v-for="item in compTypeBig"
@@ -41,7 +40,6 @@
                      <span class="absol span-block" style="width:80px;left:45px;">
                         构件小类:
                     </span>
-
                     <el-select  v-model="searchKeyParams.smallType" placeholder="请选择" style="left:120px;" >
                         <el-option
                             v-for="item in compTypeSmall"
@@ -80,7 +78,7 @@
                             <!---->
                             <!--<el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
                             </el-table-column>-->
-                            <el-table-column prop="fileName" width="" label="构件名称" show-overflow-tooltip>
+                            <el-table-column prop="name" width="" label="构件名称" show-overflow-tooltip>
                             </el-table-column>
                             <el-table-column prop="imgUrl " width="80" label="缩略图">
                                 <template slot-scope="scope">
