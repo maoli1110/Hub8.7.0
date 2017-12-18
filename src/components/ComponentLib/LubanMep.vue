@@ -629,10 +629,12 @@
             changeData(val){
                 if (val) {
                     this.searchKeyParams.startTime = val.split('-')[0];
-                    this.searchKeyParams.endTime = val.split('-')[1]
+                    this.searchKeyParams.endTime = val.split('-')[1];
+                    this.searchKeyParams.startTime = new Date(this.searchKeyParams.startTime).toLocaleDateString();
+                    this.searchKeyParams.endTime = new Date(this.searchKeyParams.endTime).toLocaleDateString();
                 }
                 this.tableParam.startTime =  this.searchKeyParams.startTime;
-                this.tableParam.endTime =   this.searchKeyParams.endTime;
+                this.tableParam.endTime =  this.searchKeyParams.endTime;
                 this.getTableList(baseUrl, this.tableParam);
             },
             majorChange(val){
@@ -923,8 +925,6 @@
                 this.downloadSum.endTime = this.searchKeyParams.endTime;
                 this.downloadSum.startTime = this.searchKeyParams.startTime;
                 this.downloadSum.title =  this.searchKeyParams.searchVal;
-
-
                 this.getBaseUrl();
                 this.getMarjor();
                 this.getTableList(baseUrl,this.tableParam);
