@@ -24,6 +24,9 @@ new Vue({
     render: h => h(App)
 }).$mount('#app');
 
+let bus = new Vue();
+Vue.prototype.bus = bus;
+
 /**
  * http拦截器
  * Add a request interceptor 

@@ -1,9 +1,8 @@
  <template>
     <div>
         <div class="aside">
-            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-menu-item index="/companyprofile/organization-structure">组织结构</el-menu-item>
-                <el-menu-item index="/companyprofile/space-usage">空间使用</el-menu-item>
+            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-menu-item :index="subItem.menuId" v-for="(subItem,i) in mainMenu">{{subItem.name}}</el-menu-item>
             </el-menu>
         </div>
         <div class="container">
@@ -13,10 +12,16 @@
 </template>
 
 <script>
+import {getMenusList} from '../../api/getData-mll.js';
 export default {
-    data: () => ({
-        activeIndex: '',
-    }),
+    data() {
+        return{
+            mainMenu:[],
+            serverUrl: this.GLOBAL.serverPath.casUrl,
+            activeIndex: '',
+            currentNav:''
+        }
+    },
     methods: {
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
@@ -26,6 +31,15 @@ export default {
         }
     },
     created(){
+        let self = this;
+        this.bus.$on('currentNav',function(key){
+            if(!self.mainMenu.length){
+                getMenusList({url:self.serverUrl,params:key}).then((res)=>{
+                    self.mainMenu = res.data;
+                    console.log(this.mainMenu,'this.mainMenu')
+                })
+            }
+        })
         this.activeIndex = this.$route.path;
     }
 }
