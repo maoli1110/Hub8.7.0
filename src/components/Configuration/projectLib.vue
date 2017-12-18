@@ -12,8 +12,12 @@
                 <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData" border tooltip-effect="dark"
                           style="min-width: 1537px;margin-top:20px">
                     <el-table-column class="" type='index' label="序号" width="60"></el-table-column>
-                    <el-table-column class="table-tr" prop="ip" label="项目名称" width="200"></el-table-column>
-                    <el-table-column class="table-tr" prop="func" label="创建人" width=""></el-table-column>
+                    <el-table-column class="table-tr" prop="ip" label="项目名称" width="">
+                        <template slot-scope="scope">
+                            <router-link to="projectLib/1">{{scope.row.func}}</router-link>
+                        </template>
+                    </el-table-column>
+                    <el-table-column class="table-tr" prop="func" label="创建人" width="200"></el-table-column>
                     <el-table-column class="table-tr" prop="operator" label="创建时间" width="200"></el-table-column>
                     <el-table-column class="table-tr" prop="operator" label="更新人" width="200"></el-table-column>
                     <el-table-column class="table-tr" :formatter="dateFormat" prop="operateTime" label="更新时间" width="200"></el-table-column>
