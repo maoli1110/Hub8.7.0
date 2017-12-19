@@ -5,9 +5,7 @@
                 <el-menu-item :index="subItem.menuId" v-for="(subItem,i) in subMenus">{{subItem.name}}</el-menu-item>
             </el-menu>
         </div>
-
         <div class="container">
-           <div v-show="isShow">111</div>
         </div>
     </div>
 </template>
@@ -34,15 +32,11 @@ export default {
     },
     created() {
         let self = this;
-        console.log(localStorage.getItem("mainNavObj"),'7887878')
         let mainNavObj = JSON.parse(localStorage.getItem("mainNavObj"));
         this.currentMenuId = getMainNavMenuId(this.$route.path,mainNavObj);
-        setTimeout(()=>{
-            getMenusList({url:self.serverUrl,params:self.currentMenuId}).then((res)=>{
-                self.subMenus = res.data;
-            });
-        },1)
-        
+        getMenusList({url:self.serverUrl,params:self.currentMenuId}).then((res)=>{
+            self.subMenus = res.data;
+        });
     },
     mounted() {
 

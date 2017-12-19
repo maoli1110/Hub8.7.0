@@ -17,17 +17,17 @@
 <script>
 /* 左侧导航菜单样式 */
 
-
-//js
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
 import {route} from "../../api/getData-yhj.js";
 import {getMenusList} from '../../api/getData-mll.js';
+import {getMainNavMenuId} from "../../utils/common.js"; // 通用模块
 export default {
     data (){
         return {
             serverUrl: this.GLOBAL.serverPath.casUrl,
             activeIndex: "",
-            subMenus:[]
+            subMenus:[],
+            currentMenuId:''
         }
     },
     methods: {
@@ -44,8 +44,10 @@ export default {
     },
     created(){
         let self = this;
-        let menuId = 'a73ce286e17311e7aefd729014adbe9a';
-        getMenusList({url:self.serverUrl,params:menuId}).then((res)=>{
+        // let menuId = 'a73ce286e17311e7aefd729014adbe9a';
+        let mainNavObj = JSON.parse(localStorage.getItem("mainNavObj"));
+        this.currentMenuId = getMainNavMenuId(this.$route.path,mainNavObj);
+        getMenusList({url:self.serverUrl,params:self.currentMenuId}).then((res)=>{
             self.subMenus = res.data;
             let tempSubMenu = res.data;
             tempSubMenu.forEach((value,key)=>{
@@ -57,7 +59,7 @@ export default {
                     });
                 }
             })
-        })
+        });
     }
 }
 </script>

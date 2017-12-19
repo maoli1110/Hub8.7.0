@@ -3,7 +3,7 @@
         <div class="aside relat">
             <!--左侧菜单项 材料、设备、人工、机械、周转材料、专业分包、清工分包-->
             <div class="menus-status absol menus-mask"></div>
-             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
                 <el-menu-item :index="subItem.menuId" v-for="(subItem,i) in subMenus">{{subItem.name}}</el-menu-item>
             </el-menu>
         </div>
@@ -26,12 +26,16 @@
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import VueFooter from '../../components/common/footer.vue';
     import {getMenusList} from '../../api/getData-mll.js';
+    import {getMainNavMenuId} from "../../utils/common.js"; // 通用模块
     export default {
-    data: () => ({
-        subMenus:[],
-        serverUrl: this.GLOBAL.serverPath.casUrl,
-        activeIndex: '',
-    }),
+    data () {
+        return{
+            subMenus:[],
+            serverUrl: this.GLOBAL.serverPath.casUrl,
+            activeIndex: '',
+            currentMenuId:''
+        }
+    },
     methods: {
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
@@ -43,10 +47,11 @@
     components: { VueScrollbar,VueFooter },
     created(){
         let self = this;
-        let menuId = 'a73cefade17311e7aefd729014adbe9a';
-        getMenusList({url:self.serverUrl,params:menuId}).then((res)=>{
+        let mainNavObj = JSON.parse(localStorage.getItem("mainNavObj"));
+        this.currentMenuId = getMainNavMenuId(this.$route.path,mainNavObj);
+        getMenusList({url:self.serverUrl,params:self.currentMenuId}).then((res)=>{
             self.subMenus = res.data;
-        })
+        });
     }
 }
 </script>

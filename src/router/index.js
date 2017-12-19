@@ -54,7 +54,6 @@ export default new Router({
                     // 指标库
                     path: '/indicatorslib',
                     component: resolve => require(['../components/IndicatorsLib/IndicatorsLib.vue'], resolve),
-                    redirect: '/indicatorslib/unchecked/civilEngineering-index',
                 },
                 {
                     // 应用配置

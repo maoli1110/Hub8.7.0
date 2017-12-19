@@ -9,15 +9,8 @@
                 <el-menu-item index="/configuration/cim">CIM</el-menu-item>
                 <el-menu-item index="/configuration/ppp">PPP</el-menu-item>
             </el-menu>-->
-            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-menu-item index="/configuration/common">通用</el-menu-item>
-                <el-menu-item index="/configuration/govern">Govern</el-menu-item>
-                <el-menu-item index="/configuration/plan">plan</el-menu-item>
-                <el-menu-item index="/configuration/coopreation">Co/View/Boss</el-menu-item>
-                <el-menu-item index="/configuration/explorerCivil">Explorer(Civil)</el-menu-item>
-                <el-menu-item index="/configuration/Inspector">Inspector</el-menu-item>
-                <el-menu-item index="/configuration/o-bw">原BW</el-menu-item>
-                <el-menu-item index="/configuration/o-govern">原Govern</el-menu-item>
+            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-menu-item :index="subItem.menuId" v-for="(subItem,i) in subMenus">{{subItem.name}}</el-menu-item>
             </el-menu>
         </div>
 
@@ -29,10 +22,15 @@
 </template>
 
 <script>
+import {getMenusList} from '../../api/getData-mll.js';
+import {getMainNavMenuId} from "../../utils/common.js"; // 通用模块
 export default {
     data() {
         return {
+            subMenus:[],
+            serverUrl: this.GLOBAL.serverPath.casUrl,
             activeIndex: '',
+            currentMenuId:''
         }
     },
     methods: {
@@ -46,7 +44,12 @@ export default {
     mounted() {
     },
     created(){
-        this.activeIndex = this.$route.matched[2].path;
+        let self = this;
+        let mainNavObj = JSON.parse(localStorage.getItem("mainNavObj"));
+        this.currentMenuId = getMainNavMenuId(this.$route.path,mainNavObj);
+        getMenusList({url:self.serverUrl,params:self.currentMenuId}).then((res)=>{
+            self.subMenus = res.data;
+        });
     }
 }
 </script>

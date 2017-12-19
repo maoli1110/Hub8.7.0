@@ -1,31 +1,36 @@
 <template>
     <div>
         <div class="aside">
-            <el-menu mode="vertical" :default-active="activeIndex" class="el-menu-vertical-demo" router>
-                <el-menu-item-group title="自动套">
-                    <el-menu-item index="/quotalib/automatic/automatic-template">自动套模板</el-menu-item>
-                </el-menu-item-group>
-               <!-- <el-menu-item-group title="企业定额">
-                    <el-menu-item index="/quotalib/quota-lib">定额库</el-menu-item>
-                    &lt;!&ndash; <el-menu-item index="/quotalib/list-lib">清单库</el-menu-item> &ndash;&gt;
-                </el-menu-item-group>-->
+            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-menu-item v-for="(menus,index) in subMenus" v-if="menus.path==='/quotalib/automatic-template'" :key="index" :index="menus.path">
+                    {{menus.name}}
+                </el-menu-item>
+                <el-submenu  v-for="(menus,i) in subMenus" :key="i" :index="menus.menuId" v-if="menus.path!=='/quotalib/automatic-template'">
+                    <template slot="title">{{menus.name}}</template>
+                    <el-menu-item v-for="(subMenus,key) in menus.children" :key="key" :index="subMenus.menuId">{{subMenus.name}}</el-menu-item>
+                </el-submenu>
             </el-menu>
         </div>
         <div class="container">
-            <router-view></router-view>
         </div>
     </div>
 </template>
 
 <script>
+import {getMenusList} from '../../api/getData-mll.js';
+import {getMainNavMenuId} from "../../utils/common.js"; // 通用模块
 export default {
     data() {
         return {
-            activeIndex: '',
+            serverUrl: this.GLOBAL.serverPath.casUrl,
+            activeIndex: "",
+            subMenus:[],
+            currentMenuId:''
         }
     },
     methods: {
-        handleOpen(key, keyPath) {
+        handleOpen(key, keyPath) { 
+            this.activeIndex = key;
             console.log(key, keyPath);
         },
         handleClose(key, keyPath) {
@@ -33,7 +38,23 @@ export default {
         }
     },
     created(){
-        this.activeIndex = this.$route.path;
+        let self = this;
+        // let menuId = 'a73ce286e17311e7aefd729014adbe9a';
+        let mainNavObj = JSON.parse(localStorage.getItem("mainNavObj"));
+        this.currentMenuId = getMainNavMenuId(this.$route.path,mainNavObj);
+        getMenusList({url:self.serverUrl,params:self.currentMenuId}).then((res)=>{
+            self.subMenus = res.data;
+            let tempSubMenu = res.data;
+            tempSubMenu.forEach((value,key)=>{
+                if(value.hasLowLevel !== 0){
+                    self.subMenus[key].children = [];
+                    getMenusList({url:self.serverUrl,params:value.menuId}).then((res)=>{
+                        self.subMenus[key].children = res.data;
+                        console.log(self.subMenus);
+                    });
+                }
+            })
+        })
     }
 }
 </script>

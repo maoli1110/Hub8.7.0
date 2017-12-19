@@ -3,17 +3,11 @@
         <div class="aside">
 
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-submenu index="/indicatorslib/unchecked/civilEngineering-index">
-                    <template slot="title">未审核指标</template>
-                    <el-menu-item index="/indicatorslib/unchecked/civilEngineering-index">土建指标（）</el-menu-item>
-                    <el-menu-item index="/indicatorslib/unchecked/reinforcement-index">钢筋指标（）</el-menu-item>
+                <el-submenu  v-for="(menus,i) in subMenus" :key="i" :index="menus.menuId">
+                    <template slot="title">{{menus.name}}</template>
+                    <el-menu-item v-for="(subMenus,key) in menus.children" :key="key" :index="subMenus.menuId">{{subMenus.name}}</el-menu-item>
                 </el-submenu>
-                <el-submenu index="/indicatorslib/passed/civil-engineering-index">
-                    <template slot="title">已通过指标</template>
-                    <el-menu-item index="/indicatorslib/passed/civil-engineering-index">土建指标（）</el-menu-item>
-                    <el-menu-item index="/indicatorslib/passed/reinforcement-index">钢筋指标（）</el-menu-item>
-                </el-submenu>
-                </el-menu>
+            </el-menu>
         </div>
         <div class="container">
             <router-view></router-view>
@@ -22,16 +16,20 @@
 </template>
 
 <script>
+import {getMenusList} from '../../api/getData-mll.js';
+import {getMainNavMenuId} from "../../utils/common.js"; // 通用模块
 export default {
     data() {
         return {
-//            activeIndex: '',
-
-            activeIndex: '/indicatorslib/civilengineering'
+            serverUrl: this.GLOBAL.serverPath.casUrl,
+            activeIndex: "",
+            subMenus:[],
+            currentMenuId:''
         }
     },
     methods: {
         handleOpen(key, keyPath) {
+            this.activeIndex = key;
             console.log(key, keyPath);
         },
         handleClose(key, keyPath) {
@@ -39,7 +37,23 @@ export default {
         }
     },
     created(){
-        this.activeIndex = this.$route.path;
+        let self = this;
+        // let menuId = 'a73ce286e17311e7aefd729014adbe9a';
+        let mainNavObj = JSON.parse(localStorage.getItem("mainNavObj"));
+        this.currentMenuId = getMainNavMenuId(this.$route.path,mainNavObj);
+        getMenusList({url:self.serverUrl,params:self.currentMenuId}).then((res)=>{
+            self.subMenus = res.data;
+            let tempSubMenu = res.data;
+            tempSubMenu.forEach((value,key)=>{
+                if(value.hasLowLevel !== 0){
+                    self.subMenus[key].children = [];
+                    getMenusList({url:self.serverUrl,params:value.menuId}).then((res)=>{
+                        self.subMenus[key].children = res.data;
+                        console.log(self.subMenus);
+                    });
+                }
+            })
+        });
     }
 }
 </script>
