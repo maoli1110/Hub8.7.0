@@ -29,7 +29,6 @@ export default new Router({
                     // 权限管理
                     path: '/authority',
                     component: resolve => require(['../components/Authority/Authority.vue'], resolve),
-                    redirect: '/authority/member-management',
                 },
                 {
                     // BIM库

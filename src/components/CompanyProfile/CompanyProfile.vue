@@ -2,46 +2,58 @@
     <div>
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-                <el-menu-item :index="subItem.menuId" v-for="(subItem,i) in mainMenu">{{subItem.name}}</el-menu-item>
+                <el-menu-item :index="subItem.menuId" v-for="(subItem,i) in subMenus">{{subItem.name}}</el-menu-item>
             </el-menu>
         </div>
+
         <div class="container">
-            <router-view></router-view>
+           <div v-show="isShow">111</div>
         </div>
     </div>
 </template>
 
 <script>
 import {getMenusList} from '../../api/getData-mll.js';
+import {transformToObjFormat,getMainNavMenuId} from "../../utils/common.js"; // 通用模块
 export default {
     data() {
         return{
-            mainMenu:[],
+            subMenus:[],
             serverUrl: this.GLOBAL.serverPath.casUrl,
             activeIndex: '',
-            currentNav:''
+            currentMenuId:''
         }
     },
     methods: {
         handleOpen(key, keyPath) {
-            console.log(key, keyPath);
+            this.activeIndex = key;
         },
         handleClose(key, keyPath) {
-            console.log(key, keyPath);
+            // console.log(key, keyPath);
         }
     },
-    created(){
+    created() {
         let self = this;
-        this.bus.$on('currentNav',function(key){
-            if(!self.mainMenu.length){
-                getMenusList({url:self.serverUrl,params:key}).then((res)=>{
-                    self.mainMenu = res.data;
-                    console.log(this.mainMenu,'this.mainMenu')
-                })
-            }
-        })
-        this.activeIndex = this.$route.path;
-    }
+        console.log(localStorage.getItem("mainNavObj"),'7887878')
+        let mainNavObj = JSON.parse(localStorage.getItem("mainNavObj"));
+        this.currentMenuId = getMainNavMenuId(this.$route.path,mainNavObj);
+        setTimeout(()=>{
+            getMenusList({url:self.serverUrl,params:self.currentMenuId}).then((res)=>{
+                self.subMenus = res.data;
+            });
+        },1)
+        
+    },
+    mounted() {
+
+    },
+    watch: {
+     　　'$route' (to, from) {
+             // console.log(this.$route.name);
+              let toName = to.name;//路由跳转到信息
+             console.log(toName,'toname')
+     　　 }
+　　},
 }
 </script>
 

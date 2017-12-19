@@ -47,6 +47,20 @@ function transformToObjFormat(param, simpleOrgNodes) {
 }
 
 /**
+ * 获取导航menuId
+ */
+
+function getMainNavMenuId(path,mainNavObj) {
+    let menuId = '';
+    mainNavObj.forEach((value,key)=>{
+        if(path===value.path){
+            menuId = value.menuId;
+        }
+    });
+    return menuId;
+}
+
+/**
  *
  * @param localhost     分属模块
  * @returns {basePath}  分属模块对应的路径
@@ -248,5 +262,6 @@ export {
     FormIndex,
     basePath,
     transformToObjFormat,
-    dateFormat
+    dateFormat,
+    getMainNavMenuId
 }

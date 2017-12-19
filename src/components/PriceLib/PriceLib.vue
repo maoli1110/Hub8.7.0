@@ -3,14 +3,8 @@
         <div class="aside relat">
             <!--左侧菜单项 材料、设备、人工、机械、周转材料、专业分包、清工分包-->
             <div class="menus-status absol menus-mask"></div>
-            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-menu-item index="/pricelib/material">材料</el-menu-item>
-                <el-menu-item index="/pricelib/device">设备</el-menu-item>
-                <el-menu-item index="/pricelib/artificial">人工</el-menu-item>
-                <el-menu-item index="/pricelib/mechanics">机械</el-menu-item>
-                <el-menu-item index="/pricelib/revolving-materials">周转材料</el-menu-item>
-                <el-menu-item index="/pricelib/specialty-subcontracting">专业分包</el-menu-item>
-                <el-menu-item index="/pricelib/clean-subcontracting">清工分包</el-menu-item>
+             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-menu-item :index="subItem.menuId" v-for="(subItem,i) in subMenus">{{subItem.name}}</el-menu-item>
             </el-menu>
         </div>
         <div class="container " >
@@ -30,9 +24,12 @@
 
 <script>
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import VueFooter from '../../components/common/footer.vue'
+    import VueFooter from '../../components/common/footer.vue';
+    import {getMenusList} from '../../api/getData-mll.js';
     export default {
     data: () => ({
+        subMenus:[],
+        serverUrl: this.GLOBAL.serverPath.casUrl,
         activeIndex: '',
     }),
     methods: {
@@ -45,7 +42,11 @@
     },
     components: { VueScrollbar,VueFooter },
     created(){
-        this.activeIndex = this.$route.path;
+        let self = this;
+        let menuId = 'a73cefade17311e7aefd729014adbe9a';
+        getMenusList({url:self.serverUrl,params:menuId}).then((res)=>{
+            self.subMenus = res.data;
+        })
     }
 }
 </script>

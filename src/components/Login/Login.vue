@@ -113,7 +113,7 @@ export default {
             //根据获取的字符串判断是否成功登录
             if(sectionHtmlArr.indexOf('Successful')!=-1) {
                 this.loading = true;
-                this.$router.push("/main");
+                this.$router.push("/companyprofile");
             }
         });
     },
@@ -141,7 +141,7 @@ export default {
                     console.log('lastLogin')
                     self.centerLogin();
                     this.loading = true;
-                    this.$router.push("/main");
+                    this.$router.push("/companyprofile");
                 }
             } else {
               console.log("error submit!!");

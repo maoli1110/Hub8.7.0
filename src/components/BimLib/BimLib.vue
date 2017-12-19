@@ -1,36 +1,15 @@
 <template>
     <div>
         <div class="aside">
-            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <!--<el-submenu index="/bimlib/housing/bim-lib/1">
-                    <template slot="title">房建</template>
-                    <el-menu-item index="/bimlib/housing/bim-lib/1">工程库</el-menu-item>
-                    <el-menu-item index="/bimlib/housing/working-set">工作集库</el-menu-item>
-                    <el-menu-item index="/bimlib/housing/pdf-drawing">PDF图纸</el-menu-item>
-                </el-submenu>
-                <el-submenu index="/bimlib/BaseBuild/bim-lib/2">
-                    <template slot="title">基建</template>
-                    <el-menu-item index="/bimlib/BaseBuild/bim-lib/2">工程库</el-menu-item>
-                    <el-menu-item index="/bimlib/BaseBuild/working-set">工作集库</el-menu-item>
-                </el-submenu>
-                <el-submenu index="/bimlib/decoration/bim-lib/4">
-                    <template slot="title">家装</template>
-                    <el-menu-item index="/bimlib/decoration/bim-lib/4">工程库</el-menu-item>
-                </el-submenu>-->
-                <el-submenu  v-for="(menus,i) in submenus.children" :key="i" :index="`${menus.url}/bim-lib/${i==0?i=1:i*2}`">
+            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-submenu  v-for="(menus,i) in subMenus" :key="i" :index="menus.menuId">
                     <template slot="title">{{menus.name}}</template>
-                    <el-menu-item v-for="(subMenus,key) in menus.children" :key="key" :index="subMenus.url">{{subMenus.name}}</el-menu-item>
+                    <el-menu-item v-for="(subMenus,key) in menus.children" :key="key" :index="subMenus.menuId">{{subMenus.name}}</el-menu-item>
                 </el-submenu>
             </el-menu>
 
         </div>
         <div class="container">
-            <!--<ul id="treeDemo" class="ztree"></ul>-->
-            <div class="contents">
-             <transition :name="transitionName">
-                <router-view class="Router bimlib Bim-libs"></router-view>
-             </transition>
-            </div>
         </div>
     </div>
 </template>
@@ -41,44 +20,19 @@
 
 //js
 import "../../../static/zTree/js/jquery.ztree.core.min.js";
-import {route} from "../../api/getData-yhj.js"
+import {route} from "../../api/getData-yhj.js";
+import {getMenusList} from '../../api/getData-mll.js';
 export default {
-    data: () => ({
-        activeIndex: "",
-        transitionName: 'slide-right' , // 默认动态路由变化为slide-right
-        setting: {
-            data: {
-                simpleData: {
-                    enable: true
-                }
-            }
-        },
-        zNodes: [
-            { id: 1, pId: 0, name: "展开、折叠 自定义图标不同", open: true, iconSkin: "pIcon01" },
-            { id: 11, pId: 1, name: "叶子节点1", iconSkin: "icon01" },
-            { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-            { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-            { id: 14, pId: 1, name: "叶子节点1", open: true, iconSkin: "pIcon02" },
-            { id: 15, pId: 14, name: "叶子节点2", iconSkin: "icon02" },
-            { id: 16, pId: 14, name: "叶子节点3", open: true, iconSkin: "pIcon02" },
-            { id: 17, pId: 16, name: "叶子节点1", iconSkin: "icon01" },
-            { id: 18, pId: 16, name: "叶子节点2", iconSkin: "icon02" },
-            { id: 19, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-            { id: 2, pId: 0, name: "展开、折叠 自定义图标相同", open: true, iconSkin: "pIcon02" },
-            { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-            { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-            { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-            { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-            { id: 31, pId: 3, name: "叶子节点1" },
-            { id: 32, pId: 3, name: "叶子节点2" },
-            { id: 33, pId: 3, name: "叶子节点3" }
-        ],
-        submenus:[]
-    }),
+    data (){
+        return {
+            serverUrl: this.GLOBAL.serverPath.casUrl,
+            activeIndex: "",
+            subMenus:[]
+        }
+    },
     methods: {
         handleOpen(key, keyPath) {
             this.activeIndex = key;
-            this.$router.push({ path: key});
         },
         handleClose(key, keyPath) {
             console.log(key, keyPath);
@@ -86,54 +40,25 @@ export default {
 
     },
     mounted() {
-        $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
-        console.log(this.$route,'this.$router')
+        
     },
-    beforeRouteUpdate (to, from, next) {
-      let isBack = this.$router.isBack
-
-      if (isBack) {
-         this.transitionName = 'slide-right'
-      } else {
-         this.transitionName = 'slide-left'
-      }
-        this.$router.isBack = false
-        next()
-    },
-
-     watch: {
-     　　'$route' (to, from) {
-             console.log(this.$route.name);
-              if(!this.$route.name || this.$route.name.length<=0){
-                  return false
-              }
-              if(!to.name || !from.name){return false}
-              let toName = to.name;//路由跳转到信息
-              let fromName = from.name;//路由跳转前的信息
-              toName = toName.split("?")[1];
-              fromName = fromName.split("?")[1];
-              this.transitionName  = toName< fromName? 'slide-right':'slide-left';//判断动画是向前还是
-     　　 }
-　　},
     created(){
-        console.log(this.$route.path,'path');
-        this.activeIndex =  this.$route.path;
-//        this.activeIndex =  this.$route.matched[3].path;
-//        console.log(this.$route.matched[3].path,'路由')
-        route().then((routes)=>{
-            let currentMenusKey = "";
-            let route = routes.data.list;
-            route.forEach((val,key)=>{
-               if((val.url).indexOf(this.$route.matched[1].path)!=-1){
-                   currentMenusKey =key;
-               };
-            });
-            if(currentMenusKey){
-                this.submenus = routes.data.list[currentMenusKey];
-            }
+        let self = this;
+        let menuId = 'a73ce286e17311e7aefd729014adbe9a';
+        getMenusList({url:self.serverUrl,params:menuId}).then((res)=>{
+            self.subMenus = res.data;
+            let tempSubMenu = res.data;
+            tempSubMenu.forEach((value,key)=>{
+                if(value.hasLowLevel !== 0){
+                    self.subMenus[key].children = [];
+                    getMenusList({url:self.serverUrl,params:value.menuId}).then((res)=>{
+                        self.subMenus[key].children = res.data;
+                        console.log(self.subMenus);
+                    });
+                }
+            })
         })
     }
-
 }
 </script>
 

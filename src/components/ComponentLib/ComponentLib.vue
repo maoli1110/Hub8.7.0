@@ -1,62 +1,55 @@
 <template>
     <div>
         <div class="aside">
-            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <!--<el-menu-item index="/componentlib/luban-mep">鲁班安装</el-menu-item>
-                <el-menu-item index="/componentlib/luban-steel">鲁班钢筋</el-menu-item>
-                <el-submenu index="/componentlib/remiz-comp">
-                    <template slot="title">Remiz</template>
-                    <el-menu-item index="/componentlib/remiz-comp">Remiz-构件库</el-menu-item>
-                    <el-menu-item index="/componentlib/remiz-temp">Remiz-模型库</el-menu-item>
-                    <el-menu-item index="/componentlib/remiz-mate">Remiz-材质库</el-menu-item>
-                </el-submenu>-->
-                <el-menu-item v-for="(menusItem,index) in menusList.children" v-if="menusItem.url!='/componentlib/Remiz'" :key="index" :index="menusItem.url">
-                    {{menusItem.name}}
+            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-menu-item v-for="(menus,index) in subMenus" v-if="menus.path!=='/componentlib/Remiz'" :key="index" :index="menus.path">
+                    {{menus.name}}
                 </el-menu-item>
-                <el-submenu index="" v-for="(menusItem,index) in menusList.children"  v-if="menusItem.url=='/componentlib/Remiz'" :key="index" :index="`${ menusItem.children[0].url}`">
-                    <template slot="title">{{menusItem.name}}</template>
-                    <el-menu-item v-for="(Item,i) in  menusItem.children" :index="Item.url" :key="i">{{Item.name}}</el-menu-item>
+                <el-submenu  v-for="(menus,i) in subMenus" :key="i" :index="menus.menuId" v-if="menus.path==='/componentlib/Remiz'">
+                    <template slot="title">{{menus.name}}</template>
+                    <el-menu-item v-for="(subMenus,key) in menus.children" :key="key" :index="subMenus.menuId">{{subMenus.name}}</el-menu-item>
                 </el-submenu>
-
             </el-menu>
         </div>
         <div class="container">
-            <router-view></router-view>
         </div>
     </div>
 </template>
 
 <script>
 import {route} from "../../api/getData-yhj";
+import {getMenusList} from '../../api/getData-mll.js';
 export default {
     data() {
         return {
-            activeIndex: '',
-            menusList:[],
+            serverUrl: this.GLOBAL.serverPath.casUrl,
+            activeIndex: "",
+            subMenus:[]
         }
     },
     methods: {
         handleOpen(key, keyPath) {
-            console.log(key, keyPath);
+            this.activeIndex = key;
         },
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         }
     },
     created(){
-        this.activeIndex = this.$route.path;
-        route().then((routes)=>{
-            let currentMenusKey = "";
-            let route = routes.data.list;
-            route.forEach((val,key)=>{
-                if((val.url).indexOf(this.$route.matched[1].path)!=-1){
-                    currentMenusKey =key;
-                };
-            });
-            if(currentMenusKey){
-                this.menusList = routes.data.list[currentMenusKey];
-                console.log(this.menusList ,'list')
-            }
+        let self = this;
+        let menuId = 'a73ce47ae17311e7aefd729014adbe9a';
+        getMenusList({url:self.serverUrl,params:menuId}).then((res)=>{
+            self.subMenus = res.data;
+            let tempSubMenu = res.data;
+            tempSubMenu.forEach((value,key)=>{
+                if(value.hasLowLevel !== 0){
+                    self.subMenus[key].children = [];
+                    getMenusList({url:self.serverUrl,params:value.menuId}).then((res)=>{
+                        self.subMenus[key].children = res.data;
+                        console.log(self.subMenus);
+                    });
+                }
+            })
         })
     }
 }

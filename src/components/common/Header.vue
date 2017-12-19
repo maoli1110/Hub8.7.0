@@ -64,11 +64,11 @@ export default {
         }
     },
     created(){
-        if( this.$route.matched[1].path=='/order-management' || this.$route.matched[1].path=='/online' || this.$route.matched[1].path=='/system-log' || this.$route.matched[1].path=='/upgrade-notes'){
-            this.showSetting = false;
-        }else{
-            this.showSetting = true;
-        }
+        // if( this.$route.matched[1].path=='/order-management' || this.$route.matched[1].path=='/online' || this.$route.matched[1].path=='/system-log' || this.$route.matched[1].path=='/upgrade-notes'){
+        //     this.showSetting = false;
+        // }else{
+        //     this.showSetting = true;
+        // }
     }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
-        <el-menu :default-active="activeIndex" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect">
-            <el-menu-item :index="menuItem.menuId" v-for='(menuItem,i) in mainMenu' :key="i">{{menuItem.name}}</el-menu-item>
+        <el-menu :default-active="activeIndex" class="el-menu-demo navmenu" mode="horizontal" @select="handleSelect" router>
+            <el-menu-item v-if="menuItem.path" :index="menuItem.path" v-for='(menuItem,i) in mainMenu' :key="i" @click="subSelect(menuItem.name,menuItem.menuId)">{{menuItem.name}}</el-menu-item>
         </el-menu>
     </div>
 </template>
@@ -20,29 +20,37 @@ export default {
     },
     methods: {
         handleSelect(key, keyPath) {
-            this.bus.$emit('currentNav',key)
             console.log(key, keyPath);
         },
-        selectMenu(){
+        selectMenu() {
             this.changeMenu=!this.changeMenu;
+        },
+        subSelect(name,menuId) {
+            let currentNav = {
+                name:name,
+                menuId:menuId
+            }
+            this.bus.$emit('currentNav',currentNav)
         }
     },
     mounted(){
     },
     created(){
         //一级路由的状态 主数据库和价格库正在建设中。。。。。。
-        if(this.$route.matched[1].path=='/database/:building'){
-            this.activeIndex = '/database/false'
-        }else if(this.$route.matched[1].path=='/pricelib/:isRoot'){
-            this.activeIndex = '/pricelib/false';
-        }else{
-            this.activeIndex = this.$route.matched[1].path;
-        }
+        // if(this.$route.matched[1].path=='/database/:building'){
+        //     this.activeIndex = '/database/false'
+        // }else if(this.$route.matched[1].path=='/pricelib/:isRoot'){
+        //     this.activeIndex = '/pricelib/false';
+        // }else{
+        //     this.activeIndex = this.$route.matched[1].path;
+        // }
         // route().then((routes)=>{
         //    this.mainMenu =  routes.data.list;
         // })
         getMenusList({url:this.serverUrl,params:-1}).then((res)=>{
             this.mainMenu =  res.data;
+            localStorage.setItem("mainNavObj", JSON.stringify(this.mainMenu));
+            console.log(localStorage.getItem("mainNavObj"));
         })
     }
 
