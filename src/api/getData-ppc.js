@@ -18,14 +18,14 @@ export const getOrgTreeList = params => {
  * 获取角色列表
  */
 export const getRoleList = params => {
-    return axios.post(`${builderUrl}rs/testRest/findPageRoles`, params);
+    return axios.post(`${builderUrl}roleRest/findPageRoles`, params);
 };
 /**
  * @param {*} params 
  * 获取角色类型
  */
 export const getRoleType = params => {
-    return axios.get(`${builderUrl}rs/testRest/findRoleType`);
+    return axios.get(`${builderUrl}roleRest/findRoleType`);
 };
 /**
  * @param {
@@ -34,7 +34,7 @@ export const getRoleType = params => {
  * 获取角色客户端权限码
  */
 export const getRoleAuthCodes = params => {
-    return axios.get(`${builderUrl}rs/testRest/findRoleAuthCodes/${params}`);
+    return axios.get(`${builderUrl}roleRest/findRoleAuthCodes/${params}`);
 };
 /**
  * @param {*
@@ -43,28 +43,28 @@ export const getRoleAuthCodes = params => {
  * 获取角色信息
  */
 export const getRoleInfo = params => {
-    return axios.get(`${builderUrl}rs/testRest/findRole/${params}`);
+    return axios.get(`${builderUrl}roleRest/findRole/${params}`);
 };
 /**
  * @param {*} params 
  * 获取角色列表客户端权限信息
  */
 export const getRoleClientAuthInfo = params => {
-    return axios.get(`${builderUrl}rs/testRest/findClientAuthInfos`);
+    return axios.get(`${builderUrl}roleRest/findClientAuthInfos`);
 };
 /**
  * @param {*} params 
  * 删除角色
  */
 export const deleteRole = params => {
-    return axios.delete(`${builderUrl}rs/testRest/deleteAuth/${params}`);
+    return axios.delete(`${builderUrl}roleRest/deleteAuth/${params}`);
 };
 /**
  * @param {*} params
  * 更新保存角色信息
  */
 export const updateRoleAuth = params => {
-    return axios.post(`${builderUrl}rs/testRest/saveOrUpdateRoleAuth`, params);
+    return axios.post(`${builderUrl}roleRest/saveOrUpdateRoleAuth`, params);
 };
 /**
  * 应用配置-通用-资料目录
@@ -151,5 +151,37 @@ export const delAttributeTemplateInfo = params => {
  */
 export const moveAttributeTemplateInfo = params => {
     return axios.post(`${builderUrl}appconfig/general/attribute/template/moveAttributeTemplateInfo`, params);
-
 };
+/**
+ * 应用配置-通用-工序模板
+ * baseUrl = 'http://192.168.13.195:8989/builder/';
+ */
+/**
+ * @param {*} params
+ * 获取工序模板列表
+ */
+export const getProcessTemplateInfo = params => {
+    return axios.post(`${builderUrl}appconfig/general/process/template/getProcessTemplateInfoWrapper`, params);
+};
+/**
+ * @param {*} params
+ * 查询工序模板详情
+ */
+export const getProcessTemplateTreeInfo = params => {
+    return axios.get(`${builderUrl}appconfig/general/process/template/getProcessTemplateTreeInfo/${params}`);
+};
+/**
+ * @param {*} params
+ * 获取默认工序模板树
+ */
+export const getDefaultProcessTemplateTreeInfo = params => {
+    return axios.post(`${builderUrl}appconfig/general/process/template/getDefaultProcessTemplateTreeInfo`)
+};
+/**
+ * @param {*} params
+ * 批量删除工序模板
+ */
+export const deleteProcessTemplateInfos = params => {
+    return axios.post(`${builderUrl}appconfig/general/process/template/deleteProcessTemplateInfos`)
+};
+
