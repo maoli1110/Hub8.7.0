@@ -882,6 +882,9 @@
             },
             //构件树保存
             ModifyOk(){
+                let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
+                let nodes = treeObj.transformToArray(treeObj.getNodes());
+                console.log(nodes,'nodes')
                 //掉保存的接口
             },
             //构件树取消保存

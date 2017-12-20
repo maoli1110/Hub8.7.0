@@ -26,7 +26,7 @@ new Vue({
 
 /**
  * http拦截器
- * Add a request interceptor 
+ * Add a request interceptor
  */
 axios.interceptors.request.use(function (config) {
 	// Do something before request is sent
