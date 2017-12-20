@@ -211,32 +211,43 @@
                 zNodes: []
             };
         },
-        mounted() {        
-        },
+        mounted() {},
         methods: {
-            //获取工序模板树结构
+            //树结构初始化
+            treeInit() {
+                let zTree = $.fn.zTree.init($("#tree_edit"), this.setting, this.zNodes);
+                let nodes = zTree.getNodes();
+                if (nodes.length > 0) {
+                    zTree.selectNode(nodes[0]);
+                }
+                let treeNodes = zTree.transformToArray(zTree.getNodes());
+                //获取状态树的深度
+                for (let i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].level >= maxLevel) {
+                        maxLevel = treeNodes[i].level;
+                    }
+                    if (treeNodes[i].level == 0 && treeNodes[i].isParent) {
+                        //展开"全部"下的子节点
+                        zTree.expandNode(treeNodes[i], true, false, null, true);
+                    }
+                }
+                level = 1;
+            },
+            //获取默认工序模板树
+            getDefaultProcessTemplateTreeInfo() {
+                this.zNodes = [];
+                types.getDefaultProcessTemplateTreeInfo().then(res => {
+                    this.treeInit()
+                })
+            },
+            //获取指定工序模板树结构
             getProcessTemplateTreeInfo() {
                 this.templateName = this.templateParams.templateName
-                this.zNodes=[];
-                types.getProcessTemplateTreeInfo(this.templateParams.templateId).then(res => {                    
+                this.zNodes = [];
+                types.getProcessTemplateTreeInfo(this.templateParams.templateId).then(res => {
+                    console.log(res.data.result)
                     this.zNodes = res.data.result;
-                    let zTree = $.fn.zTree.init($("#tree_edit"), this.setting, this.zNodes);
-                    let nodes = zTree.getNodes();
-                    if (nodes.length > 0) {
-                        zTree.selectNode(nodes[0]);
-                    }
-                    let treeNodes = zTree.transformToArray(zTree.getNodes());
-                    //获取状态树的深度
-                    for (let i = 0; i < treeNodes.length; i++) {
-                        if (treeNodes[i].level >= maxLevel) {
-                            maxLevel = treeNodes[i].level;
-                        }
-                        if (treeNodes[i].level == 0 && treeNodes[i].isParent) {
-                            //展开"全部"下的子节点
-                            zTree.expandNode(treeNodes[i], true, false, null, true);
-                        }
-                    }
-                    level = 1;
+                    this.treeInit()
                 })
             },
             // 自定义颜色选择器

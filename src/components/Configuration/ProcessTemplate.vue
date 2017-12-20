@@ -73,8 +73,8 @@
                 title: "",
                 textarea: "",
                 orgValue: "",
-                orgType: "",
-                orgid: "",
+                orgType: 0,
+                orgid: "string",
                 curPage: 1,
                 pageSize: 10,
                 total: 0,
@@ -92,127 +92,7 @@
                     }
                 },
                 zNodes: [],
-                ProcessTableData: [{
-                        name: "赵四",
-                        id: 1,
-                        pass: "wulijjjj111111111111111111",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remark11111111111111111111111111111111111111111111111"
-                    },
-                    {
-                        name: "赵四",
-                        id: 2,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 3,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 4,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 5,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 6,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 7,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 8,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 9,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四111111111111111111111111111111111111111",
-                        id: 10,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    }
-                ],
+                ProcessTableData: [],
                 multipleSelection: []
             };
         },
@@ -295,6 +175,7 @@
                     
                 } else {
                     this.title = "添加模板";
+
                 }
             },
             deleteProcess() {
@@ -321,7 +202,8 @@
             }
         },
         mounted() {
-            this.getOrgTreeList();
+          this.getProcessTemplateInfo();
+            // this.getOrgTreeList();
         }
     };
 
