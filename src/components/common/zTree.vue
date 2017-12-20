@@ -1,12 +1,12 @@
 <template>
     <div>
         <el-dialog  custom-class="cloud-component"
-            title="提示"
+            title="云构件树管理"
             :visible.sync="isShow"
             :before-close="handleClose">
             <el-row>
                 <el-col class="cloud-toobar">
-
+                    <!--{{paramObj.productId}}-->
                     <el-col :span="4" class="icon-item" >
                         <div @click="expandNode({type:'expand',operObj:'cloudTree'})"><span class="el-icon-plus"></span></div>
                     </el-col>
@@ -52,7 +52,7 @@
     let maxLevel = -1;//预览状态模板树的深度
     let baseUrl;
     export default {
-        props:{paramObj:Object,isShow:Boolean},
+        props:{ztreeInfo:Object,isShow:Boolean},
 
         data() {
             return {
@@ -73,7 +73,8 @@
                     },
 
                 },
-                zNodes:[]   //树结构的初始值
+                zNodes:[],   //树结构的初始值
+                zTreeParam:this.ztreeInfo,
             };
         },
         methods: {
@@ -83,6 +84,12 @@
             },
             getData(){
                 this.getBaseUrl();
+            },
+            commonMessage(message, type){
+                this.$message({
+                    type: type,
+                    message: message
+                })
             },
             handleClose(done) {
                 this.dialogVisible = false;
@@ -118,7 +125,9 @@
             //保存构件树
             setZtree(url,param){
                 treeSave({url:url,param:param}).then((data)=>{
-                    console.log(data.data.result,'保存成功了？')
+                    if(data.data.code==200){
+                        this.commonMessage('保存成功!','success')
+                    }
                 })
             },
             //ztree  插件的事件
@@ -265,28 +274,24 @@
             },
             //重置
             resetZtree(){
-                this.getZtree(baseUrl,{version:"1.0.0",productId:5});
+                this.getZtree(baseUrl,this.zTreeParam);
             },
             //保存
             ztreeSave(){
-                this.cloudComTreeOk();
-            },
-            //构件树保存
-            cloudComTreeOk(){
-                //保存
                 this.$emit('hidePanel',this.dialogVisible);
                 let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
                 let nodes = treeObj.transformToArray(treeObj.getNodes());
                 let treeNodes = [];
-                let treeNodes2 = [];
-                nodes.forEach((val,key)=>{
-//                    treeNodes.push({description:val.description,nodeCode:val.nodeCode, nodeName:val.nodeName,parentNodeCode:val.parentNodeCode,productId:val.productId,sortIndex:val.sortIndex,version:val.version})
-                    treeNodes.push(nodes[key].nodeName);
-                    treeNodes2.push(val.nodeName)
+                this.zNodes.forEach((val,key)=>{
+                    treeNodes.push({description:val.description,nodeCode:val.nodeCode, nodeName:val.nodeName,parentNodeCode:val.parentNodeCode,productId:val.productId,sortIndex:val.sortIndex,version:val.version});
                 });
-                console.log(treeNodes);
-                console.log(treeNodes2);
-                this.setZtree(baseUrl,{version:"1.0.0",productId:5,componentTree:treeNodes})
+
+                this.setZtree(baseUrl,{version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
+            },
+            //构件树保存
+            cloudComTreeOk(){
+                //保存
+                this.ztreeSave();
             },
         },
         mounted(){

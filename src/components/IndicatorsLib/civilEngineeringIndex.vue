@@ -12,28 +12,28 @@
                         </el-input>
                     </div>
                 </el-col>
-                <el-col :span="2">
+                <el-col :span="4">
                     <div class="advanced-search">
                         <el-button type="primary" class="basic-btn" @click="deepSearch = true">高级搜索</el-button>
+                        <el-button type="primary" class="basic-btn" @click="deepSearch = true">指标排序</el-button>
                     </div>
                 </el-col>
             </div>
-            <div class="header">
-                <el-col :span="20">
-                    <el-button type="primary" class="basic-btn">
-                        <i class="icon icon-pass"></i>
-                        <span>审核通过</span>
-                    </el-button>
-                    <el-button type="primary" class="basic-btn">
-                        <i class="icon icon-btn-delete"></i>
-                        <span>删除</span>
-                    </el-button>
-                </el-col>
-            </div>
+            
             <div class="main">
+                <el-row class="tools-bar">
+                    <el-col :span="20">
+                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-info-update left-icon"></i><span class="btn-text">更新指标</span>
+                        </el-button>
+                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-forbidden left-icon"></i><span class="btn-text">不更新</span>
+                        </el-button>
+                        <el-button type="primary" class="basic-btn" @click=""><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
+                        </el-button>
+                    </el-col>
+                </el-row>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                     <el-table ref="multipleTable scroll-me" :data="bindManageTableData" border tooltip-effect="dark"
-                              style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
+                              style="min-width: 1537px;" @selection-change="handleSelectionChange">
                         <el-table-column type="selection" width="60"></el-table-column>
                         <el-table-column type='index' label="编号" width="60"
                                          :index="indexSort"></el-table-column>
@@ -43,6 +43,8 @@
                                 <span>{{scope.row.username}}({{scope.row.realname}})</span>
                             </template>
                         </el-table-column>
+                        <el-table-column prop="bindingTime" label="状态" width="200"></el-table-column>
+                        <el-table-column prop="bindingTime" label="上传人" width="200"></el-table-column>
                         <el-table-column prop="bindingTime" label="上传时间" width="200"></el-table-column>
                         <el-table-column prop="remarks" label="备注"></el-table-column>
                     </el-table>
@@ -198,7 +200,8 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
+import '../../../static/css/components.css';
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 
 export default {
@@ -311,6 +314,13 @@ export default {
 </script>
 
 <style scoped>
+.order-management .main{
+  padding: 20px;
+}
+.left-icon{
+  float: left;
+  margin-top: -1px;
+}
 .header .advanced-search {
   margin-left: 10px;
 }
@@ -332,4 +342,5 @@ export default {
   padding-bottom: 20px;
   border-bottom: 1px solid #e6e6e6;
 }
+
 </style>

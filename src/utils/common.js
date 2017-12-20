@@ -62,78 +62,78 @@ function basePath(localhost) {
             baseUrl = 'http://192.168.13.195:8989/cas/';
             break;
 
-        //builder
+        //hello
         case '/companyprofile/organization-structure':     //企业概况->组织结构
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case '/authority/member-management':               //权限管理->成员管理
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case '/authority/role-management':                 //权限管理->角色管理
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
 
         case '/bimlib/housing/bim-lib/1':                  //Bim库->房建->工程库
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/bimlib/housing/recycle-bin/1":
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
 
         case '/bimlib/housing/working-set/1':               //Bim库->房建->工作集库
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case '/bimlib/housing/pdf-drawing':               //Bim库->房建->PDF图纸
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case '/bimlib/BaseBuild/bim-lib/2':                  //Bim库->基建->工程库
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/bimlib/BaseBuild/recycle-bin/2":
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
 
         case '/bimlib/BaseBuild/working-set/2':              //Bim库->基建->工作集库
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case '/bimlib/decoration/bim-lib/4':                  //Bim库->家装->工程库
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/bimlib/decoration/recycle-bin/4":
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
 
         case "/configuration/common/data-catalog":        //应用配置->通用->资料目录
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/configuration/common/attribute-template":   //应用配置->通用->属性模板
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/configuration/common/logo-management":      //应用配置->通用->标识管理
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/configuration/common/label-management":     //应用配置->通用->标签管理
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/configuration/common/form-management":      //应用配置->通用->表单管理
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/configuration/common/process-template":     //应用配置->通用->工序管理
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/configuration/common/color-template":       //应用配置->通用->颜色模板
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
 
         case "/configuration/o-bw":                        //应用配置->原bw
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
         case "/configuration/o-govern":                    //应用配置->原bw
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
 
         case "/configuration/govern":                      //应用配置->govern
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
             break;
 
 
@@ -202,21 +202,21 @@ function basePath(localhost) {
             baseUrl = 'http://192.168.13.195:8989/cloud/';
 
         case "/system/system-log/govern-log":
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
         case "/system/system-log/explorer-log":
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
         case "/system/system-log/civil-log":
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
         case "/system/system-log/works-log":
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
         case "/system/system-log/plan-log":
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
         case "/system/system-log/prevbw-log":
-            baseUrl = 'http://192.168.13.195:8989/builder/';
+            baseUrl = 'http://192.168.13.195:8989/hello/';
         case "/system/system-log/prevgovern-log":
-            baseUrl= 'http://192.168.13.195:8989/builder/';
+            baseUrl= 'http://192.168.13.195:8989/hello/';
         case "/system/system-log/remiz-log":
-            baseUrl= 'http://192.168.13.195:8989/builder/';
+            baseUrl= 'http://192.168.13.195:8989/hello/';
         default:
             break;
     }
