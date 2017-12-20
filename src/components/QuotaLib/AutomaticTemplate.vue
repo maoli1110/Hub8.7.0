@@ -207,6 +207,7 @@
 </template>
 
 <script>
+import '../../../static/css/components.css';
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 import {getCitys} from '../../api/getData.js'
     let deletArray = [];
