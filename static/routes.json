@@ -1,172 +1,317 @@
 {
     "list":[
 	{
-		"url":"/companyprofile",
+		"menuId":"a73cdd8ee17311e7aefd729014adbe9a",
         "name":"企业概况",
-        "sever":"",
+        "system":null,
+        "path":"/companyprofile",
+        "pid":"",
+        "hasLowLevel":1,
 		"children":[
-			{
-				"url":"/companyprofile/organization-structure",
-                "name":"组织结构",
-				"sever":"http://192.168.13.195:8989/cas/"
-			},
-			{
-				"url":"/companyprofile/space-usage",
-                "name":"空间使用",
-				"sever":"http://192.168.13.195:8989/cas/"
-			}
-		]
-	},
-	{
-		"url":"/database/false",
-        "name":"主数据库",
-        "sever":""
-	},
-	{
-		"url":"/authority",
-        "name":"权限管理",
-        "sever":"",
-		"children":[
-			{
-				"url":"/authority/member-management",
-                "name":"成员管理",
-				"sever":"http://192.168.13.195:8989/builder/"
-			},
-			{
-				"url":"/authority/role-management",
-                "name":"角色管理",
-				"sever":"http://192.168.13.195:8989/builder/"
-			},
             {
-                "url":"/authority/application-allot",
-                "name":"应用分配",
-                "sever":"",
+                "menuId":"",
+                "name":"系统概况",
+                "system":"cas",
+                "path":"",
+                "pid":"b5cb4bc4e07b11e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/companyprofile-nav-icon1.png"
+            },
+            {
+                "menuId":"b5cb5a1ae07b11e7aefd729014adbe9a",
+                "name":"组织结构",
+                "system":"cas",
+                "path":"/companyprofile/organization-structure",
+                "pid":"b5cb4bc4e07b11e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/companyprofile-nav-icon2.png"
+            },
+            {
+                "menuId":"b5cb5c7ae07b11e7aefd729014adbe9a",
+                "name":"空间使用",
+                "system":"cas",
+                "path":"/companyprofile/space-usage",
+                "pid":"b5cb4bc4e07b11e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/companyprofile-nav-icon3.png"
+            },
+            {
+                "menuId":"b5cb5cdee07b11e7aefd729014adbe9a",
+                "name":"项目结构",
+                "system":"cas",
+                "path":"",
+                "pid":"b5cb4bc4e07b11e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/project-structure-nav-icon4.png"
+            }
+        ]
+	},
+	{
+        "menuId":"a73ce703e17311e7aefd729014adbe9a",
+        "name":"主数据库",
+        "system":null,
+        "path":"/database/false",
+        "pid":"",
+        "hasLowLevel":1,
+        "children":[
+            {
+                "menuId":"a73ce92ce17311e7aefd729014adbe9a",
+                "name":"组织类",
+                "system":null,
+                "path":"",
+                "pid":"a73ce703e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/database-nav-icon1.png"
+            },
+            {
+                "menuId":"a73ceb59e17311e7aefd729014adbe9a",
+                "name":"项目类",
+                "system":null,
+                "path":"",
+                "pid":"a73ce703e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/database-nav-icon2.png"
+            },
+            {
+                "menuId":"a73ced87e17311e7aefd729014adbe9a",
+                "name":"物料类",
+                "system":null,
+                "path":"",
+                "pid":"a73ce703e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/database-nav-icon3.png"
+            }
+        ]
+	},
+	{
+		"menuId":"a73cefade17311e7aefd729014adbe9a",
+        "name":"权限管理",
+        "system":"",
+        "path":"/authority",
+        "pid":"",
+        "hasLowLevel":1,
+		"children":[
+            {
+                "menuId":"a73cf1d7e17311e7aefd729014adbe9a",
+                "name":"人员授权",
+                "system":"builder",
+                "path":"/authority/member-management",
+                "pid":"a73cefade17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/authority-nav-icon1.png"
+            },
+            {
+                "menuId":"a73cdeb7e17311e7aefd729014adbe9a",
+                "name":"角色授权",
+                "system":"builder",
+                "path":"/authority/role-management",
+                "pid":"a73cefade17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/authority-nav-icon2.png"
+
+            },
+            {
+                "menuId":"a73cdf3ee17311e7aefd729014adbe9a",
+                "name":"应用授权",
+                "system":"",
+                "path":"/authority/application-allot",
+                "pid":"a73cefade17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/authority-nav-icon3.png",
                 "children":[
                     {
-                        "url":"/authority/application-allot/basic-client",
+                        "menuId":"a73cdf81e17311e7aefd729014adbe9a",
                         "name":"基础客户端",
-                        "sever":"http://192.168.13.195:8989/cloud/"
+                        "system":"cloud",
+                        "path":"/authority/application-allot/basic-client",
+                        "pid":"a73cdf3ee17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     },
                     {
-                        "url":"/authority/application-allot/system-client",
+                        "menuId":"a73cdfb7e17311e7aefd729014adbe9a",
                         "name":"系统客户端",
-                        "sever":"http://192.168.13.195:8989/cloud/"
+                        "system":"cloud",
+                        "path":"/authority/application-allot/system-client",
+                        "pid":"a73cdf3ee17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     },
                     {
-                        "url":"/authority/application-allot/bim-meal",
+                        "menuId":"a73ce1cfe17311e7aefd729014adbe9a",
                         "name":"BIM应用套餐",
-                        "sever":"http://192.168.13.195:8989/cloud/"
+                        "system":"cloud",
+                        "path":"/authority/application-allot/bim-meal",
+                        "pid":"a73cdf3ee17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     },
                     {
-                        "url":"/authority/application-allot/quota-lib",
+                        "menuId":"a73ce211e17311e7aefd729014adbe9a",
                         "name":"定额库",
-                        "sever":"http://192.168.13.195:8989/cloud/"
+                        "system":"cloud",
+                        "path":"/authority/application-allot/quota-lib",
+                        "pid":"a73cdf3ee17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     }
                 ]
             },
-			{
-				"url":"/authority/administrators-list",
+            {
+                "menuId":"a73ce24be17311e7aefd729014adbe9a",
                 "name":"管理员列表",
-				"sever":"http://192.168.13.195:8989/builder/"
-			}
-		]
+                "system":"builder",
+                "path":"/authority/administrators-list",
+                "pid":"a73cefade17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/authority-nav-icon4.png"
+            },
+            
+        ]
 	},
 	{
 		"url":"/bimlib",
         "name":"BIM库",
         "sever":"",
 		"children":[
-			{
-				"url":"/bimlib/housing",
+            {
+                "menuId":"a73ce2bae17311e7aefd729014adbe9a",
                 "name":"房建",
-                "sever":"",
-				"children":[
-					{
-						"url":"/bimlib/housing/bim-lib/1",
+                "system":"builder",
+                "path":"/bimlib/housing",
+                "pid":"a73ce286e17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/bimlib-nav-icon1.png",
+                "children":[
+                    {
+                        "menuId":"a73ce2eae17311e7aefd729014adbe9a",
                         "name":"工程库",
-						"sever":"http://192.168.13.195:8989/builder/"
-					},
-					{
-						"url":"/bimlib/housing/working-set/1",
+                        "system":"builder",
+                        "path":"/bimlib/housing/bim-lib/1",
+                        "pid":"a73ce2bae17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73ce350e17311e7aefd729014adbe9a",
                         "name":"工作集库",
-						"sever":"http://192.168.13.195:8989/builder/"
-					},
-					{
-						"url":"/bimlib/housing/pdf-drawing",
+                        "system":"builder",
+                        "path":"/bimlib/housing/working-set/1",
+                        "pid":"a73ce2bae17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73ce381e17311e7aefd729014adbe9a",
                         "name":"PDF图纸",
-						"sever":"http://192.168.13.195:8989/builder/"
-					}
-				]
-			},
-			{
-				"url":"/bimlib/BaseBuild",
+                        "system":"builder",
+                        "path":"/bimlib/housing/pdf-drawing",
+                        "pid":"a73ce2bae17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    }
+                ]
+            },
+            {
+                "menuId":"a73cf20be17311e7aefd729014adbe9a",
                 "name":"基建",
-                "sever":"",
-				"children":[
-					{
-						"url":"/bimlib/BaseBuild/bim-lib/2",
+                "system":null,
+                "path":"/bimlib/BaseBuild",
+                "pid":"a73ce286e17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/bimlib-nav-icon3.png",
+                "children":[
+                    {
+                        "menuId":"a73ce3b3e17311e7aefd729014adbe9a",
                         "name":"工程库",
-						"sever":"http://192.168.13.195:8989/builder/"
-					},
-					{
-						"url":"/bimlib/BaseBuild/working-set/2",
+                        "system":"builder",
+                        "path":"/bimlib/BaseBuild/bim-lib/2",
+                        "pid":"a73cf20be17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73ce3e4e17311e7aefd729014adbe9a",
                         "name":"工作集库",
-						"sever":"http://192.168.13.195:8989/builder/"
-					}
-				]
-			},
-			{
-				"url":"/bimlib/decoration",
+                        "system":"builder",
+                        "path":"/bimlib/BaseBuild/working-set/2",
+                        "pid":"a73cf20be17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    }
+                ]
+            },
+            {
+                "menuId":"a73ce416e17311e7aefd729014adbe9a",
                 "name":"家装",
-                "sever":"",
-				"children":[
-					{
-						"url":"/bimlib/decoration/bim-lib/4",
+                "system":"builder",
+                "path":"/bimlib/decoration",
+                "pid":"a73ce286e17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/bimlib-nav-icon2.png",
+                "children":[
+                    {
+                        "menuId":"a73ce449e17311e7aefd729014adbe9a",
                         "name":"工程库",
-						"sever":"http://192.168.13.195:8989/builder/"
-					}
-				]
-			}
-		]
+                        "system":"builder",
+                        "path":"/bimlib/decoration/bim-lib/4",
+                        "pid":"a73ce416e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    }
+                ]
+            },
+        ]
 	},
 	{
 		"url":"/componentlib",
         "name":"构件库",
         "sever":"",
 		"children":[
-			{
-				"url":"/componentlib/luban-steel",
-                "name":"鲁班钢筋",
-				"sever":"http://192.168.13.195:8989/cloud/"
-			},
-			{
-				"url":"/componentlib/luban-mep",
-                "name":"鲁班安装",
-				"sever":"http://192.168.13.195:8989/cloud/"
-			},
             {
-                "url":"/componentlib/Remiz",
+                "menuId":"a73ce4dee17311e7aefd729014adbe9a",
+                "name":"鲁班钢筋",
+                "system":"cloud",
+                "path":"/componentlib/luban-steel",
+                "pid":"a73ce47ae17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/componentlib-nav-icon4.png"
+            },
+            {
+                "menuId":"a73ce541e17311e7aefd729014adbe9a",
+                "name":"鲁班安装",
+                "system":"cloud",
+                "path":"/componentlib/luban-mep",
+                "pid":"a73ce47ae17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/componentlib-nav-icon4.png"
+            },
+            {
+                "menuId":"a73ce572e17311e7aefd729014adbe9a",
                 "name":"Remiz",
-                "sever":"",
+                "system":"",
+                "path":"/componentlib/Remiz",
+                "pid":"a73ce47ae17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/componentlib-nav-icon4.png",
                 "children":[
                     {
-                        "url":"/componentlib/Remiz/remiz-comp",
-                        "name":"Remiz-构件库----*待定*",
-                        "sever":"http://192.168.13.195:8989/palace/"
+                        "menuId":"a73ce5a3e17311e7aefd729014adbe9a",
+                        "name":"Remiz-构件库",
+                        "system":"palace",
+                        "path":"/componentlib/Remiz/remiz-comp",
+                        "pid":"a73ce572e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     },
                     {
-                        "url":"/componentlib/Remiz/remiz-temp",
-                        "name":"Remiz-模型库----*待定*",
-                        "sever":"http://192.168.13.195:8989/palace/"
+                        "menuId":"a73ce5d4e17311e7aefd729014adbe9a",
+                        "name":"Remiz-模型库",
+                        "system":"palace",
+                        "path":"/componentlib/Remiz/remiz-temp",
+                        "pid":"a73ce572e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     },
                     {
-                        "url":"/componentlib/Remiz/remiz-mate",
-                        "name":"Remiz-材质库----*待定*",
-                        "sever":"http://192.168.13.195:8989/palace/"
+                        "menuId":"a73ce606e17311e7aefd729014adbe9a",
+                        "name":"Remiz-材质库",
+                        "system":"palace",
+                        "path":"/componentlib/Remiz/remiz-mate",
+                        "pid":"a73ce572e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     }
                 ]
             }
-		]
+        ]
 	},
 	{
 		"url":"/quotalib",
@@ -174,64 +319,173 @@
         "sever":"",
 		"children":[
             {
-                "url":"/quotalib/automatic",
-                "name":"",
+                "menuId":"a73ce66ee17311e7aefd729014adbe9a",
+                "name":"自动套模板",
+                "system":"cloud",
+                "path":"/quotalib/automatic-template",
+                "pid":"a73ce638e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/quotalib-nav-icon4.png",
+            },
+            {
+                "menuId":"a73ce69fe17311e7aefd729014adbe9a",
+                "name":"企业定额",
+                "system":"",
+                "path":"",
+                "pid":"a73ce638e17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/quotalib-nav-icon4.png",
                 "children":[
                     {
-                        "url":"/quotalib/automatic-template",
-                        "name":"自动套模板",
-                        "sever":"http://192.168.13.195:8989/cloud/"
+                        "menuId":"a73cf172e17311e7aefd729014adbe9a",
+                        "name":"定额库",
+                        "system":"cloud",
+                        "path":"",
+                        "pid":"a73ce69fe17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cf1a4e17311e7aefd729014adbe9a",
+                        "name":"清单库",
+                        "system":"cloud",
+                        "path":"",
+                        "pid":"a73ce69fe17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     }
                 ]
             }
-
-		]
+        ]
 	},
 	{
 		"url":"/pricelib/false",
         "name":"价格库",
-        "sever":""
+        "sever":"",
+        "children":[
+            {
+                "menuId":"a73ce736e17311e7aefd729014adbe9a",
+                "name":"材料",
+                "system":null,
+                "path":"",
+                "pid":"a73ce6d0e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/pricelib-nav-icon1.png"
+            },
+            {
+                "menuId":"a73ce767e17311e7aefd729014adbe9a",
+                "name":"设备",
+                "system":"",
+                "path":"",
+                "pid":"a73ce6d0e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/pricelib-nav-icon2.png"
+            },
+            {
+                "menuId":"a73ce79ae17311e7aefd729014adbe9a",
+                "name":"人工",
+                "system":"",
+                "path":"",
+                "pid":"a73ce6d0e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/pricelib-nav-icon3.png"
+            },
+            {
+                "menuId":"a73ce7cce17311e7aefd729014adbe9a",
+                "name":"机械",
+                "system":"",
+                "path":"",
+                "pid":"a73ce6d0e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/pricelib-nav-icon4.png"
+            },
+            {
+                "menuId":"a73ce7fee17311e7aefd729014adbe9a",
+                "name":"周转材料",
+                "system":"",
+                "path":"",
+                "pid":"a73ce6d0e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/pricelib-nav-icon5.png"
+            },
+            {
+                "menuId":"a73ce832e17311e7aefd729014adbe9a",
+                "name":"专业分包",
+                "system":"",
+                "path":"",
+                "pid":"a73ce6d0e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/pricelib-nav-icon6.png"
+            },
+            {
+                "menuId":"a73ce864e17311e7aefd729014adbe9a",
+                "name":"清工分包",
+                "system":"",
+                "path":"",
+                "pid":"a73ce6d0e17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/pricelib-nav-icon7.png"
+            }
+        ]
 	},
 	{
 		"url":"/indicatorslib",
         "name":"指标库",
         "sever":"",
 		"children":[
-			{
-				"url":"/indicatorslib/unchecked/",
+            {
+                "menuId":"a73ce8c9e17311e7aefd729014adbe9a",
                 "name":"未审核指标",
-                "sever":"",
-				"children":[
-					{
-						"url":"/indicatorslib/unchecked/civilEngineering-index",
+                "system":null,
+                "path":"/indicatorslib/unchecked/",
+                "pid":"a73ce897e17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/indicatorslib-nav-icon1.png",
+                "children":[
+                    {
+                        "menuId":"a73ce8fae17311e7aefd729014adbe9a",
                         "name":"土建指标",
-						"sever":"http://192.168.13.195:8989/cloud/"
-					},
-					{
-						"url":"/indicatorslib/unchecked/reinforcement-index",
+                        "system":"cloud",
+                        "path":"/indicatorslib/unchecked/civilEngineering-index",
+                        "pid":"a73ce8c9e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73ce960e17311e7aefd729014adbe9a",
                         "name":"钢筋指标",
-						"sever":"http://192.168.13.195:8989/cloud/"
-					}
-				]
-			},
-			{
-				"url":"/indicatorslib/passed",
+                        "system":"cloud",
+                        "path":"/indicatorslib/unchecked/reinforcement-index",
+                        "pid":"a73ce8c9e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    }
+                ]
+            },
+            {
+                "menuId":"a73ce994e17311e7aefd729014adbe9a",
                 "name":"已通过指标",
-                "sever":"",
-				"children":[
-					{
-						"url":"/indicatorslib/passed/civil-engineering-index",
+                "system":"",
+                "path":"/indicatorslib/passed",
+                "pid":"a73ce897e17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/indicatorslib-nav-icon2.png",
+                "children":[
+                    {
+                        "menuId":"a73ce9c6e17311e7aefd729014adbe9a",
                         "name":"土建指标",
-						"sever":"http://192.168.13.195:8989/cloud/"
-					},
-					{
-						"url":"/indicatorslib/passed/reinforcement-index",
+                        "system":"cloud",
+                        "path":"/indicatorslib/passed/civil-engineering-index",
+                        "pid":"a73ce994e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73ce9f7e17311e7aefd729014adbe9a",
                         "name":"钢筋指标",
-						"sever":"http://192.168.13.195:8989/cloud/"
-					}
-				]
-			}
-		]
+                        "system":"cloud",
+                        "path":"/indicatorslib/passed/reinforcement-index",
+                        "pid":"a73ce994e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    }
+                ]
+            }
+        ]
 	},
 	{
 		"url":"/configuration",
@@ -239,124 +493,125 @@
         "sever":"",
         "children":[
             {
-                "url":"/configuration/common",
+                "menuId":"a73cea5de17311e7aefd729014adbe9a",
                 "name":"通用",
-                "sever":"",
+                "system":null,
+                "path":"/configuration/common",
+                "pid":"a73cea2ae17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/configuration-nav-icon1.png",
                 "children":[
                     {
-                        "url":"/configuration/common/data-catalog",
+                        "menuId":"a73cea90e17311e7aefd729014adbe9a",
                         "name":"资料目录",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/configuration/common/attribute-template",
-                        "name":"属性模板",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/configuration/common/logo-management",
-                        "name":"标识管理",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/configuration/common/label-management",
-                        "name":"标签管理",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/configuration/common/form-management",
-                        "name":"表单管理",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/configuration/common/process-template",
-                        "name":"工序模板",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/configuration/common/color-template",
-                        "name":"颜色模板",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    }
-                ]
-            },
-            {
-                "url":"/configuration/govern",
-                "name":"Govern-------*//路由不完整*",
-                "sever":"",
-                "children":[
-                    {
-                        "url":"",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    }
-                ]
-            },
-            {
-                "url":"/configuration/plan",
-                "name":"plan",
-                "sever":"",
-                "children":[
-                    {
-                        "url":"/configuration/plan/calendar-template",
-                        "name":"日历模板管理",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    }
-                ]
-            },
-            {
-                "url":"/configuration/coopreation",
-                "name":"Co/View/Boss-------*//路由不完整*",
-                "sever":"",
-                "children":[
-                    {
-                        "url":"",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    }
-                ]
-            },
-            {
-                "url":"/configuration/explorerCivil",
-                "name":"Explorer(Civil)-------*//路由不完整*",
-                "sever":"",
-                "children":[
-                    {
-                        "url":"",
-                        "sever":"http://192.168.13.195:8989/builderForCiVil/"
-                    }
-                ]
-            },
-            {
-                "url":"/configuration/Inspector",
-                "name":"Inspector-------*//路由不完整*",
-                "sever":"",
-                "children":[
-                    {
-                        "url":"",
-                        "sever":"http://192.168.13.195:8989/builderForCiVil/"
-                    }
-                ]
-            },
-            {
-                "url":"/configuration/o-bw",
-                "name":"原BW-------*//路由不完整*",
-                "sever":"",
-                "children":[
-                    {
-                        "url":"",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    }
-                ]
-            },
-            {
-                "url":"/configuration/o-govern",
-                "name":"原Govern",
-                "sever":"",
-                "children":[
-                    {
-                        "url":"/configuration/o-govern/report-subscription",
-                        "name":"报表订阅",
-                        "sever":"http://192.168.13.195:8989/builder/"
+                        "system":"builder",
+                        "path":"/configuration/common/data-catalog",
+                        "pid":"a73cea5de17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     },
                     {
-                        "url":"/configuration/o-govern/engineering-nature",
-                        "name":"工程性质",
-                        "sever":"http://192.168.13.195:8989/builder/"
+                        "menuId":"a73ceac1e17311e7aefd729014adbe9a",
+                        "name":"属性模板",
+                        "system":"builder",
+                        "path":"/configuration/common/attribute-template",
+                        "pid":"a73cea5de17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73ceaf3e17311e7aefd729014adbe9a",
+                        "name":"标识管理",
+                        "system":"builder",
+                        "path":"/configuration/common/logo-management",
+                        "pid":"a73cea5de17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73ceb27e17311e7aefd729014adbe9a",
+                        "name":"标签管理",
+                        "system":"builder",
+                        "path":"/configuration/common/label-managemen",
+                        "pid":"a73cea5de17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73ceb8ce17311e7aefd729014adbe9a",
+                        "name":"表单管理",
+                        "system":"builder",
+                        "path":"/configuration/common/form-management",
+                        "pid":"a73cea5de17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cebc0e17311e7aefd729014adbe9a",
+                        "name":"工序模板",
+                        "system":"builder",
+                        "path":"/configuration/common/process-template",
+                        "pid":"a73cea5de17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cebf5e17311e7aefd729014adbe9a",
+                        "name":"颜色模板",
+                        "system":"builder",
+                        "path":"/configuration/common/color-template",
+                        "pid":"a73cea5de17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     }
                 ]
+            },
+            {
+                "menuId":"a73cecbfe17311e7aefd729014adbe9a",
+                "name":"Explorer(Civil)",
+                "system":"builderForCiVil",
+                "path":"/configuration/explorerCivil",
+                "pid":"a73cea2ae17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/configuration-nav-icon5.png",
+            },
+            {
+                "menuId":"a73cec27e17311e7aefd729014adbe9a",
+                "name":"Govern",
+                "system":"builder",
+                "path":"/configuration/govern",
+                "pid":"a73cea2ae17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/configuration-nav-icon2.png",
+            },
+            {
+                "menuId":"a73cec5ae17311e7aefd729014adbe9a",
+                "name":"Plan",
+                "system":"builder",
+                "path":"/configuration/plan",
+                "pid":"a73cea2ae17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/configuration-nav-icon3.png",
+            },
+            {
+                "menuId":"a73cec8de17311e7aefd729014adbe9a",
+                "name":"Inspector",
+                "system":"builderForCiVil",
+                "path":"/configuration/Inspector",
+                "pid":"a73cea2ae17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/configuration-nav-icon4.png",
+            },
+            {
+                "menuId":"a73cecf1e17311e7aefd729014adbe9a",
+                "name":"原BW",
+                "system":"builder",
+                "path":"/configuration/o-bw",
+                "pid":"a73cea2ae17311e7aefd729014adbe9a",
+                "hasLowLevel":0,
+                "icon":"/static/img/configuration-nav-icon6.png",
+            },
+            {
+                "menuId":"a73ced23e17311e7aefd729014adbe9a",
+                "name":"原Govern",
+                "system":"",
+                "path":"/configuration/o-govern",
+                "pid":"a73cea2ae17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/configuration-nav-icon7.png",
             }
         ]
 	},
@@ -366,67 +621,207 @@
         "sever":"",
         "children":[
             {
-                "url":"/system/order-management",
-                "name":"订单记录",
-                "sever":"",
+                "menuId":"a73cee20e17311e7aefd729014adbe9a",
+                "name":"订单管理",
+                "system":null,
+                "path":"/system/order-management",
+                "pid":"a73cedede17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/system-nav-icon1.png",
                 "children":[
                     {
-                        "url":"/system/order-management/orders",
-                        "name":"套餐订单",
-                        "sever":"http://192.168.13.195:8989/cloud/"
-                    },{
-                        "url":"/system/order-management/eds-orders",
+                        "menuId":"a73cee84e17311e7aefd729014adbe9a",
                         "name":"系统订单",
-                        "sever":"http://192.168.13.195:8989/cloud/"
+                        "system":"cloud",
+                        "path":"/system/order-management/eds-orders",
+                        "pid":"a73cee20e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cee53e17311e7aefd729014adbe9a",
+                        "name":"套餐订单",
+                        "system":"cloud",
+                        "path":"/system/order-management/orders",
+                        "pid":"a73cee20e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cee53e17311e7aefd729014adbe9a",
+                        "name":"鲁班币管理",
+                        "system":"cloud",
+                        "path":"/system/order-management/lubancoins",
+                        "pid":"a73cee20e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     }
                 ]
             },
             {
-                "url":"/system/lubancoins-management",
-                "name":"鲁班币",
-                "sever":"http://192.168.13.195:8989/cloud/"
-            },
-            {
-                "url":"/system/system-log",
+                "menuId":"a73ceee7e17311e7aefd729014adbe9a",
                 "name":"系统日志",
-                "sever":"",
+                "system":null,
+                "path":"/system/system-lo",
+                "pid":"a73cedede17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/system-nav-icon3.png",
                 "children":[
                     {
-                        "url":"/system/system-log/govern-log",
+                        "menuId":"a73cef19e17311e7aefd729014adbe9a",
                         "name":"Govern应用日志",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/system/system-log/explorer-log",
+                        "system":"builder",
+                        "path":"/system/system-log/govern-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cef4be17311e7aefd729014adbe9a",
                         "name":"Explorer应用日志",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/system/system-log/civil-log",
+                        "system":"builder",
+                        "path":"/system/system-log/explorer-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cef7ce17311e7aefd729014adbe9a",
                         "name":"市政应用日志",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/system/system-log/works-log",
+                        "system":"builder",
+                        "path":"/system/system-log/civil-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cefe1e17311e7aefd729014adbe9a",
                         "name":"Works应用日志",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/system/system-log/plan-log",
+                        "system":"builder",
+                        "path":"/system/system-log/works-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cf013e17311e7aefd729014adbe9a",
                         "name":"Plan应用日志",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/system/system-log/prevbw-log",
+                        "system":"builder",
+                        "path":"/system/system-log/plan-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cf045e17311e7aefd729014adbe9a",
                         "name":"原BW应用日志",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/system/system-log/prevgovern-log",
+                        "system":"builder",
+                        "path":"/system/system-log/prevbw-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cf075e17311e7aefd729014adbe9a",
                         "name":"原Govern应用日志",
-                        "sever":"http://192.168.13.195:8989/builder/"
-                    },{
-                        "url":"/system/system-log/remiz-log",
+                        "system":"builder",
+                        "path":"/system/system-log/prevgovern-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cf0a7e17311e7aefd729014adbe9a",
                         "name":"Remiz应用日志",
-                        "sever":"http://192.168.13.195:8989/builder/"
+                        "system":"builder",
+                        "path":"/system/system-log/remiz-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    }
+                ]
+            },
+            {
+                "menuId":"a73ceee7e17311e7aefd729014adbe9a",
+                "name":"在线日志",
+                "system":null,
+                "path":"/system/system-lo",
+                "pid":"a73cedede17311e7aefd729014adbe9a",
+                "hasLowLevel":1,
+                "icon":"/static/img/system-nav-icon3.png",
+                "children":[
+                    {
+                        "menuId":"a73cef19e17311e7aefd729014adbe9a",
+                        "name":"Govern应用日志",
+                        "system":"builder",
+                        "path":"/system/system-log/govern-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cef4be17311e7aefd729014adbe9a",
+                        "name":"Explorer应用日志",
+                        "system":"builder",
+                        "path":"/system/system-log/explorer-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cef7ce17311e7aefd729014adbe9a",
+                        "name":"市政应用日志",
+                        "system":"builder",
+                        "path":"/system/system-log/civil-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cefe1e17311e7aefd729014adbe9a",
+                        "name":"Works应用日志",
+                        "system":"builder",
+                        "path":"/system/system-log/works-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cf013e17311e7aefd729014adbe9a",
+                        "name":"Plan应用日志",
+                        "system":"builder",
+                        "path":"/system/system-log/plan-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cf045e17311e7aefd729014adbe9a",
+                        "name":"原BW应用日志",
+                        "system":"builder",
+                        "path":"/system/system-log/prevbw-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cf075e17311e7aefd729014adbe9a",
+                        "name":"原Govern应用日志",
+                        "system":"builder",
+                        "path":"/system/system-log/prevgovern-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
+                    },
+                    {
+                        "menuId":"a73cf0a7e17311e7aefd729014adbe9a",
+                        "name":"Remiz应用日志",
+                        "system":"builder",
+                        "path":"/system/system-log/remiz-log",
+                        "pid":"a73ceee7e17311e7aefd729014adbe9a",
+                        "hasLowLevel":0
                     }
                 ]
             }
         ]
-	}
+	},
+    {
+        "menuId":"a73cf0d8e17311e7aefd729014adbe9a",
+        "name":"CIM数据",
+        "system":null,
+        "path":"",
+        "pid":"",
+        "hasLowLevel":1
+    },
+    {
+        "menuId":"a73cf13de17311e7aefd729014adbe9a",
+        "name":"硬件平台",
+        "system":null,
+        "path":"",
+        "pid":"",
+        "hasLowLevel":1
+    }
 ]
 }

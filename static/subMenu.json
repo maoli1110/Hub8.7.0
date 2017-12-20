@@ -1,0 +1,26 @@
+[
+    {
+        "menuId":"a73ce31de17311e7aefd729014adbe9a",
+        "name":"组织结构",
+        "system":"cas",
+        "path":"/companyprofile/organization-structure",
+        "pid":"a73cdd8ee17311e7aefd729014adbe9a",
+        "hasLowLevel":0
+    },
+    {
+        "menuId":"a73ce4abe17311e7aefd729014adbe9a",
+        "name":"空间使用",
+        "system":"cas",
+        "path":"/companyprofile/space-usage",
+        "pid":"a73cdd8ee17311e7aefd729014adbe9a",
+        "hasLowLevel":0
+    },
+    {
+        "menuId":"a73ce510e17311e7aefd729014adbe9a",
+        "name":"项目结构",
+        "system":"cas",
+        "path":"",
+        "pid":"a73cdd8ee17311e7aefd729014adbe9a",
+        "hasLowLevel":0
+    }
+]

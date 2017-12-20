@@ -2,7 +2,7 @@
     <div>
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-                <el-menu-item :index="subItem.menuId" v-for="(subItem,i) in subMenus">{{subItem.name}}</el-menu-item>
+                <el-menu-item :index="subItem.menuId" v-for="(subItem,i) in subMenus"><img v-bind:src="subItem.icon" alt="">{{subItem.name}}</el-menu-item>
             </el-menu>
         </div>
         <div class="container">
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 import {getMenusList} from '../../api/getData-mll.js';
 import {transformToObjFormat,getMainNavMenuId} from "../../utils/common.js"; // 通用模块
 export default {
@@ -31,12 +33,18 @@ export default {
         }
     },
     created() {
+        //正式
         let self = this;
         let mainNavObj = JSON.parse(localStorage.getItem("mainNavObj"));
         this.currentMenuId = getMainNavMenuId(this.$route.path,mainNavObj);
         getMenusList({url:self.serverUrl,params:self.currentMenuId}).then((res)=>{
             self.subMenus = res.data;
         });
+        //假数据
+        // axios.get('./static/subMenu.json').then((res)=>{
+        //      self.subMenus = res.data;
+        //     console.log(res.data,'res')
+        // });
     },
     mounted() {
 
@@ -56,5 +64,8 @@ export default {
 @import "../../../static/css/aside.css";
 .container{
     overflow: hidden;
+}
+.el-icon-menu-company{
+    background: 
 }
 </style>
