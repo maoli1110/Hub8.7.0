@@ -50,7 +50,7 @@
             <edit-tree :templateParams="templateParams" v-show='editDialogVisible' ref="processEditTree"> </edit-tree>
             <div style="clear:both;"></div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="editDialogVisible = false" class="dialog-btn">确 定</el-button>
+                <el-button type="primary" @click="editDialogVisible = false;updataTemplateTreeInfo()" class="dialog-btn">确 定</el-button>
                 <el-button @click="editDialogVisible = false" class="dialog-btn">取消</el-button>
             </span>
         </el-dialog>
@@ -137,8 +137,7 @@
                     this.ProcessTableData = res.data.result.list;
                     this.total = res.data.result.lbPageInfo.totalNumber;
                 });
-            },
-
+            },            
             orgTreeClick(event, treeId, treeNode) {
                 this.orgValue = treeNode.name;
                 this.orgType = treeNode.type;
@@ -167,7 +166,8 @@
                     this.title = "编辑模板";
                     this.templateParams = {
                         templateId: row.templateId ||'5a38b1e9bb5ec84f66e3f70f',
-                        templateName: row.templateName||'pc'
+                        templateName: row.templateName||'pc',
+                        isAdd:false
                     };
                     setTimeout(() => {                      
                       this.$refs.processEditTree.getProcessTemplateTreeInfo()
@@ -175,8 +175,21 @@
                     
                 } else {
                     this.title = "添加模板";
+                    this.templateParams = {
+                        orgType:this.orgType,
+                        orgid:this.orgid,
+
+                        isAdd:true
+                    };
+                    setTimeout(() => {                      
+                      this.$refs.processEditTree.getDefaultProcessTemplateTreeInfo()
+                    }, 0);
+                    
 
                 }
+            },
+            updataTemplateTreeInfo(){
+                  this.$refs.processEditTree.updataTemplateTreeInfo()
             },
             deleteProcess() {
                 this.$confirm("确认删除该记录吗?", "提示", {

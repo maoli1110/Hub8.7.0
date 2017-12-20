@@ -71,9 +71,11 @@
         },
         methods: {
             downLoadLogs(){
+                alert("downLoad")
+
                 let vm = this;
                 let baseUrl = basePath(this.$route.matched[3].path);
-                let args    = "?page="+ 1 +"&size="+ 2 +"&sort="+ 3 +"&start="+ 4 +"&end="+ 5;
+                let args    = "?page="+ 0 +"&size="+ 2 +"&sort="+ 3 +"&start="+ 4 +"&end="+ 5;
                 let params  = {
                                 "url":baseUrl,
                                 "type":this.pathType[this.nowPath],
@@ -81,7 +83,23 @@
                                 }
                 //?page=1&size=2&sort=2&start=3&end=4
                 getLogsDownload(params).then(function (res) {
-                    if(res.data.msg == "success"){}
+                    if(res.data.msg == "success"){
+
+                        var form = $("<form>");
+                        form.attr("style","display:none")
+                        form.attr("method","post")
+                        form.attr("action",res.data.downloadUrl)
+                        var input = $("<input>")
+                        input.attr("type","hidden")
+                        input.attr("name","batchParam")
+                        input.attr("value",res.data.downloadParam)
+                        $("body").append(form)
+                        form.append(input)
+                        form.submit();
+
+
+
+                    }
                 })
             },
             dateFormat(row, column) {  
@@ -103,7 +121,7 @@
                 let params = {
                                 "url":baseUrl,
                                 "type":this.pathType[this.nowPath],
-                                "args":"?page=&size=10"
+                                "args":"?page=0&size=10"
                                 }
                 //?page=1&size=2&sort=2&start=3&end=4
                 getLogs(params).then(function (res) {
