@@ -193,7 +193,7 @@
                 </div>
             </el-dialog>
             <!--云构件库-->
-            <z-tree @hidePanel=hidePanel :paramObj="param" v-show="cloudComTree" :is-show='cloudComTree' ref="cloudTrees"></z-tree>
+            <z-tree @hidePanel=hidePanel :ztreeInfo="ztreeInfoParam" v-show="cloudComTree" :is-show='cloudComTree' ref="cloudTrees"></z-tree>
         </div>
     </div>
 </template>
@@ -299,7 +299,7 @@
                     startTime: "",
                     title: ""
                 },
-                param:{
+                ztreeInfoParam:{
                     version:'1.0.0',
                     productId:5,
                 },
@@ -659,7 +659,7 @@
             },
             //加载树结构
             getCloudTree(){
-               this.$refs.cloudTrees.getZtree(baseUrl,this.param);
+               this.$refs.cloudTrees.getZtree(baseUrl,this.ztreeInfoParam);
                this.cloudComTree = true;
             },
             getData(){
