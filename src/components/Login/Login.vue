@@ -140,8 +140,6 @@ export default {
                 } else {
                     console.log('lastLogin')
                     self.centerLogin();
-                    this.loading = true;
-                    this.$router.push("/companyprofile/organization-structure");
                 }
             } else {
               console.log("error submit!!");
@@ -231,18 +229,12 @@ export default {
                     if (this.isRemember) {   // 记住密码
                         Cookies.set("username", self.loginForm.username);
                         Cookies.set("password", self.loginForm.password);
-                        console.log(Cookies.get("username"),Cookies.get("password"));
                     } else {                  // 不记住密码
                         Cookies.set("username",self.loginForm.username);
                         Cookies.set("password","");
                     }
-                    console.log(res);
-                    //获取导航菜单
-                    getMenusList({url:self.loginUrl}).then((res)=>{
-                        debugger
-                        console.log(res)
-                    })
-                    
+                    this.loading = true;
+                    this.$router.push("/companyprofile/organization-structure");
                 })
             } else {
                 alert('请选择企业');

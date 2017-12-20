@@ -1820,4 +1820,9 @@ body .el-popover.remark-popper {
     transition: all 1s;
 
 }
+.corporateInformationDialog {
+    top:10% !important;
+    width: 35% !important
+}
+
 

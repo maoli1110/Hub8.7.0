@@ -3,7 +3,7 @@ import axios from 'axios';
  * builder模块
  * Url = 'http://192.168.13.195:8989/builder/';
  */
-let builderUrl = 'http://192.168.13.195:8989/builder/'
+let builderUrl = 'http://192.168.13.195:8989/hello/'
 /**
  * 组织树结构
  */
@@ -175,13 +175,22 @@ export const getProcessTemplateTreeInfo = params => {
  * 获取默认工序模板树
  */
 export const getDefaultProcessTemplateTreeInfo = params => {
-    return axios.post(`${builderUrl}appconfig/general/process/template/getDefaultProcessTemplateTreeInfo`)
+    return axios.get(`${builderUrl}appconfig/general/process/template/getDefaultProcessTemplateTreeInfo`)
 };
+
+/**
+ * @param {*} params
+ * 添加工序模板
+ */
+export const addProcessTemplateInfo = params => {
+    return axios.put(`${builderUrl}appconfig/general/process/template/addProcessTemplateInfo`,params)
+};
+
 /**
  * @param {*} params
  * 批量删除工序模板
  */
 export const deleteProcessTemplateInfos = params => {
-    return axios.post(`${builderUrl}appconfig/general/process/template/deleteProcessTemplateInfos`)
+    return axios.post(`${builderUrl}appconfig/general/process/template/deleteProcessTemplateInfos`,params)
 };
 
