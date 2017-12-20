@@ -48,17 +48,45 @@
         </el-dialog>
         <!-- 企业信息 -->
         <el-dialog title="企业信息" :visible.sync="corporateInformationDialogVisible" custom-class="corporateInformationDialog">
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="企业图标：" style="position:relative">
+            <div>
+                <ul class="corporate-tabs">
+                    <li :class="{'corporate-checked':i==currentIndex}" v-for="(item,i) in corporateItems" :key="i" @click="currentIndex=i;i==1?isLoginPage=true:isLoginPage=false">{{item}}</li>
+                </ul>
+            </div>
+            <!-- 登录页管理 -->
+            <div style="margin-top:50px" v-show="isLoginPage">
+                <div class="el-form_">
+                    <label class="el-form-item__label">登录页背景：</label>
+                    <div class="el-form-item__content" style="width:50%">
+                        <el-input v-model="ruleForm.password" style="width:68%"></el-input>
+                        <div style="float:right;color:#fff;background:#6595f2;padding:0 31px;cursor:pointer;border-radius: 4px">替换</div>
+                    </div>
+                </div>
+                <div class="el-form_">
+                    <label class="el-form-item__label" >预览：</label>
+                    <div class="el-form-item__content" style="height:450px;margin-left:85px;border:1px solid #e6e6e6;">
+                        <img src="http://upload.17u.net/uploadpicbase/2013/10/12/aa/201310121054516850.jpg" alt="" style="width:100%;height:100%"> 
+                    </div>
+                </div>
+                <!-- <el-form-item label="登录页背景：" >
+                    <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off" style="width:80%"></el-input>
+                    <div v-show="isEdit" style="float:right;color:#fff;background:#6595f2;padding:0 30px;cursor:pointer;border-radius: 4px">替换</div>
+                    <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
+                </el-form-item> -->
+
+            </div>
+            <!-- 企业信息 -->
+            <el-form :model="ruleForm" :rules="rules" v-show="!isLoginPage" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="企业图标：">
                     <el-upload v-show="isEdit" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false"
                         :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        <div v-show="isEdit" style="float:right;margin-left:330px">
-                            <img src="http://dunizb.com/img/avatar.gif" class="avatar">
-                        </div>
                     </el-upload>
                     <img v-show="!isEdit" src="http://dunizb.com/img/avatar.gif" class="avatar" style="margin-left:20px">
+                </el-form-item>
+                <el-form-item :label="isEdit?'示例:':'' ">
+                    <img v-show="isEdit" src="http://dunizb.com/img/avatar.gif" class="avatar">
                 </el-form-item>
                 <el-form-item label="企业名称：" prop="password">
                     <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off"></el-input>
@@ -68,27 +96,24 @@
                     <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off"></el-input>
                     <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
                 </el-form-item>
-                <el-form-item label="登录页背景：" prop="password">
+
+                <el-form-item label="联系地址：" prop="repeat">
                     <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off"></el-input>
                     <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
                 </el-form-item>
-                <el-form-item label="联系地址：" prop="password">
+                <el-form-item label="企业管理员：" prop="repeat">
                     <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off"></el-input>
                     <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
                 </el-form-item>
-                <el-form-item label="详细地址：" prop="password">
+                <el-form-item label="详细地址：" prop="repeat">
                     <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off"></el-input>
                     <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
                 </el-form-item>
-                <el-form-item label="联系人：" prop="password">
+                <el-form-item label="手机：" prop="repeat">
                     <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off"></el-input>
                     <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
                 </el-form-item>
                 <el-form-item label="电话：" prop="password">
-                    <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off"></el-input>
-                    <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
-                </el-form-item>
-                <el-form-item label="手机：" prop="password">
                     <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off"></el-input>
                     <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
                 </el-form-item>
@@ -99,12 +124,16 @@
                 <el-form-item v-show="isEdit" label="密码验证：" prop="repeat">
                     <el-input v-model="ruleForm.repeat" auto-complete="off"></el-input>
                 </el-form-item>
+                <el-form-item v-show="isEdit" label="">
+                    <!-- 占位符  无视                  -->
+                </el-form-item>
             </el-form>
-            <span slot="footer" class="dialog-footer">
+
+            <div slot="footer" class="dialog-footer" v-show="!isLoginPage">
                 <el-button type="primary" class="dialog-btn" v-show="!isEdit" @click="isEdit=!isEdit">编辑</el-button>
-                <el-button type="primary" class="dialog-btn" v-show="isEdit" @click="isEdit=!isEdit">确 定</el-button>
+                <el-button type="primary" class="dialog-btn" v-show="isEdit" @click="isEdit=!isEdit">保存</el-button>
                 <el-button @click="corporateInformationDialogVisible= false" class="dialog-btn" v-show="isEdit">取消</el-button>
-            </span>
+            </div>
         </el-dialog>
 
     </div>
@@ -116,15 +145,19 @@
     export default {
         data() {
             return {
-                name: '鱼遇雨欲与雨语',
+                name: "鱼遇雨欲与雨语",
                 showSetting: false,
+                currentIndex: 0,
+                index: 1,
+                corporateItems: ['企业信息', '登录页管理'],
                 changePasswordDialogVisible: false,
                 corporateInformationDialogVisible: false,
                 isEdit: false,
+                isLoginPage:false,
                 ruleForm: {
                     password: "",
                     newPassword: "",
-                    repeat: "",
+                    repeat: ""
                 },
                 rules: {
                     password: [{
@@ -138,39 +171,39 @@
                         trigger: "blur"
                     }],
                     repeat: [{
-                        required: true,
+                        required: false,
                         message: "请输入密码",
                         trigger: "blur"
                     }]
                 },
-                imageUrl: ''
-            }
+                imageUrl: ""
+            };
         },
         computed: {
             username() {
-                let username = localStorage.getItem('ms_username');
+                let username = localStorage.getItem("ms_username");
                 return username ? username : this.name;
             }
         },
         methods: {
             handleCommand(command) {
                 switch (command) {
-                    case 'loginout':
-                        localStorage.removeItem('ms_username')
+                    case "loginout":
+                        localStorage.removeItem("ms_username");
                         // this.$router.push('/login');
-                        axios.get('http://192.168.13.195:8080/pds/logout').then((res) => {
-                            console.log('logoutSuccess');
-                            this.$router.push('/login');
-                        })
+                        axios.get("http://192.168.13.195:8080/pds/logout").then(res => {
+                            console.log("logoutSuccess");
+                            this.$router.push("/login");
+                        });
                         break;
-                    case 'changePassword':
+                    case "changePassword":
                         this.changePasswordDialogVisible = true;
                         break;
-                    case 'modifyAvatar':
+                    case "modifyAvatar":
                         this.changePasswordDialogVisible = true;
                         break;
-                    case 'corporateInformation':
-                        this.corporateInformationDialogVisible = true
+                    case "corporateInformation":
+                        this.corporateInformationDialogVisible = true;
                         break;
                     default:
                         break;
@@ -180,26 +213,26 @@
                 this.imageUrl = URL.createObjectURL(file.raw);
             },
             beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
+                const isJPG = file.type === "image/jpeg";
                 const isLt2M = file.size / 1024 / 1024 < 2;
 
                 if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                    this.$message.error("上传头像图片只能是 JPG 格式!");
                 }
                 if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                    this.$message.error("上传头像图片大小不能超过 2MB!");
                 }
                 return isJPG && isLt2M;
             },
             setting() {
-                this.$emit('authority');
+                this.$emit("authority");
                 this.showSetting = false;
-                this.$router.push('/order-management')
+                this.$router.push("/order-management");
             },
             back() {
-                this.$emit('authority');
+                this.$emit("authority");
                 this.showSetting = true;
-                this.$router.push('/companyprofile')
+                this.$router.push("/companyprofile");
             },
             submitForm(formName) {
                 this.$refs[formName].validate(valid => {
@@ -212,17 +245,21 @@
                         return false;
                     }
                 });
-            },
+            }
         },
         created() {
-            if (this.$route.matched[1].path == '/order-management' || this.$route.matched[1].path == '/online' || this.$route
-                .matched[1].path == '/system-log' || this.$route.matched[1].path == '/upgrade-notes') {
+            if (
+                this.$route.matched[1].path == "/order-management" ||
+                this.$route.matched[1].path == "/online" ||
+                this.$route.matched[1].path == "/system-log" ||
+                this.$route.matched[1].path == "/upgrade-notes"
+            ) {
                 this.showSetting = false;
             } else {
                 this.showSetting = true;
             }
         }
-    }
+    };
 
 </script>
 <style scoped>
@@ -271,12 +308,16 @@
     }
 
     .demo-ruleForm {
+        margin-top: 50px;
         margin-left: -25px;
     }
-
-    .el-form-item__label {
-        margin-right: 20px;
+    .el-form_+.el-form_{
+        margin-top: 20px
     }
+  
+    /* .el-form-item__label {
+        margin-right: 20px;
+    } */
 
     .corporate-text {
         font-size: 14px;
@@ -297,6 +338,28 @@
         cursor: pointer;
     }
 
+    .corporate-tabs {
+        width: 400px;
+        height: 40px;
+        border: 1px solid #6595f2;
+        border-radius: 5px;
+        margin: 0 auto;
+        cursor: pointer;
+    }
+
+    .corporate-tabs>li {
+        float: left;
+        width: 50%;
+        height: 40px;
+        line-height: 40px;
+        text-align: center
+    }
+
+    .corporate-checked {
+        background-color: #6595f2;
+        color: #fff
+    }
+
     .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
@@ -312,21 +375,33 @@
     .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
-        width: 90px;
-        height: 90px;
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
         border: 1px solid #e6e6e6;
-        line-height: 90px;
+        line-height: 150px;
         text-align: center;
     }
 
-
-
     .avatar {
-        width: 90px;
-        height: 90px;
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
         display: block;
+    }
+
+    
+
+    .el-form-item {
+        width: 50%;
+    }
+
+    .el-form-item:nth-child(odd) {
+        float: left;
+    }
+
+    .el-form-item:nth-child(even) {
+        margin-left: 50%;
     }
 
 </style>

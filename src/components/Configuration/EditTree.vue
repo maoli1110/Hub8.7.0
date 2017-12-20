@@ -161,14 +161,14 @@
     let maxLevel = -1;
 
     export default {
-        props: ['templateParams'],
+        props: ["templateParams"],
         data() {
             return {
                 textAreaVisible: false,
                 textareaValue: "",
                 textTittle: "",
                 type: "",
-                templateName: '',
+                templateName: "",
                 // 树数据
                 url: "../../../static/datasource.json",
                 setting: {
@@ -237,18 +237,45 @@
             getDefaultProcessTemplateTreeInfo() {
                 this.zNodes = [];
                 types.getDefaultProcessTemplateTreeInfo().then(res => {
-                    this.treeInit()
-                })
+                    this.zNodes = res.data.result;
+                    this.treeInit();
+                });
             },
             //获取指定工序模板树结构
             getProcessTemplateTreeInfo() {
-                this.templateName = this.templateParams.templateName
+                this.templateName = this.templateParams.templateName;
                 this.zNodes = [];
-                types.getProcessTemplateTreeInfo(this.templateParams.templateId).then(res => {
-                    console.log(res.data.result)
-                    this.zNodes = res.data.result;
-                    this.treeInit()
-                })
+                types
+                    .getProcessTemplateTreeInfo(this.templateParams.templateId)
+                    .then(res => {
+                        console.log(res.data.result);
+                        this.zNodes = res.data.result;
+                        this.treeInit();
+                    });
+            },
+            updataTemplateTreeInfo() {
+                // 添加模板树
+                if (this.templateParams.isAdd) {
+                    let treeObj = $.fn.zTree.getZTreeObj("tree_edit");
+                    let treeInfo = treeObj.transformToArray(
+                        treeObj.getNodes()
+                    );
+                    let params = {
+                        orgType: this.templateParams.orgType,
+                        orgid: this.templateParams.orgid,
+                        processTemplateTreeInfo: treeInfo[0],
+                        tmplName: this.templateName
+                    };
+                    console.log(params)
+                    console.log(treeObj)
+                    types.addProcessTemplateInfo().then(res => {
+                        console.log(res);
+                    });
+                } 
+                // 编辑模板树
+                else {
+
+                }
             },
             // 自定义颜色选择器
             colorSelect(treeId, treeNode) {
@@ -703,9 +730,9 @@
                             }
                         } else {
                             /*if(!treeNode.isParent){
-                             alertDialog("warning", "请选择一个节点！", function(){});
-                             break;
-                             }*/
+                                             alertDialog("warning", "请选择一个节点！", function(){});
+                                             break;
+                                             }*/
                             var parentNode = treeNode.getParentNode();
                             var childNodes = parentNode.children;
                             for (var i = 0; i < childNodes.length; i++) {
@@ -750,13 +777,12 @@
                         message: message,
                         type: "error"
                     });
-
                 }
             },
             //取消
             cancleMultiNodeState() {
                 $(".selectStatus ul").slideUp("fast");
-                $(".selcetNodes ul").slideUp('fast')
+                $(".selcetNodes ul").slideUp("fast");
             },
             createNode(zTree, treeNode, isParent, directCreateName, node) {
                 var newNode;
@@ -1043,7 +1069,7 @@
                             childNodes[j].name == nodes[i].name
                         ) {
                             /*alertDialog("warning", "升级后出现同名节点/状态！", function(){});
-                             return;*/
+                                             return;*/
                             nameRepeatFlag = true;
                             break;
                         }
@@ -1058,9 +1084,9 @@
                                 name = nodes[i].name + "(" + k + ")";
                             }
                             /*if(childNodes.length==0){
-                             //父节点下无子节点，直接创建
-                             break;
-                             }*/
+                                             //父节点下无子节点，直接创建
+                                             break;
+                                             }*/
                             for (var j = 0; j < childNodes.length; j++) {
                                 if (
                                     childNodes[j].isParent == nodes[i].isParent &&
@@ -1198,7 +1224,7 @@
                                 childNodes[k].name == nodes[i].name
                             ) {
                                 /*alertDialog("warning", "降级后出现同名节点/状态！", function(){});
-                                 return;*/
+                                                   return;*/
                                 nameRepeatFlag = true;
                             }
                             if (childNodes[k].isParent) {
@@ -1219,9 +1245,9 @@
                                     name = nodes[i].name + "(" + k + ")";
                                 }
                                 /*if(childNodes.length==0){
-                                 //父节点下无子节点，直接创建
-                                 break;
-                                 }*/
+                                                   //父节点下无子节点，直接创建
+                                                   break;
+                                                   }*/
                                 for (var j = 0; j < childNodes.length; j++) {
                                     if (
                                         childNodes[j].isParent == nodes[i].isParent &&
@@ -1247,8 +1273,8 @@
                             treeObj.moveNode(preNode, nodes[i], "inner");
                         }
                         /*else{
-                         treeObj.moveNode(preNode,node,"inner");
-                         }*/
+                                       treeObj.moveNode(preNode,node,"inner");
+                                       }*/
                     } else {
                         //找出父节点下的最后一个节点
                         var parentNode = nodes[i].getParentNode();
@@ -1287,9 +1313,9 @@
                                     name = nodes[i].name + "(" + k + ")";
                                 }
                                 /*if(childNodes.length==0){
-                                 //父节点下无子节点，直接创建
-                                 break;
-                                 }*/
+                                                   //父节点下无子节点，直接创建
+                                                   break;
+                                                   }*/
                                 for (var j = 0; j < childNodes.length; j++) {
                                     if (
                                         childNodes[j].isParent == nodes[i].isParent &&
@@ -1323,8 +1349,8 @@
                     return;
                 }
                 type == "node" ?
-                    $(".selcetNodes ul").slideToggle('fast') :
-                    $(".selectStatus ul").slideToggle('fast');
+                    $(".selcetNodes ul").slideToggle("fast") :
+                    $(".selectStatus ul").slideToggle("fast");
             }
         }
     };
@@ -1411,7 +1437,7 @@
     }
 
     .tree-operate li:nth-of-type(3) {
-        margin-right: 22px
+        margin-right: 22px;
     }
 
     .dialog-footer {
