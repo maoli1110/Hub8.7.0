@@ -34,9 +34,9 @@
             </el-row>
             <div slot="footer" class="dialog-footer">
                 <el-button class="dialog-btn dialog-btn-ok" type="primary"
-                           @click="dialogVisible = false;cloudComTreeOk()">确 定
+                           @click="uploadVisible = false;cloudComTreeOk()">确 定
                 </el-button>
-                <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false;hidePanel()">取 消</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="uploadVisible = false;hidePanel()">取 消</el-button>
             </div>
         </el-dialog>
     </div>
