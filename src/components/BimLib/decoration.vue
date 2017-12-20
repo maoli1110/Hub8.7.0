@@ -567,6 +567,7 @@
             //组织结构树
             getOrgzTreeList(url){
                 getOrgTreeList({url:url}).then((data)=>{
+                    if(!data.data.result.length){return false}
                     data.data.result.forEach((val,key)=>{//添加icon
                         if(val.root){
                             this.$set(val,'iconSkin','rootNode');

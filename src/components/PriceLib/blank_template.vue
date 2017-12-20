@@ -69,7 +69,7 @@
                 <el-col>
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                         <el-table class="house-table scroll-me" :fit="true" :data="tableData.list" style="width: 100%"
-                                  :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll" @sort-change="tableSort"
+                                  :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
                                   @select="selectChecked">
                             <el-table-column
                                 type="selection"
@@ -78,7 +78,7 @@
                             <!---->
                             <!--<el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
                             </el-table-column>-->
-                            <el-table-column prop="title" width="" label="构件名称" sortable show-overflow-tooltip>
+                            <el-table-column prop="title" width="" label="构件名称" show-overflow-tooltip>
                             </el-table-column>
                             <el-table-column prop="imgUrl " width="80" label="缩略图">
                                 <template slot-scope="scope">
@@ -89,21 +89,21 @@
                             </el-table-column>
                             <el-table-column prop="majorName" width="70" label="专业" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="bigTypeName" width="100" label="构件大类" sortable show-overflow-tooltip>
+                            <el-table-column prop="bigTypeName" width="70" label="构件大类" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="smallTypeName" width="100" label="构件小类" sortable show-overflow-tooltip>
+                            <el-table-column prop="smallTypeName" width="70" label="构件小类" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="company" width="" label="厂商" sortable show-overflow-tooltip>
+                            <el-table-column prop="company" width="" label="厂商" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="productModel" width="80" label="型号" sortable show-overflow-tooltip>
+                            <el-table-column prop="productModel" width="80" label="型号" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="author" width="80" label="作者" sortable show-overflow-tooltip>
+                            <el-table-column prop="author" width="80" label="作者" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="addUser" width="80" label="上传人" sortable  show-overflow-tooltip>
+                            <el-table-column prop="addUser" width="80" label="上传人" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="addTime " width="135" label="更新时间" sortable show-overflow-tooltip>
+                            <el-table-column prop="addTime " width="135" label="更新时间" show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="downloadTimes" width="100" label="下载次数" sortable show-overflow-tooltip>
+                            <el-table-column prop="downloadTimes" width="60" label="下载次数" show-overflow-tooltip>
                             </el-table-column>
                             <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
@@ -193,7 +193,42 @@
                 </div>
             </el-dialog>
             <!--云构件库-->
-            <z-tree @hidePanel=hidePanel :paramObj="param" v-show="cloudComTree" :is-show='cloudComTree' ref="cloudTrees"></z-tree>
+            <el-dialog :visible.sync="cloudComTree" custom-class="cloud-component" title="云构件树管理">
+                <el-row>
+                    <el-col class="cloud-toobar">
+
+                        <el-col :span="4" class="icon-item" >
+                            <div @click="expandNode({type:'expand',operObj:'cloudTree'})"><span class="el-icon-plus"></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item" >
+                            <div @click="expandNode({type:'collapse',operObj:'cloudTree'})"><span class="el-icon-minus"></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item">
+                            <div @click="upMove"><span class="el-icon-arrow-up" ></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item">
+                            <div @click="downMove"><span class="el-icon-arrow-down" ></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item">
+                            <div @click="resetZtree"><span class="el-icon-d-arrow-left" ></span></div>
+                        </el-col>
+                        <el-col :span="4" class="icon-item">
+                            <div @click="ztreeSave"><span class="el-icon-picture" ></span></div>
+                        </el-col>
+                    </el-col>
+                    <el-col>
+                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:450px;">
+                            <ul class="ztree scroll-me" id="cloudTree" style="background:#fff;"></ul>
+                        </vue-scrollbar>
+                    </el-col>
+                </el-row>
+                <div slot="footer" class="dialog-footer">
+                    <el-button class="dialog-btn dialog-btn-ok" type="primary"
+                               @click="cloudComTree = false;cloudComTreeOk()">确 定
+                    </el-button>
+                    <el-button class="dialog-btn dialog-btn-cancel" @click="cloudComTree = false;cloudComTreeCancel()">取 消</el-button>
+                </div>
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -220,7 +255,6 @@
 
     } from '../../api/getData-yhj.js';
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
-    import zTree from "components/common/zTree.vue"
     let deletArray = [];
     let level;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     //预览状态模板树的深度
@@ -299,15 +333,29 @@
                     startTime: "",
                     title: ""
                 },
-                param:{
-                    version:'1.0.0',
-                    productId:5,
-                },
                 nodesList:[],//树结构副本
+                setting: {//搜索条件ztree setting
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            idKey:'parentNodeCode',
+                            pIdKey:'nodeCode'
+                        },
+                        key:{
+                            name:'nodeName'
+                        }
+                    },
+                    callback: {
+                        onClick: this.ztreeClick
+                    },
+
+                },
+                zNodes:[]   //树结构的初始值
             }
         },
         methods: {
             hidePanel (isVisible) {
+                console.log(isVisible,'isVisible')
                 this.cloudComTree = isVisible;
             },
             /**common-message(公用消息框)
@@ -339,7 +387,7 @@
 
             //分页器事件
             handleSizeChange(size){
-//                console.log(`每页显示多少条${size}`);
+                console.log(`每页显示多少条${size}`);
                 this.totalPage = size;
                 this.tableParam.pageSize = size;
                 this.getTableList(baseUrl,this.tableParam);
@@ -348,7 +396,7 @@
                 this.cur_page = currentPage;
                 this.tableParam.currentPage = currentPage;
                 this.getTableList(baseUrl,this.tableParam);
-//                console.log(`当前页${currentPage}`);
+                console.log(`当前页${currentPage}`);
             },
 
             //上传
@@ -363,7 +411,7 @@
              * @params response 浏览器的响应返回值
              * @params file     文件信息
              * @params fileList 文件的信息
-            **/
+             **/
 
             updataSucess(response, file, fileList){
 //                console.log(file,'上传文件上传成功')
@@ -385,13 +433,13 @@
             //安装->专业
             getMarjor(){
                 componentMajors({url:baseUrl}).then((data)=>{
-                   this.majorOptions = data.data.result;
-                   if(data.data.result){
-                       this.majorOptions.unshift('不限');
-                       this.searchKeyParams.majorVal = data.data.result[0];
-                   }else{
-                       this.majorOptions =[];
-                   }
+                    this.majorOptions = data.data.result;
+                    if(data.data.result){
+                        this.majorOptions.unshift('不限');
+                        this.searchKeyParams.majorVal = data.data.result[0];
+                    }else{
+                        this.majorOptions =[];
+                    }
                 })
             },
             //安装->大类
@@ -430,9 +478,9 @@
                 componentAdd({url:url,param:param}).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('添加成功','warning');
-                       setTimeout(()=>{
-                           this.getTableList(baseUrl,this.tableParam)
-                       },1100)
+                        setTimeout(()=>{
+                            this.getTableList(baseUrl,this.tableParam)
+                        },1100)
                     }
                 })
             },
@@ -447,7 +495,7 @@
                 })
             },
             getTokenId(){
-               generate({url:baseUrl}).then((data)=>{
+                generate({url:baseUrl}).then((data)=>{
                     this.token = data.data.result;
                 })
             },
@@ -487,32 +535,21 @@
             deleteComponent(url,param){
                 componentDelete({url:url,param:param}).then((data)=>{
                     if(data.data.code==200){
-                         if(this.tableData.list.length===deletArray.length){
+                        if(this.tableData.list.length===deletArray.length){
                             this.getTableList(baseUrl,this.tableParam)
-                         }else{
-                             for (let i = 0; i < deletArray.length; i++) {
-                                 for (let j = 0; j < this.tableData.list.length; j++) {
-                                     if (this.tableData.list[j].componentFileId == deletArray[i].componentId) {
-                                         this.tableData.list.splice(j, 1);
-                                     }
-                                 }
-                             }
-                             this.tableData.totalRecords -=deletArray.length;
-                         }
+                        }else{
+                            for (let i = 0; i < deletArray.length; i++) {
+                                for (let j = 0; j < this.tableData.list.length; j++) {
+                                    if (this.tableData.list[j].componentFileId == deletArray[i].componentId) {
+                                        this.tableData.list.splice(j, 1);
+                                    }
+                                }
+                            }
+                            this.tableData.totalRecords -=deletArray.length;
+                        }
                         deletArray =[];
                     }
                 })
-            },
-            //          构件列表排序
-            tableSort(column, prop, order){
-                console.log(column,'column');
-                if(column.order=='descending'){
-                    this.tableParam.asc = false;
-                }else{
-                    this.tableParam.asc = true;
-                }
-                this.tableParam.sort = column.prop;
-                this.getTableList(baseUrl,this.tableParam);
             },
             //上传构件清除数据
             clearUploadInfo(){
@@ -620,10 +657,10 @@
             //列表删除
             deleteComp(){
                 if (!deletArray.length) {
-                    this.commonMessage('没有选中构件', 'warning')
+                    this.commonMessage('请选择要删除的文件', 'warning')
                     return false;
                 }
-                this.commonConfirm('删除选中构件', () => {
+                this.commonConfirm('确定要删除吗', () => {
                     this.deleteComponent(baseUrl,{productId:5,del:deletArray})
                 }, () => {
                 }, 'warning')
@@ -657,10 +694,209 @@
                     this.getComponetExit(baseUrl,{bigTypeName:this.updateComList.bigType,company:this.updateComList.company,majorName:this.updateComList.majorName,productModel:this.updateComList.productModel,smallTypeName:this.updateComList.smallType,title:this.updateComList.title,version:this.updateComList.version})
                 }
             },
+            //取消上传
+            updateCancel(){
+//                this.clearCreateParam();
+            },
+            //加载树结构
+            getZtree(url,param){
+                treeList({url:url,param:param}).then((data)=>{
+                    this.zNodes = data.data.result;
+                    this.nodesList = data.data.result;
+                    let zTree = $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
+
+                    let nodes = zTree.getNodes();
+                    if (nodes.length > 0) {
+                        zTree.selectNode(nodes[0]);
+                    }
+                    let treeNodes = zTree.transformToArray(zTree.getNodes());
+                    //获取状态树的深度
+                    for (let i = 0; i < treeNodes.length; i++) {
+                        if (treeNodes[i].level >= maxLevel) {
+                            maxLevel = treeNodes[i].level;
+                        }
+                        if (treeNodes[i].level == 0 && treeNodes[i].isParent) {
+                            //展开"全部"下的子节点
+                            zTree.expandNode(treeNodes[i], true, false, null, true);
+                        }
+                    }
+                    level = 1;
+                });
+            },
+            //保存构件树
+            setZtree(url,param){
+                treeSave({url:url,param:param}).then((data)=>{
+                    console.log(data.data.result,'保存成功了？')
+                })
+            },
             //加载树结构
             getCloudTree(){
-               this.$refs.cloudTrees.getZtree(baseUrl,this.param);
-               this.cloudComTree = true;
+                this.getZtree(baseUrl,{version:'1.0.0',productId:5})
+                this.cloudComTree = true;
+            },
+            //ztree  插件的事件
+            ztreeClick(event, treeId, treeNode){
+                console.log(treeNode.nodeCode)
+            },
+            //展开、收起树节点
+            expandNode(e) {
+                let type = e.type;
+                let operObj = e.operObj;
+                let zTree = $.fn.zTree.getZTreeObj(operObj);
+                let treeNodes = zTree.transformToArray(zTree.getNodes());
+                let flag = true;
+
+                //点击展开、折叠的时候需要判断一下当前level的节点是不是都为折叠、展开状态
+                for (let i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].level == level && treeNodes[i].isParent) {
+                        if (type == "expand" && !treeNodes[i].open) {
+                            flag = false;
+                            break;
+                        } else if (type == "collapse" && treeNodes[i].open) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (flag) {
+                    //说明当前level的节点都为折叠或者展开状态
+                    if (type == "expand") {
+                        // level++
+                        if (level < maxLevel - 1) {
+                            level++;
+                        }
+                    } else if (type == "collapse") {
+                        //level--
+                        if (level == 0) {
+                            return;
+                        }
+                        level--;
+                    }
+                }
+                for (let i = 0; i < treeNodes.length; i++) {
+                    if (treeNodes[i].level == level && treeNodes[i].isParent) {
+                        if (type == "expand" && !treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], true, false, null, true);
+                        } else if (type == "collapse" && treeNodes[i].open) {
+                            zTree.expandNode(treeNodes[i], false, false, null, true);
+                        }
+                    }
+                }
+            },
+            //上移
+            upMove() {
+                let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
+                let nodes = treeObj.getSelectedNodes();
+                if (nodes.length == 0) {
+                    // alertDialog("warning", "至少选择一个节点", function() {});
+                    this.$message({
+                        showClose: true,
+                        message: "至少选择一个节点",
+                        type: "warning"
+                    });
+                    return;
+                }
+                //移动之前需要判断满足条件才能上移
+                //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许粘贴
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].isParent != nodes[0].isParent) {
+                        return;
+                    }
+                }
+                //判断多选的节点/状态是否是同一层级，如果不是，不允许粘贴
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].level != nodes[0].level) {
+                        return;
+                    }
+                }
+
+                //判断节点/状态是否是第一个，如果是，不能移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].getPreNode() == null) {
+                        return;
+                    }
+                }
+                //判断状态前一个节点是否是节点，如果是，不能移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (!nodes[i].isParent && nodes[i].getPreNode().isParent) {
+                        return;
+                    }
+                }
+
+                for (var i = nodes.length - 1; i >= 0; i--) {
+                    treeObj.moveNode(nodes[i].getPreNode(), nodes[i], "prev");
+                }
+            },
+            //下移
+            downMove() {
+                var treeObj = $.fn.zTree.getZTreeObj("cloudTree");
+                var nodes = treeObj.getSelectedNodes();
+                if (nodes.length == 0) {
+                    this.$message({
+                        showClose: true,
+                        message: "至少选择一个节点",
+                        type: "warning"
+                    });
+                    return;
+                }
+
+                //移动之前需要判断满足条件才能下移
+                //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].isParent != nodes[0].isParent) {
+                        return;
+                    }
+                }
+                //判断多选的节点/状态是否是同一层级，如果不是，不允许移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].level != nodes[0].level) {
+                        return;
+                    }
+                }
+
+                //判断节点/状态是否是最后一个，如果是，不能移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].getNextNode() == null) {
+                        return;
+                    }
+                }
+                //判断节点后一个节点是否是状态，如果是，不能移动
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].isParent && !nodes[i].getNextNode().isParent) {
+                        return;
+                    }
+                }
+
+                for (var i = nodes.length - 1; i >= 0; i--) {
+                    treeObj.moveNode(nodes[i].getNextNode(), nodes[i], "next");
+                }
+            },
+            //重置
+            resetZtree(){
+                this.getZtree(baseUrl,{version:"1.0.0",productId:5});
+            },
+            //保存
+            ztreeSave(){
+                this.cloudComTreeOk();
+            },
+            //构件树保存
+            cloudComTreeOk(){
+                //保存
+                let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
+                let nodes = treeObj.transformToArray(treeObj.getNodes());
+                let treeNodes = [];
+                let treeNodes2 = [];
+                console.log(nodes,'save')
+                this.nodesList.forEach((val,key)=>{
+//                    treeNodes.push({description:val.description,nodeCode:val.nodeCode, nodeName:val.nodeName,parentNodeCode:val.parentNodeCode,productId:val.productId,sortIndex:val.sortIndex,version:val.version})
+                    treeNodes.push(nodes[key].nodeName);
+                    treeNodes2.push(val.nodeName)
+                });
+
+                console.log(treeNodes,'treeNdoes')
+                console.log(treeNodes2,'treeNdoes22222222')
+                this.setZtree(baseUrl,{version:"1.0.0",productId:5,componentTree:treeNodes})
             },
             getData(){
                 this.downloadSum.bigTypeName = this.searchKeyParams.bigType;
@@ -676,7 +912,7 @@
 
         },
         mounted(){ },
-        components: {VueScrollbar,zTree},
+        components: {VueScrollbar},
         watch: {
             'searchKeyParams.majorVal':function(newVal,oldVal){
                 if(newVal !=oldVal && oldVal!=""){
