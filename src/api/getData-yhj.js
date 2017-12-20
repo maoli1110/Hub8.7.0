@@ -108,6 +108,7 @@ export const getDrawingDetailInfos = params =>axios.post(`${params.url}rs/pdfDra
 export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.param.version}/${params.param.productId}`);
 //构件树保存
 export const treeSave = params=>axios.post(`${params.url}component/tree/save/${params.param.version}/${params.param.productId}`,params.param.componentTree)
+
 //鲁班安装筛选条件
 //安装->查询专业
 export const componentMajors = params=>axios.get(`${params.url}component/az/majors`);
@@ -139,8 +140,16 @@ export const componentUpdate = params=>axios.put(`${params.url}component/az/upda
 //钢筋->查询大类
 export const SteelBigtypes = params=>axios.get(`${params.url}component/gj/bigtypes/${params.param.productId}`);
 //钢筋->查询小类
-export const SteelSmalltypes = params=>axios.post(`${params.url}/component/gj/smalltypes/${params.param.productId}/?bigType=${params.param.bigType}`);
+export const SteelSmalltypes = params=>axios.post(`${params.url}component/gj/smalltypes/${params.param.productId}/?bigType=${params.param.bigType}`);
+//判断钢筋构件是否存在
+export const SteelExit = params =>axios.post(`${params.url}component/gj/exist`,params.param);
 //钢筋->添加
-export const SteelAdd = params=>axios.post(`${params.url}component/gj/add/${params.param.productId}`,params.param)
+export const SteelAdd = params=>axios.post(`${params.url}component/gj/add/${params.param.productId}`,params.param);
+//更新构件接口
+export const SteelUpdate = params=>axios.post(`${params.url}component/gj/update/${params.param.productId}`,params.param.update);
+//钢筋下载次数
+export const SteelCountDownload = params=>axios.post(`${params.url}component/gj/countDownloadTimes`,params.param);
+//钢筋->删除构件
+export const SteelDelete = params=>axios.put(`${params.url}component/gj/delete/${params.param.productId}`,params.param.del);
 //钢筋列表
 export const SteelList = params=>axios.post(`${params.url}component/gj/find`,params.param);
