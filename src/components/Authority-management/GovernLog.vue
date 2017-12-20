@@ -33,7 +33,7 @@
                                    @size-change="handleSizeChange"
                                    @current-change="handleCurrentChange"
                                    current-page="1"
-                                   page-size="5"
+                                   :page-size="5"
                                    page-sizes="[5, 10, 20, 50]"
                                    layout="total, sizes, prev, pager, next, jumper"
                                    :total="coinsManagementTableData.totalElements">
@@ -57,7 +57,7 @@
                 pathType:{
                             "govern-log":"govern",
                             "explorer-log":"explorer",
-                            "civil-log":"",
+                            "civil-log":"civil",
                             "works-log":"works",
                             "plan-log":"plan",
                             "prevbw-log":"old-works", //原BW

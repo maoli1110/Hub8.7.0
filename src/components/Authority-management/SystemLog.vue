@@ -39,7 +39,7 @@
         watch: {
             '$route' (to, from) {
                 console.log(this.$route.query.typeId,this.$route.path);
-                this.nowPath = this.$route.path.split("/")[3];  
+                this.nowPath = this.$route.path.split("/")[3];
             }
         }
     }
