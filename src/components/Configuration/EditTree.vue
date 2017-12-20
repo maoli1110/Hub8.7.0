@@ -5,7 +5,7 @@
                 <div class="el-form-item el-form_">
                     <label class="el-form-item__label">模板名称：</label>
                     <div class="el-form-item__content" style="margin-left: 80px;">
-                        <el-input placeholder="请输入模板名称" style="width:83%"></el-input>
+                        <el-input placeholder="请输入模板名称" style="width:83%" v-model="templateName"></el-input>
                         <span class="icon-expand" style="vertical-align:middle" @click="expandNode({type:'expand',operObj:'tree_edit'})" size='small'></span>
                         <span class="icon-collapse" style="vertical-align:middle" @click="expandNode({type:'collapse',operObj:'tree_edit'})" size='small'></span>
                     </div>
@@ -114,9 +114,10 @@
     </div>
 </template>
 <script>
-    import axios from "axios";
     import "../../../static/zTree/js/jquery.ztree.operate.js";
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
+    import * as types from "../../api/getData-ppc";
+
     function Map() {
         this.container = new Object();
     }
@@ -158,13 +159,16 @@
     let level;
     //预览状态模板树的深度
     let maxLevel = -1;
+
     export default {
+        props: ['templateParams'],
         data() {
             return {
                 textAreaVisible: false,
                 textareaValue: "",
                 textTittle: "",
                 type: "",
+                templateName: '',
                 // 树数据
                 url: "../../../static/datasource.json",
                 setting: {
@@ -207,29 +211,34 @@
                 zNodes: []
             };
         },
-        mounted() {
-            axios.get(this.url).then(res => {
-                this.zNodes = res.data[0].result;
-                let zTree = $.fn.zTree.init($("#tree_edit"), this.setting, this.zNodes);
-                let nodes = zTree.getNodes();
-                if (nodes.length > 0) {
-                    zTree.selectNode(nodes[0]);
-                }
-                let treeNodes = zTree.transformToArray(zTree.getNodes());
-                //获取状态树的深度
-                for (let i = 0; i < treeNodes.length; i++) {
-                    if (treeNodes[i].level >= maxLevel) {
-                        maxLevel = treeNodes[i].level;
-                    }
-                    if (treeNodes[i].level == 0 && treeNodes[i].isParent) {
-                        //展开"全部"下的子节点
-                        zTree.expandNode(treeNodes[i], true, false, null, true);
-                    }
-                }
-                level = 1;
-            });
+        mounted() {        
         },
         methods: {
+            //获取工序模板树结构
+            getProcessTemplateTreeInfo() {
+                this.templateName = this.templateParams.templateName
+                this.zNodes=[];
+                types.getProcessTemplateTreeInfo(this.templateParams.templateId).then(res => {                    
+                    this.zNodes = res.data.result;
+                    let zTree = $.fn.zTree.init($("#tree_edit"), this.setting, this.zNodes);
+                    let nodes = zTree.getNodes();
+                    if (nodes.length > 0) {
+                        zTree.selectNode(nodes[0]);
+                    }
+                    let treeNodes = zTree.transformToArray(zTree.getNodes());
+                    //获取状态树的深度
+                    for (let i = 0; i < treeNodes.length; i++) {
+                        if (treeNodes[i].level >= maxLevel) {
+                            maxLevel = treeNodes[i].level;
+                        }
+                        if (treeNodes[i].level == 0 && treeNodes[i].isParent) {
+                            //展开"全部"下的子节点
+                            zTree.expandNode(treeNodes[i], true, false, null, true);
+                        }
+                    }
+                    level = 1;
+                })
+            },
             // 自定义颜色选择器
             colorSelect(treeId, treeNode) {
                 if (treeNode.isParent) {
