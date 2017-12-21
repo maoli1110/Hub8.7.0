@@ -27,6 +27,7 @@ export default {
     },
     created(){
         this.activeIndex = this.$route.path;
+        console.log(window.serverPath.casUrl,'window.casUrl')
     }
 }
 </script>

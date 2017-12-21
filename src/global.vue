@@ -1,4 +1,5 @@
 <script>
+import axios from "axios";
 const serverPath= {
 	//接口地址
 	casUrl:'http://192.168.13.195:8080/',

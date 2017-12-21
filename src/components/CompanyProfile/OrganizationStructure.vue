@@ -363,7 +363,8 @@ export default {
         },
         //获取接口地址
         getBaseUrl(){
-            baseUrl = basePath(this.$route.path);
+            baseUrl = window.serverPath.builderUrl;
+            console.log(baseUrl,"baseUrl")
         },
         zTreeBeforeExpand() {
             $("#organization-tree").width(this.getOrgTreeWidth()+300);
@@ -388,6 +389,7 @@ export default {
         },
         //mouseOn显示负责人信息
         addHoverDom(treeId,treeNode) {
+            debugger
             console.log('add');
             console.log(treeId,'treeId')
             console.log(treeNode,'treeId')

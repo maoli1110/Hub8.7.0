@@ -78,7 +78,7 @@ export default {
         isRemember: false,
         isActive: false,
         loading: false,
-        loginUrl: this.GLOBAL.serverPath.casUrl,
+        loginUrl: window.serverPath.casUrl,
         src: './static/img/background.png',
         loginForm: {
             username: "",
@@ -98,6 +98,7 @@ export default {
         }
     },
     created() {
+      console.log(window.serverPath.casUrl,'window.serverPath.casUrl')
         if(Cookies.get("username")) {
             this.loginForm.username = Cookies.get("username");
         }
@@ -182,7 +183,7 @@ export default {
 
             function step2 (resolve, reject){
                 $.ajax({
-                    url:self.loginUrl+'pds/login',
+                    url:self.loginUrl+'/login',
                     type:'POST',
                     contentType:'application/x-www-form-urlencoded',
                     data:comString,

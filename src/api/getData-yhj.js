@@ -75,13 +75,13 @@ export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
 //项目部数据
 export const getDeptsHasWorkSet = params=>axios.get(`${params.url}rs/workSetRest/getDeptsHasWorkSet`);
 //bim->工作集库列表
-export const getWorkSets = params =>axios.post(`${params.url}rs/workSetRest/getWorkSets`,params.param);
+export const getWorkSets = params =>axios.post(`${window.serverPath.builderUrl}/rs/workSetRest/getWorkSets`,params.param);
 //bim->删除工作集
 export const delWorkSets = params =>axios.post(`${params.url}rs/workSetRest/delWorkSets`,params.param)
 //bim->工作集查看工程
 export const  getProjByWorkSet = params =>axios.post(`${params.url}rs/workSetRest/getProjByWorkSet`,params.param)
 //根据uuid匹配缩略图列表
-export const getFileViewUrl = params =>axios.post(`${params.url}rs/workSetRest/getFileViewUrl`,params.param);
+export const getFileViewUrl = params =>axios.post(`${params.url}/rs/workSetRest/getFileViewUrl`,params.param);
 /*模拟uuid*/
 export const getProjectInfo = params =>axios.get("./static/projectLook.json");
 export const getViewUrl = params=>axios.get('./static/viewUrl.json');

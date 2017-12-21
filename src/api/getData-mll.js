@@ -36,27 +36,27 @@ export const router = params=> axios.get(`${route}`);
  * 登录
  */
 //cas登录
-export const casLogin = params=> axios.get(`${params.url}pds/login`);
+export const casLogin = params=> axios.get(`${params.url}/login`);
 //获取企业列表
-export const getCompanyList = params=> axios.get(`${params.url}pds/rs/centerLogin/companyList`);
+export const getCompanyList = params=> axios.get(`${params.url}/rs/centerLogin/companyList`);
 //center登录
-export const centerRealLogin = params=> axios.post(`${params.url}pds/rs/centerLogin/login`,params.params);
+export const centerRealLogin = params=> axios.post(`${params.url}/rs/centerLogin/login`,params.params);
 //获取菜单
-export const getMenusList = params=> axios.get(`${params.url}pds/rs/centerLogin/menu/-1`);
+export const getMenusList = params=> axios.get(`${params.url}/rs/centerLogin/menu/-1`);
 /**
  * 组织结构
  */
 //查询组织机构树
-export const getOrgTreeList = params=> axios.get(`${params.url}org/nodes`);
+export const getOrgTreeList = params=> axios.get(`${params.url}/org/nodes`);
 //查询有组织机构信息，携带管理员信息
-export const getOrgNodeInfo = params=> axios.get(`${params.url}org/${params.params.orgId}`);
+export const getOrgNodeInfo = params=> axios.get(`${params.url}/org/${params.params.orgId}`);
 //创建新的组织机构
-export const createBranchCompany = params=> axios.post(`${params.url}org/${params.params.orgId}/subs`,params.params.companyInfo);
+export const createBranchCompany = params=> axios.post(`${params.url}/org/${params.params.orgId}/subs`,params.params.companyInfo);
 //创建新的项目部
-export const createProject = params=> axios.post(`${params.url}org/${params.params.parentId}/depts`,params.params.projectInfo);
+export const createProject = params=> axios.post(`${params.url}/org/${params.params.parentId}/depts`,params.params.projectInfo);
 //编辑组织机构
-export const editBranchCompany = params=> axios.put(`${params.url}org/${params.params.orgId}`,params.params.companyInfo);
+export const editBranchCompany = params=> axios.put(`${params.url}/org/${params.params.orgId}`,params.params.companyInfo);
 //编辑项目部信息
-export const editProject = params=> axios.put(`${params.url}org/${params.params.orgId}/depts/${params.params.deptId}`,params.params.projectInfo)
+export const editProject = params=> axios.put(`${params.url}/org/${params.params.orgId}/depts/${params.params.deptId}`,params.params.projectInfo)
 //删除节点
-export const deleteNode = params=> axios.delete(`${params.url}org/${params.params.orgId}`);
+export const deleteNode = params=> axios.delete(`${params.url}/org/${params.params.orgId}`);

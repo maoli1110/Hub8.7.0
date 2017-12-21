@@ -114,7 +114,6 @@
 
 <script>
     import {
-        basePath,
         dateFormat,//日期格式化
     } from "../../utils/common.js";
     import {
@@ -132,7 +131,7 @@
     import ElCol from "element-ui/packages/col/src/col";
     // import "../../utils/directive.js"
     let deletArray = [];
-    let baseUrl = '';
+    let baseUrl = window.severPath.builderUrl;
     let deptIds= [];
     export default {
         created(){
@@ -186,17 +185,11 @@
             VueScrollbar
         },
         methods: {
-
-            //获取地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
-            },
             //日期格式化
             dateFormatter(data){
                data = dateFormat(data);
                return data;
             },
-//
             //项目部change
             changeProject(value){
                 this.tableListParam.deptIds =[];
