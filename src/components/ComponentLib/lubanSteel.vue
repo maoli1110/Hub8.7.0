@@ -251,10 +251,10 @@
                     bigTypeName:"",     //大类
                     currentPage:1,      //当前页
                     endTime:"",         //结束时间
-                    pageSize:1,         //每页显示多少条
+                    pageSize:10,         //每页显示多少条
                     productId:2,        //产品id
                     smallTypeName:"",   //小类
-                    sort:"",            //排序
+                    sort:"editTime",    //排序
                     startTime:"",       //开始时间
                     title:""            //构件名称
                 },
@@ -285,8 +285,12 @@
             },
             uploadClose(updateInfo){
                 this.uploadCompDialog = updateInfo.visible;
-                this.tableData = updateInfo.data;
-                this.downloadSum = updateInfo.count;
+                if(updateInfo.data){
+                    this.tableData = updateInfo.data;
+                    this.downloadSum = updateInfo.count;
+                };
+
+
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -538,7 +542,7 @@
                 this.updateComList.version = item.version;
                 this.updateComList.productName = this.tableData.productName;
                 this.updateComList.componentFileId = item.componentFileId;
-                console.log( item.componentFileId,' this.updateComList')
+                this.$refs.upload.updateeDialogInfo(this.updateComList);
             },
             //上传构件清除数据
             clearUploadInfo(){

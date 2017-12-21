@@ -366,7 +366,11 @@
             **/
 
             updataSucess(response, file, fileList){
-//                console.log(file,'上传文件上传成功')
+//              console.log(file,'上传文件上传成功')
+                if(response.result==null){
+                    this.commonMessage('请选择安装的文件','warning');
+                    return false;
+                };
                 this.updateComList = response.result;
             },
             /**
@@ -468,6 +472,10 @@
                         title:  this.updateComList.name,
                         token: this.token,
                         version:  this.updateComList.version,
+                    };
+                    if(!base.fileName){
+                        this.commonMessage('请选择钢筋的文件','warning');
+                        return false
                     };
                     if(data.data.result){
                         this.commonConfirm('构件已经存在是否替换', () => {

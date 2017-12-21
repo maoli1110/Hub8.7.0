@@ -1824,5 +1824,10 @@ body .el-popover.remark-popper {
     top:10% !important;
     width: 60% !important
 }
-
-
+.org-text .el-input__inner {
+    font-size: 14px;
+    font-weight: 700;
+    color: #6595f2
+}
+/*header->帮助中心*/
+.issue{width:20px;height:20px;display:inline-block; background: url(../../static/img/icon-header.png) -65px -25px no-repeat !important;}
