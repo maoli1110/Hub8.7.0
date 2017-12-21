@@ -131,7 +131,7 @@
     import ElCol from "element-ui/packages/col/src/col";
     // import "../../utils/directive.js"
     let deletArray = [];
-    let baseUrl = window.severPath.builderUrl;
+    let baseUrl = window.serverPath.builderUrl;
     let deptIds= [];
     export default {
         created(){
@@ -345,7 +345,6 @@
                 })*/
             },
             getData(){
-                this.getBaseUrl();
                 this.getHasWorkList();
 //                this.filterParm.workValue = this.projectList[0].value;
                 /*if(this.filterParm.workValue=='1'){

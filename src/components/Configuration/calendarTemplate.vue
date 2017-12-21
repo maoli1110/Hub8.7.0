@@ -28,7 +28,8 @@
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope">
                         <span class="icon-template icon-edit"
-                              @click="setTemplate= true;openWindow('set','16a5da8f68bc45f08755309dee7bec89')"></span>
+                              @click="setTemplate= true;openCreateCalendar('set','16a5da8f68bc45f08755309dee7bec89')"></span>
+                        <!--openWindow('set','16a5da8f68bc45f08755309dee7bec89')-->
                     </template>
                 </el-table-column>
             </el-table>
@@ -63,7 +64,7 @@
                 <el-button class="dialog-btn dialog-btn-cancel" @click="addVisible = false">取 消</el-button>
             </span>
         </el-dialog>
-        <el-dialog custom-class="edit-template" :visible.sync="setTemplate" title="设置模板" >
+        <!--<el-dialog custom-class="edit-template" :visible.sync="setTemplate" title="设置模板" >
             <template>
                 <el-row class="calendar-main">
                     <el-col :span="6" class="edit-dup" >
@@ -114,9 +115,10 @@
                                @click="setTemplate = false;setTemplateOK()">确 定</el-button>
                     <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
                 </span>
-        </el-dialog>
+        </el-dialog>-->
+        <create-calendar v-show="setTemplate" :isCreateCalendar="setTemplate" @hidePanel=hidePanelNew ref="setTemplate"></create-calendar>
         <!--查看模板-->
-        <el-dialog custom-class="edit-template prview-template" :visible.sync="lookTemplate" title="查看模板" >
+        <!--<el-dialog custom-class="edit-template prview-template" :visible.sync="lookTemplate" title="查看模板" >
             <template>
                 <el-row class="calendar-main">
                     <el-col :span="24"  class="cal-template" style="margin:0">
@@ -134,7 +136,8 @@
                     </el-col>
                 </el-row>
             </template>
-        </el-dialog>
+        </el-dialog>-->
+        <priview-calendar v-show="lookTemplate" :isPrviewCalendar="lookTemplate" @hidePanel=hidePanelLook ref="priviewTemplate"></priview-calendar>
     </div>
 </template>
 
@@ -144,6 +147,8 @@
     import {FormIndex} from "../../utils/common.js";
     import {getWorksetingList} from '../../api/getData.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
+    import createCalendar from 'components/Configuration/create-calendar.vue';
+    import priviewCalendar from 'components/Configuration/priview-calendar.vue';
     let calendarTemplate;//日历模板初始化
     let deletArray = [];//删除模板删除数组
     let isWekendWorkDates = [];//工作日
@@ -194,9 +199,17 @@
             }
         },
         components: {
-            VueScrollbar//滚动插件
+            VueScrollbar,//滚动插件
+            createCalendar,
+            priviewCalendar
         },
         methods: {
+            hidePanelNew(visible){
+                this.setTemplate = visible;
+            },
+            hidePanelLook(visible){
+                this.lookTemplate = visible;
+            },
             getData(){//初始化方法
                 for (let i = 0; i < this.tableData.length; i++) {
                     this.tableData[i].index = 3 * 10 + this.tableData[i].index;
@@ -376,30 +389,33 @@
                 }
 
                 this.setTemplate = true;
-                this.openWindow('set', '123')
+                this.$refs.setTemplate.openWindow('set', '123')
             },
             //添加标签
             addTemplate(){
                 this.templateInfo.name = "";
             },
-            dealJavaDateArr(dates){
+            openCreateCalendar(){
+                this.$refs.priviewTemplate.openWindow('set','123')
+            },
+        /*    dealJavaDateArr(dates){
                 var result = [];
                 for (var i = 0; i < dates.length; i++) {
                     result.push(dates[i])
                 }
                 return result;
             },
-            /**
+            /!**
              * 日历模板设置
-             **/
+             **!/
 
-            /**
+            /!**
              * 筛选出指定想起的所有日期
              * @param arr 日历队列
              * @param sd  时间范围之开始时间
              * @param ed  时间范围之结束时间
              * @return rulesDates  筛选符合条件的集合
-             **/
+             **!/
             getRulesDate(arr, sd, ed){
                 let rulesDates = [];
                 let sdate = new Date(sd);
@@ -415,7 +431,7 @@
                 }
                 return rulesDates;
             },
-            /* 添加页面非日历初始化 */
+            /!* 添加页面非日历初始化 *!/
             initCalendarSetMethod() {
 //                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null && "" != ct.endDate) {
                 // 创建日历模板
@@ -435,7 +451,7 @@
 //                }
             },
 
-            /* 初始化设置日历模板页面 */
+            /!* 初始化设置日历模板页面 *!/
             inittocopystate() {
 
                 //修改页面渲染逻辑
@@ -523,11 +539,11 @@
                     isWekendWorkDates = thisIsWekendRestDates;
                 }
             },
-            /**
+            /!**
              * 日历模板
              * @param type ps(set:添加修改，show:预览模板)
              * @param cpt 模板cpt
-             * */
+             * *!/
             openWindow(type, cpt){
                 console.log(this.template,'this.template')
                 //执行ajax
@@ -564,7 +580,7 @@
                 this.chooseWeeks = val;
                 console.log( this.checkList,' this.chooseWeeks')
             },
-            /* 设置工作日||非工作日 */
+            /!* 设置工作日||非工作日 *!/
             setCalendarDate(dateType){
                 // 获取时间范围
                 if (!this.selectInteral.length) {//日历范围的值存在
@@ -600,18 +616,18 @@
                     this.restDates = restDate
 //                }
                 console.log(this.restDates,'复制成功了没有');
-            },
+            },*/
             //el-table 单元格单机事件
             previewTemplate(row, column,cell, event){
                 if(column.id=='el-table_1_column_2'){//查看模板
                     console.log(row,'columnssssss')
                     this.lookTemplate  =true;
                     this.template.name=row.name;
-                    this.openWindow('show','123')
+                    this.$refs.priviewTemplate.openWindow('show','123')
                 }
             },
 
-            /* 详情页面日历初始化 */
+         /*   /!* 详情页面日历初始化 *!/
             detailinittocopystate() {
                  restDates = this.restDates;
 //                console.log(restDates,'restDates');
@@ -655,7 +671,7 @@
                 }
                 calendarTemplate.readOnly(true);
             },
-            /* 详情页面日历之外初始化 */
+            /!* 详情页面日历之外初始化 *!/
              detailCalendarSetMethod() {
 //                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null&& "" != ct.endDate) {
                     // 创建日历模板
@@ -674,13 +690,13 @@
                      console.log(restDates,'rest')
                      this.detailinittocopystate();
                  })
-                    /*setTimeout(()=>{
+                    /!*setTimeout(()=>{
                         this.priveiwDate = this.selectInteral[0]+"-"+this.selectInteral[1]
                         calendarTemplate = new CalendarSet(this.selectInteral[0],this.selectInteral[1]);
                         this.detailinittocopystate();
-                    })*/
+                    })*!/
 //                }
-            },
+            },*/
         },
         computed: {
 
