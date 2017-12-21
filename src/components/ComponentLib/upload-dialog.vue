@@ -107,7 +107,7 @@
             //关闭弹窗
             handleClose(done){
                 this.uploadVisible = false;
-                this.$emit('uploadClose',{visible:this.uploadVisible,data:this.tableDataList,count:this.count})
+                this.$emit('uploadClose',{visible:this.uploadVisible})
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -230,6 +230,9 @@
                     this.getDownloadTimes(baseUrl,{bigTypeName:param.bigTypeName,endTime:param.endTime,majorName:"",productId:param.productId,smallTypeName:param.smallTypeName,startTime:param.startTime,title:param.title});//下载次数
                 })
             },
+            updateeDialogInfo(data){
+                this.updateList = data;
+            },
             getData(){
                 this.getBaseUrl();
             },
@@ -248,6 +251,10 @@
              **/
 
             updataSucess(response, file, fileList){
+                if(response.result==null){
+                    this.commonMessage('请选择安装的文件','warning');
+                    return false;
+                };
                 this.updateList = response.result;
             },
             /**
@@ -300,8 +307,6 @@
                 } else {
                     this.exists(baseUrl,{bigTypeName:this.updateList.bigType,productId:2,smallTypeName:this.updateList.smallType,title:this.updateList.name,version:this.updateList.version})
                 }
-                //保存修改
-//                this.updateList = {};
             },
         },
         created(){
