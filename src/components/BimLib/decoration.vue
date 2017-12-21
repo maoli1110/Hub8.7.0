@@ -383,7 +383,6 @@
 </template>
 
 <script>
-    import {basePath} from "../../utils/common.js";                         //基础路径返回
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';    //滚动组件
     import "../../../static/zTree/js/jquery.ztree.exhide.min.js";
     import {
@@ -413,7 +412,7 @@
     let deletArray = [];        //删除projIds队列
     let monitorPpids = [];
     let countIndex = 0;         //表格选中状态个数统计
-    let baseUrl;                //基础路径
+    let baseUrl = window.serverPath.builderUrl ;                //基础路径
     let authUserInfoListCopy;   //授权人员搜索deepCopy数据
     let deptIds =[];
     export default {
@@ -596,7 +595,6 @@
             },
             //默认加载数据
             getData(name,id){
-                this.getBaseUrl();      //获取基础路径
                 this.getOrgzTreeList(baseUrl);
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
@@ -693,10 +691,7 @@
                     this.getProjectList({url:baseUrl,param:this.tableParam})
                 }
             },
-            //获取地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
-            },
+
             //获取属性
             getProjGenreEvent(isDelete,packageType){
                 getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=> {

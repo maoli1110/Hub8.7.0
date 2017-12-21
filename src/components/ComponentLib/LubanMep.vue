@@ -201,7 +201,6 @@
 <script>
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import {basePath} from "../../utils/common.js";
     import {getCitys,cloudTree} from '../../api/getData.js';
     import {
         treeList,               //构件树
@@ -225,7 +224,7 @@
     let level;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     //预览状态模板树的深度
     let maxLevel = -1;
-    let baseUrl;
+    let baseUrl = window.serverPath.cloudUrl;
     let updateToken = '';
     export default {
         data(){
@@ -381,10 +380,6 @@
              **/
             updateError(err, file, fileList){
                 this.commonMessage('上传失败哦。。。。','warning')
-            },
-            //获取接口地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
             },
             //安装->专业
             getMarjor(){
@@ -677,7 +672,6 @@
                 this.downloadSum.endTime = this.searchKeyParams.endTime;
                 this.downloadSum.startTime = this.searchKeyParams.startTime;
                 this.downloadSum.title =  this.searchKeyParams.searchVal;
-                this.getBaseUrl();
                 this.getMarjor();
                 this.getTableList(baseUrl,this.tableParam);
             },
