@@ -109,7 +109,7 @@
                 </el-col>
             </el-row>
             <!--上传构件-->
-            <el-dialog :visible.sync="uploadCompDialog" custom-class="up-component" :title="title">
+            <!--<el-dialog :visible.sync="uploadCompDialog" custom-class="up-component" :title="title">
                 <el-row>
                     <el-col :span="24" class="relat">
                         <span class="absol span-block label-w">构件文件：</span>
@@ -185,7 +185,8 @@
                         取 消
                     </el-button>
                 </div>
-            </el-dialog>
+            </el-dialog>-->
+            <upload-dialog @uploadClose= uploadClose v-show="uploadCompDialog" :table-param="tableParam" :override="override" :upload-url="uploadUrl" :title="title" :is-show="uploadCompDialog" :data-list="updateComList" :downloadSum="downloadSum" ref="upload"></upload-dialog>
             <!--云构件库-->
             <z-tree @hidePanel=hidePanel :ztreeInfo="ztreeInfoParam" v-show="ModifyTree" :is-show='ModifyTree' ref="cloudTrees"></z-tree>
         </div>
@@ -196,7 +197,7 @@
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import {basePath} from "../../utils/common.js";
-    import zTree from "components/common/zTree.vue";
+
     import {getCitys, cloudTree,tests} from '../../api/getData.js';
     import {
         treeList,           //测试数据列表
@@ -210,7 +211,8 @@
         SteelList,          //钢筋列表
         SteelCountDownload, //下载次数
     } from '../../api/getData-yhj.js';
-
+    import zTree from "components/ComponentLib/zTree.vue";
+    import uploadDialog from "components/ComponentLib/upload-dialog.vue";
     let deletArray = [];    //删除数组
     let level;              //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;      //最大层级
@@ -249,10 +251,10 @@
                     bigTypeName:"",     //大类
                     currentPage:1,      //当前页
                     endTime:"",         //结束时间
-                    pageSize:1,         //每页显示多少条
+                    pageSize:10,         //每页显示多少条
                     productId:2,        //产品id
                     smallTypeName:"",   //小类
-                    sort:"",            //排序
+                    sort:"editTime",    //排序
                     startTime:"",       //开始时间
                     title:""            //构件名称
                 },
@@ -280,6 +282,15 @@
         methods: {
             hidePanel (isVisible) {
                 this.ModifyTree = isVisible;
+            },
+            uploadClose(updateInfo){
+                this.uploadCompDialog = updateInfo.visible;
+                if(updateInfo.data){
+                    this.tableData = updateInfo.data;
+                    this.downloadSum = updateInfo.count;
+                };
+
+
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -329,22 +340,22 @@
             handlePreview(file) {
                 console.log(file);
             },
-            /**
+           /* /!**
              *上传成功回调的函数
              * @params response 浏览器的响应返回值
              * @params file     文件信息
              * @params fileList 文件的信息
-             **/
+             **!/
 
             updataSucess(response, file, fileList){
                 this.updateComList = response.result;
             },
-            /**
+            /!**
              *上传失败回调的函数
              * @params err      上传失败的返回信息
              * @params file     文件信息
              * @params fileList 文件的信息
-             **/
+             **!/
             updateError(err, file, fileList){
                 this.commonMessage('上传失败哦。。。。', 'warning')
             },
@@ -356,14 +367,14 @@
                 }
             },
 
-            /**
+            /!**
              * 上传文件再次上传 （ps:覆盖之前的)
              * @param type  1.update上传 2.cover修改页面
-             **/
+             **!/
             overUpdate(){
                 this.uploadUrl = `${baseUrl}component/gj/upload/2`;
                 this.fileList = [];
-            },
+            },*/
             //获取接口地址
             getBaseUrl(){
                 baseUrl = basePath(this.$route.path);
@@ -405,7 +416,7 @@
                    this.downloadSum = data.data.result;
                 })
             },
-            //创建时 token验证
+      /*      //创建时 token验证
             getTokenId(){
                 generate({url:baseUrl}).then((data)=>{
                     this.updateComList.token     = data.data.result;
@@ -450,11 +461,11 @@
                     }
                 })
             },
-            /**
+            /!**
              *钢筋添加功能
              * @param url      响应地址
              * @param param    响应参数
-             **/
+             **!/
             setAddInfo(url,param){
                 SteelAdd({url:url,param:param}).then((data)=>{
                     if(data.data.code==200){
@@ -470,7 +481,7 @@
                         this.getTableList(baseUrl,this.tableParam);
                     };
                 })
-            },
+            },*/
             /**
              * 删除构件信息
              * @param url       响应地址
@@ -493,6 +504,12 @@
                        }
                        deletArray = [];
                    }
+                })
+            },
+            //创建时 token验证
+            getTokenId(){
+                generate({url:baseUrl}).then((data)=>{
+                    this.updateComList.token = data.data.result;
                 })
             },
             /**
@@ -525,6 +542,14 @@
                 this.updateComList.version = item.version;
                 this.updateComList.productName = this.tableData.productName;
                 this.updateComList.componentFileId = item.componentFileId;
+                this.$refs.upload.updateeDialogInfo(this.updateComList);
+            },
+            //上传构件清除数据
+            clearUploadInfo(){
+                for (var key in this.updateComList) {
+                    console.log(this.updateComList[key])
+                    this.updateComList[key] = '';
+                }
             },
             //上传构件
             uploadComp(){
@@ -533,10 +558,9 @@
                 } else {
                     this.title = "修改构件文件";
                 }
-
                 this.fileList = [];
-                this.clearUploadInfo();
                 this.getTokenId();
+                console.log(this.updateComList,'listList');
             },
 
             /**
@@ -603,7 +627,7 @@
 
 
             },
-            //上传构件到服务器
+           /* //上传构件到服务器
             updateOk(){
                 let updateParam = {
                     coding: this.updateComList.componentCoding,
@@ -630,7 +654,7 @@
                 }
                 //保存修改
 //                this.updateComList = {};
-            },
+            },*/
             //取消上传
             updateCancel(){
                 this.updateComList = {};
@@ -648,7 +672,7 @@
 
         },
         mounted(){},
-        components: {VueScrollbar,zTree},
+        components: {VueScrollbar,zTree,uploadDialog},
         watch: {
             //查询大类
             'searchKeyParams.bigType':function(newVal,oldVal){

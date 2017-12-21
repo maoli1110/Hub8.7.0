@@ -220,7 +220,7 @@
 
     } from '../../api/getData-yhj.js';
     import "../../../static/zTree/js/spectrum.js"; // 颜色选择控件
-    import zTree from "components/common/zTree.vue"
+    import zTree from "components/ComponentLib/zTree.vue"
     let deletArray = [];
     let level;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     //预览状态模板树的深度
@@ -366,7 +366,11 @@
             **/
 
             updataSucess(response, file, fileList){
-//                console.log(file,'上传文件上传成功')
+//              console.log(file,'上传文件上传成功')
+                if(response.result==null){
+                    this.commonMessage('请选择安装的文件','warning');
+                    return false;
+                };
                 this.updateComList = response.result;
             },
             /**
@@ -468,6 +472,10 @@
                         title:  this.updateComList.name,
                         token: this.token,
                         version:  this.updateComList.version,
+                    };
+                    if(!base.fileName){
+                        this.commonMessage('请选择钢筋的文件','warning');
+                        return false
                     };
                     if(data.data.result){
                         this.commonConfirm('构件已经存在是否替换', () => {
