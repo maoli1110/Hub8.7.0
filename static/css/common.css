@@ -1824,5 +1824,10 @@ body .el-popover.remark-popper {
     top:10% !important;
     width: 60% !important
 }
+.org-text .el-input__inner {
+    font-size: 14px;
+    font-weight: 700;
+    color: #6595f2
+}
 
 

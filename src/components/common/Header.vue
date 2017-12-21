@@ -1,14 +1,9 @@
 <template>
     <div class="header">
         <div class="logo">中国公路工程咨询集团有限公司</div>
-        <div class="configuration" @click="setting" v-show='showSetting'>
-            <span class="el-icon-setting" style="font-size:17px"></span>
-            <span> 权限管理</span>
-        </div>
-        <div class="configuration" @click="back" v-show='!showSetting'>
-            <span class="el-icon-setting" style="font-size:17px"></span>
-            <span> 返回首页</span>
-        </div>
+        <div class="configuration" @click="setting" >
+            <span class="el-icon-setting" style="font-size:24px"></span>
+        </div>        
         <div class="user-info">
             <el-dropdown trigger="click" @command="handleCommand">
                 <div class="el-dropdown-link">
@@ -17,11 +12,10 @@
                 </div>
                 <el-dropdown-menu slot="dropdown" class="el-popper">
                     <el-dropdown-item command="changePassword">
-                        <span class="el-icon-edit"></span> 修改密码</el-dropdown-item>
+                        <span class="iconfont icon-Password"></span> 修改密码</el-dropdown-item>
                     <el-dropdown-item command="modifyAvatar">
-                        <span class="el-icon-edit"></span> 修改头像</el-dropdown-item>
+                        <span class="iconfont icon-user"></span> 修改头像</el-dropdown-item>
                     <el-dropdown-item command="loginout">绑定通行证</el-dropdown-item>
-                    <el-dropdown-item command="corporateInformation">企业信息</el-dropdown-item>
                     <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
                     <div x-arrow="" class="popper__arrow" style="left: 40px;"></div>
                 </el-dropdown-menu>
@@ -55,6 +49,7 @@
             </div>
             <!-- 登录页管理 -->
             <div style="margin-top:50px" v-show="isLoginPage">
+
                 <div class="el-form_">
                     <label class="el-form-item__label">登录页背景：</label>
                     <div class="el-form-item__content" style="width:50%">
@@ -62,18 +57,18 @@
                         <div style="float:right;color:#fff;background:#6595f2;padding:0 31px;cursor:pointer;border-radius: 4px">替换</div>
                     </div>
                 </div>
-                <div class="el-form_">
-                    <label class="el-form-item__label" >预览：</label>
-                    <div class="el-form-item__content" style="height:450px;margin-left:85px;border:1px solid #e6e6e6;">
-                        <img src="http://upload.17u.net/uploadpicbase/2013/10/12/aa/201310121054516850.jpg" alt="" style="width:100%;height:100%"> 
+                <div>
+                    <label class="el-form-item__label"></label>
+                    <div  style="margin:10px 0 20px 83px">
+                        <div>登录页背景图片建议尺寸：1920像素×560像素<br />只支持JPGPNGGIF格式，大小不超过5MB</div>
                     </div>
                 </div>
-                <!-- <el-form-item label="登录页背景：" >
-                    <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off" style="width:80%"></el-input>
-                    <div v-show="isEdit" style="float:right;color:#fff;background:#6595f2;padding:0 30px;cursor:pointer;border-radius: 4px">替换</div>
-                    <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
-                </el-form-item> -->
-
+                <div class="el-form_">
+                    <label class="el-form-item__label" style="padding-left:42px ">预览：</label>
+                    <div class="el-form-item__content" style="height:450px;margin-left:85px;border:1px solid #e6e6e6;">
+                        <img src="http://upload.17u.net/uploadpicbase/2013/10/12/aa/201310121054516850.jpg" alt="" style="width:100%;height:100%">
+                    </div>
+                </div>
             </div>
             <!-- 企业信息 -->
             <el-form :model="ruleForm" :rules="rules" v-show="!isLoginPage" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -153,7 +148,7 @@
                 changePasswordDialogVisible: false,
                 corporateInformationDialogVisible: false,
                 isEdit: false,
-                isLoginPage:false,
+                isLoginPage: false,
                 ruleForm: {
                     password: "",
                     newPassword: "",
@@ -202,9 +197,6 @@
                     case "modifyAvatar":
                         this.changePasswordDialogVisible = true;
                         break;
-                    case "corporateInformation":
-                        this.corporateInformationDialogVisible = true;
-                        break;
                     default:
                         break;
                 }
@@ -225,9 +217,7 @@
                 return isJPG && isLt2M;
             },
             setting() {
-                this.$emit("authority");
-                this.showSetting = false;
-                this.$router.push("/order-management");
+                this.corporateInformationDialogVisible = true;
             },
             back() {
                 this.$emit("authority");
@@ -311,10 +301,10 @@
         margin-top: 50px;
         margin-left: -25px;
     }
-    .el-form_+.el-form_{
+
+    .el-form_+.el-form_ {
         margin-top: 20px
     }
-  
     /* .el-form-item__label {
         margin-right: 20px;
     } */
@@ -329,12 +319,11 @@
         height: 40px;
         padding-left: 20px;
         margin: 25px 20px 0 0;
-        border: 1px solid #fff;
         box-sizing: border-box;
         border-radius: 2px;
         float: right;
         line-height: 40px;
-        font-size: 14px;
+        font-size: 16px;
         cursor: pointer;
     }
 
@@ -390,17 +379,17 @@
         display: block;
     }
 
-    
 
-    .el-form-item {
+
+    .corporateInformationDialog .el-form-item {
         width: 50%;
     }
 
-    .el-form-item:nth-child(odd) {
+    .corporateInformationDialog .el-form-item:nth-child(odd) {
         float: left;
     }
 
-    .el-form-item:nth-child(even) {
+    .corporateInformationDialog .el-form-item:nth-child(even) {
         margin-left: 50%;
     }
 

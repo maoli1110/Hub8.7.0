@@ -1,17 +1,19 @@
 <template>
     <div>
         <div class="header">
-            <div class="el-form-item el-form_">
+            <div>
                 <label class="el-form-item__label">组织节点：</label>
                 <div class="el-form-item__content" style="margin-left: 85px;">
-                    <el-select v-model="orgValue" placeholder="请选择" style="max-width:260px">
+                    <el-select v-model="orgValue" placeholder="请选择" style="width:100%" class="org-text">
                         <el-option :value="orgValue" v-show="false">
                         </el-option>
                         <ul id="orgTree" class="ztree"></ul>
                     </el-select>
                 </div>
             </div>
-            <div class="el-form-item el-form_">
+        </div>
+        <div class="header">
+            <div class="el-form-item el-form_" style="margin-left:30px">
                 <label class="el-form-item__label">角色：</label>
                 <div class="el-form-item__content" style="margin-left: 55px;">
                     <el-select v-model="role" placeholder="请选择" style="max-width:170px">
@@ -21,8 +23,17 @@
                 </div>
             </div>
             <div class="el-form-item el-form_">
+                <label class="el-form-item__label">显示成员：</label>
+                <div class="el-form-item__content" style="margin-left: 55px;">
+                    <el-select v-model="role" placeholder="请选择" style="max-width:170px">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <div class="el-form-item el-form_" style="float:right">
                 <div class="el-form-item__content">
-                    <el-input placeholder="请输入通行证账号或备注" icon="search" style="max-width:220px"></el-input>
+                    <el-input placeholder="请输入通行证账号或备注" icon="search" style=""></el-input>
                 </div>
             </div>
         </div>
@@ -887,11 +898,15 @@
         background-color: #fff;
         padding: 10px 20px;
     }
-
+    .header+.header{
+        margin-top: 20px;
+    }
     .header .el-form-item__label {
         text-align: left;
     }
-
+    .org-text .el-input__inner{
+        color:aqua
+    }
     .ztree {
         margin-top: 0px;
         width: 205px;
@@ -899,7 +914,7 @@
 
     .el-form_ {
         float: left;
-        width: 20%;
+        width: 16%;
         margin-bottom: 0px;
     }
 
