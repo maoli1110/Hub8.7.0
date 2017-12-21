@@ -1,13 +1,13 @@
 <template>
     <div class="header">
         <div class="logo">中国公路工程咨询集团有限公司</div>
-        <div class="configuration" @click="setting" >
+        <div class="configuration" @click="setting">
             <span class="el-icon-setting" style="font-size:24px"></span>
-        </div>        
+        </div>
         <div class="user-info">
             <el-dropdown trigger="click" @command="handleCommand">
                 <div class="el-dropdown-link">
-                    <img class="user-logo" src="../../../static/img/dog.jpg">
+                    <img class="user-logo" :src="imgDataUrl">
                     <span style="display:inline-block;margin-top:40px">{{username}}</span>
                 </div>
                 <el-dropdown-menu slot="dropdown" class="el-popper">
@@ -40,6 +40,9 @@
                 <el-button @click="changePasswordDialogVisible= false" class="dialog-btn">取消</el-button>
             </span>
         </el-dialog>
+        <!-- 修改图像 -->
+        <my-upload field="img" @crop-success="cropSuccess" @crop-upload-success="cropUploadSuccess" @crop-upload-fail="cropUploadFail"
+            v-model="myUploadShow" :width="300" :height="300" url="https://httpbin.org/post" :params="params" :headers="headers" img-format="png"></my-upload>
         <!-- 企业信息 -->
         <el-dialog title="企业信息" :visible.sync="corporateInformationDialogVisible" custom-class="corporateInformationDialog">
             <div>
@@ -59,8 +62,9 @@
                 </div>
                 <div>
                     <label class="el-form-item__label"></label>
-                    <div  style="margin:10px 0 20px 83px">
-                        <div>登录页背景图片建议尺寸：1920像素×560像素<br />只支持JPGPNGGIF格式，大小不超过5MB</div>
+                    <div style="margin:10px 0 20px 83px">
+                        <div>登录页背景图片建议尺寸：1920像素×560像素
+                            <br />只支持JPGPNGGIF格式，大小不超过5MB</div>
                     </div>
                 </div>
                 <div class="el-form_">
@@ -137,18 +141,31 @@
 </template>
 <script>
     import axios from "axios";
+    import myUpload from './Upload.vue';
     export default {
+        components: {
+            'my-upload': myUpload
+        },
         data() {
             return {
                 name: "鱼遇雨欲与雨语",
                 showSetting: false,
                 currentIndex: 0,
                 index: 1,
-                corporateItems: ['企业信息', '登录页管理'],
+                corporateItems: ["企业信息", "登录页管理"],
                 changePasswordDialogVisible: false,
                 corporateInformationDialogVisible: false,
                 isEdit: false,
                 isLoginPage: false,
+                myUploadShow: false,
+                params: {
+                    token: '123456798',
+                    name: 'avatar'
+                },
+                headers: {
+                    smail: '*_~'
+                },
+                imgDataUrl: '../../../static/img/dog.jpg',
                 ruleForm: {
                     password: "",
                     newPassword: "",
@@ -181,6 +198,32 @@
             }
         },
         methods: {
+            toggleShow() {
+                this.myUploadShow = !this.myUploadShow;
+            },
+            cropSuccess(data, field, key) {
+                // if (field == 'avatar1') {
+                //     this.avatarUrl1 = data;
+                // } else if (field == 'avatar2') {
+                //     this.avatarUrl2 = data;
+                // } else {
+                //     this.avatarUrl3 = data;
+                // }
+                console.log('-------- 剪裁成功 --------');
+            },
+            cropUploadSuccess(data, field, key) {
+                console.log('-------- 上传成功 --------');
+                console.log(data);
+                this.imgDataUrl=data.files.img
+                console.log('field: ' + field);
+                console.log('key: ' + key);
+            },
+            cropUploadFail(status, field, key) {
+                console.log('-------- 上传失败 --------');
+                console.log(status);
+                console.log('field: ' + field);
+                console.log('key: ' + key);
+            },
             handleCommand(command) {
                 switch (command) {
                     case "loginout":
@@ -195,7 +238,7 @@
                         this.changePasswordDialogVisible = true;
                         break;
                     case "modifyAvatar":
-                        this.changePasswordDialogVisible = true;
+                        this.toggleShow()
                         break;
                     default:
                         break;
@@ -303,7 +346,7 @@
     }
 
     .el-form_+.el-form_ {
-        margin-top: 20px
+        margin-top: 20px;
     }
     /* .el-form-item__label {
         margin-right: 20px;
@@ -341,12 +384,12 @@
         width: 50%;
         height: 40px;
         line-height: 40px;
-        text-align: center
+        text-align: center;
     }
 
     .corporate-checked {
         background-color: #6595f2;
-        color: #fff
+        color: #fff;
     }
 
     .avatar-uploader .el-upload {
@@ -378,8 +421,6 @@
         border-radius: 50%;
         display: block;
     }
-
-
 
     .corporateInformationDialog .el-form-item {
         width: 50%;
