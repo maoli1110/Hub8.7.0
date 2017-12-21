@@ -1825,4 +1825,5 @@ body .el-popover.remark-popper {
     width: 60% !important
 }
 
-
+/*header->帮助中心*/
+.issue{width:20px;height:20px;display:inline-block; background: url(../../static/img/icon-header.png) -65px -25px no-repeat !important;}
