@@ -1,5 +1,5 @@
 {
-    "list":[
+"list":[
 	{
 		"menuId":"a73cdd8ee17311e7aefd729014adbe9a",
         "name":"企业概况",
@@ -732,7 +732,7 @@
             },
             {
                 "menuId":"a73ceee7e17311e7aefd729014adbe9a",
-                "name":"在线日志",
+                "name":"在线人数统计",
                 "system":null,
                 "path":"/system/system-lo",
                 "pid":"a73cedede17311e7aefd729014adbe9a",
@@ -741,7 +741,7 @@
                 "children":[
                     {
                         "menuId":"a73cef19e17311e7aefd729014adbe9a",
-                        "name":"Govern应用日志",
+                        "name":"所有客户端",
                         "system":"builder",
                         "path":"/system/system-log/govern-log",
                         "pid":"a73ceee7e17311e7aefd729014adbe9a",
@@ -749,7 +749,7 @@
                     },
                     {
                         "menuId":"a73cef4be17311e7aefd729014adbe9a",
-                        "name":"Explorer应用日志",
+                        "name":"MC在线人数",
                         "system":"builder",
                         "path":"/system/system-log/explorer-log",
                         "pid":"a73ceee7e17311e7aefd729014adbe9a",
@@ -757,7 +757,7 @@
                     },
                     {
                         "menuId":"a73cef7ce17311e7aefd729014adbe9a",
-                        "name":"市政应用日志",
+                        "name":"MC在线人数",
                         "system":"builder",
                         "path":"/system/system-log/civil-log",
                         "pid":"a73ceee7e17311e7aefd729014adbe9a",
@@ -765,7 +765,7 @@
                     },
                     {
                         "menuId":"a73cefe1e17311e7aefd729014adbe9a",
-                        "name":"Works应用日志",
+                        "name":"BE在线人数",
                         "system":"builder",
                         "path":"/system/system-log/works-log",
                         "pid":"a73ceee7e17311e7aefd729014adbe9a",
@@ -773,7 +773,7 @@
                     },
                     {
                         "menuId":"a73cf013e17311e7aefd729014adbe9a",
-                        "name":"Plan应用日志",
+                        "name":"BW在线人数",
                         "system":"builder",
                         "path":"/system/system-log/plan-log",
                         "pid":"a73ceee7e17311e7aefd729014adbe9a",
@@ -781,7 +781,7 @@
                     },
                     {
                         "menuId":"a73cf045e17311e7aefd729014adbe9a",
-                        "name":"原BW应用日志",
+                        "name":"SP在线人数",
                         "system":"builder",
                         "path":"/system/system-log/prevbw-log",
                         "pid":"a73ceee7e17311e7aefd729014adbe9a",
@@ -789,7 +789,7 @@
                     },
                     {
                         "menuId":"a73cf075e17311e7aefd729014adbe9a",
-                        "name":"原Govern应用日志",
+                        "name":"BV手机版在线人数",
                         "system":"builder",
                         "path":"/system/system-log/prevgovern-log",
                         "pid":"a73ceee7e17311e7aefd729014adbe9a",
@@ -797,7 +797,7 @@
                     },
                     {
                         "menuId":"a73cf0a7e17311e7aefd729014adbe9a",
-                        "name":"Remiz应用日志",
+                        "name":"BVHD版在线人数",
                         "system":"builder",
                         "path":"/system/system-log/remiz-log",
                         "pid":"a73ceee7e17311e7aefd729014adbe9a",

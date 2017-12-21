@@ -6,6 +6,7 @@
             </el-menu>
         </div>
         <div class="container">
+            <iframe src="http://localhost:8529/#/companyprofile/organization-structure"></iframe>
         </div>
     </div>
 </template>
