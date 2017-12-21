@@ -23,11 +23,16 @@
 </template>
 <script>
     let ct = {};
+    let calendarTemplate;//日历模板初始化
+    let isWekendWorkDates = [];//工作日
+    let notWekendRestDates = [];//非工作日
+    let restDates = [];//24非工作日
     export default{
         props:{isPrviewCalendar:Boolean},
         data(){
             return {
                 isPriviewTemplate:false,
+                selectInteral: [],//日历选择时间范围
                 priveiwDate:"",//预览模板日期范围
                 template:{
                     name:""
@@ -38,6 +43,28 @@
             //关闭弹窗
             handleClose(done){
                 this.$emit('hidePanel',this.isPriviewTemplate)
+            },
+            /**
+             * 筛选出指定想起的所有日期
+             * @param arr 日历队列
+             * @param sd  时间范围之开始时间
+             * @param ed  时间范围之结束时间
+             * @return rulesDates  筛选符合条件的集合
+             **/
+            getRulesDate(arr, sd, ed){
+                let rulesDates = [];
+                let sdate = new Date(sd);
+                let edate = new Date(ed);
+                let stime = sdate.getTime();
+                let etime = edate.getTime();
+                for (stime; stime <= etime;) {
+                    let thdate = new Date(stime);
+                    if (arr.indexOf(thdate.getDay()) != -1) {
+                        rulesDates.push(thdate.toLocaleDateString());
+                    }
+                    stime = stime + 24 * 60 * 60 * 1000;
+                }
+                return rulesDates;
             },
             /**
              * 日历模板
