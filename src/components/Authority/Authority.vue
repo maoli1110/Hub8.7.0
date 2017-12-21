@@ -2,10 +2,10 @@
     <div>
         <div class="aside">
             <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
-                <el-menu-item index="/authority/member-management" class="roleCome">成员管理</el-menu-item>
-                <el-menu-item index="/authority/role-management">角色管理</el-menu-item>
+                <el-menu-item index="/authority/member-management" class="roleCome">人员授权</el-menu-item>
+                <el-menu-item index="/authority/role-management">角色授权</el-menu-item>
                 <el-submenu index="/authority/application-allot">
-                    <template slot="title">应用分配</template>
+                    <template slot="title">应用授权</template>
                     <el-menu-item index="/authority/application-allot/basic-client" class="default">基础客户端</el-menu-item>
                     <el-menu-item index="/authority/application-allot/system-client">系统客户端</el-menu-item>
                     <el-menu-item index="/authority/application-allot/bim-meal">BIM应用套餐</el-menu-item>

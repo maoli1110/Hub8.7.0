@@ -181,7 +181,8 @@
 
                         isAdd:true
                     };
-                    setTimeout(() => {                      
+                    setTimeout(() => {      
+                      this.$refs.processEditTree.templateName='';                
                       this.$refs.processEditTree.getDefaultProcessTemplateTreeInfo()
                     }, 0);
                     
