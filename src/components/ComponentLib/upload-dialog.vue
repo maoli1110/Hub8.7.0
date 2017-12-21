@@ -193,7 +193,9 @@
                 SteelAdd({url:url,param:param}).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('添加构件成功','success');
-                        this.getTableList(baseUrl,this.tableInfo);
+                        setTimeout(()=>{
+                            this.getTableList(baseUrl,this.tableInfo);
+                        },1200)
                         this.$emit('uploadClose',{visible:this.uploadVisible,data:this.tableDataList,count:this.count})
                     }
                 })

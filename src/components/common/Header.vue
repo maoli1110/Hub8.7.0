@@ -1,32 +1,27 @@
 <template>
     <div class="header">
-        <div class="logo">中国公路工程咨询集团有限公司</div>
-        <div class="configuration" @click="setting" v-show='showSetting'>
-            <span class="el-icon-setting" style="font-size:17px"></span>
-            <span> 权限管理</span>
-        </div>
-        <div class="configuration" @click="back" v-show='!showSetting'>
-            <span class="el-icon-setting" style="font-size:17px"></span>
-            <span> 返回首页</span>
-        </div>
-        <div class="user-info">
-            <el-dropdown trigger="click" @command="handleCommand">
-                <div class="el-dropdown-link">
-                    <img class="user-logo" src="../../../static/img/dog.jpg">
-                    <span style="display:inline-block;margin-top:40px">{{username}}</span>
-                </div>
-                <el-dropdown-menu slot="dropdown" class="el-popper">
-                    <el-dropdown-item command="changePassword">
-                        <span class="el-icon-edit"></span> 修改密码</el-dropdown-item>
-                    <el-dropdown-item command="modifyAvatar">
-                        <span class="el-icon-edit"></span> 修改头像</el-dropdown-item>
-                    <el-dropdown-item command="loginout">绑定通行证</el-dropdown-item>
-                    <el-dropdown-item command="corporateInformation">企业信息</el-dropdown-item>
-                    <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
-                    <div x-arrow="" class="popper__arrow" style="left: 40px;"></div>
-                </el-dropdown-menu>
-            </el-dropdown>
-        </div>
+        <div class="logo left-bar">中国公路工程咨询集团有限公司</div>
+       <div class="right-bar">
+           <div class="issue" title="帮助中心" @click="issueShow=true"></div>
+           <div class="user-info">
+               <el-dropdown trigger="click" @command="handleCommand">
+                   <div class="el-dropdown-link">
+                       <img class="user-logo" src="../../../static/img/dog.jpg">
+                       <span style="display:inline-block;">{{username}}</span>
+                   </div>
+                   <el-dropdown-menu slot="dropdown" class="el-popper">
+                       <el-dropdown-item command="changePassword">
+                           <span class="el-icon-edit"></span> 修改密码</el-dropdown-item>
+                       <el-dropdown-item command="modifyAvatar">
+                           <span class="el-icon-edit"></span> 修改头像</el-dropdown-item>
+                       <el-dropdown-item command="loginout">绑定通行证</el-dropdown-item>
+                       <el-dropdown-item command="corporateInformation">企业信息</el-dropdown-item>
+                       <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
+                       <div x-arrow="" class="popper__arrow" style="left: 40px;"></div>
+                   </el-dropdown-menu>
+               </el-dropdown>
+           </div>
+       </div>
         <!-- 修改密码 -->
         <el-dialog title="修改密码" :visible.sync="changePasswordDialogVisible" size='sign'>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -65,7 +60,7 @@
                 <div class="el-form_">
                     <label class="el-form-item__label" >预览：</label>
                     <div class="el-form-item__content" style="height:450px;margin-left:85px;border:1px solid #e6e6e6;">
-                        <img src="http://upload.17u.net/uploadpicbase/2013/10/12/aa/201310121054516850.jpg" alt="" style="width:100%;height:100%"> 
+                        <img src="http://upload.17u.net/uploadpicbase/2013/10/12/aa/201310121054516850.jpg" alt="" style="width:100%;height:100%">
                     </div>
                 </div>
                 <!-- <el-form-item label="登录页背景：" >
@@ -135,6 +130,9 @@
                 <el-button @click="corporateInformationDialogVisible= false" class="dialog-btn" v-show="isEdit">取消</el-button>
             </div>
         </el-dialog>
+        <!--帮助中心-->
+        <v-issue :is-show="issueShow" @closeDialog = closeDialog :user-info="loginInfo" ref="issueAbout"></v-issue>
+
 
     </div>
 
@@ -142,6 +140,7 @@
 </template>
 <script>
     import axios from "axios";
+    import vIssue from "components/common/issue.vue";
     export default {
         data() {
             return {
@@ -176,7 +175,17 @@
                         trigger: "blur"
                     }]
                 },
-                imageUrl: ""
+                imageUrl: "",
+                issueShow:false,
+                loginInfo:{
+                    phone:18888888881,
+                    itemList:[
+                        {value:'大类'},
+                        {value:'小类'},
+                        {value:'鲁班'},
+                        {value:'钢筋'},
+                    ]
+                }
             };
         },
         computed: {
@@ -186,6 +195,9 @@
             }
         },
         methods: {
+            closeDialog(visible){
+                this.issueShow = visible;
+            },
             handleCommand(command) {
                 switch (command) {
                     case "loginout":
@@ -258,7 +270,8 @@
             } else {
                 this.showSetting = true;
             }
-        }
+        },
+        components:{vIssue}
     };
 
 </script>
@@ -271,18 +284,19 @@
         font-size: 22px;
         color: #fff;
     }
-
     .header .logo {
-        padding-left: 95px;
         float: left;
         text-align: center;
+        font-size: 23px;
+        line-height: 84px;
+        padding:0 10px;
     }
-
+    .header .right-bar{float:right;width:300px;height:90px;line-height:90px;}
     .user-info {
-        float: right;
-        margin-right: 190px;
         font-size: 16px;
         color: #fff;
+        float:right;
+        margin-right:10px;
     }
 
     .user-info .el-dropdown-link {
@@ -314,7 +328,7 @@
     .el-form_+.el-form_{
         margin-top: 20px
     }
-  
+
     /* .el-form-item__label {
         margin-right: 20px;
     } */
@@ -390,7 +404,7 @@
         display: block;
     }
 
-    
+
 
     .el-form-item {
         width: 50%;
