@@ -105,51 +105,51 @@ export const getDrawingDetailInfos = params =>axios.post(`${params.url}/rs/pdfDr
  * 云构件库
  * */
 //构件树列表
-export const treeList = params=> axios.get(`${params.url}component/tree/list/${params.param.version}/${params.param.productId}`);
+export const treeList = params=> axios.get(`${params.url}/component/tree/list/${params.param.version}/${params.param.productId}`);
 //构件树保存
-export const treeSave = params=>axios.post(`${params.url}component/tree/save/${params.param.version}/${params.param.productId}`,params.param.componentTree)
+export const treeSave = params=>axios.post(`${params.url}/component/tree/save/${params.param.version}/${params.param.productId}`,params.param.componentTree)
 
 //鲁班安装筛选条件
 //安装->查询专业
-export const componentMajors = params=>axios.get(`${params.url}component/az/majors`);
+export const componentMajors = params=>axios.get(`${params.url}/component/az/majors`);
 //安装->查询大类
-export const bigtypes = params=>axios.post(`${params.url}component/az/bigtypes?majorName=${params.param.majorName}`);
+export const bigtypes = params=>axios.post(`${params.url}/component/az/bigtypes?majorName=${params.param.majorName}`);
 //安装->查询小类
-export const smalltypes = params=>axios.post(`${params.url}component/az/smalltypes?majorName=${params.param.majorName}&bigType=${params.param.bigType}`);
+export const smalltypes = params=>axios.post(`${params.url}/component/az/smalltypes?majorName=${params.param.majorName}&bigType=${params.param.bigType}`);
 
 //安装->列表
-export const componentList = params=>axios.post(`${params.url}component/az/find`,params.param);
+export const componentList = params=>axios.post(`${params.url}/component/az/find`,params.param);
 //安装->列表下载次数
-export const countDownloadTimes = params=>axios.post(`${params.url}component/az/countDownloadTimes`,params.param);
+export const countDownloadTimes = params=>axios.post(`${params.url}/component/az/countDownloadTimes`,params.param);
 //安装列表->删除
-export const componentDelete = params=>axios.put(`${params.url}component/az/delete/${params.param.productId}`,params.param.del)
+export const componentDelete = params=>axios.put(`${params.url}/component/az/delete/${params.param.productId}`,params.param.del)
 //获取重复提交验证token
-export const generate = params=>axios.get(`${params.url}component/az/token/generate`);
+export const generate = params=>axios.get(`${params.url}/component/az/token/generate`);
 //判断鲁班安装构件是否存在
-export const componentExist = params=>axios.post(`${params.url}component/az/exist`,params.param)
+export const componentExist = params=>axios.post(`${params.url}/component/az/exist`,params.param)
 //安装->上传
-export const upload = params=>axios.post(`${params.url}component/az/upload/${params.param.productId}`);
+export const upload = params=>axios.post(`${params.url}/component/az/upload/${params.param.productId}`);
 //安装->添加
-export const componentAdd = params=>axios.put(`${params.url}component/az/add/${params.param.productId}`,params.param.base);
+export const componentAdd = params=>axios.put(`${params.url}/component/az/add/${params.param.productId}`,params.param.base);
 //安装->更新
-export const componentUpdate = params=>axios.put(`${params.url}component/az/update/${params.param.productId}`,params.param.modify);
+export const componentUpdate = params=>axios.put(`${params.url}/component/az/update/${params.param.productId}`,params.param.modify);
 
 /**
  * 钢筋
  * */
 //钢筋->查询大类
-export const SteelBigtypes = params=>axios.get(`${params.url}component/gj/bigtypes/${params.param.productId}`);
+export const SteelBigtypes = params=>axios.get(`${params.url}/component/gj/bigtypes/${params.param.productId}`);
 //钢筋->查询小类
-export const SteelSmalltypes = params=>axios.post(`${params.url}component/gj/smalltypes/${params.param.productId}/?bigType=${params.param.bigType}`);
+export const SteelSmalltypes = params=>axios.post(`${params.url}/component/gj/smalltypes/${params.param.productId}/?bigType=${params.param.bigType}`);
 //判断钢筋构件是否存在
-export const SteelExit = params =>axios.post(`${params.url}component/gj/exist`,params.param);
+export const SteelExit = params =>axios.post(`${params.url}/component/gj/exist`,params.param);
 //钢筋->添加
-export const SteelAdd = params=>axios.post(`${params.url}component/gj/add/${params.param.productId}`,params.param);
+export const SteelAdd = params=>axios.post(`${params.url}/component/gj/add/${params.param.productId}`,params.param);
 //更新构件接口
-export const SteelUpdate = params=>axios.post(`${params.url}component/gj/update/${params.param.productId}`,params.param.update);
+export const SteelUpdate = params=>axios.post(`${params.url}/component/gj/update/${params.param.productId}`,params.param.update);
 //钢筋下载次数
-export const SteelCountDownload = params=>axios.post(`${params.url}component/gj/countDownloadTimes`,params.param);
+export const SteelCountDownload = params=>axios.post(`${params.url}/component/gj/countDownloadTimes`,params.param);
 //钢筋->删除构件
-export const SteelDelete = params=>axios.put(`${params.url}component/gj/delete/${params.param.productId}`,params.param.del);
+export const SteelDelete = params=>axios.put(`${params.url}/component/gj/delete/${params.param.productId}`,params.param.del);
 //钢筋列表
-export const SteelList = params=>axios.post(`${params.url}component/gj/find`,params.param);
+export const SteelList = params=>axios.post(`${params.url}/component/gj/find`,params.param);

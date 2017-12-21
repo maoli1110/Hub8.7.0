@@ -196,8 +196,6 @@
 <script>
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import {basePath} from "../../utils/common.js";
-
     import {getCitys, cloudTree,tests} from '../../api/getData.js';
     import {
         treeList,           //测试数据列表
@@ -216,7 +214,7 @@
     let deletArray = [];    //删除数组
     let level;              //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;      //最大层级
-    let baseUrl = '';       //响应地址
+    let baseUrl = window.serverPath.cloudUrl;       //响应地址
     export default {
         data(){
             return {
@@ -375,10 +373,6 @@
                 this.uploadUrl = `${baseUrl}component/gj/upload/2`;
                 this.fileList = [];
             },*/
-            //获取接口地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
-            },
             /**
              * 获取构件大类
              * @params url  响应地址
@@ -665,7 +659,6 @@
                 this.$refs.cloudTrees.getZtree(baseUrl,this.ztreeInfoParam);
             },
             getData(){
-                this.getBaseUrl();                      //基础地址
                 this.getBigType(baseUrl,{productId:2}); //构件大类
                 this.getTableList(baseUrl,this.tableParam);//数据列表
             },
