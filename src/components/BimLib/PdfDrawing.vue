@@ -106,7 +106,7 @@
 </template>
 
 <script>
-    import {FormIndex,basePath,dateFormat} from "../../utils/common.js";
+    import {FormIndex,dateFormat} from "../../utils/common.js";
     import {
         PDFtestList,//列表假数据
         getWorksetingList,
@@ -118,7 +118,6 @@
     } from '../../api/getData-yhj.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     let deletArray = [];
-    let baseUrl = '';
     let FirstIn = false;
     export default {
         created(){
@@ -168,12 +167,11 @@
         },
         methods: {
             getData(){
-                this.getBaseUrl();
                 this.getTypeGroup();//分类下拉
                 this.getProjGroup();//工程下拉
 //                this.tableListParams.ppid = this.filterParam.proVal;
                 this.tableListParams.ppid = -1;
-                this.getTableList(baseUrl,this.tableListParams);
+                this.getTableList(this.tableListParams);
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -205,13 +203,13 @@
 //                console.log(`每页显示多少条${size}`);
                 this.totalPage = size;
                 this.tableListParams.pageParam.size = size;
-                this.getTableList(baseUrl,this.tableListParams);
+                this.getTableList(this.tableListParams);
             },
             handleCurrentChange(currentPage){
 //                console.log(`当前页${currentPage}`);
                 this.cur_page = currentPage;
                 this.tableListParams.pageParam.page = currentPage;
-                this.getTableList(baseUrl,this.tableListParams);
+                this.getTableList(this.tableListParams);
             },
             //清除搜索关键字
             clearSearchKey(){
@@ -221,13 +219,10 @@
             editDrawChange(val){
                 this.drawInfoItem.classifyId = val;
             },
-            //获取动态匹配地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
-            },
+
             //获取分类下拉框数据
             getTypeGroup(){
-                getDrawingClassifyInfos({url:baseUrl}).then((type)=>{
+                getDrawingClassifyInfos().then((type)=>{
                     if(type.data.result){
                         this.typeList = type.data.result;
                         this.filterParam.typeVal = this.typeList[0].classifyId;
@@ -237,7 +232,7 @@
             },
             //获取工程下拉框数据
             getProjGroup(){
-                getProjHasPdfDraw({url:baseUrl}).then((data)=>{
+                getProjHasPdfDraw().then((data)=>{
                     console.log(data.data.result,'list');
                     if(data.data.result.length>0){
                         this.projectList = data.data.result;
@@ -250,8 +245,8 @@
              * @params url      路径地址
              * @params param    路径参数
              * */
-            getTableList(url,param){
-                getDrawingDetailInfos({url:url,param:param}).then((data)=>{
+            getTableList(param){
+                getDrawingDetailInfos(param).then((data)=>{
                     if(data.data.result!=null){
                         this.tableData = data.data.result;
                     }else{
@@ -281,7 +276,7 @@
                     this.tableListParams.pageParam.orders[0].property = "classifyId";
                 }
                 if(FirstIn){//判断是不是第一次进来
-                    this.getTableList(baseUrl,this.tableListParams);//排序刷新
+                    this.getTableList(this.tableListParams);//排序刷新
                 }else{
                     FirstIn  = true;
                 }
@@ -290,16 +285,16 @@
             //列表搜索
             searchClick(){
                 this.tableListParams.searchKey = this.filterParam.searchKey;
-                this.getTableList(baseUrl,this.tableListParams);//排序刷新
+                this.getTableList(this.tableListParams);//排序刷新
             },
             /**
              * 删除图纸列表
              * **/
-            getDelArray(url,param){
-                delDrawingInfos({url:url,param:param}).then((data)=>{
+            getDelArray(param){
+                delDrawingInfos(param).then((data)=>{
                     if(data.data.code==200 && this.tableData.content.length){
                          if(this.tableData.content.length===deletArray.length){//整页删除重新渲染数据
-                             this.getTableList(baseUrl,this.tableListParams);
+                             this.getTableList(this.tableListParams);
                          }else if (deletArray.length) {//单页删除手动个抽掉数据
                             for (let i = 0; i < deletArray.length; i++) {
                                 for (let j = 0; j < this.tableData.content.length; j++) {
@@ -350,17 +345,17 @@
                     return false;
                 }
                 this.commonConfirm('确定要删除吗',()=> {
-                    this.getDelArray(baseUrl,deletArray);
+                    this.getDelArray(deletArray);
                 })
             },
             /**PDF修改图纸信息
              * @params url      响应地址
              * @params param    响应参数
              * **/
-            setDrawInfo(url,param){
-                updateDrawingInfo({url:url,param:param}).then((data)=>{
+            setDrawInfo(param){
+                updateDrawingInfo(param).then((data)=>{
                     if(data.data.code==200){
-                        this.getTableList(baseUrl,this.tableListParams);
+                        this.getTableList(this.tableListParams);
                     }
                 })
             },
@@ -374,7 +369,7 @@
             },
             editDrawOk(){
                 if(this.drawInfoItem.drawingName.length){
-                    this.setDrawInfo(baseUrl,this.drawInfoItem);
+                    this.setDrawInfo(this.drawInfoItem);
                 }else{
                     this.commonMessage('工程名称不能为空','warning')
                 }
@@ -384,13 +379,13 @@
             'filterParam.proVal':function(newVal,oldVal){
                 if(newVal!=oldVal && oldVal!=""){
                     this.tableListParams.ppid = newVal;
-                    this.getTableList(baseUrl,this.tableListParams);//排序刷新
+                    this.getTableList(this.tableListParams);//排序刷新
                 }
             },
             'filterParam.typeVal':function(newVal,oldVal){
                 if(newVal!=oldVal && oldVal!=""){
                     this.tableListParams.classifyId = newVal;
-                    this.getTableList(baseUrl,this.tableListParams);//排序刷新
+                    this.getTableList(this.tableListParams);//排序刷新
                 }
             },
         },

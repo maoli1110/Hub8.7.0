@@ -214,7 +214,6 @@
     let deletArray = [];    //删除数组
     let level;              //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;      //最大层级
-    let baseUrl = window.serverPath.cloudUrl;       //响应地址
     export default {
         data(){
             return {
@@ -322,12 +321,12 @@
                 console.log(`每页显示多少条${size}`);
                 this.totalPage = size;
                 this.tableParam.pageSize = size;
-                this.getTableList(baseUrl,this.tableParam);
+                this.getTableList(this.tableParam);
             },
             handleCurrentChange(currentPage){
                 this.cur_page = currentPage;
                 this.tableParam.currentPage = currentPage;
-                this.getTableList(baseUrl,this.tableParam);
+                this.getTableList(this.tableParam);
 //                console.log(`当前页${currentPage}`);
             },
 
@@ -370,7 +369,7 @@
              * @param type  1.update上传 2.cover修改页面
              **!/
             overUpdate(){
-                this.uploadUrl = `${baseUrl}component/gj/upload/2`;
+                this.uploadUrl = `${component/gj/upload/2`;
                 this.fileList = [];
             },*/
             /**
@@ -378,15 +377,15 @@
              * @params url  响应地址
              * @params param   响应参数
              * */
-            getBigType(url,param){
-                SteelBigtypes({url:url,param:param}).then((data)=>{
+            getBigType(param){
+                SteelBigtypes(param).then((data)=>{
                     if(data.data.result!=null){
                         this.compTypeBig = data.data.result;
                         this.compTypeBig.unshift('不限');
                     }
                     this.searchKeyParams.bigType = this.compTypeBig[0];
                     if(this.searchKeyParams.bigType!='不限'){
-                        this.getSmallType(baseUrl,{productId:2,bigType:this.searchKeyParams.bigType})
+                        this.getSmallType({productId:2,bigType:this.searchKeyParams.bigType})
                     }
                 })
             },
@@ -395,8 +394,8 @@
              * @params url  响应地址
              * @params param   响应参数
              * */
-            getSmallType(url,param){
-                SteelSmalltypes({url:url,param:param}).then((data)=>{
+            getSmallType(param){
+                SteelSmalltypes(param).then((data)=>{
                     if(data.data.result!=null){
                         this.compTypeSmall = data.data.result;
                         this.compTypeSmall.unshift('不限');
@@ -405,20 +404,20 @@
                 })
             },
             //钢筋下载次数
-            getDownloadTimes(url,param){
-                SteelCountDownload({url:url,param:param}).then((data)=>{
+            getDownloadTimes(param){
+                SteelCountDownload(param).then((data)=>{
                    this.downloadSum = data.data.result;
                 })
             },
       /*      //创建时 token验证
             getTokenId(){
-                generate({url:baseUrl}).then((data)=>{
+                generate().then((data)=>{
                     this.updateComList.token     = data.data.result;
                 })
             },
             //添加之前判断构件是否存在
-            exists(url,param){
-                SteelExit({url:url,param:param}).then((data)=>{
+            exists(param){
+                SteelExit(param).then((data)=>{
                     console.log(data.data.result);
                     let addParam = {
                         author: this.updateComList.author,
@@ -438,7 +437,7 @@
                     }
                     if(data.data.result){
                         this.commonConfirm('构件已经存在，是否替换？',()=>{
-                        this.updateInfo(baseUrl,{productId:2,update:{
+                        this.updateInfo({productId:2,update:{
                             coding:this.updateComList.componentCoding,
                             compntFileId:this.updateComList.componentFileId,
                             componentFilePath:this.updateComList.componentFilePath,
@@ -451,7 +450,7 @@
                         }})
                         },()=>{},"warning")
                     }else{
-                        this.setAddInfo(baseUrl,addParam)
+                        this.setAddInfo(addParam)
                     }
                 })
             },
@@ -460,19 +459,19 @@
              * @param url      响应地址
              * @param param    响应参数
              **!/
-            setAddInfo(url,param){
-                SteelAdd({url:url,param:param}).then((data)=>{
+            setAddInfo(param){
+                SteelAdd(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('添加构件成功','success');
-                        this.getTableList(baseUrl,this.tableParam);
+                        this.getTableList(this.tableParam);
                     }
                 })
             },
-            updateInfo(url,param){
-                SteelUpdate({url:url,param:param}).then((data)=>{
+            updateInfo(param){
+                SteelUpdate(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('更新构件成功','success');
-                        this.getTableList(baseUrl,this.tableParam);
+                        this.getTableList(this.tableParam);
                     };
                 })
             },*/
@@ -481,12 +480,12 @@
              * @param url       响应地址
              * @param param     响应参数
              **/
-             deleteItem(url,param){
-                SteelDelete({url:url,param:param}).then((data)=>{
+             deleteItem(param){
+                SteelDelete(param).then((data)=>{
                    if(data.data.code==200){
                        this.commonMessage('删除成功','success');
                        if(this.tableData.list.length===deletArray.length){
-                           this.getTableList(baseUrl,this.tableParam);
+                           this.getTableList(this.tableParam);
                        }else if (deletArray.length) {
                            for (let i = 0; i < deletArray.length; i++) {
                                for (let j = 0; j < this.tableData.list.length; j++) {
@@ -502,7 +501,7 @@
             },
             //创建时 token验证
             getTokenId(){
-                generate({url:baseUrl}).then((data)=>{
+                generate().then((data)=>{
                     this.updateComList.token = data.data.result;
                 })
             },
@@ -511,12 +510,12 @@
              * @param url       //响应地址
              * @param param     //响应参数
              **/
-            getTableList(url,param){
-                SteelList({url:url,param:param}).then((data)=>{
+            getTableList(param){
+                SteelList(param).then((data)=>{
                     if( data.data.result!=null){
                         this.tableData = data.data.result;
                     }
-                    this.getDownloadTimes(baseUrl,{bigTypeName:param.bigTypeName,endTime:param.endTime,majorName:"",productId:param.productId,smallTypeName:param.smallTypeName,startTime:param.startTime,title:param.title});//下载次数
+                    this.getDownloadTimes({bigTypeName:param.bigTypeName,endTime:param.endTime,majorName:"",productId:param.productId,smallTypeName:param.smallTypeName,startTime:param.startTime,title:param.title});//下载次数
                 })
             },
             //修改构件默认数据
@@ -597,12 +596,12 @@
                 }
                 this.tableParam.startTime = this.searchKeyParams.startTime;
                 this.tableParam.endTime = this.searchKeyParams.endTime;
-                this.getTableList(baseUrl,this.tableParam);
+                this.getTableList(this.tableParam);
             },
             //搜索功能
             searchComp(){
                  this.tableParam.title = this.searchKeyParams.searchVal;
-                 this.getTableList(baseUrl,this.tableParam);
+                 this.getTableList(this.tableParam);
             },
             //列表删除
             deleteComp(){
@@ -614,7 +613,7 @@
                 this.commonConfirm('确定要删除吗', () => {
 
 
-                  this.deleteItem(baseUrl,{productId:2,del:deletArray});
+                  this.deleteItem({productId:2,del:deletArray});
                 }, () => {
 
                 }, 'warning')
@@ -642,9 +641,9 @@
 
                 //保存上传到数据库
                 if (this.override) {
-                   this.updateInfo(baseUrl,{productId:2,update:updateParam})
+                   this.updateInfo({productId:2,update:updateParam})
                 } else {
-                    this.exists(baseUrl,{bigTypeName:this.updateComList.bigType,productId:2,smallTypeName:this.updateComList.smallType,title:this.updateComList.name,version:this.updateComList.version})
+                    this.exists({bigTypeName:this.updateComList.bigType,productId:2,smallTypeName:this.updateComList.smallType,title:this.updateComList.name,version:this.updateComList.version})
                 }
                 //保存修改
 //                this.updateComList = {};
@@ -656,11 +655,11 @@
             //加载树结构
             getCloudTree(){
                 this.ModifyTree = true;
-                this.$refs.cloudTrees.getZtree(baseUrl,this.ztreeInfoParam);
+                this.$refs.cloudTrees.getZtree(this.ztreeInfoParam);
             },
             getData(){
-                this.getBigType(baseUrl,{productId:2}); //构件大类
-                this.getTableList(baseUrl,this.tableParam);//数据列表
+                this.getBigType({productId:2}); //构件大类
+                this.getTableList(this.tableParam);//数据列表
             },
 
         },
@@ -674,10 +673,10 @@
                         this.compTypeSmall = ['不限'];
                         this.searchKeyParams.smallType = this.compTypeSmall[0]
                     } else {
-                        this.getSmallType(baseUrl,{productId:2,bigType:newVal})
+                        this.getSmallType({productId:2,bigType:newVal})
                     }
                     this.tableParam.bigTypeName = newVal;
-                    this.getTableList(baseUrl,this.tableParam);
+                    this.getTableList(this.tableParam);
                 }
             },
             //查询小类
@@ -688,7 +687,7 @@
                         this.searchKeyParams.smallType = this.compTypeSmall[0]
                     }
                     this.tableParam.smallTypeName = newVal;
-                    this.getTableList(baseUrl,this.tableParam);
+                    this.getTableList(this.tableParam);
                 }
             }
         },
