@@ -1,25 +1,31 @@
 <template>
-    <div class="header">
-        <div class="logo">中国公路工程咨询集团有限公司</div>
-        <div class="configuration" @click="setting">
-            <span class="el-icon-setting" style="font-size:24px"></span>
-        </div>
-        <div class="user-info">
-            <el-dropdown trigger="click" @command="handleCommand">
-                <div class="el-dropdown-link">
-                    <img class="user-logo" :src="imgDataUrl">
-                    <span style="display:inline-block;margin-top:40px">{{username}}</span>
+    <div>
+        <div class="header">
+            <div class="logo left-bar">中国公路工程咨询集团有限公司</div>
+            <div class="configuration" @click="setting">
+                <span class="el-icon-setting" style="font-size:24px"></span>
+            </div>
+            <div class="right-bar">
+                <div class="issue" title="帮助中心" @click="issueShow=true"></div>
+                <div class="user-info">
+                    <el-dropdown trigger="click" @command="handleCommand">
+                        <div class="el-dropdown-link">
+                            <img class="user-logo" :src="imgDataUrl">
+                            <span style="display:inline-block">{{username}}</span>
+                        </div>
+                        <el-dropdown-menu slot="dropdown" class="el-popper">
+                            <el-dropdown-item command="changePassword">
+                                <span class="iconfont icon-Password"></span> 修改密码</el-dropdown-item>
+                            <el-dropdown-item command="modifyAvatar">
+                                <span class="iconfont icon-user"></span> 修改头像</el-dropdown-item>
+                            <el-dropdown-item command="loginout">绑定通行证</el-dropdown-item>
+                            <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
+                            <div x-arrow="" class="popper__arrow" style="left: 40px;"></div>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
-                <el-dropdown-menu slot="dropdown" class="el-popper">
-                    <el-dropdown-item command="changePassword">
-                        <span class="iconfont icon-Password"></span> 修改密码</el-dropdown-item>
-                    <el-dropdown-item command="modifyAvatar">
-                        <span class="iconfont icon-user"></span> 修改头像</el-dropdown-item>
-                    <el-dropdown-item command="loginout">绑定通行证</el-dropdown-item>
-                    <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
-                    <div x-arrow="" class="popper__arrow" style="left: 40px;"></div>
-                </el-dropdown-menu>
-            </el-dropdown>
+            </div>
+
         </div>
         <!-- 修改密码 -->
         <el-dialog title="修改密码" :visible.sync="changePasswordDialogVisible" size='sign'>
@@ -42,7 +48,8 @@
         </el-dialog>
         <!-- 修改图像 -->
         <my-upload field="img" @crop-success="cropSuccess" @crop-upload-success="cropUploadSuccess" @crop-upload-fail="cropUploadFail"
-            v-model="myUploadShow" :width="300" :height="300" url="https://httpbin.org/post" :params="params" :headers="headers" img-format="png"></my-upload>
+            v-model="myUploadShow" :width="300" :height="300" url="https://httpbin.org/post" :params="params" :headers="headers"
+            img-format="png"></my-upload>
         <!-- 企业信息 -->
         <el-dialog title="企业信息" :visible.sync="corporateInformationDialogVisible" custom-class="corporateInformationDialog">
             <div>
@@ -52,7 +59,6 @@
             </div>
             <!-- 登录页管理 -->
             <div style="margin-top:50px" v-show="isLoginPage">
-
                 <div class="el-form_">
                     <label class="el-form-item__label">登录页背景：</label>
                     <div class="el-form-item__content" style="width:50%">
@@ -68,11 +74,12 @@
                     </div>
                 </div>
                 <div class="el-form_">
-                    <label class="el-form-item__label" style="padding-left:42px ">预览：</label>
+                    <label class="el-form-item__label">预览：</label>
                     <div class="el-form-item__content" style="height:450px;margin-left:85px;border:1px solid #e6e6e6;">
                         <img src="http://upload.17u.net/uploadpicbase/2013/10/12/aa/201310121054516850.jpg" alt="" style="width:100%;height:100%">
                     </div>
                 </div>
+
             </div>
             <!-- 企业信息 -->
             <el-form :model="ruleForm" :rules="rules" v-show="!isLoginPage" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -134,17 +141,21 @@
                 <el-button @click="corporateInformationDialogVisible= false" class="dialog-btn" v-show="isEdit">取消</el-button>
             </div>
         </el-dialog>
-
+        <!--帮助中心-->
+        <v-issue :is-show="issueShow" @closeDialog=closeDialog :user-info="loginInfo" ref="issueAbout"></v-issue>
     </div>
+
 
 
 </template>
 <script>
     import axios from "axios";
     import myUpload from './Upload.vue';
+    import vIssue from "components/common/issue.vue";
     export default {
         components: {
-            'my-upload': myUpload
+            'my-upload': myUpload,
+            vIssue
         },
         data() {
             return {
@@ -188,7 +199,24 @@
                         trigger: "blur"
                     }]
                 },
-                imageUrl: ""
+                imageUrl: "",
+                issueShow: false,
+                loginInfo: {
+                    phone: 18888888881,
+                    itemList: [{
+                            value: '大类'
+                        },
+                        {
+                            value: '小类'
+                        },
+                        {
+                            value: '鲁班'
+                        },
+                        {
+                            value: '钢筋'
+                        },
+                    ]
+                }
             };
         },
         computed: {
@@ -214,7 +242,7 @@
             cropUploadSuccess(data, field, key) {
                 console.log('-------- 上传成功 --------');
                 console.log(data);
-                this.imgDataUrl=data.files.img
+                this.imgDataUrl = data.files.img
                 console.log('field: ' + field);
                 console.log('key: ' + key);
             },
@@ -223,6 +251,9 @@
                 console.log(status);
                 console.log('field: ' + field);
                 console.log('key: ' + key);
+            },
+            closeDialog(visible) {
+                this.issueShow = visible;
             },
             handleCommand(command) {
                 switch (command) {
@@ -239,6 +270,9 @@
                         break;
                     case "modifyAvatar":
                         this.toggleShow()
+                        break;
+                    case "corporateInformation":
+                        this.corporateInformationDialogVisible = true;
                         break;
                     default:
                         break;
@@ -260,7 +294,7 @@
                 return isJPG && isLt2M;
             },
             setting() {
-                this.corporateInformationDialogVisible = true;
+                this.corporateInformationDialogVisible=true
             },
             back() {
                 this.$emit("authority");
@@ -278,7 +312,7 @@
                         return false;
                     }
                 });
-            }
+            },
         },
         created() {
             if (
@@ -291,7 +325,8 @@
             } else {
                 this.showSetting = true;
             }
-        }
+        },
+
     };
 
 </script>
@@ -309,6 +344,16 @@
         padding-left: 95px;
         float: left;
         text-align: center;
+        font-size: 23px;
+        line-height: 84px;
+        padding: 0 10px;
+    }
+
+    .header .right-bar {
+        float: right;
+        width: 300px;
+        height: 90px;
+        line-height: 90px;
     }
 
     .user-info {
@@ -316,6 +361,8 @@
         margin-right: 190px;
         font-size: 16px;
         color: #fff;
+        float: right;
+        margin-right: 10px;
     }
 
     .user-info .el-dropdown-link {
@@ -366,7 +413,7 @@
         border-radius: 2px;
         float: right;
         line-height: 40px;
-        font-size: 16px;
+        font-size: 14px;
         cursor: pointer;
     }
 

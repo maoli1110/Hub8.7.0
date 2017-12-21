@@ -1829,5 +1829,5 @@ body .el-popover.remark-popper {
     font-weight: 700;
     color: #6595f2
 }
-
-
+/*header->帮助中心*/
+.issue{width:20px;height:20px;display:inline-block; background: url(../../static/img/icon-header.png) -65px -25px no-repeat !important;}
