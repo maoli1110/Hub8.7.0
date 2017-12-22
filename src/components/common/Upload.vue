@@ -124,7 +124,7 @@
 				<a @click="setStep(2)" @mousedown="ripple">{{ lang.btn.back }}</a>
 				<a @click="off" @mousedown="ripple">{{ lang.btn.close }}</a>
 			</div> -->
-			<div  class="dialog-footer">
+			<div  class="dialog-footer" style="text-align:center;margin-top:40px">
                 <el-button type="primary" @click="setStep(1)" @mousedown="ripple" class="dialog-btn">{{ lang.btn.back }}</el-button>
                 <el-button @click="off"    @mousedown="ripple"    class="dialog-btn">{{ lang.btn.close }}</el-button>
             </div>

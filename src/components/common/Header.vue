@@ -166,17 +166,17 @@
                 corporateItems: ["企业信息", "登录页管理"],
                 changePasswordDialogVisible: false,
                 corporateInformationDialogVisible: false,
-                isEdit: false,
-                isLoginPage: false,
-                myUploadShow: false,
+                isEdit: false,//编辑状态?
+                isLoginPage: false,//切换到企业信息
+                myUploadShow: false,//上传图像?
                 params: {
                     token: '123456798',
                     name: 'avatar'
-                },
+                },//上传企业图片参数
                 headers: {
                     smail: '*_~'
                 },
-                imgDataUrl: '../../../static/img/dog.jpg',
+                imgDataUrl: '../../../static/img/dog.jpg',//上传图像成功返回地址
                 ruleForm: {
                     password: "",
                     newPassword: "",
@@ -199,7 +199,7 @@
                         trigger: "blur"
                     }]
                 },
-                imageUrl: "",
+                imageUrl: "",//企业logo地址                
                 issueShow: false,
                 loginInfo: {
                     phone: 18888888881,
@@ -226,9 +226,10 @@
             }
         },
         methods: {
+            // 上传图像？
             toggleShow() {
                 this.myUploadShow = !this.myUploadShow;
-            },
+            },            
             cropSuccess(data, field, key) {
                 // if (field == 'avatar1') {
                 //     this.avatarUrl1 = data;
@@ -242,7 +243,8 @@
             cropUploadSuccess(data, field, key) {
                 console.log('-------- 上传成功 --------');
                 console.log(data);
-                this.imgDataUrl = data.files.img
+                this.imgDataUrl = data.files.img;
+                // this.toggleShow()
                 console.log('field: ' + field);
                 console.log('key: ' + key);
             },
