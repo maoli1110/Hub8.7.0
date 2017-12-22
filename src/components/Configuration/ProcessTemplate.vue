@@ -47,7 +47,8 @@
 
         <!-- 移动资料目录 -->
         <el-dialog :title=title :visible.sync="editDialogVisible" size='process-edit-template'>
-            <edit-tree :templateParams="templateParams" v-show='editDialogVisible' ref="processEditTree" @updataTemplateInfos='getProcessTemplateInfo()'> </edit-tree>
+            <edit-tree :templateParams="templateParams" v-show='editDialogVisible' ref="processEditTree" @updataTemplateInfos='getProcessTemplateInfo()'>
+            </edit-tree>
             <div style="clear:both;"></div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="updataTemplateTreeInfo()" class="dialog-btn">确 定</el-button>
@@ -136,9 +137,9 @@
                 types.getProcessTemplateInfo(params).then(res => {
                     this.ProcessTableData = res.data.result.list;
                     this.total = res.data.result.lbPageInfo.totalNumber;
-                    this.editDialogVisible=false;                   
+                    this.editDialogVisible = false;
                 });
-            },            
+            },
             orgTreeClick(event, treeId, treeNode) {
                 this.orgValue = treeNode.name;
                 this.orgType = treeNode.type;
@@ -168,44 +169,43 @@
                     this.templateParams = {
                         templateId: row.templateId,
                         templateName: row.templateName,
-                        orgType:this.orgType,
-                        orgid:this.orgid,
-                        isAdd:false
+                        orgType: this.orgType,
+                        orgid: this.orgid,
+                        isAdd: false
                     };
-                    setTimeout(() => {                      
-                      this.$refs.processEditTree.getProcessTemplateTreeInfo()
+                    setTimeout(() => {
+                        this.$refs.processEditTree.getProcessTemplateTreeInfo();
                     }, 0);
-                    
                 } else {
                     this.title = "添加模板";
                     this.templateParams = {
-                        orgType:this.orgType,
-                        orgid:this.orgid,
-                        isAdd:true
+                        orgType: this.orgType,
+                        orgid: this.orgid,
+                        isAdd: true
                     };
-                    setTimeout(() => {      
-                      this.$refs.processEditTree.templateName='';                
-                      this.$refs.processEditTree.getDefaultProcessTemplateTreeInfo()
-                    }, 0);                    
+                    setTimeout(() => {
+                        this.$refs.processEditTree.templateName = "";
+                        this.$refs.processEditTree.getDefaultProcessTemplateTreeInfo();
+                    }, 0);
                 }
             },
-            updataTemplateTreeInfo(){
-                this.$refs.processEditTree.updataTemplateTreeInfo()                                                  
+            updataTemplateTreeInfo() {
+                this.$refs.processEditTree.updataTemplateTreeInfo();
             },
             deleteProcess() {
                 this.$confirm("确认删除该记录吗?", "提示", {
                         type: "warning"
                     })
                     .then(() => {
-                        let params=[]
-                        this.multipleSelection.forEach(item =>{
-                            params.push(item.templateId)
-                        } )
-                        types.deleteProcessTemplateInfos(params).then(res=>{
-                            if(res.data.code==200){
-                                this.getProcessTemplateInfo()
+                        let params = [];
+                        this.multipleSelection.forEach(item => {
+                            params.push(item.templateId);
+                        });
+                        types.deleteProcessTemplateInfos(params).then(res => {
+                            if (res.data.code == 200) {
+                                this.getProcessTemplateInfo();
                             }
-                        })
+                        });
                     })
                     .catch(() => {});
             }

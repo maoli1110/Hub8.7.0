@@ -6,21 +6,40 @@
 		</div>
 
 		<div class="vicp-step1" v-show="step == 1">
-			<div class="vicp-drop-area" @dragleave="preventDefault" @dragover="preventDefault" @dragenter="preventDefault" @click="handleClick" @drop="handleChange">
-				<i class="vicp-icon1" v-show="loading != 1">
+			<div class="vicp-drop-area" @dragleave="preventDefault" @dragover="preventDefault" @dragenter="preventDefault" @drop="handleChange">
+				<!-- <i class="vicp-icon1" v-show="loading != 1">
 				<i class="vicp-icon1-arrow"></i>
 				<i class="vicp-icon1-body"></i>
 				<i class="vicp-icon1-bottom"></i>
-				</i>
+				</i> -->
+				<el-button class="dialog-btn" type="primary" icon="plus"  @click="handleClick" style="margin-top:120px">选择图片</el-button>
 				<span class="vicp-hint" v-show="loading !== 1">{{ lang.hint }}</span>
 				<span class="vicp-no-supported-hint" v-show="!isSupported">{{ lang.noSupported }}</span>
 				<input type="file" v-show="false" v-if="step == 1" @change="handleChange" ref="fileinput">
 			</div>
+			<div  class="vicp-crop-right" style="margin-left:340px">
+					<ul class="vicp-preview">					
+						<li class="vicp-preview-item vicp-preview-item-circle" >
+							<img src="http://dunizb.com/img/avatar.gif"  style="width:80px;height:80px">
+							<span style="bottom:-11px">80px × 80px</span>
+						</li>
+						<li class="vicp-preview-item vicp-preview-item-circle" >
+							<img src="http://dunizb.com/img/avatar.gif"  style="width:50px;height:50px">
+							<span style="bottom:2px">50px × 50px</span>
+						</li>
+						<li class="vicp-preview-item vicp-preview-item-circle" >
+							<img src="http://dunizb.com/img/avatar.gif"  style="width:30px;height:30px">
+							<span style="bottom:12px">30px × 30px</span>
+						</li>
+					</ul>
+				</div>
 			<div class="vicp-error" v-show="hasError">
 				<i class="vicp-icon2"></i> {{ errorMsg }}
 			</div>
-			<div class="vicp-operate">
-				<a @click="off" @mousedown="ripple">{{ lang.btn.off }}</a>
+			<div class="dialog-footer" style="text-align:center;margin-top:40px">
+				<el-button  class="dialog-btn" style="color:#e6e6e6">重新上传</el-button>
+				<el-button  class="dialog-btn" type="primary">确定</el-button>
+				<el-button  @click="off"  @mousedown="ripple" class="dialog-btn">取消</el-button>
 			</div>
 		</div>
 
@@ -61,22 +80,31 @@
                     </div>
 				</div>
 				<div class="vicp-crop-right" v-show="true">
-					<div class="vicp-preview">
-						<div class="vicp-preview-item" v-if="!noSquare">
-							<img :src="createImgUrl" :style="previewStyle">
-							<span>{{ lang.preview }}</span>
-						</div>
-						<div class="vicp-preview-item vicp-preview-item-circle" v-if="!noCircle">
-							<img :src="createImgUrl" :style="previewStyle">
-							<span>{{ lang.preview }}</span>
-						</div>
-					</div>
+					<ul class="vicp-preview">					
+						<li class="vicp-preview-item vicp-preview-item-circle" v-if="!noCircle">
+							<img :src="createImgUrl"  style="width:80px;height:80px">
+							<span style="bottom:-11px">80px × 80px</span>
+						</li>
+						<li class="vicp-preview-item vicp-preview-item-circle" v-if="!noCircle">
+							<img :src="createImgUrl"  style="width:50px;height:50px">
+							<span style="bottom:2px">50px × 50px</span>
+						</li>
+						<li class="vicp-preview-item vicp-preview-item-circle" v-if="!noCircle">
+							<img :src="createImgUrl"  style="width:30px;height:30px">
+							<span style="bottom:12px">30px × 30px</span>
+						</li>
+					</ul>
 				</div>
 			</div>
-			<div class="vicp-operate">
+			<!-- <div class="vicp-operate">
 				<a @click="setStep(1)" @mousedown="ripple">{{ lang.btn.back }}</a>
 				<a class="vicp-operate-btn" @click="prepareUpload" @mousedown="ripple">{{ lang.btn.save }}</a>
-			</div>
+			</div> -->
+			<div  class="dialog-footer">
+                <el-button  @click="setStep(1)" @mousedown="ripple" class="dialog-btn">{{ lang.btn.back }}</el-button>
+                <el-button  @click="prepareUpload"    @mousedown="ripple"    class="dialog-btn" type="primary">{{ lang.btn.save }}</el-button>
+                <el-button  @click="off"   class="dialog-btn">取消</el-button>
+            </div>
 		</div>
 
 		<div class="vicp-step3" v-if="step == 3">
@@ -92,10 +120,14 @@
 					<i class="vicp-icon3"></i> {{ lang.success }}
 				</div>
 			</div>
-			<div class="vicp-operate">
+			<!-- <div class="vicp-operate">
 				<a @click="setStep(2)" @mousedown="ripple">{{ lang.btn.back }}</a>
 				<a @click="off" @mousedown="ripple">{{ lang.btn.close }}</a>
-			</div>
+			</div> -->
+			<div  class="dialog-footer">
+                <el-button type="primary" @click="setStep(1)" @mousedown="ripple" class="dialog-btn">{{ lang.btn.back }}</el-button>
+                <el-button @click="off"    @mousedown="ripple"    class="dialog-btn">{{ lang.btn.close }}</el-button>
+            </div>
 		</div>
 		<canvas v-show="false" :width="width" :height="height" ref="canvas"></canvas>
 	</div>
@@ -247,8 +279,8 @@ export default {
 			},
 			// 原图容器宽高
 			sourceImgContainer: { // sic
-				width: 240,
-				height: 184 // 如果生成图比例与此一致会出现bug，先改成特殊的格式吧，哈哈哈
+				width: 310,
+				height: 310 // 如果生成图比例与此一致会出现bug，先改成特殊的格式吧，哈哈哈
 			},
 			// 原图展示属性
 			scale: {
@@ -345,7 +377,7 @@ export default {
 				w = sim.width == sic.width ? sim.width : (sic.width - sim.width) / 2,
 				h = sim.height == sic.height ? sim.height : (sic.height - sim.height) / 2;
 			return {
-				width: w + 'px',
+				width: 18 + 'px',
 				height: h + 'px'
 			};
 		},
@@ -866,8 +898,11 @@ export default {
 <style lang='sass' src="./scss/upload.scss">
 </style> -->
 
-<style>
+<style scoped>
 @charset "UTF-8";
+input:focus, select:focus, textarea:focus{
+	box-shadow: none;
+}
 @-webkit-keyframes vicp_progress {
   0% {
     background-position-y: 0; }
@@ -924,8 +959,8 @@ export default {
     left: 0;
     right: 0;
     margin: auto;
-    width: 600px;
-    height: 330px;
+    width: 530px;
+    height: 500px;
     padding: 25px;
     background-color: #fff;
     border-radius: 2px;
@@ -970,11 +1005,13 @@ export default {
               -ms-transform: rotate(90deg);
                   transform: rotate(90deg); }
     .vue-image-crop-upload .vicp-wrap .vicp-step1 .vicp-drop-area {
-      position: relative;
+	  position: relative;
+	  float: left;
       -webkit-box-sizing: border-box;
               box-sizing: border-box;
-      padding: 35px;
-      height: 170px;
+	  /* padding: 35px; */
+	  width: 310px;
+      height: 310px;
       background-color: rgba(0, 0, 0, 0.03);
       text-align: center;
       border: 1px dashed rgba(0, 0, 0, 0.08);
@@ -1036,8 +1073,8 @@ export default {
         .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-img-container {
           position: relative;
           display: block;
-          width: 240px;
-          height: 180px;
+          width: 310px;
+          height: 310px;
           background-color: #e5e5e0;
           overflow: hidden; }
           .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-img-container .vicp-img {
@@ -1061,8 +1098,8 @@ export default {
               right: 0; }
         .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-rotate {
           position: relative;
-          width: 240px;
-          height: 18px; }
+          width: 310px;
+          height: 310px; }
           .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-rotate i {
             display: block;
             width: 18px;
@@ -1086,8 +1123,8 @@ export default {
               float: right; }
         .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range {
           position: relative;
-          margin: 30px 0 10px 0;
-          width: 240px;
+          margin: 10px 0 50px 0;
+          width: 310px;
           height: 18px; }
           .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range .vicp-icon5,
           .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range .vicp-icon6 {
@@ -1139,7 +1176,8 @@ export default {
             padding-top: 5px;
             margin: 0 auto;
             width: 180px;
-            height: 8px;
+			height: 8px;
+			border: none;
             vertical-align: top;
             background: transparent;
             -webkit-appearance: none;
@@ -1160,7 +1198,7 @@ export default {
               margin-top: -3px;
               width: 12px;
               height: 12px;
-              background-color: #61c091;
+              background-color: #6595f2;
               border-radius: 100%;
               border: none;
               -webkit-transition: 0.2s;
@@ -1171,7 +1209,7 @@ export default {
                    appearance: none;
               width: 12px;
               height: 12px;
-              background-color: #61c091;
+              background-color: #6595f2;
               border-radius: 100%;
               border: none;
               -webkit-transition: 0.2s;
@@ -1181,7 +1219,7 @@ export default {
               appearance: none;
               width: 12px;
               height: 12px;
-              background-color: #61c091;
+              background-color: #6595f2;
               border: none;
               border-radius: 100%;
               -webkit-transition: 0.2s;
@@ -1208,7 +1246,7 @@ export default {
               cursor: pointer;
               border-radius: 2px;
               border: none;
-              background-color: rgba(68, 170, 119, 0.3); }
+              background-color: #6595f2; }
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-moz-range-track {
               box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12);
               width: 100%;
@@ -1216,7 +1254,7 @@ export default {
               cursor: pointer;
               border-radius: 2px;
               border: none;
-              background-color: rgba(68, 170, 119, 0.3); }
+              background-color: #6595f2; }
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-ms-track {
               box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12);
               width: 100%;
@@ -1228,38 +1266,42 @@ export default {
               border-radius: 2px;
               border: none; }
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-ms-fill-lower {
-              background-color: rgba(68, 170, 119, 0.3); }
+              background-color: #6595f2; }
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-ms-fill-upper {
-              background-color: rgba(68, 170, 119, 0.15); }
+              background-color:  #6595f2;}
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus::-webkit-slider-runnable-track {
-              background-color: rgba(68, 170, 119, 0.5); }
+              background-color:  #6595f2; }
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus::-moz-range-track {
-              background-color: rgba(68, 170, 119, 0.5); }
+              background-color:  #6595f2; }
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus::-ms-fill-lower {
-              background-color: rgba(68, 170, 119, 0.45); }
+              background-color:  #6595f2; }
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus::-ms-fill-upper {
-              background-color: rgba(68, 170, 119, 0.25); }
+              background-color:  #6595f2; }
       .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-right {
         float: right; }
-        .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-right .vicp-preview {
-          height: 150px;
-          overflow: hidden; }
-          .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-right .vicp-preview .vicp-preview-item {
+         .vicp-preview {
+		  width:140px;
+		  height: 310px;
+		  border: 1px solid #e6e6e6;
+		  border-radius: 5px;
+		  overflow: hidden; 
+		  }
+           .vicp-preview-item {
             position: relative;
-            padding: 5px;
+            /* padding: 5px; */
             width: 100px;
             height: 100px;
-            float: left;
+            /* float: left; */
             margin-right: 16px; }
-            .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-right .vicp-preview .vicp-preview-item span {
+            .vicp-preview-item span {
               position: absolute;
-              bottom: -30px;
+              bottom: 0px;
               width: 100%;
               font-size: 14px;
               color: #bbb;
               display: block;
               text-align: center; }
-            .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-right .vicp-preview .vicp-preview-item img {
+            .vicp-preview-item img {
               position: absolute;
               display: block;
               top: 0;
@@ -1267,7 +1309,6 @@ export default {
               left: 0;
               right: 0;
               margin: auto;
-              padding: 3px;
               background-color: #fff;
               border: 1px solid rgba(0, 0, 0, 0.15);
               overflow: hidden;
@@ -1275,9 +1316,9 @@ export default {
                  -moz-user-select: none;
                   -ms-user-select: none;
                       user-select: none; }
-            .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-right .vicp-preview .vicp-preview-item.vicp-preview-item-circle {
-              margin-right: 0; }
-              .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-right .vicp-preview .vicp-preview-item.vicp-preview-item-circle img {
+             .vicp-preview-item.vicp-preview-item-circle {
+              margin: 0px auto; }
+             .vicp-preview-item.vicp-preview-item-circle img {
                 border-radius: 100%; }
     .vue-image-crop-upload .vicp-wrap .vicp-step3 .vicp-upload {
       position: relative;
@@ -1303,9 +1344,9 @@ export default {
           display: block;
           height: 5px;
           border-radius: 3px;
-          background-color: #4a7;
-          -webkit-box-shadow: 0 2px 6px 0 rgba(68, 170, 119, 0.3);
-                  box-shadow: 0 2px 6px 0 rgba(68, 170, 119, 0.3);
+          background-color: #6595f2;
+          -webkit-box-shadow: 0 2px 6px 0 #6595f2;
+                  box-shadow: 0 2px 6px 0 #6595f2;
           -webkit-transition: width 0.15s linear;
           transition: width 0.15s linear;
           background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
@@ -1325,14 +1366,14 @@ export default {
             -webkit-box-shadow: 0 1px 4px 0 rgba(68, 170, 119, 0.7);
                     box-shadow: 0 1px 4px 0 rgba(68, 170, 119, 0.7);
             border-radius: 100%;
-            background-color: #4a7; }
+            background-color: #6595f2; }
       .vue-image-crop-upload .vicp-wrap .vicp-step3 .vicp-upload .vicp-error,
       .vue-image-crop-upload .vicp-wrap .vicp-step3 .vicp-upload .vicp-success {
         height: 100px;
         line-height: 100px; }
     .vue-image-crop-upload .vicp-wrap .vicp-operate {
       position: absolute;
-      right: 20px;
+      left: 50%;
       bottom: 20px; }
       .vue-image-crop-upload .vicp-wrap .vicp-operate a {
         position: relative;
@@ -1345,7 +1386,7 @@ export default {
         text-align: center;
         cursor: pointer;
         font-size: 14px;
-        color: #4a7;
+        color: #6595f2;
         border-radius: 2px;
         overflow: hidden;
         -webkit-user-select: none;
@@ -1364,7 +1405,7 @@ export default {
       text-align: center;
       vertical-align: top; }
     .vue-image-crop-upload .vicp-wrap .vicp-success {
-      color: #4a7; }
+      color: #6595f2; }
     .vue-image-crop-upload .vicp-wrap .vicp-icon3 {
       position: relative;
       display: inline-block;
@@ -1378,7 +1419,7 @@ export default {
         width: 6px;
         height: 10px;
         border-width: 0 2px 2px 0;
-        border-color: #4a7;
+        border-color: #6595f2;
         border-style: solid;
         -webkit-transform: rotate(45deg);
             -ms-transform: rotate(45deg);
