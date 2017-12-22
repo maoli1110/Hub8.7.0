@@ -40,8 +40,6 @@ export const createProject = params=>axios.post(`${builderUrl}/rs/bimRest/create
 export const updateProjShortInfo = params =>axios.post(`${builderUrl}/rs/bimRest/updateProjShortInfo`,params);
 //bim创建->授权人员列表
 export const getProjAuthUserInfos = params =>axios.post(`${builderUrl}/rs/bimParamRest/getProjAuthUserInfos`,params);
-//bim创建 项目部树结构
-export const zTreeNodes = params =>axios.get(`${builderUrl}/org/admin/nodes`);
 //列表删除
 export const deleteProjects = params =>axios.post(`${builderUrl}/rs/bimRest/deleteProjects/${params.packageType}`,params.projIds);
 
@@ -156,3 +154,14 @@ export const SteelDelete = params=>axios.put(`${cloudUrl}/component/gj/delete/${
 //钢筋列表
 export const SteelList = params=>axios.post(`${cloudUrl}/component/gj/find`,params);
 
+/**
+ * 应用配置->通用->颜色模板
+ ***/
+//颜色模板分类
+export const getColorTemplateTypes = params=>axios.get(`${builderUrl}/appconfig/general/color/template/getColorTemplateTypes/${params.orgType}/${params.orgid}`)
+//颜色模板列表
+export const getColorTemplateInfoWrapper = params =>axios.post(`${builderUrl}/appconfig/general/color/template/getColorTemplateInfoWrapper`,params);
+//颜色模板编辑功能
+export const editColorTemplateInfo = params =>axios.post(`${builderUrl}/appconfig/general/color/template/editColorTemplateInfo`,params);
+//颜色模板删除
+export const deleteColorTemplateInfos = params=>axios.post(`${builderUrl}/appconfig/general/color/template/deleteColorTemplateInfos`,params)

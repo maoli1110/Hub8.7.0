@@ -4,20 +4,20 @@
             <el-col  :span="24" class="relat template-filter">
                 <span class="span-block absol" style="width:60px;">项目部：</span>
                 <el-col :span="5" >
-                    <el-select v-model="filterWord" placeholder="请选择" @change="filterWordChange" style="margin-left:60px;">
+                    <el-select v-model="filterParam.orgName" placeholder="请选择" @change="filterWordChange" style="margin-left:60px;">
                         <el-option v-show="false"
-                           :value="filterWord">
+                           :value="filterParam.orgName">
                         </el-option>
                         <ul id="color-temp" class="ztree"></ul>
                     </el-select>
                 </el-col>
                 <el-col :span="5" style="margin-left:60px;">
                     <span class="span-block absol" >专业：</span>
-                    <el-select v-model="filterClassfiyVal" placeholder="请选择" @change="filterClassfiyChange" style="margin-left:60px;">
+                    <el-select v-model="filterParam.filterClassfiyVal" placeholder="请选择" @change="filterClassfiyChange" style="margin-left:60px;">
                         <el-option
                             v-for="item in classfiyList"
-                            :key="item.name"
-                            :value="item.name">
+                            :key="item"
+                            :value="item">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -76,9 +76,15 @@
 
 <script>
     import {FormIndex} from "../../utils/common.js";
-    import {getWorksetingList} from '../../api/getData.js'
+//    import {getWorksetingList} from '../../api/getData.js'
+    import {
+        getOrgTreeList,             //树结构
+        getColorTemplateTypes,      //分类
+        getColorTemplateInfoWrapper,//列表
+        editColorTemplateInfo,      //编辑
+        deleteColorTemplateInfos    //删除
+    } from '../../api/getData-yhj.js';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import ElCol from "element-ui/packages/col/src/col";
     // import "../../utils/directive.js"
     import "../../../static/css/configuration.css";
     let deletArray = [];
@@ -90,72 +96,65 @@
         },
         data: function(){
             return {
-                filterClassfiyVal:"",
-                filterWord:"",
-                renameVisble:false,
+                filterParam:{
+                    orgName:"",                 //项目名称
+                    orgId:"",                   //项目id
+                    filterClassfiyVal:"",       //专业
+                },
+                renameVisble:false,             //编辑的显示状态
                 renameIndex:"",
+                classfiyList:[],                //分类信息
                 //分页的一些设置
                 cur_page:1,
                 totalPage:50,
                 totalNumber:300,
-                tableData:[
-                    {index:1,processName:'鲁班安装鲁班安装鲁班安装鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理成功",isRoot:'27人'},
-                    {index:2,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理失败",isRoot:'27人'},
-                    {index:3,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"处理中",isRoot:'27人'},
-                    {index:4,processName:'鲁班安装',speciality:"土建",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"待处理",isRoot:'27人'},
-                    {index:5,processName:'鲁班安装',speciality:"钢筋",BIMparams:"预算",updateUser:"杨会杰",updateTime:'2017-11-18:13:14',PDF:"0",proDepartment:"初始项目部",size:'512KB',output:'10.78kb',status:"未处理",isRoot:'27人'},
-                ],
-                classfiyList:[{name:'初始项目部1'},{name:'初始项目部2'},{name:'初始项目部3'},{name:'初始项目部4'}],
-                templateInfo:{
+                tableData:[],
+                tableParams:{                   //列表的传参问题
+                    orgType: 0,                 //节点类型
+                    orgid: "1",                 //节点id
+                    pageParam: {                //分页参数
+                        orders: [               //排序
+                            {
+                                direction: 0,   //asc or desc
+                                ignoreCase: false,//是否区分大小写
+                                property: ""//支持排序的字段
+                            }
+                        ],
+                        page: 1,                //分页
+                        size: 10                //条目
+                    },
+                    type: ""                    //分类
+                },
+                templateInfo:{      //修改信息
                     name:'',
                     remark:''
                 },
                 setting: {//搜索条件ztree setting
                     data: {
                         simpleData: {
-                            enable: true
+                            enable: true,
+                            idKey:'id',
+                            pIdKey:'parentId'
                         }
                     },
-                    callback: {
+                    callback: {     //树结构单机
                         onClick: this.templateTreeClick
                     }
                 },
-                zNodes: [
-                    {
-                        id: 1,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标不同",
-                        open: true,
-                        iconSkin: "pIcon01"
-                    },
-                    { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-                    { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-                    { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-                    {
-                        id: 2,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标相同",
-                        open: true,
-                        iconSkin: "pIcon02"
-                    },
-                    { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-                    { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-                    { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-                    { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-                    { id: 31, pId: 3, name: "叶子节点1" },
-                    { id: 32, pId: 3, name: "叶子节点2" },
-                    { id: 33, pId: 3, name: "叶子节点3" }
-                ],
+                zNodes: [],     //树结构数据
             }
         },
         components: {
-            VueScrollbar
+            VueScrollbar,//滚动插件
         },
         methods: {
             getData(){
-                for(let i = 0;i<this.tableData.length;i++){
-                    this.tableData[i].index = 3*10+ this.tableData[i].index;
-                }
+               this.getTreeList();
+               if( this.filterParam.orgId=='1'){
+                   this.tableParams.orgType = 0;
+               }
+                this.tableParams.orgid  = this.filterParam.orgId;
+               this.getColorTemplateList(this.tableParams);
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -185,12 +184,60 @@
             },
             //分页器事件
             handleSizeChange(size){
-                console.log(`每页显示多少条${size}`);
+                this.totalPage = size;
+                this.tableParams.size = size;
+//                console.log(`每页显示多少条${size}`);
+                this.getColorTemplateList(this.tableParams);
             },
             handleCurrentChange(currentPage){
-                console.log(`当前页${currentPage}`);
+                this.cur_page = currentPage;
+                this.tableParams.page = currentPage;
+//                console.log(`当前页${currentPage}`);
+                this.getColorTemplateList(this.tableParams);
             },
-
+            //获取项目部树结构
+            getTreeList(){
+                getOrgTreeList().then((data)=>{
+                    if(!data.data.result.length){return false}
+                    data.data.result.forEach((val,key)=>{//添加icon
+                        if(val.root){
+                            this.$set(val,'iconSkin','rootNode');
+                        }else if(!val.root && val.type==0 && !val.direct){
+                            this.$set(val,'iconSkin','subNode');
+                        }else if(val.type==1 ){
+                            this.$set(val,'iconSkin','projNode');
+                        }else if(val.direct){
+                            this.$set(val,'iconSkin','projNode');
+                        }
+                        if(val.id=="1"){
+                            this.filterParam.orgName = val.name;
+                            this.filterParam.orgId = val.id;
+                        }
+                    })
+                    this.zNodes = data.data.result;
+                    $.fn.zTree.init($("#color-temp"), this.setting, this.zNodes);
+                    this.getTemplateTypes({orgType:0,orgid:this.filterParam.orgId});
+                })
+            },
+            //获取分类信息
+            getTemplateTypes(params){
+                getColorTemplateTypes(params).then((data)=>{
+                   /* if(data.data.result.length>0){
+//                        this.classfiyList = data.data.result;
+                        this.classfiyList = ['项目一','项目二','项目三'];
+                    }else{
+                        this.classfiyList = [];
+                    }*/
+                    this.classfiyList = ['项目一','项目二','项目三'];
+                    this.filterParam.filterClassfiyVal = this.classfiyList[0];
+                })
+            },
+            //获取颜色模板列表
+            getColorTemplateList(params){
+                getColorTemplateInfoWrapper(params).then((data)=>{
+                    console.log(data.data.result)
+                })
+            },
             /**
              * ztree
              * @param event
@@ -199,7 +246,13 @@
              */
             //工程管理树结构单机事件
             templateTreeClick(event, treeId, treeNode){
-                this.filterWord = treeNode.name;
+                this.filterParam.orgName = treeNode.name;
+                this.filterParam.orgId = treeNode.id;
+                if(treeNode.root){
+                    this.getTemplateTypes({orgType:0,orgid:treeNode.id})
+                }else if(treeNode.type==1 || treeNode.direct){
+                    this.getTemplateTypes({orgType:1,orgid:treeNode.id})
+                }
                 setTimeout(function(event, treeId, treeNode) {
                     $(".el-scrollbar .el-select-dropdown__item.selected").click();
                 }, 300);
@@ -296,8 +349,11 @@
             }
         },
         mounted(){
-            $.fn.zTree.init($("#color-temp"), this.setting, this.zNodes);
-        }
+            //$.fn.zTree.init($("#color-temp"), this.setting, this.zNodes);
+        },
+        created(){
+            this.getData();
+        },
 
     }
 </script>
