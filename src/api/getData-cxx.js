@@ -84,24 +84,24 @@ export const allocateLubanBi = params=>axios.post(`${params.url}luban/bi/allocat
 *原Govern工程属性
 **/
 //GET /rs/oldgovern/projattr/getProjAttrs 获取工程性质列表数据
-export const getProjAttrs = params=> axios.get(`${params.url}rs/oldgovern/projattr/getProjAttrs`);
+export const getProjAttrs = params=> axios.get(`${params.url}/rs/oldgovern/projattr/getProjAttrs`);
 //POST /rs/oldgovern/projattr/updateProjAttrs 更新工程性质列表数据
-export const updateProjAttrs = params=> axios.post(`${params.url}rs/oldgovern/projattr/updateProjAttrs`,params.projAttrs);
+export const updateProjAttrs = params=> axios.post(`${params.url}/rs/oldgovern/projattr/updateProjAttrs`,params.projAttrs);
 
 /**
 *原Govern报表订阅相关接口
 **/
 //POST /rs/oldgovern/report/addReportPermissions 添加角色对应的报表权限
-export const addReportPermissions = params=> axios.post(`${params.url}rs/oldgovern/report/addReportPermissions`,params.reportPermissions);
+export const addReportPermissions = params=> axios.post(`${params.url}/rs/oldgovern/report/addReportPermissions`,params.reportPermissions);
 //POST /rs/oldgovern/report/delReportPermissions 删除角色对应的报表权限
-export const delReportPermissions = params=> axios.post(`${params.url}rs/oldgovern/report/delReportPermissions`,params.reportPermissions);
+export const delReportPermissions = params=> axios.post(`${params.url}/rs/oldgovern/report/delReportPermissions`,params.reportPermissions);
 //GET /rs/oldgovern/report/getDataType 数据类型列表下拉框数据
-export const getDataType = params=> axios.get(`${params.url}rs/oldgovern/report/getDataType`);
+export const getDataType = params=> axios.get(`${params.url}/rs/oldgovern/report/getDataType`);
 //GET /rs/oldgovern/report/getOrgNodes 组织节点列表下拉框数据
-export const getOrgNodes = params=> axios.get(`${params.url}rs/oldgovern/report/getOrgNodes`);
+export const getOrgNodes = params=> axios.get(`${params.url}/rs/oldgovern/report/getOrgNodes`);
 //POST /rs/oldgovern/report/getReportList 获取报表列表数据
-export const getReportList = params=> axios.post(`${params.url}rs/oldgovern/report/getReportList`,params.reportListParam);
+export const getReportList = params=> axios.post(`${params.url}/rs/oldgovern/report/getReportList`,params.reportListParam);
 //GET /rs/oldgovern/report/getReportList/{roleId} 查询对应角色的报表模板权限,返回有权限的报表id列表
-export const getReportListRoleId = params=> axios.get(`${params.url}rs/oldgovern/report/getReportList/${params.roleId}`);
+export const getReportListRoleId = params=> axios.get(`${params.url}/rs/oldgovern/report/getReportList/${params.roleId}`);
 
 

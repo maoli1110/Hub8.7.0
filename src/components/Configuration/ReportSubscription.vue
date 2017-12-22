@@ -39,15 +39,15 @@
                 </div>
             </div>
         </div>
-        <div class="main"    style="position:relative">
+        <div class="main" style="position:relative">
             <div class="basic-aside">
                 <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
                           style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55"></el-table-column>
                     <el-table-column label="全部">
                         <template slot-scope="scope">
-                            <div :title="scope.row.operator" class="textcell">
-                                {{ scope.row.operator }}
+                            <div :title="scope.row.reportName" class="textcell">
+                                {{ scope.row.reportName }}
                             </div>
                         </template>
                     </el-table-column>
@@ -87,149 +87,85 @@
 </template>
 
 <script>
-  import {addReportPermissions,delReportPermissions,getDataType,getOrgNodes,getReportList,getReportListRoleId} from '../../api/getData-cxx.js';
-  import {basePath} from '../../utils/common.js'
+import {
+  addReportPermissions,
+  delReportPermissions,
+  getDataType,
+  getOrgNodes,
+  getReportList,
+  getReportListRoleId
+} from "../../api/getData-cxx.js";
+import { basePath } from "../../utils/common.js";
 export default {
-    data() {
-        return {
-            select: {
-                'role': '',
-                'dataType': '',
-                'orgNodes': '',
-            },
-            activeIndex: "",
-            addAuthorizationDialogVisible: false,
-            modifyDialogVisible: false,
-            //下拉-数据类型、节点
-            roleOptions: [],
-            dataTypeOptions: [],
-            orgNodesOptions: [],
-            roleTableData: [
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                },
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                },
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                },
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                },
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                },
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                },
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                },
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                },
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                },
-                {
-                    name: "赵四",
-                    pass: 1588885456596,
-                    deadDate: "2020年5月20日 剩余42个月29天",
-                    operator: "尼古拉斯-赵四",
-                    operateTime: "2016-05-03 13:51"
-                }
-            ]
-        };
-    },
-    watch: {
-        select: {
-            handler(newValue, oldValue) {
-                let vm = this;
-                let baseUrl = basePath(this.$route.matched[2].path);
-                let params = {
-                    'url': baseUrl,
-                    'reportListParam': {
-                        "dataType": vm.select.dataType,
-                        "orgCode": vm.select.orgNodes
-                    }
-                }
-                getReportList(params).then(function (res) {
-                    if (res.data.msg == "success") {
-
-                    }
-                })
-            },
-            deep: true
-        },
-    },
-    methods: {
-        handleSelectionChange(val, a) {
-            console.log(val)
-            console.log(a)
-        }
-    },
-    mounted(){
+  data() {
+    return {
+      select: {
+        role: "",
+        dataType: "",
+        orgNodes: ""
+      },
+      activeIndex: "",
+      addAuthorizationDialogVisible: false,
+      modifyDialogVisible: false,
+      //下拉-数据类型、节点
+      roleOptions: [],
+      dataTypeOptions: [],
+      orgNodesOptions: [],
+      roleTableData: []
+    };
+  },
+  watch: {
+    select: {
+      handler(newValue, oldValue) {
         let vm = this;
         let baseUrl = basePath(this.$route.matched[2].path);
         let params = {
-            'url': baseUrl,
+          url: baseUrl,
+          reportListParam: {
+            dataType: vm.select.dataType,
+            orgCode: vm.select.orgNodes
+          }
+        };
+        if (vm.select.dataType != "" && vm.select.orgNodes != "") {
+          getReportList(params).then(function(res) {
+            if (res.data.msg == "success") {
+               vm.roleTableData = res.data.result
+            }
+          });
         }
-
-        //数据类型列表下拉框数据
-        getDataType(params).then(function (res) {
-            if (res.data.msg == "success") {
-                vm.dataTypeOptions = res.data.result;
-                vm.select.dataType = res.data.result[0].value;
-
-            }
-        })
-        //组织节点列表下拉框数据
-        getOrgNodes(params).then(function (res) {
-            if (res.data.msg == "success") {
-                vm.orgNodesOptions = res.data.result;
-                vm.select.orgNodes = res.data.result[0].orgId;
-
-            }
-        })
+      },
+      deep: true
     }
-}
+  },
+  methods: {
+    handleSelectionChange(val, a) {
+      console.log(val);
+      console.log(a);
+    }
+  },
+  mounted() {
+    let vm = this;
+    let baseUrl = basePath(this.$route.matched[2].path);
+    let params = {
+      url: baseUrl
+    };
+
+    //数据类型列表下拉框数据
+    getDataType(params).then(function(res) {
+      if (res.data.msg == "success") {
+        vm.dataTypeOptions = res.data.result;
+        vm.select.dataType = res.data.result[0].value;
+      }
+    });
+    //组织节点列表下拉框数据
+    getOrgNodes(params).then(function(res) {
+      if (res.data.msg == "success") {
+        vm.orgNodesOptions = res.data.result;
+        vm.select.orgNodes = res.data.result[0].orgCode;
+      }
+    });
+  }
+};
 </script>
 
 <style scoped>
@@ -239,7 +175,8 @@ export default {
   padding: 10px 20px;
   margin-top: 20px;
 }
-.main{
+.main {
+  height: calc(100vh - 418px);
   padding: 20px;
   border-top: 1px solid #e6e6e6;
   background-color: #fff;
