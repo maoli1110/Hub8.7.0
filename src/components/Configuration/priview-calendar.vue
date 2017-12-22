@@ -23,12 +23,17 @@
 </template>
 <script>
     let ct = {};
+    let calendarTemplate;//日历模板初始化
+    let isWekendWorkDates = [];//工作日
+    let notWekendRestDates = [];//非工作日
+    let restDates = [];//24非工作日
     export default{
         props:{isPrviewCalendar:Boolean},
         data(){
             return {
                 isPriviewTemplate:false,
                 priveiwDate:"",//预览模板日期范围
+                selectInteral:[],
                 template:{
                     name:""
                 }
@@ -38,6 +43,90 @@
             //关闭弹窗
             handleClose(done){
                 this.$emit('hidePanel',this.isPriviewTemplate)
+            },
+            /* 添加页面非日历初始化 */
+            initCalendarSetMethod() {
+//                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null && "" != ct.endDate) {
+                // 创建日历模板
+                let startTime,endTime;
+                setTimeout(()=>{
+                    if(!this.selectInteral.length){
+                        let fullYear =  new Date().getFullYear();
+                        startTime = fullYear+'/01/01';
+                        endTime = fullYear+"/12/30"
+                    }else{
+                        startTime = this.selectInteral[0];
+                        endTime = this.selectInteral[1];
+                    }
+                    calendarTemplate = new CalendarSet(startTime, endTime);
+                    this.inittocopystate();
+                })
+//                }
+            },
+            /* 初始化设置日历模板页面 */
+            inittocopystate() {
+
+                //修改页面渲染逻辑
+                if (ct.calendarFalg == 0) {//复制24小时
+                    if (restDates != null && restDates.length > 0) {// 已经设置过的
+                        var arr = [];
+                        for (var i = 0; i < restDates.length; i++) {
+                            if (new Date(this.selectInteral[0]).getTime() <= new Date(restDates[i]).getTime() && new Date(restDates[i]).getTime() <= new Date(this.selectInteral[1]).getTime()) {
+                                arr.push(restDates[i])
+                            }
+                        }
+                        // 设置对应非工作日
+                        calendarTemplate.setRestDate(arr);
+                    }
+                } else {//复制标准
+                    var arr = new Array(6, 0);
+                    var chooseDate = this.getRulesDate(arr, this.selectInteral[0], this.selectInteral[1]);
+                    //将所有展示的周六，周日设置为非工作日
+                    console.log(chooseDate, 'chooseDate')
+                    calendarTemplate.setRestDate(chooseDate);
+                    if (notWekendRestDates != null && notWekendRestDates.length > 0) {// 已经设置过的
+                        var arr = [];
+                        for (var i = 0; i < notWekendRestDates.length; i++) {
+                            if (new Date(this.selectInteral[0]).getTime() <= new Date(notWekendRestDates[i]).getTime() && new Date(notWekendRestDates[i]).getTime() <= new Date(this.selectInteral[0]).getTime()) {
+                                arr.push(notWekendRestDates[i])
+                            }
+                        }
+                        //将所有展示的周一到周五设置已经设置的非工作日
+                        calendarTemplate.setRestDate(arr);
+                    }
+                    if (isWekendWorkDates != null && isWekendWorkDates.length > 0) {
+                        var arr = [];
+                        for (var i = 0; i < isWekendWorkDates.length; i++) {
+                            if (new Date(this.selectInteral[0]).getTime() <= new Date(isWekendWorkDates[i]).getTime() && new Date(isWekendWorkDates[i]).getTime() <= new Date(this.selectInteral[0]).getTime()) {
+                                arr.push(isWekendWorkDates[i])
+                            }
+                        }
+                        //将所有展示的周六、周日中工作日的设置为工作日
+                        calendarTemplate.setWorkDate(arr);
+                    }
+                }
+            },
+            /**
+             * 筛选出指定想起的所有日期
+             * @param arr 日历队列
+             * @param sd  时间范围之开始时间
+             * @param ed  时间范围之结束时间
+             * @return rulesDates  筛选符合条件的集合
+             **/
+            getRulesDate(arr, sd, ed){
+                let rulesDates = [];
+                let sdate = new Date(sd);
+                let edate = new Date(ed);
+                let stime = sdate.getTime();
+                let etime = edate.getTime();
+                for (stime; stime <= etime;) {
+                    let thdate = new Date(stime);
+                    if (arr.indexOf(thdate.getDay()) != -1) {
+                        rulesDates.push(thdate.toLocaleDateString());
+                    }
+                    stime = stime + 24 * 60 * 60 * 1000;
+                }
+                return rulesDates;
             },
             /**
              * 日历模板
