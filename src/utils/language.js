@@ -9,8 +9,8 @@ export default {
 		btn: {
 			off: '取消',
 			close: '关闭',
-			back: '上一步',
-			save: '保存'
+			back: '重新上传',
+			save: '确定'
 		},
 		error: {
 			onlyImg: '仅限图片格式',
