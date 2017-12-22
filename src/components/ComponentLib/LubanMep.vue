@@ -393,7 +393,7 @@
                 })
             },
             //安装->大类
-            getBigtypes(url,param){
+            getBigtypes(param){
                 bigtypes(param).then((data)=>{
                     this.compTypeBig = data.data.result;
                     if(data.data.result){
@@ -685,7 +685,7 @@
                         this.compTypeBig = ['不限'];
                         this.searchKeyParams.bigType = this.compTypeBig[0];
                     }else{
-                       this.tableParam.majorName =  newVal;
+                        this.tableParam.majorName =  newVal;
                         this.downloadSum.majorName = newVal;
                         this.getBigtypes({majorName:newVal})
                         this.getTableList( this.tableParam);
