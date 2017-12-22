@@ -1,44 +1,6 @@
 <template>
     <div>
         <div class="order-management order-detail">
-
-            <div class="header">
-                <el-col :span="8">
-                    <div>
-                        <el-input
-                            placeholder="请输入搜索内容"
-                            icon="search"
-                            v-model="searchContent"
-                            :on-icon-click="search" class="searchContent">
-                        </el-input>
-                    </div>
-                </el-col>
-                <el-col :span="6">
-                    <div class="advanced-search">
-                        <el-button type="primary" class="basic-btn" @click="">高级搜索</el-button>
-                        <el-button type="primary" class="basic-btn" @click="indexSort();indexSortDialogVisible=true">
-                            指标排序
-
-
-                        </el-button>
-                    </div>
-                </el-col>
-            </div>
-<<<<<<< HEAD
-            
-
-            <div class="main">
-                <el-row>
-                    <el-col :span="20">
-                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-info-update left-icon"></i><span class="btn-text">更新指标</span>
-                        </el-button>
-                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-forbidden left-icon"></i><span class="btn-text">不更新</span>
-                        </el-button>
-                        <el-button type="primary" class="basic-btn" @click=""><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
-                        </el-button>
-                    </el-col>
-                </el-row>
-=======
             <div class="header">
                 <el-col :span="20">
                     <el-button type="primary" class="basic-btn">
@@ -57,7 +19,6 @@
             </div>
 
             <div class="main">
->>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                     <el-table ref="multipleTable scroll-me" :data="bindManageTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
@@ -114,11 +75,11 @@
             </div>
             <div class="el-dialog__footer">
                 <div data-v-a8097a2c="" class="dialog-footer" style="margin-top: 54px;">
-                    <button data-v-a8097a2c="" type="button" 
+                    <button data-v-a8097a2c="" type="button"
                     @click="indexSortDialogVisible=false"
                     class="el-button dialog-btn el-button--primary">
                        <span>确 定</span></button>
-                    <button data-v-a8097a2c="" type="button" 
+                    <button data-v-a8097a2c="" type="button"
                     @click="indexSortDialogVisible=false"
                     class="el-button dialog-btn el-button--default">
                         <span>取消</span></button>
@@ -249,7 +210,6 @@
 </script>
 
 <style scoped>
-<<<<<<< HEAD
     .order-management .main{
       padding:20px;
     }
@@ -260,8 +220,6 @@
     .header .advanced-search {
       margin-left: 10px;
     }
-=======
->>>>>>> 6f35a59f546bea79705a68894fe071f625462181
     .header .advanced-search {
         margin-left: 10px;
     }
