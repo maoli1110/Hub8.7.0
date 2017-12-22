@@ -43,14 +43,12 @@
 </template>
 
 <script>
-    import {basePath} from "../../utils/common.js";
     import {
         treeList,               //构件树
         treeSave,               //保存构件树
     } from '../../api/getData-yhj.js';
     let level=1;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;//预览状态模板树的深度
-    let baseUrl;
     export default {
         props:{ztreeInfo:Object,isShow:Boolean},
 
@@ -78,12 +76,8 @@
             };
         },
         methods: {
-            //获取接口地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
-            },
             getData(){
-                this.getBaseUrl();
+
             },
             commonMessage(message, type){
                 this.$message({
@@ -99,8 +93,8 @@
                 this.$emit('hidePanel',this.dialogVisible);
             },
             //加载树结构
-            getZtree(url,param){
-                treeList({url:url,param:param}).then((data)=>{
+            getZtree(param){
+                treeList(param).then((data)=>{
                     this.zNodes = data.data.result;
                     this.nodesList = data.data.result;
                     let zTree = $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
@@ -123,8 +117,8 @@
                 });
             },
             //保存构件树
-            setZtree(url,param){
-                treeSave({url:url,param:param}).then((data)=>{
+            setZtree(param){
+                treeSave(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('保存成功!','success')
                     }
@@ -274,7 +268,7 @@
             },
             //重置
             resetZtree(){
-                this.getZtree(baseUrl,this.zTreeParam);
+                this.getZtree(this.zTreeParam);
             },
             //保存
             ztreeSave(){
@@ -286,7 +280,7 @@
                     treeNodes.push({description:val.description,nodeCode:val.nodeCode, nodeName:val.nodeName,parentNodeCode:val.parentNodeCode,productId:val.productId,sortIndex:val.sortIndex,version:val.version});
                 });
 
-                this.setZtree(baseUrl,{version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
+                this.setZtree({version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
             },
             //构件树保存
             cloudComTreeOk(){

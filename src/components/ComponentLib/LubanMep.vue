@@ -201,7 +201,6 @@
 <script>
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import {basePath} from "../../utils/common.js";
     import {getCitys,cloudTree} from '../../api/getData.js';
     import {
         treeList,               //构件树
@@ -225,7 +224,6 @@
     let level;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     //预览状态模板树的深度
     let maxLevel = -1;
-    let baseUrl;
     let updateToken = '';
     export default {
         data(){
@@ -342,12 +340,12 @@
 //                console.log(`每页显示多少条${size}`);
                 this.totalPage = size;
                 this.tableParam.pageSize = size;
-                this.getTableList(baseUrl,this.tableParam);
+                this.getTableList(this.tableParam);
             },
             handleCurrentChange(currentPage){
                 this.cur_page = currentPage;
                 this.tableParam.currentPage = currentPage;
-                this.getTableList(baseUrl,this.tableParam);
+                this.getTableList(this.tableParam);
 //                console.log(`当前页${currentPage}`);
             },
 
@@ -382,13 +380,9 @@
             updateError(err, file, fileList){
                 this.commonMessage('上传失败哦。。。。','warning')
             },
-            //获取接口地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
-            },
             //安装->专业
             getMarjor(){
-                componentMajors({url:baseUrl}).then((data)=>{
+                componentMajors().then((data)=>{
                    this.majorOptions = data.data.result;
                    if(data.data.result){
                        this.majorOptions.unshift('不限');
@@ -400,7 +394,7 @@
             },
             //安装->大类
             getBigtypes(url,param){
-                bigtypes({url:url,param:param}).then((data)=>{
+                bigtypes(param).then((data)=>{
                     this.compTypeBig = data.data.result;
                     if(data.data.result){
                         this.compTypeBig.unshift('不限');
@@ -409,8 +403,8 @@
                 })
             },
             //安装->小类
-            getSmalltypes(url,param){
-                smalltypes({url:url,param:param}).then((data)=>{
+            getSmalltypes(param){
+                smalltypes(param).then((data)=>{
                     this.compTypeSmall = data.data.result;
                     if(this.compTypeSmall.length){
                         this.compTypeSmall.unshift('不限');
@@ -419,44 +413,44 @@
                 })
             },
             //获取列表数据
-            getTableList(url,param){
-                componentList({url:url,param:param}).then((data)=>{
+            getTableList(param){
+                componentList(param).then((data)=>{
                     if(data.data.result){
                         this.tableData = data.data.result;
                     }else{
                         this.tableData ={};
                     }
-                    this.getDownloadCount(baseUrl,this.downloadSum)
+                    this.getDownloadCount(this.downloadSum)
                 })
             },
             //添加功能
-            createComponent(url,param){
-                componentAdd({url:url,param:param}).then((data)=>{
+            createComponent(param){
+                componentAdd(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('添加成功','warning');
                        setTimeout(()=>{
-                           this.getTableList(baseUrl,this.tableParam)
+                           this.getTableList(this.tableParam)
                        },1100)
                     }
                 })
             },
-            modifyComponent(url,param){
-                componentUpdate({url:url,param:param}).then((data)=>{
+            modifyComponent(param){
+                componentUpdate(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('更新成功','warning');
                         setTimeout(()=>{
-                            this.getTableList(baseUrl,this.tableParam)
+                            this.getTableList(this.tableParam)
                         },2000)
                     }
                 })
             },
             getTokenId(){
-               generate({url:baseUrl}).then((data)=>{
+               generate().then((data)=>{
                     this.token = data.data.result;
                 })
             },
-            getComponetExit(url,param){
-                componentExist({url:url,param:param}).then((data)=>{
+            getComponetExit(param){
+                componentExist(param).then((data)=>{
                     let base =  {
                         author: this.updateComList.author,
                         bigTypeName: this.updateComList.bigType,
@@ -479,24 +473,24 @@
                     };
                     if(data.data.result){
                         this.commonConfirm('构件已经存在是否替换', () => {
-                            this.modifyComponent(baseUrl,{productId:this.updateComList.productId,modify:{compntFileId:this.updateComList.componentFileId,componentFilePath:this.updateComList.componentFilePath,description:this.updateComList.remark,fileChanged:true,fileName:this.updateComList.fileName,pictureFilePath:this.updateComList.pictureFilePath,summaryFilePath:this.updateComList.summaryFilePath,title:this.updateComList.title}});
+                            this.modifyComponent({productId:this.updateComList.productId,modify:{compntFileId:this.updateComList.componentFileId,componentFilePath:this.updateComList.componentFilePath,description:this.updateComList.remark,fileChanged:true,fileName:this.updateComList.fileName,pictureFilePath:this.updateComList.pictureFilePath,summaryFilePath:this.updateComList.summaryFilePath,title:this.updateComList.title}});
                         }, () => {
                         }, 'warning')
                     }else{
-                        this.createComponent(baseUrl,{productId:this.updateComList.productId,base});
+                        this.createComponent({productId:this.updateComList.productId,base});
                     }
                 })
             },
-            getDownloadCount(url,param){
-                countDownloadTimes({url:url,param:param}).then((data)=>{
+            getDownloadCount(param){
+                countDownloadTimes(param).then((data)=>{
                     this.downloadCount = data.data.result;
                 })
             },
-            deleteComponent(url,param){
-                componentDelete({url:url,param:param}).then((data)=>{
+            deleteComponent(param){
+                componentDelete(param).then((data)=>{
                     if(data.data.code==200){
                          if(this.tableData.list.length===deletArray.length){
-                            this.getTableList(baseUrl,this.tableParam)
+                            this.getTableList(this.tableParam)
                          }else{
                              for (let i = 0; i < deletArray.length; i++) {
                                  for (let j = 0; j < this.tableData.list.length; j++) {
@@ -520,7 +514,7 @@
                     this.tableParam.asc = true;
                 }
                 this.tableParam.sort = column.prop;
-                this.getTableList(baseUrl,this.tableParam);
+                this.getTableList(this.tableParam);
             },
             //上传构件清除数据
             clearUploadInfo(){
@@ -535,7 +529,7 @@
              * @param type  1.update上传 2.cover修改页面
              **/
             overUpdate(){
-                this.uploadUrl = `${baseUrl}component/az/upload/${5}`;//上传接口
+                this.uploadUrl = `${window.serverPath.cloudUrl}/component/az/upload/${5}`;//上传接口
                 this.fileList = [];
                 this.updateComList.fileName= '';
             },
@@ -610,7 +604,7 @@
                     this.tableParam.endTime =  this.searchKeyParams.endTime;
                     this.downloadSum.startTime =  this.searchKeyParams.startTime;
                     this.downloadSum.endTime =  this.searchKeyParams.endTime;
-                    this.getTableList(baseUrl, this.tableParam);
+                    this.getTableList( this.tableParam);
                 }
 
             },
@@ -623,7 +617,7 @@
                 this.tableParam.bigTypeName = this.searchKeyParams.bigType;
                 this.tableParam.smallTypeName = this.searchKeyParams.smallType;
                 this.downloadSum.title = this.searchKeyParams.searchVal;
-                this.getTableList(baseUrl,this.tableParam);
+                this.getTableList(this.tableParam);
             },
             //列表删除
             deleteComp(){
@@ -632,7 +626,7 @@
                     return false;
                 }
                 this.commonConfirm('删除选中构件', () => {
-                    this.deleteComponent(baseUrl,{productId:5,del:deletArray})
+                    this.deleteComponent({productId:5,del:deletArray})
                 }, () => {
                 }, 'warning')
             },
@@ -660,14 +654,14 @@
                     modify.fileChanged = false;
                 };
                 if(this.override){
-                    this.modifyComponent(baseUrl,{productId:this.updateComList.productId,modify})
+                    this.modifyComponent({productId:this.updateComList.productId,modify})
                 }else {
-                    this.getComponetExit(baseUrl,{bigTypeName:this.updateComList.bigType,company:this.updateComList.company,majorName:this.updateComList.majorName,productModel:this.updateComList.productModel,smallTypeName:this.updateComList.smallType,title:this.updateComList.title,version:this.updateComList.version})
+                    this.getComponetExit({bigTypeName:this.updateComList.bigType,company:this.updateComList.company,majorName:this.updateComList.majorName,productModel:this.updateComList.productModel,smallTypeName:this.updateComList.smallType,title:this.updateComList.title,version:this.updateComList.version})
                 }
             },
             //加载树结构
             getCloudTree(){
-               this.$refs.cloudTrees.getZtree(baseUrl,this.ztreeInfoParam);
+               this.$refs.cloudTrees.getZtree(this.ztreeInfoParam);
                this.cloudComTree = true;
             },
             getData(){
@@ -677,9 +671,8 @@
                 this.downloadSum.endTime = this.searchKeyParams.endTime;
                 this.downloadSum.startTime = this.searchKeyParams.startTime;
                 this.downloadSum.title =  this.searchKeyParams.searchVal;
-                this.getBaseUrl();
                 this.getMarjor();
-                this.getTableList(baseUrl,this.tableParam);
+                this.getTableList(this.tableParam);
             },
 
         },
@@ -692,10 +685,10 @@
                         this.compTypeBig = ['不限'];
                         this.searchKeyParams.bigType = this.compTypeBig[0];
                     }else{
-                        this.tableParam.majorName =  newVal;
+                       this.tableParam.majorName =  newVal;
                         this.downloadSum.majorName = newVal;
-                        this.getBigtypes(baseUrl,{majorName:newVal})
-                        this.getTableList(baseUrl, this.tableParam);
+                        this.getBigtypes({majorName:newVal})
+                        this.getTableList( this.tableParam);
                     }
                 }
             },
@@ -707,8 +700,8 @@
                     }else{
                         this.tableParam.bigTypeName =  newVal;
                         this.downloadSum.bigTypeName = newVal;
-                        this.getTableList(baseUrl, this.tableParam);
-                        this.getSmalltypes(baseUrl,{majorName:this.searchKeyParams.majorVal,bigType:newVal})
+                        this.getTableList( this.tableParam);
+                        this.getSmalltypes({majorName:this.searchKeyParams.majorVal,bigType:newVal})
                     }
                 }
             },
@@ -716,7 +709,7 @@
                 if(newVal!=oldVal && oldVal!=""){
                     this.tableParam.smallTypeName =  newVal;
                     this.downloadSum.smallTypeName = newVal;
-                    this.getTableList(baseUrl, this.tableParam);
+                    this.getTableList( this.tableParam);
                 }
             }
         },
