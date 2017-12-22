@@ -103,7 +103,7 @@
                     filterClassfiyVal:"",       //专业
                 },
                 renameVisble:false,             //编辑的显示状态
-                renameIndex:"",
+
                 classfiyList:[],                //分类信息
                 //分页的一些设置
                 cur_page:1,
@@ -128,7 +128,8 @@
                 },
                 templateInfo:{      //修改信息
                     name:'',
-                    remark:''
+                    remark:'',
+                    tmplkey:""
                 },
                 setting: {//搜索条件ztree setting
                     data: {
@@ -294,6 +295,16 @@
                     }
                 })
             },
+            //编辑模板
+            eidtTemplate(params){
+                editColorTemplateInfo(params).then((data)=>{
+                    if(data.data.code==200){
+                        this.commonMessage('修改成功','success');
+                        this.getColorTemplateList(this.tableParams);
+                    }
+                })
+
+            },
             /**
              * ztree
              * @param event
@@ -364,19 +375,18 @@
             //重命名模板名称
             renameTemplate(item){
                 //去拿相关模板的信息
-                this.renameIndex = item.index;
-                this.templateInfo.name = item.processName;
-                this.templateInfo.remark = item.proDepartment;
+                this.templateInfo.tmplkey = item.tmplkey;
+                this.templateInfo.name = item.name;
+                this.templateInfo.remark = item.memo;
             },
             renameTemplateOK(){
-                if(this.renameIndex ){
-                    this.tableData.forEach((val,key)=>{
+                    /*this.tableData.forEach((val,key)=>{
                         if(val.index==this.renameIndex){
                             this.tableData[key].processName = this.templateInfo.name;
                             this.tableData[key].proDepartment = this.templateInfo.remark;
                         }
-                    })
-                }
+                    })*/
+                    this.eidtTemplate(this.templateInfo);
             },
             renameTemplateCancel(){
 
