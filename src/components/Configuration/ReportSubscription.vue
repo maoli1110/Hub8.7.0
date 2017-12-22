@@ -41,12 +41,13 @@
         </div>
         <div class="main" style="position:relative">
             <div class="basic-aside">
-                <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
+                <el-table ref="multipleTable" :data="reportTableData" border tooltip-effect="dark"
                           style="width: 100%" @selection-change="handleSelectionChange">
-                    <el-table-column type="selection" width="55"></el-table-column>
+                    <el-table-column type="selection" width="55">
+                    </el-table-column>
                     <el-table-column label="全部">
                         <template slot-scope="scope">
-                            <div :title="scope.row.reportName" class="textcell">
+                            <div :title="scope.row.reportName" class="textcell" @click="aaa(scope.row)">
                                 {{ scope.row.reportName }}
                             </div>
                         </template>
@@ -111,7 +112,8 @@ export default {
       roleOptions: [],
       dataTypeOptions: [],
       orgNodesOptions: [],
-      roleTableData: []
+      roleTableData: [],
+      reportTableData: []
     };
   },
   watch: {
@@ -129,7 +131,7 @@ export default {
         if (vm.select.dataType != "" && vm.select.orgNodes != "") {
           getReportList(params).then(function(res) {
             if (res.data.msg == "success") {
-               vm.roleTableData = res.data.result
+              vm.reportTableData = res.data.result;
             }
           });
         }
@@ -138,6 +140,19 @@ export default {
     }
   },
   methods: {
+    aaa(row) {
+      let vm = this;
+      let baseUrl = basePath(this.$route.matched[2].path);
+      let params = {
+        url: baseUrl,
+        roleId: row.reportId
+      };
+      getReportListRoleId(params).then(function(res) {
+        if (res.data.msg == "success") {
+          vm.roleTableData = res.data.result;
+        }
+      });
+    },
     handleSelectionChange(val, a) {
       console.log(val);
       console.log(a);
