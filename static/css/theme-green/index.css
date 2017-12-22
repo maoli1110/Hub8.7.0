@@ -109,13 +109,13 @@
     content: "\e607"
 }
 
-.el-icon-check:before {
+/* .el-icon-check:before {
     content: "\e608"
 }
 
 .el-icon-circle-check:before {
     content: "\e609"
-}
+} */
 
 .el-icon-circle-close:before {
     content: "\e60a"
@@ -1396,7 +1396,7 @@
     padding: 6px 0;
     margin: 0;
     box-sizing: border-box;
-    max-width: 634px;
+    /* max-width: 634px; */
 }
 .el-select-dropdown__item {
     font-size: 14px;
@@ -9240,3 +9240,8 @@
 .el-transfer-panel__filter .el-icon-circle-close {
     cursor: pointer
 }
+
+/* .el-upload-list__item .el-icon-upload-success {
+    color: #13ce66;
+} */
+

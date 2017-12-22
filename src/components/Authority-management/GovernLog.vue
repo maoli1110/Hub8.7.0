@@ -128,44 +128,7 @@
                     if(res.data.msg == "success"){
                         //vm.coinsManagementTableData = res.data.content;
                         vm.coinsManagementTableData.totalElements = 5;
-                        vm.coinsManagementTableData.content = [{
-                          "epid": 1,
-                          "func": "string",
-                          "ip": "string",
-                          "operateTime": "2017-12-06T07:14:39.085Z",
-                          "operator": "string",
-                          "target": "string"
-                        },{
-                          "epid": 0,
-                          "func": "string",
-                          "ip": "string",
-                          "operateTime": "2017-12-06T07:14:39.085Z",
-                          "operator": "string",
-                          "target": "string"
-                        },
-                        {
-                          "epid": 1,
-                          "func": "strdddddddddddddddddddding",
-                          "ip": "string",
-                          "operateTime": "2017-12-06T07:14:39.085Z",
-                          "operator": "string",
-                          "target": "strinddddddddddddddddddddg"
-                        },{
-                          "epid": 0,
-                          "func": "strdddddddddddddddddddding",
-                          "ip": "string",
-                          "operateTime": "2017-12-06T07:14:39.085Z",
-                          "operator": "string",
-                          "target": "string"
-                        },
-                        {
-                          "epid": 1,
-                          "func": "string",
-                          "ip": "string",
-                          "operateTime": "2017-12-06T07:14:39.085Z",
-                          "operator": "string",
-                          "target": "string"
-                        }]
+                        vm.coinsManagementTableData.content = res.data.result.content;
                     } 
                 }) 
             },

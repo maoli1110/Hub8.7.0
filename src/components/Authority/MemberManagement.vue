@@ -1,17 +1,22 @@
 <template>
     <div>
-        <div class="header">
+        <!-- <div class="header">
             <div>
                 <label class="el-form-item__label">组织节点：</label>
                 <div class="el-form-item__content" style="margin-left: 85px;">
-                    <el-select v-model="orgValue" placeholder="请选择" style="width:100%" class="org-text">
+                    <el-select v-model="orgValue" placeholder="请选择" style="width:100%" class="org-text" @click.native='selectDropDown'>
                         <el-option :value="orgValue" v-show="false">
                         </el-option>
-                        <ul id="orgTree" class="ztree"></ul>
                     </el-select>
+                    <div style="margin-left:45px;border:1px solid #e6e6e6" class="select-dropdown">
+                        <el-input placeholder="请输入组织节点" icon="search" style="width:100%"></el-input>
+                        <ul id="orgTree" class="ztree"></ul>
+                    </div>
                 </div>
+
             </div>
-        </div>
+        </div> -->
+        <orgTree></orgTree>
         <div class="header">
             <div class="el-form-item el-form_" style="margin-left:30px">
                 <label class="el-form-item__label">角色：</label>
@@ -226,8 +231,9 @@
                 :auto-upload="false" action="https://jsonplaceholder.typicode.com/posts/" multiple>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">点击上传电子签名</div>
-                <div class="el-upload__tip" slot="tip" style="color:#e30000">*建议签名图片尺寸（宽：100px-高：40px）</div>
-                <div class="el-upload__tip" slot="tip" style="color:#e30000">只能上传png和jpg格式的签名照片，且不超过500kb</div>
+                <div class="el-upload__tip" slot="tip">
+                    <span style="color:#e30000">*</span>建议签名图片尺寸（宽：100px-高：40px）</div>
+                <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
             </el-upload>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="submitUpload" class="dialog-btn">确 定</el-button>
@@ -240,7 +246,14 @@
 <script>
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+    import orgTree from '../common/OrganizationTree.vue'
+    import * as types from "../../api/getData-ppc";
+
+
     export default {
+        components:{
+         orgTree
+        },
         data() {
             var validatePass = (rule, value, callback) => {
                 if (value === "") {
@@ -315,78 +328,7 @@
                         onClick: this.dialogOrgTreeClick
                     }
                 },
-                zNodes: [{
-                        id: 1,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标不同",
-                        open: true,
-                        iconSkin: "pIcon01"
-                    },
-                    {
-                        id: 11,
-                        pId: 1,
-                        name: "叶子节点4",
-                        iconSkin: "icon01"
-                    },
-                    {
-                        id: 12,
-                        pId: 1,
-                        name: "叶子节点2",
-                        iconSkin: "icon02"
-                    },
-                    {
-                        id: 13,
-                        pId: 1,
-                        name: "叶子节点3",
-                        iconSkin: "icon03"
-                    },
-                    {
-                        id: 2,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标相同",
-                        open: true,
-                        iconSkin: "pIcon02"
-                    },
-                    {
-                        id: 21,
-                        pId: 2,
-                        name: "叶子节点1",
-                        iconSkin: "icon04"
-                    },
-                    {
-                        id: 22,
-                        pId: 2,
-                        name: "叶子节点2",
-                        iconSkin: "icon05"
-                    },
-                    {
-                        id: 23,
-                        pId: 2,
-                        name: "叶子节点3",
-                        iconSkin: "icon06"
-                    },
-                    {
-                        id: 3,
-                        pId: 0,
-                        name: "不使用自定义图标",
-                        open: true
-                    },
-                    {
-                        id: 31,
-                        pId: 3,
-                        name: "叶子节点1"
-                    },
-                    {
-                        id: 32,
-                        pId: 3,
-                        name: "叶子节点2"
-                    },
-                    {
-                        id: 33,
-                        pId: 3,
-                        name: "叶子节点3"
-                    }
-                ],
+                zNodes: [],
                 authorizedProjectSetting: {
                     data: {
                         simpleData: {
@@ -725,11 +667,21 @@
         },
 
         methods: {
+            getDefaultProcessTemplateTreeInfo() {
+                this.zNodes = [];
+                types.getDefaultProcessTemplateTreeInfo().then(res => {
+                    this.zNodes = res.data.result;
+                    $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
+                });
+            },
+            selectDropDown() {
+                $('.el-select-dropdown__list').hide();
+                $('.el-select-dropdown').css('border','none')
+                $(".select-dropdown").slideToggle("fast");               
+            },
             orgTreeClick(event, treeId, treeNode) {
                 this.orgValue = treeNode.name;
-                setTimeout(() => {
-                    $(".el-select-dropdown__item.selected").click();
-                }, 100);
+                $(".select-dropdown").slideToggle("fast");
             },
             dialogOrgTreeClick(event, treeId, treeNode) {
                 this.ruleForm.attribution = treeNode.name;
@@ -884,7 +836,8 @@
             }
         },
         mounted() {
-            $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
+            this.getDefaultProcessTemplateTreeInfo()
+
         },
         created() {
             this.$emit("routerActive");
@@ -898,18 +851,23 @@
         background-color: #fff;
         padding: 10px 20px;
     }
-    .header+.header{
+
+    .header+.header {
         margin-top: 20px;
     }
+
     .header .el-form-item__label {
         text-align: left;
     }
-    .org-text .el-input__inner{
-        color:aqua
+
+    .org-text .el-input__inner {
+        color: aqua
     }
+
     .ztree {
         margin-top: 0px;
-        width: 205px;
+        height: 600px;
+        overflow: auto;
     }
 
     .el-form_ {
@@ -997,6 +955,20 @@
 
     .icon+.icon {
         margin-left: 15px;
+    }
+
+
+    .select-dropdown {
+        display: none;
+        width: 100%;
+        height: 700px;
+        padding: 10px;
+        box-sizing: border-box;
+        position: absolute;
+        left: -45px;
+        top: 35px;
+        background-color: #fff;
+        z-index: 3000;
     }
 
 </style>
