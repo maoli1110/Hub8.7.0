@@ -4,7 +4,7 @@
             <el-col  :span="24" class="relat template-filter">
                 <span class="span-block absol" style="width:60px;">项目部：</span>
                 <el-col :span="5" >
-                    <el-select v-model="filterParam.orgName" placeholder="请选择" @change="filterWordChange" style="margin-left:60px;">
+                    <el-select v-model="filterParam.orgName" placeholder="请选择"  style="margin-left:60px;">
                         <el-option v-show="false"
                            :value="filterParam.orgName">
                         </el-option>
@@ -13,7 +13,7 @@
                 </el-col>
                 <el-col :span="5" style="margin-left:60px;">
                     <span class="span-block absol" >专业：</span>
-                    <el-select v-model="filterParam.filterClassfiyVal" placeholder="请选择" @change="filterClassfiyChange" style="margin-left:60px;">
+                    <el-select v-model="filterParam.filterClassfiyVal" placeholder="请选择"  style="margin-left:60px;">
                         <el-option
                             v-for="item in classfiyList"
                             :key="item"
@@ -27,20 +27,20 @@
             </el-col>
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class="house-table scroll-me"   :data="tableData" style="min-width: 900px;"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)"  @select-all="selectAll" @select="selectChecked">
+            <el-table class="house-table scroll-me"   :data="tableData.colorTemplateInfoList" style="min-width: 900px;"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked">
                 <el-table-column
                     type="selection"
                     width="40" >
                 </el-table-column>
                <!-- <el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
                 </el-table-column>-->
-                <el-table-column prop="processName" width="" label="模板名称" show-overflow-tooltip>
+                <el-table-column prop="name" width="" label="模板名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="updateUser" width="100" label="创建人" >
+                <el-table-column prop="type" width="100" label="分类" >
                 </el-table-column>
-                <el-table-column prop="updateTime" width="160" label="创建时间" >
+                <el-table-column prop="createuser" width="160" label="上传人" >
                 </el-table-column>
-                <el-table-column prop="proDepartment" width="" label="所属项目部" show-overflow-tooltip>
+                <el-table-column prop="memo" width="" label="备注" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
@@ -50,7 +50,8 @@
             </el-table>
         </vue-scrollbar>
         <div class="pagination">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+            <!--<span>当前页{{tableData.lbPageInfo.currentPage}},共{{tableData.lbPageInfo.totalPage}}页，共{{tableData.lbPageInfo.totalNumber}}条</span>-->
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout=" sizes, prev, pager, next, jumper" :total="300">
             </el-pagination>
         </div>
         <!--重命名模板名称-->
@@ -108,7 +109,7 @@
                 cur_page:1,
                 totalPage:50,
                 totalNumber:300,
-                tableData:[],
+                tableData:{},
                 tableParams:{                   //列表的传参问题
                     orgType: 0,                 //节点类型
                     orgid: "1",                 //节点id
@@ -150,11 +151,11 @@
         methods: {
             getData(){
                this.getTreeList();
-               if( this.filterParam.orgId=='1'){
+               /*if( this.filterParam.orgId=='1'){
                    this.tableParams.orgType = 0;
                }
-                this.tableParams.orgid  = this.filterParam.orgId;
-               this.getColorTemplateList(this.tableParams);
+                this.tableParams.orgid  = this.filterParam.orgId;*/
+
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -204,10 +205,13 @@
                             this.$set(val,'iconSkin','rootNode');
                         }else if(!val.root && val.type==0 && !val.direct){
                             this.$set(val,'iconSkin','subNode');
+                            this.tableParams.orgType = 0
                         }else if(val.type==1 ){
                             this.$set(val,'iconSkin','projNode');
+                            this.tableParams.orgType = 1
                         }else if(val.direct){
                             this.$set(val,'iconSkin','projNode');
+                            this.tableParams.orgType = 1
                         }
                         if(val.id=="1"){
                             this.filterParam.orgName = val.name;
@@ -216,7 +220,9 @@
                     })
                     this.zNodes = data.data.result;
                     $.fn.zTree.init($("#color-temp"), this.setting, this.zNodes);
+                    this.tableParams.type = this.filterParam.filterClassfiyVal;
                     this.getTemplateTypes({orgType:0,orgid:this.filterParam.orgId});
+                    this.getColorTemplateList(this.tableParams);
                 })
             },
             //获取分类信息
@@ -235,7 +241,57 @@
             //获取颜色模板列表
             getColorTemplateList(params){
                 getColorTemplateInfoWrapper(params).then((data)=>{
-                    console.log(data.data.result)
+                    this.tableData = {
+                        colorTemplateInfoList: [
+                            {
+                                createuser: "yhj",
+                                memo: "米格米格",
+                                name: "米格",
+                                tmplkey: "123",
+                                type: "项目一"
+                            },
+                            {
+                                createuser: "yhj",
+                                memo: "米格米格",
+                                name: "米格",
+                                tmplkey: "124",
+                                type: "项目一"
+                            },
+                            {
+                                createuser: "yhj",
+                                memo: "米格米格",
+                                name: "米格",
+                                tmplkey: "125",
+                                type: "项目一"
+                            }
+                        ],
+                        lbPageInfo: {
+                            beginNumber: 0,
+                            currentPage: 1,
+                            pageSize: 10,
+                            totalNumber: 100,
+                            totalPage: 10
+                        }
+                    }
+                })
+            },
+            //删除颜色模板
+            delTemplates(params){
+                deleteColorTemplateInfos(params).then((data)=>{
+                    if(data.data.code==200){
+                        this.commonMessage('删除成功','success');
+                         if(this.tableData.colorTemplateInfoList.length===deletArray.length){
+                            this.getColorTemplateList(this.tableParams);
+                         }else if(deletArray.length) {
+                            for (let i = 0; i < deletArray.length; i++) {
+                                for (let j = 0; j < this.tableData.colorTemplateInfoList.length; j++) {
+                                    if (this.tableData.colorTemplateInfoList[j].tmplkey == deletArray[i]) {
+                                        this.tableData.colorTemplateInfoList.splice(j, 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 })
             },
             /**
@@ -246,25 +302,22 @@
              */
             //工程管理树结构单机事件
             templateTreeClick(event, treeId, treeNode){
-                this.filterParam.orgName = treeNode.name;
-                this.filterParam.orgId = treeNode.id;
+                if(treeNode.root ||treeNode.type==1||treeNode.direct){
+                    this.filterParam.orgName = treeNode.name;
+                    this.filterParam.orgId = treeNode.id;
+                }else{
+                    return false;
+                }
                 if(treeNode.root){
-                    this.getTemplateTypes({orgType:0,orgid:treeNode.id})
+                    this.tableParams.orgType = 0;
+                    this.getTemplateTypes({orgType:this.tableParams.orgType,orgid:treeNode.id})
                 }else if(treeNode.type==1 || treeNode.direct){
-                    this.getTemplateTypes({orgType:1,orgid:treeNode.id})
+                    this.tableParams.orgType = 1;
+                    this.getTemplateTypes({orgType:this.tableParams.orgType,orgid:treeNode.id})
                 }
                 setTimeout(function(event, treeId, treeNode) {
                     $(".el-scrollbar .el-select-dropdown__item.selected").click();
                 }, 300);
-            },
-
-            //filter筛选项目
-            filterWordChange(val){
-                console.log(val)
-            },
-            //筛选专业
-            filterClassfiyChange(value){
-                console.log(value)
             },
 
             /**
@@ -273,11 +326,13 @@
              */
 
             selectAll(selection){
+                deletArray=[];
                 selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray.push(val.index)
+                    if( deletArray.indexOf(val.tmplkey) ==-1){
+                        deletArray.push(val.tmplkey)
                     }
                 });
+                console.log(deletArray,'deletArray')
             },
 
             /**
@@ -286,11 +341,13 @@
              * @params row 列
              */
             selectChecked(selection, row){
+                deletArray=[];
                 selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray = selection
+                    if( deletArray.indexOf(val.tmplkey) ==-1){
+                        deletArray.push(val.tmplkey)
                     }
                 })
+                console.log(deletArray,'deletArray')
             },
 
             //删除模板
@@ -300,25 +357,8 @@
                     return false;
                 }
                 this.commonConfirm('确定要删除吗',()=> {
-                    /* if(this.tableData.length===deletArray.length){
-                     //重新渲染数据
-                     }else*/
-                    let deletArrayCopy = [];
-                    deletArray.forEach((val,key)=>{
-                        deletArrayCopy.push(val.index)
-                    })
-                    deletArray = deletArrayCopy;
-                    if (deletArray.length) {
-                        for (let i = 0; i < deletArray.length; i++) {
-                            for (let j = 0; j < this.tableData.length; j++) {
-                                if (this.tableData[j].index == deletArray[i]) {
-                                    this.tableData.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
 
-                    deletArray = [];//接口成功之后删除数据
+                    this.delTemplates(deletArray)
                 })
             },
             //重命名模板名称
@@ -354,7 +394,26 @@
         created(){
             this.getData();
         },
+        watch:{
+            'filterParam.orgName':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=''){
 
+                    if(this.filterParam.orgId=="1"){
+                        this.tableParams.orgType = 0;
+                    }else{
+                        this.tableParams.orgType = 1;
+                    }
+                    this.tableParams.orgid = this.filterParam.orgId;
+                    this.getColorTemplateList(this.tableParams)
+                }
+            },
+            'filterParam.filterClassfiyVal':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=''){
+                    this.tableParams.type = this.filterParam.filterClassfiyVal;
+                    this.getColorTemplateList(this.tableParams)
+                }
+            }
+        }
     }
 </script>
 <style scoped>
