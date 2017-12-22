@@ -64,7 +64,6 @@ function basePath(localhost) {
 
         //LBbuilder
         case '/companyprofile/organization-structure':     //企业概况->组织结构
-<<<<<<< HEAD
             baseUrl = 'http://192.168.13.195:8989/LBbuilder/';
             break;
         case '/authority/member-management':               //权限管理->成员管理
@@ -128,7 +127,6 @@ function basePath(localhost) {
 
         case "/configuration/o-bw":                        //应用配置->原bw
             baseUrl = 'http://192.168.13.195:8989/LBbuilder/';
-=======
             baseUrl = window.serverPath.builderUrl;
             break;
         case '/authority/member-management':               //权限管理->成员管理
@@ -195,18 +193,14 @@ function basePath(localhost) {
             break;
         case "/configuration/o-govern":                    //应用配置->原bw
             baseUrl = window.serverPath.builderUrl;
->>>>>>> d2b1654679936e9bd07946e4d60edb6a3e072c47
             break;
         case "/configuration/o-govern":                    //应用配置->原govern
             baseUrl = 'http://192.168.13.195:8989/LBbuilder/';
-            break;  
+            break;
 
         case "/configuration/govern":                      //应用配置->govern
-<<<<<<< HEAD
             baseUrl = 'http://192.168.13.195:8989/LBbuilder/';
-=======
             baseUrl = window.serverPath.builderUrl;
->>>>>>> d2b1654679936e9bd07946e4d60edb6a3e072c47
             break;
 
 
@@ -275,7 +269,6 @@ function basePath(localhost) {
             baseUrl = 'http://192.168.13.195:8989/cloud/';
 
         case "/system/system-log/govern-log":
-<<<<<<< HEAD
             baseUrl = 'http://192.168.13.195:8989/LBbuilder/';
         case "/system/system-log/explorer-log":
             baseUrl = 'http://192.168.13.195:8989/LBbuilder/';
@@ -287,7 +280,6 @@ function basePath(localhost) {
             baseUrl = 'http://192.168.13.195:8989/LBbuilder/';
         case "/system/system-log/prevbw-log":
             baseUrl = 'http://192.168.13.195:8989/LBbuilder/';
-=======
             baseUrl = window.serverPath.builderUrl;
         case "/system/system-log/explorer-log":
             baseUrl = window.serverPath.builderUrl;
@@ -299,7 +291,6 @@ function basePath(localhost) {
             baseUrl = window.serverPath.builderUrl;
         case "/system/system-log/prevbw-log":
             baseUrl = window.serverPath.builderUrl;
->>>>>>> d2b1654679936e9bd07946e4d60edb6a3e072c47
         case "/system/system-log/prevgovern-log":
             baseUrl= 'http://192.168.13.195:8989/LBbuilder/';
         case "/system/system-log/remiz-log":
