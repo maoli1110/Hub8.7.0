@@ -24,6 +24,7 @@
                     </div>
                 </el-col>
             </div>
+<<<<<<< HEAD
             
 
             <div class="main">
@@ -37,6 +38,26 @@
                         </el-button>
                     </el-col>
                 </el-row>
+=======
+            <div class="header">
+                <el-col :span="20">
+                    <el-button type="primary" class="basic-btn">
+                        <i class="icon icon-info-update"></i>
+                        <span>更新指标</span>
+                    </el-button>
+                    <el-button type="primary" class="basic-btn">
+                        <i class="icon icon-forbidden"></i>
+                        <span>不更新</span>
+                    </el-button>
+                    <el-button type="primary" class="basic-btn">
+                        <i class="icon icon-btn-delete"></i>
+                        <span>删除</span>
+                    </el-button>
+                </el-col>
+            </div>
+
+            <div class="main">
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                     <el-table ref="multipleTable scroll-me" :data="bindManageTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
@@ -228,6 +249,7 @@
 </script>
 
 <style scoped>
+<<<<<<< HEAD
     .order-management .main{
       padding:20px;
     }
@@ -238,6 +260,8 @@
     .header .advanced-search {
       margin-left: 10px;
     }
+=======
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
     .header .advanced-search {
         margin-left: 10px;
     }

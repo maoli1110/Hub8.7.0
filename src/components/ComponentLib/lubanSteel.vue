@@ -1,0 +1,710 @@
+<template>
+    <div>
+        <div class="component-main">
+            <el-row class="filter-toolbar">
+                <el-col :span="4" style="padding-right:50px;">
+                    <span class="absol span-block" style="width:50px;">日期：</span>
+                    <el-date-picker format="yyyy.MM.dd" @change="changeData"
+                                    v-model="selectDate"
+                                    type="daterange"
+                                    placeholder="选择日期范围" class="absol" style="left:50px;">
+                    </el-date-picker>
+                </el-col>
+                <el-col :span="3" class="relat" style="padding-right:50px;margin-left:20px;">
+                     <span class="absol span-block" style="width:80px;">
+                        构件大类:
+                    </span>
+
+                    <el-select v-model="searchKeyParams.bigType" placeholder="请选择" style="left:80px;">
+                        <el-option
+                            v-for="(item,index) in compTypeBig"
+                            :key="item.index"
+                            :label="item"
+                            :value="item">
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="3" class="relat" style="padding-right:50px;">
+                     <span class="absol span-block" style="width:80px;left:45px;">
+                        构件小类:
+                    </span>
+
+                    <el-select v-model="searchKeyParams.smallType" placeholder="请选择" style="left:120px;">
+                        <el-option
+                            v-for="item in compTypeSmall"
+                            :key="item"
+                            :label="item"
+                            :value="item">
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="4" class="relat" :offset="1" style="left:35px">
+                    <el-input placeholder="请输入要搜索的内容" icon="search" v-model="searchKeyParams.searchVal"
+                              :on-icon-click="searchComp"></el-input>
+                </el-col>
+                <el-col :span="4" :offset="2" style="text-align:right;">
+                    <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件树管理</el-button>
+                </el-col>
+            </el-row>
+            <el-row class="tools-bar">
+                <el-col>
+                    <el-button type="primary" class="basic-btn "
+                               @click="override = false;uploadCompDialog = true;uploadComp()"><i
+                        class="components-icon icon-update icon-map "></i><span class="btn-text">上传</span>
+                    </el-button>
+                    <el-button type="primary" class="basic-btn " @click="deleteComp"><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
+                    </el-button>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col>
+                    <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
+                        <el-table class="house-table scroll-me" :fit="true" :data="tableData.list" style="width: 100%"
+                                  :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
+                                  @select="selectChecked">
+                            <el-table-column
+                                type="selection"
+                                width="40">
+                            </el-table-column>
+                            <el-table-column prop="title" width="" label="构件名称" show-overflow-tooltip>
+                            </el-table-column>
+                            <el-table-column prop="imgUrl" width="80" label="缩略图">
+                                <template slot-scope="scope">
+                                    <div class="imgUrl" :style="{backgroundImage: 'url('+scope.row.imgUrl+')'}"></div>
+                                    <!--<img :src="scope.row.imgUrl" alt="" style="width:44px;">-->
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="version" width="70" label="版本">
+                            </el-table-column>
+                            <el-table-column prop="coding" width="100" label="构件编码">
+                            </el-table-column>
+                            <el-table-column prop="bigTypeName" width="100" label="构件大类">
+                            </el-table-column>
+                            <el-table-column prop="smallTypeName" width="100" label="构件小类">
+                            </el-table-column>
+                            <el-table-column prop="author" width="100" label="作者" show-overflow-tooltip>
+                            </el-table-column>
+                            <el-table-column prop="addUser" width="130" label="上传人">
+                            </el-table-column>
+                            <el-table-column prop="addTime" width="" label="时间">
+                            </el-table-column>
+                            <el-table-column prop="downloadTimes" width="80" label="下载次数">
+                            </el-table-column>
+                            <el-table-column label="操作" width="60">
+                                <template slot-scope="scope">
+                                    <i class="components-icon icon-edit"
+                                       @click=" override = true;uploadCompDialog = true;modifyCompData(scope.row)"></i>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </vue-scrollbar>
+                    <div class="pagination" style="text-align:center">
+                        <span
+                            style="float:left;line-height:42px;">共 {{tableData.totalRecords}} 条构件,共 {{tableData.totalPages}} 页,累计下载 {{downloadSum}} 次</span>
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                       :current-page="cur_page" :page-sizes="[1, 50, 100, 150]" :page-size="totalPage"
+                                       layout="sizes, prev, pager, next, jumper" :total="tableData.totalRecords">
+                        </el-pagination>
+                    </div>
+                </el-col>
+            </el-row>
+            <!--上传构件-->
+            <!--<el-dialog :visible.sync="uploadCompDialog" custom-class="up-component" :title="title">
+                <el-row>
+                    <el-col :span="24" class="relat">
+                        <span class="absol span-block label-w">构件文件：</span>
+                        <div class="simulate-label" v-text="updateComList.fileName"></div>
+                        <el-upload :on-success="updataSucess" :on-error="updateError" :multiple='true'
+                                   :show-file-list="false"
+                                   class="upload-demo"
+                                   :action="uploadUrl"
+                                   :on-preview="handlePreview"
+                                   :on-remove="handleRemove"
+                                   :file-list="fileList">
+                            <el-button type="primary" class="basic-btn update-btn" @click="overUpdate('update')"
+                                       v-show="!override">上传
+                            </el-button>
+                            <el-button type="primary" class="basic-btn update-btn" @click="overUpdate('cover')"
+                                       v-show="override">替换
+                            </el-button>
+                        </el-upload>
+
+                    </el-col>
+                    <el-col :span="24">
+                        <el-col :span="12" class="relat">
+                            <span class="absol span-block label-w">版本：</span>
+                            <span class="simulate-input substr " style="margin-left:80px;"
+                                  v-text="updateComList.version"></span>
+                        </el-col>
+                        <el-col :span="12" class="relat">
+                            <span class="absol span-block label-w">专业：</span>
+                            <span class="simulate-input substr " style="margin-left:80px;"
+                                  v-text="updateComList.productName"></span>
+                        </el-col>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-col :span="12" class="relat">
+                            <span class="absol span-block label-w">构件大类：</span>
+                            <span class="simulate-input substr " style="margin-left:80px;"
+                                  v-text="updateComList.bigType"></span>
+                        </el-col>
+                        <el-col :span="12" class="relat">
+                            <span class="absol span-block label-w">构件小类：</span>
+                            <span class="simulate-input substr " style="margin-left:80px;"
+                                  v-text="updateComList.smallType"></span>
+                        </el-col>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-col :span="12" class="relat">
+                            <span class="absol span-block label-w">构件编码：</span>
+                            <span class="simulate-input substr " v-show="!override" style="margin-left:80px;"
+                                  v-text="updateComList.componentCoding"></span>
+                            <el-input placeholder="请输入模板名称" v-show="override" v-model="updateComList.componentCoding"
+                                      style="left:80px;"></el-input>
+                        </el-col>
+                        <el-col :span="12" class="relat">
+                            <span class="absol span-block label-w">作者：</span>
+                            <span class="simulate-input substr " style="margin-left:80px;"
+                                  v-text="updateComList.author"></span>
+                        </el-col>
+
+                    </el-col>
+                    <el-col class="relat">
+                        <span class="absol span-block label-w">构件说明：</span>
+                        <el-input type="textarea" placeholder="请输入模板名称" class="projManage-remark" :maxlength="150"
+                                  style="margin-left:80px;" :rows="4" v-model="updateComList.remark"></el-input>
+                        <span class="info-pos absol"
+                              style="right:15px;bottom:3px;background:#fff;color:#ccc">({{!updateComList.remark ? (0 + "/" + 150) : (updateComList.remark.length + "/" + 150)}})</span>
+                    </el-col>
+                </el-row>
+                <div slot="footer" class="dialog-footer">
+                    <el-button class="dialog-btn dialog-btn-ok" type="primary"
+                               @click="uploadCompDialog = false;updateOk()">确 定
+                    </el-button>
+                    <el-button class="dialog-btn dialog-btn-cancel" @click="uploadCompDialog = false;updateCancel()">
+                        取 消
+                    </el-button>
+                </div>
+            </el-dialog>-->
+            <upload-dialog @uploadClose= uploadClose v-show="uploadCompDialog" :table-param="tableParam" :override="override" :upload-url="uploadUrl" :title="title" :is-show="uploadCompDialog" :data-list="updateComList" :downloadSum="downloadSum" ref="upload"></upload-dialog>
+            <!--云构件库-->
+            <z-tree @hidePanel=hidePanel :ztreeInfo="ztreeInfoParam" v-show="ModifyTree" :is-show='ModifyTree' ref="cloudTrees"></z-tree>
+        </div>
+    </div>
+</template>
+
+<script>
+    import '../../../static/css/components.css';
+    import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
+    import {basePath} from "../../utils/common.js";
+
+    import {getCitys, cloudTree,tests} from '../../api/getData.js';
+    import {
+        treeList,           //测试数据列表
+        SteelBigtypes,      //构件大类
+        SteelSmalltypes,    //构件小类
+        SteelExit,          //添加时判断是否存在
+        generate,           //token验证
+        SteelAdd,           //钢筋添加
+        SteelUpdate,        //钢筋更新
+        SteelDelete,       //钢筋删除
+        SteelList,          //钢筋列表
+        SteelCountDownload, //下载次数
+    } from '../../api/getData-yhj.js';
+    import zTree from "components/ComponentLib/zTree.vue";
+    import uploadDialog from "components/ComponentLib/upload-dialog.vue";
+    let deletArray = [];    //删除数组
+    let level;              //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
+    let maxLevel = -1;      //最大层级
+    let baseUrl = '';       //响应地址
+    export default {
+        data(){
+            return {
+                title: "上传构件文件",   //构件信息标题
+                selectDate: "",        //日期插件选择的日期
+                uploadCompDialog: false,//上传构件弹窗
+                ModifyTree: false,      //构件树修改弹窗
+                override: false,        //是否覆盖
+                searchKeyParams: {      //筛选栏的条件
+                    majorVal: "",       //版本
+                    bigType: "",        //大类
+                    smallType: '',      //小类
+                    searchVal: '',      //关键字
+                    startTime: "",      //开始时间
+                    endTime: "",        //结束时间
+
+                },
+                compTypeBig: ["不限"],    //构件大类
+                compTypeSmall: ["不限"],  //构件小类
+                versionsOptions: [{     //版本选择框
+                    value: '1.0.0',
+
+                }],
+                fileList: [],           //上传的文件信息
+                //分页的一些设置
+                cur_page: 1,            //第几页
+                totalPage: 1,          //每页多少条
+                downloadSum:0,          //下载次数
+                tableData: {},          //模拟列表数据
+                tableParam:{
+                    asc:false,          //排序
+                    bigTypeName:"",     //大类
+                    currentPage:1,      //当前页
+                    endTime:"",         //结束时间
+                    pageSize:10,         //每页显示多少条
+                    productId:2,        //产品id
+                    smallTypeName:"",   //小类
+                    sort:"editTime",    //排序
+                    startTime:"",       //开始时间
+                    title:""            //构件名称
+                },
+                uploadUrl:"",           //上传地址
+                updateComList: {     //上传构件的一些文件信息
+                    fileName: "",       //文件名称
+                    productName: "",    //产品名称
+                    componentCoding: "",//code编码
+                    smallType: '',      //小类
+                    bigType: "",        //大类
+                    author: "",         //作者
+                    version: "",        //版本
+                    componentFilePath:"",//构建文件路径
+                    pictureFilePath:"", //构建图片路径 ,
+                    summaryFilePath:"",//构建概要文件路径 ,
+                    name:'',            //构件名称
+                    remark: "",         //备注
+                },
+                ztreeInfoParam:{
+                    version:"2.0.0",
+                    productId:2
+                },
+            }
+        },
+        methods: {
+            hidePanel (isVisible) {
+                this.ModifyTree = isVisible;
+            },
+            uploadClose(updateInfo){
+                this.uploadCompDialog = updateInfo.visible;
+                if(updateInfo.data){
+                    this.tableData = updateInfo.data;
+                    this.downloadSum = updateInfo.count;
+                };
+
+
+            },
+            /**common-message(公用消息框)
+             * @params message   给出的错误提示
+             * @params success  成功处理的
+             * @params error    失败处理的
+             * */
+            commonConfirm(message, success, error, type){
+                this.$confirm(message, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: type
+                }).then(success).catch(error);
+            },
+            commonAlert(message){
+                this.$alert(message, '提示', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+
+                    }
+                })
+            },
+            commonMessage(message, type){
+                this.$message({
+                    type: type,
+                    message: message
+                })
+            },
+
+            //分页器事件
+            handleSizeChange(size){
+                console.log(`每页显示多少条${size}`);
+                this.totalPage = size;
+                this.tableParam.pageSize = size;
+                this.getTableList(baseUrl,this.tableParam);
+            },
+            handleCurrentChange(currentPage){
+                this.cur_page = currentPage;
+                this.tableParam.currentPage = currentPage;
+                this.getTableList(baseUrl,this.tableParam);
+//                console.log(`当前页${currentPage}`);
+            },
+
+            //上传
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
+           /* /!**
+             *上传成功回调的函数
+             * @params response 浏览器的响应返回值
+             * @params file     文件信息
+             * @params fileList 文件的信息
+             **!/
+
+            updataSucess(response, file, fileList){
+                this.updateComList = response.result;
+            },
+            /!**
+             *上传失败回调的函数
+             * @params err      上传失败的返回信息
+             * @params file     文件信息
+             * @params fileList 文件的信息
+             **!/
+            updateError(err, file, fileList){
+                this.commonMessage('上传失败哦。。。。', 'warning')
+            },
+            //上传构件清除数据
+            clearUploadInfo(){
+                for (var key in this.updateComList) {
+                    console.log(this.updateComList[key])
+                    this.updateComList[key] = '';
+                }
+            },
+
+            /!**
+             * 上传文件再次上传 （ps:覆盖之前的)
+             * @param type  1.update上传 2.cover修改页面
+             **!/
+            overUpdate(){
+                this.uploadUrl = `${baseUrl}component/gj/upload/2`;
+                this.fileList = [];
+            },*/
+            //获取接口地址
+            getBaseUrl(){
+                baseUrl = basePath(this.$route.path);
+            },
+            /**
+             * 获取构件大类
+             * @params url  响应地址
+             * @params param   响应参数
+             * */
+            getBigType(url,param){
+                SteelBigtypes({url:url,param:param}).then((data)=>{
+                    if(data.data.result!=null){
+                        this.compTypeBig = data.data.result;
+                        this.compTypeBig.unshift('不限');
+                    }
+                    this.searchKeyParams.bigType = this.compTypeBig[0];
+                    if(this.searchKeyParams.bigType!='不限'){
+                        this.getSmallType(baseUrl,{productId:2,bigType:this.searchKeyParams.bigType})
+                    }
+                })
+            },
+            /**
+             * 获取构件小类
+             * @params url  响应地址
+             * @params param   响应参数
+             * */
+            getSmallType(url,param){
+                SteelSmalltypes({url:url,param:param}).then((data)=>{
+                    if(data.data.result!=null){
+                        this.compTypeSmall = data.data.result;
+                        this.compTypeSmall.unshift('不限');
+                    }
+                    this.searchKeyParams.smallType = this.compTypeSmall[0];
+                })
+            },
+            //钢筋下载次数
+            getDownloadTimes(url,param){
+                SteelCountDownload({url:url,param:param}).then((data)=>{
+                   this.downloadSum = data.data.result;
+                })
+            },
+      /*      //创建时 token验证
+            getTokenId(){
+                generate({url:baseUrl}).then((data)=>{
+                    this.updateComList.token     = data.data.result;
+                })
+            },
+            //添加之前判断构件是否存在
+            exists(url,param){
+                SteelExit({url:url,param:param}).then((data)=>{
+                    console.log(data.data.result);
+                    let addParam = {
+                        author: this.updateComList.author,
+                        bigTypeName: this.updateComList.bigType,
+                        coding: this.updateComList.componentCoding,
+                        componentFilePath: this.updateComList.componentFilePath,
+                        description:  this.updateComList.remark,
+                        fileName:  this.updateComList.fileName,
+                        pictureFilePath:  this.updateComList.pictureFilePath,
+                        productId: 2,
+                        componentFileId:"",
+                        smallTypeName:  this.updateComList.smallType,
+                        summaryFilePath:  this.updateComList.summaryFilePath,
+                        title:  this.updateComList.name,
+                        token:  "",
+                        version:  this.updateComList.version
+                    }
+                    if(data.data.result){
+                        this.commonConfirm('构件已经存在，是否替换？',()=>{
+                        this.updateInfo(baseUrl,{productId:2,update:{
+                            coding:this.updateComList.componentCoding,
+                            compntFileId:this.updateComList.componentFileId,
+                            componentFilePath:this.updateComList.componentFilePath,
+                            description:this.updateComList.remark,
+                            fileChanged:true,
+                            fileName:this.updateComList.fileName,
+                            pictureFilePath:this.updateComList.pictureFilePath,
+                            summaryFilePath:this.updateComList.summaryFilePath,
+                            title:this.updateComList.name
+                        }})
+                        },()=>{},"warning")
+                    }else{
+                        this.setAddInfo(baseUrl,addParam)
+                    }
+                })
+            },
+            /!**
+             *钢筋添加功能
+             * @param url      响应地址
+             * @param param    响应参数
+             **!/
+            setAddInfo(url,param){
+                SteelAdd({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        this.commonMessage('添加构件成功','success');
+                        this.getTableList(baseUrl,this.tableParam);
+                    }
+                })
+            },
+            updateInfo(url,param){
+                SteelUpdate({url:url,param:param}).then((data)=>{
+                    if(data.data.code==200){
+                        this.commonMessage('更新构件成功','success');
+                        this.getTableList(baseUrl,this.tableParam);
+                    };
+                })
+            },*/
+            /**
+             * 删除构件信息
+             * @param url       响应地址
+             * @param param     响应参数
+             **/
+             deleteItem(url,param){
+                SteelDelete({url:url,param:param}).then((data)=>{
+                   if(data.data.code==200){
+                       this.commonMessage('删除成功','success');
+                       if(this.tableData.list.length===deletArray.length){
+                           this.getTableList(baseUrl,this.tableParam);
+                       }else if (deletArray.length) {
+                           for (let i = 0; i < deletArray.length; i++) {
+                               for (let j = 0; j < this.tableData.list.length; j++) {
+                                   if (this.tableData.list[j].componentFileId  == deletArray[i].componentId) {
+                                       this.tableData.list.splice(j, 1);
+                                   }
+                               }
+                           }
+                       }
+                       deletArray = [];
+                   }
+                })
+            },
+            //创建时 token验证
+            getTokenId(){
+                generate({url:baseUrl}).then((data)=>{
+                    this.updateComList.token = data.data.result;
+                })
+            },
+            /**
+             *钢筋数据列表
+             * @param url       //响应地址
+             * @param param     //响应参数
+             **/
+            getTableList(url,param){
+                SteelList({url:url,param:param}).then((data)=>{
+                    if( data.data.result!=null){
+                        this.tableData = data.data.result;
+                    }
+                    this.getDownloadTimes(baseUrl,{bigTypeName:param.bigTypeName,endTime:param.endTime,majorName:"",productId:param.productId,smallTypeName:param.smallTypeName,startTime:param.startTime,title:param.title});//下载次数
+                })
+            },
+            //修改构件默认数据
+            modifyCompData(item){
+                if (this.override) {
+                    this.title = "修改构件文件";
+                } else {
+                    this.title = "上传构件文件";
+                }
+                this.updateComList.title = item.name;
+                this.updateComList.bigType = item.bigTypeName;
+                this.updateComList.smallType = item.smallTypeName;
+                this.updateComList.fileName = item.fileName;
+                this.updateComList.author = item.author;
+                this.updateComList.componentCoding =  item.coding;
+                this.updateComList.remark = item.description;
+                this.updateComList.version = item.version;
+                this.updateComList.productName = this.tableData.productName;
+                this.updateComList.componentFileId = item.componentFileId;
+                this.$refs.upload.updateeDialogInfo(this.updateComList);
+            },
+            //上传构件清除数据
+            clearUploadInfo(){
+                for (var key in this.updateComList) {
+                    console.log(this.updateComList[key])
+                    this.updateComList[key] = '';
+                }
+            },
+            //上传构件
+            uploadComp(){
+                if (!this.override) {
+                    this.title = "上传构件文件";
+                } else {
+                    this.title = "修改构件文件";
+                }
+                this.fileList = [];
+                this.getTokenId();
+                console.log(this.updateComList,'listList');
+            },
+
+            /**
+             * 全选
+             * @params [{type array}]  selection  选中的队列对象
+             */
+
+            selectAll(selection){
+                deletArray =[];
+                selection.forEach(function (val, key) {
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,title:val.title})
+                    }
+                });
+//                console.log(deletArray, 'selectionall')
+            },
+
+            /**
+             * 单选
+             * @params [{type obj}] selection    选中的对象
+             * @params row 列
+             */
+            selectChecked(selection, row){
+                deletArray =[];
+                selection.forEach(function (val, key) {
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,title:val.title})
+                    }
+                })
+//                console.log(deletArray, 'selection')
+            },
+            //日期插件日期改变触发
+            changeData(val){
+                if (val) {
+                    this.searchKeyParams.startTime = val.split('-')[0].trim();
+                    this.searchKeyParams.endTime = val.split('-')[1].trim();
+                    this.searchKeyParams.startTime = new Date(this.searchKeyParams.startTime).toLocaleDateString();
+                    this.searchKeyParams.endTime = new Date(this.searchKeyParams.endTime).toLocaleDateString();
+
+                }
+                this.tableParam.startTime = this.searchKeyParams.startTime;
+                this.tableParam.endTime = this.searchKeyParams.endTime;
+                this.getTableList(baseUrl,this.tableParam);
+            },
+            //搜索功能
+            searchComp(){
+                 this.tableParam.title = this.searchKeyParams.searchVal;
+                 this.getTableList(baseUrl,this.tableParam);
+            },
+            //列表删除
+            deleteComp(){
+                if (!deletArray.length) {
+                    this.commonMessage('请选择要删除的文件', 'warning')
+                    return false;
+                }
+
+                this.commonConfirm('确定要删除吗', () => {
+
+
+                  this.deleteItem(baseUrl,{productId:2,del:deletArray});
+                }, () => {
+
+                }, 'warning')
+
+
+            },
+           /* //上传构件到服务器
+            updateOk(){
+                let updateParam = {
+                    coding: this.updateComList.componentCoding,
+                    compntFileId: this.updateComList.componentFileId,
+                    componentFilePath:this.updateComList.componentFilePath,
+                    description: this.updateComList.remark,
+                    fileChanged: false,
+                    fileName: this.updateComList.fileName,
+                    pictureFilePath: this.updateComList.pictureFilePath,
+                    summaryFilePath: this.updateComList.summaryFilePath,
+                    title: this.updateComList.name
+                }
+                if(updateParam.summaryFilePath && updateParam.pictureFilePath && updateParam.componentFilePath){
+                    updateParam.fileChanged = true;
+                }else{
+                    updateParam.fileChanged = false;
+                }
+
+                //保存上传到数据库
+                if (this.override) {
+                   this.updateInfo(baseUrl,{productId:2,update:updateParam})
+                } else {
+                    this.exists(baseUrl,{bigTypeName:this.updateComList.bigType,productId:2,smallTypeName:this.updateComList.smallType,title:this.updateComList.name,version:this.updateComList.version})
+                }
+                //保存修改
+//                this.updateComList = {};
+            },*/
+            //取消上传
+            updateCancel(){
+                this.updateComList = {};
+            },
+            //加载树结构
+            getCloudTree(){
+                this.ModifyTree = true;
+                this.$refs.cloudTrees.getZtree(baseUrl,this.ztreeInfoParam);
+            },
+            getData(){
+                this.getBaseUrl();                      //基础地址
+                this.getBigType(baseUrl,{productId:2}); //构件大类
+                this.getTableList(baseUrl,this.tableParam);//数据列表
+            },
+
+        },
+        mounted(){},
+        components: {VueScrollbar,zTree,uploadDialog},
+        watch: {
+            //查询大类
+            'searchKeyParams.bigType':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=""){
+                    if (newVal == '不限') {
+                        this.compTypeSmall = ['不限'];
+                        this.searchKeyParams.smallType = this.compTypeSmall[0]
+                    } else {
+                        this.getSmallType(baseUrl,{productId:2,bigType:newVal})
+                    }
+                    this.tableParam.bigTypeName = newVal;
+                    this.getTableList(baseUrl,this.tableParam);
+                }
+            },
+            //查询小类
+            'searchKeyParams.smallType':function(newVal,oldVal){
+                if(newVal!=oldVal && oldVal!=""){
+                    if (newVal == '不限') {
+                        this.compTypeSmall = ['不限'];
+                        this.searchKeyParams.smallType = this.compTypeSmall[0]
+                    }
+                    this.tableParam.smallTypeName = newVal;
+                    this.getTableList(baseUrl,this.tableParam);
+                }
+            }
+        },
+        created(){
+            this.getData();
+        },
+    }
+</script>
+
+<style scoped>
+
+</style>

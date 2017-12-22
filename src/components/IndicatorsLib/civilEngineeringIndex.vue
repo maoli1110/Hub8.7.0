@@ -1,6 +1,10 @@
 <template>
     <div>
+<<<<<<< HEAD
         <div class="order-management order-detail">
+=======
+        <div class="order-management">
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
             <div class="header">
                 <el-col :span="8">
                     <div>
@@ -15,6 +19,10 @@
                 <el-col :span="4">
                     <div class="advanced-search">
                         <el-button type="primary" class="basic-btn" @click="deepSearch = true">高级搜索</el-button>
+<<<<<<< HEAD
+=======
+                        <el-button type="primary" class="basic-btn" @click="deepSearch = true">指标排序</el-button>
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                     </div>
                 </el-col>
             </div>
@@ -22,9 +30,16 @@
             <div class="main">
                 <el-row class="tools-bar">
                     <el-col :span="20">
+<<<<<<< HEAD
                         <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-pass left-icon"></i><span class="btn-text">通过审核</span>
                         </el-button>
 
+=======
+                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-info-update left-icon"></i><span class="btn-text">更新指标</span>
+                        </el-button>
+                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-forbidden left-icon"></i><span class="btn-text">不更新</span>
+                        </el-button>
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                         <el-button type="primary" class="basic-btn" @click=""><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
                         </el-button>
                     </el-col>
@@ -41,6 +56,11 @@
                                 <span>{{scope.row.username}}({{scope.row.realname}})</span>
                             </template>
                         </el-table-column>
+<<<<<<< HEAD
+=======
+                        <el-table-column prop="bindingTime" label="状态" width="200"></el-table-column>
+                        <el-table-column prop="bindingTime" label="上传人" width="200"></el-table-column>
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                         <el-table-column prop="bindingTime" label="上传时间" width="200"></el-table-column>
                         <el-table-column prop="remarks" label="备注"></el-table-column>
                     </el-table>
@@ -311,7 +331,11 @@ export default {
 
 <style scoped>
 .order-management .main{
+<<<<<<< HEAD
   padding:20px;
+=======
+  padding: 20px;
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
 }
 .left-icon{
   float: left;

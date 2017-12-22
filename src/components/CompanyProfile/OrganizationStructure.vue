@@ -130,7 +130,7 @@ import {
 } from "../../utils/validate";
 
 //公用参数及常量定义
-let baseUrl = window.serverPath.builderUrl;
+let baseUrl;
 let selectedNode,selectedTreeId;
 const validateMobile = (rule, value, callback) => {
   if (validatephoneNumber(value)) {
@@ -253,6 +253,9 @@ export default {
         };
     },
     mounted() {
+        // 根据路由地址获取baseUrl
+        this.getBaseUrl();
+        // getOrgTreeList({url:baseUrl}).then(res => {
         // 获取原始树结构
         getOrgTreeList({url:baseUrl}).then(res => {
             // 组合树结构需要的参数
@@ -358,6 +361,11 @@ export default {
                 return tempWidth;
             }
         },
+        //获取接口地址
+        getBaseUrl(){
+            baseUrl = window.serverPath.builderUrl;
+            console.log(baseUrl,"baseUrl")
+        },
         zTreeBeforeExpand() {
             $("#organization-tree").width(this.getOrgTreeWidth()+300);
         },
@@ -381,6 +389,7 @@ export default {
         },
         //mouseOn显示负责人信息
         addHoverDom(treeId,treeNode) {
+            debugger
             console.log('add');
             console.log(treeId,'treeId')
             console.log(treeNode,'treeId')
@@ -390,9 +399,6 @@ export default {
              */
             selectedNode = treeNode;
             selectedTreeId = treeId;
-            let params = {
-                orgId: selectedNode.id,
-            };
             //获取对应节点的信息
             getOrgNodeInfo({url:baseUrl,params:params}).then((res)=>{
                 this.orgNodeInfo.admins = res.data.result.admins;
@@ -400,7 +406,9 @@ export default {
                 console.log(this.orgNodeInfo.admins,'admins')
             });
             if($(".el-popover").css('display') === 'block') return;
-            
+            let params = {
+                orgId: selectedNode.id,
+            };
             let aObj = $("#" + treeNode.tId + "_a");
             let mX = aObj.offset().left,
                 mY = aObj.offset().top;

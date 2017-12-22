@@ -4,11 +4,19 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">角色：</label>
                 <div class="el-form-item__content" style="margin-left: 48px;">
+<<<<<<< HEAD
                     <el-select v-model="select.role" placeholder="请选择">
                         <el-option
                             v-for="item in roleOptions"
                             :key="item.value"
                             :label="item.name"
+=======
+                    <el-select v-model="role" placeholder="请选择">
+                        <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                             :value="item.value">
                         </el-option>
                     </el-select>
@@ -17,12 +25,21 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">组织节点：</label>
                 <div class="el-form-item__content" style="margin-left: 76px;">
+<<<<<<< HEAD
                     <el-select v-model="select.orgNodes" placeholder="请选择">
                         <el-option
                             v-for="item in orgNodesOptions"
                             :key="item.orgCode"
                             :label="item.orgName"
                             :value="item.orgCode">
+=======
+                    <el-select v-model="role" placeholder="请选择">
+                        <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                         </el-option>
                     </el-select>
                 </div>
@@ -30,11 +47,19 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">数据类型：</label>
                 <div class="el-form-item__content" style="margin-left: 76px;">
+<<<<<<< HEAD
                     <el-select v-model="select.dataType" placeholder="请选择">
                         <el-option
                             v-for="item in dataTypeOptions"
                             :key="item.value"
                             :label="item.name"
+=======
+                    <el-select v-model="role" placeholder="请选择">
+                        <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                             :value="item.value">
                         </el-option>
                     </el-select>
@@ -44,7 +69,11 @@
         <div class="main"    style="position:relative">
             <div class="basic-aside">
                 <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
+<<<<<<< HEAD
                           style="width: 100%" @select-all="handleSelectionChange">
+=======
+                          style="width: 100%" @selection-change="handleSelectionChange">
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                     <el-table-column type="selection" width="55"></el-table-column>
                     <el-table-column label="全部">
                         <template slot-scope="scope">
@@ -58,7 +87,11 @@
 
             <div class="basic-content">
                 <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
+<<<<<<< HEAD
                           style="width: 100%" @select="handleSelectionChange">
+=======
+                          style="width: 100%" @selection-change="handleSelectionChange">
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
                     <el-table-column type="index" width="55" label="序号"></el-table-column>
                     <el-table-column prop="name" label="项目编号" width="100">
                     </el-table-column>
@@ -87,6 +120,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
   import {addReportPermissions,delReportPermissions,getDataType,getOrgNodes,getReportList,getReportListRoleId} from '../../api/getData-cxx.js';
   import {basePath} from '../../utils/common.js'
 export default {
@@ -104,6 +138,38 @@ export default {
       roleOptions:[],
       dataTypeOptions:[],
       orgNodesOptions:[],
+=======
+export default {
+  data() {
+    return {
+      radio: "1",
+      activeIndex: "",
+      role: "",
+      addAuthorizationDialogVisible: false,
+      modifyDialogVisible: false,
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕"
+        },
+        {
+          value: "选项2",
+          label: "双皮奶"
+        },
+        {
+          value: "选项3",
+          label: "蚵仔煎"
+        },
+        {
+          value: "选项4",
+          label: "龙须面"
+        },
+        {
+          value: "选项5",
+          label: "北京烤鸭"
+        }
+      ],
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
       roleTableData: [
         {
           name: "赵四",
@@ -178,6 +244,7 @@ export default {
       ]
     };
   },
+<<<<<<< HEAD
   watch: {
     select: {
 　　　　handler(newValue, oldValue) {
@@ -228,6 +295,11 @@ export default {
     
         }
     })
+=======
+  watch: {},
+  methods: {
+    handleSelectionChange(val) {}
+>>>>>>> 6f35a59f546bea79705a68894fe071f625462181
   }
 };
 </script>
