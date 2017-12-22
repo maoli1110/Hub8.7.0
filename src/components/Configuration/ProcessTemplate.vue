@@ -136,9 +136,7 @@
                 types.getProcessTemplateInfo(params).then(res => {
                     this.ProcessTableData = res.data.result.list;
                     this.total = res.data.result.lbPageInfo.totalNumber;
-                    this.editDialogVisible=false;
-
-                    
+                    this.editDialogVisible=false;                   
                 });
             },            
             orgTreeClick(event, treeId, treeNode) {
