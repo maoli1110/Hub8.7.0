@@ -204,7 +204,7 @@
 </template>
 
 <script>
-import '../../../static/css/components.css';
+import "../../../static/css/components.css";
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 
 export default {
@@ -225,22 +225,22 @@ export default {
         }
       ],
       rules: {
-        name: [{ required: false, message: "请输入姓名", trigger: "blur" }],
+        name: [{ required: false, message: "请输入3姓名", trigger: "blur" }],
         role: [{ required: true, message: "请输入角色", trigger: "blur" }],
         attribution: [{ required: true, message: "请输入归属", trigger: "blur" }]
       },
-      ruleForm:{
-        projectName:'',
-        buildingType:'',
-        buildingUse:'',
-        defenseProject:'',
-        basicForm:'',
-        seismicRating:'',
-        atlasSpecifications:'',
-        connectorForm:'',
-        implementationPhase:'',
-        pileType:'',
-        basalDepth:''
+      ruleForm: {
+        projectName: "",
+        buildingType: "",
+        buildingUse: "",
+        defenseProject: "",
+        basicForm: "",
+        seismicRating: "",
+        atlasSpecifications: "",
+        connectorForm: "",
+        implementationPhase: "",
+        pileType: "",
+        basalDepth: ""
       },
       options: [
         {
@@ -317,10 +317,10 @@ export default {
 </script>
 
 <style scoped>
-.order-management .main{
-  padding:20px;
+.order-management .main {
+  padding: 20px;
 }
-.left-icon{
+.left-icon {
   float: left;
   margin-top: -1px;
 }
@@ -345,5 +345,4 @@ export default {
   padding-bottom: 20px;
   border-bottom: 1px solid #e6e6e6;
 }
-
 </style>
