@@ -283,7 +283,7 @@ export default {
                     yield [key, tempzNodes[key]];
                 }
             }
-            
+
             this.zNodes = tempzNodes;
 
             for(let [key,value] of entries(tempzNodes)){
@@ -389,11 +389,10 @@ export default {
         },
         //mouseOn显示负责人信息
         addHoverDom(treeId,treeNode) {
-            debugger
-            console.log('add');
+           /* console.log('add');
             console.log(treeId,'treeId')
-            console.log(treeNode,'treeId')
-            /** 
+            console.log(treeNode,'treeId')*/
+            /**
              * 1.获取当前鼠标的位置
              * 2.更改属性显示界面，获取数据
              */
@@ -452,7 +451,7 @@ export default {
                 }
                 $("#organization-tree").width(this.getOrgTreeWidth());
             }
-            
+
             if(this.orgForm.resource === '分公司'){
                 this.$refs.companyForm.validate(valid => {
                     if (valid) {
@@ -486,7 +485,7 @@ export default {
                       return false;
                     }
                 });
-                
+
             }
         }
     },
@@ -612,7 +611,7 @@ export default {
     background-position: 17px 0;
 }
 .org .ztree li span.button.switch {
-    width: 50px !important; 
+    width: 50px !important;
     height: 59px;
 }
 

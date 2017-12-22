@@ -29,6 +29,8 @@
                     <template slot-scope="scope">
                         <span class="icon-template icon-edit"
                               @click="setTemplate= true;openWindow('set','16a5da8f68bc45f08755309dee7bec89')"></span>
+                        @click="setTemplate= true;openCreateCalendar('set','16a5da8f68bc45f08755309dee7bec89')"></span>
+                        <!--openWindow('set','16a5da8f68bc45f08755309dee7bec89')-->
                     </template>
                 </el-table-column>
             </el-table>
@@ -63,78 +65,80 @@
                 <el-button class="dialog-btn dialog-btn-cancel" @click="addVisible = false">取 消</el-button>
             </span>
         </el-dialog>
-        <el-dialog custom-class="edit-template" :visible.sync="setTemplate" title="设置模板" >
-            <template>
-                <el-row class="calendar-main">
-                    <el-col :span="6" class="edit-dup" >
-                        <span class="">批量修改重复范围</span>
-                        <el-col class="calendar-time" :span="20">
-                            <template>
-                                <div class="block">
-                                    <el-date-picker @change="modifyDataPicker" format="yyyy.MM.dd"
-                                                    v-model="selectInteral"
-                                                    type="daterange"
-                                                    placeholder="选择日期范围">
-                                    </el-date-picker>
-                                </div>
-                            </template>
-                        </el-col>
-                        <el-col>
-                            <template>
-                                <el-checkbox-group v-model="checkList" @change="checkedList">
-                                    <el-checkbox v-for="item in workDay" :label="item.key" :key="item.key">
-                                        {{item.name}}
-                                    </el-checkbox>
-                                </el-checkbox-group>
-                            </template>
-                        </el-col>
-                        <el-col style="padding:10px 0 ">
-                            <el-button type="primary" size="small" @click="setCalendarDate('work')">工作日</el-button>
-                            <el-button type="primary" size="small" @click="setCalendarDate('rest')">非工作日</el-button>
-                        </el-col>
-                    </el-col>
-                    <el-col :span="17"  class="cal-template" >
-                        <el-col class="template-tips">克隆：{{!templateInfo.name?template.name:templateInfo.name}}</el-col>
-                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
-                            <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
-                                <div class="calendar"></div>
+            <!--<el-dialog custom-class="edit-template" :visible.sync="setTemplate" title="设置模板" >
+                <template>
+                    <el-row class="calendar-main">
+                        <el-col :span="6" class="edit-dup" >
+                            <span class="">批量修改重复范围</span>
+                            <el-col class="calendar-time" :span="20">
+                                <template>
+                                    <div class="block">
+                                        <el-date-picker @change="modifyDataPicker" format="yyyy.MM.dd"
+                                                        v-model="selectInteral"
+                                                        type="daterange"
+                                                        placeholder="选择日期范围">
+                                        </el-date-picker>
+                                    </div>
+                                </template>
                             </el-col>
-                        </vue-scrollbar>
+                            <el-col>
+                                <template>
+                                    <el-checkbox-group v-model="checkList" @change="checkedList">
+                                        <el-checkbox v-for="item in workDay" :label="item.key" :key="item.key">
+                                            {{item.name}}
+                                        </el-checkbox>
+                                    </el-checkbox-group>
+                                </template>
+                            </el-col>
+                            <el-col style="padding:10px 0 ">
+                                <el-button type="primary" size="small" @click="setCalendarDate('work')">工作日</el-button>
+                                <el-button type="primary" size="small" @click="setCalendarDate('rest')">非工作日</el-button>
+                            </el-col>
+                        </el-col>
+                        <el-col :span="17"  class="cal-template" >
+                            <el-col class="template-tips">克隆：{{!templateInfo.name?template.name:templateInfo.name}}</el-col>
+                            <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
+                                <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
+                                    <div class="calendar"></div>
+                                </el-col>
+                            </vue-scrollbar>
 
-                    </el-col>
-                    <el-col :span="17" :offset="7" class="template-legend" >
-                        图例：
-                        <span class="legend-black">1</span>工作日&nbsp;&nbsp;
-                        <span class="legend-red">1</span>非工作日
-                    </el-col>
-                </el-row>
-            </template>
-            <span slot="footer" class="dialog-footer" >
-                    <el-button class="dialog-btn dialog-btn-ok" type="primary"
-                               @click="setTemplate = false;setTemplateOK()">确 定</el-button>
-                    <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
-                </span>
-        </el-dialog>
-        <!--查看模板-->
-        <el-dialog custom-class="edit-template prview-template" :visible.sync="lookTemplate" title="查看模板" >
-            <template>
-                <el-row class="calendar-main">
-                    <el-col :span="24"  class="cal-template" style="margin:0">
-                        <el-col class="template-tips" style="line-height:58px;">
-                            <el-col :span="4">{{template.name}}</el-col>
-                            <el-col :span="6">
-                                <span class="absol span-block" style="width:108px;top:0">日历有效范围：</span><el-input v-model = "priveiwDate" readonly placeholder="显示时间范围" style="margin-left:108px;"></el-input>
-                            </el-col>
                         </el-col>
-                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
-                            <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
-                                <div class="calendar"></div>
+                        <el-col :span="17" :offset="7" class="template-legend" >
+                            图例：
+                            <span class="legend-black">1</span>工作日&nbsp;&nbsp;
+                            <span class="legend-red">1</span>非工作日
+                        </el-col>
+                    </el-row>
+                </template>
+                <span slot="footer" class="dialog-footer" >
+                        <el-button class="dialog-btn dialog-btn-ok" type="primary"
+                                   @click="setTemplate = false;setTemplateOK()">确 定</el-button>
+                        <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
+                    </span>
+            </el-dialog>
+            <create-calendar v-show="setTemplate" :isCreateCalendar="setTemplate" @hidePanel=hidePanelNew ref="setTemplate"></create-calendar>
+            <!--查看模板-->
+                <!--<el-dialog custom-class="edit-template prview-template" :visible.sync="lookTemplate" title="查看模板" >
+                    <template>
+                        <el-row class="calendar-main">
+                            <el-col :span="24"  class="cal-template" style="margin:0">
+                                <el-col class="template-tips" style="line-height:58px;">
+                                    <el-col :span="4">{{template.name}}</el-col>
+                                    <el-col :span="6">
+                                        <span class="absol span-block" style="width:108px;top:0">日历有效范围：</span><el-input v-model = "priveiwDate" readonly placeholder="显示时间范围" style="margin-left:108px;"></el-input>
+                                    </el-col>
+                                </el-col>
+                                <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
+                                    <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
+                                        <div class="calendar"></div>
+                                    </el-col>
+                                </vue-scrollbar>
                             </el-col>
-                        </vue-scrollbar>
-                    </el-col>
-                </el-row>
-            </template>
-        </el-dialog>
+                        </el-row>
+                    </template>
+                </el-dialog>-->
+                <priview-calendar v-show="lookTemplate" :isPrviewCalendar="lookTemplate" @hidePanel=hidePanelLook ref="priviewTemplate"></priview-calendar>
     </div>
 </template>
 
@@ -144,6 +148,8 @@
     import {FormIndex} from "../../utils/common.js";
     import {getWorksetingList} from '../../api/getData.js'
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
+    import createCalendar from 'components/Configuration/create-calendar.vue';
+    import priviewCalendar from 'components/Configuration/priview-calendar.vue';
     let calendarTemplate;//日历模板初始化
     let deletArray = [];//删除模板删除数组
     let isWekendWorkDates = [];//工作日
@@ -194,9 +200,17 @@
             }
         },
         components: {
-            VueScrollbar//滚动插件
+            VueScrollbar,//滚动插件
+            createCalendar,
+            priviewCalendar
         },
         methods: {
+            hidePanelNew(visible){
+                this.setTemplate = visible;
+            },
+            hidePanelLook(visible){
+                this.lookTemplate = visible;
+            },
             getData(){//初始化方法
                 for (let i = 0; i < this.tableData.length; i++) {
                     this.tableData[i].index = 3 * 10 + this.tableData[i].index;
@@ -377,6 +391,7 @@
 
                 this.setTemplate = true;
                 this.openWindow('set', '123')
+                this.$refs.setTemplate.openWindow('set', '123')
             },
             //添加标签
             addTemplate(){
@@ -422,9 +437,9 @@
                 let startTime,endTime;
                 setTimeout(()=>{
                     if(!this.selectInteral.length){
-                       let fullYear =  new Date().getFullYear();
-                       startTime = fullYear+'/01/01';
-                       endTime = fullYear+"/12/30"
+                        let fullYear =  new Date().getFullYear();
+                        startTime = fullYear+'/01/01';
+                        endTime = fullYear+"/12/30"
                     }else{
                         startTime = this.selectInteral[0];
                         endTime = this.selectInteral[1];
@@ -597,7 +612,7 @@
                 }
                 console.log(restDate, '设置工作日和非工作日');
 //                if(ct.calendarFalg==0){
-                    this.restDates = restDate
+                this.restDates = restDate
 //                }
                 console.log(this.restDates,'复制成功了没有');
             },
@@ -608,13 +623,14 @@
                     this.lookTemplate  =true;
                     this.template.name=row.name;
                     this.openWindow('show','123')
+                    this.$refs.priviewTemplate.openWindow('show','123')
                 }
             },
 
             /* 详情页面日历初始化 */
             detailinittocopystate() {
-                 restDates = this.restDates;
-//                console.log(restDates,'restDates');
+                restDates = this.restDates;
+                //                console.log(restDates,'restDates');
                 //修改页面渲染逻辑
                 if(ct.calendarFalg == 0){//复制24小时
                     if (restDates != null && restDates.length > 0) {// 已经设置过的
@@ -656,30 +672,30 @@
                 calendarTemplate.readOnly(true);
             },
             /* 详情页面日历之外初始化 */
-             detailCalendarSetMethod() {
+            detailCalendarSetMethod() {
 //                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null&& "" != ct.endDate) {
-                    // 创建日历模板
-                 let startTime,endTime;
-                 setTimeout(()=>{
-                     if(!this.selectInteral.length){
-                         let fullYear =  new Date().getFullYear();
-                         startTime = fullYear+'/01/01';
-                         endTime = fullYear+"/12/30"
-                     }else{
-                         startTime = this.selectInteral[0];
-                         endTime = this.selectInteral[1];
-                     }
-                     this.priveiwDate = new Date(startTime).toLocaleDateString()+"-"+new Date(endTime).toLocaleDateString();
-                     calendarTemplate = new CalendarSet(startTime, endTime);
-                     console.log(restDates,'rest')
-                     this.detailinittocopystate();
-                 })
-                    /*setTimeout(()=>{
-                        this.priveiwDate = this.selectInteral[0]+"-"+this.selectInteral[1]
-                        calendarTemplate = new CalendarSet(this.selectInteral[0],this.selectInteral[1]);
-                        this.detailinittocopystate();
-                    })*/
-//                }
+                // 创建日历模板
+                let startTime,endTime;
+                setTimeout(()=>{
+                    if(!this.selectInteral.length){
+                        let fullYear =  new Date().getFullYear();
+                        startTime = fullYear+'/01/01';
+                        endTime = fullYear+"/12/30"
+                    }else{
+                        startTime = this.selectInteral[0];
+                        endTime = this.selectInteral[1];
+                    }
+                    this.priveiwDate = new Date(startTime).toLocaleDateString()+"-"+new Date(endTime).toLocaleDateString();
+                    calendarTemplate = new CalendarSet(startTime, endTime);
+                    console.log(restDates,'rest')
+                    this.detailinittocopystate();
+                })
+                /*setTimeout(()=>{
+                 this.priveiwDate = this.selectInteral[0]+"-"+this.selectInteral[1]
+                 calendarTemplate = new CalendarSet(this.selectInteral[0],this.selectInteral[1]);
+                 this.detailinittocopystate();
+                 })*/
+                //                }
             },
         },
         computed: {
@@ -699,3 +715,5 @@
     }
 
 </style>
+
+
