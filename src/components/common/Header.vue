@@ -1,26 +1,31 @@
 <template>
-    <div class="header">
-        <div class="logo left-bar">中国公路工程咨询集团有限公司</div>
-        <div class="right-bar">
-            <div class="issue" title="帮助中心" @click="issueShow=true"></div>
-            <div class="user-info">
-                <el-dropdown trigger="click" @command="handleCommand">
-                    <div class="el-dropdown-link">
-                        <img class="user-logo" src="../../../static/img/dog.jpg">
-                        <span style="display:inline-block;">{{username}}</span>
-                    </div>
-                    <el-dropdown-menu slot="dropdown" class="el-popper">
-                        <el-dropdown-item command="changePassword">
-                            <span class="el-icon-edit"></span> 修改密码</el-dropdown-item>
-                        <el-dropdown-item command="modifyAvatar">
-                            <span class="el-icon-edit"></span> 修改头像</el-dropdown-item>
-                        <el-dropdown-item command="loginout">绑定通行证</el-dropdown-item>
-                        <el-dropdown-item command="corporateInformation">企业信息</el-dropdown-item>
-                        <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
-                        <div x-arrow="" class="popper__arrow" style="left: 40px;"></div>
-                    </el-dropdown-menu>
-                </el-dropdown>
+    <div>
+        <div class="header">
+            <div class="logo left-bar">中国公路工程咨询集团有限公司</div>
+            <div class="configuration" @click="setting">
+                <span class="el-icon-setting" style="font-size:24px"></span>
             </div>
+            <div class="right-bar">
+                <div class="issue" title="帮助中心" @click="issueShow=true"></div>
+                <div class="user-info">
+                    <el-dropdown trigger="click" @command="handleCommand">
+                        <div class="el-dropdown-link">
+                            <img class="user-logo" :src="imgDataUrl">
+                            <span style="display:inline-block">{{username}}</span>
+                        </div>
+                        <el-dropdown-menu slot="dropdown" class="el-popper">
+                            <el-dropdown-item command="changePassword">
+                                <span class="iconfont icon-Password"></span> 修改密码</el-dropdown-item>
+                            <el-dropdown-item command="modifyAvatar">
+                                <span class="iconfont icon-user"></span> 修改头像</el-dropdown-item>
+                            <el-dropdown-item command="loginout">绑定通行证</el-dropdown-item>
+                            <el-dropdown-item command="loginout">安全退出</el-dropdown-item>
+                            <div x-arrow="" class="popper__arrow" style="left: 40px;"></div>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
+            </div>
+
         </div>
         <!-- 修改密码 -->
         <el-dialog title="修改密码" :visible.sync="changePasswordDialogVisible" size='sign'>
@@ -41,6 +46,10 @@
                 <el-button @click="changePasswordDialogVisible= false" class="dialog-btn">取消</el-button>
             </span>
         </el-dialog>
+        <!-- 修改图像 -->
+        <my-upload field="img" @crop-success="cropSuccess" @crop-upload-success="cropUploadSuccess" @crop-upload-fail="cropUploadFail"
+            v-model="myUploadShow" :width="300" :height="300" url="https://httpbin.org/post" :params="params" :headers="headers"
+            img-format="png"></my-upload>
         <!-- 企业信息 -->
         <el-dialog title="企业信息" :visible.sync="corporateInformationDialogVisible" custom-class="corporateInformationDialog">
             <div>
@@ -57,17 +66,19 @@
                         <div style="float:right;color:#fff;background:#6595f2;padding:0 31px;cursor:pointer;border-radius: 4px">替换</div>
                     </div>
                 </div>
+                <div>
+                    <label class="el-form-item__label"></label>
+                    <div style="margin:10px 0 20px 83px">
+                        <div>登录页背景图片建议尺寸：1920像素×560像素
+                            <br />只支持JPGPNGGIF格式，大小不超过5MB</div>
+                    </div>
+                </div>
                 <div class="el-form_">
-                    <label class="el-form-item__label" >预览：</label>
+                    <label class="el-form-item__label">预览：</label>
                     <div class="el-form-item__content" style="height:450px;margin-left:85px;border:1px solid #e6e6e6;">
                         <img src="http://upload.17u.net/uploadpicbase/2013/10/12/aa/201310121054516850.jpg" alt="" style="width:100%;height:100%">
                     </div>
                 </div>
-                <!-- <el-form-item label="登录页背景：" >
-                    <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off" style="width:80%"></el-input>
-                    <div v-show="isEdit" style="float:right;color:#fff;background:#6595f2;padding:0 30px;cursor:pointer;border-radius: 4px">替换</div>
-                    <div v-show="!isEdit" class="corporate-text">如果你的意识还能控制你的大腿，那你一定跳不出最美的舞蹈。</div>
-                </el-form-item> -->
 
             </div>
             <!-- 企业信息 -->
@@ -131,26 +142,41 @@
             </div>
         </el-dialog>
         <!--帮助中心-->
-        <v-issue :is-show="issueShow" @closeDialog = closeDialog :user-info="loginInfo" ref="issueAbout"></v-issue>
+        <v-issue :is-show="issueShow" @closeDialog=closeDialog :user-info="loginInfo" ref="issueAbout"></v-issue>
     </div>
+
 
 
 </template>
 <script>
     import axios from "axios";
+    import myUpload from './Upload.vue';
     import vIssue from "components/common/issue.vue";
     export default {
+        components: {
+            'my-upload': myUpload,
+            vIssue
+        },
         data() {
             return {
                 name: "鱼遇雨欲与雨语",
                 showSetting: false,
                 currentIndex: 0,
                 index: 1,
-                corporateItems: ['企业信息', '登录页管理'],
+                corporateItems: ["企业信息", "登录页管理"],
                 changePasswordDialogVisible: false,
                 corporateInformationDialogVisible: false,
                 isEdit: false,
-                isLoginPage:false,
+                isLoginPage: false,
+                myUploadShow: false,
+                params: {
+                    token: '123456798',
+                    name: 'avatar'
+                },
+                headers: {
+                    smail: '*_~'
+                },
+                imgDataUrl: '../../../static/img/dog.jpg',
                 ruleForm: {
                     password: "",
                     newPassword: "",
@@ -174,14 +200,21 @@
                     }]
                 },
                 imageUrl: "",
-                issueShow:false,
-                loginInfo:{
-                    phone:18888888881,
-                    itemList:[
-                        {value:'大类'},
-                        {value:'小类'},
-                        {value:'鲁班'},
-                        {value:'钢筋'},
+                issueShow: false,
+                loginInfo: {
+                    phone: 18888888881,
+                    itemList: [{
+                            value: '大类'
+                        },
+                        {
+                            value: '小类'
+                        },
+                        {
+                            value: '鲁班'
+                        },
+                        {
+                            value: '钢筋'
+                        },
                     ]
                 }
             };
@@ -193,7 +226,33 @@
             }
         },
         methods: {
-            closeDialog(visible){
+            toggleShow() {
+                this.myUploadShow = !this.myUploadShow;
+            },
+            cropSuccess(data, field, key) {
+                // if (field == 'avatar1') {
+                //     this.avatarUrl1 = data;
+                // } else if (field == 'avatar2') {
+                //     this.avatarUrl2 = data;
+                // } else {
+                //     this.avatarUrl3 = data;
+                // }
+                console.log('-------- 剪裁成功 --------');
+            },
+            cropUploadSuccess(data, field, key) {
+                console.log('-------- 上传成功 --------');
+                console.log(data);
+                this.imgDataUrl = data.files.img
+                console.log('field: ' + field);
+                console.log('key: ' + key);
+            },
+            cropUploadFail(status, field, key) {
+                console.log('-------- 上传失败 --------');
+                console.log(status);
+                console.log('field: ' + field);
+                console.log('key: ' + key);
+            },
+            closeDialog(visible) {
                 this.issueShow = visible;
             },
             handleCommand(command) {
@@ -210,7 +269,7 @@
                         this.changePasswordDialogVisible = true;
                         break;
                     case "modifyAvatar":
-                        this.changePasswordDialogVisible = true;
+                        this.toggleShow()
                         break;
                     case "corporateInformation":
                         this.corporateInformationDialogVisible = true;
@@ -235,9 +294,7 @@
                 return isJPG && isLt2M;
             },
             setting() {
-                this.$emit("authority");
-                this.showSetting = false;
-                this.$router.push("/order-management");
+                this.corporateInformationDialogVisible=true
             },
             back() {
                 this.$emit("authority");
@@ -255,7 +312,7 @@
                         return false;
                     }
                 });
-            }
+            },
         },
         created() {
             if (
@@ -269,7 +326,7 @@
                 this.showSetting = true;
             }
         },
-        components:{vIssue}
+
     };
 
 </script>
@@ -289,18 +346,25 @@
         text-align: center;
         font-size: 23px;
         line-height: 84px;
-        padding:0 10px;
+        padding: 0 10px;
     }
 
-    .header .right-bar{float:right;width:300px;height:90px;line-height:90px;}
+    .header .right-bar {
+        float: right;
+        width: 300px;
+        height: 90px;
+        line-height: 90px;
+    }
+
     .user-info {
         float: right;
         margin-right: 190px;
         font-size: 16px;
         color: #fff;
-        float:right;
-        margin-right:10px;
+        float: right;
+        margin-right: 10px;
     }
+
     .user-info .el-dropdown-link {
         position: relative;
         display: inline-block;
@@ -327,10 +391,10 @@
         margin-top: 50px;
         margin-left: -25px;
     }
-    .el-form_+.el-form_{
-        margin-top: 20px
-    }
 
+    .el-form_+.el-form_ {
+        margin-top: 20px;
+    }
     /* .el-form-item__label {
         margin-right: 20px;
     } */
@@ -345,7 +409,6 @@
         height: 40px;
         padding-left: 20px;
         margin: 25px 20px 0 0;
-        border: 1px solid #fff;
         box-sizing: border-box;
         border-radius: 2px;
         float: right;
@@ -368,12 +431,12 @@
         width: 50%;
         height: 40px;
         line-height: 40px;
-        text-align: center
+        text-align: center;
     }
 
     .corporate-checked {
         background-color: #6595f2;
-        color: #fff
+        color: #fff;
     }
 
     .avatar-uploader .el-upload {
@@ -406,17 +469,15 @@
         display: block;
     }
 
-
-
-    .el-form-item {
+    .corporateInformationDialog .el-form-item {
         width: 50%;
     }
 
-    .el-form-item:nth-child(odd) {
+    .corporateInformationDialog .el-form-item:nth-child(odd) {
         float: left;
     }
 
-    .el-form-item:nth-child(even) {
+    .corporateInformationDialog .el-form-item:nth-child(even) {
         margin-left: 50%;
     }
 
