@@ -383,7 +383,6 @@
 </template>
 
 <script>
-    import {basePath} from "../../utils/common.js";                         //基础路径返回
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';    //滚动组件
     import "../../../static/zTree/js/jquery.ztree.exhide.min.js";
     import {
@@ -413,7 +412,6 @@
     let deletArray = [];        //删除projIds队列
     let monitorPpids = [];
     let countIndex = 0;         //表格选中状态个数统计
-    let baseUrl;                //基础路径
     let authUserInfoListCopy;   //授权人员搜索deepCopy数据
     let deptIds =[];
     export default {
@@ -565,8 +563,8 @@
         },
         methods: {
             //组织结构树
-            getOrgzTreeList(url){
-                getOrgTreeList({url:url}).then((data)=>{
+            getOrgzTreeList(){
+                getOrgTreeList().then((data)=>{
                     if(!data.data.result.length){return false}
                     data.data.result.forEach((val,key)=>{//添加icon
                         if(val.root){
@@ -591,13 +589,12 @@
                             this.tableParam.deptIds.push(val.id)
                         }
                     })
-                    this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+                    this.getProjectList(this.tableParam)            //bim库列表
                 });
             },
             //默认加载数据
             getData(name,id){
-                this.getBaseUrl();      //获取基础路径
-                this.getOrgzTreeList(baseUrl);
+                this.getOrgzTreeList();
                 let currentRoute = this.$route.path.substr(0,this.$route.path.length-2);//当前路由信息
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;         //回收站的状态
@@ -616,7 +613,7 @@
                 this.tableParam.pageParam.page = this.cur_page;
                 this.tableParam.pageParam.size = this.totalPages;
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
-//                this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+//                this.getProjectList(this.tableParam})            //bim库列表
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //bim库bim属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
             },
@@ -673,33 +670,30 @@
             handleSizeChange(size){
                 this.tableParam.pageParam.size = size;
                 this.totalPages = size;
-                this.getProjectList({url:baseUrl,param:this.tableParam})
+                this.getProjectList(this.tableParam)
             },
             handleCurrentChange(currentPage){
                 this.cur_page = currentPage;
                 this.tableParam.pageParam.page = currentPage;
-                this.getProjectList({url:baseUrl,param:this.tableParam})
+                this.getProjectList(this.tableParam)
             },
             //tableList搜索功能
             versionChange(val){
                 this.tableParam.latest = val;
-                this.getProjectList({url:baseUrl,param:this.tableParam})
+                this.getProjectList(this.tableParam)
             },
             //表格列表搜索
             tableListSearch(event){
                 if(event.type=='click' ||event.keyCode==13){
 //                    if(!this.filterParams.searchVal){return false;}
                     this.tableParam.searchKey = this.filterParams.searchVal;
-                    this.getProjectList({url:baseUrl,param:this.tableParam})
+                    this.getProjectList(this.tableParam)
                 }
             },
-            //获取地址
-            getBaseUrl(){
-                baseUrl = basePath(this.$route.path);
-            },
+
             //获取属性
             getProjGenreEvent(isDelete,packageType){
-                getProjGenre({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=> {
+                getProjGenre({isDelete:isDelete,packageType:packageType}).then((data)=> {
                     if (data.data.result!=null) {
                         this.bimOptions = data.data.result;
                         this.filterParams.bimVal = this.bimOptions[0].value;
@@ -708,7 +702,7 @@
             },
             //获取专业
             getProjTypeEvent(isDelete,packageType){
-                getProjType({url:baseUrl,isDelete:isDelete,packageType:packageType}).then((data)=>{
+                getProjType({isDelete:isDelete,packageType:packageType}).then((data)=>{
                     if(data.data.result){
                         this.majorOptions = data.data.result;
                         this.filterParams.majorVal = this.majorOptions[0].value;
@@ -743,7 +737,7 @@
                        console.log(treeNode.id,'first')
                    }
                }
-                this.getProjectList({url:baseUrl,param:this.tableParam});
+                this.getProjectList(this.tableParam);
                 //关闭树结构的窗口
                 setTimeout(function(event, treeId, treeNode) {
                     $(".el-select-dropdown__item.selected").click();
@@ -765,9 +759,9 @@
 
             },
             //创建->获取授权人员
-            getRootMan(baseUrl,param){
+            getRootMan(param){
 //                deptId = !deptId?"d68ceeb2d02043bd9ea5991ac44d649b":deptId;
-                getProjAuthUserInfos({url:baseUrl,param:param}).then((data)=>{
+                getProjAuthUserInfos(param).then((data)=>{
                     this.authUserInfoList = data.data.result; //可授权人员列表
                     authUserInfoListCopy = data.data.result;  //可授权人员deep_copy
                     if(this.authUserInfoList==null){
@@ -802,7 +796,7 @@
                 console.log($($(event.target)),'12313');
                 this.tableParam.pageParam.orders[0].property = fileName;
                 this.tableParam.pageParam.orders[0].direction = parseInt(sort);
-                this.getProjectList({url:baseUrl,param:this.tableParam})
+                this.getProjectList(this.tableParam)
             },
             /**
              * bim列表-删除接口
@@ -814,7 +808,7 @@
                 deleteProjects(params).then((data)=>{
                     if(data.data.code==200){
                         if(deletArray.length==this.tableData.length){      //删除整页重新渲染数据
-                            this.getProjectList({url:baseUrl,param:this.tableParam})
+                            this.getProjectList(this.tableParam)
                         }else if(deletArray.length){
                             for(let i = 0;i<deletArray.length;i++){     //逐个删除的时候手动抽取
                                 for(let j = 0;j<this.tableData.length;j++){
@@ -844,7 +838,7 @@
                 deleteProject(params).then((data)=>{
                     if(data.data.code==200){
                         deletArray = [];
-                        this.getProjectList({url:baseUrl,param:this.tableParam});
+                        this.getProjectList(this.tableParam);
                         this.commonMessage('删除成功','success');
                         this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                     }
@@ -861,7 +855,7 @@
 //                    console.log(data.data.result);
                     if(data.data.code==200){
                         deletArray = [];
-                        this.getProjectList({url:baseUrl,param:this.tableParam});
+                        this.getProjectList(this.tableParam);
                         this.commonMessage('还原成功','success');
                     }
                 })
@@ -975,11 +969,11 @@
                 }
                 if(type=='whileData'){
                     this.commonConfirm('删除选中工程?',()=>{
-                    this.delTableList({url:baseUrl,param:{packageType:this.$route.params.typeId,projIds:deletArray}});
+                    this.delTableList({packageType:this.$route.params.typeId,projIds:deletArray});
                 },()=>{},'warning')
                 }else if(type=='wipeData'){
                     this.commonConfirm('确认删除回收站工程？删除后不可恢复！',()=>{
-                        this.delRecycle({url:baseUrl,param:{deleteAll:false,packageType:this.$route.params.typeId,projIds:deletArray}})
+                        this.delRecycle({deleteAll:false,packageType:this.$route.params.typeId,projIds:deletArray})
                     },()=>{},'warning')
                 }
             },
@@ -989,13 +983,13 @@
                     this.commonMessage('没有选中工程','warning');return false;
                 }
                 this.commonConfirm('还原选中工程?',()=>{
-                    this.tableListRestore({url:baseUrl,param:{packageType:this.$route.params.typeId,deleteAll:false,projIds:deletArray}});
+                    this.tableListRestore({packageType:this.$route.params.typeId,deleteAll:false,projIds:deletArray});
                 },()=>{},'warning')
             },
             //回收站清空
             dataEmpty(){
                 this.commonConfirm('确认清空回收站所有内容吗？请谨慎操作！',()=>{
-                    this.delRecycle({url:baseUrl,param:{packageType:this.$route.params.typeId,deleteAll:true,projIds:[]}})
+                    this.delRecycle({packageType:this.$route.params.typeId,deleteAll:true,projIds:[]})
                 },()=>{},'warning')
                 console.log('回收站清空')
             },
@@ -1079,7 +1073,7 @@
             },
             //添加弹窗授权项目部树结构
             getTree(type,deptId){
-                getOrgTreeList({url:baseUrl}).then(res => {
+                getOrgTreeList().then(res => {
                     this.proDepartNodes = res.data.result;
                     if(type=='modify' && deptId){
                         this.proDepartNodes.forEach((val,key)=>{
@@ -1100,8 +1094,8 @@
              * @params url      响应地址
              * @params param    参数
              */
-            newCreateProject(url,param){
-                createProject({url:url,param:param}).then((data)=>{
+            newCreateProject(param){
+                createProject(param).then((data)=>{
                     if(data.data.code==500){
                         this.commonMessage(data.data.msg,'warning')
                     }else if(data.data.code==200){
@@ -1110,28 +1104,28 @@
                         this.clearCreateParam();
                         this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
                         setTimeout(()=>{
-                            this.getProjectList({url:baseUrl,param:this.tableParam});
+                            this.getProjectList(this.tableParam);
                         },1000)
                     }
                 },(error)=>{
                     this.commonMessage(error.data.msg,'warning')
                 })
             },
-            updateProjInfo(url,param){
-                updateProjShortInfo({url:url,param:param}).then((data)=>{
+            updateProjInfo(param){
+                updateProjShortInfo(param).then((data)=>{
                     if(data.data.code==200){
                         if(!data.data.result){
                             this.ProjManageDialog = false;
                         }
                         this.commonMessage('修改成功','success');
                         this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
-                        this.getProjectList({url:baseUrl,param:this.tableParam});
+                        this.getProjectList(this.tableParam);
                     }
                 })
             },
             //创建能够创建的专业类型
             newGetType(){
-                getMajorsByCreate({url: baseUrl}).then((data) => {
+                getMajorsByCreate().then((data) => {
                     this.newCreatmajor = data.data.result;
                     if (!this.isDisable) {
                         this.proManage.major = this.newCreatmajor[0].value;
@@ -1152,7 +1146,7 @@
                     }
                     this.clearCreateParam();
                     this.getTree();
-                    this.getRootMan(baseUrl,{deptId:this.createDeptId,packageType:this.$route.params.typeId,ppid:""});
+                    this.getRootMan({deptId:this.createDeptId,packageType:this.$route.params.typeId,ppid:""});
 
                 }else{
                     //修改工程
@@ -1179,7 +1173,7 @@
                     this.UpdateParamInfo.projId = parseInt(item.projId);
                     this.createDeptId = item.deptId;
                     this.proManage.major = item.projType;
-                    this.getRootMan(baseUrl,{deptId: this.createDeptId,packageType:this.$route.params.typeId,ppid:item.ppid})
+                    this.getRootMan({deptId: this.createDeptId,packageType:this.$route.params.typeId,ppid:item.ppid})
 
                 }
             },
@@ -1299,14 +1293,14 @@
                     }
                 })
                 if(!this.isDisable){
-                    this.newCreateProject(baseUrl,newCreate)
+                    this.newCreateProject(newCreate)
                 }else{
                     this.UpdateParamInfo.packageType = parseInt(this.$route.params.typeId);//套餐类型,
                     this.UpdateParamInfo.projMemo = this.proManage.remark;       //备注
                     this.UpdateParamInfo.projName =  this.proManage.name;         //名称
                     this.UpdateParamInfo.projType =  this.proManage.major;        //专业
                     //执行修改的接口
-                    this.updateProjInfo(baseUrl,this.UpdateParamInfo);
+                    this.updateProjInfo(this.UpdateParamInfo);
                 }
             },
 
@@ -1321,15 +1315,15 @@
                 this.monitorSever.remark = "";
                 this.monitorSever.projectItem = "";
             },
-            getMonitorInfoPart(url){
-                getMonitorInfos({url:url}).then((data)=>{
+            getMonitorInfoPart(){
+                getMonitorInfos().then((data)=>{
                     this.monitorSever.projectList = data.data.result;
                     this.monitorSever.projectItem = this.monitorSever.projectList[0].code;
                 })
             },
             //单个工程设置或者修改监控信息
-            getMonitorInfo(url,param){
-                getMonitorInfo({url:url,param:param}).then((data)=>{
+            getMonitorInfo(param){
+                getMonitorInfo(param).then((data)=>{
                     if(data.data.result){
                         this.monitorSever.projectItem = data.data.result.code;
                         this.monitorSever.username = data.data.result.username;
@@ -1340,16 +1334,16 @@
                 })
             },
             //设置监控消息
-            setMonitorInfoAll(url,param){
-                saveMonitorInfo({url:url,param:param}).then((data)=>{
+            setMonitorInfoAll(param){
+                saveMonitorInfo(param).then((data)=>{
                     if(data.data.code==200){
 //                        this.commonMessage("数据保存服务器成功",'success');
                     }
                 })
             },
             //检测
-            checkMonitorInfo(url,param){
-                checkMonitorSetInfo({url:url,param:param}).then((data)=>{
+            checkMonitorInfo(param){
+                checkMonitorSetInfo(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage(data.data.result.errorMsg,'warning');
                         if(data.data.result.success && data.data.result.errorMsg=='检测成功！'){
@@ -1371,12 +1365,12 @@
                 }else {
                     this.clearMonitorParma();
                     this.monitorSeverVisible =true;
-                    this.getMonitorInfoPart(baseUrl);//获取第三方平台
+                    this.getMonitorInfoPart();//获取第三方平台
                     if(type=='all'){
 //                        this.monitorSever = {};
                     }else if(type=='single'){
                         monitorPpids.push(item.ppid);
-                        this.getMonitorInfo(baseUrl,{ppids:[item.ppid]})
+                        this.getMonitorInfo({ppids:[item.ppid]})
                     }
 
                 }
@@ -1398,28 +1392,28 @@
                 this.checkMonitor.password = BASE64.encoder(this.monitorSever.pasword)
                 this.checkMonitor.username = this.monitorSever.username
                 this.checkMonitor.port = this.monitorSever.port
-                this.checkMonitorInfo(baseUrl,this.checkMonitor);
-                this.setMonitorInfoAll(baseUrl,this.monitorParam);
+                this.checkMonitorInfo(this.checkMonitor);
+                this.setMonitorInfoAll(this.monitorParam);
             },
             //关闭弹窗
             updateList(){
                 monitorPpids = [];
-                this.getProjectList({url:baseUrl,param:this.tableParam});
+                this.getProjectList(this.tableParam);
             },
             /**
              * 抽取
              * extractProject       抽取接口
              * getProjExtractInfo   抽取信息失败
              **/
-            extractProject(url,param){
-                extractProj({url:url,param:param}).then((data)=>{
+            extractProject(param){
+                extractProj(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('操作成功,该工程正在处理中,请稍后查看！','success');
                     }
                 })
             },
-            getProjExtractInfo(url,param){
-                getProjExtractInfo({url:url,param:param}).then((data)=>{
+            getProjExtractInfo(param){
+                getProjExtractInfo(param).then((data)=>{
                     console.log(data)
                 })
             },
@@ -1443,27 +1437,27 @@
                 }
                 errorInfo.ppids.push(item.ppid);
                 console.log(errorInfo)
-                this.getProjExtractInfo(baseUrl,errorInfo)
+                this.getProjExtractInfo(errorInfo)
             },
             //抽取数据
             extractOk(){
-                this.extractProject(baseUrl,{ packageType:this.$route.params.typeId, projId:parseInt(this.itemInfo.projId)})
+                this.extractProject({ packageType:this.$route.params.typeId, projId:parseInt(this.itemInfo.projId)})
             },
             //修改名称
-            updateProjRename(url,param){
-                updateProjName({url:url,param:param}).then((data)=>{
+            updateProjRename(param){
+                updateProjName(param).then((data)=>{
                     if(data.data.code==200){
                         this.modifyInfo = false;
                         this.commonMessage('工程名称修改成功','success');
-                        this.getProjectList({url:baseUrl,param:this.tableParam})            //bim库列表
+                        this.getProjectList(this.tableParam)            //bim库列表
                     }else{
                         this.commonMessage(data.data.msg,'warning');
                     }
                 })
             },
             //获取曾用名
-            getProjUserSecondName(url,param){
-                getProjUsedName({url:url,param:param}).then((data)=>{
+            getProjUserSecondName(param){
+                getProjUsedName(param).then((data)=>{
                     if(data.data.result){
                         this.modifyInfoList.formatName = data.data.result;
                     }
@@ -1473,12 +1467,12 @@
             projRename(item){
                 this.modifyInfoList.name = item.projName;
                 this.modifyInfoList.projId = item.projId
-                this.getProjUserSecondName(baseUrl,{projId:item.projId,packageType:this.$route.params.typeId})
+                this.getProjUserSecondName({projId:item.projId,packageType:this.$route.params.typeId})
             },
             modifyUpdate(){
                 ///{projId}/{projName}/{packageType}
                 if(this.modifyInfoList.name){
-                    this.updateProjRename(baseUrl,{projId:parseInt(this.modifyInfoList.projId),projName:this.modifyInfoList.name,packageType:parseInt(this.$route.params.typeId)})
+                    this.updateProjRename({projId:parseInt(this.modifyInfoList.projId),projName:this.modifyInfoList.name,packageType:parseInt(this.$route.params.typeId)})
 
                 }else{
                     this.commonMessage('工程名称不能为空','warning')
@@ -1517,7 +1511,7 @@
 
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //筛选属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //筛选专业
-                this.getProjectList({url:baseUrl,param:this.tableParam});           //表格列表
+                this.getProjectList(this.tableParam);           //表格列表
                 if(!this.$route.name || this.$route.name.length<=0){
                     return false
                 }
@@ -1526,14 +1520,14 @@
                 this.tableParam.projType = this.filterParams.majorVal;
                 if(newVal!=oldVal && oldVal!=""){
                     this.tableParam.projType = newVal;
-                    this.getProjectList({url:baseUrl,param:this.tableParam})
+                    this.getProjectList(this.tableParam)
                 }
             },
             'filterParams.bimVal':function(newVal,oldVal){
                 this.tableParam.projGenre = this.filterParams.bimVal;
                 if(newVal!=oldVal && oldVal!="" ){
                     this.tableParam.projGenre = newVal;
-                    this.getProjectList({url:baseUrl,param:this.tableParam})
+                    this.getProjectList(this.tableParam)
                 }
             }
         }

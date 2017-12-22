@@ -146,8 +146,8 @@
                 })
             },
             //添加之前判断构件是否存在
-            exists(url,param){
-                SteelExit({url:url,param:param}).then((data)=>{
+            exists(param){
+                SteelExit(param).then((data)=>{
                    if(!param.title){return false;}
                     let addParam = {
                         author: this.updateList.author,
@@ -167,7 +167,7 @@
                     }
                     if(data.data.result){
                         this.commonConfirm('构件已经存在，是否替换？',()=>{
-                            this.updateInfo(baseUrl,{productId:2,update:{
+                            this.updateInfo({productId:2,update:{
                                 coding:this.updateList.componentCoding,
                                 compntFileId:this.updateList.componentFileId,
                                 componentFilePath:this.updateList.componentFilePath,
@@ -180,7 +180,7 @@
                             }})
                         },()=>{},"warning")
                     }else{
-                        this.setAddInfo(baseUrl,addParam)
+                        this.setAddInfo(addParam)
                     }
                 })
             },
@@ -189,29 +189,29 @@
              * @param url      响应地址
              * @param param    响应参数
              **/
-            setAddInfo(url,param){
-                SteelAdd({url:url,param:param}).then((data)=>{
+            setAddInfo(param){
+                SteelAdd(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('添加构件成功','success');
                         setTimeout(()=>{
-                            this.getTableList(baseUrl,this.tableInfo);
+                            this.getTableList(this.tableInfo);
                         },1200)
                         this.$emit('uploadClose',{visible:this.uploadVisible,data:this.tableDataList,count:this.count})
                     }
                 })
             },
-            updateInfo(url,param){
-                SteelUpdate({url:url,param:param}).then((data)=>{
+            updateInfo(param){
+                SteelUpdate(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('更新构件成功','success');
-                        this.getTableList(baseUrl,this.tableInfo);
+                        this.getTableList(this.tableInfo);
 
                     };
                 })
             },
             //钢筋下载次数
-            getDownloadTimes(url,param){
-                SteelCountDownload({url:url,param:param}).then((data)=>{
+            getDownloadTimes(param){
+                SteelCountDownload(param).then((data)=>{
                     this.count = data.data.result;
                     this.$emit('uploadClose',{visible:this.uploadVisible,data:this.tableDataList,count:this.count})
                 })
@@ -222,14 +222,14 @@
              * @param url       //响应地址
              * @param param     //响应参数
              **/
-            getTableList(url,param){
-                SteelList({url:url,param:param}).then((data)=>{
+            getTableList(param){
+                SteelList(param).then((data)=>{
                     if( data.data.result!=null){
                         this.uploadVisible = false;
                         this.tableDataList = data.data.result;
                         this.$emit('uploadClose',{visible:this.uploadVisible,data:this.tableDataList,count:this.count})
                     }
-                    this.getDownloadTimes(baseUrl,{bigTypeName:param.bigTypeName,endTime:param.endTime,majorName:"",productId:param.productId,smallTypeName:param.smallTypeName,startTime:param.startTime,title:param.title});//下载次数
+                    this.getDownloadTimes({bigTypeName:param.bigTypeName,endTime:param.endTime,majorName:"",productId:param.productId,smallTypeName:param.smallTypeName,startTime:param.startTime,title:param.title});//下载次数
                 })
             },
             updateeDialogInfo(data){
@@ -273,7 +273,7 @@
              * @param type  1.update上传 2.cover修改页面
              **/
             overUpdate(){
-                this.uploadUri = `${baseUrl}component/gj/upload/2`;
+                this.uploadUri = `${window.serverPath.cloudUrl}/component/gj/upload/2`;
                 this.fileList = [];
             },
             //上传构件清除数据
@@ -305,9 +305,9 @@
 
                 //保存上传到数据库
                 if (this.override) {
-                    this.updateInfo(baseUrl,{productId:2,update:updateParam})
+                    this.updateInfo({productId:2,update:updateParam})
                 } else {
-                    this.exists(baseUrl,{bigTypeName:this.updateList.bigType,productId:2,smallTypeName:this.updateList.smallType,title:this.updateList.name,version:this.updateList.version})
+                    this.exists({bigTypeName:this.updateList.bigType,productId:2,smallTypeName:this.updateList.smallType,title:this.updateList.name,version:this.updateList.version})
                 }
             },
         },
