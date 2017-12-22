@@ -130,7 +130,6 @@ import {
 } from "../../utils/validate";
 
 //公用参数及常量定义
-let baseUrl;
 let selectedNode,selectedTreeId;
 const validateMobile = (rule, value, callback) => {
   if (validatephoneNumber(value)) {
@@ -253,11 +252,8 @@ export default {
         };
     },
     mounted() {
-        // 根据路由地址获取baseUrl
-        this.getBaseUrl();
-        // getOrgTreeList({url:baseUrl}).then(res => {
         // 获取原始树结构
-        getOrgTreeList({url:baseUrl}).then(res => {
+        getOrgTreeList().then(res => {
             // 组合树结构需要的参数
             let param = {
                 orgNodeKey: "id",
@@ -361,11 +357,6 @@ export default {
                 return tempWidth;
             }
         },
-        //获取接口地址
-        getBaseUrl(){
-            baseUrl = window.serverPath.builderUrl;
-            console.log(baseUrl,"baseUrl")
-        },
         zTreeBeforeExpand() {
             $("#organization-tree").width(this.getOrgTreeWidth()+300);
         },
@@ -398,16 +389,16 @@ export default {
              */
             selectedNode = treeNode;
             selectedTreeId = treeId;
+            let params = {
+                orgId: selectedNode.id,
+            };
             //获取对应节点的信息
-            getOrgNodeInfo({url:baseUrl,params:params}).then((res)=>{
+            getOrgNodeInfo({params:params}).then((res)=>{
                 this.orgNodeInfo.admins = res.data.result.admins;
                 this.orgNodeInfo.org = res.data.result.org;
                 console.log(this.orgNodeInfo.admins,'admins')
             });
             if($(".el-popover").css('display') === 'block') return;
-            let params = {
-                orgId: selectedNode.id,
-            };
             let aObj = $("#" + treeNode.tId + "_a");
             let mX = aObj.offset().left,
                 mY = aObj.offset().top;
@@ -459,7 +450,7 @@ export default {
                             orgId: selectedNode.id,
                             companyInfo: this.companyForm
                         };
-                        createBranchCompany({url:baseUrl,params}).then((data)=>{
+                        createBranchCompany({params}).then((data)=>{
                             let tempNode = data.data.result;
                             addTreeNode(selectedNode, tempNode);
                             self.dialogVisible = false;
@@ -476,7 +467,7 @@ export default {
                             parentId: selectedNode.id,
                             projectInfo: this.projectForm
                         };
-                        createProject({url:baseUrl,params}).then((data)=>{
+                        createProject({params}).then((data)=>{
                             let tempNode = data.data.result;
                             addTreeNode(selectedNode, tempNode);
                         });
