@@ -4,11 +4,11 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">角色：</label>
                 <div class="el-form-item__content" style="margin-left: 48px;">
-                    <el-select v-model="role" placeholder="请选择">
+                    <el-select v-model="select.role" placeholder="请选择">
                         <el-option
-                            v-for="item in options"
+                            v-for="item in roleOptions"
                             :key="item.value"
-                            :label="item.label"
+                            :label="item.name"
                             :value="item.value">
                         </el-option>
                     </el-select>
@@ -17,12 +17,12 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">组织节点：</label>
                 <div class="el-form-item__content" style="margin-left: 76px;">
-                    <el-select v-model="role" placeholder="请选择">
+                    <el-select v-model="select.orgNodes" placeholder="请选择">
                         <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            v-for="item in orgNodesOptions"
+                            :key="item.orgCode"
+                            :label="item.orgName"
+                            :value="item.orgCode">
                         </el-option>
                     </el-select>
                 </div>
@@ -30,11 +30,11 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">数据类型：</label>
                 <div class="el-form-item__content" style="margin-left: 76px;">
-                    <el-select v-model="role" placeholder="请选择">
+                    <el-select v-model="select.dataType" placeholder="请选择">
                         <el-option
-                            v-for="item in options"
+                            v-for="item in dataTypeOptions"
                             :key="item.value"
-                            :label="item.label"
+                            :label="item.name"
                             :value="item.value">
                         </el-option>
                     </el-select>
@@ -44,7 +44,7 @@
         <div class="main"    style="position:relative">
             <div class="basic-aside">
                 <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
-                          style="width: 100%" @selection-change="handleSelectionChange">
+                          style="width: 100%" @select-all="handleSelectionChange">
                     <el-table-column type="selection" width="55"></el-table-column>
                     <el-table-column label="全部">
                         <template slot-scope="scope">
@@ -58,7 +58,7 @@
 
             <div class="basic-content">
                 <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
-                          style="width: 100%" @selection-change="handleSelectionChange">
+                          style="width: 100%" @select="handleSelectionChange">
                     <el-table-column type="index" width="55" label="序号"></el-table-column>
                     <el-table-column prop="name" label="项目编号" width="100">
                     </el-table-column>
@@ -87,36 +87,23 @@
 </template>
 
 <script>
+  import {addReportPermissions,delReportPermissions,getDataType,getOrgNodes,getReportList,getReportListRoleId} from '../../api/getData-cxx.js';
+  import {basePath} from '../../utils/common.js'
 export default {
   data() {
     return {
-      radio: "1",
+      select:{
+          'role':'',
+          'dataType':'',
+          'orgNodes':'',
+      },
       activeIndex: "",
-      role: "",
       addAuthorizationDialogVisible: false,
       modifyDialogVisible: false,
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
+      //下拉-数据类型、节点
+      roleOptions:[],
+      dataTypeOptions:[],
+      orgNodesOptions:[],
       roleTableData: [
         {
           name: "赵四",
@@ -191,9 +178,56 @@ export default {
       ]
     };
   },
-  watch: {},
+  watch: {
+    select: {
+　　　　handler(newValue, oldValue) {
+            let vm = this;
+            let baseUrl = basePath(this.$route.matched[2].path);
+            let params = {
+                  'url':baseUrl,
+                  'reportListParam':{
+                                      "dataType": vm.select.dataType,
+                                      "orgCode": vm.select.orgNodes
+                                    }
+                }
+　　　　　　getReportList(params).then(function (res) {
+                if(res.data.msg == "success"){
+                   
+                }
+            })
+　　　　},
+　　　　deep: true
+　　},
+  },
   methods: {
-    handleSelectionChange(val) {}
+    handleSelectionChange(val,a) {
+      console.log(val)
+      console.log(a)
+    }
+  },
+  mounted(){
+    let vm = this;
+    let baseUrl = basePath(this.$route.matched[2].path);
+    let params = {
+                  'url':baseUrl,
+                }
+
+    //数据类型列表下拉框数据
+    getDataType(params).then(function (res) {
+        if(res.data.msg == "success"){
+          vm.dataTypeOptions = res.data.result;
+          vm.select.dataType = res.data.result[0].value;
+           
+        }
+    })
+    //组织节点列表下拉框数据
+    getOrgNodes(params).then(function (res) {
+        if(res.data.msg == "success"){
+          vm.orgNodesOptions = res.data.result;
+          vm.select.orgNodes = res.data.result[0].orgId;
+    
+        }
+    })
   }
 };
 </script>

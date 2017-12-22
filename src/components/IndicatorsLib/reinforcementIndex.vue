@@ -24,24 +24,19 @@
                     </div>
                 </el-col>
             </div>
-            <div class="header">
-                <el-col :span="20">
-                    <el-button type="primary" class="basic-btn">
-                        <i class="icon icon-info-update"></i>
-                        <span>更新指标</span>
-                    </el-button>
-                    <el-button type="primary" class="basic-btn">
-                        <i class="icon icon-forbidden"></i>
-                        <span>不更新</span>
-                    </el-button>
-                    <el-button type="primary" class="basic-btn">
-                        <i class="icon icon-btn-delete"></i>
-                        <span>删除</span>
-                    </el-button>
-                </el-col>
-            </div>
+            
 
             <div class="main">
+                <el-row>
+                    <el-col :span="20">
+                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-info-update left-icon"></i><span class="btn-text">更新指标</span>
+                        </el-button>
+                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-forbidden left-icon"></i><span class="btn-text">不更新</span>
+                        </el-button>
+                        <el-button type="primary" class="basic-btn" @click=""><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
+                        </el-button>
+                    </el-col>
+                </el-row>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                     <el-table ref="multipleTable scroll-me" :data="bindManageTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
@@ -233,6 +228,16 @@
 </script>
 
 <style scoped>
+    .order-management .main{
+      padding:20px;
+    }
+    .left-icon{
+      float: left;
+      margin-top: -1px;
+    }
+    .header .advanced-search {
+      margin-left: 10px;
+    }
     .header .advanced-search {
         margin-left: 10px;
     }
