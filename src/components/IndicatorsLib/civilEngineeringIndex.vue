@@ -15,7 +15,7 @@
                 </el-col>
                 <el-col :span="4">
                     <div class="advanced-search">
-                        <el-button type="primary" class="basic-btn" @click="deepSearch = true">指标排序</el-button>
+                        <el-button type="primary" class="basic-btn" @click="deepSearch = true">高级搜索</el-button>
                     </div>
                 </el-col>
             </div>
@@ -25,11 +25,6 @@
                     <el-col :span="20">
                         <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-pass left-icon"></i><span class="btn-text">通过审核</span>
                         </el-button>
-                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-info-update left-icon"></i><span class="btn-text">更新指标</span>
-                        </el-button>
-                        <el-button type="primary" class="basic-btn" @click=""><i class="icon icon-forbidden left-icon"></i><span class="btn-text">不更新</span>
-                        </el-button>
-
                         <el-button type="primary" class="basic-btn" @click=""><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
                         </el-button>
                     </el-col>

@@ -2,19 +2,30 @@
     <div>
         <div class="order-management order-detail">
             <div class="header">
+                <el-col :span="8">
+                    <div>
+                        <el-input
+                            placeholder="请输入搜索内容"
+                            icon="search"
+                            v-model="searchContent"
+                            :on-icon-click="search" class="searchContent">
+                        </el-input>
+                    </div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="advanced-search">
+                        <el-button type="primary" class="basic-btn" @click="deepSearch = true">指标排序</el-button>
+                    </div>
+                </el-col>
+            </div>
+            <div class="header">
                 <el-col :span="20">
-                    <el-button type="primary" class="basic-btn">
-                        <i class="icon icon-info-update"></i>
-                        <span>更新指标</span>
-                    </el-button>
-                    <el-button type="primary" class="basic-btn">
-                        <i class="icon icon-forbidden"></i>
-                        <span>不更新</span>
-                    </el-button>
-                    <el-button type="primary" class="basic-btn">
-                        <i class="icon icon-btn-delete"></i>
-                        <span>删除</span>
-                    </el-button>
+                    <el-button type="primary" class="basic-btn" @click=""><i class="left-icon icon icon-info-update"></i><span class="btn-text">更新指标</span>
+                        </el-button>
+                    <el-button type="primary" class="basic-btn" @click=""><i class="left-icon icon icon-forbidden"></i><span class="btn-text">不更新</span>
+                        </el-button>
+                    <el-button type="primary" class="basic-btn" @click=""><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
+                        </el-button>
                 </el-col>
             </div>
 
@@ -91,165 +102,164 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
-    import Sortable from "sortablejs";
-    export default {
-        data() {
-            return {
-                searchContent: "曹相相",
-                indexSortDialogVisible: false,
-                multipleSelection: [],
-                olderList: [
-                    {name: "香肠"},
-                    {name: "烤鸭"},
-                    {name: "烧鸡"},
-                    {name: "卤煮"},
-                    {name: "酱汁腊肉"},
-                    {name: "松花小肚"},
-                    {name: "白丸子"},
-                    {name: "红丸子"},
-                    {name: "汆丸子"},
-                    {name: "蒸熊掌"},
-                    {name: "蒸羊羔"},
-                    {name: "蒸鹿尾"},
-                    {name: "梅菜扣肉"},
-                    {name: "四喜丸子"},
-                    {name: "酒酿萝卜皮"},
-                    {name: "红烧胖大海"},
-                    {name: "连年有鱼"}
-                ],
-                newList: [
-                    {name: "香肠"},
-                    {name: "烤鸭"},
-                    {name: "烧鸡"},
-                    {name: "卤煮"},
-                    {name: "酱汁腊肉"},
-                    {name: "松花小肚"},
-                    {name: "白丸子"},
-                    {name: "红丸子"},
-                    {name: "汆丸子"},
-                    {name: "蒸熊掌"},
-                    {name: "蒸羊羔"},
-                    {name: "蒸鹿尾"},
-                    {name: "梅菜扣肉"},
-                    {name: "四喜丸子"},
-                    {name: "酒酿萝卜皮"},
-                    {name: "红烧胖大海"},
-                    {name: "连年有鱼"}
-                ],
-                bindManageTableData: [
-                    {
-                        bindingId: 0,
-                        bindingTime: "string",
-                        computerName: "string",
-                        enterprisePackageId: 0,
-                        hardwareCode: "string",
-                        realName: "string",
-                        remarks: "string",
-                        username: "string"
-                    }
-                ]
-            };
-        },
-        methods: {
-
-            backToOrderList() {
-                this.$router.push({path: "/order-management/orders"});
-            },
-            search(ev) {
-                //                搜索
-                console.log(ev);
-            },
-            handleSelectionChange(val) {
-                //                多选
-                this.multipleSelection = val;
-            },
-            sort() {
-                //序号
-                return index * 1;
-            },
-            indexSort() {
-                console.log(123);
-            },
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            },
-            getList() {
-                this.$nextTick(() => {
-                    let olderList = document.getElementById("olderList");
-                    Sortable.create(olderList, {
-                        animation: 120,
-                        // onRemove(event) {
-                        //     vm.newList.splice(event.newIndex, 0, vm.olderList[event.item.getAttribute('data-index')]);
-                        // },
-                        onEnd: evt => {
-                            debugger;
-                            const tempIndex = this.newList.splice(evt.oldIndex, 1)[0];
-                            this.newList.splice(evt.newIndex, 0, tempIndex);
-                        }
-                    });
-                });
-            }
-        },
-        components: {
-            VueScrollbar
-        },
-        created() {
-            this.getList()
-        },
-        mounted() {
-            document.body.ondrop = function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            };
+import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
+import Sortable from "sortablejs";
+export default {
+  data() {
+    return {
+      searchContent: "曹相相",
+      indexSortDialogVisible: false,
+      multipleSelection: [],
+      olderList: [
+        { name: "香肠" },
+        { name: "烤鸭" },
+        { name: "烧鸡" },
+        { name: "卤煮" },
+        { name: "酱汁腊肉" },
+        { name: "松花小肚" },
+        { name: "白丸子" },
+        { name: "红丸子" },
+        { name: "汆丸子" },
+        { name: "蒸熊掌" },
+        { name: "蒸羊羔" },
+        { name: "蒸鹿尾" },
+        { name: "梅菜扣肉" },
+        { name: "四喜丸子" },
+        { name: "酒酿萝卜皮" },
+        { name: "红烧胖大海" },
+        { name: "连年有鱼" }
+      ],
+      newList: [
+        { name: "香肠" },
+        { name: "烤鸭" },
+        { name: "烧鸡" },
+        { name: "卤煮" },
+        { name: "酱汁腊肉" },
+        { name: "松花小肚" },
+        { name: "白丸子" },
+        { name: "红丸子" },
+        { name: "汆丸子" },
+        { name: "蒸熊掌" },
+        { name: "蒸羊羔" },
+        { name: "蒸鹿尾" },
+        { name: "梅菜扣肉" },
+        { name: "四喜丸子" },
+        { name: "酒酿萝卜皮" },
+        { name: "红烧胖大海" },
+        { name: "连年有鱼" }
+      ],
+      bindManageTableData: [
+        {
+          bindingId: 0,
+          bindingTime: "string",
+          computerName: "string",
+          enterprisePackageId: 0,
+          hardwareCode: "string",
+          realName: "string",
+          remarks: "string",
+          username: "string"
         }
+      ]
     };
+  },
+  methods: {
+    backToOrderList() {
+      this.$router.push({ path: "/order-management/orders" });
+    },
+    search(ev) {
+      //                搜索
+      console.log(ev);
+    },
+    handleSelectionChange(val) {
+      //                多选
+      this.multipleSelection = val;
+    },
+    sort() {
+      //序号
+      return index * 1;
+    },
+    indexSort() {
+      console.log(123);
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    getList() {
+      this.$nextTick(() => {
+        let olderList = document.getElementById("olderList");
+        Sortable.create(olderList, {
+          animation: 120,
+          // onRemove(event) {
+          //     vm.newList.splice(event.newIndex, 0, vm.olderList[event.item.getAttribute('data-index')]);
+          // },
+          onEnd: evt => {
+            debugger;
+            const tempIndex = this.newList.splice(evt.oldIndex, 1)[0];
+            this.newList.splice(evt.newIndex, 0, tempIndex);
+          }
+        });
+      });
+    }
+  },
+  components: {
+    VueScrollbar
+  },
+  created() {
+    this.getList();
+  },
+  mounted() {
+    document.body.ondrop = function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+  }
+};
 </script>
 
 <style scoped>
-    .order-management .main{
-      padding:20px;
-    }
-    .left-icon{
-      float: left;
-      margin-top: -1px;
-    }
-    .header .advanced-search {
-      margin-left: 10px;
-    }
-    .header .advanced-search {
-        margin-left: 10px;
-    }
+.order-management .main {
+  padding: 20px;
+}
+.left-icon {
+  float: left;
+  margin-top: -1px;
+}
+.header .advanced-search {
+  margin-left: 10px;
+}
+.header .advanced-search {
+  margin-left: 10px;
+}
 
-    .header .unbind {
-        padding: 10px 15px 10px 30px;
-        background-color: #4778c7;
-        color: #fff;
-        border-radius: 4px;
-    }
+.header .unbind {
+  padding: 10px 15px 10px 30px;
+  background-color: #4778c7;
+  color: #fff;
+  border-radius: 4px;
+}
 
-    .header .unbind span {
-        font-size: 14px;
-    }
+.header .unbind span {
+  font-size: 14px;
+}
 
-    .draggable-list li {
-        padding: 9px;
-        border: 1px solid #e7ebee;
-        border-bottom: none;
-        cursor: pointer;
-        position: relative;
-        transition: all 0.2s;
-        list-style: none;
-    }
-    .draggable-list li:last-child{
-        border-bottom:1px solid #e7ebee
-    }
+.draggable-list li {
+  padding: 9px;
+  border: 1px solid #e7ebee;
+  border-bottom: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  list-style: none;
+}
+.draggable-list li:last-child {
+  border-bottom: 1px solid #e7ebee;
+}
 
-    .draggable-list {
-        height: 100%;
-        overflow: auto;
-    }
+.draggable-list {
+  height: 100%;
+  overflow: auto;
+}
 </style>
