@@ -116,7 +116,7 @@
                                    @click="setTemplate = false;setTemplateOK()">确 定</el-button>
                         <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
                     </span>
-            </el-dialog>
+            </el-dialog>-->
             <create-calendar v-show="setTemplate" :isCreateCalendar="setTemplate" @hidePanel=hidePanelNew ref="setTemplate"></create-calendar>
             <!--查看模板-->
                 <!--<el-dialog custom-class="edit-template prview-template" :visible.sync="lookTemplate" title="查看模板" >

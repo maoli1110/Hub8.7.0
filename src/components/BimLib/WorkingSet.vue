@@ -131,7 +131,6 @@
     import ElCol from "element-ui/packages/col/src/col";
     // import "../../utils/directive.js"
     let deletArray = [];
-    let baseUrl = window.severPath.builderUrl;
     let deptIds= [];
     export default {
         created(){
@@ -203,16 +202,16 @@
                     }
                 }
 
-                this.getTableList(baseUrl,this.tableListParam);
+                this.getTableList(this.tableListParam);
             },
             //搜索功能
             searchClick(){
                 this.tableListParam.searchKey = this.filterParm.searchKey;
-                this.getTableList(baseUrl,this.tableListParam);
+                this.getTableList(this.tableListParam);
             },
             //所属工程
             getHasWorkList(){
-                getDeptsHasWorkSet({url:baseUrl}).then((data)=>{
+                getDeptsHasWorkSet().then((data)=>{
                     if(data.data.result){
                         this.projectList = data.data.result;
                     }else{
@@ -221,8 +220,8 @@
                 })
             },
             //获取工作集列表
-            getTableList(url,param){
-                getWorkSets({url:url,param:param}).then((data)=>{
+            getTableList(param){
+                getWorkSets(param).then((data)=>{
                     if(data.data.code!=200){//读取数据失败
                        this.commonMessage(data.data.msg,'warning')
                        return false;
@@ -245,12 +244,12 @@
                     }
                 })*/
             },
-            delWorkSetting(url,param){
-                delWorkSets({url:url,param:param}).then((data)=>{
+            delWorkSetting(param){
+                delWorkSets(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('删除工作集成功！','success');
                         if(this.tableData.content.length==deletArray.length){
-                            this.getTableList(baseUrl,this.tableListParam);
+                            this.getTableList(this.tableListParam);
                         }else{
                             for (let i = 0; i < deletArray.length; i++) {
                                 for (let j = 0; j < this.tableData.content.length; j++) {
@@ -267,8 +266,8 @@
                 })
             },
             //获取预览地址 整合
-            getFileUrl(url,param,workList){
-                getFileViewUrl({url:url,param:param}).then((data)=>{
+            getFileUrl(param,workList){
+                getFileViewUrl(param).then((data)=>{
                     if(data.data.result){
                         data.data.result.forEach((val,key)=>{
                             for(let key1 in workList){
@@ -312,8 +311,8 @@
                 })*/
             },
             //查看工程
-            getProjByWorkInfo(url,param){
-                getProjByWorkSet({url:url,param:param}).then((data)=>{
+            getProjByWorkInfo(param){
+                getProjByWorkSet(param).then((data)=>{
                     let uuidArr = [];
                     this.worksList = data.data.result;
                     for(let key in data.data.result){
@@ -326,7 +325,7 @@
                             }
                         }
                     }
-                    this.getFileUrl(baseUrl,uuidArr,this.worksList);
+                    this.getFileUrl(uuidArr,this.worksList);
                 })
                /* getProjectInfo().then((data)=>{
                     let uuidArr = [];
@@ -341,11 +340,10 @@
                             }
                         }
                     }
-                    this.getFileUrl(baseUrl,uuidArr,this.workList);
+                    this.getFileUrl(uuidArr,this.workList);
                 })*/
             },
             getData(){
-                this.getBaseUrl();
                 this.getHasWorkList();
 //                this.filterParm.workValue = this.projectList[0].value;
                 /*if(this.filterParm.workValue=='1'){
@@ -363,7 +361,7 @@
                 this.tableListParam.packageType = parseInt(this.$route.params.typeId);
                 this.tableListParam.pageParam.size = this.totalPage;
                 this.tableListParam.pageParam.page = this.cur_page;
-                this.getTableList(baseUrl,this.tableListParam);
+                this.getTableList(this.tableListParam);
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -395,12 +393,12 @@
                 console.log(`每页显示多少条${size}`);
                 this.totalPage = size;
                 this.tableListParam.pageParam.size = size;
-                this.getTableList(baseUrl,this.tableListParam);
+                this.getTableList(this.tableListParam);
             },
             handleCurrentChange(currentPage){
                 this.cur_page = currentPage;
                 this.tableListParam.pageParam.page = currentPage;
-                this.getTableList(baseUrl,this.tableListParam);
+                this.getTableList(this.tableListParam);
                 console.log(`当前页${currentPage}`);
             },
             /**
@@ -442,7 +440,7 @@
 
                 this.commonConfirm('确定要删除吗',()=> {
                     if(deletArray.length && this.tableData.content.length){
-                        this.delWorkSetting(baseUrl,{workSetIds:deletArray,packageType:parseInt(this.$route.params.typeId)})
+                        this.delWorkSetting({workSetIds:deletArray,packageType:parseInt(this.$route.params.typeId)})
                     }
                 })
             },
@@ -457,7 +455,7 @@
                 this.workInfo.createUsername = item.createUsername;
                 this.workInfo.createRealname = item.createRealname;
                 this.workInfo.createDate = item.createDate;
-                this.getProjByWorkInfo(baseUrl,param)
+                this.getProjByWorkInfo(param)
             },
         },
         computed: {
@@ -466,7 +464,7 @@
         watch: {
             '$route' (to, from) {
                 this.tableListParam.packageType = this.$route.params.typeId;
-                this.getTableList(baseUrl,this.tableListParam);
+                this.getTableList(this.tableListParam);
             }
         }
 
