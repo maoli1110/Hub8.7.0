@@ -117,8 +117,7 @@
                     <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
                 </span>
         </el-dialog>-->
-        <create-calendar v-show="setTemplate" :isCreateCalendar="setTemplate" @hidePanel=hidePanelNew
-                         ref="setTemplate"></create-calendar>
+        <create-calendar v-show="setTemplate" :isCreateCalendar="setTemplate" @hidePanel=hidePanelNew ref="setTemplate" :dateArr="checkedDate"></create-calendar>
         <!--查看模板-->
         <!--<el-dialog custom-class="edit-template prview-template" :visible.sync="lookTemplate" title="查看模板" >
             <template>
@@ -139,8 +138,7 @@
                 </el-row>
             </template>
         </el-dialog>-->
-        <priview-calendar v-show="lookTemplate" :isPrviewCalendar="lookTemplate" @hidePanel=hidePanelLook
-                          ref="priviewTemplate"></priview-calendar>
+        <priview-calendar v-show="lookTemplate" :isPrviewCalendar="lookTemplate" @hidePanel=hidePanelLook ref="priviewTemplate" :dateArr="checkedDate"></priview-calendar>
     </div>
 </template>
 
@@ -198,7 +196,8 @@
                 ],
                 template: {
                     name: ""
-                }
+                },
+                checkedDate:[]
             }
         },
         components: {
@@ -207,8 +206,9 @@
             priviewCalendar
         },
         methods: {
-            hidePanelNew(visible){
-                this.setTemplate = visible;
+            hidePanelNew(param){
+                this.setTemplate = param.visible;
+                this.checkedDate = param.checkedDate;
             },
             hidePanelLook(visible){
                 this.lookTemplate = visible;
@@ -392,17 +392,16 @@
                 }
 
                 this.setTemplate = true;
-                this.openWindow('set', '123')
-                this.$refs.setTemplate.openWindow('set', '123')
+                this.$refs.setTemplate.openWindow('set', '123',null,null)
             },
             //添加标签
             addTemplate(){
                 this.templateInfo.name = "";
             },
             openCreateCalendar(){
-                this.$refs.priviewTemplate.openWindow('set', '123')
+                this.$refs.setTemplate.openWindow('set', '123',{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate)
             },
-            dealJavaDateArr(dates){
+            /*dealJavaDateArr(dates){
                 dealJavaDateArr(dates)
                 {
                     var result = [];
@@ -412,16 +411,16 @@
                     return result;
                 }
             },
-            /**
+            /!**
              * 日历模板设置
-             **/
-            /**
+             **!/
+            /!**
              * 筛选出指定想起的所有日期
              * @param arr 日历队列
              * @param sd  时间范围之开始时间
              * @param ed  时间范围之结束时间
              * @return rulesDates  筛选符合条件的集合
-             **/
+             **!/
             getRulesDate(arr, sd, ed){
                 let rulesDates = [];
                 let sdate = new Date(sd);
@@ -437,7 +436,7 @@
                 }
                 return rulesDates;
             },
-            /* 添加页面非日历初始化 */
+            /!* 添加页面非日历初始化 *!/
             initCalendarSetMethod() {
 //                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null && "" != ct.endDate) {
                 // 创建日历模板
@@ -457,7 +456,7 @@
 //                }
             },
 
-            /* 初始化设置日历模板页面 */
+            /!* 初始化设置日历模板页面 *!/
             inittocopystate() {
 
                 //修改页面渲染逻辑
@@ -545,11 +544,11 @@
                     isWekendWorkDates = thisIsWekendRestDates;
                 }
             },
-            /**
+            /!**
              * 日历模板
              * @param type ps(set:添加修改，show:预览模板)
              * @param cpt 模板cpt
-             * */
+             * *!/
             openWindow(type, cpt){
                 console.log(this.template, 'this.template')
                 //执行ajax
@@ -586,7 +585,7 @@
                 this.chooseWeeks = val;
                 console.log(this.checkList, ' this.chooseWeeks')
             },
-            /* 设置工作日||非工作日 */
+            /!* 设置工作日||非工作日 *!/
             setCalendarDate(dateType){
                 // 获取时间范围
                 if (!this.selectInteral.length) {//日历范围的值存在
@@ -606,7 +605,7 @@
                 } else {
                     calendarTemplate.setRestDate(chooseDate);
                 }
-            },
+            },*/
 
             //日历设置模板确定
             setTemplateOK(){
@@ -629,12 +628,11 @@
                     console.log(row, 'columnssssss')
                     this.lookTemplate = true;
                     this.template.name = row.name;
-                    this.openWindow('show', '123')
-                    this.$refs.priviewTemplate.openWindow('show', '123')
+                    this.$refs.priviewTemplate.openWindow('show', '123',{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate)
                 }
             },
 
-            /* 详情页面日历初始化 */
+   /*         /!* 详情页面日历初始化 *!/
             detailinittocopystate() {
                 restDates = this.restDates;
                 //                console.log(restDates,'restDates');
@@ -678,7 +676,7 @@
                 }
                 calendarTemplate.readOnly(true);
             },
-            /* 详情页面日历之外初始化 */
+            /!* 详情页面日历之外初始化 *!/
             detailCalendarSetMethod() {
 //                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null&& "" != ct.endDate) {
                 // 创建日历模板
@@ -697,14 +695,14 @@
                     console.log(restDates, 'rest')
                     this.detailinittocopystate();
                 })
-                /*setTimeout(()=>{
+                /!*setTimeout(()=>{
              /!*setTimeout(()=>{
              this.priveiwDate = this.selectInteral[0]+"-"+this.selectInteral[1]
              calendarTemplate = new CalendarSet(this.selectInteral[0],this.selectInteral[1]);
              this.detailinittocopystate();
-             })*/
+             })*!/
                 //                }
-            }
+            }*/
         },
         computed: {},
 

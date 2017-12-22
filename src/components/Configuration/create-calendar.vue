@@ -49,7 +49,7 @@
             <span slot="footer" class="dialog-footer" >
                     <el-button class="dialog-btn dialog-btn-ok" type="primary"
                                @click="createVisible = false;setTemplateOK()">确 定</el-button>
-                    <el-button class="dialog-btn dialog-btn-cancel" @click="createVisible = false">取 消</el-button>
+                    <el-button class="dialog-btn dialog-btn-cancel" @click="createVisible = false;handleClose()">取 消</el-button>
                 </span>
         </el-dialog>
     </div>
@@ -62,7 +62,7 @@
     let restDates = [];//24非工作日
 
     export default{
-        props:{isCreateCalendar:Boolean},
+        props:{isCreateCalendar:Boolean,dateArr:Array},
         data(){
             return{
                 selectInteral: [],//日历选择时间范围
@@ -93,6 +93,7 @@
                     name:""
                 },
                 createVisible:false,
+                checkedDateArray:this.dateArr
             }
         },
         methods:{
@@ -161,10 +162,14 @@
                 return rulesDates;
             },
             /* 添加页面非日历初始化 */
-            initCalendarSetMethod() {
+            initCalendarSetMethod(checkedTime,timeList) {
 //                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null && "" != ct.endDate) {
                 // 创建日历模板
                 let startTime,endTime;
+                if(checkedTime){
+                    this.selectInteral[0] = checkedTime.startTime;
+                    this.selectInteral[1] = checkedTime.endTime;
+                }
                 setTimeout(()=>{
                     if(!this.selectInteral.length){
                         let fullYear =  new Date().getFullYear();
@@ -175,14 +180,14 @@
                         endTime = this.selectInteral[1];
                     }
                     calendarTemplate = new CalendarSet(startTime, endTime);
-                    this.inittocopystate();
+                    this.inittocopystate(timeList);
                 })
 //                }
             },
 
             /* 初始化设置日历模板页面 */
-            inittocopystate() {
-
+            inittocopystate(timeList) {
+                restDates = timeList;
                 //修改页面渲染逻辑
                 if (ct.calendarFalg == 0) {//复制24小时
                     if (restDates != null && restDates.length > 0) {// 已经设置过的
@@ -222,6 +227,81 @@
                         calendarTemplate.setWorkDate(arr);
                     }
                 }
+            },
+
+            /* 详情页面日历初始化 */
+            detailinittocopystate(timeList) {
+                restDates = timeList;
+//                console.log(restDates,'restDates');
+                //修改页面渲染逻辑
+                if(ct.calendarFalg == 0){//复制24小时
+                    if (restDates != null && restDates.length > 0) {// 已经设置过的
+                        var arr = [];
+                        for (var i = 0; i < restDates.length; i++) {
+                            if (new Date(this.selectInteral[0]).getTime() <= new Date(restDates[i]).getTime()&& new Date(restDates[i]).getTime() <= new Date(this.selectInteral[1]).getTime()) {
+                                arr.push(restDates[i])
+                            }
+                        }
+                        // 设置对应非工作日
+                        calendarTemplate.setRestDate(arr);
+                    }
+                }else{//复制标准
+                    var arr = new Array(6, 0);
+                    var chooseDate = this.getRulesDate(arr, this.selectInteral[0], this.selectInteral[1]);
+                    //将所有展示的周六，周日设置为非工作日
+                    calendarTemplate.setRestDate(chooseDate);
+                    if (notWekendRestDates != null && notWekendRestDates.length > 0) {// 已经设置过的
+                        var arr = [];
+                        for (var i = 0; i < notWekendRestDates.length; i++) {
+                            if (new Date(this.selectInteral[1]).getTime() <= new Date(notWekendRestDates[i]).getTime() && new Date(notWekendRestDates[i]).getTime() <= new Date(this.selectInteral[1]).getTime()) {
+                                arr.push(notWekendRestDates[i])
+                            }
+                        }
+                        //将所有展示的周一到周五设置已经设置的非工作日
+                        calendarTemplate.setRestDate(arr);
+                    }
+                    if(isWekendWorkDates!=null && isWekendWorkDates.length > 0){
+                        var arr = [];
+                        for (var i = 0; i < isWekendWorkDates.length; i++) {
+                            if (new Date(this.selectInteral[0]).getTime() <= new Date(isWekendWorkDates[i]).getTime() && new Date(isWekendWorkDates[i]).getTime() <= new Date(this.selectInteral[1]).getTime()) {
+                                arr.push(isWekendWorkDates[i])
+                            }
+                        }
+                        //将所有展示的周六、周日中工作日的设置为工作日
+                        calendarTemplate.setWorkDate(arr);
+                    }
+                }
+                calendarTemplate.readOnly(true);
+            },
+            /* 详情页面日历之外初始化 */
+            detailCalendarSetMethod(checkedTime,timeList) {
+//                if (ct.startDate != null && "" != ct.startDate && ct.endDate != null&& "" != ct.endDate) {
+                // 创建日历模板
+                let startTime,endTime;
+                if(checkedTime){
+                    this.selectInteral[0] = checkedTime.startTime;
+                    this.selectInteral[1] = checkedTime.endTime;
+                }
+                setTimeout(()=>{
+                    if(!this.selectInteral.length){
+                        let fullYear =  new Date().getFullYear();
+                        startTime = fullYear+'/01/01';
+                        endTime = fullYear+"/12/30"
+                    }else{
+                        startTime = this.selectInteral[0];
+                        endTime = this.selectInteral[1];
+                    }
+                    this.priveiwDate = new Date(startTime).toLocaleDateString()+"-"+new Date(endTime).toLocaleDateString();
+                    calendarTemplate = new CalendarSet(startTime, endTime);
+                    console.log(restDates,'rest')
+                    this.detailinittocopystate(timeList);
+                })
+                /*setTimeout(()=>{
+                 this.priveiwDate = this.selectInteral[0]+"-"+this.selectInteral[1]
+                 calendarTemplate = new CalendarSet(this.selectInteral[0],this.selectInteral[1]);
+                 this.detailinittocopystate();
+                 })*/
+//                }
             },
             //普通时间段的计算工作数组、非工作数组
             dealDatas() {
@@ -273,8 +353,7 @@
              * @param type ps(set:添加修改，show:预览模板)
              * @param cpt 模板cpt
              * */
-            openWindow(type, cpt){
-                console.log(this.template,'this.template')
+            openWindow(type, cpt,checkedTime,timeList){
                 //执行ajax
                 if (ct.calendarFalg == 0) {//24小时(自定义时间)
                     restDates = [];
@@ -292,9 +371,9 @@
                     }
                 }
                 if(type=='set'){//设置模板
-                    this.initCalendarSetMethod()
+                    this.initCalendarSetMethod(checkedTime,timeList)
                 }else{//预览模板
-                    this.detailCalendarSetMethod();
+                    this.detailCalendarSetMethod(checkedTime,timeList);
                 }
             },
             //日历时间发生改变重绘日历
@@ -335,15 +414,16 @@
             setTemplateOK(){
                 let restDate;
                 let startTime,endTime;
+                ct.calendarFalg = 0;
                 if(ct.calendarFalg==0){
                     restDate = calendarTemplate.getRestDate();
                 }else{
                     this.dealDatas();//总时间段的普通时间标准
                 }
                 console.log(restDate, '设置工作日和非工作日');
-//                if(ct.calendarFalg==0){
-                this.restDates = restDate
-                this.$emit("hidePanel",this.createVisible)
+                this.restDates = restDate;
+//                console.log( this.restDates,' this.restDates');
+                this.$emit("hidePanel",{visible:this.createVisible,checkedDate:this.restDates})
             },
 
         }
