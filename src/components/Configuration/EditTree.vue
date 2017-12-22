@@ -254,27 +254,57 @@
                     });
             },
             updataTemplateTreeInfo() {
+                if (!this.templateName) {
+                    this.$alert("名称不能为空", "提示", {
+                        confirmButtonText: "确定",
+                        type: "info"
+                    });
+                    return false;
+                }
+                let treeObj = $.fn.zTree.getZTreeObj("tree_edit");
+                let treeInfo = treeObj.transformToArray(
+                    treeObj.getNodes()
+                );
                 // 添加模板树
                 if (this.templateParams.isAdd) {
-                    let treeObj = $.fn.zTree.getZTreeObj("tree_edit");
-                    let treeInfo = treeObj.transformToArray(
-                        treeObj.getNodes()
-                    );
                     let params = {
                         orgType: this.templateParams.orgType,
                         orgid: this.templateParams.orgid,
                         processTemplateTreeInfo: treeInfo[0],
                         tmplName: this.templateName
                     };
-                    console.log(params)
-                    console.log(treeObj)
-                    types.addProcessTemplateInfo().then(res => {
+                    types.addProcessTemplateInfo(params).then(res => {
                         console.log(res);
+                        if (res.data.code == 200) {
+                            this.$emit('updataTemplateInfos')
+                        }
+                        if (res.data.code == 500) {
+                            this.$alert(res.data.msg, "提示", {
+                                confirmButtonText: "确定",
+                                type: "info"
+                            });
+                        }
                     });
-                } 
-                // 编辑模板树
-                else {
-
+                }else {
+                    // 编辑模板树
+                    let params_ = {
+                        orgType: this.templateParams.orgType,
+                        orgid: this.templateParams.orgid,
+                        processTemplateTreeInfo: treeInfo[0],
+                        tmplName: this.templateName,
+                        tmplId: this.templateParams.templateId
+                    };
+                    types.modifyProcessTemplateInfo(params_).then(res => {
+                        if (res.data.code == 200) {
+                            this.$emit('updataTemplateInfos')
+                        }
+                        if (res.data.code == 500) {
+                            this.$alert(res.data.msg, "提示", {
+                                confirmButtonText: "确定",
+                                type: "info"
+                            });
+                        }
+                    })
                 }
             },
             // 自定义颜色选择器

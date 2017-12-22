@@ -38,7 +38,7 @@
                 </el-table-column>
             </el-table>
             <div style="margin-top: 20px">
-                <div style="float:left;height:40px;line-height:40px">共10个结果</div>
+                <!-- <div style="float:left;height:40px;line-height:40px">共10个结果</div> -->
                 <el-pagination style="margin-left:30%" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage"
                     :page-sizes="[10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
@@ -47,10 +47,10 @@
 
         <!-- 移动资料目录 -->
         <el-dialog :title=title :visible.sync="editDialogVisible" size='process-edit-template'>
-            <edit-tree :templateParams="templateParams" v-show='editDialogVisible' ref="processEditTree"> </edit-tree>
+            <edit-tree :templateParams="templateParams" v-show='editDialogVisible' ref="processEditTree" @updataTemplateInfos='getProcessTemplateInfo()'> </edit-tree>
             <div style="clear:both;"></div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="editDialogVisible = false;updataTemplateTreeInfo()" class="dialog-btn">确 定</el-button>
+                <el-button type="primary" @click="updataTemplateTreeInfo()" class="dialog-btn">确 定</el-button>
                 <el-button @click="editDialogVisible = false" class="dialog-btn">取消</el-button>
             </span>
         </el-dialog>
@@ -136,6 +136,9 @@
                 types.getProcessTemplateInfo(params).then(res => {
                     this.ProcessTableData = res.data.result.list;
                     this.total = res.data.result.lbPageInfo.totalNumber;
+                    this.editDialogVisible=false;
+
+                    
                 });
             },            
             orgTreeClick(event, treeId, treeNode) {
@@ -165,8 +168,10 @@
                     console.log(row.templateId);
                     this.title = "编辑模板";
                     this.templateParams = {
-                        templateId: row.templateId ||'5a38b1e9bb5ec84f66e3f70f',
-                        templateName: row.templateName||'pc',
+                        templateId: row.templateId,
+                        templateName: row.templateName,
+                        orgType:this.orgType,
+                        orgid:this.orgid,
                         isAdd:false
                     };
                     setTimeout(() => {                      
@@ -178,46 +183,37 @@
                     this.templateParams = {
                         orgType:this.orgType,
                         orgid:this.orgid,
-
                         isAdd:true
                     };
                     setTimeout(() => {      
                       this.$refs.processEditTree.templateName='';                
                       this.$refs.processEditTree.getDefaultProcessTemplateTreeInfo()
-                    }, 0);
-                    
-
+                    }, 0);                    
                 }
             },
             updataTemplateTreeInfo(){
-                  this.$refs.processEditTree.updataTemplateTreeInfo()
+                this.$refs.processEditTree.updataTemplateTreeInfo()                                                  
             },
             deleteProcess() {
                 this.$confirm("确认删除该记录吗?", "提示", {
                         type: "warning"
                     })
                     .then(() => {
-                        this.listLoading = true;
-                        //NProgress.start();
-                        let para = {
-                            id: row.id
-                        };
-                        removeUser(para).then(res => {
-                            this.listLoading = false;
-                            //NProgress.done();
-                            this.$message({
-                                message: "删除成功",
-                                type: "success"
-                            });
-                            this.getUsers();
-                        });
+                        let params=[]
+                        this.multipleSelection.forEach(item =>{
+                            params.push(item.templateId)
+                        } )
+                        types.deleteProcessTemplateInfos(params).then(res=>{
+                            if(res.data.code==200){
+                                this.getProcessTemplateInfo()
+                            }
+                        })
                     })
                     .catch(() => {});
             }
         },
         mounted() {
-          this.getProcessTemplateInfo();
-            // this.getOrgTreeList();
+            this.getOrgTreeList();
         }
     };
 
