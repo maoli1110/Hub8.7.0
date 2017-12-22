@@ -65,79 +65,7 @@
                 <el-button class="dialog-btn dialog-btn-cancel" @click="addVisible = false">取 消</el-button>
             </span>
         </el-dialog>
-        <!--<el-dialog custom-class="edit-template" :visible.sync="setTemplate" title="设置模板" >
-            <template>
-                <el-row class="calendar-main">
-                    <el-col :span="6" class="edit-dup" >
-                        <span class="">批量修改重复范围</span>
-                        <el-col class="calendar-time" :span="20">
-                            <template>
-                                <div class="block">
-                                    <el-date-picker @change="modifyDataPicker" format="yyyy.MM.dd"
-                                                    v-model="selectInteral"
-                                                    type="daterange"
-                                                    placeholder="选择日期范围">
-                                    </el-date-picker>
-                                </div>
-                            </template>
-                        </el-col>
-                        <el-col>
-                            <template>
-                                <el-checkbox-group v-model="checkList" @change="checkedList">
-                                    <el-checkbox v-for="item in workDay" :label="item.key" :key="item.key">
-                                        {{item.name}}
-                                    </el-checkbox>
-                                </el-checkbox-group>
-                            </template>
-                        </el-col>
-                        <el-col style="padding:10px 0 ">
-                            <el-button type="primary" size="small" @click="setCalendarDate('work')">工作日</el-button>
-                            <el-button type="primary" size="small" @click="setCalendarDate('rest')">非工作日</el-button>
-                        </el-col>
-                    </el-col>
-                    <el-col :span="17"  class="cal-template" >
-                        <el-col class="template-tips">克隆：{{!templateInfo.name?template.name:templateInfo.name}}</el-col>
-                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
-                            <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
-                                <div class="calendar"></div>
-                            </el-col>
-                        </vue-scrollbar>
-
-                    </el-col>
-                    <el-col :span="17" :offset="7" class="template-legend" >
-                        图例：
-                        <span class="legend-black">1</span>工作日&nbsp;&nbsp;
-                        <span class="legend-red">1</span>非工作日
-                    </el-col>
-                </el-row>
-            </template>
-            <span slot="footer" class="dialog-footer" >
-                    <el-button class="dialog-btn dialog-btn-ok" type="primary"
-                               @click="setTemplate = false;setTemplateOK()">确 定</el-button>
-                    <el-button class="dialog-btn dialog-btn-cancel" @click="setTemplate = false">取 消</el-button>
-                </span>
-        </el-dialog>-->
         <create-calendar v-show="setTemplate" :isCreateCalendar="setTemplate" @hidePanel=hidePanelNew ref="setTemplate" :dateArr="checkedDate"></create-calendar>
-        <!--查看模板-->
-        <!--<el-dialog custom-class="edit-template prview-template" :visible.sync="lookTemplate" title="查看模板" >
-            <template>
-                <el-row class="calendar-main">
-                    <el-col :span="24"  class="cal-template" style="margin:0">
-                        <el-col class="template-tips" style="line-height:58px;">
-                            <el-col :span="4">{{template.name}}</el-col>
-                            <el-col :span="6">
-                                <span class="absol span-block" style="width:108px;top:0">日历有效范围：</span><el-input v-model = "priveiwDate" readonly placeholder="显示时间范围" style="margin-left:108px;"></el-input>
-                            </el-col>
-                        </el-col>
-                        <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
-                            <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
-                                <div class="calendar"></div>
-                            </el-col>
-                        </vue-scrollbar>
-                    </el-col>
-                </el-row>
-            </template>
-        </el-dialog>-->
         <priview-calendar v-show="lookTemplate" :isPrviewCalendar="lookTemplate" @hidePanel=hidePanelLook ref="priviewTemplate" :dateArr="checkedDate"></priview-calendar>
     </div>
 </template>
@@ -159,7 +87,6 @@
     export default {
         created(){
             FormIndex(this.tableData, 2, 10);
-//            this.selectInteral = ['2017.11.11', '2017.12.12'];//初始化赋值
 //            this.getData();
         },
         data: function () {
