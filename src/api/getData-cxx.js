@@ -103,5 +103,6 @@ export const getOrgNodes = params=> axios.get(`${params.url}/rs/oldgovern/report
 export const getReportList = params=> axios.post(`${params.url}/rs/oldgovern/report/getReportList`,params.reportListParam);
 //GET /rs/oldgovern/report/getReportList/{roleId} 查询对应角色的报表模板权限,返回有权限的报表id列表
 export const getReportListRoleId = params=> axios.get(`${params.url}/rs/oldgovern/report/getReportList/${params.roleId}`);
-
+//GET /roleRest/findRoles 获取角色列表
+export const findRoles = params=> axios.get(`${params.url}/roleRest/findRoles`);
 
