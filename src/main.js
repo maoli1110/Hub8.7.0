@@ -10,11 +10,13 @@ import $ from 'jquery';
 import '../static/css/theme-green/index.css';       // 浅绿色主题
 import '../static/zTree/js/jquery.ztree.all.min.js';
 import VueScrollbar from'../static/scroll/vue-scrollbar.vue';
+import orgTree from '../src/components/common/OrganizationTree.vue'
 import '../static/js/select-vue-component.js'; //vue多选参照select2
 import "babel-polyfill";
 import '../static/js/jbase64';
 Vue.use(ElementUI);
 Vue.component('vue-scrollbar', VueScrollbar)
+Vue.component('org-tree', orgTree)
 Vue.prototype.$axios = axios;
 // import global_ from './global.vue'//引用config文件
 // Vue.prototype.GLOBAL = global_//挂载到Vue实例上面

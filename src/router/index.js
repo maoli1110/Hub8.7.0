@@ -447,7 +447,20 @@ export default new Router({
                         {
                             // 市政
                             path: 'Inspector',
-                            component: resolve => require(['../components/Configuration/BaseBuild.vue'], resolve)
+                            component: resolve => require(['../components/Configuration/Inspector.vue'], resolve),
+                            redirect: '/configuration/Inspector/qualityMeasure',
+                            children:[
+                                {
+                                    path: 'qualityMeasure',//流程设置
+                                    component: resolve => require(['../components/Configuration/qualityMeasure.vue'], resolve),
+                                }, {
+                                    path: 'proTemplate',//工程模板
+                                    component: resolve => require(['../components/Configuration/proTemplate.vue'], resolve),
+                                },{
+                                    path: 'formManage',//表单管理
+                                    component: resolve => require(['../components/Configuration/formManage.vue'], resolve),
+                                }
+                            ],
                         },
                         {
                             // explorer
@@ -501,7 +514,7 @@ export default new Router({
                                     path: ':type/:index',
                                     component: resolve => require(['../components/Configuration/BWTemplate.vue'], resolve)
                                 }
-                                           
+
                             ]
                         },
                         {

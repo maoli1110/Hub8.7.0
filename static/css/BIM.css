@@ -246,7 +246,8 @@ text-align:left;}
     border-top:5px solid #ccc;
     display:inline-block;top:15px;left:0;
 }
-
+.sort-active-desc{border-top-color:#555 !important;}
+.sort-active-asc{border-bottom-color:#555 !important;}
 .el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover{
     background:#84aaf5;
 }
