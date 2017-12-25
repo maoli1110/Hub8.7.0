@@ -377,13 +377,6 @@
     let updateProcessId;
     //表格传参
     let processId;
-    let tableParams = {
-        searchKey:"",
-        page:"",
-        pageSize:"",
-        sortField:"",
-        sortType:"",
-    }
     let curretPage,pageSize,sortField,sortType;
     //关联模板参数
     let formModelParams = {
@@ -442,7 +435,7 @@
         updateProcessRelForm,//表单模板更新添加和删除
         getFormPreview,//表单模板预览接口
         getFormInfosForProcess//表单模板树结构
-    } from 'src/api/getData-yhj.js'
+    } from '../../api/getData-yhj';
     export default {
         data() {
             return {
@@ -482,6 +475,20 @@
 
                 zNodes: [],
                 tableData: [],//流程列表
+                tableParams:{
+                    pageParam: {
+                        orders: [
+                            {
+                                direction: 0,
+                                ignoreCase: false,
+                                property: "updateTime"
+                            }
+                        ],
+                        page: 0,
+                        size: 0
+                    },
+                    searchKey: ""
+                },
                 cur_page: 1,
                 tableSearchKey:"",
                 remainLength:0,
@@ -538,13 +545,18 @@
             pageSize = !pageSize?10:pageSize;
             sortField = !sortField?"":sortField;
             sortType = !sortType?"desc":sortType;
-            tableParams.page= curretPage;
-            tableParams.searchKey = this.tableSearchKey;
-            tableParams.pageSize = pageSize;
-            tableParams.sortType = sortType;
-            tableParams.sortField = sortField;
+            if(sortType=='desc'){
+                this.tableParams.pageParam.orders[0].direction = 1;
+            }else{
+                this.tableParams.pageParam.orders[0].direction = 0;
+            }
+            this.tableParams.pageParam.page= curretPage;
+            this.tableParams.searchKey = this.tableSearchKey;
+            this.tableParams.pageParam.size = pageSize;
+
+            this.tableParams.pageParam.orders[0].property = 'updateTime';
             this.activeIndex = this.$route.path;
-            this.getData(tableParams);
+            this.getData(this.tableParams);
 //        this.beforeRouteEnter();
 
         },
@@ -610,25 +622,29 @@
 //            next(vm => vm.from = from);
                 console.info(this.$route.name,'from')
             },
-            getData(tableParam){//默认数据
-                //表单列表
-                console.log(tableParam);
-//            this.tableData =[];
-                getProcessList(tableParam).then((res)=>{
+            //获取流程列表
+            getTableList(tableParams){
+                getProcessList(tableParams).then((res)=>{
                     //console.info(res.data.result,'我是流程列表数据')
-                    this.tableData = res.data;
-                    this.totalNumber = res.data.pageInfo.totalNumber;
-                    this.totalPage = res.data.pageInfo.pageSize;
+                    this.tableData = res.data.result.content;
+                    this.totalNumber = res.data.totalElements;
+                    this.totalPage = res.data.totalPages;
                 }).catch(function(error){
                     console.info(error)
                     this.messageBox(error.response.data.message);
                 })
-                //获取角色名称
-                getRoleInfo().then((res)=>{
-                    this.rootList = res.data;
-                }).catch(function(error){
-                    self.messageBox(error.response.data.message);
-                });
+            },
+            getRootList(){
+                  //获取角色名称
+                 getRoleInfo().then((res)=>{
+                    this.rootList = res.data.result;
+                 }).catch(function(error){
+                    this.messageBox(error.response.data.message);
+                 });
+            },
+            getData(tableParam){//默认数据
+               this.getTableList(this.tableParams);
+               this.getRootList();
                 /*  //更新的模板列表
                  updateProcessRelForm({addFormIds:["LBBG0004","LBBG0005"],delFormIds:["LBBG0004","LBBG0005"],modelId:"2-2",processId:40}).then((res)=>{
                  console.info(res.data,'更新模板列表')
@@ -641,27 +657,24 @@
                 this.remainLength =txtVal;
             },
             tableSearch(event){//搜索功能
-                console.log(event.type);
-
+//                console.log(event.type);
                 if(event.type=='click' || event.keyCode==13){
-                    tableParams.searchKey = this.tableSearchKey;
-                    this.getData(tableParams);
-
+                    this.tableParams.searchKey = this.tableSearchKey;
+                    this.getData(this.tableParams);
                 }
-
             },
             handleCurrentChange(val) {//显示第几页
                 this.cur_page = val;
                 curretPage= this.cur_page;
-                tableParams.page = curretPage;
-                console.info(tableParams.pageSize)
-                this.getData(tableParams);
+                this.tableParams.page = curretPage;
+                console.info(this.tableParams.pageSize)
+                this.getData(this.tableParams);
             },
             handleSizeChange(val) {//每页显示多少条
 //            debugger;
                 console.log(`每页 ${val} 条`);
-                tableParams.pageSize = val;
-                this.getData(tableParams);
+                this.tableParams.pageSize = val;
+                this.getData(this.tableParams);
             },
             formatter(row, column) {
                 return row.address;
@@ -1144,7 +1157,7 @@
                         this.flowName ="";
                         this.flowRemark="";
 
-                        getProcessList(tableParams).then((res)=>{
+                        getProcessList(this.tableParams).then((res)=>{
                             //console.info(res.data.result,'我是流程列表数据')
                             this.tableData = res.data;
                             this.totalNumber = res.data.pageInfo.totalNumber;

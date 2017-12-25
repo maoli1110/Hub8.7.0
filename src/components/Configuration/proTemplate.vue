@@ -229,7 +229,7 @@
     </div>
 </template>
 <script>
-    import { getLDProjModelList, getProjModelDetail, getProjModelNodeForms, getFormModelTypeList, getFormInfos, updateProjModel, getFormPreview } from 'src/api/getData-yhj.js'
+    import { getLDProjModelList, getProjModelDetail, getProjModelNodeForms, getFormModelTypeList, getFormInfos, updateProjModel, getFormPreview } from '../../api/getData-yhj';
     let level = 1;
     let maxLevel = -1;
     let newCount = 1;

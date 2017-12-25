@@ -122,7 +122,7 @@
         modelId:""
     };
     let cachezNodes = [];
-    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from 'src/api/getData-yhj.js'
+    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from '../../api/getData-yhj';
     export default{
         data(){
             return {
