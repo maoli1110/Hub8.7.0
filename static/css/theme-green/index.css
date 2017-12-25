@@ -1388,7 +1388,7 @@
 }
 
 .el-select-dropdown__wrap {
-    max-height: 274px
+    max-height: 600px
 }
 
 .el-select-dropdown__list {

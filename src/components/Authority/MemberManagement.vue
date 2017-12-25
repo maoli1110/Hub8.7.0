@@ -1,22 +1,6 @@
 <template>
     <div>
-        <!-- <div class="header">
-            <div>
-                <label class="el-form-item__label">组织节点：</label>
-                <div class="el-form-item__content" style="margin-left: 85px;">
-                    <el-select v-model="orgValue" placeholder="请选择" style="width:100%" class="org-text" @click.native='selectDropDown'>
-                        <el-option :value="orgValue" v-show="false">
-                        </el-option>
-                    </el-select>
-                    <div style="margin-left:45px;border:1px solid #e6e6e6" class="select-dropdown">
-                        <el-input placeholder="请输入组织节点" icon="search" style="width:100%"></el-input>
-                        <ul id="orgTree" class="ztree"></ul>
-                    </div>
-                </div>
-
-            </div>
-        </div> -->
-        <orgTree></orgTree>
+        <org-tree @handleTreeNodeChange='handleTreeNodeChange'></org-tree>
         <div class="header">
             <div class="el-form-item el-form_" style="margin-left:30px">
                 <label class="el-form-item__label">角色：</label>
@@ -246,14 +230,7 @@
 <script>
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
-    import orgTree from '../common/OrganizationTree.vue'
-    import * as types from "../../api/getData-ppc";
-
-
     export default {
-        components:{
-         orgTree
-        },
         data() {
             var validatePass = (rule, value, callback) => {
                 if (value === "") {
@@ -667,6 +644,9 @@
         },
 
         methods: {
+            handleTreeNodeChange(currentTreeNode){
+             console.log(currentTreeNode);
+            },
             getDefaultProcessTemplateTreeInfo() {
                 this.zNodes = [];
                 types.getDefaultProcessTemplateTreeInfo().then(res => {
@@ -674,29 +654,15 @@
                     $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
                 });
             },
-            selectDropDown() {
-                $('.el-select-dropdown__list').hide();
-                $('.el-select-dropdown').css('border','none')
-                $(".select-dropdown").slideToggle("fast");               
-            },
-            orgTreeClick(event, treeId, treeNode) {
-                this.orgValue = treeNode.name;
-                $(".select-dropdown").slideToggle("fast");
-            },
+            // orgTreeClick(event, treeId, treeNode) {
+            //     this.orgValue = treeNode.name;
+            //     $(".select-dropdown").slideToggle("fast");
+            // },
             dialogOrgTreeClick(event, treeId, treeNode) {
                 this.ruleForm.attribution = treeNode.name;
                 setTimeout(() => {
                     $(".el-select-dropdown__item.selected").click();
                 }, 100);
-            },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -836,7 +802,7 @@
             }
         },
         mounted() {
-            this.getDefaultProcessTemplateTreeInfo()
+            // this.getDefaultProcessTemplateTreeInfo()
 
         },
         created() {
@@ -862,12 +828,6 @@
 
     .org-text .el-input__inner {
         color: aqua
-    }
-
-    .ztree {
-        margin-top: 0px;
-        height: 600px;
-        overflow: auto;
     }
 
     .el-form_ {
