@@ -11,6 +11,7 @@
  */
 let builderUrl = window.serverPath.builderUrl;
 let cloudUrl = window.serverPath.cloudUrl;
+let civilUrl = window.serverPath.civilUrl;
 import axios from "axios";
 
 export const tests = params=> axios.get(`${builderUrl}/` + "payment/alipay/alipayCloseTradeNotify");
@@ -130,7 +131,7 @@ export const componentExist = params=>axios.post(`${cloudUrl}/component/az/exist
 //安装->上传
 export const upload = params=>axios.post(`${cloudUrl}/component/az/upload/${params.productId}`);
 //安装->添加
-export const componentAdd = params=>axios.put(`${cloudUrl}/component/az/add/${params.productId}`,params.base);
+export const componentAdd = params=>axios.put(`${cloudUrl}/component/az/add/${params.productId}`,params.civilUrl);
 //安装->更新
 export const componentUpdate = params=>axios.put(`${cloudUrl}/component/az/update/${params.productId}`,params.modify);
 
@@ -165,3 +166,59 @@ export const getColorTemplateInfoWrapper = params =>axios.post(`${builderUrl}/ap
 export const editColorTemplateInfo = params =>axios.post(`${builderUrl}/appconfig/general/color/template/editColorTemplateInfo`,params);
 //颜色模板删除
 export const deleteColorTemplateInfos = params=>axios.post(`${builderUrl}/appconfig/general/color/template/deleteColorTemplateInfos`,params)
+
+//市政
+
+export const getUserListPage = params => axios.post(`${civilUrl}/rs/lbconfig/process/getProcessList`, params);
+
+
+
+/*
+ * 流程设置列表
+ * */
+export const getProcessList = params => axios.post(`${civilUrl}/rs/lbconfig/process/getProcessList`, params);
+//流程设置添加角色管理
+export const getRoleInfo = params =>axios.get(`${civilUrl}/rs/lbconfig/process/getRoleInfo`,{params:params});
+//添加流程
+export const addProcessInfo = params => axios.post(`${civilUrl}/rs/lbconfig/process/addProcessInfo`, params);
+//获取流程列表
+export const getProcessInfo = params => axios.get(`${civilUrl}/rs/lbconfig/process/getProcessInfo/${params.processId}`);
+
+//验证流程是否被使用
+export const isUsedProcess = params => axios.get(`${civilUrl}/rs/lbconfig/process/isUsedProcess/${params.processId}`);
+//获取表单模板列表
+export const getProcessRelFormList = params => axios.post(`${civilUrl}/rs/lbconfig/process/getProcessRelFormList`, params);
+
+//更新流程
+export const updateProcessInfo = params => axios.post(`${civilUrl}/rs/lbconfig/process/updateProcessInfo/${params.processId}`, params.ProcessAddParam);
+//删除流程
+export const removeProcessInfo = params => axios.get(`${civilUrl}/rs/lbconfig/process/removeProcessInfo/${params.processId}`);
+//更新流程关联表单（添加和取消）
+export const updateProcessRelForm = params => axios.post(`${civilUrl}/rs/lbconfig/process/updateProcessRelForm`, params);
+/**
+ *表单管理
+ */
+//export const getFormModelList =params  => axios.get(`${civilUrl}/rs/lbconfig/form/getFormModelTypeList`);
+//表单预览获取uuid
+export const getFormPreview =params  => axios.get(`${civilUrl}/rs/lbconfig/form/getFormPreview/${params.modelId}/${params.formId}`);
+//关联表单数据
+export const getFormModelTypeList  = params =>axios.get(`${civilUrl}/rs/lbconfig/form/getFormModelTypeList/${params.belong}`);
+//获取表单列表-->树结构
+export const getFormInfosForProcess = params=>axios.get(`${civilUrl}/rs/lbconfig/form/getFormInfosForProcess/${params.modelId}/${params.processId}`);
+//查询表单列表
+export const getFormInfosForm = params=>axios.get(`${civilUrl}/rs/lbconfig/form/getFormInfos/${params.modelId}`);
+/**
+ * 工程模板接口
+ */
+/*查询工程模板列表 */
+
+export const getLDProjModelList = params => axios.get(`${civilUrl}/rs/lbconfig/projmodel/getLDProjModelList`, { params: params });
+/*获取工程模板展示明细*/
+export const getProjModelDetail = params => axios.get(`${civilUrl}/rs/lbconfig/projmodel/getProjModelDetail/${params}`);
+/*获取工程模板下某个节点关联的表单*/
+export const getProjModelNodeForms = params => axios.get(`${civilUrl}/rs/lbconfig/projmodel/getProjModelNodeForms/${params.projmodelId}/${params.nodeId}`);
+/*更新工程模板的表单*/
+export const updateProjModel = params => axios.post(`${civilUrl}/rs/lbconfig/projmodel/updateProjModel`, params);
+/*添加界面的下拉框选项*/
+/*添加界面树结构*/
+export const getFormInfos = params => axios.get(`${civilUrl}/rs/lbconfig/form/getFormInfos/${params}`);
