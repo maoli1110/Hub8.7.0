@@ -83,15 +83,15 @@
                                     <el-checkbox v-model="allChecked" @change="allSelectChange"></el-checkbox>
                                 </template>
                             </th>
-                            <th>工程名称<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.oriFileName','0')"></span><span class="desc absol" @click="tableListSort('t1.oriFileName','1')"></span></div></th>
-                            <th class="bim-projType">专业<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projType','0')"></span><span class="desc absol" @click="tableListSort('t1.projType','1')"></span></div></th>
-                            <th v-if="$route.params.typeId!=4">BIM属性<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projGenre','0')"></span><span class="desc absol" @click="tableListSort('t1.projGenre','1  ')"></span></div></th>
+                            <th>工程名称<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.oriFileName','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.oriFileName','1')"></span></div></th>
+                            <th class="bim-projType">专业<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.projType','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.projType','1')"></span></div></th>
+                            <th v-if="$route.params.typeId!=4">BIM属性<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.projGenre','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.projGenre','1  ')"></span></div></th>
                             <th class="uploadPerson">上传人</th>
-                            <th>上传时间<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.createDate','0')"></span><span class="desc absol" @click="tableListSort('t1.createDate','1')"></span></div></th>
+                            <th>上传时间<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.createDate','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.createDate','1')"></span></div></th>
 
                             <th v-if="$route.params.typeId!=4">图纸</th>
                             <th>所属项目部</th>
-                            <th>大小<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projSize','0')"></span><span class="desc absol" @click="tableListSort('t1.projSize','1')"></span></div></th>
+                            <th>大小<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.projSize','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.projSize','1')"></span></div></th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
                             <th style="min-width:88px;">数据处理</th>
                             <th>版本</th>
@@ -161,14 +161,14 @@
                                     <el-checkbox v-model="allChecked" @change="allSelectChange"></el-checkbox>
                                 </template>
                             </th>
-                            <th>工程名称<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.oriFileName','0')"></span><span class="desc absol" @click="tableListSort('t1.oriFileName','1')"></span></div></th>
-                            <th class="bim-projType">专业<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projType','0')"></span><span class="desc absol" @click="tableListSort('t1.projType','1')"></span></div></th>
-                            <th v-if="$route.params.typeId!=4">BIM属性<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projGenre','0')"></span><span class="desc absol" @click="tableListSort('t1.projGenre','1  ')"></span></div></th>
+                            <th>工程名称<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.oriFileName','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.oriFileName','1')"></span></div></th>
+                            <th class="bim-projType">专业<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.projType','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.projType','1')"></span></div></th>
+                            <th v-if="$route.params.typeId!=4">BIM属性<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.projGenre','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.projGenre','1  ')"></span></div></th>
                             <th class="uploadPerson">上传人</th>
-                            <th>上传时间<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.createDate','0')"></span><span class="desc absol" @click="tableListSort('t1.createDate','1')"></span></div></th>
+                            <th>上传时间<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.createDate','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.createDate','1')"></span></div></th>
                             <th v-if="$route.params.typeId!=4" class="bim-projType">图纸</th>
                             <th class="depart-pro">所属项目部</th>
-                            <th class="bim-projType">大小<div class="sort relat"><span class="asc absol" @click="tableListSort('t1.projSize','0')"></span><span class="desc absol" @click="tableListSort('t1.projSize','1')"></span></div></th>
+                            <th class="bim-projType">大小<div class="sort relat"><span class="asc absol sort-table" @click="tableListSort('t1.projSize','0')"></span><span class="desc absol sort-table" @click="tableListSort('t1.projSize','1')"></span></div></th>
                             <th v-if="$route.params.typeId==1">输出造价</th>
                             <th>版本</th>
                         </tr>
@@ -792,8 +792,17 @@
              * @params sort         ps(0:asc(降序),1:desc(升序))
              */
             tableListSort(fileName,sort){
-//                $($(event.target)).css('color','red');
-                console.log($($(event.target)),'12313');
+                //选中样式问题
+                if($($(event.target)).hasClass('desc')){
+                    $($("span.sort-table")).removeClass('sort-active-asc');
+                    $($(event.target)).addClass('sort-active-desc');
+
+                }else{
+                    $($('span.sort-table')).removeClass('sort-active-desc');
+                    $($(event.target)).addClass('sort-active-asc');
+
+                }
+
                 this.tableParam.pageParam.orders[0].property = fileName;
                 this.tableParam.pageParam.orders[0].direction = parseInt(sort);
                 this.getProjectList(this.tableParam)
