@@ -27,20 +27,20 @@
             </el-col>
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class="house-table scroll-me"   :data="tableData.colorTemplateInfoList" style="min-width: 900px;"  :default-sort="{prop: 'date', order: 'descending'}"    @select-all="selectAll" @select="selectChecked">
+            <el-table class="house-table scroll-me"   :data="tableData" style="min-width: 900px;"   @sort-change="tableSort" @select-all="selectAll" @select="selectChecked">
                 <el-table-column
                     type="selection"
                     width="40" >
                 </el-table-column>
                <!-- <el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
                 </el-table-column>-->
-                <el-table-column prop="name" width="" label="模板名称" show-overflow-tooltip>
+                <el-table-column prop="name" width="" label="模板名称" show-overflow-tooltip sortable>
                 </el-table-column>
-                <el-table-column prop="type" width="100" label="分类" >
+                <el-table-column prop="type" width="100" label="分类" sortable>
                 </el-table-column>
-                <el-table-column prop="createuser" width="160" label="上传人" >
+                <el-table-column prop="createuser" width="160" label="上传人" sortable>
                 </el-table-column>
-                <el-table-column prop="memo" width="" label="备注" show-overflow-tooltip>
+                <el-table-column prop="memo" width="" label="备注" show-overflow-tooltip sortable>
                 </el-table-column>
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
@@ -50,8 +50,8 @@
             </el-table>
         </vue-scrollbar>
         <div class="pagination">
-            <!--<span>当前页{{tableData.lbPageInfo.currentPage}},共{{tableData.lbPageInfo.totalPage}}页，共{{tableData.lbPageInfo.totalNumber}}条</span>-->
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout=" sizes, prev, pager, next, jumper" :total="300">
+            <span>当前页{{pageInfo.currentPage}},共{{pageInfo.totalPage}}页，共{{pageInfo.totalNumber}}条</span>
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout=" sizes, prev, pager, next, jumper" :total="pageInfo.totalNumber"><!---->
             </el-pagination>
         </div>
         <!--重命名模板名称-->
@@ -63,8 +63,8 @@
                     <el-input v-model="templateInfo.name"></el-input>
                 </el-form-item>
                 <el-form-item label="备注：" class="relat">
-                    <el-input type="textarea" placeholder="请输入模板名称，不得超过15个字符" :rows="5" v-model="templateInfo.remark" :maxlength="150"></el-input>
-                    <span class="info-pos absol"  style="right:28px;bottom:1px;background:#fff;">({{!templateInfo.remark.length?(0+"/"+150):(templateInfo.remark.length+"/"+150)}})</span>
+                    <el-input type="textarea" placeholder="请输入模板名称，不得超过15个字符" :rows="5" v-model="templateInfo.memo" :maxlength="150"></el-input>
+                    <span class="info-pos absol"  style="right:28px;bottom:1px;background:#fff;">({{!templateInfo.memo.length?(0+"/"+150):(templateInfo.memo.length+"/"+150)}})</span>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -89,6 +89,7 @@
     // import "../../utils/directive.js"
     import "../../../static/css/configuration.css";
     let deletArray = [];
+    let sortFirst = false;
     export default {
         created(){
             FormIndex(this.tableData,2,10);
@@ -107,28 +108,28 @@
                 classfiyList:[],                //分类信息
                 //分页的一些设置
                 cur_page:1,
-                totalPage:50,
-                totalNumber:300,
-                tableData:{},
+                totalPage:10,
+                tableData:[],
+                pageInfo:{},
                 tableParams:{                   //列表的传参问题
                     orgType: 0,                 //节点类型
                     orgid: "1",                 //节点id
                     pageParam: {                //分页参数
                         orders: [               //排序
                             {
-                                direction: 0,   //asc or desc
+                                direction: 1,   //asc or desc
                                 ignoreCase: false,//是否区分大小写
-                                property: ""//支持排序的字段
+                                property: "createtime"//支持排序的字段
                             }
                         ],
                         page: 1,                //分页
-                        size: 10                //条目
+                        size: 10               //条目
                     },
                     type: ""                    //分类
                 },
                 templateInfo:{      //修改信息
                     name:'',
-                    remark:'',
+                    memo:'',
                     tmplkey:""
                 },
                 setting: {//搜索条件ztree setting
@@ -152,11 +153,6 @@
         methods: {
             getData(){
                this.getTreeList();
-               /*if( this.filterParam.orgId=='1'){
-                   this.tableParams.orgType = 0;
-               }
-                this.tableParams.orgid  = this.filterParam.orgId;*/
-
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -164,7 +160,7 @@
              * @params error    失败处理的
              * */
             commonConfirm(message,success,error,type){
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                this.$confirm(message, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: type
@@ -187,13 +183,13 @@
             //分页器事件
             handleSizeChange(size){
                 this.totalPage = size;
-                this.tableParams.size = size;
+                this.tableParams.pageParam.size = size;
 //                console.log(`每页显示多少条${size}`);
                 this.getColorTemplateList(this.tableParams);
             },
             handleCurrentChange(currentPage){
                 this.cur_page = currentPage;
-                this.tableParams.page = currentPage;
+                this.tableParams.pageParam.page = currentPage;
 //                console.log(`当前页${currentPage}`);
                 this.getColorTemplateList(this.tableParams);
             },
@@ -206,15 +202,13 @@
                             this.$set(val,'iconSkin','rootNode');
                         }else if(!val.root && val.type==0 && !val.direct){
                             this.$set(val,'iconSkin','subNode');
-                            this.tableParams.orgType = 0
                         }else if(val.type==1 ){
                             this.$set(val,'iconSkin','projNode');
-                            this.tableParams.orgType = 1
                         }else if(val.direct){
                             this.$set(val,'iconSkin','projNode');
-                            this.tableParams.orgType = 1
                         }
                         if(val.id=="1"){
+                            this.tableParams.orgType = 0;
                             this.filterParam.orgName = val.name;
                             this.filterParam.orgId = val.id;
                         }
@@ -225,54 +219,26 @@
                     this.getTemplateTypes({orgType:0,orgid:this.filterParam.orgId});
                     this.getColorTemplateList(this.tableParams);
                 })
+//                this.getColorTemplateList(this.tableParams);
             },
             //获取分类信息
             getTemplateTypes(params){
                 getColorTemplateTypes(params).then((data)=>{
-                   /* if(data.data.result.length>0){
-//                        this.classfiyList = data.data.result;
-                        this.classfiyList = ['项目一','项目二','项目三'];
+                    if(data.data.result.length>0){
+                        this.classfiyList = data.data.result;
+                        this.filterParam.filterClassfiyVal = this.classfiyList[0];
                     }else{
                         this.classfiyList = [];
-                    }*/
-                    this.classfiyList = ['项目一','项目二','项目三'];
-                    this.filterParam.filterClassfiyVal = this.classfiyList[0];
+                    }
+
                 })
             },
             //获取颜色模板列表
             getColorTemplateList(params){
                 getColorTemplateInfoWrapper(params).then((data)=>{
-                    this.tableData = {
-                        colorTemplateInfoList: [
-                            {
-                                createuser: "yhj",
-                                memo: "米格米格",
-                                name: "米格",
-                                tmplkey: "123",
-                                type: "项目一"
-                            },
-                            {
-                                createuser: "yhj",
-                                memo: "米格米格",
-                                name: "米格",
-                                tmplkey: "124",
-                                type: "项目一"
-                            },
-                            {
-                                createuser: "yhj",
-                                memo: "米格米格",
-                                name: "米格",
-                                tmplkey: "125",
-                                type: "项目一"
-                            }
-                        ],
-                        lbPageInfo: {
-                            beginNumber: 0,
-                            currentPage: 1,
-                            pageSize: 10,
-                            totalNumber: 100,
-                            totalPage: 10
-                        }
+                    if(data.data.result.colorTemplateInfoList.length>0){
+                        this.tableData = data.data.result.colorTemplateInfoList;
+                        this.pageInfo = data.data.result.lbPageInfo;
                     }
                 })
             },
@@ -281,13 +247,13 @@
                 deleteColorTemplateInfos(params).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('删除成功','success');
-                         if(this.tableData.colorTemplateInfoList.length===deletArray.length){
+                         if(this.tableData.length===deletArray.length){
                             this.getColorTemplateList(this.tableParams);
                          }else if(deletArray.length) {
                             for (let i = 0; i < deletArray.length; i++) {
-                                for (let j = 0; j < this.tableData.colorTemplateInfoList.length; j++) {
-                                    if (this.tableData.colorTemplateInfoList[j].tmplkey == deletArray[i]) {
-                                        this.tableData.colorTemplateInfoList.splice(j, 1);
+                                for (let j = 0; j < this.tableData.length; j++) {
+                                    if (this.tableData[j].tmplkey == deletArray[i]) {
+                                        this.tableData.splice(j, 1);
                                     }
                                 }
                             }
@@ -335,7 +301,16 @@
              * 全选
              * @params [{type array}]  selection  选中的队列对象
              */
-
+            tableSort(column){
+                if(column.order=='descending'){
+                    this.tableParams.pageParam.orders[0].direction = 1;
+                }else if(column.order=="ascending"){
+                    this.tableParams.pageParam.orders[0].direction = 0;
+                }
+                console.log(column)
+                this.tableParams.pageParam.orders[0].property = column.prop;
+                this.getColorTemplateList(this.tableParams)
+            },
             selectAll(selection){
                 deletArray=[];
                 selection.forEach(function(val,key){
@@ -343,7 +318,6 @@
                         deletArray.push(val.tmplkey)
                     }
                 });
-                console.log(deletArray,'deletArray')
             },
 
             /**
@@ -358,7 +332,6 @@
                         deletArray.push(val.tmplkey)
                     }
                 })
-                console.log(deletArray,'deletArray')
             },
 
             //删除模板
@@ -377,16 +350,14 @@
                 //去拿相关模板的信息
                 this.templateInfo.tmplkey = item.tmplkey;
                 this.templateInfo.name = item.name;
-                this.templateInfo.remark = item.memo;
+                if(item.memo==null){
+                    this.templateInfo.memo = "";
+                }else{
+                    this.templateInfo.memo = item.memo;
+                }
             },
             renameTemplateOK(){
-                    /*this.tableData.forEach((val,key)=>{
-                        if(val.index==this.renameIndex){
-                            this.tableData[key].processName = this.templateInfo.name;
-                            this.tableData[key].proDepartment = this.templateInfo.remark;
-                        }
-                    })*/
-                    this.eidtTemplate(this.templateInfo);
+                this.eidtTemplate(this.templateInfo);
             },
             renameTemplateCancel(){
 
@@ -407,8 +378,7 @@
         watch:{
             'filterParam.orgName':function(newVal,oldVal){
                 if(newVal!=oldVal && oldVal!=''){
-
-                    if(this.filterParam.orgId=="1"){
+                    if(newVal=="根机构"){
                         this.tableParams.orgType = 0;
                     }else{
                         this.tableParams.orgType = 1;
@@ -433,4 +403,5 @@
     .workSeting .work-toobar .el-select{
         width:100%;
     }
+
 </style>

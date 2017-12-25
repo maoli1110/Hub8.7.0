@@ -473,7 +473,9 @@
                     };
                     if(data.data.result){
                         this.commonConfirm('构件已经存在是否替换', () => {
-                            this.modifyComponent({productId:this.updateComList.productId,modify:{compntFileId:this.updateComList.componentFileId,componentFilePath:this.updateComList.componentFilePath,description:this.updateComList.remark,fileChanged:true,fileName:this.updateComList.fileName,pictureFilePath:this.updateComList.pictureFilePath,summaryFilePath:this.updateComList.summaryFilePath,title:this.updateComList.title}});
+                            setTimeout(()=>{
+                                this.modifyComponent({productId:this.updateComList.productId,modify:{compntFileId:this.updateComList.componentFileId,componentFilePath:this.updateComList.componentFilePath,description:this.updateComList.remark,fileChanged:true,fileName:this.updateComList.fileName,pictureFilePath:this.updateComList.pictureFilePath,summaryFilePath:this.updateComList.summaryFilePath,title:this.updateComList.title}});
+                            },1200)
                         }, () => {
                         }, 'warning')
                     }else{

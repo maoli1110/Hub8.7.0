@@ -23,7 +23,7 @@
 {text-align:left !important;padding:0 0 0 15px;}
 
 /*template-dialog*/
-.template-rename{width:450px;height:340px;}
+.template-rename{width:450px;padding-bottom:20px;}
 .template-rename .el-input,.template-rename .el-textarea{width:76%}
 /*label-tempalte*/
 .lab-template-filter{border-bottom:1px solid #e6e6e6;padding-top:0 !important;padding-bottom:20px ;}
@@ -48,6 +48,10 @@
 .icon-template.icon-dels{
     background-position:-57px -164px;
 }
+.color-template .el-form-item__label{
+    width:73px !important;
+}
+.color-template .el-dialog__footer{padding-bottom:0px;}
 /*日历模板*/
 .calendar-template .el-select{width:75%;}
 .calendar-template .el-select>.el-input{width:100% !important;}
