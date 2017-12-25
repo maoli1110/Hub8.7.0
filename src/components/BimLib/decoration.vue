@@ -796,11 +796,9 @@
                 if($($(event.target)).hasClass('desc')){
                     $($("span.sort-table")).removeClass('sort-active-asc');
                     $($(event.target)).addClass('sort-active-desc');
-
                 }else{
                     $($('span.sort-table')).removeClass('sort-active-desc');
                     $($(event.target)).addClass('sort-active-asc');
-
                 }
 
                 this.tableParam.pageParam.orders[0].property = fileName;
