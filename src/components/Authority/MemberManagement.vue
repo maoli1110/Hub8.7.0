@@ -1,6 +1,6 @@
 <template>
     <div>
-        <org-tree @handleTreeNodeChange='handleTreeNodeChange'></org-tree>
+        <org-tree @handleTreeNodeChange='handleTreeNodeChange' ref="org-tree"></org-tree>
         <div class="header">
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">角色：</label>
@@ -105,10 +105,10 @@
         <el-dialog title="添加人员" :visible.sync="addMemberDialogVisible" size="add-member-dialog">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="鲁班通行证：" prop="pass">
-                    <el-input v-model="ruleForm.pass" auto-complete="off"></el-input>
+                    <el-input v-model="ruleForm.pass" auto-complete="off" placeholder="请输入成员注册的通行证账号"></el-input>
                 </el-form-item>
                 <el-form-item label="姓名：" prop="name">
-                    <el-input v-model="ruleForm.name" auto-complete="off"></el-input>
+                    <el-input v-model="ruleForm.name" auto-complete="off" placeholder="请输入用户的昵称"></el-input>
                 </el-form-item>
                 <el-form-item label="角色：" prop="role">
                     <el-select v-model="ruleForm.role" placeholder="请选择" style="width:360px">
@@ -117,20 +117,23 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="归属：" prop="attribution">
-                    <el-select v-model="ruleForm.attribution" placeholder="请选择" style="width:360px">
+                    <!-- <el-select v-model="ruleForm.attribution" placeholder="请选择" style="width:360px">
                         <el-option :value="ruleForm.attribution" v-show="false">
                         </el-option>
                         <ul id="dialogOrgTree" class="ztree"></ul>
+                    </el-select> -->
+                    <el-select v-model="ruleForm.attribution" placeholder="请选择" style="width:360px">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="手机号码：" prop="phone">
-                    <span style="color:#e6e6e6">请先填写通行证账号，手机号码自动关联</span>
-                    <!-- <el-input v-model="ruleForm.phone" auto-complete="off" :disabled="true"></el-input> -->
+                    <!-- <span style="color:#e6e6e6">请先填写通行证账号，手机号码自动关联</span> -->
+                    <el-input v-model="ruleForm.phone" auto-complete="off" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱：" prop="email">
-                    <span style="color:#e6e6e6">请先填写通行证账号，邮箱自动关联</span>
-
-                    <!-- <el-input v-model="ruleForm.email" auto-complete="off" :disabled="true"></el-input> -->
+                    <!-- <span style="color:#e6e6e6">请先填写通行证账号，邮箱自动关联</span> -->
+                    <el-input v-model="ruleForm.email" auto-complete="off" :disabled="true"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" style="margin-top:-30px">
@@ -241,6 +244,7 @@
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
     import * as api from "../../api/getData-ppc";
+    import {mapActions} from "vuex";
     export default {
         data() {
             var validatePass = (rule, value, callback) => {
@@ -248,8 +252,15 @@
                     callback(new Error("请输入通行证"));
                 } else {
                     console.log("后台验证中......");
-                    this.ruleForm.phone = "18555524036";
-                    this.ruleForm.email = "yunyinyue@163.com";
+                    let params = 'center10'
+                    api.getPassCheck(params).then(res => {
+                        console.log(res.data)
+                        if (res.data.code == 200) {
+                            console.log("验证成功......");
+                            this.ruleForm.phone = res.data.result.mobile;
+                            this.ruleForm.email = res.data.result.email;
+                        }
+                    })
                     callback();
                 }
             };
@@ -538,6 +549,9 @@
         },
 
         methods: {
+            ...mapActions([
+                "curEditMember" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
+            ]),
             getUsersList() {
                 let params = {
                     orgIds: [
@@ -586,14 +600,23 @@
                 }, 100);
             },
             editMember(MemberId) {
+
                 this.$router.push({
                     path: `/authority/edit-member/${MemberId}`
                 });
             },
             submitForm(formName) {
+                debugger
                 this.$refs[formName].validate(valid => {
+                    console.log(valid)
+
+
+
+
+
+
                     if (valid) {
-                        alert("提交中...........");
+                        // alert("提交中...........");
                         console.log(this.ruleForm);
                         this.addMemberDialogVisible = false;
                     } else {
@@ -704,7 +727,7 @@
             }
         },
         mounted() {
-            this.getUsersList()           
+            this.getUsersList()
         },
         created() {
             this.$emit("routerActive");

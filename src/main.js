@@ -9,6 +9,9 @@ import $ from 'jquery';
 // import 'element-ui/lib/theme-default/index.css';    // 默认主题
 import '../static/css/theme-green/index.css';       // 浅绿色主题
 import '../static/zTree/js/jquery.ztree.all.min.js';
+import "../static/zTree/js/jquery.ztree.core.min.js";
+import "../static/zTree/js/jquery.ztree.excheck.min.js";
+import "../static/zTree/js/jquery.ztree.exhide.min.js";
 import VueScrollbar from'../static/scroll/vue-scrollbar.vue';
 import orgTree from '../src/components/common/OrganizationTree.vue'
 import '../static/js/select-vue-component.js'; //vue多选参照select2

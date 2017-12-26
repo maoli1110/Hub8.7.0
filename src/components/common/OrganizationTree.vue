@@ -23,8 +23,6 @@
 </template>
 <script>
     import * as types from "../../api/getData-ppc";
-    import "../../../static/zTree/js/jquery.ztree.exhide.min.js";
-    import "../../../static/zTree/js/jquery.ztree.core.min.js";
     export default {
         data() {
             return {
@@ -175,7 +173,7 @@
 
     .fade-enter-active,
     .fade-leave-active {
-        transition: opacity .5s
+        transition: opacity 1s
     }
 
     .fade-enter,
