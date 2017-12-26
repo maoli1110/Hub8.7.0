@@ -27,6 +27,13 @@ export const getUsersList = params => {
 export const getPassCheck = params => {
     return axios.get(`${builderUrl}/userRest/check/${params}`);
 };
+/**
+ * @param {*} params 
+ * 获取角色列表(全部菲分页)
+ */
+export const getRoleList2 = params => {
+    return axios.get(`${builderUrl}/roleRest/findRoles`);
+};
 
 
 

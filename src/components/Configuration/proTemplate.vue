@@ -441,7 +441,6 @@
             updatePromodel() {
                 let treeObj = $.fn.zTree.getZTreeObj("proZtree");
                 let nodes = treeObj.transformToArray(treeObj.getNodes());
-                debugger;
                 let nodeTrees = [];
                 let formList = [];
                 this.nodeForms = [];
@@ -1284,7 +1283,6 @@
             },
 
             maxViewTab(index) {
-                debugger;
                 console.info(index)
             },
             beforeClick(treeNode) {

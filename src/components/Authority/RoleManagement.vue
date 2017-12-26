@@ -44,7 +44,7 @@
     import {
         mapActions
     } from "vuex";
-    import * as types from "../../api/getData-ppc";
+    import * as api from "../../api/getData-ppc";
     export default {
         data() {
             return {
@@ -68,8 +68,9 @@
             ...mapActions([
                 "curEditRole" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
             ]),
+            //获取角色列表
             getRoleList() {
-                types.getRoleList(this.pageParams).then(res => {
+                api.getRoleList(this.pageParams).then(res => {
                     this.roleTableData = res.data.result.result;
                     let pageInfo = res.data.result.pageInfo;
                     this.curPage = pageInfo.currentPage;
@@ -98,7 +99,7 @@
                 this.$router.push({
                     path: `/authority/add-role`
                 });
-                // types.getRoleClientAuthInfo().then(res => {
+                // api.getRoleClientAuthInfo().then(res => {
                 //   console.log(res.data);
                 // });
             },
@@ -122,7 +123,7 @@
                     })
                     .then(() => {
                         this.multipleSelection.forEach(item => {
-                            types.deleteRole(item.roleId).then(res => {
+                            api.deleteRole(item.roleId).then(res => {
                                 if (res.data.code == 200) {
                                     this.getRoleList();
                                 }

@@ -59,7 +59,7 @@
             </div>
 
             <div class="basic-content">
-                <img :src="'../../../static/img/report/'+ imgName +'.jpg'" />
+                <img :src="!imgName?'':'../../../static/img/report/'+ imgName +'.jpg'" />
                 <!-- <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
 
                           style="width: 100%" @selection-change="handleSelectionChange">
@@ -278,9 +278,6 @@ export default {
         reportPermissions: []
       };
       vm.selectNum = sel.length;
-      //   sel.forEach(element => {
-      //     vm.selectList.push(element.reportId);
-      //   });
       let reportId = [];
       sel.forEach(element => {
         reportId.push(element.reportId);

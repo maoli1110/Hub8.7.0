@@ -14,23 +14,23 @@
                 </el-col>
                 <el-col :span="4">
                     <div class="advanced-search">
-                        <el-button type="primary" class="basic-btn" @click="deepSearch = true">指标排序</el-button>
+                      <el-button type="primary" class="basic-btn" @click="deepSearch = true">高级搜索</el-button>
+                      <el-button type="primary" class="basic-btn" @click="deepSearch = true">指标排序</el-button>
                     </div>
                 </el-col>
             </div>
-            <div class="header">
-                <el-col :span="20">
-                    <el-button type="primary" class="basic-btn" @click=""><i class="left-icon icon icon-info-update"></i><span class="btn-text">更新指标</span>
-                        </el-button>
-                    <el-button type="primary" class="basic-btn" @click=""><i class="left-icon icon icon-forbidden"></i><span class="btn-text">不更新</span>
-                        </el-button>
-                    <el-button type="primary" class="basic-btn" @click=""><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
-                        </el-button>
-                </el-col>
-            </div>
-
+            
             <div class="main">
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
+                      <el-col :span="20" style="padding-bottom:20px;">
+                          <el-button type="primary" class="basic-btn" @click=""><i class="left-icon icon icon-info-update"></i><span class="btn-text">更新指标</span>
+                              </el-button>
+                          <el-button type="primary" class="basic-btn" @click=""><i class="left-icon icon icon-forbidden"></i><span class="btn-text">不更新</span>
+                              </el-button>
+                          <el-button type="primary" class="basic-btn" @click=""><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
+                              </el-button>
+                      </el-col>
+
                     <el-table ref="multipleTable scroll-me" :data="bindManageTableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
                         <el-table-column type="selection" width="60"></el-table-column>
@@ -196,7 +196,6 @@ export default {
           //     vm.newList.splice(event.newIndex, 0, vm.olderList[event.item.getAttribute('data-index')]);
           // },
           onEnd: evt => {
-            debugger;
             const tempIndex = this.newList.splice(evt.oldIndex, 1)[0];
             this.newList.splice(evt.newIndex, 0, tempIndex);
           }
@@ -261,5 +260,8 @@ export default {
 .draggable-list {
   height: 100%;
   overflow: auto;
+}
+.order-management .content .el-input {
+  width: 100%;
 }
 </style>

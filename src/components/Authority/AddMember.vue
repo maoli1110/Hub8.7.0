@@ -13,27 +13,27 @@
                         <label class="el-form-item__label">姓名：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;">
                             <div v-show="isEdit">
-                                <el-input placeholder="请输入姓名"></el-input>
+                                <el-input placeholder="请输入姓名" v-model="curEditMember.realName"></el-input>
                                 <span class="red_">*</span>
                             </div>
-                            <span v-show="!isEdit">尼古拉斯-药四</span>
+                            <span v-show="!isEdit">{{curEditMember.realName}}</span>
                         </div>
                     </div>
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label">角色：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;">
-                            <el-input placeholder="请选择角色" v-show="isEdit"></el-input>
-                            <span v-show="!isEdit">舞王</span>
+                            <el-input placeholder="请选择角色" v-show="isEdit" v-model="curEditMember.roleName"></el-input>
+                            <span v-show="!isEdit">{{curEditMember.roleName}}</span>
                         </div>
                     </div>
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label">归属：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;">
                             <div v-show="isEdit">
-                                <el-input placeholder="请选择归属"></el-input>
+                                <el-input placeholder="请选择归属" v-model="curEditMember.orgId"></el-input>
                                 <span class="red_">*</span>
                             </div>
-                            <span v-show="!isEdit">象牙山村</span>
+                            <span v-show="!isEdit">{{curEditMember.orgId}}</span>
                         </div>
                     </div>
                 </el-col>
@@ -41,31 +41,19 @@
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label" style="width:96px">鲁班通行证:</label>
                         <div class="el-form-item__content" style="margin-left: 55px;overflow:hidden">
-                            55555555555666
-
-
-
-
+                            {{curEditMember.userName}}
                         </div>
                     </div>
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label" style="width:95px">手机号码:</label>
                         <div class="el-form-item__content" style="margin-left: 55px;overflow:hidden">
-                            15842546875
-
-
-
-
+                            {{curEditMember.mobile}}
                         </div>
                     </div>
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label" style="width:55px">邮箱:</label>
                         <div class="el-form-item__content" style="margin-left: 96px;overflow:hidden">
-                            yunyinyue@163.com
-
-
-
-
+                            {{curEditMember.email}}
                         </div>
                     </div>
                 </el-col>
@@ -73,7 +61,7 @@
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label" style="width:55px">备注：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;position:relative">
-                            <el-input type="textarea" resize='none' :maxlength='100' :autosize="{ minRows: 6, maxRows: 6}" placeholder="请输入内容" v-model="textarea">
+                            <el-input type="textarea" resize='none' :maxlength='100' :autosize="{ minRows: 6, maxRows: 6}" placeholder="请输入内容" v-model="curEditMember.remarks">
                             </el-input>
                             <span style="position:absolute;right:10px;bottom:0">({{textarea.length}}/100)</span>
                         </div>
@@ -392,6 +380,9 @@
 <script>
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+    import {
+        mapGetters
+    } from "vuex";
     export default {
         data() {
             return {
@@ -538,6 +529,9 @@
                 ]
             };
         },
+        computed: {
+            ...mapGetters(["curEditMember"])
+        },
         methods: {
             handleClick(tab, event) {
                 console.log(tab);
@@ -583,6 +577,11 @@
                     path: `/authority/member-management`
                 });
             }
+        },
+        created () {
+            if (!this.curEditMember.realName) {
+                    this.$router.push("/authority/member-management");
+                }
         }
     };
 

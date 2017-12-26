@@ -138,8 +138,8 @@
 
         },
         mounted() {
-            $(".el-select-dropdown__list").hide();
-            $(".el-select-dropdown").css("border", "none"); //隐藏element 下拉框中下拉列表
+            $(".organization-header .el-select-dropdown__list").hide();
+            $(".organization-header .el-select-dropdown").css("border", "none"); //隐藏element 下拉框中下拉列表
             this.getOrgTreeInfo() 
         }
     };
@@ -173,7 +173,7 @@
 
     .fade-enter-active,
     .fade-leave-active {
-        transition: opacity 1s
+        transition: opacity .5s
     }
 
     .fade-enter,

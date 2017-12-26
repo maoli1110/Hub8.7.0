@@ -52,7 +52,7 @@ function transformToObjFormat(param, simpleOrgNodes) {
  * @returns {basePath}  分属模块对应的路径
  */
 function basePath(localhost) {
-    let baseUrl = "";
+    let baseUrl = "";  
     switch (localhost) {
         //cas
         case '/authority/administrators-list':             //权限管理->管理员管理
@@ -224,49 +224,49 @@ function basePath(localhost) {
             baseUrl = 'http://192.168.13.195:8989/builderCiVil/';
             break;
 
-        // cloud
+        // LBcloud
         case "/componentlib/luban-mep":        //构件库->鲁班安装
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case "/componentlib/luban-steel":      //构件库->鲁班钢筋
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case '/quotalib/automatic-template':   //定额库->自动套
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case '/indicatorslib/unchecked/civilEngineering-index':    //指标库->未审核->土建指标
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case '/indicatorslib/unchecked/reinforcement-index':       //指标库->未审核->钢筋指标
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case '/indicatorslib/passed/civil-engineering-index':      //指标库->已审核->土建指标
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case '/indicatorslib/passed/reinforcement-index':          //指标库->已审核->土建指标
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case "/authority/basic-client":        //权限管理->应用分配>基础客户端
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case "/authority/system-client":       //权限管理->应用分配->系统客户端
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case "/authority/bim-meal":            //权限管理->应用分配->BIM应用套餐
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case "/authority/quota-lib":           //权限管理->应用分配->定额库
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
-        case "/system/lubancoins-management":  //系统->鲁班币
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+        case "/system/order-management/lubancoins-management":  //系统->鲁班币
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
             break;
         case "/system/order-management/orders":
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
         case "/system/order-management/orders-detail/:id":
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
         case "/system/order-management/eds-orders":
-            baseUrl = 'http://192.168.13.195:8989/cloud/';
+            baseUrl = 'http://192.168.13.195:8989/LBcloud/';
 
         case "/system/system-log/govern-log":
             baseUrl = 'http://192.168.13.195:8989/LBbuilder/';
