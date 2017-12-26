@@ -59,7 +59,8 @@
         labelList,  //标签列表
         labelDel,   //标签删除
         labelAdd,   //创建标签
-        labelUpdate //更新标签
+        labelUpdate, //更新标签
+        labelDelArr
     } from '../../api/getData-yhj.js';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import ElCol from "element-ui/packages/col/src/col";
@@ -172,25 +173,33 @@
                     }
                 })
             },
-            deletelabelList(params){
-                labelDel(params).then((data)=>{
-                    if(data.data.code==200){
-                        this.commonMessage('删除成功','success');
-                         if(this.tableData.length===deletArray.length){
-                            //重新渲染数据
-                            this.getLableList(this.tableParam);
-                         }else {
-                            for (let i = 0; i < deletArray.length; i++) {
-                                for (let j = 0; j < this.tableData.length; j++) {
-                                    if (this.tableData[j].id == deletArray[i]) {
-                                        this.tableData.splice(j, 1);
+            deletelabelList(params,type){
+                if(type=='dbdel'){
+                    labelDelArr(params).then((data)=>{
+                        if(data.data.code==200){
+                            this.commonMessage('删除成功','success');
+                            if(this.tableData.length===deletArray.length){
+                                //重新渲染数据
+                                this.getLableList(this.tableParam);
+                            }else {
+                                for (let i = 0; i < deletArray.length; i++) {
+                                    for (let j = 0; j < this.tableData.length; j++) {
+                                        if (this.tableData[j].id == deletArray[i]) {
+                                            this.tableData.splice(j, 1);
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                    }
-                })
+                        }
+                    })
+                }else{
+                    labelDel(params).then((data)=>{
+
+                    })
+                }
+
+
             },
             //标签列表字段排序
             tableSort(column){
@@ -248,17 +257,22 @@
 
             //删除模板
             delTemplate(item){
-                if(item){
-                    deletArray = [];
-                    deletArray.push(item.id);
-                }
+                if(item.id){
+                    deletArray = item.id;
+                };
                 if(!deletArray.length){
                     this.commonMessage('请选择要删除的文件','warning')
                     return false;
+                }else if(item.id){
+                    this.commonConfirm('确定要删除吗',()=> {
+                        this.deletelabelList(deletArray,'single');
+                    })
+                }else{
+                    this.commonConfirm('确定要删除吗',()=> {
+                        this.deletelabelList(deletArray,'dbdel');
+                    })
                 }
-                this.commonConfirm('确定要删除吗',()=> {
-                    this.deletelabelList(deletArray);
-                })
+
             },
             //重命名模板名称
             renameTemplate(item){
