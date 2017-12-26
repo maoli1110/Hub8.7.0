@@ -20,8 +20,13 @@ export const getOrgTreeList = params => {
 export const getUsersList = params => {
     return axios.post(`${builderUrl}/userRest/findUsers`, params);
 };
-
-
+/**
+ * @param {*} params 
+ * 
+ */
+export const getPassCheck = params => {
+    return axios.get(`${builderUrl}/userRest/check/${params}`);
+};
 
 
 

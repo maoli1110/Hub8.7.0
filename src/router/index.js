@@ -122,6 +122,11 @@ export default new Router({
                             component: resolve => require(['../components/Authority/AddMember.vue'], resolve)
                         },
                         {
+                            // 成员管理(编辑/添加)
+                            path: 'add-member',
+                            component: resolve => require(['../components/Authority/AddMember.vue'], resolve)
+                        },
+                        {
                             // 角色管理
                             path: 'role-management',
                             component: resolve => require(['../components/Authority/RoleManagement.vue'], resolve)
