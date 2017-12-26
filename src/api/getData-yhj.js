@@ -172,7 +172,7 @@ export const deleteColorTemplateInfos = params=>axios.post(`${builderUrl}/appcon
 //分页查询标签列表
 export const labelList  = params =>axios.get(`${builderUrl}/appconfig/general/tags/?page=${params.page}&size=${params.size}&sort=${params.sort}&keyword=${params.keyword}`)
 //批量删除标签
-export const labelDel = params=>axios.delete(`${builderUrl}/appconfig/general/tags/${params.id}`);
+export const labelDel = params=>axios.put(`${builderUrl}/appconfig/general/tags`,params);
 //创建新的标签--媒体类型不一致
 export const labelAdd = params=>axios.post(`${builderUrl}/appconfig/general/tags/`,params.tagName,{
     headers: {
