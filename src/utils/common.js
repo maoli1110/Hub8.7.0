@@ -52,9 +52,7 @@ function transformToObjFormat(param, simpleOrgNodes) {
  * @returns {basePath}  分属模块对应的路径
  */
 function basePath(localhost) {
-    let baseUrl = "";
-    debugger
-    console.log(222)    
+    let baseUrl = "";  
     switch (localhost) {
         //cas
         case '/authority/administrators-list':             //权限管理->管理员管理
