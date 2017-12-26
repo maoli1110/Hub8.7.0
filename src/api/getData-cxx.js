@@ -11,7 +11,7 @@
  */
 import axios from "axios";
 
-let builderUrl = 'http://192.168.13.195:8989/LBbuilder/'
+//let builderUrl = 'http://192.168.13.195:8989/LBbuilder/'
 
 let base = './static/workSeting.json';
 let route = './static/routes.json';

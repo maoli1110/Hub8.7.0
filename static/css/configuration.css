@@ -28,7 +28,7 @@
 /*label-tempalte*/
 .lab-template-filter{border-bottom:1px solid #e6e6e6;padding-top:0 !important;padding-bottom:20px ;}
 /*dialog*/
-.lab-addTemplate{width:450px;}
+.lab-addTemplate{width:450px;padding-bottom:30px;}
 .lab-addTemplate .el-input{width:75% !important;}
 .icon-template{width:14px;height:14px;display:inline-block;background: url('../../static/img/icon-menu.png') -0px -0px no-repeat;}
 .icon-template.icon-del{
