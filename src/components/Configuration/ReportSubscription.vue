@@ -4,11 +4,13 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">角色：</label>
                 <div class="el-form-item__content" style="margin-left: 48px;">
-                    <el-select v-model="select.role" placeholder="请选择">
+                    <el-select v-model="role" placeholder="请选择">
                         <el-option
                             v-for="item in roleOptions"
-                            :key="item.value"
-                            :label="item.name"
+                            :key="item.roleId"
+                            :label="item.roleName"
+                            :value="item.roleId">
+                        </el-option>
                     </el-select>
                 </div>
             </div>
@@ -42,12 +44,13 @@
         <div class="main" style="position:relative">
             <div class="basic-aside">
                 <el-table ref="multipleTable" :data="reportTableData" border tooltip-effect="dark"
-                          style="width: 100%" @selection-change="handleSelectionChange">
+                          style="width: 100%" @select="handleSelectionChange" @select-all="handleSelectAll">
                     <el-table-column type="selection" width="55">
                     </el-table-column>
+                    
                     <el-table-column label="全部">
                         <template slot-scope="scope">
-                            <div :title="scope.row.reportName" class="textcell" @click="aaa(scope.row)">
+                            <div :title="scope.row.reportName" class="textcell" @click="getImg(scope.row)">
                                 {{ scope.row.reportName }}
                             </div>
                         </template>
@@ -56,7 +59,8 @@
             </div>
 
             <div class="basic-content">
-                <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
+                <img :src="'../../../static/img/report/'+ imgName +'.jpg'" />
+                <!-- <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark"
 
                           style="width: 100%" @selection-change="handleSelectionChange">
 
@@ -80,7 +84,7 @@
                     </el-table-column>
                     <el-table-column label="工程量" prop="operateTime">
                     </el-table-column>
-                </el-table>
+                </el-table> -->
             </div>
         </div>
 
@@ -94,14 +98,18 @@ import {
   getDataType,
   getOrgNodes,
   getReportList,
-  getReportListRoleId
+  getReportListRoleId,
+  findRoles
 } from "../../api/getData-cxx.js";
 import { basePath } from "../../utils/common.js";
 export default {
   data() {
     return {
+      selectNum: 0,
+      imgName: "TJ_QD",
+      //角色
+      role: "",
       select: {
-        role: "",
         dataType: "",
         orgNodes: ""
       },
@@ -113,10 +121,47 @@ export default {
       dataTypeOptions: [],
       orgNodesOptions: [],
       roleTableData: [],
-      reportTableData: []
+      reportTableData: [],
+      //已选中列表
+      multipleSelection: []
     };
   },
   watch: {
+    role: {
+      handler(newValue, oldValue) {
+        let vm = this;
+        let baseUrl = basePath(this.$route.matched[2].path);
+        let params = {
+          url: baseUrl,
+          reportListParam: {
+            dataType: vm.select.dataType,
+            orgCode: vm.select.orgNodes
+          },
+          roleId: vm.role
+        };
+        getReportListRoleId(params).then(function(res) {
+          if (res.data.msg == "success") {
+            //已选中列表
+            vm.selectNum = res.data.result.length;
+            let arr = [];
+            //console.log(vm.reportTableData)
+            //console.log(res.data.result)
+
+            vm.reportTableData.forEach(function(val2) {
+              res.data.result.forEach(function(val) {
+                if (val == val2.reportId) {
+                  arr.push(val2);
+                  //console.log(arr);
+                }
+              });
+            });
+
+            vm.toggleSelection(arr);
+          }
+        });
+      },
+      deep: true
+    },
     select: {
       handler(newValue, oldValue) {
         let vm = this;
@@ -126,36 +171,119 @@ export default {
           reportListParam: {
             dataType: vm.select.dataType,
             orgCode: vm.select.orgNodes
-          }
+          },
+          roleId: vm.role
         };
         if (vm.select.dataType != "" && vm.select.orgNodes != "") {
           getReportList(params).then(function(res) {
             if (res.data.msg == "success") {
               vm.reportTableData = res.data.result;
+              let rowImgName = { reportName: vm.reportTableData[0].reportName };
+              vm.getImg(rowImgName);
             }
           });
+          if (vm.role) {
+            getReportListRoleId(params).then(function(res) {
+              if (res.data.msg == "success") {
+                //已选中列表
+                vm.selectNum = res.data.result.length;
+                let arr = [];
+                vm.reportTableData.forEach(function(val2) {
+                  res.data.result.forEach(function(val) {
+                    if (val == val2.reportId) {
+                      arr.push(val2);
+                    }
+                  });
+                });
+                //console.log(arr);
+                vm.toggleSelection(arr);
+              }
+            });
+          }
         }
       },
       deep: true
     }
   },
   methods: {
-    aaa(row) {
+    //是否已选中
+    toggleSelection(rows) {
+      console.log(rows);
+      if (rows) {
+        this.$refs.multipleTable.clearSelection()  
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
+    getImg(row) {
+      let imgNameList = {
+        项目土建清单工程量汇总表: "TJ_QD", //969
+        项目土建定额工程量汇总表: "TJ_DE", //970
+        项目安装清单工程量汇总表: "AZ_QD", //971
+        项目安装定额工程量汇总表: "AZ_DE", //972
+        项目钢筋实物量汇总表: "GJ_SW", //973
+        项目钢筋接头汇总表: "GJ_JT", //974
+        清单汇总表: "ZJ_QD_HZ", //975
+        清单费用组成表: "ZJ_QD_FYZC", //976
+        定额汇总表: "ZJ_DE_HZ", //977
+        定额费用组成表: "ZJ_DE_FYZC", //978
+        消耗量汇总表: "ZJ_XHL_HZ" //979
+      };
+      this.imgName = imgNameList[row.reportName];
+    },
+    handleSelectionChange(sel, row) {
       let vm = this;
       let baseUrl = basePath(this.$route.matched[2].path);
       let params = {
         url: baseUrl,
-        roleId: row.reportId
+        reportPermissions: [{ reportId: row.reportId, roleId: vm.role }]
       };
-      getReportListRoleId(params).then(function(res) {
-        if (res.data.msg == "success") {
-          vm.roleTableData = res.data.result;
-        }
-      });
+      if (this.selectNum < sel.length) {
+        //添加角色权限
+        addReportPermissions(params).then(function(res) {
+          if (res.data.msg == "success") {
+          }
+        });
+      } else if (this.selectNum > sel.length) {
+        //删除角色权限
+        delReportPermissions(params).then(function(res) {
+          if (res.data.msg == "success") {
+          }
+        });
+      }
+      this.selectNum = sel.length;
     },
-    handleSelectionChange(val, a) {
-      console.log(val);
-      console.log(a);
+    handleSelectAll(sel) {
+      console.log(sel);
+      let vm = this;
+      let baseUrl = basePath(this.$route.matched[2].path);
+      let params = {
+        url: baseUrl,
+        reportPermissions: []
+      };
+      sel.forEach(function(val) {
+        let obj = {};
+        obj.reportId = val.reportId;
+        obj.roleId = vm.role;
+        params.reportPermissions.push(obj);
+      });
+      if (sel.length == 0) {
+        //删除全部角色权限
+        delReportPermissions(params).then(function(res) {
+          if (res.data.msg == "success") {
+          }
+        });
+      } else {
+        //添加全部角色权限
+        addReportPermissions(params).then(function(res) {
+          if (res.data.msg == "success") {
+          }
+        });
+      }
+      this.selectNum = sel.length;
     }
   },
   mounted() {
@@ -169,14 +297,23 @@ export default {
     getDataType(params).then(function(res) {
       if (res.data.msg == "success") {
         vm.dataTypeOptions = res.data.result;
-        vm.select.dataType = res.data.result[0].value;
+        vm.select.dataType = res.data.result[0] ? res.data.result[0].value : "";
       }
     });
     //组织节点列表下拉框数据
     getOrgNodes(params).then(function(res) {
       if (res.data.msg == "success") {
         vm.orgNodesOptions = res.data.result;
-        vm.select.orgNodes = res.data.result[0].orgCode;
+        vm.select.orgNodes = res.data.result[0]
+          ? res.data.result[0].orgCode
+          : "";
+      }
+    });
+    //角色下拉数据
+    findRoles(params).then(function(res) {
+      if (res.data.msg == "success") {
+        vm.roleOptions = res.data.result;
+        vm.role = res.data.result[0] ? res.data.result[0].roleId : "";
       }
     });
   }
@@ -232,6 +369,8 @@ export default {
 
 .basic-content {
   margin-left: 320px;
+  height: 100%;
+  overflow: auto;
 }
 
 .el-form-item {
@@ -239,6 +378,7 @@ export default {
 }
 
 .textcell {
+  cursor: pointer;
   height: 46px;
   padding: 0 20px;
   line-height: 46px;
