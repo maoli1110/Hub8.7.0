@@ -7,3 +7,7 @@ export const curEditRole = function ({ commit }, param) {
   // 设置当前编辑角色（异步操作使用该方式）
   commit(types.CUR_EDIT_ROLE, param)
 }
+export const curEditMember = function ({ commit }, param) {
+  // 设置当前编辑角色（异步操作使用该方式）
+  commit(types.CUR_EDIT_MEMBER, param)
+}

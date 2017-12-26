@@ -7,23 +7,21 @@
                     <el-button class="basic-btn" type="primary" @click="delTemplate"><i class="icon-template icon-del"></i><span class="btn-text">删除</span></el-button>
                 </el-col>
                 <el-col :span="5" :offset="11">
-                   <el-input icon="search" placeholder="请输入标签名称" :on-icon-click="templateSearch" v-model="searchKey"></el-input>
+                   <el-input icon="search" placeholder="请输入标签名称" v-model="searchKey" :on-icon-click="templateSearch" ></el-input>
                 </el-col>
             </el-col>
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class="house-table scroll-me"   :data="tableData" style="min-width: 900px;"  :default-sort="{prop: 'date', order: 'descending'}"  height="calc(100vh - 380px)"  @select-all="selectAll" @select="selectChecked">
+            <el-table class="house-table scroll-me"   :data="tableData" style="min-width: 900px;"  :default-sort="{prop: 'date', order: 'descending'}"  @select-all="selectAll" @select="selectChecked">
                 <el-table-column
                     type="selection"
                     width="40" >
                 </el-table-column>
-                <!-- <el-table-column label="序号" width="50" prop="index">&lt;!&ndash;(cur_page-1)*10+index&ndash;&gt;
-                 </el-table-column>-->
-                <el-table-column prop="processName" width="" label="标签" show-overflow-tooltip>
+                <el-table-column prop="name" width="" label="标签" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="updateTime" width="200" label="更新时间" >
+                <el-table-column prop="lastModifiedDate" width="200" label="更新时间" >
                 </el-table-column>
-                <el-table-column prop="updateUser" width="200" label="操作人" >
+                <el-table-column prop="lastModifiedBy" width="200" label="操作人" >
                 </el-table-column>
                 <el-table-column label="操作" width="100" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
@@ -34,7 +32,8 @@
             </el-table>
         </vue-scrollbar>
         <div class="pagination">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+            <span v-show="tableData.length>0" style="float:left;line-height:42px;">当前页{{pageInfo.number==0?pageInfo.number+1:pageInfo.number}},共{{pageInfo.totalPages}}页，共{{pageInfo.totalElements}}条</span>
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage" layout="sizes, prev, pager, next, jumper" :total="pageInfo.totalElements">
             </el-pagination>
         </div>
         <!--重命名模板名称-->
@@ -43,7 +42,7 @@
                    :visible.sync="addVisible" size="tiny">
             <el-form  :model="templateInfo">
                 <el-form-item label="标签名称：">
-                    <el-input v-model="templateInfo.name" placeholder="请输入标签名称"></el-input>
+                    <el-input v-model="templateInfo.tagName" placeholder="请输入标签名称"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -55,8 +54,13 @@
 </template>
 
 <script>
-    import {FormIndex} from "../../utils/common.js";
-    import {getWorksetingList} from '../../api/getData.js'
+    import {FormIndex,dateFormat} from "../../utils/common.js";
+    import {
+        labelList,  //标签列表
+        labelDel,   //标签删除
+        labelAdd,   //创建标签
+        labelUpdate //更新标签
+    } from '../../api/getData-yhj.js';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import ElCol from "element-ui/packages/col/src/col";
     // import "../../utils/directive.js"
@@ -64,71 +68,31 @@
     let deletArray = [];
     export default {
         created(){
-            FormIndex(this.tableData,2,10);
-//            this.getData();
-
+            this.getData();
         },
         data: function(){
             return {
-                filterClassfiyVal:"",
-                filterWord:"",
-                addVisible:false,
-                renameIndex:"",
-                searchKey:"",//搜索关键字
+                addVisible:false,   //添加窗口状态
+                renameIndex:"",     //修改的index
+                searchKey:"",       //搜索关键字
                 //分页的一些设置
-                cur_page:1,
-                totalPage:50,
-                totalNumber:300,
-                title:'添加标签',
-                switchDialog:false,
-                tableData:[
-                    {index:1,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                    {index:2,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                    {index:3,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                    {index:4,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                    {index:5,processName:'鲁班安装',updateUser:"杨会杰",updateTime:'2017-11-18 13:14:01',proDepartment:"初始项目部"},
-                ],
-                classfiyList:[{name:'初始项目部1'},{name:'初始项目部2'},{name:'初始项目部3'},{name:'初始项目部4'}],
-                templateInfo:{
-                    name:'',
-                    remark:''
+                cur_page:0,         //第几页
+                totalPage:10,       //页多少条
+                totalNumber:300,   //总共多少条
+                title:'添加标签',   //动态标题
+                switchDialog:false, //修改和创建标识
+                tableData:[],       //列表数据
+                pageInfo:{},
+                tableParam:{
+                    page:0,
+                    size:10,
+                    sort:"",
+                    keyword:""
                 },
-                setting: {//搜索条件ztree setting
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
-                    },
-                    callback: {
-                        onClick: this.templateTreeClick
-                    }
+                templateInfo:{      //重命名信息
+                    tagName:'',
+                    id:''
                 },
-                zNodes: [
-                    {
-                        id: 1,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标不同",
-                        open: true,
-                        iconSkin: "pIcon01"
-                    },
-                    { id: 11, pId: 1, name: "叶子节点4", iconSkin: "icon01" },
-                    { id: 12, pId: 1, name: "叶子节点2", iconSkin: "icon02" },
-                    { id: 13, pId: 1, name: "叶子节点3", iconSkin: "icon03" },
-                    {
-                        id: 2,
-                        pId: 0,
-                        name: "展开、折叠 自定义图标相同",
-                        open: true,
-                        iconSkin: "pIcon02"
-                    },
-                    { id: 21, pId: 2, name: "叶子节点1", iconSkin: "icon04" },
-                    { id: 22, pId: 2, name: "叶子节点2", iconSkin: "icon05" },
-                    { id: 23, pId: 2, name: "叶子节点3", iconSkin: "icon06" },
-                    { id: 3, pId: 0, name: "不使用自定义图标", open: true },
-                    { id: 31, pId: 3, name: "叶子节点1" },
-                    { id: 32, pId: 3, name: "叶子节点2" },
-                    { id: 33, pId: 3, name: "叶子节点3" }
-                ],
             }
         },
         components: {
@@ -136,9 +100,7 @@
         },
         methods: {
             getData(){
-                for(let i = 0;i<this.tableData.length;i++){
-                    this.tableData[i].index = 3*10+ this.tableData[i].index;
-                }
+               this.getLableList(this.tableParam);
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -168,36 +130,62 @@
             },
             //分页器事件
             handleSizeChange(size){
-                console.log(`每页显示多少条${size}`);
+//                console.log(`每页显示多少条${size}`);
+                this.totalPage = size;
+                this.tableParam.size = size;
+                this.getLableList(this.tableParam);
             },
             handleCurrentChange(currentPage){
-                console.log(`当前页${currentPage}`);
+//                console.log(`当前页${currentPage}`);
+                this.cur_page = currentPage;
+                this.tableParam.page = (currentPage-1);
+                this.getLableList(this.tableParam);
             },
-
-            /**
-             * ztree
-             * @param event
-             * @param treeId
-             * @param treeNode
-             */
-            //工程管理树结构单机事件
-            templateTreeClick(event, treeId, treeNode){
-                this.filterWord = treeNode.name;
-                setTimeout(function(event, treeId, treeNode) {
-                    $(".el-scrollbar .el-select-dropdown__item.selected").click();
-                }, 300);
+            //创建标签
+            setLabelList(params){
+                labelAdd(params).then((data)=>{
+                   if(data.data.code==200){
+                       this.commonMessage('创建标签成功','success');
+                       setTimeout(()=>{
+                           this.getLableList(this.tableParam);
+                       })
+                   }
+                })
             },
-
-            //filter筛选项目
-            filterWordChange(val){
-                console.log(val)
+            //标签列表展示
+            getLableList(params){
+                labelList(params).then((data)=>{
+                    if( data.data.result.content.length>0){
+                        this.tableData = data.data.result.content;
+                        this.pageInfo = data.data.result;
+                        this.tableData.forEach((val,key)=>{
+                            val.lastModifiedDate = dateFormat(val.lastModifiedDate);
+                        })
+                    }
+                })
             },
-            //筛选专业
-            filterClassfiyChange(value){
-                console.log(value)
+            updateLableList(params){
+                labelUpdate(params).then((data)=>{
+                    if(data.data.code==200){
+                        this.commonMessage('标签重命名成功','success')
+                        this.getLableList(this.tableParam);
+                    }
+                })
             },
+            //添加标签
+            addTemplate(){
+                if(!this.switchDialog){
+                    this.title="添加标签"
+                }else{
+                    this.title="修改标签"
+                }
+                this.templateInfo.tagName = "";
+            },
+            //标签搜索
             templateSearch(){
-                console.log(this.searchKey)
+//                console.log(this.searchKey,'searchKey')
+                this.tableParam.keyword = this.searchKey;
+                this.getLableList(this.tableParam);
                 //执行搜索
             },
 
@@ -263,44 +251,30 @@
                 }else{
                     this.title="添加标签"
                 }
-                this.renameIndex = item.index;
-                this.templateInfo.name = item.processName;
+                this.templateInfo.id = item.id;
+                this.templateInfo.tagName = item.name;
             },
+            //重名名ok
             renameTemplateOK(){
-                let currentTime = new Date().toLocaleString();
-                console.log(this.tableData,'data')
                 if(!this.switchDialog){
-                    this.tableData.unshift({processName:this.templateInfo.name,updateUser:"杨会杰",updateTime:currentTime,proDepartment:"初始项目部"},)
+                    //创建标签保存
+                    this.setLabelList(this.templateInfo)
+                }else{
+                    //修改标签信息
+                    console.log(this.templateInfo,'this.templateInfo');
+                    this.updateLableList(this.templateInfo);
                 }
-                if(this.switchDialog){
-                    this.tableData.forEach((val,key)=>{
-                        if(val.index==this.renameIndex){
-                            this.tableData[key].processName = this.templateInfo.name;
-                        }
-                    })
-                }
+
             },
             renameTemplateCancel(){
 
             },
-            //添加标签
-            addTemplate(){
-                if(!this.switchDialog){
-                    this.title="添加标签"
-                }else{
-                    this.title="修改标签"
-                }
-                this.templateInfo.name = "";
-            }
+
         },
         computed: {
 
-            editor() {
-                return this.$refs.myTextEditor.quillEditor;
-            }
         },
         mounted(){
-            $.fn.zTree.init($("#color-temp"), this.setting, this.zNodes);
         }
 
     }

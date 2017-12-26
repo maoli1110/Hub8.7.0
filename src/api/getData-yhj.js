@@ -11,7 +11,7 @@
  */
 let builderUrl = window.serverPath.builderUrl;
 let cloudUrl = window.serverPath.cloudUrl;
-let civilUrl = window.serverPath.civilUrl;
+let civilUrl ='http://192.168.13.195:8989/LBcivil';
 import axios from "axios";
 
 export const tests = params=> axios.get(`${builderUrl}/` + "payment/alipay/alipayCloseTradeNotify");
@@ -166,12 +166,34 @@ export const getColorTemplateInfoWrapper = params =>axios.post(`${builderUrl}/ap
 export const editColorTemplateInfo = params =>axios.post(`${builderUrl}/appconfig/general/color/template/editColorTemplateInfo`,params);
 //颜色模板删除
 export const deleteColorTemplateInfos = params=>axios.post(`${builderUrl}/appconfig/general/color/template/deleteColorTemplateInfos`,params)
+/**
+ * 应用配置->通用->标签管理
+ **/
+//分页查询标签列表
+export const labelList  = params =>axios.get(`${builderUrl}/appconfig/general/tags/?page=${params.page}&size=${params.size}&sort=${params.sort}&keyword=${params.keyword}`)
+//批量删除标签
+export const labelDel = params=>axios.delete(`${builderUrl}/appconfig/general/tags/${params.id}`);
+//创建新的标签--媒体类型不一致
+export const labelAdd = params=>axios.post(`${builderUrl}/appconfig/general/tags/`,params.tagName,{
+    headers: {
+        'Content-Type': 'text/plain',
+        'Accept': 'application/json'
+    }
+});
+//标签更新
+export const labelUpdate = params=>axios.put(`${builderUrl}/appconfig/general/tags/${params.id}`,params.tagName,{
+    headers: {
+        'Content-Type': 'text/plain',
+        'Accept': 'application/json'
+    }
+});
 
 //市政
 export const getUserListPage = params => axios.post(`${civilUrl}/rs/lbconfig/process/getProcessList`, params);
 /*
  * 流程设置列表
  * */
+console.log(civilUrl,'civilUrl')
 export const getProcessList = params => axios.post(`${civilUrl}/inspector/process/getProcessList`, params);
 //流程设置添加角色管理
 export const getRoleInfo = params =>axios.get(`${builderUrl}/roleRest/findRoles`,{params:params});

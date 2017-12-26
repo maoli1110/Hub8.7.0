@@ -629,8 +629,7 @@
                     this.tableData = res.data.result.content;
                     this.totalNumber = res.data.totalElements;
                     this.totalPage = res.data.totalPages;
-                }).catch(function(error){
-                    console.info(error)
+                }).catch((error)=>{
                     this.messageBox(error.response.data.message);
                 })
             },

@@ -9,6 +9,9 @@ import $ from 'jquery';
 // import 'element-ui/lib/theme-default/index.css';    // 默认主题
 import '../static/css/theme-green/index.css';       // 浅绿色主题
 import '../static/zTree/js/jquery.ztree.all.min.js';
+import "../static/zTree/js/jquery.ztree.core.min.js";
+import "../static/zTree/js/jquery.ztree.excheck.min.js";
+import "../static/zTree/js/jquery.ztree.exhide.min.js";
 import VueScrollbar from'../static/scroll/vue-scrollbar.vue';
 import orgTree from '../src/components/common/OrganizationTree.vue'
 import '../static/js/select-vue-component.js'; //vue多选参照select2
@@ -28,7 +31,7 @@ new Vue({
 
 //获取接口地址
 // let currentUrlPath = window.location.host;
-let currentUrlPath = 'http://192.168.13.195:8080/'; 
+let currentUrlPath = 'http://192.168.13.195:8080/';
 axios.get(currentUrlPath +'pds/rs/centerLogin/serverurl').then((res)=>{
 	console.log(currentUrlPath,'currentUrlPath')
 	let serverPath = res.data;
@@ -65,6 +68,9 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
 	// Do something with response data
+    if(response.data.code==500){
+        alert(response.data.msg);
+    }
 	return response;
 }, function (error) {
 	// Do something with response error
