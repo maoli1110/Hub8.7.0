@@ -24,7 +24,6 @@
                                 <el-option v-for="item in options" :key="item.roleTypeName" :label="item.roleTypeName" :value="item.roleTypeId">
                                 </el-option>
                             </el-select>
-
                         </div>
                     </div>
                 </el-col>
