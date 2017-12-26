@@ -574,6 +574,11 @@ export default new Router({
                                     //EDS订单
                                     path: 'eds-orders',
                                     component: resolve => require(['../components/Authority-management/EDSOrders.vue'], resolve)
+                                },
+                                {
+                                    //鲁班币管理
+                                    path: 'lubancoins-management',
+                                    component: resolve => require(['../components/Authority-management/LubanCoinsManagement.vue'], resolve)
                                 }
                             ]
                         },
@@ -681,13 +686,14 @@ export default new Router({
                                     name: 'systemLog?7',
                                     component: resolve => require(['../components/Authority-management/GovernLog.vue'], resolve)
                                 }
+                                
                             ]
                         },
-                        {
-                            //鲁班币管理
-                            path: 'lubancoins-management',
-                            component: resolve => require(['../components/Authority-management/LubanCoinsManagement.vue'], resolve)
-                        }
+                        // {
+                        //     //鲁班币管理
+                        //     path: 'lubancoins-management',
+                        //     component: resolve => require(['../components/Authority-management/LubanCoinsManagement.vue'], resolve)
+                        // }
                     ]
                 }
             ]

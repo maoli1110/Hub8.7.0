@@ -7,8 +7,9 @@
                     <template slot="title">订单记录</template>
                     <el-menu-item index="/system/order-management/orders">套餐订单</el-menu-item>
                     <el-menu-item index="/system/order-management/eds-orders">系统订单</el-menu-item>
+                    <el-menu-item index="/system/order-management/lubancoins-management">鲁班币</el-menu-item>
                 </el-submenu>
-                <el-menu-item index="/system/lubancoins-management">鲁班币</el-menu-item>
+                
 
                 <el-submenu index="/online/all-clients">
                     <template slot="title">在线人数统计</template>

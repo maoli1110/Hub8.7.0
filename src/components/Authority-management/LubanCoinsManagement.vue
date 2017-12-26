@@ -693,7 +693,7 @@
                 this.invoiceInfoType='';
                 this.showCover(this.rechargeCommon,this.rechargeCommon[3])
                 let vm = this;
-                let baseUrl = basePath(vm.$route.matched[2].path)
+                let baseUrl = basePath(vm.$route.matched[3].path)
                 let params = {
                     url: baseUrl
                 }
@@ -1120,7 +1120,7 @@
             queryEnterpriseLubanBiList(){
                 // 分页获取鲁班币列表
                 let vm = this;
-                let baseUrl = basePath(vm.$route.matched[2].path)
+                let baseUrl = basePath(vm.$route.matched[3].path)
                 let params = {
                     url: baseUrl,
                     currentPage: vm.currentPage,
@@ -1240,15 +1240,18 @@
 
             this.beginTime = new Date(start).toLocaleString();
             this.endTime = new Date(end).toLocaleString();
-            // 分页获取鲁班币列表
-            this.queryEnterpriseLubanBiList()
+           
 
-            let baseUrl = basePath(this.$route.matched[2].path)
+            let baseUrl = basePath(this.$route.matched[3].path)
             let params = {
                 url: baseUrl
             }
 
+
+             // 分页获取鲁班币列表
+            this.queryEnterpriseLubanBiList()
             var vm = this;
+
             //  获取企业当前鲁班币数量
             getEnterpriseCurrentLubanBiCount(params).then(function (result) {
                 vm.count = result.data.result;

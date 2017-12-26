@@ -53,6 +53,8 @@ function transformToObjFormat(param, simpleOrgNodes) {
  */
 function basePath(localhost) {
     let baseUrl = "";
+    debugger
+    console.log(222)    
     switch (localhost) {
         //cas
         case '/authority/administrators-list':             //权限管理->管理员管理
@@ -258,7 +260,7 @@ function basePath(localhost) {
         case "/authority/quota-lib":           //权限管理->应用分配->定额库
             baseUrl = 'http://192.168.13.195:8989/cloud/';
             break;
-        case "/system/lubancoins-management":  //系统->鲁班币
+        case "/system/order-management/lubancoins-management":  //系统->鲁班币
             baseUrl = 'http://192.168.13.195:8989/cloud/';
             break;
         case "/system/order-management/orders":
