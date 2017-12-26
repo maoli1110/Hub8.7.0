@@ -606,7 +606,6 @@
                 });
             },
             submitForm(formName) {
-                debugger
                 this.$refs[formName].validate(valid => {
                     console.log(valid)
 

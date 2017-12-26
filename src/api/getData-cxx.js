@@ -46,7 +46,6 @@ export const unBindingList = params=>axios.post(`${params.url}order/manage/unbin
 
 // EDS订单
 // GET /eds/order/getEnterpriseOrderList/{recentMonth}/{currentPage}/{pageSize} 获取EDS订单列表
-debugger
 export const getEnterpriseOrderList = params=> axios.get(`${params.url}eds/order/getEnterpriseOrderList/${params.recentMonth}/${params.currentPage}/${params.pageSize}`);
 // GET /eds/order/generatePayUrl/{orderId}/{packageName} 生成支付宝付款地址
 export const generatePayUrl = params=> axios.get(`${params.url}eds/order/generatePayUrl/${params.orderId}/${params.packageName}`);

@@ -368,7 +368,7 @@
                             tempSearchResultChecked++;
                         }
                     });
-                    debugger;
+            
                     this.checkAll = tempSearchResultChecked == this.cities.length;
                 }
             },
