@@ -106,7 +106,8 @@ export default {
   data() {
     return {
       selectNum: 0,
-      imgName: "TJ_QD",
+      selectList: [],
+      imgName: "",
       //角色
       role: "",
       select: {
@@ -143,6 +144,8 @@ export default {
           if (res.data.msg == "success") {
             //已选中列表
             vm.selectNum = res.data.result.length;
+            vm.selectList = res.data.result;
+            console.log(vm.selectList);
             let arr = [];
             //console.log(vm.reportTableData)
             //console.log(res.data.result)
@@ -208,9 +211,9 @@ export default {
   methods: {
     //是否已选中
     toggleSelection(rows) {
-      console.log(rows);
+      // console.log(rows);
       if (rows) {
-        this.$refs.multipleTable.clearSelection()  
+        this.$refs.multipleTable.clearSelection();
         rows.forEach(row => {
           this.$refs.multipleTable.toggleRowSelection(row);
         });
@@ -234,6 +237,7 @@ export default {
       };
       this.imgName = imgNameList[row.reportName];
     },
+    //单个添加、删除角色操作
     handleSelectionChange(sel, row) {
       let vm = this;
       let baseUrl = basePath(this.$route.matched[2].path);
@@ -255,35 +259,62 @@ export default {
         });
       }
       this.selectNum = sel.length;
+      this.selectList = [];
+      sel.forEach(element => {
+        this.selectList.push(element.reportId);
+      });
+      console.log(this.selectList);
     },
+    difference(a, b) {
+      const s = new Set(b);
+      return a.filter(x => !s.has(x));
+    },
+    // 全选添加、删除角色操作
     handleSelectAll(sel) {
-      console.log(sel);
       let vm = this;
       let baseUrl = basePath(this.$route.matched[2].path);
       let params = {
         url: baseUrl,
         reportPermissions: []
       };
-      sel.forEach(function(val) {
-        let obj = {};
-        obj.reportId = val.reportId;
-        obj.roleId = vm.role;
-        params.reportPermissions.push(obj);
+      vm.selectNum = sel.length;
+      //   sel.forEach(element => {
+      //     vm.selectList.push(element.reportId);
+      //   });
+      let reportId = [];
+      sel.forEach(element => {
+        reportId.push(element.reportId);
       });
       if (sel.length == 0) {
         //删除全部角色权限
+        vm.selectList.forEach(element => {
+          let obj = {};
+          obj.reportId = element;
+          obj.roleId = vm.role;
+          params.reportPermissions.push(obj);
+        });
         delReportPermissions(params).then(function(res) {
           if (res.data.msg == "success") {
+            vm.selectList = [];
           }
         });
       } else {
         //添加全部角色权限
+        vm.difference(reportId, vm.selectList).forEach(element => {
+          let obj = {};
+          obj.reportId = element;
+          obj.roleId = vm.role;
+          params.reportPermissions.push(obj);
+        });
         addReportPermissions(params).then(function(res) {
           if (res.data.msg == "success") {
+            vm.selectList = [];
+            sel.forEach(element => {
+              vm.selectList.push(element.reportId);
+            });
           }
         });
       }
-      this.selectNum = sel.length;
     }
   },
   mounted() {
