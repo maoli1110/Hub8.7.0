@@ -28,7 +28,7 @@ new Vue({
 
 //获取接口地址
 // let currentUrlPath = window.location.host;
-let currentUrlPath = 'http://192.168.13.195:8080/'; 
+let currentUrlPath = 'http://192.168.13.195:8080/';
 axios.get(currentUrlPath +'pds/rs/centerLogin/serverurl').then((res)=>{
 	console.log(currentUrlPath,'currentUrlPath')
 	let serverPath = res.data;
@@ -65,6 +65,9 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
 	// Do something with response data
+    if(response.data.code==500){
+        alert(response.data.msg);
+    }
 	return response;
 }, function (error) {
 	// Do something with response error
