@@ -12,16 +12,16 @@
             </el-col>
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" >
-            <el-table class="house-table scroll-me"   :data="tableData" style="min-width: 900px;"  :default-sort="{prop: 'date', order: 'descending'}"  @select-all="selectAll" @select="selectChecked">
+            <el-table class="house-table scroll-me"   :data="tableData" style="min-width: 900px;"  :default-sort="{prop: 'lastModifiedDate', order: 'descending'}" @sort-change="tableSort" @select-all="selectAll" @select="selectChecked">
                 <el-table-column
                     type="selection"
                     width="40" >
                 </el-table-column>
-                <el-table-column prop="name" width="" label="标签" show-overflow-tooltip>
+                <el-table-column prop="name" width="" label="标签" show-overflow-tooltip sortable>
                 </el-table-column>
-                <el-table-column prop="lastModifiedDate" width="200" label="更新时间" >
+                <el-table-column prop="lastModifiedDate" width="200" label="更新时间" sortable>
                 </el-table-column>
-                <el-table-column prop="lastModifiedBy" width="200" label="操作人" >
+                <el-table-column prop="lastModifiedBy" width="200" label="操作人" sortable>
                 </el-table-column>
                 <el-table-column label="操作" width="100" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
@@ -118,7 +118,7 @@
                 this.$alert(message, '提示', {
                     confirmButtonText: '确定',
                     callback: action => {
-                        console.log(1111)
+
                     }
                 })
             },
@@ -171,6 +171,15 @@
                         this.getLableList(this.tableParam);
                     }
                 })
+            },
+            //标签列表字段排序
+            tableSort(column){
+                if(column.order=='descending'){
+                    this.tableParam.sort = `${column.prop},desc`
+                }else if(column.order=="ascending"){
+                    this.tableParam.sort = `${column.prop}`
+                }
+                this.getLableList(this.tableParam);
             },
             //添加标签
             addTemplate(){
@@ -261,7 +270,7 @@
                     this.setLabelList(this.templateInfo)
                 }else{
                     //修改标签信息
-                    console.log(this.templateInfo,'this.templateInfo');
+//                    console.log(this.templateInfo,'this.templateInfo');
                     this.updateLableList(this.templateInfo);
                 }
 
