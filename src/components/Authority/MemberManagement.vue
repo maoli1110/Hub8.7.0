@@ -2,7 +2,7 @@
     <div>
         <org-tree @handleTreeNodeChange='handleTreeNodeChange'></org-tree>
         <div class="header">
-            <div class="el-form-item el-form_" style="margin-left:30px">
+            <div class="el-form-item el-form_">
                 <label class="el-form-item__label">角色：</label>
                 <div class="el-form-item__content" style="margin-left: 55px;">
                     <el-select v-model="role" placeholder="请选择" style="max-width:170px">
@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="el-form-item el-form_">
-                <label class="el-form-item__label">显示成员：</label>
+                <label class="el-form-item__label">显示：</label>
                 <div class="el-form-item__content" style="margin-left: 55px;">
                     <el-select v-model="role" placeholder="请选择" style="max-width:170px">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
@@ -20,6 +20,15 @@
                     </el-select>
                 </div>
             </div>
+            <!-- <div class="el-form-item el-form_">
+                <label class="el-form-item__label">显示成员：</label>
+                <div class="el-form-item__content" style="margin-left: 55px;">
+                    <el-select v-model="role" placeholder="请选择" style="max-width:170px">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div> -->
             <div class="el-form-item el-form_" style="float:right">
                 <div class="el-form-item__content">
                     <el-input placeholder="请输入通行证账号或备注" icon="search" style=""></el-input>
@@ -37,10 +46,10 @@
             </div>
             <el-table ref="multipleTable" :data="memberTableData" border tooltip-effect="dark" style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="name" label="姓名" width="150" align='left'>
+                <el-table-column prop="realName" label="姓名" width="150" align='left'>
                     <template slot-scope="scope">
                         <div slot="reference" class="name-wrapper">
-                            <span style="margin-right:5px">{{ scope.row.name }}</span>
+                            <span style="margin-right:5px">{{ scope.row.realName }}</span>
                             <el-tag v-show="scope.row.isAdmin" style="background:#76ca75">管理员</el-tag>
                             <span v-show="!scope.row.isAdmin" style="height:24px;width:48px;display:inline-block"></span>
                         </div>
@@ -48,20 +57,20 @@
                 </el-table-column>
                 <el-table-column label="通行证" width="150">
                     <template slot-scope="scope">
-                        <div :title="scope.row.pass" class="textcell">
-                            {{ scope.row.pass }}
+                        <div :title="scope.row.passWord" class="textcell">
+                            {{ scope.row.passWord }}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="role" label="角色" width="100"></el-table-column>
-                <el-table-column prop="phone" label="手机号码" width="150"></el-table-column>
+                <el-table-column prop="roleName" label="角色" width="100"></el-table-column>
+                <el-table-column prop="mobile" label="手机号码" width="150"></el-table-column>
                 <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
                 <el-table-column label="更新时间" width="180">
                     <template slot-scope="scope">{{ scope.row.date }}</template>
                 </el-table-column>
                 <el-table-column label="周活跃度" width="100">
                     <template slot-scope="scope">
-                        <el-button type="text" @click="weeklyActivityDialogVisible=true"> {{ scope.row.WAU }}
+                        <el-button type="text" @click="weeklyActivityDialogVisible=true"> {{ scope.row.weekActive }}
 
                         </el-button>
                     </template>
@@ -85,8 +94,8 @@
             </el-table>
             <div style="margin-top: 20px">
                 <div style="float:left;height:40px;line-height:40px">共10个结果</div>
-                <el-pagination style="margin-left:30%" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="4"
-                    :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+                <el-pagination style="margin-left:30%" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage"
+                    :page-sizes="[10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
             </div>
 
@@ -228,8 +237,10 @@
 
 </template>
 <script>
+    // 1349047949@qq.com
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+    import * as api from "../../api/getData-ppc";
     export default {
         data() {
             var validatePass = (rule, value, callback) => {
@@ -251,6 +262,9 @@
                 serviceDetailsDialogVisible: false,
                 authorizedDataCatalogVisible: false,
                 signDialogVisible: false,
+                curPage: 1,
+                pageSize: 10,
+                total: 0,
                 textarea: "布鲁斯123 布鲁斯",
                 orgValue: "",
                 role: "",
@@ -472,127 +486,7 @@
                         name: "我是开始 2-3"
                     }
                 ],
-                memberTableData: [{
-                        name: "赵四",
-                        id: 1,
-                        pass: "wulijjjj111111111111111111",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remark11111111111111111111111111111111111111111111111"
-                    },
-                    {
-                        name: "赵四",
-                        id: 2,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 3,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 4,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 5,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 6,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 7,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 8,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 9,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: true,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    },
-                    {
-                        name: "赵四",
-                        id: 10,
-                        pass: "wulijjjj",
-                        role: "项目经理",
-                        isAdmin: false,
-                        phone: "18075240365",
-                        email: "978648117@163.com",
-                        date: "2016-05-03 13:51",
-                        WAU: "5小时.5次",
-                        remarks: "超长remarks"
-                    }
-                ],
+                memberTableData: [],
                 weeklyActivityData: [{
                         date: "2017.9.30 17:43:57",
                         name: "Explorer",
@@ -644,20 +538,24 @@
         },
 
         methods: {
-            handleTreeNodeChange(currentTreeNode){
-             console.log(currentTreeNode);
-            },
-            getDefaultProcessTemplateTreeInfo() {
-                this.zNodes = [];
-                types.getDefaultProcessTemplateTreeInfo().then(res => {
-                    this.zNodes = res.data.result;
-                    $.fn.zTree.init($("#orgTree"), this.orgSetting, this.zNodes);
+            getUsersList() {
+                let params = {
+                    orgIds: [
+                        "ff93a6e0fde84760845a9b2c40659839"
+                    ],
+                    pageNum: 1,
+                    pageSize: 10,
+                    searchType: 1
+                }
+                api.getUsersList(params).then(res => {
+                    console.log(res.data);
+                    this.memberTableData = res.data.result.result;
+                    this.total = res.data.result.pageInfo.totalNumber;
                 });
             },
-            // orgTreeClick(event, treeId, treeNode) {
-            //     this.orgValue = treeNode.name;
-            //     $(".select-dropdown").slideToggle("fast");
-            // },
+            handleTreeNodeChange(currentTreeNode) {
+                console.log(currentTreeNode);
+            },
             dialogOrgTreeClick(event, treeId, treeNode) {
                 this.ruleForm.attribution = treeNode.name;
                 setTimeout(() => {
@@ -668,9 +566,13 @@
                 this.multipleSelection = val;
             },
             handleSizeChange(val) {
+                this.pageSize = val;
+                this.getUsersList()
                 console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
+                this.curPage = val;
+                this.getUsersList()
                 console.log(`当前页: ${val}`);
             },
             addMember() {
@@ -802,8 +704,7 @@
             }
         },
         mounted() {
-            // this.getDefaultProcessTemplateTreeInfo()
-
+            this.getUsersList()           
         },
         created() {
             this.$emit("routerActive");
@@ -827,17 +728,13 @@
     }
 
     .org-text .el-input__inner {
-        color: aqua
+        color: aqua;
     }
 
     .el-form_ {
         float: left;
         width: 16%;
         margin-bottom: 0px;
-    }
-
-    .el-form_+.el-form_ {
-        margin-left: 20px;
     }
 
     .main {
@@ -915,20 +812,6 @@
 
     .icon+.icon {
         margin-left: 15px;
-    }
-
-
-    .select-dropdown {
-        display: none;
-        width: 100%;
-        height: 700px;
-        padding: 10px;
-        box-sizing: border-box;
-        position: absolute;
-        left: -45px;
-        top: 35px;
-        background-color: #fff;
-        z-index: 3000;
     }
 
 </style>

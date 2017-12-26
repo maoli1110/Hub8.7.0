@@ -2,8 +2,8 @@
     <div>
         <div class="organization-header">
             <div>
-                <label class="el-form-item__label">组织节点：</label>
-                <div class="el-form-item__content" style="margin-left: 85px;position:relative">
+                <label class="el-form-item__label">组织：</label>
+                <div class="el-form-item__content" style="margin-left: 55px;position:relative">
                     <el-select v-model="orgValue" placeholder="请选择" style="width:100%" class="org-text" @click.native='isSlideDown=!isSlideDown'>
                         <el-option :value="orgValue" v-show="false">
                         </el-option>
@@ -141,7 +141,7 @@
         },
         mounted() {
             $(".el-select-dropdown__list").hide();
-            $(".el-select-dropdown").css("border", "none"); 
+            $(".el-select-dropdown").css("border", "none"); //隐藏element 下拉框中下拉列表
             this.getOrgTreeInfo() 
         }
     };
@@ -152,7 +152,7 @@
         height: 40px;
         background-color: #fff;
         padding: 10px 20px;
-        margin-bottom: 20px;
+        /* margin-bottom: 20px; */
     }
 
     .ztree {
@@ -163,7 +163,7 @@
 
     .select-dropdown {
         width: 100%;
-        height: 700px;
+        height: 680px;
         padding: 10px;
         box-sizing: border-box;
         position: absolute;

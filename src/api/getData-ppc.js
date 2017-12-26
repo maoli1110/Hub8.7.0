@@ -2,13 +2,32 @@ import axios from 'axios';
 /**
  * builder模块
  */
-let builderUrl = window.serverPath.builderUrl
+// let builderUrl = window.serverPath.builderUrl
+let builderUrl = 'http://192.168.13.195:8989/LBbuilder'
 /**
  * 组织树结构
  */
 export const getOrgTreeList = params => {
     return axios.get(`${builderUrl}/org/nodes`);
 };
+/**
+ * 权限管理-人员授权
+ */
+/**
+ * @param {*} params 
+ * 获取用户列表
+ */
+export const getUsersList = params => {
+    return axios.post(`${builderUrl}/userRest/findUsers`, params);
+};
+
+
+
+
+
+
+
+
 /**
  * 权限管理-角色管理
  */
