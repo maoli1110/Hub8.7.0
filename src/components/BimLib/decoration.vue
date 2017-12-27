@@ -613,7 +613,7 @@
                 this.tableParam.pageParam.page = this.cur_page;
                 this.tableParam.pageParam.size = this.totalPages;
                 this.filterParams.versionsVal = this.versionsOptions[0].value;
-//                this.getProjectList(this.tableParam})            //bim库列表
+                this.getProjectList(this.tableParam);            //bim库列表
                 this.getProjGenreEvent(this.isRecycle,this.$route.params.typeId);   //bim库bim属性
                 this.getProjTypeEvent(this.isRecycle,this.$route.params.typeId);    //bim库bim专业
             },
