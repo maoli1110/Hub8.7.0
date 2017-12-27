@@ -211,9 +211,9 @@ export const getProcessList = params => axios.post(`${civilUrl}/inspector/proces
 //流程设置添加角色管理
 export const getRoleInfo = params =>axios.get(`${builderUrl}/roleRest/findRoles`,{params:params});
 //添加流程
-export const addProcessInfo = params => axios.post(`${civilUrl} /inspector/process/addProcessInfo`, params);
+export const addProcessInfo = params => axios.post(`${civilUrl}/inspector/process/addProcessInfo`, params);
 //获取流程列表
-export const getProcessInfo = params => axios.get(`${civilUrl} /inspector/process/getProcessInfo/${params.processId}`);
+export const getProcessInfo = params => axios.get(`${civilUrl}/inspector/process/getProcessInfo/${params.processId}`);
 
 //查询关联工作流程
 export const getFuncInfoList = params => axios.get(`${civilUrl}/inspector/process/getFuncInfoList`);
