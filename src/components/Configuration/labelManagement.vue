@@ -26,7 +26,7 @@
                 <el-table-column label="操作" width="100" class="quality-page-tableIcon">
                     <template slot-scope="scope" >
                         <span class="icon-template icon-edit" @click="addVisible=true;switchDialog=true;renameTemplate(scope.row)" ></span>
-                        <span class="icon-template icon-dels" @click="delTemplate" ></span>
+                        <span class="icon-template icon-dels" @click="delTemplate(scope.row)" ></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -59,7 +59,8 @@
         labelList,  //标签列表
         labelDel,   //标签删除
         labelAdd,   //创建标签
-        labelUpdate //更新标签
+        labelUpdate, //更新标签
+        labelDelArr
     } from '../../api/getData-yhj.js';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import ElCol from "element-ui/packages/col/src/col";
@@ -172,6 +173,34 @@
                     }
                 })
             },
+            deletelabelList(params,type){
+                if(type=='dbdel'){
+                    labelDelArr(params).then((data)=>{
+                        if(data.data.code==200){
+                            this.commonMessage('删除成功','success');
+                            if(this.tableData.length===deletArray.length){
+                                //重新渲染数据
+                                this.getLableList(this.tableParam);
+                            }else {
+                                for (let i = 0; i < deletArray.length; i++) {
+                                    for (let j = 0; j < this.tableData.length; j++) {
+                                        if (this.tableData[j].id == deletArray[i]) {
+                                            this.tableData.splice(j, 1);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    })
+                }else{
+                    labelDel(params).then((data)=>{
+
+                    })
+                }
+
+
+            },
             //标签列表字段排序
             tableSort(column){
                 if(column.order=='descending'){
@@ -204,9 +233,10 @@
              */
 
             selectAll(selection){
+                deletArray= [];
                 selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray.push(val.index)
+                    if( deletArray.indexOf(val.id) ==-1){
+                        deletArray.push(val.id)
                     }
                 });
             },
@@ -217,40 +247,32 @@
              * @params row 列
              */
             selectChecked(selection, row){
+                deletArray= [];
                 selection.forEach(function(val,key){
-                    if( deletArray.indexOf(val.index) ==-1){
-                        deletArray = selection
+                    if( deletArray.indexOf(val.id) ==-1){
+                        deletArray.push(val.id);
                     }
                 })
             },
 
             //删除模板
-            delTemplate(){
+            delTemplate(item){
+                if(item.id){
+                    deletArray = item.id;
+                };
                 if(!deletArray.length){
                     this.commonMessage('请选择要删除的文件','warning')
                     return false;
-                }
-                this.commonConfirm('确定要删除吗',()=> {
-                    /* if(this.tableData.length===deletArray.length){
-                     //重新渲染数据
-                     }else*/
-                    let deletArrayCopy = [];
-                    deletArray.forEach((val,key)=>{
-                        deletArrayCopy.push(val.index)
+                }else if(item.id){
+                    this.commonConfirm('确定要删除吗',()=> {
+                        this.deletelabelList(deletArray,'single');
                     })
-                    deletArray = deletArrayCopy;
-                    if (deletArray.length) {
-                        for (let i = 0; i < deletArray.length; i++) {
-                            for (let j = 0; j < this.tableData.length; j++) {
-                                if (this.tableData[j].index == deletArray[i]) {
-                                    this.tableData.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
-                    console.log(deletArray,'数组')
-                    deletArray = [];//接口成功之后删除数据
-                })
+                }else{
+                    this.commonConfirm('确定要删除吗',()=> {
+                        this.deletelabelList(deletArray,'dbdel');
+                    })
+                }
+
             },
             //重命名模板名称
             renameTemplate(item){
@@ -275,15 +297,12 @@
                 }
 
             },
-            renameTemplateCancel(){
-
-            },
-
         },
         computed: {
 
         },
         mounted(){
+
         }
 
     }

@@ -6,6 +6,8 @@ const state = {
   curEditRole:{},
   // 当前编辑的成员
   curEditMember:{},
+  //当前添加人员
+  curAddMember:{},
 }
 
 export default state

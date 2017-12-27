@@ -5,8 +5,8 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">角色：</label>
                 <div class="el-form-item__content" style="margin-left: 55px;">
-                    <el-select v-model="role" placeholder="请选择" style="max-width:170px">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                    <el-select v-model="roleId" placeholder="请选择" style="max-width:170px">
+                        <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.roleId">
                         </el-option>
                     </el-select>
                 </div>
@@ -14,21 +14,12 @@
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">显示：</label>
                 <div class="el-form-item__content" style="margin-left: 55px;">
-                    <el-select v-model="role" placeholder="请选择" style="max-width:170px">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                    <el-select v-model="searchTypeId" placeholder="请选择" style="max-width:170px">
+                        <el-option v-for="item in searchType" :key="item.searchTypeName" :label="item.searchTypeName" :value="item.searchTypeId">
                         </el-option>
                     </el-select>
                 </div>
             </div>
-            <!-- <div class="el-form-item el-form_">
-                <label class="el-form-item__label">显示成员：</label>
-                <div class="el-form-item__content" style="margin-left: 55px;">
-                    <el-select v-model="role" placeholder="请选择" style="max-width:170px">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </div>
-            </div> -->
             <div class="el-form-item el-form_" style="float:right">
                 <div class="el-form-item__content">
                     <el-input placeholder="请输入通行证账号或备注" icon="search" style=""></el-input>
@@ -85,7 +76,7 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span class="icon-edit_    icon" @click="editMember(scope.row.id)"></span>
+                        <span class="icon-edit_    icon" @click="editMember(scope.row)"></span>
                         <span class="icon-authorize_ icon" @click="authorizedDataCatalog();authorizedDataCatalogVisible=true;"></span>
                         <span class="icon-sign  icon" @click="signDialogVisible=true"></span>
                         <span class="icon-view icon" @click="serviceDetailsDialogVisible=true"></span>
@@ -104,32 +95,28 @@
         <!-- 添加人员 -->
         <el-dialog title="添加人员" :visible.sync="addMemberDialogVisible" size="add-member-dialog">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="鲁班通行证：" prop="pass">
-                    <el-input v-model="ruleForm.pass" auto-complete="off" placeholder="请输入成员注册的通行证账号"></el-input>
+                <el-form-item label="鲁班通行证：" prop="userName">
+                    <el-input v-model="ruleForm.userName" auto-complete="off" placeholder="请输入成员注册的通行证账号"></el-input>
                 </el-form-item>
                 <el-form-item label="姓名：" prop="name">
-                    <el-input v-model="ruleForm.name" auto-complete="off" placeholder="请输入用户的昵称"></el-input>
+                    <el-input v-model="ruleForm.realName" auto-complete="off" placeholder="请输入用户的称"></el-input>
                 </el-form-item>
-                <el-form-item label="角色：" prop="role">
-                    <el-select v-model="ruleForm.role" placeholder="请选择" style="width:360px">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                <el-form-item label="角色：" prop="roleName">
+                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:360px">
+                        <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.roleId">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="归属：" prop="attribution">
-                    <!-- <el-select v-model="ruleForm.attribution" placeholder="请选择" style="width:360px">
-                        <el-option :value="ruleForm.attribution" v-show="false">
+                <el-form-item label="归属：" prop="orgId">
+                    <el-select v-model="dialogOrgName" placeholder="请选择" style="width:360px">
+                        <el-option :value="dialogOrgName" v-show="false">
                         </el-option>
                         <ul id="dialogOrgTree" class="ztree"></ul>
-                    </el-select> -->
-                    <el-select v-model="ruleForm.attribution" placeholder="请选择" style="width:360px">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="手机号码：" prop="phone">
+                <el-form-item label="手机号码：" prop="mobile">
                     <!-- <span style="color:#e6e6e6">请先填写通行证账号，手机号码自动关联</span> -->
-                    <el-input v-model="ruleForm.phone" auto-complete="off" :disabled="true"></el-input>
+                    <el-input v-model="ruleForm.mobile" auto-complete="off" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱：" prop="email">
                     <!-- <span style="color:#e6e6e6">请先填写通行证账号，邮箱自动关联</span> -->
@@ -146,8 +133,8 @@
             <div class="el-form-item" style="margin-top:20px">
                 <label class="el-form-item__label" style="width: 45px;text-align:left">克隆：</label>
                 <div class="el-form-item__content" style="margin-left: 45px;">
-                    <el-select v-model="ruleForm.role" placeholder="请选择" style="width:208px">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:208px">
+                        <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                     <span class="red_">*</span>
@@ -241,10 +228,13 @@
 </template>
 <script>
     // 1349047949@qq.com
+    let hasChecked = false;
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
     import * as api from "../../api/getData-ppc";
-    import {mapActions} from "vuex";
+    import {
+        mapActions
+    } from "vuex";
     export default {
         data() {
             var validatePass = (rule, value, callback) => {
@@ -252,21 +242,29 @@
                     callback(new Error("请输入通行证"));
                 } else {
                     console.log("后台验证中......");
-                    let params = 'center10'
-                    api.getPassCheck(params).then(res => {
-                        console.log(res.data)
-                        if (res.data.code == 200) {
-                            console.log("验证成功......");
-                            this.ruleForm.phone = res.data.result.mobile;
-                            this.ruleForm.email = res.data.result.email;
-                        }
-                    })
-                    callback();
+                    let params = 'center08'
+                    if (!hasChecked) {
+                        api.getPassCheck(params).then(res => {
+                            console.log(res.data)
+                            if (res.data.code == 200) {
+                                console.log("验证成功......");
+                                this.ruleForm.mobile = res.data.result.mobile;
+                                this.ruleForm.email = res.data.result.email;
+                                callback();
+                            } else {
+                                callback(new Error(res.data.msg))
+                            }
+                        })
+                    } else {
+                        console.log('已经验证')
+                    }
+
+
                 }
             };
             return {
                 url: "../../../static/tree1.json",
-                cacheProjectTree: [],
+                cacheProjectTree: [], //缓存树内容
                 addMemberDialogVisible: false,
                 batchAddMemberDialogVisible: false,
                 weeklyActivityDialogVisible: false,
@@ -276,34 +274,45 @@
                 curPage: 1,
                 pageSize: 10,
                 total: 0,
-                textarea: "布鲁斯123 布鲁斯",
-                orgValue: "",
-                role: "",
+                roleId: '', //角色
+                roleData: [],
+                textarea: "布鲁斯123 布鲁斯", //批量添加文本内容
+                dialogOrgName: "", //添加成员弹框树名称
+                searchTypeId: '',
+                searchType: [{
+                        searchTypeId: 0,
+                        searchTypeName: '项目成员和管理员'
+                    },
+                    {
+                        searchTypeId: 1,
+                        searchTypeName: '归属'
+                    }
+                ],
                 ruleForm: {
-                    pass: "",
-                    name: "",
-                    role: "",
-                    attribution: "",
-                    phone: "",
-                    email: ""
+                    userName: "", //鲁班通行证
+                    realName: "", //姓名
+                    roleId: "", //角色
+                    orgId: "", //归属
+                    mobile: "", //手机号
+                    email: "" //邮箱
                 },
                 rules: {
-                    pass: [{
+                    userName: [{
                         required: true,
                         validator: validatePass,
                         trigger: "blur"
                     }],
-                    name: [{
+                    realName: [{
                         required: false,
                         message: "请输入姓名",
                         trigger: "blur"
                     }],
-                    role: [{
+                    roleId: [{
                         required: true,
                         message: "请输入角色",
                         trigger: "blur"
                     }],
-                    attribution: [{
+                    orgId: [{
                         required: true,
                         message: "请输入归属",
                         trigger: "blur"
@@ -323,7 +332,9 @@
                 dialogOrgSetting: {
                     data: {
                         simpleData: {
-                            enable: true
+                            enable: true,
+                            idKey: "id",
+                            pIdKey: "parentId"
                         }
                     },
                     callback: {
@@ -331,6 +342,7 @@
                     }
                 },
                 zNodes: [],
+
                 authorizedProjectSetting: {
                     data: {
                         simpleData: {
@@ -523,35 +535,57 @@
                         times: "88"
                     }
                 ],
-                options: [{
-                        value: "选项1",
-                        label: "黄金糕"
-                    },
-                    {
-                        value: "选项2",
-                        label: "双皮奶"
-                    },
-                    {
-                        value: "选项3",
-                        label: "蚵仔煎"
-                    },
-                    {
-                        value: "选项4",
-                        label: "龙须面"
-                    },
-                    {
-                        value: "选项5",
-                        label: "北京烤鸭"
-                    }
-                ],
+                roles: [],
                 multipleSelection: []
             };
         },
+        watch: {
+            'ruleForm.userName' (newval, oldval) {
 
+            }
+        },
         methods: {
             ...mapActions([
-                "curEditMember" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
+                "curEditMember" ,"curAddMember"// 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
             ]),
+            getOrgTreeInfo() {
+                api.getOrgTreeList().then(res => {
+                    this.zNodes = res.data.result;
+                    this.zNodes.forEach((val, key) => {
+                        //添加icon
+                        //this.$set(val,'iconSkin',"");
+                        if (val.root) {
+                            this.$set(val, "iconSkin", "rootNode");
+                        } else if (!val.root && val.type == 0 && !val.direct) {
+                            this.$set(val, "iconSkin", "subNode");
+                        } else if (val.type == 1) {
+                            this.$set(val, "iconSkin", "projNode");
+                        } else if (val.direct) {
+                            this.$set(val, "iconSkin", "projNode");
+                        }
+                    });
+                    $.fn.zTree.init(
+                        $("#dialogOrgTree"),
+                        this.dialogOrgSetting,
+                        this.zNodes
+                    );
+                });
+            },
+            /**获取角色*/
+            getRoleList() {
+                let roleData = [];
+                api.getRoleList2().then(res => {
+                    console.log(res)
+                    this.roleData = res.data.result;
+                    this.roleData.forEach(item => {
+                        this.roles.push({
+                            roleId: item.roleId,
+                            roleName: item.roleName
+                        })
+                    })
+                    // console.log(this.roles)
+                });
+            },
             getUsersList() {
                 let params = {
                     orgIds: [
@@ -562,7 +596,7 @@
                     searchType: 1
                 }
                 api.getUsersList(params).then(res => {
-                    console.log(res.data);
+                    // console.log(res.data);
                     this.memberTableData = res.data.result.result;
                     this.total = res.data.result.pageInfo.totalNumber;
                 });
@@ -571,7 +605,9 @@
                 console.log(currentTreeNode);
             },
             dialogOrgTreeClick(event, treeId, treeNode) {
-                this.ruleForm.attribution = treeNode.name;
+                console.log(treeNode)
+                this.dialogOrgName = treeNode.name
+                this.ruleForm.orgId = treeNode.id;
                 setTimeout(() => {
                     $(".el-select-dropdown__item.selected").click();
                 }, 100);
@@ -591,33 +627,23 @@
             },
             addMember() {
                 this.addMemberDialogVisible = true;
-                setTimeout(() => {
-                    $.fn.zTree.init(
-                        $("#dialogOrgTree"),
-                        this.dialogOrgSetting,
-                        this.zNodes
-                    );
-                }, 100);
+                this.getOrgTreeInfo();
             },
-            editMember(MemberId) {
-
+            editMember(row) {
+                this.curEditMember(row)
                 this.$router.push({
-                    path: `/authority/edit-member/${MemberId}`
+                    path: `/authority/edit-member/${row.userId}`
                 });
             },
             submitForm(formName) {
+                hasChecked = true; //通行证账号检查通过
                 this.$refs[formName].validate(valid => {
-                    console.log(valid)
-
-
-
-
-
-
                     if (valid) {
-                        // alert("提交中...........");
-                        console.log(this.ruleForm);
                         this.addMemberDialogVisible = false;
+                        this.curAddMember()
+                        this.$router.push({
+                            path: `/authority/add-member}`
+                        });
                     } else {
                         console.log("error submit!!");
                         return false;
@@ -726,7 +752,8 @@
             }
         },
         mounted() {
-            this.getUsersList()
+            this.getUsersList();
+            this.getRoleList()
         },
         created() {
             this.$emit("routerActive");
