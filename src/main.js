@@ -68,9 +68,9 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
 	// Do something with response data
-    if(response.data.code==500){
-        alert(response.data.msg);
-    }
+    // if(response.data.code==500){
+    //     alert(response.data.msg);
+    // }
 	return response;
 }, function (error) {
 	// Do something with response error

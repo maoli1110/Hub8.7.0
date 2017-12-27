@@ -13,6 +13,10 @@ const matutaions = {
   [types.CUR_EDIT_MEMBER](state, curEditMember) {
     state.curEditMember=curEditMember
   },
+  //当前添加的成员
+  [types.CUR_ADD_MEMBER](state, curAddMember) {
+    state.curAddMember = curAddMember
+  },
 }
 
 export default matutaions
