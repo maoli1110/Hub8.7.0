@@ -340,7 +340,7 @@
 .content .simlue-checkbox{
     width:22px;height:22px;/*border:1px solid #ccc;*/display:inline-block;/*background:#fff;*/ position: absolute;
     left: 0px;top:-2px;
-    background:url('../../static/js/ztree/css/img/zTreeStandard1.png') no-repeat -32px -86px;
+    background:url('../../static/img/zTreeStandard1.png') no-repeat -32px -86px;
 }
 .content .simlue-label input[type=checkbox]:checked+ :after{
 
@@ -348,7 +348,7 @@
     display: block;
     width: 22px;
     height: 22px;
-    background:url('../../static/js/ztree/css/img/zTreeStandard1.png') no-repeat -32px -90px;
+    background:url('../../static/img/zTreeStandard1.png') no-repeat -32px -90px;
     background-position: -58px -89px;
 
 }

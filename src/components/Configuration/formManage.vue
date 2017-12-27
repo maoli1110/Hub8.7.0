@@ -6,7 +6,7 @@
                 </el-menu>-->
             <el-col :span="24" class="sub-menus-style">
                 <el-menu  class="el-menu-demo sub-menus" mode="horizontal" router >
-                    <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+                    <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump" :key="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                 </el-menu>
             </el-col>
         </el-row>
@@ -29,7 +29,7 @@
             <el-table-column prop="remark" label="备注"  >
             </el-table-column>
             <el-table-column label="操作" width="100" @click.native="addnew">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
                     <span class="icon-look" @click="showTreeDialog(scope.$index,scope.row)"></span>
                 </template>
@@ -66,7 +66,7 @@
                         <el-table :data="zNodes"   :border="false" :show-header="false" class="ztreeSingData">
                             <el-table-column prop="formName"></el-table-column>
                             <el-table-column width="100">
-                                <template scope="scope"  v-show="zNodes.isForm">
+                                <template slot-scope="scope"  v-show="zNodes.isForm">
                                     <!--<el-icon class="el-icon-picture" @click.native="changeFormVisible = true"></el-icon>-->
                                     <span class="icon-eyes" @click="formPriview(scope.$index,scope.row)" ></span>
                                 </template>
@@ -125,12 +125,8 @@
         modelId:""
     };
     let cachezNodes = [];
-    import "static/css/setting-qualityMeasure.css";
-    import "static/js/ztree/js/jquery.ztree.core-3.5.js";
-    import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-    import "static/js/ztree/js/jquery.ztree.exedit.js";
-    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js";
-    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from 'src/api/getData.js'
+    import "../../../static/css/setting-qualityMeasure.css";
+    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from '../../api/getData-yhj'
     export default{
         data(){
             return {

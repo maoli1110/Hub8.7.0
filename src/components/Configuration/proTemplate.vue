@@ -10,7 +10,7 @@
                                 </el-menu>-->
                 <el-col :span="24" class="sub-menus-style">
                     <el-menu class="el-menu-demo sub-menus" mode="horizontal" router>
-                        <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump">{{menusdata.name}}
+                        <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" :key="menusdata.name">{{menusdata.name}}
                         </el-menu-item>
                     </el-menu>
                 </el-col>
@@ -28,7 +28,7 @@
 
                 <el-table-column label="操作" width="150">
 
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <!--<el-button @click="dialogVisible = true">del</el-button>-->
                         <span class="icon-compile" @click="proTemplateEdit(scope.$index,scope.row)"></span>
                     </template>
@@ -116,11 +116,11 @@
                             <!--<el-icon class="el-icon-edit"  @click.native="formEditVisible = true"></el-icon>-->
                             <span class="icon-edit-dialog" @click="formAdd()" title='关联表单'></span>
                         </div>
-                        <div class="project-form-ele" v-for='(item,index) in typeList' v-show='index==value'>
-                            <ul v-for='childitem in item.childs'>
+                        <div class="project-form-ele" v-for='(item,index) in typeList' :index="index" v-show='index==value'>
+                            <ul v-for='childitem in item.childs' :key="childitem.typeName">
                                 <p class="project-sultable">{{childitem.typeName}}</p>
                                 <!--<li style="text-align:center;color:#e6e6e6">没数据我才显示{{childitem.childs}}</li>-->
-                                <li v-for='childitemName in childitem.childs'>{{childitemName.formName}}</li>
+                                <li v-for='childitemName in childitem.childs' :key="childitemName.formName">{{childitemName.formName}}</li>
                             </ul>
                         </div>
                     </div>
@@ -209,13 +209,13 @@
                     </template>
                     <template>
                         <el-tabs v-model="activeName2" type="card" @tab-click="tabClick"
-                                 v-for='(item,index) in typeList' v-show='index==value'>
+                                 v-for='(item,index) in typeList' v-show='index==value' :key="index">
 
-                            <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs'>
+                            <el-tab-pane :label="childitem.typeName" v-for='(childitem,index) in item.childs' :key="index">
                                 <div class="project-forme">
                                     <ul class="form-table">
                                         <!--<li v-show='childitem.childs.length==0' style="text-align:center;color:#e6e6e6">没数据我才显示</li>-->
-                                        <li v-for='(childitemName,index) in childitem.childs'>
+                                        <li v-for='(childitemName,index) in childitem.childs' :key="index">
                                             <span
                                                 style="display:inline-block;width:235px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
                                                 :title='childitemName.formName'>{{childitemName.formName}}</span>
@@ -265,11 +265,7 @@
     </div>
 </template>
 <script>
-    import "../../../../static/css/setting-explorer.css";
-    import "static/js/ztree/js/jquery.ztree.core-3.5.js";
-    import "static/js/ztree/js/jquery.ztree.excheck-3.5.min.js";
-    import "static/js/ztree/js/jquery.ztree.exedit.js";
-    import "static/js/ztree/js/jquery.ztree.exhide-3.5.js";
+    import "../../../static/css/setting-explorer.css";
     import {
         getLDProjModelList,
         getProjModelDetail,
@@ -278,7 +274,7 @@
         getFormInfos,
         updateProjModel,
         getFormPreview
-    } from 'src/api/getData.js'
+    } from '../../api/getData-yhj'
     let level = 1;
     let maxLevel = -1;
     let newCount = 1;
