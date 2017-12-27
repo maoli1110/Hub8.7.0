@@ -1,6 +1,6 @@
 <template>
     <div class="bims-container">
-        <div class="bims-contents Bim-libs shadow-style">
+        <div class="bims-contents shadow-style">
             <transition :name="transitionName">
                 <router-view class="main-shadow"></router-view><!--:tableData="tableData"-->
             </transition>
