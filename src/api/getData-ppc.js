@@ -14,21 +14,24 @@ export const getOrgTreeList = params => {
  * 权限管理-人员授权
  */
 /**
- * @param {*} params 
  * 获取用户列表
  */
 export const getUsersList = params => {
     return axios.post(`${builderUrl}/userRest/findUsers`, params);
 };
 /**
- * @param {*} params 
- * 
+ * 通行证检查
  */
 export const getPassCheck = params => {
     return axios.get(`${builderUrl}/userRest/check/${params}`);
 };
+/** 
+ * 添加单个用户
+ */
+export const addUser = params => {
+    return axios.post(`${builderUrl}/userRest/addUser`, params);
+};
 /**
- * @param {*} params 
  * 获取角色列表(全部菲分页)
  */
 export const getRoleList2 = params => {
@@ -44,14 +47,12 @@ export const getRoleList2 = params => {
  * 权限管理-角色管理
  */
 /**
- * @param {*} params 
  * 获取角色列表
  */
 export const getRoleList = params => {
     return axios.post(`${builderUrl}/roleRest/findPageRoles`, params);
 };
 /**
- * @param {*} params 
  * 获取角色类型
  */
 export const getRoleType = params => {
@@ -76,14 +77,12 @@ export const getRoleInfo = params => {
     return axios.get(`${builderUrl}/roleRest/findRole/${params}`);
 };
 /**
- * @param {*} params 
  * 获取角色列表客户端权限信息
  */
 export const getRoleClientAuthInfo = params => {
     return axios.get(`${builderUrl}/roleRest/findClientAuthInfos`);
 };
 /**
- * @param {*} params 
  * 删除角色
  */
 export const deleteRole = params => {

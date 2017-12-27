@@ -9,7 +9,7 @@
                         </el-option>
                     </el-select>
                     <transition name="fade">
-                        <div style="margin-left:45px;border:1px solid #e6e6e6" class="select-dropdown" v-show="isSlideDown">
+                        <div style="margin-left:45px;border:1px solid #e6e6e6" class="select-down" v-show="isSlideDown">
                             <el-input placeholder="请输入组织节点" icon="search" :on-icon-click="searchOrgTree" @keyup.enter.native="searchOrgTree" v-model="searchVal"
                                 style="width:100%"></el-input>
                             <ul id="orgTree" class="ztree"></ul>
@@ -39,7 +39,7 @@
                     }
                 },
                 zNodes: [],
-                currentTreeNode:{},//当前选中树节点
+                currentTreeNode: {}, //当前选中树节点
                 orgValue: "",
                 searchVal: '',
                 isSlideDown: false,
@@ -49,7 +49,10 @@
             searchVal(newVal, oldVal) {},
             orgValue(newVal, oldVal) {
                 //当前选中节点发生变化时
-                this.$emit('handleTreeNodeChange',this.currentTreeNode)
+                if (newVal) {
+                    this.$emit('handleTreeNodeChange', this.currentTreeNode)
+                }
+
             }
         },
         methods: {
@@ -62,6 +65,8 @@
                         //this.$set(val,'iconSkin',"");
                         if (val.root) {
                             this.$set(val, "iconSkin", "rootNode");
+                            this.currentTreeNode = val;
+                            this.orgValue = val.name
                         } else if (!val.root && val.type == 0 && !val.direct) {
                             this.$set(val, "iconSkin", "subNode");
                         } else if (val.type == 1) {
@@ -74,7 +79,7 @@
                 });
             },
             orgTreeClick(event, treeId, treeNode) {
-                this.currentTreeNode=treeNode
+                this.currentTreeNode = treeNode
                 this.orgValue = treeNode.name;
                 this.isSlideDown = false;
             },
@@ -140,7 +145,7 @@
         mounted() {
             $(".organization-header .el-select-dropdown__list").hide();
             $(".organization-header .el-select-dropdown").css("border", "none"); //隐藏element 下拉框中下拉列表
-            this.getOrgTreeInfo() 
+            this.getOrgTreeInfo()
         }
     };
 
@@ -159,7 +164,7 @@
         overflow: auto;
     }
 
-    .select-dropdown {
+    .select-down {
         width: 100%;
         height: 680px;
         padding: 10px;
