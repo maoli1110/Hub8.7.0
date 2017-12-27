@@ -228,6 +228,7 @@
 </template>
 <script>
     // 1349047949@qq.com
+    let hasChecked = false;
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
     import * as api from "../../api/getData-ppc";
@@ -242,17 +243,22 @@
                 } else {
                     console.log("后台验证中......");
                     let params = 'center08'
-                    api.getPassCheck(params).then(res => {
-                        console.log(res.data)
-                        if (res.data.code == 200) {
-                            console.log("验证成功......");
-                            this.ruleForm.mobile = res.data.result.mobile;
-                            this.ruleForm.email = res.data.result.email;
-                            callback();
-                        } else {
-                            callback(new Error(res.data.msg))
-                        }
-                    })
+                    if (!hasChecked) {
+                        api.getPassCheck(params).then(res => {
+                            console.log(res.data)
+                            if (res.data.code == 200) {
+                                console.log("验证成功......");
+                                this.ruleForm.mobile = res.data.result.mobile;
+                                this.ruleForm.email = res.data.result.email;
+                                callback();
+                            } else {
+                                callback(new Error(res.data.msg))
+                            }
+                        })
+                    } else {
+                        console.log('已经验证')
+                    }
+
 
                 }
             };
@@ -272,7 +278,7 @@
                 roleData: [],
                 textarea: "布鲁斯123 布鲁斯", //批量添加文本内容
                 dialogOrgName: "", //添加成员弹框树名称
-                searchTypeId:'',
+                searchTypeId: '',
                 searchType: [{
                         searchTypeId: 0,
                         searchTypeName: '项目成员和管理员'
@@ -533,10 +539,14 @@
                 multipleSelection: []
             };
         },
+        watch: {
+            'ruleForm.userName' (newval, oldval) {
 
+            }
+        },
         methods: {
             ...mapActions([
-                "curEditMember" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
+                "curEditMember" ,"curAddMember"// 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
             ]),
             getOrgTreeInfo() {
                 api.getOrgTreeList().then(res => {
@@ -626,12 +636,14 @@
                 });
             },
             submitForm(formName) {
+                hasChecked = true; //通行证账号检查通过
                 this.$refs[formName].validate(valid => {
-                    console.log(valid)
                     if (valid) {
-                        // alert("提交中...........");
-                        console.log(this.ruleForm);
                         this.addMemberDialogVisible = false;
+                        this.curAddMember()
+                        this.$router.push({
+                            path: `/authority/add-member}`
+                        });
                     } else {
                         console.log("error submit!!");
                         return false;

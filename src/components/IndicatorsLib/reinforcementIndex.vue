@@ -14,8 +14,8 @@
                 </el-col>
                 <el-col :span="4">
                     <div class="advanced-search">
-                      <el-button type="primary" class="basic-btn" @click="deepSearch = true">高级搜索</el-button>
-                      <el-button type="primary" class="basic-btn" @click="deepSearch = true">指标排序</el-button>
+                      <el-button type="primary" class="basic-btn" @click="">高级搜索</el-button>
+                      <el-button type="primary" class="basic-btn" @click="indexSort();indexSortDialogVisible=true">指标排序</el-button>
                     </div>
                 </el-col>
             </div>
