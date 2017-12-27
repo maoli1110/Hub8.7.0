@@ -102,11 +102,15 @@
                     <el-input v-model="ruleForm.realName" auto-complete="off" placeholder="请输入用户的称"></el-input>
                 </el-form-item>
                 <el-form-item label="角色：" prop="roleName">
-                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:360px">
+                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:360px" ref="dialogRole">
                         <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.roleId">
                         </el-option>
                     </el-select>
-                </el-form-item>
+                    <!-- <el-select v-model="dialogRoleName" placeholder="请选择" style="width:360px">
+                        <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.roleId">
+                        </el-option>
+                    </el-select> -->
+                </el-form-item>                
                 <el-form-item label="归属：" prop="orgId">
                     <el-select v-model="dialogOrgName" placeholder="请选择" style="width:360px">
                         <el-option :value="dialogOrgName" v-show="false">
@@ -115,11 +119,9 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="手机号码：" prop="mobile">
-                    <!-- <span style="color:#e6e6e6">请先填写通行证账号，手机号码自动关联</span> -->
                     <el-input v-model="ruleForm.mobile" auto-complete="off" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱：" prop="email">
-                    <!-- <span style="color:#e6e6e6">请先填写通行证账号，邮箱自动关联</span> -->
                     <el-input v-model="ruleForm.email" auto-complete="off" :disabled="true"></el-input>
                 </el-form-item>
             </el-form>
@@ -257,6 +259,7 @@
                         })
                     } else {
                         console.log('已经验证')
+                        callback()
                     }
 
 
@@ -277,7 +280,8 @@
                 roleId: '', //角色
                 roleData: [],
                 textarea: "布鲁斯123 布鲁斯", //批量添加文本内容
-                dialogOrgName: "", //添加成员弹框树名称
+                dialogOrgName: "", //添加成员弹框树组织名称
+                dialogRoleName:'',//添加成员弹框角色名称
                 searchTypeId: '',
                 searchType: [{
                         searchTypeId: 0,
@@ -292,7 +296,7 @@
                     userName: "", //鲁班通行证
                     realName: "", //姓名
                     roleId: "", //角色
-                    orgId: "", //归属
+                    orgId: "ff93a6e0fde84760845a9b2c40659839", //归属
                     mobile: "", //手机号
                     email: "" //邮箱
                 },
@@ -638,12 +642,16 @@
             submitForm(formName) {
                 hasChecked = true; //通行证账号检查通过
                 this.$refs[formName].validate(valid => {
-                    if (valid) {
-                        this.addMemberDialogVisible = false;
-                        this.curAddMember()
+                    if (valid) {                     
+                        // this.curAddMember(this.ruleForm)
+                        let currentMemberMsg={orgName:this.dialogOrgName,roleName:this.$refs.dialogRole.selectedLabel}
+                        currentMemberMsg=Object.assign(currentMemberMsg,this.ruleForm)
+                        this.curEditMember(currentMemberMsg)
+                        console.log(currentMemberMsg)
                         this.$router.push({
-                            path: `/authority/add-member}`
-                        });
+                            path: `/authority/add-member`
+                        });                    
+                        this.addMemberDialogVisible = false;
                     } else {
                         console.log("error submit!!");
                         return false;
