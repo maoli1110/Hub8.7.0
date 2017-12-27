@@ -11,7 +11,7 @@
                 </el-table-column>
                 <el-table-column prop="projAttrNickName" label="名称" width="">
                 </el-table-column>
-                <el-table-column label="审核分析" width="300">
+                <el-table-column label="审核分析" width="">
                     <template slot-scope="scope">
                         <el-checkbox v-model="scope.row.attrConfig==1?true:false" @change="changeList(scope.row)"></el-checkbox>
                     </template>
@@ -45,13 +45,13 @@
 import InfiniteLoading from "vue-infinite-loading";
 import { getProjAttrs, updateProjAttrs } from "../../api/getData-cxx.js";
 import { basePath } from "../../utils/common.js";
-//const api = "http://hn.algolia.com/api/v1/search_by_date?tags=story";
 export default {
   components: {
     InfiniteLoading
   },
   data() {
     return {
+      baseUrl : basePath(this.$route.matched[2].path),
       isEdit: false,
       options: [
         {
@@ -83,8 +83,7 @@ export default {
     },
     saveProjAttrs() {
       let vm = this;
-      let baseUrl = basePath(this.$route.matched[2].path);
-      let params = { url: baseUrl, projAttrs: vm.list };
+      let params = { url: vm.baseUrl, projAttrs: vm.list };
       updateProjAttrs(params).then(function(res) {
         if (res.data.msg == "success") {
           vm.$message({
@@ -133,9 +132,8 @@ export default {
   },
   mounted() {
     let vm = this;
-    let baseUrl = basePath(this.$route.matched[2].path);
     let params = {
-      url: baseUrl
+      url: vm.baseUrl
     };
     getProjAttrs(params).then(function(res) {
       if (res.data.msg == "success") {
