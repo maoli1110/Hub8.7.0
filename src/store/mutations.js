@@ -17,6 +17,10 @@ const matutaions = {
   [types.CUR_ADD_MEMBER](state, curAddMember) {
     state.curAddMember = curAddMember
   },
+  // //修改归属
+  // [types.CUR_ADD_MEMBER](state, curAddMember) {
+  //   state.curAddMember = curAddMember
+  // },
 }
 
 export default matutaions

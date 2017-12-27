@@ -1,12 +1,12 @@
 <template>
     <div>
-        <org-tree @handleTreeNodeChange='handleTreeNodeChange' ref="org-tree"></org-tree>
+        <org-tree @handleTreeNodeChange='handleTreeNodeChange' ref="orgTree"></org-tree>
         <div class="header">
             <div class="el-form-item el-form_">
                 <label class="el-form-item__label">角色：</label>
                 <div class="el-form-item__content" style="margin-left: 55px;">
                     <el-select v-model="roleId" placeholder="请选择" style="max-width:170px">
-                        <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.roleId">
+                        <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </div>
@@ -28,7 +28,7 @@
         </div>
         <div class="main">
             <div>
-                <el-button type="primary" class="basic-btn" icon="plus" @click="addMember()">添加人员</el-button>
+                <el-button type="primary" class="basic-btn" icon="plus" @click="addMember();">添加人员</el-button>
                 <el-button type="primary" class="basic-btn" @click=' batchAddMemberDialogVisible=true'>
                     <i class="icon-batch-add pl-icon-batch-add"></i>
                     <span>批量添加 </span>
@@ -48,8 +48,8 @@
                 </el-table-column>
                 <el-table-column label="通行证" width="150">
                     <template slot-scope="scope">
-                        <div :title="scope.row.passWord" class="textcell">
-                            {{ scope.row.passWord }}
+                        <div :title="scope.row.userName" class="textcell">
+                            {{ scope.row.userName}}
                         </div>
                     </template>
                 </el-table-column>
@@ -102,15 +102,15 @@
                     <el-input v-model="ruleForm.realName" auto-complete="off" placeholder="请输入用户的称"></el-input>
                 </el-form-item>
                 <el-form-item label="角色：" prop="roleName">
-                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:360px" ref="dialogRole">
-                        <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.roleId">
+                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:100%" @change="dialogSelectChange">
+                        <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                     <!-- <el-select v-model="dialogRoleName" placeholder="请选择" style="width:360px">
                         <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.roleId">
                         </el-option>
                     </el-select> -->
-                </el-form-item>                
+                </el-form-item>
                 <el-form-item label="归属：" prop="orgId">
                     <el-select v-model="dialogOrgName" placeholder="请选择" style="width:360px">
                         <el-option :value="dialogOrgName" v-show="false">
@@ -127,7 +127,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer" style="margin-top:-30px">
                 <el-button type="primary" @click="submitForm('ruleForm')" class="dialog-btn">确 定</el-button>
-                <el-button @click="addMemberDialogVisible = false;resetForm('ruleForm')" class="dialog-btn">取 消</el-button>
+                <el-button @click="addMemberDialogVisible = false;" class="dialog-btn">取 消</el-button>
             </div>
         </el-dialog>
         <!-- 批量添加 -->
@@ -244,25 +244,22 @@
                     callback(new Error("请输入通行证"));
                 } else {
                     console.log("后台验证中......");
-                    let params = 'center08'
                     if (!hasChecked) {
-                        api.getPassCheck(params).then(res => {
-                            console.log(res.data)
+                        api.getPassCheck(value).then(res => {
+                            console.log(res.data);
                             if (res.data.code == 200) {
                                 console.log("验证成功......");
                                 this.ruleForm.mobile = res.data.result.mobile;
                                 this.ruleForm.email = res.data.result.email;
                                 callback();
                             } else {
-                                callback(new Error(res.data.msg))
+                                callback(new Error(res.data.msg));
                             }
-                        })
+                        });
                     } else {
-                        console.log('已经验证')
-                        callback()
+                        console.log("已经验证");
+                        callback();
                     }
-
-
                 }
             };
             return {
@@ -277,26 +274,27 @@
                 curPage: 1,
                 pageSize: 10,
                 total: 0,
-                roleId: '', //角色
+                orgId: "", //组织树节点
+                roleId: "", //角色
                 roleData: [],
                 textarea: "布鲁斯123 布鲁斯", //批量添加文本内容
                 dialogOrgName: "", //添加成员弹框树组织名称
-                dialogRoleName:'',//添加成员弹框角色名称
-                searchTypeId: '',
+                dialogRoleName: "", //添加成员弹框角色名称
+                searchTypeId: 1,
                 searchType: [{
                         searchTypeId: 0,
-                        searchTypeName: '项目成员和管理员'
+                        searchTypeName: "项目成员和管理员"
                     },
                     {
                         searchTypeId: 1,
-                        searchTypeName: '归属'
+                        searchTypeName: "归属"
                     }
                 ],
                 ruleForm: {
                     userName: "", //鲁班通行证
                     realName: "", //姓名
                     roleId: "", //角色
-                    orgId: "ff93a6e0fde84760845a9b2c40659839", //归属
+                    orgId: "", //归属
                     mobile: "", //手机号
                     email: "" //邮箱
                 },
@@ -544,13 +542,12 @@
             };
         },
         watch: {
-            'ruleForm.userName' (newval, oldval) {
-
-            }
+            "ruleForm.userName" (newval, oldval) {}
         },
         methods: {
             ...mapActions([
-                "curEditMember" ,"curAddMember"// 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
+                "curEditMember",
+                "curAddMember" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
             ]),
             getOrgTreeInfo() {
                 api.getOrgTreeList().then(res => {
@@ -560,6 +557,7 @@
                         //this.$set(val,'iconSkin',"");
                         if (val.root) {
                             this.$set(val, "iconSkin", "rootNode");
+                            console.log(val);
                         } else if (!val.root && val.type == 0 && !val.direct) {
                             this.$set(val, "iconSkin", "subNode");
                         } else if (val.type == 1) {
@@ -578,63 +576,74 @@
             /**获取角色*/
             getRoleList() {
                 let roleData = [];
+                //获取角色列表
                 api.getRoleList2().then(res => {
-                    console.log(res)
                     this.roleData = res.data.result;
                     this.roleData.forEach(item => {
                         this.roles.push({
-                            roleId: item.roleId,
-                            roleName: item.roleName
-                        })
-                    })
-                    // console.log(this.roles)
+                            value: item.roleId,
+                            label: item.roleName
+                        });
+                    });
+                    this.roleId = this.roles[0].roleId; //默认角色
                 });
             },
             getUsersList() {
                 let params = {
-                    orgIds: [
-                        "ff93a6e0fde84760845a9b2c40659839"
-                    ],
-                    pageNum: 1,
-                    pageSize: 10,
-                    searchType: 1
-                }
+                    orgIds: [this.orgId],
+                    pageNum: this.curPage,
+                    pageSize: this.pageSize,
+                    searchType: this.searchTypeId
+                };
+                if (!this.orgId) return;
                 api.getUsersList(params).then(res => {
-                    // console.log(res.data);
                     this.memberTableData = res.data.result.result;
                     this.total = res.data.result.pageInfo.totalNumber;
                 });
             },
             handleTreeNodeChange(currentTreeNode) {
-                console.log(currentTreeNode);
+                this.orgId = currentTreeNode.id;
+                this.getUsersList();
             },
             dialogOrgTreeClick(event, treeId, treeNode) {
-                console.log(treeNode)
-                this.dialogOrgName = treeNode.name
+                console.log(treeNode);
+                this.dialogOrgName = treeNode.name;
                 this.ruleForm.orgId = treeNode.id;
                 setTimeout(() => {
                     $(".el-select-dropdown__item.selected").click();
                 }, 100);
+            },
+            dialogSelectChange(v){
+     
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
             handleSizeChange(val) {
                 this.pageSize = val;
-                this.getUsersList()
+                this.getUsersList();
                 console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
                 this.curPage = val;
-                this.getUsersList()
+                this.getUsersList();
                 console.log(`当前页: ${val}`);
             },
+            // a0e51be234784b9f9468511a7f456755
             addMember() {
+                setTimeout(() => {
+                    this.resetForm("ruleForm");
+                }, 0);
                 this.addMemberDialogVisible = true;
-                this.getOrgTreeInfo();
+                // 每次添加重置form表单
+                for (var k in this.ruleForm) {
+                    this.ruleForm[k] = "";
+                }
+                hasChecked = false;
+                (this.dialogOrgName = ""), this.getOrgTreeInfo();
             },
             editMember(row) {
-                this.curEditMember(row)
+                this.curEditMember(row);
                 this.$router.push({
                     path: `/authority/edit-member/${row.userId}`
                 });
@@ -642,16 +651,39 @@
             submitForm(formName) {
                 hasChecked = true; //通行证账号检查通过
                 this.$refs[formName].validate(valid => {
-                    if (valid) {                     
-                        // this.curAddMember(this.ruleForm)
-                        let currentMemberMsg={orgName:this.dialogOrgName,roleName:this.$refs.dialogRole.selectedLabel}
-                        currentMemberMsg=Object.assign(currentMemberMsg,this.ruleForm)
-                        this.curEditMember(currentMemberMsg)
-                        console.log(currentMemberMsg)
-                        this.$router.push({
-                            path: `/authority/add-member`
-                        });                    
-                        this.addMemberDialogVisible = false;
+                    if (valid) {
+                        debugger
+                        let currentMemberMsg = {
+                                    orgName: this.dialogOrgName,
+                                    roleName: this.$refs.dialogRole.selectedLabel,                                
+                                };
+                                console.log(this.currentMemberMsg)
+                                currentMemberMsg = Object.assign(currentMemberMsg, this.ruleForm);
+                        // api.addUser(this.ruleForm).then(res => {
+                            
+                        //     let userId = res.data.result
+                        //     if (res.data.code == 200) {
+                        //         res.data.result
+                        //         // 记录当前成员信息传递到addMember页面
+                        //         let currentMemberMsg = {
+                        //             orgName: this.dialogOrgName,
+                        //             roleName: this.$refs.dialogRole.selectedLabel,
+                        //             userId: userId
+                        //         };
+                        //         currentMemberMsg = Object.assign(currentMemberMsg, this.ruleForm);
+                        //         this.curEditMember(currentMemberMsg);
+                        //         this.$router.push({
+                        //             path: `/authority/add-member`
+                        //         });
+                        //         this.addMemberDialogVisible = false;
+                        //     } else {
+                        //         this.$alert(res.data.msg, "提示", {
+                        //             confirmButtonText: "确定",
+                        //             type: "info"
+                        //         });
+                        //         hasChecked = false;
+                        //     }
+                        // });
                     } else {
                         console.log("error submit!!");
                         return false;
@@ -760,8 +792,8 @@
             }
         },
         mounted() {
+            this.getRoleList();
             this.getUsersList();
-            this.getRoleList()
         },
         created() {
             this.$emit("routerActive");
