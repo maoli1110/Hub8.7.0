@@ -222,7 +222,7 @@
                     this.formDataList = res.data.result;
                     for(var i = 0;i<this.formDataList.length;i++){
                         let date = new Date(this.formDataList[i].updateTime );
-                        this.formDataList[i].updateTime =this.dateFtt("yyyy-MM-dd hh:mm",date)
+                        this.formDataList[i].updateTime =this.dateFtt("yyyy.MM.dd hh:mm",date)
                     }
 
                 })
