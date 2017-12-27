@@ -36,7 +36,7 @@
                         <el-table-column type="selection" width="60"></el-table-column>
                         <el-table-column type='index' label="编号" width="60"
                                          :index="sort"></el-table-column>
-                        <el-table-column prop="computerName" label="工程名称" width="300"></el-table-column>
+                        <el-table-column prop="computerName" label="工程名称" width=""></el-table-column>
                         <el-table-column label="状态" width="200">
                             <template slot-scope="scope">
                                 <span>{{scope.row.username}}({{scope.row.realname}})</span>
@@ -48,7 +48,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column prop="bindingTime" label="上传时间" width="200"></el-table-column>
-                        <el-table-column prop="remarks" label="备注"></el-table-column>
+                        <el-table-column prop="remarks" label="备注" width="300" show-overflow-tooltip></el-table-column>
                     </el-table>
                 </vue-scrollbar>
                 <div style="margin-top: 20px">
@@ -156,7 +156,7 @@ export default {
           enterprisePackageId: 0,
           hardwareCode: "string",
           realName: "string",
-          remarks: "string",
+          remarks: "超长超长世界级顶尖的基督教sjsjsjs444444444444444jsjsjsjakakajka啥啥啥",
           username: "string"
         }
       ]

@@ -3,7 +3,7 @@
         <div class="member-wrap">
             <div class="member-title">用户基本信息
                 <span class="el-icon-edit" style="margin-left:20px;font-size:14px;cursor:pointer;color:#6595f2" @click="isEdit=true" v-show="!isEdit">
-                编辑</span>
+                    编辑</span>
                 <span class="el-icon-document" style="margin-left:20px;font-size:14px;cursor:pointer;color:#6595f2" @click="isEdit=false"
                     v-show="isEdit"> 保存</span>
             </div>
@@ -30,10 +30,10 @@
                         <label class="el-form-item__label">归属：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;">
                             <div v-show="isEdit">
-                                <el-input placeholder="请选择归属" v-model="curEditMember.orgId"></el-input>
+                                <el-input placeholder="请选择归属" v-model="curEditMember.orgName"></el-input>
                                 <span class="red_">*</span>
                             </div>
-                            <span v-show="!isEdit">{{curEditMember.orgId}}</span>
+                            <span v-show="!isEdit">{{curEditMember.orgName}}</span>
                         </div>
                     </div>
                 </el-col>
@@ -578,10 +578,16 @@
                 });
             }
         },
-        created () {
-            if (!this.curEditMember.realName) {
+        created() {
+            if (this.$route.path == "/authority/add-member") {
+                // 添加
+            } else {
+                // 编辑
+                if (!this.curEditMember.realName) {
                     this.$router.push("/authority/member-management");
                 }
+            }
+
         }
     };
 
