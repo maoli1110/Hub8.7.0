@@ -34,13 +34,13 @@
                  </el-table-column>-->
                 <el-table-column label="序号" width="80" type="index">
                 </el-table-column>
-                <el-table-column prop="processName" width="" label="流程名称" sortable>
+                <el-table-column prop="processName" width="" label="流程名称" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="updateUser" width="120" label="更新人" sortable>
+                <el-table-column prop="updateUser" width="120" label="更新人" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="updateTime" width="165" label="更新时间" sortable :formatter="formatTime">
+                <el-table-column prop="updateTime" width="165" label="更新时间" sortable :formatter="formatTime" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="remark" label="备注">
+                <el-table-column prop="remark" label="备注" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column label="操作" width="150" @click.native="addnew" class="quality-page-tableIcon">
 
@@ -576,6 +576,7 @@
                     searchKey: ""
                 },
                 cur_page: 1,
+                totalPages:0,
                 tableSearchKey: "",
                 remainLength: 0,
                 menusDataFa: [
@@ -633,8 +634,7 @@
             tableParams.pageSize = pageSize;
             tableParams.sortType = sortType;
             tableParams.sortField = sortField;
-            this.getData(tableParams);
-            //        this.beforeRouteEnter();
+            this.getData();
         },
         mounted() {
             $.fn.zTree.init($("#lineTree"), this.setting, this.zNodes);
@@ -718,24 +718,53 @@
                     .then(res => {
                         //console.info(res.data.result,'我是流程列表数据')
                         this.tableData = res.data.result.content;
-                        this.totalNumber = res.data.pageInfo.totalNumber;
-                        this.totalPage = res.data.pageInfo.pageSize;
+                        this.totalNumber = res.data.result.totalElements;
+                        this.totalPages = res.data.result.pageSize;
                     })
-                    .catch(function (error) {
-                        console.info(error);
-                        this.messageBox(error.response.data.message);
-                    });
+
             },
             getRootList(){
                 //获取角色名称
-                getRoleInfo()
-                    .then(res => {
-                        this.rootList = res.data.result;
-                    })
-                    .catch(function (error) {
-                        self.messageBox(error.response.data.message);
-                    });
+                /*this.rootList = [{
+                    roleId: "347e0edaede64fab9970b57bdb6a4d2b",
+                    roleName: "22",
+                    roleType: 1,
+                    remarks: "222",
+                    epid: 915
+                },
+                    {
+                        roleId: "45f6cd7a73aa48fea31add2bb3fee6f6",
+                        roleName: "元素3",
+                        roleType: 2,
+                        remarks: "222",
+                        epid: 915
+                    },
+                    {
+                        roleId: "5411bbb0ca9f4423af4de5fa34f954a2",
+                        roleName: "元素二",
+                        roleType: 0,
+                        remarks: "222",
+                        epid: 915
+                    },
+                    {
+                        roleId: "94eddbba34f749eab7da3c13360089f5",
+                        roleName: "元素一",
+                        roleType: 0,
+                        remarks: "3333",
+                        epid: 915
+                    },
+                    {
+                        roleId: "9719a624a5314f299bc94352ed7bdb83",
+                        roleName: "低调的",
+                        roleType: 2,
+                        remarks: "ddd",
+                        epid: 915
+                    }]*/
+                getRoleInfo().then(res => {
+                    this.rootList = res.data.result;
+                })
             },
+            //更新列表
             updateProcessList(params){
                 updateProcessInfo(params)
                     .then(res => {
@@ -749,31 +778,85 @@
                         });
                         this.getTableList(this.tableParam);
                     })
+
+            },
+            //添加流程
+            addProcessInfos(params){
+                addProcessInfo(params).then(res => {
+                    //添加流程
+                    this.flowName = "";
+                    this.flowRemark = "";
+                    this.isBMP = false;
+                    this.isQuality = true;
+                    this.isBMPedit = false;
+                    this.getTableList(this.tableParam);
+                    for (var key in this.rootInfo) {
+                        //清除原始数据
+                        this.rootInfo[key].addRolesLine = [];
+                        this.rootInfo[key].listVal = "全部";
+                        this.rootInfo[key].isStepDisable = false;
+                        this.rootInfo[key].listRolesId = [];
+                        this.rootInfo[key].stepName = "";
+                    }
+                })
                     .catch(function (error) {
                         self.messageBox(error.response.data.message);
                     });
             },
-            getData(tableParam) {
+            //获取流程列表
+            getProcessInfos(params){
+                getProcessInfo(params).then(res => {
+                        this.rootInfoEdit = res.data.result;
+                        this.flowNameEdit = res.data.result.processName;
+                        this.flowRemarkEdit = res.data.result.remark;
+                        for (let j = 0; j < this.rootInfoEdit.steps.length; j++) {
+                            this.$set(this.rootInfoEdit.steps[j], "option", [
+                                {value: 0, label: "全部"},
+                                {value: 1, label: "任意"}
+                            ]);
+                            this.$set(this.rootInfoEdit.steps[j], "listVal", "");
+                            this.$set(this.rootInfoEdit.steps[j], "rootEditArr", []);
+                            this.$set(this.rootInfoEdit.steps[j], "isStepDisable", false);
+
+                            if (this.rootInfoEdit.steps[j].roleIds.length <= 1) {
+                                this.rootInfoEdit.steps[j].isStepDisable = false;
+                            } else if (this.rootInfoEdit.steps[j].roleIds.length > 1) {
+                                this.rootInfoEdit.steps[j].isStepDisable = true;
+                            }
+
+                            if (this.rootInfoEdit.steps[j].isAll) {
+                                this.rootInfoEdit.steps[j].listVal = "全部";
+                            } else {
+                                this.rootInfoEdit.steps[j].listVal = "任意";
+                            }
+                        }
+                        console.log(this.rootList,'this.rootInfoEdit.steps[j].roleIds')
+                        for (let i = 0; i < this.rootList.length; i++) {
+                            for (let j = 0; j < this.rootInfoEdit.steps.length; j++) {
+                                for (let l = 0;l < this.rootInfoEdit.steps[j].roleIds.length;l++) {
+                                    if (this.rootList[i].roleId == this.rootInfoEdit.steps[j].roleIds[l]) {
+                                        this.rootInfoEdit.steps[j].rootEditArr.push(
+                                            this.rootList[i].roleName
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    })
+            },
+            getData() {
                 //默认数据
                 //表单列表
                 this.getTableList(this.tableParam);
             },
             sortChange(column) {
-                tableParams.sortField = column.prop;
+                this.tableParam.pageParam.orders[0].property= column.prop;
                 if (column.order == "ascending") {
-                    tableParams.sortType = "asc";
+                    this.tableParam.pageParam.orders[0].direction = 0;
                 } else if (column.order == "descending") {
-                    tableParams.sortType = "desc";
+                    this.tableParam.pageParam.orders[0].direction = 1;
                 }
-                getProcessList(tableParams)
-                    .then(res => {
-                        this.tableData = res.data;
-                        this.totalNumber = res.data.pageInfo.totalNumber;
-                        this.totalPage = res.data.pageInfo.pageSize;
-                    })
-                    .catch(function (error) {
-                        this.messageBox(error.response.data.message);
-                    });
+               this.getTableList(this.tableParam);
             },
             change() {
                 //文本框输入数据限制
@@ -785,23 +868,21 @@
                 console.log(event.type);
 
                 if (event.type == "click" || event.keyCode == 13) {
-                    tableParams.searchKey = this.tableSearchKey;
-                    this.getData(tableParams);
+                    this.tableParam.searchKey = this.tableSearchKey;
+                    this.getTableList(this.tableParam);
                 }
             },
             handleCurrentChange(val) {
                 //显示第几页
                 this.cur_page = val;
-                curretPage = this.cur_page;
-                tableParams.page = curretPage;
-                console.log(123);
-                this.getData(tableParams);
+                this.tableParam.pageParam.page = val;
+                this.getTableList(this.tableParam);
             },
             handleSizeChange(val) {
                 //每页显示多少条
-                console.log(`每页 ${val} 条`);
-                tableParams.pageSize = val;
-                this.getData(tableParams);
+                this.totalPage = val;
+                this.tableParam.pageParam.size = val;
+                this.getTableList(this.tableParam);
             },
             formatter(row, column) {
                 return row.address;
@@ -831,8 +912,7 @@
             },
             //新增页面
             deleteProcess(index, row) {
-                isUsedProcess({processId: row.processId})
-                    .then(res => {
+                isUsedProcess({processId: row.processId}).then(res => {
                         this.isLinkResult = res.data;
                         if (this.isLinkResult) {
                             this.messageBox("相关表单正在使用，暂时不可删除流程");
@@ -1343,16 +1423,12 @@
                 this.isBMPedit = false;
             },
             incidenceRel(processId) {
-                isUsedProcess({processId: processId})
-                    .then(res => {
-                        this.isLinkResult = res.data;
+                isUsedProcess({processId: processId}).then(res => {
+                        this.isLinkResult = res.data.result;
                         if (this.isLinkResult) {
                             this.messageBox("相关表单正在使用，暂时不可更改流程");
                         }
                     })
-                    .catch(function (error) {
-                        this.messageBox(error.response.data.message);
-                    });
             },
             isBMPEditShow(index, row) {
                 this.isBMPedit = true;
@@ -1360,64 +1436,13 @@
                 this.isQuality = false;
                 let self = this;
                 //获取角色名称
-                getRoleInfo()
-                    .then(res => {
-                        this.rootList = res.data;
-                    })
-                    .catch(function (error) {
-                        self.messageBox(error.response.data.message);
-                    });
+                this.getRootList();
                 updateProcessId = row.processId;
                 //流程是否被关联
                 this.incidenceRel(updateProcessId); //判断流程设置的关联关系
-                getProcessInfo({processId: row.processId})
-                    .then(res => {
-                        this.rootInfoEdit = res.data;
-                        this.flowNameEdit = res.data.processName;
-                        this.flowRemarkEdit = res.data.remark;
-                        for (let j = 0; j < this.rootInfoEdit.steps.length; j++) {
-                            this.$set(this.rootInfoEdit.steps[j], "option", [
-                                {value: 0, label: "全部"},
-                                {value: 1, label: "任意"}
-                            ]);
-                            this.$set(this.rootInfoEdit.steps[j], "listVal", "");
-                            this.$set(this.rootInfoEdit.steps[j], "rootEditArr", []);
-                            this.$set(this.rootInfoEdit.steps[j], "isStepDisable", false);
+                this.getProcessInfos({processId: row.processId});
 
-                            if (this.rootInfoEdit.steps[j].roleIds.length <= 1) {
-                                this.rootInfoEdit.steps[j].isStepDisable = false;
-                            } else if (this.rootInfoEdit.steps[j].roleIds.length > 1) {
-                                this.rootInfoEdit.steps[j].isStepDisable = true;
-                            }
 
-                            if (this.rootInfoEdit.steps[j].isAll) {
-                                this.rootInfoEdit.steps[j].listVal = "全部";
-                            } else {
-                                this.rootInfoEdit.steps[j].listVal = "任意";
-                            }
-                        }
-                        for (let i = 0; i < this.rootList.length; i++) {
-                            for (let j = 0; j < this.rootInfoEdit.steps.length; j++) {
-                                for (
-                                    let l = 0;
-                                    l < this.rootInfoEdit.steps[j].roleIds.length;
-                                    l++
-                                ) {
-                                    if (
-                                        this.rootList[i].roleId ==
-                                        this.rootInfoEdit.steps[j].roleIds[l]
-                                    ) {
-                                        this.rootInfoEdit.steps[j].rootEditArr.push(
-                                            this.rootList[i].roleName
-                                        );
-                                    }
-                                }
-                            }
-                        }
-                    })
-                    .catch(function (error) {
-                        self.messageBox(error.response.data.message);
-                    });
             },
             flowNameAlert() {
                 //流程名称弹窗
@@ -1510,35 +1535,15 @@
                     let self = this;
                     $(".addPage .table-step tbody tr").map(function (i, val) {
                         listParams = {};
-                        if (
-                            $(this)
-                                .find("input")
-                                .val() &&
-                            $(this).find(".addRoot").length == 0
-                        ) {
+                        if ($(this).find("input").val() &&$(this).find(".addRoot").length == 0) {
                             tootipsAlert();
                         } else if (
-                            !$(this)
-                                .find("input")
-                                .val() &&
-                            $(this).find(".addRoot").length != 0
-                        ) {
+                            !$(this).find("input").val() &&$(this).find(".addRoot").length != 0) {
                             tootipsAlert();
-                        } else if (
-                            $(this)
-                                .find("input")
-                                .val() &&
-                            $(this).find(".addRoot").length != 0
-                        ) {
+                        } else if ( $(this).find("input").val() && $(this).find(".addRoot").length != 0) {
                             listParams.roleIds = rolesId[i].listRolesId;
-                            listParams.stepName = $(this)
-                                .find("input")
-                                .val();
-                            if (
-                                $(this)
-                                    .find("input[icon=caret-top]")
-                                    .val() == "全部"
-                            ) {
+                            listParams.stepName = $(this).find("input").val();
+                            if ($(this).find("input[icon=caret-top]").val() == "全部") {
                                 listParams.isAll = true;
                             } else {
                                 listParams.isAll = false;
@@ -1557,44 +1562,7 @@
                 }
 
                 if (!errorMessage && $(".addPage .table-step tbody tr").length != 0) {
-                    addProcessInfo(list)
-                        .then(res => {
-                            //添加流程
-
-                            this.flowName = "";
-                            this.flowRemark = "";
-
-                            getProcessList(tableParams)
-                                .then(res => {
-                                    //console.info(res.data.result,'我是流程列表数据')
-                                    this.tableData = res.data;
-                                    this.totalNumber = res.data.pageInfo.totalNumber;
-                                    //添加流程成功后给出的提示
-                                    this.$message({
-                                        message: "您已成功添加了一条流程信息！",
-                                        type: "success"
-                                    });
-                                })
-                                .catch(function (error) {
-                                    this.messageBox(error.response.data.message);
-                                });
-
-                            for (var key in this.rootInfo) {
-                                //清除原始数据
-                                //                        console.info(this.rootInfo,'添加工程最终数据')
-                                this.rootInfo[key].addRolesLine = [];
-                                this.rootInfo[key].listVal = "全部";
-                                this.rootInfo[key].isStepDisable = false;
-                                this.rootInfo[key].listRolesId = [];
-                                this.rootInfo[key].stepName = "";
-                            }
-                            this.isBMP = false;
-                            this.isQuality = true;
-                            this.isBMPedit = false;
-                        })
-                        .catch(function (error) {
-                            self.messageBox(error.response.data.message);
-                        });
+                   this.addProcessInfos(list);
                 }
             },
             //树结构字段处理

@@ -35,16 +35,15 @@
                         <el-table-column type="selection" width="60"></el-table-column>
                         <el-table-column type='index' label="编号" width="60"
                                          :index="indexSort"></el-table-column>
-                        <el-table-column prop="computerName" label="工程名称" width="300"></el-table-column>
+                        <el-table-column prop="computerName" label="工程名称" width=""></el-table-column>
                         <el-table-column label="上传人" width="200">
                             <template slot-scope="scope">
                                 <span>{{scope.row.username}}({{scope.row.realname}})</span>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="bindingTime" label="状态" width="200"></el-table-column>
                         <el-table-column prop="bindingTime" label="上传人" width="200"></el-table-column>
                         <el-table-column prop="bindingTime" label="上传时间" width="200"></el-table-column>
-                        <el-table-column prop="remarks" label="备注"></el-table-column>
+                        <el-table-column prop="remarks" label="备注" width="300" show-overflow-tooltip></el-table-column>
                     </el-table>
                 </vue-scrollbar>
                 <div style="margin-top: 20px">
@@ -215,7 +214,7 @@ export default {
           enterprisePackageId: 0,
           hardwareCode: "string",
           realName: "string",
-          remarks: "string",
+          remarks: "dsj大家觉得基督教的基督教的基督教的基督教多算胜少算哭哭哭",
           username: "string"
         }
       ],
@@ -339,5 +338,8 @@ export default {
 .deepSearchModal .el-dialog .el-dialog__header {
   padding-bottom: 20px;
   border-bottom: 1px solid #e6e6e6;
+}
+.order-management .content .el-input {
+  width: 100%;
 }
 </style>
