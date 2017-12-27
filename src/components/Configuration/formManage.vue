@@ -1,8 +1,11 @@
 <template>
     <div class="form-change">
         <el-row>
+            <!--    <el-menu  class="el-menu-demo" mode="horizontal" router>
+                    <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
+                </el-menu>-->
             <el-col :span="24" class="sub-menus-style">
-                <el-menu  :default-active="activeIndex" class="el-menu-demo sub-menus" mode="horizontal" router >
+                <el-menu  class="el-menu-demo sub-menus" mode="horizontal" router >
                     <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump" :key="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                 </el-menu>
             </el-col>
@@ -17,13 +20,13 @@
         <el-table :data="formDataList"  style="width: 100%"  class="form-table"  >
             <el-table-column label="序号" width="80" type="index">
             </el-table-column>
-            <el-table-column prop="modelName" label="表单类型" sortable>
+            <el-table-column prop="modelName" label="表单类型" >
             </el-table-column>
-            <el-table-column prop="updateUser" width="120" label="更新人" sortable>
+            <!--<el-table-column prop="updateUser" width="120" label="更新人" >
             </el-table-column>
-            <el-table-column prop="updateTime"  width="130" label="更新时间"  sortable>
-            </el-table-column>
-            <el-table-column prop="remark" label="备注"  sortable>
+            <el-table-column prop="updateTime"  width="170" label="更新时间"  >
+            </el-table-column>-->
+            <el-table-column prop="remark" label="备注"  >
             </el-table-column>
             <el-table-column label="操作" width="100" @click.native="addnew">
                 <template slot-scope="scope">
@@ -122,7 +125,8 @@
         modelId:""
     };
     let cachezNodes = [];
-    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from '../../api/getData-yhj';
+    import "../../../static/css/setting-qualityMeasure.css";
+    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from '../../api/getData-yhj'
     export default{
         data(){
             return {
@@ -161,10 +165,7 @@
                 tableData: [],
                 cur_page: 1,
                 menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
-                menusData: [
-                    { name: "流程设置", routerDump: '/configuration/Inspector/qualityMeasure' },
-                    { name: '工程模板', routerDump: '/configuration/Inspector/proTemplate' },
-                    { name: '表单管理', routerDump: '/configuration/Inspector/formManage' }],
+                menusData:[{name:"流程设置",routerDump:'qualityMeasure'},{name:'工程模板',routerDump:'proTemplate'},{name:'表单管理',routerDump:'formManage'}],
                 formDataList: [],
                 changeFormVisible:false,
                 istable:false,
@@ -175,10 +176,10 @@
                 dialogFormPriview:false,
                 formPriviewUrl:"",
                 searchParam:"",
-                formTreeSearch:"",
-                activeIndex:""
+                formTreeSearch:""
             }
         },
+
         components:{
 
         },
@@ -198,7 +199,6 @@
         },
         created(){
             this.getData();
-            this.activeIndex = this.$route.path;
         },
         methods: {
             clearEvent(){//清除表格元素
@@ -218,11 +218,32 @@
                 this.cur_page = val;
                 this.getData();
             },
+            dateFtt(fmt,date)
+            { //author: meizz
+                var  dateList = {
+                    "M+" : date.getMonth()+1,                 //月份
+                    "d+" : date.getDate(),                    //日
+                    "h+" : date.getHours(),                   //小时
+                    "m+" : date.getMinutes(),                 //分
+                    "s+" : date.getSeconds(),                 //秒
+                    "q+" : Math.floor((date.getMonth()+3)/3), //季度
+                    "S"  : date.getMilliseconds()             //毫秒
+                };
+                if(/(y+)/.test(fmt))
+                    fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));
+                for(var k in dateList)
+                    if(new RegExp("("+ k +")").test(fmt))
+                        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (dateList[k]) : (("00"+ dateList[k]).substr((""+ dateList[k]).length)));
+                return fmt;
+            },
             getData(){
                 getFormModelTypeList({belong:0}).then((res) => {
                     this.formDataList = res.data;
+
                     for(var i = 0;i<this.formDataList.length;i++){
-                        this.formDataList[i].updateTime = (new Date(this.formDataList[i].updateTime )).toLocaleDateString();
+//                        this.formDataList[i].updateTime = (new Date(this.formDataList[i].updateTime )).toLocaleDateString();
+                        let date = new Date(this.formDataList[i].updateTime );
+                        this.formDataList[i].updateTime =this.dateFtt("yyyy-MM-dd hh:mm",date)
                     }
 
                 })
@@ -251,7 +272,9 @@
             },
             //表单的预览功能
             formPriview(index,row){
+
                 this.formPriviewUrl = "";
+
                 formPriviewParams.modelId = getFormInfosParams.modelId;
                 formPriviewParams.formId = row.formId;
                 getFormPreview(formPriviewParams).then((res) =>{
@@ -307,7 +330,7 @@
                                 self.dialogFormPriview = true;
                                 self.formPriviewUrl = res.data;
                             }else{
-                                self.notify('暂不支持预览');
+                                self.notify('暂时不支持预览');
                             }
                         }).catch(function (error) {
 //                            console.info(error.message);
@@ -322,6 +345,8 @@
             showTreeDialog(index,row){
 //                self = this;
 //                this.isDoubForm = true;
+                this.formTreeSearch = "";
+                this.searchParam ="";
                 this.changeFormVisible = true;
 //                this.istable= true;
                 getFormInfosParams.modelId = row.modelId;
@@ -505,28 +530,3 @@
         }
     }
 </script>
-<style scoped>
-    .container .el-menu {
-        padding: 10px 20px;
-        border: 1px solid #e6e6e6;
-        border-top: none;
-    }
-
-    .container .el-menu .el-menu-item {
-        height: 40px;
-        width: 132px;
-        margin-right: 50px;
-        line-height: 40px;
-        text-align: center
-    }
-
-    .container .is-active {
-        background-color: #f5f8fd;
-        font-size: 16px;
-        font-weight: 700;
-    }
-
-    .container .el-menu .el-menu-item:hover {
-        background-color: #f5f8fd;
-    }
-</style>

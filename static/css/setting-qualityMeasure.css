@@ -39,7 +39,8 @@
     float:right;min-width:388px;
 }
 .quality-page .quality-table{
-    height:calc( 100vh - 338px);overflow:auto;
+    height:calc( 100vh - 338px);overflow-y:auto;
+    overflow-x: hidden;
 }
 .quality-page .quality-table .el-table-column--selection .cell{
     padding:0;
@@ -66,16 +67,19 @@
     line-height:45px;
 }
 .quality-page .quality-table.el-table tbody td span.quality-icon{
-   width:19px;height:19px;display:inline-block; background: url(../../static/img/hubicon.png) no-repeat 0px 0px;font-size:12px;border-radius:2px;margin-right:4px;text-align:center;margin-top:10px !important;
+    width:19px;height:19px;display:inline-block; background: url(../../static/img/hubicon.png) no-repeat 0px 0px;font-size:12px;border-radius:2px;margin-right:4px;text-align:center;margin-top:10px !important;
 }
 
-.quality-page .quality-table.el-table tbody td span.icon:nth-child(2){
-    background-position:-182px -78px;
-}
 .quality-page .quality-table.el-table tbody td span.icon:nth-child(1){
     background-position: -203px -103px;
 }
+.quality-page .quality-table.el-table tbody td span.icon:nth-child(2){
+    background-position: -138px -105px;
+}
 .quality-page .quality-table.el-table tbody td span.icon:nth-child(3){
+    background: url(../../static/img/ac.png)
+}
+.quality-page .quality-table.el-table tbody td span.icon:nth-child(4){
     background-position:-28px -30px;
 }
 .quality-page .quality-table.el-table tbody td span.quality-icon:nth-child(3){
@@ -103,10 +107,11 @@
     float:none;cursor:pointer;
 }
 .quality-page .icon-eyes{
-    width: 20px;
+    /*width: 20px;
     height: 20px;
     background: url(../../static/img/hubicon.png) no-repeat  -82px -31px;
-    display: inline-block;float:right;
+    display: inline-block;float:right;*/
+    width:16px;height:15px;display:inline-block;background:url(../../static/img/hubtree.png) no-repeat -152px -38px;float:none;margin-top:5px;cursor:pointer;position:absolute;right:0;
 }
 /*icon-add*/
 .quality-page .icon-add{
@@ -190,10 +195,13 @@
     font-weight:bold;padding:14px 20px;border-bottom:1px solid #ddd;margin-bottom:20px;
 }
 .content .BMP-info .BMP-text{
-    font-size:14px;padding-bottom:30px;
+    font-size:14px;padding-bottom:30px;vertical-align: top;
 }
 .content .process-set .BMP-text{
     font-size:16px;
+}
+. editPage .BMP-text{
+    vertical-align: top;
 }
 .BMP-info .pro-title{
     padding: 15px 20px;
@@ -239,10 +247,10 @@
     line-height:30px;border-radius:3px;height:30px;
     border: 1px solid #ddd;font-size:12px;
     width:60px;float: left;
-   position:relative;margin:5px 5px 5px 0;
+    position:relative;margin:5px 3px 5px 3px;
 }
 .content .BMP-process .addRoot:first-child{
-    margin-left:5px;
+    /*margin-left:5px;*/
 }
 .content .BMP-process  .handle-delete{
     /*float: right;
@@ -297,20 +305,20 @@
     width:100% !important;
 }
 .quality-dialog .ztree{
-    padding:15px 40px 15px !important;height:374px !important;overflow:auto;
+    padding:15px 40px 15px !important;height:352px !important;overflow:auto;
 }
 .content .ztree-allCheck{
-    cursor:pointer;padding-left:40px;font-size:14px;
+    cursor:pointer;font-size:14px;padding:0px 0 10px 40px !important;
 }
 .content .ztree-allCheck>div{
     position: absolute;
     font-size: 14px;
 
 }
- .quality-collage{
-  width:auto;height:20px;display:inline-block;
+.quality-collage{
+    width:auto;height:20px;display:inline-block;
 }
- .quality-collage .icon-plus{
+.quality-collage .icon-plus{
     background: url(../../static/img/hubtree.png) no-repeat -95px -6px;
     width: 23px;
     height: 23px;
@@ -332,7 +340,7 @@
 .content .simlue-checkbox{
     width:22px;height:22px;/*border:1px solid #ccc;*/display:inline-block;/*background:#fff;*/ position: absolute;
     left: 0px;top:-2px;
-    background:url('../../static/ztree/css/zTreeStyle/img/zTreeStandard1.png') no-repeat -32px -86px;
+    background:url('../../static/img/zTreeStandard1.png') no-repeat -32px -86px;
 }
 .content .simlue-label input[type=checkbox]:checked+ :after{
 
@@ -340,7 +348,7 @@
     display: block;
     width: 22px;
     height: 22px;
-    background:url('../../static/ztree/css/zTreeStyle/img/zTreeStandard1.png') no-repeat -32px -90px;
+    background:url('../../static/img/zTreeStandard1.png') no-repeat -32px -90px;
     background-position: -58px -89px;
 
 }
@@ -366,8 +374,8 @@
     margin-left:-380px;
     margin-top:-307px;
 }
- .link-model .el-dialog__header{
-   padding:20px 30px !important;border:1px solid #ddd;
+.link-model .el-dialog__header{
+    padding:20px 30px !important;border:1px solid #ddd;
 }
 .link-model .el-dialog__header>span{
     font-size:18px;
@@ -378,9 +386,9 @@
 .link-model .el-dialog__body{
     padding:0;
 }
- .link-model  .link-model-body>div:nth-child(1){
+.link-model  .link-model-body>div:nth-child(1){
     padding:20px 30px 10px !important;
- }
+}
 .link-model .link-table{
     margin-top:10px;height: 356px;overflow: auto;
 }
@@ -427,6 +435,12 @@
 .proTemplate .proTemplate-edit .template-name .el-input{
     font-size:14px;
 }
+.proTemplate .el-input__inner{
+    padding-right: 45px !important;
+}
+.proTemplate .formEdit-body .el-input__inner{
+    padding-right: 45px !important;
+}
 /*pro-ztreeInfo*/
 .proTemplate .proTemplate-edit .pro-ztreeInfo{
     margin-top:20px;
@@ -436,7 +450,7 @@
     background:#fff;
 }
 .proTemplate .proTemplate-edit .pro-ztreeInfo .ztree{
-    height:414px;overflow:auto;border:1px solid #ddd;
+    height:413px;overflow:auto;border:1px solid #ddd;
 }
 .proTemplate .proTemplate-edit  .pro-sear-area{
     padding:10px 0 ;border-left:1px solid #ddd;border-right:1px solid #ddd;
@@ -445,9 +459,9 @@
     width:94% !important;margin-left:12px;
 }
 .proTemplate .proTemplate-edit .sear-icon{
-   height:28px;
-   line-height: 28px;
-   float:right;
+    height:28px;
+    line-height: 28px;
+    float:right;
 }
 .proTemplate .multi-textarea .el-dialog__header{
     padding: 20px 20px 16px;
@@ -475,10 +489,10 @@
     width: 22px;
     height: 22px;
     display:inline-block;
- /*   float:right;
-    text-align: center;
-    line-height: 18px;
-    background:#6595f2;color:#fff;font-weight:bold;margin:0 5px;margin-top:8px;border-radius:2px;*/
+    /*   float:right;
+       text-align: center;
+       line-height: 18px;
+       background:#6595f2;color:#fff;font-weight:bold;margin:0 5px;margin-top:8px;border-radius:2px;*/
 }
 .icon-cut{
     width: 22px;
@@ -532,7 +546,7 @@
     border-right:1px solid #ddd;
 }
 .handle-icon .tool-btns:nth-child(5)>span{
-    background-position:-132px -36px;
+    background:url(../../static/img/hubicon.png) no-repeat -45px -30px;
 }
 .proTemplate .proTemplate-edit .createNodes{
     display: inline-block;
@@ -557,16 +571,15 @@
 .proTemplate .el-table tbody tr:nth-child(1) td{
     border-top:1px solid #ddd;
 }
+.proTemplate .el-table tbody tr td:nth-child(2){
+    padding-left:6px !important;
+}
 .proTemplate .el-table tbody tr:hover{
     background:#e6e6e6 !important;
 }
 .proTemplate .el-table .cell{
     padding:0 !important;
 }
-.proTemplate .el-table tbody td{
-    height:45px;line-height:45px;border-right: 1px solid #ddd;text-align:center;
-}
-
 .proTemplate .el-table tbody tr td:nth-child(3),.proTemplate .el-table tbody tr td:nth-child(5){
     text-align:left;
 }
@@ -618,10 +631,10 @@
     width:100% !important;
 }
 .project-form .project-form-ele{
-    height:450px;width:100%;border-top:none;overflow:auto;
+    height:445px;width:100%;border-top:none;overflow:auto;
 }
 .project-forme{
-    height:297px;width:100%;border-top:none;overflow-y:scroll;
+    height:274px;width:100%;border-top:none;overflow-y:auto;
 }
 .project-form .project-form-ele .project-sultable{
     height: 58px;
@@ -644,7 +657,7 @@
 .proTemplate-edit .ztree li span{
     font-size:14px;
 }
-    /*表单变更*/
+/*表单变更*/
 .form-change .icon-look{
     background:  url(../../static/img/hubicon.png) no-repeat  -221px -106px;width:20px;height:20px;display:inline-block;margin-top:10px;
 }
@@ -703,7 +716,7 @@
     height:400px;overflow:auto;padding:5px 40px 0;
 }
 .form-change .single-stump .form-dialog-body >.form-content{
-    padding:0px 20px 0px 20px;border:1px solid #ddd;height:398px;overflow:auto;
+    /* padding:0px 20px 0px 20px;*/border:1px solid #ddd;height:398px;overflow:auto;
 }
 /*form-ztree-dialog(表单结构树结构另外一套)*/
 .form-ztree-dialog{
@@ -754,7 +767,7 @@
     height:352px !important;overflow:auto;padding:20px 40px 40px !important;
 }
 .form-change .single-stump .icon-eyes{
-    top:11px  !important;
+    top:11px  !important;right:15px;
 }
 /*表单编辑*/
 .formEdit{
@@ -816,13 +829,13 @@
 .formEdit-body .formLine .el-input,.formEdit-body .ztree-struc .el-input:nth-child(1){
     width:106% !important;
 }
- .form-table{
+.form-table{
     /*max-height: 246px;
     overflow: auto;*/
 }
- .form-table .icon-tabs-eyes{
-     width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -82px -27px;
- }
+.form-table .icon-tabs-eyes{
+    width:20px;height:20px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -82px -27px;
+}
 .form-table .icon-tabs-del{
     width:20px;height:16px;display:inline-block;background:url('../../static/img/hubicon.png') no-repeat -45px -31px;
     vertical-align:baseline
@@ -894,7 +907,7 @@
     border-bottom: 1px solid #ddd;text-align:right
 }
 /*form-btns*/
- .formBtn{
+.formBtn{
     text-align: center;
     margin-top: 43px;
 }
@@ -902,12 +915,12 @@
     display:inline-block !important;font-weight:bold;height: 53px;width:32%;
     line-height: 49px;font-size:14px;
 }
- .formParams>span:nth-child(1){
+.formParams>span:nth-child(1){
     font-weight:normal;color: #263047;font-size:12px;
 }
- .formParams>span:nth-child(2){
-     color:#6595f2;
- }
+.formParams>span:nth-child(2){
+    color:#6595f2;
+}
 .content .ztree{
     height: 308px;
     overflow: auto;
@@ -917,7 +930,7 @@
     padding:20px 0px 0;
 }
 .content .quality-dialog-footer{
-    text-align:center;
+    text-align:center;padding:16px 0 0;
 }
 .ztree li a.curSelectedNode{
     background:transparent !important;
@@ -984,7 +997,7 @@
 }
 */
 .ztree li {
-   position:relative;
+    position:relative;
 }
 /*.ztree li a{
     width:100% !important;
@@ -998,7 +1011,7 @@
     font-size: 14px;
     position: absolute;
     right: 30px;
-    height: 95% !important;
+    height: 85% !important;
     background: #fff;
     padding: 0 0 0 4px;
     margin-top: 1px;
@@ -1006,4 +1019,23 @@
     line-height:35px !important;
     color:#ccc;
 
+}
+.link-model .el-pagination{
+    padding:10px 0 0;
+}
+.link-model .el-pagination__total{
+    left:33px !important;
+}
+.link-model .link-table .icon-eyes{
+    /*margin:2px 6px 0px 0px !important;*/
+    float: left;
+    margin-top: 2px;
+    margin-left: 14px;
+    position:static;
+}
+.el-table .sort-caret.ascending{
+    border-bottom-color:#999;
+}
+.el-table .sort-caret.descending{
+    border-top-color:#999;
 }

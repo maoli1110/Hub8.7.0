@@ -202,18 +202,22 @@ export const labelUpdate = params=>axios.put(`${builderUrl}/appconfig/general/ta
 });
 
 //市政
-export const getUserListPage = params => axios.post(`${civilUrl}/rs/lbconfig/process/getProcessList`, params);
+export const getUserListPage = params => axios.post(`${base}/rs/lbconfig/process/getProcessList`, params);
+
 /*
  * 流程设置列表
  * */
-console.log(civilUrl,'civilUrl')
 export const getProcessList = params => axios.post(`${civilUrl}/inspector/process/getProcessList`, params);
 //流程设置添加角色管理
 export const getRoleInfo = params =>axios.get(`${builderUrl}/roleRest/findRoles`,{params:params});
 //添加流程
-export const addProcessInfo = params => axios.post(`${civilUrl}/inspector/process/addProcessInfo`, params);
+export const addProcessInfo = params => axios.post(`${civilUrl} /inspector/process/addProcessInfo`, params);
 //获取流程列表
-export const getProcessInfo = params => axios.get(`${civilUrl}/inspector/process/getProcessInfo/${params.processId}`);
+export const getProcessInfo = params => axios.get(`${civilUrl} /inspector/process/getProcessInfo/${params.processId}`);
+
+//查询关联工作流程
+export const getFuncInfoList = params => axios.get(`${civilUrl}/inspector/process/getFuncInfoList`);
+export const getAssociatedInfo = params => axios.post(`${civilUrl}/inspector/process/setFuncProcessId/${params.funcNum}/${params.processId}`);
 
 //验证流程是否被使用
 export const isUsedProcess = params => axios.get(`${civilUrl}/inspector/process/isUsedProcess/${params.processId}`);
@@ -229,11 +233,11 @@ export const updateProcessRelForm = params => axios.post(`${civilUrl}/inspector/
 /**
  *表单管理
  */
-//export const getFormModelList =params  => axios.get(`${civilUrl}/rs/lbconfig/form/getFormModelTypeList`);
 //表单预览获取uuid
 export const getFormPreview =params  => axios.get(`${civilUrl}/inspector/form/getFormPreview/${params.modelId}/${params.formId}`);
-//关联表单数据
-export const getFormModelTypeList  = params =>axios.get(`${civilUrl}/inspector/form/getFormModelTypeList/${params.belong}`);
+//关联表单数据-->?sortType=desc
+export const getFormModelTypeList  = params =>axios.get(`${civilUrl}/inspector/form/getFormModelTypeList/${params.belong}?sortType=${params.sortType}`);
+//export const getFormModelTypeList  = params =>axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList/${params.belong}`);
 //获取表单列表-->树结构
 export const getFormInfosForProcess = params=>axios.get(`${civilUrl}/inspector/form/getFormInfosForProcess/${params.modelId}/${params.processId}`);
 //查询表单列表
@@ -242,7 +246,10 @@ export const getFormInfosForm = params=>axios.get(`${civilUrl}/inspector/form/ge
  * 工程模板接口
  */
 /*查询工程模板列表 */
-
+export const getFormModelTypeListCopy  = params =>axios.get(`${civilUrl}/inspector/form/getFormModelTypeList/${params.belong}`);
+/*添加界面树结构*/
+export const getFormInfos = params => axios.get(`${civilUrl}/inspector/form/getFormInfos/${params}`);
+//
 export const getLDProjModelList = params => axios.get(`${civilUrl}/inspector/projmodel/getLDProjModelList`, { params: params });
 /*获取工程模板展示明细*/
 export const getProjModelDetail = params => axios.get(`${civilUrl}/inspector/projmodel/getProjModelDetail/${params}`);
@@ -251,5 +258,4 @@ export const getProjModelNodeForms = params => axios.get(`${civilUrl}/inspector/
 /*更新工程模板的表单*/
 export const updateProjModel = params => axios.post(`${civilUrl}/inspector/projmodel/updateProjModel`, params);
 /*添加界面的下拉框选项*/
-/*添加界面树结构*/
-export const getFormInfos = params => axios.get(`${civilUrl}/rs/lbconfig/form/getFormInfos/${params}`);
+
