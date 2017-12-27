@@ -124,16 +124,16 @@ export default {
       roleTableData: [],
       reportTableData: [],
       //已选中列表
-      multipleSelection: []
+      multipleSelection: [],
+      baseUrl : basePath(this.$route.matched[2].path)
     };
   },
   watch: {
     role: {
       handler(newValue, oldValue) {
         let vm = this;
-        let baseUrl = basePath(this.$route.matched[2].path);
         let params = {
-          url: baseUrl,
+          url: vm.baseUrl,
           reportListParam: {
             dataType: vm.select.dataType,
             orgCode: vm.select.orgNodes
@@ -145,16 +145,11 @@ export default {
             //已选中列表
             vm.selectNum = res.data.result.length;
             vm.selectList = res.data.result;
-            console.log(vm.selectList);
             let arr = [];
-            //console.log(vm.reportTableData)
-            //console.log(res.data.result)
-
             vm.reportTableData.forEach(function(val2) {
               res.data.result.forEach(function(val) {
                 if (val == val2.reportId) {
                   arr.push(val2);
-                  //console.log(arr);
                 }
               });
             });
@@ -168,9 +163,8 @@ export default {
     select: {
       handler(newValue, oldValue) {
         let vm = this;
-        let baseUrl = basePath(this.$route.matched[2].path);
         let params = {
-          url: baseUrl,
+          url: vm.baseUrl,
           reportListParam: {
             dataType: vm.select.dataType,
             orgCode: vm.select.orgNodes
@@ -198,7 +192,6 @@ export default {
                     }
                   });
                 });
-                //console.log(arr);
                 vm.toggleSelection(arr);
               }
             });
@@ -240,9 +233,8 @@ export default {
     //单个添加、删除角色操作
     handleSelectionChange(sel, row) {
       let vm = this;
-      let baseUrl = basePath(this.$route.matched[2].path);
       let params = {
-        url: baseUrl,
+        url: vm.baseUrl,
         reportPermissions: [{ reportId: row.reportId, roleId: vm.role }]
       };
       if (this.selectNum < sel.length) {
@@ -263,7 +255,6 @@ export default {
       sel.forEach(element => {
         this.selectList.push(element.reportId);
       });
-      console.log(this.selectList);
     },
     difference(a, b) {
       const s = new Set(b);
@@ -272,9 +263,8 @@ export default {
     // 全选添加、删除角色操作
     handleSelectAll(sel) {
       let vm = this;
-      let baseUrl = basePath(this.$route.matched[2].path);
       let params = {
-        url: baseUrl,
+        url: vm.baseUrl,
         reportPermissions: []
       };
       vm.selectNum = sel.length;
@@ -316,9 +306,8 @@ export default {
   },
   mounted() {
     let vm = this;
-    let baseUrl = basePath(this.$route.matched[2].path);
     let params = {
-      url: baseUrl
+      url: vm.baseUrl
     };
 
     //数据类型列表下拉框数据
