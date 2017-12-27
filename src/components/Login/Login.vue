@@ -27,7 +27,7 @@
                             <i class="iconfont icon-Password" style="position:absolute;left:10px;top:0;z-index:999"></i>
                             <el-input type="password" placeholder="密码" class="paddingPlaceholder" v-model="loginForm.password" @keyup.enter.native="submitForm('ruleForm')">
                             </el-input>
-                        </el-form-item> 
+                        </el-form-item>
                         <el-form-item label="选择企业：" label-width="80px" label-position="left" v-show="isShowCompany">
                             <el-select v-model="selectedCompany" placeholder="请选择">
                                 <el-option v-for="item in companyOptions" :key="item.epid" :label="item.enterpriseName" :value="item.epid"></el-option>
@@ -108,7 +108,7 @@ export default {
         }
         //调用登录接口查看时候已经登录
         casLogin({url:this.loginUrl}).then((data)=>{
-            let loginHtml = data.data; 
+            let loginHtml = data.data;
             let sectionHtml = $(loginHtml).find("#msg h2").html();
             let sectionHtmlArr = sectionHtml.split(' ');
             //根据获取的字符串判断是否成功登录
@@ -127,12 +127,12 @@ export default {
             let self = this;
             this.$refs.loginForm.validate(valid => {
             if (valid) {
-                /** 
+                /**
                  * 非正式版本代码如下
                  */
                 // this.loading = true;
                 // this.$router.push("/companyprofile/organization-structure");
-                /** 
+                /**
                  * 正式版本代码如下
                  */
                 if(!self.centerLoginSignal){
@@ -148,7 +148,7 @@ export default {
             }
           });
         },
-        /** 
+        /**
          * 获取登录所需的组合字段
          */
         casLogin() {
@@ -169,7 +169,7 @@ export default {
             function step1 (resolve, reject){
                 self.centerLoginSignal = false;
                 casLogin({url:self.loginUrl}).then((data)=>{
-                    let loginHtml = data.data; 
+                    let loginHtml = data.data;
                     let sectionHtml = $($(loginHtml).find("#login").html()).find('.btn-row input');
                     //遍历html，获取键值
                     sectionHtml.each(function(key){
@@ -206,10 +206,10 @@ export default {
                     self.selectedCompany = res.data[0].epid;
                     self.centerLoginSignal = true;
                     self.isShowCompany = true;
-                    resolve('step3Success') 
+                    resolve('step3Success')
                     console.log(res);
                 })
-            } 
+            }
 
             new Promise(step1).then(function(val){
                 console.log(val,'val1');

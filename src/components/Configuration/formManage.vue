@@ -18,14 +18,14 @@
              </el-row>-->
         <!--:default-sort = "{prop: 'date', order: 'descending'}" -->
         <el-table :data="formDataList"  style="width: 100%"  class="form-table"  >
-            <el-table-column label="序号" width="80" type="index">
-            </el-table-column>
+           <!-- <el-table-column label="序号" width="80" type="index">
+            </el-table-column>-->
             <el-table-column prop="modelName" label="表单类型" >
             </el-table-column>
-            <!--<el-table-column prop="updateUser" width="120" label="更新人" >
+            <el-table-column prop="updateUser" width="120" label="更新人" >
             </el-table-column>
             <el-table-column prop="updateTime"  width="170" label="更新时间"  >
-            </el-table-column>-->
+            </el-table-column>
             <el-table-column prop="remark" label="备注"  >
             </el-table-column>
             <el-table-column label="操作" width="100" @click.native="addnew">
@@ -236,123 +236,34 @@
                         fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (dateList[k]) : (("00"+ dateList[k]).substr((""+ dateList[k]).length)));
                 return fmt;
             },
-            getData(){
-                getFormModelTypeList({belong:0}).then((res) => {
-                    this.formDataList = res.data;
-
+            //列表数据
+            getTableList(params){
+                getFormModelTypeList(params).then((res) => {
+                    this.formDataList = res.data.result;
                     for(var i = 0;i<this.formDataList.length;i++){
-//                        this.formDataList[i].updateTime = (new Date(this.formDataList[i].updateTime )).toLocaleDateString();
                         let date = new Date(this.formDataList[i].updateTime );
                         this.formDataList[i].updateTime =this.dateFtt("yyyy-MM-dd hh:mm",date)
                     }
 
                 })
-                /*   getFormInfosForm({modelId:"3-6000"}).then((res)=>{
-                 this.zNodes = res.data;
-                 $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
-                 })*/
             },
-            formatter(row, column) {
-                return row.address;
-            },
-            filterTag(value, row) {
-                return row.tag === value;
-            },
-            handleEdit(index, row) {
-                this.$message('编辑第'+(index+1)+'行');
-            },
-            handleDelete(index, row) {
-                this.$message.error('删除第'+(index+1)+'行');
-            },
-            notify(message){//地址为空的时候
-                this.$alert(message, {
-                    confirmButtonText: '确定'
-                })
-
-            },
-            //表单的预览功能
-            formPriview(index,row){
-
-                this.formPriviewUrl = "";
-
-                formPriviewParams.modelId = getFormInfosParams.modelId;
-                formPriviewParams.formId = row.formId;
-                getFormPreview(formPriviewParams).then((res) =>{
+            //表单预览
+            priveiwForm(parmas){
+                getFormPreview(parmas).then((res) =>{
                     if(res.data){
                         this.dialogFormPriview = true;
                         this.formPriviewUrl = res.data;
                     }else{
-                        this.notify('暂不知处预览');
+                        this.notify('暂不支持预览');
                     }
 
-                }).catch(function(error){
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        this.notify(error.response.data.message);
-                    } else if (error.request) {
-//                        console.log(error.request);
-                    } else {
-//                        console.log('Error', error.message);
-                    }
-                })
-
-
-            },
-
-            zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
-                alert(msg);
-            },
-            addHoverDom(treeId, treeNode) {
-//                var aObj = $("#" + treeNode.tId + "_a");
-                var aObj = $("#" + treeNode.tId );
-                if ($("#diyBtn_"+treeNode.id).length>0) return;
-                var editStr = "<span id='diyBtn_space-" +treeNode.formId+ "' class='icon-eyes' > </span>";
-                var currentObj = '#diyBtn_space-'+treeNode.formId;
-                if(!treeNode.isParent && treeNode.isForm && !$(currentObj).length){
-                    aObj.append(editStr);
-                }
-                let self =this;
-                $('#formTree .icon-eyes').map(function(){
-                    $(this).unbind('click');
-                    $(this).bind('click',function(){
-                        self.formPriviewUrl = "";
-                        let  linkFormId = $(this).attr("id");
-                        if(linkFormId){
-                            linkFormId =  linkFormId.split('-')[1]
-                        }
-                        formPriviewParams.modelId = getFormInfosParams.modelId;
-                        formPriviewParams.formId = linkFormId;
-//                        console.info(formPriviewParams)
-                        getFormPreview(formPriviewParams).then((res)=>{
-//                            console.info(res.data,'res.data')
-                            if(res.data){
-                                self.dialogFormPriview = true;
-                                self.formPriviewUrl = res.data;
-                            }else{
-                                self.notify('暂时不支持预览');
-                            }
-                        }).catch(function (error) {
-//                            console.info(error.message);
-                        })
-                    })
                 })
             },
-            /*   removeHoverDom(treeId, treeNode){
-             $("#diyBtn_space-" +treeNode.formId).remove();
-             $('.icon-eyes').unbind().remove();
-             },*/
-            showTreeDialog(index,row){
-//                self = this;
-//                this.isDoubForm = true;
-                this.formTreeSearch = "";
-                this.searchParam ="";
-                this.changeFormVisible = true;
-//                this.istable= true;
-                getFormInfosParams.modelId = row.modelId;
-                getFormInfosForm(getFormInfosParams).then((res)=>{
-                    this.zNodes = res.data;
-                    cachezNodes =res.data;
+            //表单列表
+            getFormInfos(params){
+                getFormInfosForm(params).then((res)=>{
+                    this.zNodes = res.data.result;
+                    cachezNodes =res.data.result;
                     for(var i = 0;i<this.zNodes.length;i++){
                         this.zNodes[i].name = this.zNodes[i].formName;
                         /*   this.zNodes[i].id = this.zNodes[i].formId;
@@ -385,6 +296,79 @@
                     }
 
                 })
+            },
+            getData(){
+                this.getTableList({belong:0,sortType:1})
+                /*   getFormInfosForm({modelId:"3-6000"}).then((res)=>{
+                 this.zNodes = res.data;
+                 $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
+                 })*/
+            },
+            formatter(row, column) {
+                return row.address;
+            },
+            filterTag(value, row) {
+                return row.tag === value;
+            },
+            handleEdit(index, row) {
+                this.$message('编辑第'+(index+1)+'行');
+            },
+            handleDelete(index, row) {
+                this.$message.error('删除第'+(index+1)+'行');
+            },
+            notify(message){//地址为空的时候
+                this.$alert(message, {
+                    confirmButtonText: '确定'
+                })
+
+            },
+
+            //表单的预览功能
+            formPriview(index,row){
+                this.formPriviewUrl = "";
+                formPriviewParams.modelId = getFormInfosParams.modelId;
+                formPriviewParams.formId = row.formId;
+                this.priveiwForm(formPriviewParams);
+            },
+
+            zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
+                alert(msg);
+            },
+            addHoverDom(treeId, treeNode) {
+//                var aObj = $("#" + treeNode.tId + "_a");
+                var aObj = $("#" + treeNode.tId );
+                if ($("#diyBtn_"+treeNode.id).length>0) return;
+                var editStr = "<span id='diyBtn_space-" +treeNode.formId+ "' class='icon-eyes' > </span>";
+                var currentObj = '#diyBtn_space-'+treeNode.formId;
+                if(!treeNode.isParent && treeNode.isForm && !$(currentObj).length){
+                    aObj.append(editStr);
+                }
+                let self =this;
+                $('#formTree .icon-eyes').map(function(){
+                    $(this).unbind('click');
+                    $(this).bind('click',function(){
+                        self.formPriviewUrl = "";
+                        let  linkFormId = $(this).attr("id");
+                        if(linkFormId){
+                            linkFormId =  linkFormId.split('-')[1]
+                        }
+                        formPriviewParams.modelId = getFormInfosParams.modelId;
+                        formPriviewParams.formId = linkFormId;
+                        this.priveiwForm(formPriviewParams);
+                    })
+                })
+            },
+
+            showTreeDialog(index,row){
+//                self = this;
+//                this.isDoubForm = true;
+                this.formTreeSearch = "";
+                this.searchParam ="";
+                this.changeFormVisible = true;
+//                this.istable= true;
+                getFormInfosParams.modelId = row.modelId;
+                this.getFormInfos(getFormInfosParams);
+
 
             },
             //树结构的搜索功能
