@@ -270,8 +270,8 @@
         getLDProjModelList,
         getProjModelDetail,
         getProjModelNodeForms,
-        getFormModelTypeListCopy,
-        getFormInfos,
+        getFormModelTypeList,
+        getFormInfosForm,
         updateProjModel,
         getFormPreview
     } from '../../api/getData-yhj'
@@ -414,30 +414,16 @@
         mounted() {
             $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);
             $.fn.zTree.init($("#editTree"), this.settingEdit, this.editZNodes);
-            // $("#expandBtn").bind("click", { type: "expand", operObj: 'proZtree' }, this.expandNode);
-            // $("#collapseBtn").bind("click", { type: "collapse", operObj: 'proZtree' }, this.expandNode);
-            // $("#edit").bind("click", this.edit);
-            // $("#remove").bind("click", this.remove);
-            // $("#upMove").bind("click", this.upMove);
-            // $("#downMove").bind("click", this.downMove);
-            // $("#addLeaf").bind("click", { "isParent": false }, this.add);
             $('#proBtnOk').bind('click', {"isParent": false}, this.addMoreNodes);
             $('#searchMessage>input').bind('keydown', this.searchTree)//搜索事件绑定到元素
             $('.sear-icon input').bind('keydown', this.searchProTree);
-            if (this.$route.path == '/setting/proTemplate') {
-                $('.sub-menus li').removeClass('is-active');
-                $('.sub-menus li').eq(1).addClass('is-active');
-                $('.nav-menu li:last').addClass('is-active');
-            } else {
-                $('.nav-menu li:last').removeClass('is-active');
-            }
         },
         // 当下拉框改变重新请求
         watch: {
             value_: function () {
-                // console.log(this.addFormOption);
-                getFormInfos(this.value_).then((res) => {
-                    this.editZNodes = res.data;
+                console.log(this.value_,'value');
+                getFormInfosForm({modelId:this.value_}).then((res) => {
+                    this.editZNodes = res.data.result;
                     $.fn.zTree.init($("#editTree"), this.settingEdit, this.editZNodes);
                     // this.addFormOption.push({value})
                 }).catch(() => {
@@ -463,10 +449,13 @@
                 this.cur_page = val;
                 this.getData();
             },
-            getData() {
+            getTableList(){
                 getLDProjModelList({}).then((res) => {
-                    this.tableData = res.data;
+                    this.tableData = res.data.result;
                 })
+            },
+            getData() {
+                this.getTableList();
 
             },
             formatter(row, column) {
@@ -480,6 +469,17 @@
             },
             handleDelete(index, row) {
                 this.$message.error('删除第' + (index + 1) + '行');
+            },
+            /*更新工程模板的表单*/
+            updateProjModelList(params){
+                updateProjModel(params).then(res => {
+                    if(flag==1){
+                        this.EditVisible = false;
+                    }
+                }).catch((err) => {
+                    this.$alert(err.response.data.message);
+                    this.EditVisible = true;
+                });
             },
             // 更新所有信息
             updatePromodel(flag) {
@@ -525,14 +525,7 @@
                         projModelName: this.projModelName,
                         nodeTrees: nodeTrees,
                     }
-                    updateProjModel(para).then(res => {
-                        if(flag==1){
-                            this.EditVisible = false;
-                        }
-                    }).catch((err) => {
-                        this.$alert(err.response.data.message);
-                        this.EditVisible = true;
-                    });
+                    this.updateProjModelList(para);
                     this.EditVisible = false;
                     return false;
                 }
@@ -544,27 +537,16 @@
                     nodeForms: this.nodeForms,
                 }
                 // console.log(para);
-                updateProjModel(para).then(res => {
-                    if(flag==1){
-                        this.EditVisible = false;
-                    }
-
-                }).catch((err) => {
-
-                    this.$alert(err.response.data.message);
-                    this.EditVisible = true;
-                });
+                this.updateProjModelList(para);
             },
             // 更新工程划分树
             getprojmodelDetail() {
                 // 每次进入清空工程划分树右侧下拉框内容
                 this.options = [];
                 getProjModelDetail(this.projModelId).then(res => {
-                    // console.log(res);
-                    this.projModelName = res.data.projModelName;
-                    this.zNodes = res.data.nodeInfos;
+                    this.projModelName = res.data.result.projModelName;
+                    this.zNodes = res.data.result.nodeInfos;
                     // 给树结构添加全部选项
-                    // console.log(this.zNodes);
                     let zNodesAll = [];
                     zNodesAll = this.zNodes;
                     this.zNodes.unshift({nodeId: '0001', nodeName: '全部', pid: ''});
@@ -573,15 +555,13 @@
                             el.pid = '0001';
                         }
                     });
-                    // console.log(this.zNodes, '默认数据');
                     $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);
-                    this.typeList = res.data.typeList;
+                    this.typeList = res.data.result.typeList;
                     // 设置包含表单下拉框内容
                     this.typeList.forEach((el, index) => {
                         this.options.push({value: index, label: el.typeName})
                     });
-                }).catch(() => {
-                });
+                })
             },
             // 获取树节点对应的表内容
             getprojmodelNodeForms() {
@@ -590,7 +570,7 @@
                     nodeId: this.nodeId
                 }).then(res => {
                     // console.log(res);
-                    res.data.forEach((elForm, index) => {
+                    res.data.result.forEach((elForm, index) => {
                         this.typeList.forEach((el, index1) => {
                             el.childs.forEach((el, index2) => {
                                 if (elForm.typeId == el.typeId) {
@@ -646,6 +626,19 @@
                     // });
                 }
             },
+            getTypeList(params){
+                getFormModelTypeList(params).then((res) => {
+                    let selectOption = res.data.result;
+                    console.log(selectOption,'selectOption')
+                    selectOption.forEach((el, index) => {
+                        if (index == 0) {
+                            this.value_ = el.modelId;
+                        }
+                        // console.log(el)
+                        this.addFormOption.push({value_: el.modelId, label: el.modelName})
+                    })
+                })
+            },
             // 表单添加
             formAdd() {
                 this.addFormOption = [];
@@ -658,17 +651,7 @@
                 // console.log(this.addFlag);
                 if (this.addFlag == 3) {
                     this.formEditVisible = true;
-                    getFormModelTypeListCopy({belong: 3}).then((res) => {
-                        let selectOption = res.data;
-                        selectOption.forEach((el, index) => {
-                            if (index == 0) {
-                                this.value_ = el.modelId;
-                            }
-                            // console.log(el)
-                            this.addFormOption.push({value_: el.modelId, label: el.modelName})
-                        })
-                    }).catch(() => {
-                    });
+                    this.getTypeList({belong: 3,sortType:1});
                 } else {
                     this.$alert('请选择三级子节点', '提示', {
                         confirmButtonText: '确定',

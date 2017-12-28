@@ -242,8 +242,14 @@
             //表单列表
             getFormInfos(params){
                 getFormInfosForm(params).then((res)=>{
+
                     this.zNodes = res.data.result;
                     cachezNodes =res.data.result;
+                    if(!res.data.result.length){
+                        this.isSingForm = true;
+                        this.isDoubForm = false;
+                        return false;
+                    }
                     for(var i = 0;i<this.zNodes.length;i++){
                         this.zNodes[i].name = this.zNodes[i].formName;
                         /*   this.zNodes[i].id = this.zNodes[i].formId;
