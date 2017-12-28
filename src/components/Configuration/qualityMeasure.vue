@@ -497,6 +497,7 @@
     let isUpdateStatus = false;
     let arrList = [];
     import "../../../static/css/setting-qualityMeasure.css";
+    import '../../../static/zTree/js/jquery.ztree.all.min';
     import {
         //数据引用
         getProcessList, //获取流程列表
@@ -630,7 +631,7 @@
                             }
                         ],
                         page: 1,
-                        size: 10
+                        size: 6
                     },
                     processId: "",
                     searchKey: ""
@@ -963,7 +964,7 @@
                         // console.info(res.data,'关联表单');
                         console.log(this.formModelData,'eeee');
                         this.formModelData = res.data.result.content;
-                        this.modelTotalNum = res.data.result.totalNumber;
+                        this.modelTotalNum = res.data.result.totalElements;
                         console.info(this.modelTotalNum);
                     })
                     .catch(function (error) {
@@ -1023,13 +1024,14 @@
                 // 切换目录后，档期内目录以勾选的表单将取消，是否确认切换目录
                 //关联表单数据
                 this.formModelParams.modelId = modelId;
-                this.formModelParams.pageParam.orders[0].size = !this.formModelParams.pageParam.orders[0].size? 6
-                    : this.formModelParams.pageParam.orders[0].size
+                this.formModelParams.pageParam.size = !this.formModelParams.pageParam.size? 6
+                    : this.formModelParams.pageParam.size
                 this.formModelType(this.formModelParams);
             },
             //表单模板分页数据展示
             formModelSizeChange(val) {
-                this.formModelParams.pageParam.orders[0].page = val;
+                console.log(val,'va;');
+                this.formModelParams.pageParam.page = val;
                 this.formModelType(this.formModelParams);
 //                console.info(val, "显示的是第几页信息");
             },

@@ -108,7 +108,8 @@
     };
     let cachezNodes = [];
     import "../../../static/css/setting-qualityMeasure.css";
-    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from '../../api/getData-yhj'
+    import { getFormModelTypeList,getFormInfosForm,getFormPreview} from '../../api/getData-yhj';
+    import '../../../static/zTree/js/jquery.ztree.all.min';
     export default{
         data(){
             return {

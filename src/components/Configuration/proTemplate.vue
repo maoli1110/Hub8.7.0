@@ -120,7 +120,7 @@
                             <ul v-for='childitem in item.childs' :key="childitem.typeName">
                                 <p class="project-sultable">{{childitem.typeName}}</p>
                                 <!--<li style="text-align:center;color:#e6e6e6">没数据我才显示{{childitem.childs}}</li>-->
-                                <li v-for='childitemName in childitem.childs' :key="childitemName.formName">{{childitemName.formName}}</li>
+                                <li class="substr" style="width:92%;" v-for='childitemName in childitem.childs' :key="childitemName.formName" :title="childitemName.formName">{{childitemName.formName}}</li>
                             </ul>
                         </div>
                     </div>
@@ -274,7 +274,8 @@
         getFormInfosForm,
         updateProjModel,
         getFormPreview
-    } from '../../api/getData-yhj'
+    } from '../../api/getData-yhj';
+    import '../../../static/zTree/js/jquery.ztree.all.min';
     let level = 1;
     let maxLevel = -1;
     let newCount = 1;
@@ -473,11 +474,15 @@
             /*更新工程模板的表单*/
             updateProjModelList(params){
                 updateProjModel(params).then(res => {
-                    if(flag==1){
+                    if(res.code==200){
                         this.EditVisible = false;
+                        if(flag==1){
+                            this.EditVisible = false;
+                        }
                     }
+
                 }).catch((err) => {
-                    this.$alert(err.response.data.message);
+//                    this.$alert(err.response.data.message);
                     this.EditVisible = true;
                 });
             },
@@ -491,6 +496,7 @@
                 this.nodeTrees = [];
                 // 拼接向后台发送的参数
                 // console.log(this.nodeId, this.projModelId, this.projModelName);
+                console.log(this.typeList,'typelist');
                 this.typeList.forEach((el, index1) => {
                     // console.log(el.childs);
                     el.childs.forEach((el, index2) => {
@@ -661,6 +667,7 @@
             },
             // 添加页面树点击事件
             editzTreeOnClick(event, treeId, treeNode) {
+                console.log(treeNode.formId)
                 // console.log(treeNode);
                 if (treeNode.isForm) {
                     // console.log(123);
