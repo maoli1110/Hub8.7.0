@@ -23,27 +23,26 @@
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label">角色：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;">
-                            <!-- <el-input placeholder="请选择角色" v-show="isEdit" v-model="curMemberInfo.roleName"></el-input> -->
-                            <el-select v-model="curMemberInfo.roleName" value="curMemberInfo.roleName" placeholder="请选择"  ref="roleSelect" v-show="isEdit" @change="curRoleNameChange">
-                                <el-option  v-for="item in roles" :key="item.value" :value="item.value" :label="item.label">
+                            <el-select v-model="curMemberInfo.roleId" value="curMemberInfo.roleName" placeholder="请选择" ref="roleSelect" v-show="isEdit"
+                                @change="curRoleNameChange" style="width:70%">
+                                <el-option v-for="item in roles" :key="item.value" :value="item.value" :label="item.label">
                                 </el-option>
                             </el-select>
-                            <span v-show="!isEdit">{{curMemberInfo.roleName}}</span>
+                            <span v-show="!isEdit">{{curEditRoleName}}</span>
                         </div>
                     </div>
                     <div class="el-form-item el-form_">
                         <label class="el-form-item__label">归属：</label>
                         <div class="el-form-item__content" style="margin-left: 55px;">
                             <div v-show="isEdit">
-                                <!-- <el-input placeholder="请选择归属" v-model="curEditMember.orgName"></el-input> -->
-                                <el-select v-model="curMemberInfo.orgName" placeholder="请选择">
-                                    <el-option :value="curMemberInfo.orgName" v-show="false">
+                                <el-select v-model="curEditOrgName" placeholder="请选择" style="width:70%">
+                                    <el-option :value="curEditOrgName" v-show="false">
                                     </el-option>
                                     <ul id="curEditOrgSetting" class="ztree"></ul>
                                 </el-select>
                                 <span class="red_">*</span>
                             </div>
-                            <span v-show="!isEdit">{{curMemberInfo.orgName}}</span>
+                            <span v-show="!isEdit">{{curEditOrgName}}</span>
                         </div>
                     </div>
                 </el-col>
@@ -388,436 +387,444 @@
     </div>
 </template>
 <script>
-import "../../../static/zTree/js/jquery.ztree.core.min.js";
-import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
-import * as api from "../../api/getData-ppc";
-import { mapGetters } from "vuex";
-export default {
-  data() {
-    return {
-      url: "../../../static/tree1.json",
-      textarea: "",
-      isEdit: false,
-      activeName: "first",
-      projectAuthorizationDialogVisible: false,
-      engineeringAuthorizationDialogVisible: false,
-      workSetAuthorizationDialogVisible: false,
-      governAuthorizationDialogVisible: false,
-      templateAuthorizationDialogVisible: false,
-      orgValue: "",
-      profession: "",
-      roles: [], //角色列表
-      curMemberInfo: "", //当前成员信息
-      curEditZnodes: [],
-      curEditOrgName: "",
-      curEditOrgSetting: {
-        data: {
-          simpleData: {
-            enable: true,
-            idKey: "id",
-            pIdKey: "parentId"
-          }
+    import "../../../static/zTree/js/jquery.ztree.core.min.js";
+    import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+    import * as api from "../../api/getData-ppc";
+    import {
+        mapGetters
+    } from "vuex";
+    export default {
+        data() {
+            return {
+                url: "../../../static/tree1.json",
+                textarea: "",
+                isEdit: false,
+                activeName: "first",
+                projectAuthorizationDialogVisible: false,
+                engineeringAuthorizationDialogVisible: false,
+                workSetAuthorizationDialogVisible: false,
+                governAuthorizationDialogVisible: false,
+                templateAuthorizationDialogVisible: false,
+                orgValue: "",
+                profession: "",
+                roles: [], //角色列表
+                curMemberInfo: "", //当前成员信息
+                curEditZnodes: [],
+                curEditOrgName: "", //当前编辑树名称
+                curEditRoleName: "", //当前编辑角色名称
+                curEditOrgSetting: {
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            idKey: "id",
+                            pIdKey: "parentId"
+                        }
+                    },
+                    callback: {
+                        onClick: this.curEditOrgTreeClick
+                    }
+                },
+                projectSetting: {
+                    check: {
+                        enable: true
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    }
+                },
+                projectNodes: [],
+                clientInformation: [{
+                        hasAuthorited: true,
+                        productsName: "lubanGovern",
+                        allAuthorizations: 100,
+                        availableAuthorizations: 50
+                    },
+                    {
+                        hasAuthorited: false,
+                        productsName: "lubanExplore",
+                        allAuthorizations: 50,
+                        availableAuthorizations: 20
+                    },
+                    {
+                        hasAuthorited: true,
+                        productsName: "lubanView",
+                        allAuthorizations: 40,
+                        availableAuthorizations: 10
+                    },
+                    {
+                        hasAuthorited: false,
+                        productsName: "lubanworks",
+                        allAuthorizations: 30,
+                        availableAuthorizations: 15
+                    },
+                    {
+                        hasAuthorited: false,
+                        productsName: "i Ban",
+                        allAuthorizations: 90,
+                        availableAuthorizations: 45
+                    },
+                    {
+                        hasAuthorited: true,
+                        productsName: "coorperation",
+                        allAuthorizations: 60,
+                        availableAuthorizations: 20
+                    },
+                    {
+                        productsName: "lubanworks",
+                        allAuthorizations: 0,
+                        availableAuthorizations: 0,
+                        hasPurchased: true
+                    },
+                    {
+                        productsName: "lubanworks",
+                        allAuthorizations: 0,
+                        availableAuthorizations: 0,
+                        hasPurchased: true
+                    }
+                ],
+                options: [{
+                        value: "选项1",
+                        label: "黄金糕"
+                    },
+                    {
+                        value: "选项2",
+                        label: "双皮奶"
+                    },
+                    {
+                        value: "选项3",
+                        label: "蚵仔煎"
+                    },
+                    {
+                        value: "选项4",
+                        label: "龙须面"
+                    },
+                    {
+                        value: "选项5",
+                        label: "北京烤鸭"
+                    }
+                ],
+                engineeringAuthorizationData: [{
+                        date: "2017.9.30 17:43:57",
+                        name: "Explorer",
+                        time: "81.8",
+                        times: "1"
+                    },
+                    {
+                        date: "2017.9.28 17:43:57",
+                        name: "Govern",
+                        time: "1.8",
+                        times: "188"
+                    },
+                    {
+                        date: "2017.9.31 17:43:57",
+                        name: "View Pad",
+                        time: "88",
+                        times: "18"
+                    },
+                    {
+                        date: "2017.10.31 16:43:57",
+                        name: "View",
+                        time: "18",
+                        times: "88"
+                    },
+                    {
+                        date: "2017.9.30 17:43:57",
+                        name: "Explorer",
+                        time: "81.8",
+                        times: "1"
+                    },
+                    {
+                        date: "2017.9.28 17:43:57",
+                        name: "Govern",
+                        time: "1.8",
+                        times: "188"
+                    },
+                    {
+                        date: "2017.9.31 17:43:57",
+                        name: "View Pad",
+                        time: "88",
+                        times: "18"
+                    },
+                    {
+                        date: "2017.10.31 16:43:57",
+                        name: "View",
+                        time: "18",
+                        times: "88"
+                    }
+                ]
+            };
         },
-        callback: {
-          onClick: this.curEditOrgTreeClick
+        computed: {
+            ...mapGetters(["curEditMember"])
+        },
+        methods: {
+            //获取组织树
+            getOrgTreeInfo() {
+                api.getOrgTreeList().then(res => {
+                    this.curEditZnodes = res.data.result;
+                    this.curEditZnodes.forEach((val, key) => {
+                        if (val.root) {
+                            this.$set(val, "iconSkin", "rootNode");
+                        } else if (!val.root && val.type == 0 && !val.direct) {
+                            this.$set(val, "iconSkin", "subNode");
+                        } else if (val.type == 1) {
+                            this.$set(val, "iconSkin", "projNode");
+                        } else if (val.direct) {
+                            this.$set(val, "iconSkin", "projNode");
+                        }
+                        //添加时根据树id找到对应的树名称
+                        if (val.id == this.curMemberInfo.orgId) this.curEditOrgName = val.name;
+
+
+                    });
+                    $.fn.zTree.init(
+                        $("#curEditOrgSetting"),
+                        this.curEditOrgSetting,
+                        this.curEditZnodes
+                    );
+                });
+            },
+            /**获取角色*/
+            getRoleList() {
+                let roleData = [];
+                //获取角色列表
+                api.getRoleList2().then(res => {
+                    this.roleData = res.data.result;
+                    this.roleData.forEach(item => {
+                        //添加时需要根据角色id找到对应的角色名
+                        if (this.$route.path == "/authority/add-member") {
+                            item.roleId == this.curMemberInfo.roleId ? this.curEditRoleName = item.roleName:this.curEditRoleName = "没找到他的角色"
+                        } else {
+                            // 编辑状态直接根据传过来对象获取
+                            this.curEditRoleName = this.curMemberInfo.roleName||'没找到该角色'
+                        }
+                        this.roles.push({
+                            value: item.roleId,
+                            label: item.roleName
+                        });
+                    });
+                });
+            },
+            // 选择角色变化
+            curRoleNameChange(v) {
+                this.curEditRoleName = this.$refs.roleSelect.selectedLabel; //span下对应的角色名称
+            },
+            saveCurUserInfo() {
+                console.log(this.curMemberInfo);
+            },
+            curEditOrgTreeClick(event, treeId, treeNode) {
+                this.curEditOrgName = treeNode.name; //span下显示的树名称和树对应的id互不干扰
+                this.curMemberInfo.orgId = treeNode.id;
+                setTimeout(() => {
+                    $(".el-select-dropdown__item.selected").click();
+                }, 100);
+            },
+            handleClick(tab, event) {
+                console.log(tab);
+            },
+            toggleAuthorited(item) {
+                if (item.hasPurchased) return;
+                item.hasAuthorited = !item.hasAuthorited;
+                // 已授权
+                if (item.hasAuthorited) {
+                    console.log("已授权");
+                } else {
+                    // 未授权
+                    console.log("未授权");
+                }
+            },
+            // 授权
+            projectAuthorize() {
+                this.$axios.get(this.url).then(res => {
+                    this.projectNodes = res.data;
+                    $.fn.zTree.init(
+                        $("#projectTree"),
+                        this.projectSetting,
+                        this.projectNodes
+                    );
+                });
+            },
+            engineeringAuthorize() {},
+            workSetAuthorize() {},
+            governAuthorize() {
+                this.$axios.get(this.url).then(res => {
+                    this.projectNodes = res.data;
+                    $.fn.zTree.init(
+                        $("#projectTree"),
+                        this.projectSetting,
+                        this.projectNodes
+                    );
+                });
+            },
+            templateAuthorize() {},
+            backList() {
+                this.$router.push({
+                    path: `/authority/member-management`
+                });
+            }
+        },
+        created() {
+            this.curMemberInfo = Object.assign({}, this.$store.getters.curEditMember); //获取vuex中的当前人员信息
+            console.log(this.curMemberInfo);
+            if (this.$route.path == "/authority/add-member") {
+                // 添加
+            } else {
+                // 编辑
+                if (!this.curEditMember.realName) {
+                    this.$router.push("/authority/member-management");
+                }
+            }
+        },
+        mounted() {
+            this.getOrgTreeInfo();
+            this.getRoleList();
         }
-      },
-      projectSetting: {
-        check: {
-          enable: true
-        },
-        data: {
-          simpleData: {
-            enable: true
-          }
-        }
-      },
-      projectNodes: [],
-      clientInformation: [
-        {
-          hasAuthorited: true,
-          productsName: "lubanGovern",
-          allAuthorizations: 100,
-          availableAuthorizations: 50
-        },
-        {
-          hasAuthorited: false,
-          productsName: "lubanExplore",
-          allAuthorizations: 50,
-          availableAuthorizations: 20
-        },
-        {
-          hasAuthorited: true,
-          productsName: "lubanView",
-          allAuthorizations: 40,
-          availableAuthorizations: 10
-        },
-        {
-          hasAuthorited: false,
-          productsName: "lubanworks",
-          allAuthorizations: 30,
-          availableAuthorizations: 15
-        },
-        {
-          hasAuthorited: false,
-          productsName: "i Ban",
-          allAuthorizations: 90,
-          availableAuthorizations: 45
-        },
-        {
-          hasAuthorited: true,
-          productsName: "coorperation",
-          allAuthorizations: 60,
-          availableAuthorizations: 20
-        },
-        {
-          productsName: "lubanworks",
-          allAuthorizations: 0,
-          availableAuthorizations: 0,
-          hasPurchased: true
-        },
-        {
-          productsName: "lubanworks",
-          allAuthorizations: 0,
-          availableAuthorizations: 0,
-          hasPurchased: true
-        }
-      ],
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
-      engineeringAuthorizationData: [
-        {
-          date: "2017.9.30 17:43:57",
-          name: "Explorer",
-          time: "81.8",
-          times: "1"
-        },
-        {
-          date: "2017.9.28 17:43:57",
-          name: "Govern",
-          time: "1.8",
-          times: "188"
-        },
-        {
-          date: "2017.9.31 17:43:57",
-          name: "View Pad",
-          time: "88",
-          times: "18"
-        },
-        {
-          date: "2017.10.31 16:43:57",
-          name: "View",
-          time: "18",
-          times: "88"
-        },
-        {
-          date: "2017.9.30 17:43:57",
-          name: "Explorer",
-          time: "81.8",
-          times: "1"
-        },
-        {
-          date: "2017.9.28 17:43:57",
-          name: "Govern",
-          time: "1.8",
-          times: "188"
-        },
-        {
-          date: "2017.9.31 17:43:57",
-          name: "View Pad",
-          time: "88",
-          times: "18"
-        },
-        {
-          date: "2017.10.31 16:43:57",
-          name: "View",
-          time: "18",
-          times: "88"
-        }
-      ]
     };
-  },
-  computed: {
-    ...mapGetters(["curEditMember"])
-  },
-  methods: {
-    //获取组织树
-    getOrgTreeInfo() {
-      api.getOrgTreeList().then(res => {
-        this.curEditZnodes = res.data.result;
-        this.curEditZnodes.forEach((val, key) => {
-          if (val.root) {
-            this.$set(val, "iconSkin", "rootNode");
-          } else if (!val.root && val.type == 0 && !val.direct) {
-            this.$set(val, "iconSkin", "subNode");
-          } else if (val.type == 1) {
-            this.$set(val, "iconSkin", "projNode");
-          } else if (val.direct) {
-            this.$set(val, "iconSkin", "projNode");
-          }
-          if (val.id == this.curMemberInfo.orgId) {
-            this.$set(this.curMemberInfo, "orgName", val.name);
-          }
-        });
-        $.fn.zTree.init(
-          $("#curEditOrgSetting"),
-          this.curEditOrgSetting,
-          this.curEditZnodes
-        );
-      });
-    },
-    /**获取角色*/
-    getRoleList() {
-      let roleData = [];
-      //获取角色列表
-      api.getRoleList2().then(res => {
-        this.roleData = res.data.result;
-        this.roleData.forEach(item => {
-          this.roles.push({
-            value: item.roleId,
-            label: item.roleName
-          });
-        });
-        console.log(this.roles);
-        this.roleId = this.roles[0].roleId; //默认角色
-      });
-    },
-    // 角色变化
-    curRoleNameChange(v) {
-      this.$set(this.curMemberInfo, "roleId", v);
-    },
-    saveCurUserInfo() {
-      console.log(this.curMemberInfo);
-    },
-    curEditOrgTreeClick(event, treeId, treeNode) {
-      this.curMemberInfo.orgName = treeNode.name;
-      this.curMemberInfo.orgId = treeNode.id;
-      setTimeout(() => {
-        $(".el-select-dropdown__item.selected").click();
-      }, 100);
-    },
-    handleClick(tab, event) {
-      console.log(tab);
-    },
-    toggleAuthorited(item) {
-      if (item.hasPurchased) return;
-      item.hasAuthorited = !item.hasAuthorited;
-      // 已授权
-      if (item.hasAuthorited) {
-        console.log("已授权");
-      } else {
-        // 未授权
-        console.log("未授权");
-      }
-    },
-    // 授权
-    projectAuthorize() {
-      this.$axios.get(this.url).then(res => {
-        this.projectNodes = res.data;
-        $.fn.zTree.init(
-          $("#projectTree"),
-          this.projectSetting,
-          this.projectNodes
-        );
-      });
-    },
-    engineeringAuthorize() {},
-    workSetAuthorize() {},
-    governAuthorize() {
-      this.$axios.get(this.url).then(res => {
-        this.projectNodes = res.data;
-        $.fn.zTree.init(
-          $("#projectTree"),
-          this.projectSetting,
-          this.projectNodes
-        );
-      });
-    },
-    templateAuthorize() {},
-    backList() {
-      this.$router.push({
-        path: `/authority/member-management`
-      });
-    }
-  },
-  created() {
-    this.curMemberInfo = Object.assign({}, this.$store.getters.curEditMember); //获取vuex中的当前人员信息
-    console.log(this.curMemberInfo)
-    if (this.$route.path == "/authority/add-member") {
-      // 添加
-    } else {
-      // 编辑
-      if (!this.curEditMember.realName) {
-        this.$router.push("/authority/member-management");
-      }
-    }
-  },
-  mounted() {
-    this.getOrgTreeInfo();
-    this.getRoleList();
-  }
-};
+
 </script>
 <style scoped>
-.member-title {
-  padding: 10px 0;
-  font-size: 16px;
-  font-weight: 700;
-}
+    .member-title {
+        padding: 10px 0;
+        font-size: 16px;
+        font-weight: 700;
+    }
 
-.member-wrap {
-  min-width: 1089px;
-  padding: 20px;
-  font-size: 16px;
-  font-weight: bold;
-  background: #fff;
-}
+    .member-wrap {
+        min-width: 1089px;
+        padding: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        background: #fff;
+    }
 
-.member-message {
-  height: 200px;
-  padding: 20px;
-  border: 1px solid #e6e6e6;
-  box-sizing: border-box;
-}
+    .member-message {
+        height: 200px;
+        padding: 20px;
+        border: 1px solid #e6e6e6;
+        box-sizing: border-box;
+    }
 
-.el-form-item__label {
-  width: 54px;
-  text-align: left;
-}
+    .el-form-item__label {
+        width: 54px;
+        text-align: left;
+    }
 
-.el-input {
-  width: 70%;
-}
+    .el-input {
+        width: 70%;
+    }
 
-.member-tabs {
-  border: 1px solid #e6e6e6;
-  border-top: none;
-}
+    .member-tabs {
+        border: 1px solid #e6e6e6;
+        border-top: none;
+    }
 
-.card {
-  width: 10%;
-  height: 200px;
-  display: inline-block;
-  box-sizing: border-box;
-}
+    .card {
+        width: 10%;
+        height: 200px;
+        display: inline-block;
+        box-sizing: border-box;
+    }
 
-.card + .card {
-  margin-left: 30px;
-}
+    .card+.card {
+        margin-left: 30px;
+    }
 
-.card:nth-child(1) {
-  margin-left: 40px;
-}
+    .card:nth-child(1) {
+        margin-left: 40px;
+    }
 
-.authorited {
-  float: right;
-  color: #7fc977;
-}
+    .authorited {
+        float: right;
+        color: #7fc977;
+    }
 
-.cart:hover .cancle-authorited {
-  display: block;
-  color: red;
-}
+    .cart:hover .cancle-authorited {
+        display: block;
+        color: red;
+    }
 
-.cart:hover .authorited {
-  display: none;
-  color: red;
-}
+    .cart:hover .authorited {
+        display: none;
+        color: red;
+    }
 
-.authorte {
-  display: none;
-}
+    .authorte {
+        display: none;
+    }
 
-.cart_:hover .unauthorited {
-  display: none;
-}
+    .cart_:hover .unauthorited {
+        display: none;
+    }
 
-.cart_:hover .authorte {
-  display: block;
-  color: #7fc977;
-}
+    .cart_:hover .authorte {
+        display: block;
+        color: #7fc977;
+    }
 
-.authorited:hover {
-  display: none;
-}
+    .authorited:hover {
+        display: none;
+    }
 
-.authorite {
-  display: none;
-}
+    .authorite {
+        display: none;
+    }
 
-.cancle-authorited {
-  display: none;
-}
+    .cancle-authorited {
+        display: none;
+    }
 
-.unauthorited {
-  float: right;
-  color: #e30000;
-}
+    .unauthorited {
+        float: right;
+        color: #e30000;
+    }
 
-.red_ {
-  color: #e30000;
-}
+    .red_ {
+        color: #e30000;
+    }
 
-.member-text {
-  font-size: 14px;
-  line-height: 40px;
-  padding-left: 95px;
-}
+    .member-text {
+        font-size: 14px;
+        line-height: 40px;
+        padding-left: 95px;
+    }
 
-.member-contents + .member-contents {
-  margin-top: 20px;
-}
+    .member-contents+.member-contents {
+        margin-top: 20px;
+    }
 
-.member-describe {
-  color: #6595f2;
-  font-size: 16px;
-}
+    .member-describe {
+        color: #6595f2;
+        font-size: 16px;
+    }
 
-.basic-btn {
-  margin-left: -30px;
-}
+    .basic-btn {
+        margin-left: -30px;
+    }
 
-.project-authorize {
-  height: 700px;
-  width: 520px;
-}
+    .project-authorize {
+        height: 700px;
+        width: 520px;
+    }
 
-.el-form__ {
-  float: left;
-}
+    .el-form__ {
+        float: left;
+    }
 
-.el-form__ + .el-form__ {
-  margin-left: 10px;
-}
+    .el-form__+.el-form__ {
+        margin-left: 10px;
+    }
 
-.back-list {
-  width: 140px;
-  height: 40px;
-  margin-top: 20px;
-  border-radius: 2px;
-}
+    .back-list {
+        width: 140px;
+        height: 40px;
+        margin-top: 20px;
+        border-radius: 2px;
+    }
 
-.back-list:hover {
-  box-shadow: 1px 0px 7px #6595f2;
-}
+    .back-list:hover {
+        box-shadow: 1px 0px 7px #6595f2;
+    }
+
 </style>

@@ -22,7 +22,7 @@
             </div>
             <div class="el-form-item el-form_" style="float:right">
                 <div class="el-form-item__content">
-                    <el-input placeholder="请输入通行证账号或备注" icon="search" style=""></el-input>
+                    <el-input placeholder="请输入通行证账号或备注" icon="search"  v-model="searchUsersListVal" :on-icon-click="searchUsersList" @keyup.enter.native="searchUsersList"></el-input>
                 </div>
             </div>
         </div>
@@ -98,18 +98,14 @@
                 <el-form-item label="鲁班通行证：" prop="userName">
                     <el-input v-model="ruleForm.userName" auto-complete="off" placeholder="请输入成员注册的通行证账号"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名：" prop="name">
+                <el-form-item label="姓名：" prop="realName">
                     <el-input v-model="ruleForm.realName" auto-complete="off" placeholder="请输入用户的称"></el-input>
                 </el-form-item>
-                <el-form-item label="角色：" prop="roleName">
-                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:100%" @change="dialogSelectChange">
+                <el-form-item label="角色：" prop="roleId">
+                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:100%" @change="dialogSelectChange" ref="dialogRole">
                         <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
-                    <!-- <el-select v-model="dialogRoleName" placeholder="请选择" style="width:360px">
-                        <el-option v-for="item in roles" :key="item.roleName" :label="item.roleName" :value="item.roleId">
-                        </el-option>
-                    </el-select> -->
                 </el-form-item>
                 <el-form-item label="归属：" prop="orgId">
                     <el-select v-model="dialogOrgName" placeholder="请选择" style="width:360px">
@@ -274,6 +270,7 @@
                 curPage: 1,
                 pageSize: 10,
                 total: 0,
+                searchUsersListVal:'',//搜索成员
                 orgId: "", //组织树节点
                 roleId: "", //角色
                 roleData: [],
@@ -542,7 +539,12 @@
             };
         },
         watch: {
-            "ruleForm.userName" (newval, oldval) {}
+            roleId(newVal, oldVal) {
+                this.getUsersList()
+            },
+            searchTypeId(newVal, oldVal) {
+                this.getUsersList()
+            }
         },
         methods: {
             ...mapActions([
@@ -585,12 +587,18 @@
                             label: item.roleName
                         });
                     });
-                    this.roleId = this.roles[0].roleId; //默认角色
+                    this.roleId = this.roles[0].value; //默认角色
                 });
             },
+            //获取用户列表
             getUsersList() {
                 let params = {
+                    direction: 0,
+                    ignoreCase: true,
                     orgIds: [this.orgId],
+                    // "property": "string",
+                    roleId: this.roleId,
+                    searchStr: this.searchUsersListVal,
                     pageNum: this.curPage,
                     pageSize: this.pageSize,
                     searchType: this.searchTypeId
@@ -600,6 +608,9 @@
                     this.memberTableData = res.data.result.result;
                     this.total = res.data.result.pageInfo.totalNumber;
                 });
+            },
+            searchUsersList(){
+                 this.getUsersList()
             },
             handleTreeNodeChange(currentTreeNode) {
                 this.orgId = currentTreeNode.id;
@@ -613,9 +624,7 @@
                     $(".el-select-dropdown__item.selected").click();
                 }, 100);
             },
-            dialogSelectChange(v){
-     
-            },
+            dialogSelectChange(v) {},
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
@@ -652,38 +661,24 @@
                 hasChecked = true; //通行证账号检查通过
                 this.$refs[formName].validate(valid => {
                     if (valid) {
-                        debugger
-                        let currentMemberMsg = {
-                                    orgName: this.dialogOrgName,
-                                    roleName: this.$refs.dialogRole.selectedLabel,                                
-                                };
-                                console.log(this.currentMemberMsg)
-                                currentMemberMsg = Object.assign(currentMemberMsg, this.ruleForm);
-                        // api.addUser(this.ruleForm).then(res => {
-                            
-                        //     let userId = res.data.result
-                        //     if (res.data.code == 200) {
-                        //         res.data.result
-                        //         // 记录当前成员信息传递到addMember页面
-                        //         let currentMemberMsg = {
-                        //             orgName: this.dialogOrgName,
-                        //             roleName: this.$refs.dialogRole.selectedLabel,
-                        //             userId: userId
-                        //         };
-                        //         currentMemberMsg = Object.assign(currentMemberMsg, this.ruleForm);
-                        //         this.curEditMember(currentMemberMsg);
-                        //         this.$router.push({
-                        //             path: `/authority/add-member`
-                        //         });
-                        //         this.addMemberDialogVisible = false;
-                        //     } else {
-                        //         this.$alert(res.data.msg, "提示", {
-                        //             confirmButtonText: "确定",
-                        //             type: "info"
-                        //         });
-                        //         hasChecked = false;
-                        //     }
-                        // });
+                        api.addUser(this.ruleForm).then(res => {
+                            let userId = res.data.result; //添加成功后返回的用户id
+                            if (res.data.code == 200) {
+                                // 记录当前成员信息传递到addMember页面
+                                this.$set(this.ruleForm, "userId", userId);
+                                this.curEditMember(this.ruleForm);
+                                this.$router.push({
+                                    path: `/authority/add-member`
+                                });
+                                this.addMemberDialogVisible = false;
+                            } else {
+                                this.$alert(res.data.msg, "提示", {
+                                    confirmButtonText: "确定",
+                                    type: "info"
+                                });
+                                hasChecked = false;
+                            }
+                        });
                     } else {
                         console.log("error submit!!");
                         return false;

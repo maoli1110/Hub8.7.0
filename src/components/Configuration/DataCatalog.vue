@@ -34,7 +34,8 @@
             </el-breadcrumb>
 
 
-            <el-table ref="multipleTable" :data="folderTableData" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table ref="multipleTable" :data="folderTableData" border tooltip-effect="dark" style="width: 100%" @sort-change="tableSort"
+                @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop="pathName" label="文件夹名称" width="360" align='left'>
                     <template slot-scope="scope">
@@ -51,10 +52,10 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="更新时间" width="180">
+                <el-table-column label="更新时间" width="180" prop='modifyTime' sortable>
                     <template slot-scope="scope">{{ scope.row.modifyTime }}</template>
                 </el-table-column>
-                <el-table-column prop="modifyUser" label="操作人" width="180"></el-table-column>
+                <el-table-column prop="modifyUser" label="操作人" width="180" sortable></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span type="primary" class="icon-edit_" @click="modifyDataCatalog(scope.row);modifyDataCatalogVisible=true;"></span>
@@ -170,6 +171,8 @@
                 curPage: 1,
                 pageSize: 10,
                 total: 0,
+                order: "1", //排序
+                prop: "modifyTime", //排序属性
                 previousParentId: [""], //记录上一级的parentId
                 currentParentId: "", //当前文件(获取当前分页内容需要)，
                 pageCacheInfo: [{
@@ -274,6 +277,11 @@
                     orgType: this.orgType,
                     orgid: this.orgid,
                     pageParam: {
+                        // orders: [{
+                        //     direction: this.order,
+                        //     ignoreCase: true,
+                        //     property: this.prop
+                        // }],
                         page: this.curPage,
                         size: this.pageSize
                     },
@@ -299,6 +307,13 @@
                     $(".el-select-dropdown__item.selected").click();
                 }, 100);
                 this.getDataDirectoryInfoWrapper();
+            },
+            //表格排序
+            tableSort(column) {
+                console.log(column)
+                column.order == "descending" ? (this.order = "1") : (this.order = "0");
+                this.prop = column.prop;
+                this.getDataDirectoryInfoWrapper()
             },
             //当前选中的文件夹
             handleSelectionChange(val) {
@@ -335,6 +350,11 @@
                     orgType: this.orgType,
                     orgid: this.orgid,
                     pageParam: {
+                        // orders: [{
+                        //     direction: this.order,
+                        //     ignoreCase: true,
+                        //     property: this.prop
+                        // }],
                         page: 1,
                         size: 10
                     },
@@ -407,7 +427,7 @@
             addFolder() {
                 this.addFolderDialogVisible = true;
                 $(".el-table__empty-block").hide();
-                this.folderName = `新建文件夹${this.folderNameIndex++}`;
+                this.folderName = `新建文件夹`;
             },
             //删除文件夹
             deleteFolder() {
