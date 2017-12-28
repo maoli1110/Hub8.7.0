@@ -734,9 +734,7 @@
             },
             //更新列表
             updateProcessList(params){
-                console.log(params,'pa')
-                updateProcessInfo(params)
-                    .then(res => {
+                updateProcessInfo(params).then(res => {
                        if(res.data.code==200){
                            this.isBMP = false;
                            this.isQuality = true;
