@@ -20,15 +20,15 @@
 			<div  class="vicp-crop-right" style="margin-left:340px">
 					<ul class="vicp-preview">					
 						<li class="vicp-preview-item vicp-preview-item-circle" >
-							<img src="http://dunizb.com/img/avatar.gif"  style="width:80px;height:80px">
+							<img src="http://www.ghost64.com/qqtupian/zixunImg/local/2017/04/14/1492160362184.jpg"  style="width:80px;height:80px">
 							<span style="bottom:-11px">80px × 80px</span>
 						</li>
 						<li class="vicp-preview-item vicp-preview-item-circle" >
-							<img src="http://dunizb.com/img/avatar.gif"  style="width:50px;height:50px">
+							<img src="http://www.ghost64.com/qqtupian/zixunImg/local/2017/04/14/1492160362184.jpg"  style="width:50px;height:50px">
 							<span style="bottom:2px">50px × 50px</span>
 						</li>
 						<li class="vicp-preview-item vicp-preview-item-circle" >
-							<img src="http://dunizb.com/img/avatar.gif"  style="width:30px;height:30px">
+							<img src="http://www.ghost64.com/qqtupian/zixunImg/local/2017/04/14/1492160362184.jpg"  style="width:30px;height:30px">
 							<span style="bottom:12px">30px × 30px</span>
 						</li>
 					</ul>
