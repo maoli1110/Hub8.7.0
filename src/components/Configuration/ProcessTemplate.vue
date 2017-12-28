@@ -17,7 +17,8 @@
                 <el-button type="primary" class="basic-btn" icon="plus" @click="toggleProcess();editDialogVisible=true">添加</el-button>
                 <el-button type="primary" class="basic-btn" icon="delete" @click="deleteProcess()"> 删除</el-button>
             </div>
-            <el-table ref="multipleTable" :data="ProcessTableData" border tooltip-effect="dark" style="width: 100%;margin-top:20px" @selection-change="handleSelectionChange">
+            <el-table ref="multipleTable" :data="ProcessTableData" border tooltip-effect="dark" @sort-change="tableSort" style="width: 100%;margin-top:20px"
+                @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop="name" label="模板名称">
                     <template slot-scope="scope">
@@ -26,11 +27,11 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="更新时间">
+                <el-table-column label="更新时间" prop='modifyTime' sortable>
                     <template slot-scope="scope">{{ scope.row.modifyTime }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="modifyUser" label="操作人"></el-table-column>
+                <el-table-column prop="modifyUser" label="操作人" sortable></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span type="primary" class="icon-edit_" @click="toggleProcess(scope.row);editDialogVisible=true;"></span>
@@ -79,6 +80,8 @@
                 curPage: 1,
                 pageSize: 10,
                 total: 0,
+                order: "1", //排序
+                prop: "modifyTime", //排序属性
                 templateParams: {},
                 orgSetting: {
                     data: {
@@ -126,9 +129,9 @@
                     orgid: this.orgid,
                     pageParam: {
                         orders: [{
-                            direction: 0,
+                            direction: this.order,
                             ignoreCase: true,
-                            property: "modifyTime"
+                            property: this.prop
                         }],
                         page: this.curPage,
                         size: this.pageSize
@@ -161,6 +164,11 @@
                 this.curPage = val;
                 this.getProcessTemplateInfo();
                 console.log(`当前页: ${val}`);
+            },
+            tableSort(column) {
+                column.order == "descending" ? (this.order = "1") : (this.order = "0");
+                this.prop = column.prop;
+                this.getProcessTemplateInfo()
             },
             toggleProcess(row) {
                 if (row) {
