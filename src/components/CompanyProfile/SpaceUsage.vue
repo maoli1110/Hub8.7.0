@@ -114,343 +114,392 @@
 </template>
 
 <script>
-import echarts from 'echarts'
+import echarts from "echarts";
 export default {
-    data() {
-        return {
-            disabledfalse: true,
-            isColumn:true,
-            chartColumn: null,
-            chartDoughnut:null,
-            chartPie: null,
-            activeIndex:"",
-            //购买云空间
-            dialogVisible: false,
-        }
+  data() {
+    return {
+      disabledfalse: true,
+      isColumn: true,
+      chartColumn: null,
+      chartDoughnut: null,
+      chartPie: null,
+      activeIndex: "",
+      //购买云空间
+      dialogVisible: false
+    };
+  },
+  created() {
+    this.activeIndex = this.$route.path;
+  },
+  methods: {
+    removeDis(dis) {
+      let vm = this;
+      if (dis == "1") {
+        vm.disabledfalse = false;
+      } else {
+        this.disabledfalse = true;
+      }
     },
-    created(){
-        this.activeIndex = this.$route.path;
+    getInvoice() {
+      //发票类型
     },
-    methods: {
-        removeDis(dis){
-                let vm = this;
-                if (dis == "1") {
-                    vm.disabledfalse = false;
-                } else {
-                    this.disabledfalse = true;
-                }
-            },
-        getInvoice(){
-            //发票类型
-            },
-        drawPieChart() {
-            this.chartPie = echarts.init(document.getElementById('chartPie'));
-            this.chartPie.setOption({
-                title: { text: 'asdf11' },
-                xAxis:[
-                        {
-                            show:false, 
-                        }
-                ],
-                yAxis:[
-                        {
-                            show:false, 
-                        }
-                ],
-                color:[ '#c04e4e', '#958bc8', '#4b618a', '#cac4c4','#e5b189','#6d95db' ,'#66bced', '#7dc15c', '#8accda', '#e7b01f', '#eab0eb',],
-                tooltip: {
-                    trigger: 'item',
-                    formatter: "已使用：{c}GB<br/>占比：{d}%"
-                },
-                legend: {
-                    orient:'vertical',
-                    top: '30',
-                    right: '100',
-                    data:["第1分公司", "第2分公司", "第3分公司", "第4分公司", "第5分公司", "第6分公司","第7分公司","第8分公司","第9分公司","第10分公司"]
-                },
-                series: [
-                    {
-                        name:'111',
-                        type:'pie',
-                        radius: ['55%','85%'],
-                        avoidLabelOverlap: false,
-                        label: {
-                            normal: {
-                                show: false,
-                                position: 'center'
-                            },
-                            emphasis: {
-                                show: true,
-                                textStyle: {
-                                    fontSize: '20',
-                                    fontWeight: ''
-                                }
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: true
-                            }
-                        },
-                        data:[
-                            {value:33, name:'第1分公司'},
-                            {value:13, name:'第2分公司'},
-                            {value:53, name:'第3分公司'},
-                            {value:42, name:'第4分公司'},
-                            {value:44, name:'第5分公司'},
-                            {value:38, name:'第6分公司'},
-                            {value:28, name:'第7分公司'},
-                            {value:14, name:'第8分公司'},
-                            {value:31, name:'第9分公司'},
-                            {value:66, name:'第10分公司'},
-                        ]
-                    }
-                ]
-            });
+    drawPieChart() {
+      this.chartPie = echarts.init(document.getElementById("chartPie"));
+      this.chartPie.setOption({
+        title: { text: "asdf11" },
+        xAxis: [
+          {
+            show: false
+          }
+        ],
+        yAxis: [
+          {
+            show: false
+          }
+        ],
+        color: [
+          "#c04e4e",
+          "#958bc8",
+          "#4b618a",
+          "#cac4c4",
+          "#e5b189",
+          "#6d95db",
+          "#66bced",
+          "#7dc15c",
+          "#8accda",
+          "#e7b01f",
+          "#eab0eb"
+        ],
+        tooltip: {
+          trigger: "item",
+          formatter: "已使用：{c}GB<br/>占比：{d}%"
         },
-        drawDoughnutChart() {
-            this.chartDoughnut = echarts.init(document.getElementById('chartDoughnut'));
-            this.chartDoughnut.setOption({
-                title: { text: 'asdf' },
-                color:['#e78788' ,'#7dc15c'],
-                tooltip: {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c}GB ({d}%)"
-                },
-                legend: {
-                    bottom: 10,
-                    left: 'center',
-                    data:['可使用','已用'],
-                    itemWidth: 10,             // 图例图形宽度
-                    itemHeight: 10,            // 图例图形高度
-                    itemGap: 100,               // 各个item之间的间隔，单位px，默认为10，
-                },
-                series: [
-                    {
-                        name:'空间使用情况',
-                        type:'pie',
-                        radius: ['40%', '60%'],
-                        avoidLabelOverlap: false,
-                        label: {
-                            normal: {
-                                show: false,
-                                position: 'center'
-                            },
-                            emphasis: {
-                                show: true,
-                                textStyle: {
-                                    fontSize: '20',
-                                    fontWeight: '',
-                                }
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: true
-                            }
-                        },
-                        data:[
-                            {value:500, name:'可使用'},
-                            {value:222, name:'已用'},
-                        ]
-                    }
-                ]
-            });
+        legend: {
+          orient: "vertical",
+          top: "30",
+          right: "100",
+          data: [
+            "第1分公司",
+            "第2分公司",
+            "第3分公司",
+            "第4分公司",
+            "第5分公司",
+            "第6分公司",
+            "第7分公司",
+            "第8分公司",
+            "第9分公司",
+            "第10分公司"
+          ]
         },
-        drawColumnChart() {
-            this.chartColumn = echarts.init(document.getElementById('chartColumn'));
-            this.chartColumn.setOption({
-                title: { text: 'Column Chart' },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: "{b} <br/> 已使用：{c}GB <br/> 占比：22%"
-                },
-                xAxis: {
-                    axisLine:{
-                        lineStyle:{
-                            color:'#ccc',
-                        }
-                    },
-                    show:true,
-                    data: ["第1分公司", "第2分公司", "第3分公司", "第4分公司", "第5分公司", "第6分公司","第7分公司","第8分公司","第9分公司","第10分公司"],
-                },
+        series: [
+          {
+            name: "111",
+            type: "pie",
+            radius: ["55%", "85%"],
+            avoidLabelOverlap: false,
+            label: {
+              normal: {
+                show: false,
+                position: "center"
+              },
+              emphasis: {
+                show: true,
                 textStyle: {
-                                fontSize: 12,
-                                color: '#000'
-                            },
-                yAxis: {
-                    show:true,
-                    axisLine:{
-                        lineStyle:{
-                            color:'#fff',
-                        }
-                    },
-                },
-                series: [{
-                    name: '哈哈哈哈哈哈22222哈',
-                    type: 'bar',
-                    barWidth : 30,
-                    data: [12,23,4,22,56,8,44,12,4,6],
-                    itemStyle: {
-                    normal: {
-                        color: function(params) {
-                            // build a color map as your need.
-                            var colorList = [
-                              '#7dc15c' ,'#958bc8', '#36bdfd', '#8accda', '#6d95db', '#b46cb6', '#e7b01f', '#4b8970', '#b2cc9f', '#e68888'
-                            ];
-                            return colorList[params.dataIndex]
-                        },
-                        barBorderRadius:[4, 4, 4, 4],
-                        label: {
-                            show: true,
-                            position: 'top',
-                            formatter: '{c}GB  {d}%'
-                        }
-                    }
+                  fontSize: "20",
+                  fontWeight: ""
                 }
-
-                }]
-            });
+              }
+            },
+            labelLine: {
+              normal: {
+                show: true
+              }
+            },
+            data: [
+              { value: 33, name: "第1分公司" },
+              { value: 13, name: "第2分公司" },
+              { value: 53, name: "第3分公司" },
+              { value: 42, name: "第4分公司" },
+              { value: 44, name: "第5分公司" },
+              { value: 38, name: "第6分公司" },
+              { value: 28, name: "第7分公司" },
+              { value: 14, name: "第8分公司" },
+              { value: 31, name: "第9分公司" },
+              { value: 66, name: "第10分公司" }
+            ]
+          }
+        ]
+      });
+    },
+    drawDoughnutChart() {
+      this.chartDoughnut = echarts.init(
+        document.getElementById("chartDoughnut")
+      );
+      this.chartDoughnut.setOption({
+        title: { text: "asdf" },
+        color: ["#e78788", "#7dc15c"],
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b}: {c}GB ({d}%)"
         },
-
-        drawCharts() {
-            if(this.isColumn){
-                this.drawColumnChart();
-                $(".chartBtn>div").removeClass("active")
-            }else{
-                this.drawPieChart();
-                $(".chartBtn>div").addClass("active")
+        legend: {
+          bottom: 10,
+          left: "center",
+          data: ["可使用", "已用"],
+          itemWidth: 10, // 图例图形宽度
+          itemHeight: 10, // 图例图形高度
+          itemGap: 100 // 各个item之间的间隔，单位px，默认为10，
+        },
+        series: [
+          {
+            name: "空间使用情况",
+            type: "pie",
+            radius: ["40%", "60%"],
+            avoidLabelOverlap: false,
+            label: {
+              normal: {
+                show: false,
+                position: "center"
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: "20",
+                  fontWeight: ""
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                show: true
+              }
+            },
+            data: [{ value: 500, name: "可使用" }, { value: 222, name: "已用" }]
+          }
+        ]
+      });
+    },
+    drawColumnChart() {
+      this.chartColumn = echarts.init(document.getElementById("chartColumn"));
+      // 添加点击事件
+     this.chartColumn.on("click", function(params) {
+        // 控制台打印数据的名称
+        console.log(params);
+      });
+      this.chartColumn.setOption({
+        title: { text: "Column Chart" },
+        tooltip: {
+          trigger: "item",
+          formatter: "{b} <br/> 已使用：{c}GB <br/> 占比：22%"
+        },
+        xAxis: {
+          axisLine: {
+            lineStyle: {
+              color: "#ccc"
             }
-            this.drawDoughnutChart()
+          },
+          show: true,
+          data: [
+            "第1分公司",
+            "第2分公司",
+            "第3分公司",
+            "第4分公司",
+            "第5分公司",
+            "第6分公司",
+            "第7分公司",
+            "第8分公司",
+            "第9分公司",
+            "第10分公司"
+          ]
         },
+        textStyle: {
+          fontSize: 12,
+          color: "#000"
+        },
+        yAxis: {
+          show: true,
+          axisLine: {
+            lineStyle: {
+              color: "#fff"
+            }
+          }
+        },
+        series: [
+          {
+            name: "哈哈哈哈哈哈22222哈",
+            type: "bar",
+            barWidth: 30,
+            data: [12, 23, 4, 22, 56, 8, 44, 12, 4, 6],
+            itemStyle: {
+              normal: {
+                color: function(params) {
+                  // build a color map as your need.
+                  var colorList = [
+                    "#7dc15c",
+                    "#958bc8",
+                    "#36bdfd",
+                    "#8accda",
+                    "#6d95db",
+                    "#b46cb6",
+                    "#e7b01f",
+                    "#4b8970",
+                    "#b2cc9f",
+                    "#e68888"
+                  ];
+                  return colorList[params.dataIndex];
+                },
+                barBorderRadius: [4, 4, 4, 4],
+                label: {
+                  show: true,
+                  position: "top",
+                  formatter: "{c}GB  {d}%"
+                }
+              }
+            }
+          }
+        ]
+      });
     },
 
-    mounted: function() {
-        this.drawCharts()
-    },
-    updated: function() {
-        this.drawCharts()
+    drawCharts() {
+      if (this.isColumn) {
+        this.drawColumnChart();
+        $(".chartBtn>div").removeClass("active");
+      } else {
+        this.drawPieChart();
+        $(".chartBtn>div").addClass("active");
+      }
+      this.drawDoughnutChart();
     }
-}
+  },
+
+  mounted: function() {
+    this.drawCharts();
+  },
+  updated: function() {
+    this.drawCharts();
+  }
+};
 </script>
 
 <style scoped>
 @import "../../../static/css/aside.css";
 @import "../../../static/css/icon-menu.css";
 .header {
-      height: 40px;
-      background-color: #fff;
-      padding: 10px 20px;
-      border-bottom: 1px solid #e6e6e6;
+  height: 40px;
+  background-color: #fff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e6e6e6;
 }
 .main {
-      background-color: #fff;
-      padding: 10px 20px;
+  background-color: #fff;
+  padding: 10px 20px;
 }
-.orders-text{
-    line-height: 40px;
-    text-align: center;
-    font-size: 16px;
-    display: block;
+.orders-text {
+  line-height: 40px;
+  text-align: center;
+  font-size: 16px;
+  display: block;
 }
 .chart-container {
-    width: 100%;
-    float: left;
+  width: 100%;
+  float: left;
 }
 .container .is-active {
-    background-color: #f5f8fd;
-    font-size: 16px;
-    font-weight: 700;
+  background-color: #f5f8fd;
+  font-size: 16px;
+  font-weight: 700;
 }
 .container .el-menu {
-    padding: 10px 20px;
-    border-bottom: 1px solid #e6e6e6;
-    border-top: none;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e6e6e6;
+  border-top: none;
 }
 .container .el-menu .el-menu-item {
-    height: 40px;
-    width: 132px;
-    margin-right: 50px;
-    line-height: 40px;
-    text-align: center
+  height: 40px;
+  width: 132px;
+  margin-right: 50px;
+  line-height: 40px;
+  text-align: center;
 }
-.capacity b,.capacity span{
-    display: block;
-    text-align: center;
+.capacity b,
+.capacity span {
+  display: block;
+  text-align: center;
 }
-.capacity b{
-    font-size: 16px;
-    padding: 55px 0 8px;
+.capacity b {
+  font-size: 16px;
+  padding: 55px 0 8px;
 }
-.capacity span{
-    color: #787878;
+.capacity span {
+  color: #787878;
 }
-.unfold{
-    color: #4778c7;
-    font-size: 14px;
-    height: 28px;
-    line-height: 28px;
-    text-align: center;
-    padding:100px 0 50px;
-    border-bottom: 1px solid #e6e6e6;
+.unfold {
+  color: #4778c7;
+  font-size: 14px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  padding: 100px 0 50px;
+  border-bottom: 1px solid #e6e6e6;
 }
-.unfold>span{
-    display: inline-block;
-    color: #fff;
-    background: #4778c7;
-    width: 80px;
-    border-radius: 3px;
-    margin-left: 10px;
-    cursor: pointer;
+.unfold > span {
+  display: inline-block;
+  color: #fff;
+  background: #4778c7;
+  width: 80px;
+  border-radius: 3px;
+  margin-left: 10px;
+  cursor: pointer;
 }
-.capacity-text{
-    line-height: 24px;
-    padding: 20px;
-    font-size: 13px;
+.capacity-text {
+  line-height: 24px;
+  padding: 20px;
+  font-size: 13px;
 }
-.chartBtn{
-    text-align: right;
+.chartBtn {
+  text-align: right;
 }
-.chartBtn>div{
-    height: 52px;
-    width: 103px;
+.chartBtn > div {
+  height: 52px;
+  width: 103px;
 }
-.chartBtn span{
-    float: left;
-    width: 50%;
-    height: 100%;
-    display: inline-block;
+.chartBtn span {
+  float: left;
+  width: 50%;
+  height: 100%;
+  display: inline-block;
 }
-.modelwidth752px span{
-    font-size: 14px;
-    color: rgb(31, 61, 60);
+.modelwidth752px span {
+  font-size: 14px;
+  color: rgb(31, 61, 60);
 }
-.modelwidth752px .label{
-    width: 80px;
-    line-height: 30px;
-    text-align: right;
-    display: inline-block;
+.modelwidth752px .label {
+  width: 80px;
+  line-height: 30px;
+  text-align: right;
+  display: inline-block;
 }
 </style>
 <style>
 .modelwidth752px .el-dialog .el-form-item__content {
-    margin-left: 100px !important;
-    padding-bottom: 25px;
-    border-bottom: 1px solid #e6e6e6;
+  margin-left: 100px !important;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #e6e6e6;
 }
 
 .modelwidth752px .el-dialog .el-dialog__header {
-    border-bottom: 1px solid #e6e6e6;
-    padding-bottom: 20px;
+  border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 20px;
 }
 
 .modelwidth752px .el-dialog .el-form-item__label {
-    color: rgb(31, 61, 60);
+  color: rgb(31, 61, 60);
 }
 .text-a-c .el-form-item__content {
-    text-align: center;
-    margin-left: 0px !important;
-    padding-bottom: 0px !important;
-    border-bottom: none !important;
+  text-align: center;
+  margin-left: 0px !important;
+  padding-bottom: 0px !important;
+  border-bottom: none !important;
 }
 </style>

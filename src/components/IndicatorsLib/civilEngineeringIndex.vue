@@ -339,7 +339,7 @@ export default {
   padding-bottom: 20px;
   border-bottom: 1px solid #e6e6e6;
 }
-.order-management .content .el-input {
+.order-management.order-detail .content .el-input {
   width: 100%;
 }
 </style>
