@@ -261,7 +261,7 @@ export default {
   height: 100%;
   overflow: auto;
 }
-.order-management .content .el-input {
+.order-management.order-detail .content .el-input {
   width: 100%;
 }
 </style>

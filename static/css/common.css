@@ -1347,7 +1347,18 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
 .icon-edit_ {
     background-position: -74px -20px;
 }
-
+.avatar-delete {
+    width: 18px;
+    height: 18px;
+    background-image: url("../img/icon-menu.png");
+    background-position: -57px -144px
+}
+.avatar-upload {
+    width: 18px;
+    height: 18px;
+    background-image: url("../img/icon-menu.png");
+    background-position: -38px -144px 
+}
 .icon-authorize_ {
     background-image: url("../img/icon-menu.png");
     background-position: -132px -275px

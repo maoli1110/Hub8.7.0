@@ -89,10 +89,10 @@
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
-                    <img v-show="!isEdit" src="http://dunizb.com/img/avatar.gif" class="avatar" style="margin-left:20px">
+                    <img v-show="!isEdit" src="http://www.ghost64.com/qqtupian/zixunImg/local/2017/04/14/1492160362184.jpg" class="avatar" style="margin-left:20px">
                 </el-form-item>
                 <el-form-item :label="isEdit?'示例:':'' ">
-                    <img v-show="isEdit" src="http://dunizb.com/img/avatar.gif" class="avatar">
+                    <img v-show="isEdit" src="http://www.ghost64.com/qqtupian/zixunImg/local/2017/04/14/1492160362184.jpg" class="avatar">
                 </el-form-item>
                 <el-form-item label="企业名称：" prop="password">
                     <el-input v-show="isEdit" v-model="ruleForm.password" auto-complete="off"></el-input>
@@ -390,7 +390,7 @@
     }
 
     .demo-ruleForm {
-        margin-top: 50px;
+        margin-top: 20px;
         margin-left: -25px;
     }
 
