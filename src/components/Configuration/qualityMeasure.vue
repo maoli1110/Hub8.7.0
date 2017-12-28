@@ -68,6 +68,7 @@
                 </el-pagination>
             </div>
         </div>
+        <!--添加流程-->
         <div v-show="isBMP" class="BMP-process addPage">
             <el-row class="BMP-info">
                 <el-col :span="24" class="pro-title">
@@ -169,7 +170,7 @@
                 </el-col>
             </el-row>
         </div>
-        <!--v-show="isBMPedit"-->
+        <!--编辑流程-->
         <div v-show="isBMPedit" class="BMP-process editPage">
             <el-row class="BMP-info">
                 <el-col :span="24" class="pro-title">
@@ -274,7 +275,6 @@
             </el-row>
         </div>
         <!--模态框(关联模型)-->
-
         <el-dialog title="已关联表单" :visible.sync="dialogFormVisible" class="link-model" :close-on-click-modal="false"
                    style="width:0;height:0;"></el-dialog>
         <div v-show="dialogFormVisible" class="link-model">
@@ -356,14 +356,12 @@
                     <div v-for="city in cities" :key="city" style="margin:10px 0 0 20px">
                         <el-checkbox :label="city" :key="city">{{city}}</el-checkbox>
                     </div>
-
-
                 </el-checkbox-group>
             </template>
             <span slot="footer" class="dialog-footer" style="text-align:center">
-                    <el-button @click="AssociatedVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="getAssociated">确 定</el-button>
-                    </span>
+                <el-button @click="AssociatedVisible = false">取 消</el-button>
+                <el-button type="primary" @click="getAssociated">确 定</el-button>
+             </span>
         </el-dialog>
         <!--模态框（收起算管理模块）-->
         <el-dialog :visible.sync="linkTree" style="width:0;height:0;opacity:0;left:50%"
@@ -417,8 +415,7 @@
             </div>
             <!--<ul class="ztree" id="lineTree"></ul>-->
         </div>
-
-
+        <!--预览功能弹窗-->
         <div v-show="dialogLinkPriview" class="dialogPriview quality-priveiw" style="padding-bottom:20px">
             <el-row>
                 <el-col :span="24" style="padding:15px 30px 2px;">
@@ -673,16 +670,6 @@
             $(".qualityTree input").bind("keydown", this.qualitySearchTree);
             $(".formModelTable input").bind("keydown", this.formModelSearch);
             $(".quality-searInput input").bind("keydown", this.tableSearch);
-            if (this.$route.path == "/setting/qualityMeasure") {
-                $(".sub-menus li").removeClass("is-active");
-                $(".sub-menus li")
-                    .eq(0)
-                    .addClass("is-active");
-                $(".nav-menu li:last").addClass("is-active");
-                console.log(this.$route.path);
-            } else {
-                $(".nav-menu li:last").removeClass("is-active");
-            }
         },
         methods: {
             clearEvent() {
@@ -976,6 +963,7 @@
                 getProcessRelFormList(params)
                     .then(res => {
                         // console.info(res.data,'关联表单');
+                        console.log(this.formModelData,'eeee');
                         this.formModelData = res.data.result.content;
                         this.modelTotalNum = res.data.result.totalNumber;
                         console.info(this.modelTotalNum);
@@ -1036,7 +1024,6 @@
             formModelChange(modelId) {
                 // 切换目录后，档期内目录以勾选的表单将取消，是否确认切换目录
                 //关联表单数据
-
                 this.formModelParams.modelId = modelId;
                 this.formModelParams.pageParam.orders[0].size = !this.formModelParams.pageParam.orders[0].size? 6
                     : this.formModelParams.pageParam.orders[0].size
@@ -1111,12 +1098,8 @@
             visibleEvent(val) {
                 currentSelectVal = val;
             },
-            formModelPriview(idnex, row) {
-                //获取表单预览地址
-                this.priviewUrl = "";
-                getFormPreviewParams.modelId = formModelParams.modelId;
-                getFormPreviewParams.formId = row.formId;
-                getFormPreview(getFormPreviewParams)
+            getPriviewUrl(params){
+                getFormPreview(params)
                     .then(res => {
                         if (res.data) {
                             this.dialogLinkPriview = true;
@@ -1125,11 +1108,14 @@
                             this.messageBox("暂时不支持预览");
                         }
                     })
-                    .catch(function (error) {
-                        this.messageBox(error.response.data.message);
-                    });
+            },
+            formModelPriview(idnex, row) {
+                //获取表单预览地址
+                this.priviewUrl = "";
+                getFormPreviewParams.modelId = this.formModelParams.modelId;
+                getFormPreviewParams.formId = row.formId;
+                this.getPriviewUrl(getFormPreviewParams)
 
-                console.log(row.formId, "formId");
             },
             //流程管理文件
             processSetEdit(event, index) {
@@ -1459,10 +1445,6 @@
                         this.isBMP = true;
                     });
             },
-            //
-            downValue(event) {
-                //           console.info($(event))
-            },
             deleteLinkModal() {
                 //删除关联模型
                 let self = this;
@@ -1471,8 +1453,8 @@
                     cancelButtonText: "取消",
                     type: "warning"
                 }).then(() => {
-                    updateProcessRelFormParams.processId = !processId;
-                    updateProcessRelFormParams.modelId = formModelParams.modelId;
+                    updateProcessRelFormParams.processId = this.formModelParams.processId;
+                    updateProcessRelFormParams.modelId = this.formModelParams.modelId;
                    this.updateFormList(updateProcessRelFormParams);
                 });
             },
@@ -1588,6 +1570,7 @@
             },
             //添加关联
             BMPAddLink() {
+                console.log(this.formModelParams)
                 this.linkTree = true;
                 this.dialogFormVisible = false;
                 //树结构
@@ -1602,15 +1585,9 @@
 
             //删除关联模型
             BMPDeleteLink() {
-                if (
-                    this.formModelData.result.length &&
-                    updateProcessRelFormParams.delFormIds.length
-                ) {
+                if (this.formModelData.length && updateProcessRelFormParams.delFormIds.length) {
                     this.deleteLinkModal();
-                } else if (
-                    this.formModelData.result.length &&
-                    !updateProcessRelFormParams.delFormIds.length
-                ) {
+                } else if (this.formModelData.length &&!updateProcessRelFormParams.delFormIds.length) {
                     this.messageBox("请选择要删除的表单！");
                 } else {
                     this.messageBox("没有可以删除的数据！");
@@ -1683,12 +1660,11 @@
                 this.modelTypeVal = this.modelTypeTreeVal;
                 this.dialogFormVisible = true;
                 this.linkTree = false;
-                updateProcessRelFormParams.processId = processId;
-                updateProcessRelFormParams.modelId = formModelParams.modelId;
+                updateProcessRelFormParams.processId = this.formModelParams.processId;
+                updateProcessRelFormParams.modelId = this.formModelParams.modelId;
                 var zTree = $.fn.zTree.getZTreeObj("lineTree");
                 var selectNodes = zTree.getCheckedNodes(true); //当前选中的节点
-                updateProcessRelFormParams.processId = this.modelTypeVal;
-               this.updateFormList(updateProcessRelFormParams);
+                this.updateFormList(updateProcessRelFormParams);
             },
             nocheckNode(e) {
                 var zTree = $.fn.zTree.getZTreeObj("lineTree"),
@@ -1854,13 +1830,21 @@
                     $("#checkAllFalse").click();
                 }
             },
-
+            updateLinkForm(params,index){
+                updateProcessRelForm(params)
+                    .then(res => {
+                        if(res.data.code==200){
+                            this.formModelData.splice(index, 1);
+                            this.formModelType(this.formModelParams); //重新渲染数据
+                        }
+                    })
+            },
             //删除关联模型记录
             linkDelete(index, row) {
                 updateProcessRelFormParams.delFormIds = [];
                 //console.log(row.formId);
-                updateProcessRelFormParams.processId = processId;
-                updateProcessRelFormParams.modelId = formModelParams.modelId;
+                updateProcessRelFormParams.processId = this.formModelParams.processId;
+                updateProcessRelFormParams.modelId = this.formModelParams.modelId;
                 updateProcessRelFormParams.delFormIds.push(row.formId);
                 let self = this;
                 //更新的模板列表
@@ -1869,14 +1853,7 @@
                     cancelButtonText: "取消",
                     type: "warning"
                 }).then(() => {
-                    updateProcessRelForm(updateProcessRelFormParams)
-                        .then(res => {
-                            this.formModelData.result.splice(index, 1);
-                            this.formModelType(this.formModelParams); //重新渲染数据
-                        })
-                        .catch(function (error) {
-                            self.messageBox(error.response.data.message);
-                        });
+                   this.updateLinkForm(updateProcessRelFormParams,index)
                 });
             },
             //树结构的搜索功能
