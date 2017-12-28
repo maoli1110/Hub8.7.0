@@ -236,7 +236,7 @@ export const updateProcessRelForm = params => axios.post(`${civilUrl}/inspector/
 //表单预览获取uuid
 export const getFormPreview =params  => axios.get(`${civilUrl}/inspector/form/getFormPreview/${params.modelId}/${params.formId}`);
 //关联表单数据-->?sortType=desc
-export const getFormModelTypeList  = params =>axios.get(`${civilUrl}/inspector/form/getFormModelTypeList/${params.belong}?sortType=${params.sortType}`);
+export const getFormModelTypeList  = params =>axios.get(`${civilUrl}/inspector/form/getFormModelTypeList/${params.belong}/${params.sortType}`);
 //export const getFormModelTypeList  = params =>axios.get(`${base}/rs/lbconfig/form/getFormModelTypeList/${params.belong}`);
 //获取表单列表-->树结构
 export const getFormInfosForProcess = params=>axios.get(`${civilUrl}/inspector/form/getFormInfosForProcess/${params.modelId}/${params.processId}`);
