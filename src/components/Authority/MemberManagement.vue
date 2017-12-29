@@ -214,14 +214,27 @@
                     <el-input v-model="signName" auto-complete="off" style="width:91%"></el-input>
                 </div>
             </div>
-            <el-upload style="margin-top:20px;padding:0 20px" class="upload-demo" drag ref="upload" v-show="!hasImage" :on-preview="handlePreview"
-                :on-remove="handleRemove" :auto-upload="false" :action="actionUrl" :on-success='handleSuccess'>
+            <el-upload style="margin-top:20px;padding:0 20px" class="upload-demo" drag ref="upload" v-show="!hasImage&&!preview" :on-preview="handlePreview"
+                :on-remove="handleRemove" 
+                :on-change="handleChange"
+                :auto-upload="false" :action="actionUrl" :on-success='handleSuccess'>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">点击上传电子签名</div>
                 <div class="el-upload__tip" slot="tip">
                     <span style="color:#e30000">*</span>建议签名图片尺寸（宽：100px-高：40px）</div>
                 <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
             </el-upload>
+            <div v-show="preview" class="avatar-wrap" style="margin-top:-20px">
+                <img :src="previewUrl" class="avatar" style="width:310px;height:140px;margin-top:20px;">
+                <div class="el-upload__tip" slot="tip">
+                    <span style="color:#e30000">*</span>建议签名图片尺寸（宽：100px-高：40px）</div>
+                <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
+                <div class="avatar-proper">
+                    <!-- <span @click="hasImage=false;" class="avatar-upload"></span> -->
+                    <span @click="preview=false;deletePreview()" class="avatar-delete"></span>
+                </div>
+            </div>
+
             <div v-show="hasImage" class="avatar-wrap">
                 <img :src="imageUrl" class="avatar" style="width:310px;height:140px;margin-top:20px;">
                 <div class="el-upload__tip" slot="tip">
@@ -238,6 +251,7 @@
                 <el-button type="primary" @click="submitUpload" class="dialog-btn">确 定</el-button>
                 <el-button @click="signDialogVisible = false" class="dialog-btn">取消</el-button>
             </span>
+
             <span slot="footer" class="dialog-footer" v-show="hasImage">
                 <el-button type="primary" @click="signDialogVisible = false" class="dialog-btn">确 定</el-button>
                 <el-button @click="signDialogVisible = false" class="dialog-btn">取消</el-button>
@@ -299,7 +313,9 @@
                 isUpdateUserSign: false, //判断是更新签名还是添加
                 actionUrl: '', //上传签名地址
                 imageUrl: '', // 上传签名成功后签名图片地址
-                signName: '', //签名
+                signName: '', //签名;
+                preview:false,
+                previewUrl:'',
                 hasImage: false, //当前用户是否上传签名照
                 textarea: "布鲁斯123 布鲁斯", //批量添加文本内容
                 hasChecked: false, //添加成员前账号是否已经检查
@@ -765,6 +781,7 @@
                 this.curSelectUserInfo = row;
                 this.imageUrl = '';
                 this.signName = '';
+                this.preview=false;
                 this.isUpdateUserSign=false;
                 //当前成员没有signId则显示上传
                 if (!this.curSelectUserInfo.signId) {
@@ -804,8 +821,17 @@
                 console.log(response)
                 if (response.code == 200) {
                     this.getUsersList();
-                    this.signDialogVisible = false
+                    this.signDialogVisible = false;
+                    this.preview=false;
                 }
+                this.$refs.upload.clearFiles()
+            },
+            handleChange(file, fileList) {
+                this.preview=true;
+                this.previewUrl=file.url;
+                
+            },
+            deletePreview(){
                 this.$refs.upload.clearFiles()
             },
             handleRemove(file, fileList) {},
@@ -1022,5 +1048,4 @@
         transition: all .5s;
         opacity: .4
     }
-
 </style>
