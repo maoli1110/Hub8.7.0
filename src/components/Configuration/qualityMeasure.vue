@@ -713,9 +713,12 @@
             getTableList(params){
                 getProcessList(params)
                     .then(res => {
-                        this.tableData = res.data.result.content;
-                        this.totalNumber = res.data.result.totalElements;
-                        this.totalPages = res.data.result.pageSize;
+                        if(res.data.result.content.length){
+                            this.tableData = res.data.result.content;
+                            this.totalNumber = res.data.result.totalElements;
+                            this.totalPages = res.data.result.pageSize;
+                        }
+
                     })
 
             },
