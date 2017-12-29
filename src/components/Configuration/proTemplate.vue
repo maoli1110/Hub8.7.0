@@ -307,11 +307,9 @@
                     },
                     callback: {
                         onCollapse: function (event, treeId, treeNode) {
-                            // console.info('折叠')
                             level = treeNode.level;
                         },
                         onExpand: function (event, treeId, treeNode) {
-                            // console.info('展开')
                             level = treeNode.level;
                         },
                         onDblClick: this.onEditDbClick,
@@ -339,11 +337,9 @@
                     },
                     callback: {
                         onCollapse: function (event, treeId, treeNode) {
-                            // console.info('折叠')
                             level = treeNode.level;
                         },
                         onExpand: function (event, treeId, treeNode) {
-                            // console.info('展开')
                             level = treeNode.level;
                         },
                         onDblClick: this.editonEditDbClick,
@@ -422,7 +418,6 @@
         // 当下拉框改变重新请求
         watch: {
             value_: function () {
-                console.log(this.value_,'value');
                 getFormInfosForm({modelId:this.value_}).then((res) => {
                     this.editZNodes = res.data.result;
                     $.fn.zTree.init($("#editTree"), this.settingEdit, this.editZNodes);
@@ -495,12 +490,8 @@
                 this.nodeForms = [];
                 this.nodeTrees = [];
                 // 拼接向后台发送的参数
-                // console.log(this.nodeId, this.projModelId, this.projModelName);
-                console.log(this.typeList,'typelist');
                 this.typeList.forEach((el, index1) => {
-                    // console.log(el.childs);
                     el.childs.forEach((el, index2) => {
-                        // console.log(el.childs)
                         if (el.childs) {
                             el.childs.forEach((el, index3) => {
                                 formList.push(el);
@@ -509,7 +500,6 @@
 
                     })
                 });
-                // console.log(this.formList);
                 formList.length == 0 ? this.nodeForms = [] : this.nodeForms.push({
                     nodeId: this.nodeId,
                     formList: formList
@@ -520,11 +510,9 @@
                     if (index == 0) {
                         return;
                     }
-                    /* console.log(el); */
                     nodeTrees.push({nodeId: el.nodeId, pid: el.pid, nodeName: el.nodeName});
                 })
                 if(this.nodeForms.length==0 && flag==1){
-                    //    console.log(456);
                     // 只更新树
                     let para = {
                         projModelId: this.projModelId,
@@ -542,7 +530,6 @@
                     nodeTrees: nodeTrees,
                     nodeForms: this.nodeForms,
                 }
-                // console.log(para);
                 this.updateProjModelList(para);
             },
             // 更新工程划分树
@@ -575,7 +562,6 @@
                     projmodelId: this.projModelId,
                     nodeId: this.nodeId
                 }).then(res => {
-                    // console.log(res);
                     res.data.result.forEach((elForm, index) => {
                         this.typeList.forEach((el, index1) => {
                             el.childs.forEach((el, index2) => {
@@ -618,12 +604,10 @@
                         el.childs = [];
                     })
                 });
-                // console.log(treeNode)
                 this.editTitle = [];
                 this.nodeId = treeNode.nodeId;
                 this.addFlag = treeNode.level;
                 if (treeNode.level == 3) {
-                    // console.log(treeNode.level)
                     this.editTitle.push(treeNode.getParentNode().getParentNode().nodeName, treeNode.getParentNode().nodeName, treeNode.nodeName);
                     this.getprojmodelNodeForms();
                 } else {
@@ -635,12 +619,10 @@
             getTypeList(params){
                 getFormModelTypeList(params).then((res) => {
                     let selectOption = res.data.result;
-                    console.log(selectOption,'selectOption')
                     selectOption.forEach((el, index) => {
                         if (index == 0) {
                             this.value_ = el.modelId;
                         }
-                        // console.log(el)
                         this.addFormOption.push({value_: el.modelId, label: el.modelName})
                     })
                 })
@@ -654,7 +636,6 @@
                     });
                     return;
                 }
-                // console.log(this.addFlag);
                 if (this.addFlag == 3) {
                     this.formEditVisible = true;
                     this.getTypeList({belong: 3,sortType:1});
@@ -667,16 +648,12 @@
             },
             // 添加页面树点击事件
             editzTreeOnClick(event, treeId, treeNode) {
-                console.log(treeNode.formId)
-                // console.log(treeNode);
                 if (treeNode.isForm) {
-                    // console.log(123);
                     if (this.value == 0) {
                         //    开工报告
                         if (this.activeName2 == 0) {
                             //    工序质检
                             this.typeList.forEach((el, index1) => {
-                                // console.log(el.childs);
                                 if (index1 == 0) {
                                     el.childs.forEach((el, index2) => {
                                         if (el.childs == null) {
@@ -709,7 +686,6 @@
                         if (this.activeName2 == 0) {
                             //    工序质检
                             this.typeList.forEach((el, index1) => {
-                                // console.log(el.childs);
                                 if (index1 == 1) {
                                     el.childs.forEach((el, index2) => {
                                         if (index2 == 0) {
@@ -738,14 +714,10 @@
                         } else if (this.activeName2 == 1) {
                             //    交工评定
                             this.typeList.forEach((el, index1) => {
-                                // console.log(el.childs);
                                 if (index1 == 1) {
                                     el.childs.forEach((el, index2) => {
                                         if (index2 == 1) {
-                                            // console.log(el.childs);
-                                            // console.log(this);
                                             // this.$set(el, 'childs', elForm.formName);
-                                            // console.log(this.typeList);
                                             if (el.childs == null) {
                                                 el.childs = [];
                                             }
@@ -774,14 +746,10 @@
                         if (this.activeName2 == 0) {
                             //    工序质检
                             this.typeList.forEach((el, index1) => {
-                                // console.log(el.childs);
                                 if (index1 == 2) {
                                     el.childs.forEach((el, index2) => {
                                         if (index2 == 0) {
-                                            // console.log(el.childs);
-                                            // console.log(this);
                                             // this.$set(el, 'childs', elForm.formName);
-                                            // console.log(this.typeList);
                                             if (el.childs == null) {
                                                 el.childs = [];
                                             }
@@ -807,14 +775,10 @@
                         } else if (this.activeName2 == 1) {
                             //    交工评定
                             this.typeList.forEach((el, index1) => {
-                                // console.log(el.childs);
                                 if (index1 == 2) {
                                     el.childs.forEach((el, index2) => {
                                         if (index2 == 1) {
-                                            // console.log(el.childs);
-                                            // console.log(this);
                                             // this.$set(el, 'childs', elForm.formName);
-                                            // console.log(this.typeList);
                                             if (el.childs == null) {
                                                 el.childs = [];
                                             }
@@ -844,8 +808,6 @@
             },
             // 删除增加或原有
             itemDelete(itemtypeName, childitemtypeName, childitemName, index) {
-                // console.log(itemtypeName, childitemtypeName, childitemName, index);
-                // console.log(this.typeList);
                 this.typeList.forEach((el, index1) => {
                     if (el.typeName == itemtypeName) {
                         el.childs.forEach((el, index2) => {
@@ -859,8 +821,6 @@
             },
             // 预览选项
             itemView(modelId, formId) {
-                //    console.log(modelId,typeId);
-
                 // formPriviewParams.modelId = getFormInfosParams.modelId;
                 // formPriviewParams.formId = row.formId;
                 getFormPreview({modelId: modelId, formId: formId}).then((res) => {
@@ -893,8 +853,6 @@
             },
             //tab选项卡菜单
             tabClick(targetName) {
-                // console.log(targetName.label);
-                // console.log(this.activeName2);
 
             },
             // 下拉框选择
@@ -907,10 +865,8 @@
             // 添加下拉框选择
             selectAdd() {
 
-                // console.log(this.value_);
             },
             proOk() {
-
 //                this.EditVisible = false;
                 this.updatePromodel(1);
                 this.getData();
@@ -919,18 +875,15 @@
             proCancel() {
                 this.EditVisible = false;
                 getProjModelDetail(this.projModelId).then(res => {
-                    // console.log(res);
                     this.projModelName = res.data.projModelName;
                     this.zNodes = res.data.nodeInfos;
                     // 给树结构添加全部选项
-                    // console.log(this.zNodes);
                     this.zNodes.unshift({nodeId: '0001', nodeName: '全部', pid: ''});
                     this.zNodes.forEach((el, index) => {
                         if (index == 1) {
                             el.pid = '0001';
                         }
                     })
-                    // console.log(this.zNodes, '组成的树机构');
                     $.fn.zTree.init($("#proZtree"), this.setting, this.zNodes);
                 }).catch(() => {
                 });
@@ -986,7 +939,6 @@
             edit() {
                 var zTree = $.fn.zTree.getZTreeObj("proZtree");
                 nodes = zTree.getSelectedNodes();
-                // console.log(nodes);
                 treeNode = nodes[0];
                 if (nodes == null) {
                     this.$alert('请选择一个节点编辑', '提示', {
@@ -1011,7 +963,6 @@
             zTreeBeforeRename(treeId, treeNode, newName, isCancel) {
                 var zTree = $.fn.zTree.getZTreeObj("proZtree");
                 var sNodes = zTree.getSelectedNodes();
-                // console.log(treeNode, '111111111');
                 // 没有选择节点的情况
                 if (this.nodeId == '') {
                     this.$alert('请选择一个节点添加', '提示', {
@@ -1322,7 +1273,6 @@
                     nodes = zTree.getSelectedNodes();
 
                     treeNode = nodes[0];
-                    // console.info(treeNode, '55555')
                     if (level > 2) {
                         treeNode = zTree.addNodes(nodeParent, {
                             nodeId: this.generateID(),
@@ -1368,7 +1318,6 @@
             //树结构的搜索功能
             getZtreeParentNode(ztreeNode, nodes) {
                 var pNode = ztreeNode.getParentNode();
-                /*console.log(pNode);*/
                 if (pNode != null) {
                     if (nodes.indexOf(pNode) < 0) {
                         nodes.push(pNode);
@@ -1381,7 +1330,6 @@
                     return;
                 }
                 var children = ztreeNode.children;
-                /* console.log(children);*/
                 if (children.length > 0) {
                     for (var i = 0; i < children.length; i++) {
                         var child = children[i];
@@ -1396,8 +1344,6 @@
                 this.searchTree(event, 'eidtTree')
             },
             searchTree(event) {
-                //    debugger;
-                // console.log(event);
                 var treeObj = $.fn.zTree.getZTreeObj('editTree');
                 var nodes1 = treeObj.getNodesByParam("isHidden", true);
                 var searchVal = $('#searchMessage').find('input').val();
@@ -1409,7 +1355,6 @@
                 var otherNeedShowNodes = [];
                 // 隐藏不符合搜索条件的节点
                 if (event.type == 'click' || event.keyCode == 13) {
-                    // console.log(searchVal);
                     for (var i = 0; i < treeNodes.length; i++) {
                         if (treeNodes[i].formName.indexOf(searchVal) < 0) {
                             treeObj.hideNode(treeNodes[i]);
@@ -1465,13 +1410,10 @@
             },
 
             maxViewTab(index) {
-                // console.info(index)
             },
             beforeClick(treeNode) {
-                // console.log(treeNode, 'treeNode')
             },
             onEditDbClick(event, treeId, treeNode) {
-                // console.info(treeNode)
                 if (event.currentTarget.id == 'editTree' && !treeNode.isParent) {
                     for (var i = 0; i < this.options.length; i++) {
                         if (this.options[i].label == treeNode.name) {
