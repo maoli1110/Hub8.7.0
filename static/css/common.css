@@ -1352,7 +1352,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c6ff00', endC
     width: 18px;
     height: 18px;
     background-image: url("../img/icon-menu.png");
-    background-position: -38px -144px 
+    background-position: -38px -144px
 }
 .icon-authorize_ {
     background-image: url("../img/icon-menu.png");
@@ -1843,3 +1843,4 @@ body .el-popover.remark-popper {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.v-modal{z-index:2000 !important;}

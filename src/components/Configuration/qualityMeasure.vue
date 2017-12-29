@@ -4,11 +4,8 @@
         <div class="" v-show="isQuality">
             <div class="search-area">
                 <el-row>
-                    <!-- <el-menu  class="el-menu-demo" mode="horizontal" router>
-                         <el-menu-item v-for="menusdata in menusDataFa"  :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-                     </el-menu>-->
                     <el-col :span="24" class="sub-menus-style">
-                        <el-menu class="el-menu-demo sub-menus" mode="horizontal" router>
+                        <el-menu class="el-menu-demo sub-menus" :default-active="activeIndex" mode="horizontal" router >
                             <el-menu-item v-for="menusdata in menusData" :key="menusdata.name" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                         </el-menu>
                     </el-col>
@@ -554,7 +551,8 @@
                         },
                         beforeCheck: this.beforeCheck,
                         onCheck: this.onZtreeFormModelCheck
-                    }
+                    },
+                    activeIndex:""
                 },
 
                 zNodes: [],
@@ -582,11 +580,7 @@
                     {name: "质检计量", routerDump: "qualityMeasure"}
                 ],
                 totalNumber: 0,
-                menusData: [
-                    {name: "流程设置", routerDump: "qualityMeasure"},
-                    {name: "工程模板", routerDump: "proTemplate"},
-                    {name: "表单管理", routerDump: "formManage"}
-                ],
+                menusData:[{name:"流程设置",routerDump:'/configuration/Inspector/qualityMeasure'},{name:'工程模板',routerDump:'/configuration/Inspector/proTemplate'},{name:'表单管理',routerDump:'/configuration/Inspector/formManage'}],
                 rootInfo: [],
                 flowNameEdit: "",
                 flowRemarkEdit: "",
@@ -648,6 +642,8 @@
             tableParams.pageSize = pageSize;
             tableParams.sortType = sortType;
             tableParams.sortField = sortField;
+            this.activeIndex = this.$route.path;
+            console.log(this.$route.path,'route');
             this.getData();
         },
         mounted() {
@@ -1922,6 +1918,29 @@
 <style scoped>
     .quality-page .el-dialog__footer {
         text-align: center !important;
+    }
+    .container .el-menu {
+        padding: 10px 20px;
+        border: 1px solid #e6e6e6;
+        border-top: none;
+    }
+
+    .container .el-menu .el-menu-item {
+        height: 40px;
+        width: 132px;
+        margin-right: 50px;
+        line-height: 40px;
+        text-align: center
+    }
+
+    .container .is-active {
+        background-color: #f5f8fd;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .container .el-menu .el-menu-item:hover {
+        background-color: #f5f8fd;
     }
 </style>
 

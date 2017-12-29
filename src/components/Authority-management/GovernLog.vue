@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import '../../../static/css/components.css';
+import "../../../static/css/components.css";
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 import { getLogs } from "../../api/getData-cxx.js";
 import { basePath } from "../../utils/common.js";
@@ -54,7 +54,7 @@ export default {
   props: ["nowPath"],
   data() {
     return {
-      tableData:[],
+      tableData: [],
       logParameters: {
         beginTime: "",
         endTime: "",
@@ -83,7 +83,8 @@ export default {
       // 选择时间范围
       this.logParameters.beginTime = val.split(" - ")[0];
       this.logParameters.endTime = val.split(" - ")[1];
-      this.getLogList();
+     this.getLogList();
+ 
     },
     downLoadLogs() {
       alert("downLoad");
@@ -126,14 +127,13 @@ export default {
       if (date == undefined) {
         return "";
       }
-      return moment(date).format("YYYY.MM.DD HH:mm:ss");
+      return moment(date).format("YYYY-MM-DD HH:mm:ss");
     },
     handleSizeChange(val) {
       console.log(val);
-      
     },
     handleCurrentChange(val) {
-      this.logParameters.page = val-1;
+      this.logParameters.page = val - 1;
       this.getLogList();
     },
     getLogList() {
@@ -156,13 +156,32 @@ export default {
       getLogs(params).then(function(res) {
         if (res.data.msg == "success") {
           vm.tableData = res.data.result.content;
-          vm.logParameters.totalElements =  res.data.result.totalElements
+          vm.logParameters.totalElements = res.data.result.totalElements;
         }
       });
     }
   },
   mounted() {
-    this.getLogList();
+    // 获取最近7天的时间
+    let end = new Date().getTime();
+    let start = end - 3600 * 1000 * 24 * 7;
+    this.selectDate = [start, end];
+
+    Date.prototype.toLocaleString = function() {
+      return (
+        this.getFullYear() +
+        "-" +
+        (this.getMonth() + 1 > 10
+          ? this.getMonth() + 1
+          : "0" + (this.getMonth() + 1)) +
+        "-" +
+        (this.getDate() > 10 ? this.getDate() : "0" + this.getDate())
+      );
+    };
+
+    this.logParameters.beginTime = new Date(start).toLocaleString();
+    this.logParameters.endTime = new Date(end).toLocaleString();
+    //this.getLogList();
   },
   watch: {
     nowPath() {

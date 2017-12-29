@@ -1,16 +1,10 @@
 <template>
     <div class="proTemplate">
-
         <div v-show="!EditVisible">
-
             <el-row>
-                <!-- <el-menu class="el-menu-demo" mode="horizontal" router>
-
-                                    <el-menu-item v-for="menusdata in menusDataFa" :index="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
-                                </el-menu>-->
                 <el-col :span="24" class="sub-menus-style">
-                    <el-menu class="el-menu-demo sub-menus" mode="horizontal" router>
-                        <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" :key="menusdata.name">{{menusdata.name}}
+                    <el-menu  class="el-menu-demo sub-menus" :default-active="activeIndex" mode="horizontal" router>
+                        <el-menu-item  v-for="menusdata in menusData" :index="menusdata.routerDump" :key="menusdata.name">{{menusdata.name}}
                         </el-menu-item>
                     </el-menu>
                 </el-col>
@@ -375,11 +369,7 @@
                 value_: '',
                 editZNodes: [],
                 cur_page: 1,
-                menusDataFa: [{name: "explorer", routerDump: 'explorer'}, {name: '质检计量', routerDump: 'qualityMeasure'}],
-                menusData: [{name: "流程设置", routerDump: 'qualityMeasure'}, {
-                    name: '工程模板',
-                    routerDump: 'proTemplate'
-                }, {name: '表单管理', routerDump: 'formManage'}],
+                menusData:[{name:"流程设置",routerDump:'/configuration/Inspector/qualityMeasure'},{name:'工程模板',routerDump:'/configuration/Inspector/proTemplate'},{name:'表单管理',routerDump:'/configuration/Inspector/formManage'}],
                 tableData: [],
                 EditVisible: false,
                 options: [],
@@ -398,7 +388,8 @@
                 testAval: false,
                 editSearch: "",
                 formInfo2: {"progress": "路基工程", "subProgress": "路基土石方工程", "subType": "土方工程"},
-                addfirm:""
+                addfirm:"",
+                activeIndex:""
             }
         },
 
@@ -406,6 +397,7 @@
             props: ['formInfo'],
         },
         created() {
+            this.activeIndex = this.$route.path;
             this.getData();
         },
         mounted() {
@@ -1459,6 +1451,29 @@
         position: absolute;
         z-index: 4000;
         /*  height: 722px;*/
+    }
+    .container .el-menu {
+        padding: 10px 20px;
+        border: 1px solid #e6e6e6;
+        border-top: none;
+    }
+
+    .container .el-menu .el-menu-item {
+        height: 40px;
+        width: 132px;
+        margin-right: 50px;
+        line-height: 40px;
+        text-align: center
+    }
+
+    .container .is-active {
+        background-color: #f5f8fd;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .container .el-menu .el-menu-item:hover {
+        background-color: #f5f8fd;
     }
 </style>
 

@@ -248,10 +248,14 @@
                 getDrawingDetailInfos(param).then((data)=>{
                     if(data.data.result!=null){
                         this.tableData = data.data.result;
+                        this.tableData.content.forEach((val,key)=>{
+                            val.uploadTime  = dateFormat(val.uploadTime);
+                        })
                     }else{
                         this.tableData.content =[];
                     }
                 })
+
                /* PDFtestList().then((data)=>{
                     this.tableData = data.data;
                     this.tableData.content.forEach((val,key)=>{

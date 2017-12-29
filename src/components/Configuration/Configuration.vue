@@ -13,10 +13,10 @@
                 <el-menu-item index="/configuration/common">通用</el-menu-item>
                 <el-menu-item index="/configuration/govern">Govern</el-menu-item>
                 <el-menu-item index="/configuration/plan">plan</el-menu-item>
-                <el-menu-item index="/configuration/coopreation">Co/View/Boss</el-menu-item>
+                <!--<el-menu-item index="/configuration/coopreation">Co/View/Boss</el-menu-item>-->
                 <el-menu-item index="/configuration/explorerCivil">Explorer(Civil)</el-menu-item>
                 <el-menu-item index="/configuration/Inspector">Inspector</el-menu-item>
-                <el-menu-item index="/configuration/o-bw">原BW</el-menu-item>
+                <!--<el-menu-item index="/configuration/o-bw">原BW</el-menu-item>-->
                 <el-menu-item index="/configuration/o-govern">原Govern</el-menu-item>
             </el-menu>
         </div>
