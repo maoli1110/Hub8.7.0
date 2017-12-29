@@ -196,8 +196,6 @@
 <script>
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
-    import {basePath} from "../../utils/common.js";
-
     import {getCitys, cloudTree,tests} from '../../api/getData.js';
     import {
         treeList,           //测试数据列表
@@ -211,7 +209,7 @@
         SteelList,          //钢筋列表
         SteelCountDownload, //下载次数
     } from '../../api/getData-yhj.js';
-    import zTree from "components/ComponentLib/zTree.vue";
+    import zTree from "./zTree.vue";
     import uploadDialog from "components/ComponentLib/upload-dialog.vue";
     let deletArray = [];    //删除数组
     let level;              //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)

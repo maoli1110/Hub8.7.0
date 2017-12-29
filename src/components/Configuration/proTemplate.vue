@@ -3,7 +3,7 @@
         <div v-show="!EditVisible">
             <el-row>
                 <el-col :span="24" class="sub-menus-style">
-                    <el-menu  class="el-menu-demo sub-menus" :default-active="activeIndex" mode="horizontal" router>
+                    <el-menu  class="el-menu-demo sub-menus" :default-acitve="activeIndex" mode="horizontal" router>
                         <el-menu-item  v-for="menusdata in menusData" :index="menusdata.routerDump" :key="menusdata.name">{{menusdata.name}}
                         </el-menu-item>
                     </el-menu>

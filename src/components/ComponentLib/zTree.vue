@@ -47,6 +47,7 @@
         treeList,               //构件树
         treeSave,               //保存构件树
     } from '../../api/getData-yhj.js';
+    import "../../../static/zTree/js/jquery.ztree.all.min.js";
     let level=1;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;//预览状态模板树的深度
     export default {

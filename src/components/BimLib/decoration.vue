@@ -268,8 +268,8 @@
                     <span v-show="isDisable">{{proManageVal}}</span>
                     <el-select v-model="proManageVal" placeholder="" v-show="!isDisable" style="width:100%" :disabled="false">
                         <el-option :value="proManageVal" v-show="false"></el-option>
-                        <div>
-                            <el-input class="search-tree" icon="search" :on-icon-click="searchzTree"></el-input>
+                        <div style="padding:8px 12px 0">
+                            <el-input class="search-tree" icon="search" :on-icon-click="searchzTree" style="margin:0 0 10px;"></el-input>
                             <ul id="projectDepart" class="ztree"></ul>
                         </div>
                     </el-select>
@@ -384,7 +384,7 @@
 
 <script>
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';    //滚动组件
-    import "../../../static/zTree/js/jquery.ztree.exhide.min.js";
+//    import "../../../static/zTree/js/jquery.ztree.exhide.min.js";
     import {
         cloudTree,
         getMajorsByCreate,
@@ -608,7 +608,6 @@
                 this.tableParam.delete = this.isRecycle;
 
 //                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b';
-                console.log(this.filterParams.majorVal,'this.filterParams.majorVal')
                 this.tableParam.projType = this.filterParams.majorVal;
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
@@ -737,7 +736,6 @@
                }else{
                    if(treeNode.direct){
                        this.tableParam.deptIds.push(treeNode.id);
-                       console.log(treeNode.id,'first')
                    }
                }
                 this.getProjectList(this.tableParam);
@@ -751,7 +749,6 @@
                 if(treeNode.type==1 || treeNode.direct){       //项目部才有点击事件
                     this.proManageVal = treeNode.name;
                     this.createDeptId = treeNode.id;
-                    console.log(treeNode.id,'second')
 //                    this.createDeptId = "d68ceeb2d02043bd9ea5991ac44d649b";
                     setTimeout(function(event, treeId, treeNode) {
                         $(".el-scrollbar .el-select-dropdown__item.selected").click();
@@ -935,8 +932,6 @@
                 }
                 deletArray = [];
                 this.foreachs(this.allChecked,this.tableData);
-
-                console.log(monitorPpids,'选中ppid')
             },
             //表格删除单选
             singChecked(event){//逐个选中
@@ -1003,7 +998,6 @@
                 this.commonConfirm('确认清空回收站所有内容吗？请谨慎操作！',()=>{
                     this.delRecycle({packageType:this.$route.params.typeId,deleteAll:true,projIds:[]})
                 },()=>{},'warning')
-                console.log('回收站清空')
             },
             /**
              * 添加创建功能
@@ -1028,7 +1022,6 @@
             //树结构的搜索功能
             getZtreeParentNode(ztreeNode, nodes) {
                 var pNode = ztreeNode.getParentNode();
-                /*console.log(pNode);*/
                 if (pNode != null) {
                     if (nodes.indexOf(pNode) < 0) {
                         nodes.push(pNode);
@@ -1041,7 +1034,6 @@
                     return;
                 }
                 var children = ztreeNode.children;
-                /* console.log(children);*/
                 if (children.length > 0) {
                     for (var i = 0; i < children.length; i++) {
                         var child = children[i];
@@ -1053,7 +1045,6 @@
                 }
             },
             searchzTree(event) {
-                console.log(event)
                 var treeObj = $.fn.zTree.getZTreeObj('projectDepart');
                 var nodes1 = treeObj.getNodesByParam("isHidden", true);
                 var searchVal = $('.search-tree').find('input').val();
@@ -1062,8 +1053,6 @@
                     treeObj.showNodes(nodes1);
                 }
                 var treeNodes = treeObj.transformToArray(treeObj.getNodes());
-                console.log(treeNodes,'treeNodes');
-                console.log(treeObj,'treeObj');
 //                return false;
                 var otherNeedShowNodes = [];
                 // 隐藏不符合搜索条件的节点
@@ -1194,6 +1183,10 @@
                 this.checkAll = false;      //全选状态改变
                 this.authUserListItem =[];  //选中数组清空
                 this.authCount = [];        //选中统计数清空
+                if(this.authUserInfoList==null){
+                    this.commonMessage('没有授权的人员','warning');
+                    return false;
+                }
                 this.authUserInfoList.forEach((val,key)=>{
                     if(val.allAuth){        //权限授权
                         this.authUserListItem.push(val);    //不可用的加入到选中列表
@@ -1226,6 +1219,10 @@
              **/
             addAllRootPerson(event){
                 this.authCount=[];  //全选选中数量清空处理
+               if(this.authUserInfoList==null){
+                   this.commonMessage('没有可授权的人员','warning');
+                   return false;
+               }
                 if (event.target.checked) {//全选选中状态 重新插入authCount
                     this.authUserListItem = [];
                     this.authUserInfoList.forEach((item,key) => {
@@ -1426,7 +1423,7 @@
             },
             getProjExtractInfo(param){
                 getProjExtractInfo(param).then((data)=>{
-                    console.log(data)
+//                    console.log(data)
                 })
             },
             //列表中传过来处状态
@@ -1438,7 +1435,6 @@
                     this.extractReadInfo = true;
                 }
                 this.itemInfo.projId = item.projId;
-                console.log(item,'抽取信息')
                 //抽取状态为待处理或者是处理中
             },
             //抽取失败
@@ -1448,7 +1444,6 @@
                     ppids:[]
                 }
                 errorInfo.ppids.push(item.ppid);
-                console.log(errorInfo)
                 this.getProjExtractInfo(errorInfo)
             },
             //抽取数据
@@ -1489,18 +1484,15 @@
                 }else{
                     this.commonMessage('工程名称不能为空','warning')
                 }
-                console.log(this.modifyInfoList)
                 //执行完成清除状态
             },
 
 
         },
         mounted() {
-            console.log('挂载');
             $('.bim-search input').bind('keypress',this.tableListSearch)
         },
         created(){
-            console.log(this.$route.path,'this.$route.path')
             this.activeIndex = this.$route.path,//当前路由也选中状态
             this.getData();                     //初始化数据
         },
@@ -1509,7 +1501,6 @@
 
             '$route' (to, from) {
                 deletArray =[];
-                console.log(deletArray,'delet')
                 if(this.$route.path==`/bimlib/housing/bim-lib/${this.$route.params.typeId}` ||this.$route.path==`/bimlib/BaseBuild/bim-lib/${this.$route.params.typeId}` || this.$route.path==`/bimlib/decoration/bim-lib/${this.$route.params.typeId}`){
                     this.isRecycle = false;         //回收站的状态
                     this.tableParam.latest = true;  //版本状态
