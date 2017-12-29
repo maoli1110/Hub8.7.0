@@ -23,7 +23,6 @@
 </template>
 <script>
     import * as types from "../../api/getData-ppc";
-    import "../../../static/zTree/js/jquery.ztree.exhide.min.js";
     export default {
         data() {
             return {
@@ -161,13 +160,13 @@
 
     .ztree {
         margin-top: 0px;
-        max-height: 600px;
+        height: 600px;
         overflow: auto;
     }
 
     .select-down {
         width: 100%;
-        max-height: 680px;
+        height: 680px;
         padding: 10px;
         box-sizing: border-box;
         position: absolute;

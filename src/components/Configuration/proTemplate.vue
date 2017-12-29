@@ -3,7 +3,7 @@
         <div v-show="!EditVisible">
             <el-row>
                 <el-col :span="24" class="sub-menus-style">
-                    <el-menu  class="el-menu-demo sub-menus" :default-active="activeIndex" mode="horizontal" router>
+                    <el-menu  class="el-menu-demo sub-menus" :default-acitve="activeIndex" mode="horizontal" router>
                         <el-menu-item  v-for="menusdata in menusData" :index="menusdata.routerDump" :key="menusdata.name">{{menusdata.name}}
                         </el-menu-item>
                     </el-menu>
@@ -269,7 +269,6 @@
         updateProjModel,
         getFormPreview
     } from '../../api/getData-yhj';
-    import '../../../static/zTree/js/jquery.ztree.all.min';
     let level = 1;
     let maxLevel = -1;
     let newCount = 1;

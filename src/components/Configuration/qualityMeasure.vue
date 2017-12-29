@@ -494,7 +494,6 @@
     let isUpdateStatus = false;
     let arrList = [];
     import "../../../static/css/setting-qualityMeasure.css";
-    import '../../../static/zTree/js/jquery.ztree.all.min';
     import {
         //数据引用
         getProcessList, //获取流程列表

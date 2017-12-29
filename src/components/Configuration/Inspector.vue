@@ -1,8 +1,5 @@
 <template>
      <div class="common-container">
-         <!--  <el-menu  :default-active="activeIndex" class="el-menu-demo" mode="horizontal"  router>
-               <el-menu-item v-for="menusdata in menusData" :index="menusdata.routerDump" :key="menusdata.name">{{menusdata.name}}</el-menu-item>
-           </el-menu>-->
         <div class="common-main">
             <router-view></router-view>
         </div>
@@ -10,7 +7,8 @@
 </template>
 <script>
     import "../../../static/css/setting-qualityMeasure.css";
-    import "../../../static/css/setting-explorer.css"
+    import "../../../static/css/setting-explorer.css";
+    import '../../../static/zTree/js/jquery.ztree.all.min.js';
     export default {
         data () {
             return {
