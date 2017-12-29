@@ -37,15 +37,15 @@
                         <el-table-column type='index' label="编号" width="60"
                                          :index="sort"></el-table-column>
                         <el-table-column prop="computerName" label="工程名称" width=""></el-table-column>
-                        <el-table-column label="状态" width="200">
-                            <template slot-scope="scope">
+                        <el-table-column label="状态" width="200" prop="hardwareCode">
+                            <!-- <template slot-scope="scope">
                                 <span>{{scope.row.username}}({{scope.row.realname}})</span>
-                            </template>
+                            </template> -->
                         </el-table-column>
-                        <el-table-column label="上传人" width="200">
-                            <template slot-scope="scope">
+                        <el-table-column label="上传人" width="200" prop="username">
+                            <!-- <template slot-scope="scope">
                                 <span>{{scope.row.username}}({{scope.row.realname}})</span>
-                            </template>
+                            </template> -->
                         </el-table-column>
                         <el-table-column prop="bindingTime" label="上传时间" width="200"></el-table-column>
                         <el-table-column prop="remarks" label="备注" width="300" show-overflow-tooltip></el-table-column>
@@ -151,15 +151,16 @@ export default {
       bindManageTableData: [
         {
           bindingId: 0,
-          bindingTime: "string",
-          computerName: "string",
+          binder:"fanweiqiu",
+          bindingTime: "2016-05-03 13:51",
+          computerName: "26.1.1 土建新工程",
           enterprisePackageId: 0,
-          hardwareCode: "string",
-          realName: "string",
-          remarks: "超长超长世界级顶尖的基督教sjsjsjs444444444444444jsjsjsjakakajka啥啥啥",
-          username: "string"
+          hardwareCode: "正常",
+          realName: "",
+          remarks: "",
+          username: "fanweiqiu"
         }
-      ]
+      ],
     };
   },
   methods: {
