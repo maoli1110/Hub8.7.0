@@ -260,14 +260,14 @@ import {getCitys} from '../../api/getData.js'
                               "district": "上海",
                               "downloadTimes": 2017-12-25,
                               "fileName": "string",
-                              "listLibName": "26.1.1 土建新工程",
+                              "listLibName": "26.1.2 土建新工程",
                               "mode": "模式",
                               "productId": 0,
                               "productName": "33",
                               "provinceId": 0,
-                              "quotaLibName": "26.1.1 土建新工程",
+                              "quotaLibName": "26.1.2 土建新工程",
                               "time": "2017-12-13 12:16",
-                              "title": "26.1.1 土建新工程",
+                              "title": "26.1.2 土建新工程",
                               "version": "v2.0.0",
                               "major":"v2.0.0"
                             },
@@ -279,14 +279,14 @@ import {getCitys} from '../../api/getData.js'
                               "district": "上海",
                               "downloadTimes": 2017-12-25,
                               "fileName": "string",
-                              "listLibName": "26.1.1 土建新工程",
+                              "listLibName": "26.1.3 土建新工程",
                               "mode": "模式",
                               "productId": 0,
                               "productName": "33",
                               "provinceId": 0,
-                              "quotaLibName": "26.1.1 土建新工程",
+                              "quotaLibName": "26.1.3 土建新工程",
                               "time": "2017-12-13 12:16",
-                              "title": "26.1.1 土建新工程",
+                              "title": "26.1.3 土建新工程",
                               "version": "v2.0.0",
                               "major":"v2.0.0"
                             }],
@@ -457,23 +457,33 @@ import {getCitys} from '../../api/getData.js'
                 })
             },
             deleteComponent(param){
-                componentDelete(param).then((data)=>{
-                    if(data.data.code==200){
-                         if(this.tableData.list.length===deletArray.length){
-                            this.getTableList(this.tableParam)
-                         }else{
-                             for (let i = 0; i < deletArray.length; i++) {
-                                 for (let j = 0; j < this.tableData.list.length; j++) {
-                                     if (this.tableData.list[j].componentFileId == deletArray[i].componentId) {
-                                         this.tableData.list.splice(j, 1);
-                                     }
-                                 }
-                             }
-                             this.tableData.totalRecords -=deletArray.length;
-                         }
-                        deletArray =[];
+                console.log(param)
+                let vm = this;
+                for(var i=0; i<this.tableData.length; i++){
+                    for(var j=0; j<param.del.length; j++){
+                        if(vm.tableData[i].title == param.del[j].title){
+                            vm.tableData.splice(i,1);
+                            
+                        }
                     }
-                })
+                }
+                // componentDelete(param).then((data)=>{
+                //     if(data.data.code==200){
+                //          if(this.tableData.list.length===deletArray.length){
+                //             this.getTableList(this.tableParam)
+                //          }else{
+                //              for (let i = 0; i < deletArray.length; i++) {
+                //                  for (let j = 0; j < this.tableData.list.length; j++) {
+                //                      if (this.tableData.list[j].componentFileId == deletArray[i].componentId) {
+                //                          this.tableData.list.splice(j, 1);
+                //                      }
+                //                  }
+                //              }
+                //              this.tableData.totalRecords -=deletArray.length;
+                //          }
+                //         deletArray =[];
+                //     }
+                // })
             },
            //列表删除
             deleteComp(){
