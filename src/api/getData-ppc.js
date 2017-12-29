@@ -38,16 +38,16 @@ export const getRoleList2 = params => {
     return axios.get(`${builderUrl}/roleRest/findRoles`);
 };
 /** 
- * 设置用户签名
- */
-// export const addUserSign= params => {
-//     return axios.get(`${builderUrl}/userRest/addUserSign/${params.userName}/${params.signName}`);
-// };
-/** 
- * 获取用户签名照片GET /userRest/findUserSign/{signId}
- */
+ * 获取用户签名照片
+*/
 export const getUserSign = params => {
     return axios.get(`${builderUrl}/userRest/findUserSign/${params}`);
+};
+/** 
+ * 删除用户签名照片
+*/
+export const deleteUserSign = params => {
+    return axios.delete(`${builderUrl}/userRest/deleteSign/${params}`);
 };
 
 

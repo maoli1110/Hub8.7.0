@@ -52,10 +52,10 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="更新时间" width="180" prop='modifyTime' sortable>
+                <el-table-column label="更新时间" width="180" prop='modify_time' sortable>
                     <template slot-scope="scope">{{ scope.row.modifyTime }}</template>
                 </el-table-column>
-                <el-table-column prop="modifyUser" label="操作人" width="180" sortable></el-table-column>
+                <el-table-column prop="modifyUser" label="操作人" width="180" ></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span type="primary" class="icon-edit_" @click="modifyDataCatalog(scope.row);modifyDataCatalogVisible=true;"></span>
@@ -172,7 +172,7 @@
                 pageSize: 10,
                 total: 0,
                 order: "1", //排序
-                prop: "modifyTime", //排序属性
+                prop: "modify_time", //排序属性
                 previousParentId: [""], //记录上一级的parentId
                 currentParentId: "", //当前文件(获取当前分页内容需要)，
                 pageCacheInfo: [{
@@ -277,11 +277,11 @@
                     orgType: this.orgType,
                     orgid: this.orgid,
                     pageParam: {
-                        // orders: [{
-                        //     direction: this.order,
-                        //     ignoreCase: true,
-                        //     property: this.prop
-                        // }],
+                        orders: [{
+                            direction: this.order,
+                            ignoreCase: true,
+                            property: this.prop
+                        }],
                         page: this.curPage,
                         size: this.pageSize
                     },
@@ -350,11 +350,11 @@
                     orgType: this.orgType,
                     orgid: this.orgid,
                     pageParam: {
-                        // orders: [{
-                        //     direction: this.order,
-                        //     ignoreCase: true,
-                        //     property: this.prop
-                        // }],
+                        orders: [{
+                            direction: this.order,
+                            ignoreCase: true,
+                            property: this.prop
+                        }],
                         page: 1,
                         size: 10
                     },
