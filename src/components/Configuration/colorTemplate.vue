@@ -254,6 +254,7 @@
                                 for (let j = 0; j < this.tableData.length; j++) {
                                     if (this.tableData[j].tmplkey == deletArray[i]) {
                                         this.tableData.splice(j, 1);
+                                        this.pageInfo.totalNumber-=1;
                                     }
                                 }
                             }
