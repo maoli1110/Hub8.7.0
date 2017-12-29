@@ -12,7 +12,7 @@
                         </el-input>
                     </div>
                 </el-col>
-                <el-col :span="4">
+                <el-col :span="12">
                     <div class="advanced-search">
                       <el-button type="primary" class="basic-btn" @click="">高级搜索</el-button>
                       <el-button type="primary" class="basic-btn" @click="indexSort();indexSortDialogVisible=true">指标排序</el-button>
@@ -107,7 +107,7 @@ import Sortable from "sortablejs";
 export default {
   data() {
     return {
-      searchContent: "曹相相",
+      searchContent: "",
       indexSortDialogVisible: false,
       multipleSelection: [],
       olderList: [
@@ -263,6 +263,6 @@ export default {
   overflow: auto;
 }
 .order-management.order-detail .content .el-input {
-  width: 100%;
+  width: 100% !important ;
 }
 </style>

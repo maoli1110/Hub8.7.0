@@ -13,7 +13,7 @@
                         </el-input>
                     </div>
                 </el-col>
-                <el-col :span="4">
+                <el-col :span="12">
                     <div class="advanced-search">
                         <el-button type="primary" class="basic-btn" @click="deepSearch = true">高级搜索</el-button>
                     </div>
@@ -341,6 +341,6 @@ export default {
   border-bottom: 1px solid #e6e6e6;
 }
 .order-management.order-detail .content .el-input {
-  width: 100%;
+  width: 100% !important ;
 }
 </style>

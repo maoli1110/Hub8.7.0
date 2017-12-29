@@ -4,7 +4,7 @@
         <div class="header">
             <el-form :model="searchKeyParams" class="demo-form-inline" :inline="true">
               <el-form-item label="时间：">
-                <el-date-picker format="yyyy.MM.DD" @change="changeData"
+                <el-date-picker format="yyyy.MM.dd" @change="changeData"
                                 v-model="searchKeyParams.selectDate"
                                 type="daterange"
                                 placeholder="选择日期范围">
@@ -22,12 +22,13 @@
               </el-form-item>
               <el-form-item label="版本：">
                  <el-select v-model="searchKeyParams.xx.value" placeholder="不限" style="max-width: 140px;">
-                    <el-option
+                    <!-- <el-option
                       v-for="item in searchKeyParams.xx"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
-                    </el-option>
+                    </el-option> -->
+                    <option>不限</option>
                 </el-select>
               </el-form-item>
 
@@ -289,7 +290,7 @@ import {getCitys} from '../../api/getData.js'
                               "major":"v2.0.0"
                             }],
                 searchKeyParams:{
-                    xx:{label:"不限",value:"不限"},
+                    xx:{label:"",value:""},
                     selectDate:'',//时间范围
                     majorVal:'', //专业
                 },
