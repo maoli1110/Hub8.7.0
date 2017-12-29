@@ -160,13 +160,13 @@
 
     .ztree {
         margin-top: 0px;
-        height: 600px;
+        max-height: 600px;
         overflow: auto;
     }
 
     .select-down {
         width: 100%;
-        height: 680px;
+        max-height: 680px;
         padding: 10px;
         box-sizing: border-box;
         position: absolute;
