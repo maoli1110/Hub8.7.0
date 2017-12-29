@@ -2,7 +2,7 @@
     <div class="form-change">
         <el-row>
             <el-col :span="24" class="sub-menus-style">
-                <el-menu  class="el-menu-demo sub-menus" mode="horizontal" router >
+                <el-menu  :default-active="activeIndex" class="el-menu-demo sub-menus" mode="horizontal" router >
                     <el-menu-item v-for="menusdata in menusData"  :index="menusdata.routerDump" :key="menusdata.routerDump">{{menusdata.name}}</el-menu-item>
                 </el-menu>
             </el-col>
@@ -139,14 +139,14 @@
                         onExpand: function (event, treeId, treeNode) {
                             level = treeNode.level;
                         },
-                    }
+                    },
+                    activeIndex:""
                 },
 
                 zNodes: [],
                 tableData: [],
                 cur_page: 1,
-                menusDataFa:[{name:"explorer",routerDump:'explorer'},{name:'质检计量',routerDump:'qualityMeasure'}],
-                menusData:[{name:"流程设置",routerDump:'qualityMeasure'},{name:'工程模板',routerDump:'proTemplate'},{name:'表单管理',routerDump:'formManage'}],
+                menusData:[{name:"流程设置",routerDump:'/configuration/Inspector/qualityMeasure'},{name:'工程模板',routerDump:'/configuration/Inspector/proTemplate'},{name:'表单管理',routerDump:'/configuration/Inspector/formManage'}],
                 formDataList: [],
                 changeFormVisible:false,
                 istable:false,
@@ -168,15 +168,9 @@
             $.fn.zTree.init($("#formTree"), this.setting, this.zNodes);
             $('.basicSearch input').bind('keyup',this.basicSearch);
             $('.form-dialog-title input').bind('keydown',this.searchformTree);
-            if(this.$route.path=='/setting/formManage'){
-                $('.sub-menus li').removeClass('is-active');
-                $('.sub-menus li').eq(2).addClass('is-active');
-                $('.nav-menu li:last').addClass('is-active');
-            }else{
-                $('.nav-menu li:last').removeClass('is-active');
-            }
         },
         created(){
+            this.activeIndex = this.$route.path;
             this.getData();
         },
         methods: {
@@ -482,3 +476,28 @@
         }
     }
 </script>
+<style scope>
+    .container .el-menu {
+        padding: 10px 20px;
+        border: 1px solid #e6e6e6;
+        border-top: none;
+    }
+
+    .container .el-menu .el-menu-item {
+        height: 40px;
+        width: 132px;
+        margin-right: 50px;
+        line-height: 40px;
+        text-align: center
+    }
+
+    .container .is-active {
+        background-color: #f5f8fd;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .container .el-menu .el-menu-item:hover {
+        background-color: #f5f8fd;
+    }
+</style>

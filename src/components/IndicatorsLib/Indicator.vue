@@ -113,4 +113,5 @@
      transform: translate(-100% 0);
  }
 .bims-contents>.bim {position:static !important;}
+
 </style>
