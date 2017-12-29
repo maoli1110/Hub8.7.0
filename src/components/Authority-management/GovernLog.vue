@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import '../../../static/css/components.css';
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 import { getLogs } from "../../api/getData-cxx.js";
 import { basePath } from "../../utils/common.js";
