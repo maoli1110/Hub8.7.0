@@ -435,13 +435,12 @@ import {getCitys} from '../../api/getData.js'
              */
 
             selectAll(selection){
-                this.commonAlert('全部选中了哦')
+                deletArray =[];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,'title':val.title})
                     }
                 });
-                console.log(deletArray, 'selectionall')
             },
 
             /**
@@ -450,9 +449,29 @@ import {getCitys} from '../../api/getData.js'
              * @params row 列
              */
             selectChecked(selection, row){
+                deletArray = [];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,'title':val.title})
+                    }
+                })
+            },
+            deleteComponent(param){
+                componentDelete(param).then((data)=>{
+                    if(data.data.code==200){
+                         if(this.tableData.list.length===deletArray.length){
+                            this.getTableList(this.tableParam)
+                         }else{
+                             for (let i = 0; i < deletArray.length; i++) {
+                                 for (let j = 0; j < this.tableData.list.length; j++) {
+                                     if (this.tableData.list[j].componentFileId == deletArray[i].componentId) {
+                                         this.tableData.list.splice(j, 1);
+                                     }
+                                 }
+                             }
+                             this.tableData.totalRecords -=deletArray.length;
+                         }
+                        deletArray =[];
                     }
                 })
             },
