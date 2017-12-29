@@ -576,8 +576,6 @@
                         }
                         //添加时根据树id找到对应的树名称
                         if (val.id == this.curMemberInfo.orgId) this.curEditOrgName = val.name;
-
-
                     });
                     $.fn.zTree.init(
                         $("#curEditOrgSetting"),

@@ -173,7 +173,7 @@
         left: -45px;
         top: 35px;
         background-color: #fff;
-        z-index: 3000;
+        z-index: 1000;
     }
 
     .fade-enter-active,

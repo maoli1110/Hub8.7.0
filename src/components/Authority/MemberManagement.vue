@@ -22,7 +22,7 @@
             </div>
             <div class="el-form-item el-form_" style="float:right">
                 <div class="el-form-item__content">
-                    <el-input placeholder="请输入通行证账号或备注" icon="search"  v-model="searchUsersListVal" :on-icon-click="searchUsersList" @keyup.enter.native="searchUsersList"></el-input>
+                    <el-input placeholder="请输入通行证账号或备注" icon="search" v-model="searchUsersListVal" :on-icon-click="searchUsersList" @keyup.enter.native="searchUsersList"></el-input>
                 </div>
             </div>
         </div>
@@ -78,7 +78,7 @@
                     <template slot-scope="scope">
                         <span class="icon-edit_    icon" @click="editMember(scope.row)"></span>
                         <span class="icon-authorize_ icon" @click="authorizedDataCatalog();authorizedDataCatalogVisible=true;"></span>
-                        <span class="icon-sign  icon" @click="signDialogVisible=true"></span>
+                        <span class="icon-sign  icon" @click="signDialogVisible=true;curSelectUser(scope.row)"></span>
                         <span class="icon-view icon" @click="serviceDetailsDialogVisible=true"></span>
                     </template>
                 </el-table-column>
@@ -102,7 +102,7 @@
                     <el-input v-model="ruleForm.realName" auto-complete="off" placeholder="请输入用户的称"></el-input>
                 </el-form-item>
                 <el-form-item label="角色：" prop="roleId">
-                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:100%" @change="dialogSelectChange" ref="dialogRole">
+                    <el-select v-model="ruleForm.roleId" placeholder="请选择" style="width:100%" ref="dialogRole">
                         <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
@@ -208,19 +208,40 @@
         </el-dialog>
         <!-- 设置电子签名 -->
         <el-dialog title="设置电子签名" :visible.sync="signDialogVisible" size='sign'>
-            <el-upload style="margin-top:30px;padding:0 20px" class="upload-demo" drag ref="upload" :on-preview="handlePreview" :on-remove="handleRemove"
-                :auto-upload="false" action="https://jsonplaceholder.typicode.com/posts/" multiple>
+            <div class="el-form-item" v-show="!hasImage">
+                <label class="el-form-item__label" style="width:92px">设置电子签名:</label>
+                <div class="el-form-item__content" style="margin-left: 55px;">
+                    <el-input v-model="signName" auto-complete="off" style="width:80%"></el-input>
+                </div>
+            </div>
+            <el-upload style="margin-top:30px;padding:0 20px" class="upload-demo" drag ref="upload" v-show="!hasImage" :on-preview="handlePreview"
+                :on-remove="handleRemove" :auto-upload="false" :action="actionUrl" :on-success='handleSuccess'>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">点击上传电子签名</div>
                 <div class="el-upload__tip" slot="tip">
                     <span style="color:#e30000">*</span>建议签名图片尺寸（宽：100px-高：40px）</div>
                 <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
             </el-upload>
-            <span slot="footer" class="dialog-footer">
+            <div v-show="hasImage" class="avatar-wrap">
+                <img :src="imageUrl" class="avatar" style="width:310px;height:310px;margin:0 auto">
+                <div class="avatar-proper">
+                    <span @click="hasImage=false" class="avatar-upload"></span>
+                    <span class="avatar-delete"></span>                    
+                </div>
+            </div>
+            
+            
+            <span slot="footer" class="dialog-footer" v-show="!hasImage">
                 <el-button type="primary" @click="submitUpload" class="dialog-btn">确 定</el-button>
                 <el-button @click="signDialogVisible = false" class="dialog-btn">取消</el-button>
             </span>
+            <span slot="footer" class="dialog-footer" v-show="hasImage" >
+                <el-button type="primary" @click="signDialogVisible = false" class="dialog-btn">确 定</el-button>
+                <el-button @click="signDialogVisible = false" class="dialog-btn">取消</el-button>
+            </span>
+
         </el-dialog>
+        
     </div>
 
 </template>
@@ -259,6 +280,7 @@
                 }
             };
             return {
+                visible2:false,
                 url: "../../../static/tree1.json",
                 cacheProjectTree: [], //缓存树内容
                 addMemberDialogVisible: false,
@@ -270,10 +292,15 @@
                 curPage: 1,
                 pageSize: 10,
                 total: 0,
-                searchUsersListVal:'',//搜索成员
+                curSelectUserInfo: {}, //当前选中user
+                searchUsersListVal: '', //搜索成员
                 orgId: "", //组织树节点
                 roleId: "", //角色
                 roleData: [],
+                actionUrl: '', //上传签名地址
+                imageUrl: '', //成功后签名图片地址
+                signName: '', //签名
+                hasImage: false, //当前用户是否上传签名照
                 textarea: "布鲁斯123 布鲁斯", //批量添加文本内容
                 dialogOrgName: "", //添加成员弹框树组织名称
                 dialogRoleName: "", //添加成员弹框角色名称
@@ -609,8 +636,8 @@
                     this.total = res.data.result.pageInfo.totalNumber;
                 });
             },
-            searchUsersList(){
-                 this.getUsersList()
+            searchUsersList() {
+                this.getUsersList()
             },
             handleTreeNodeChange(currentTreeNode) {
                 this.orgId = currentTreeNode.id;
@@ -624,7 +651,6 @@
                     $(".el-select-dropdown__item.selected").click();
                 }, 100);
             },
-            dialogSelectChange(v) {},
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
@@ -715,8 +741,50 @@
                 console.log(memberMessage);
             },
             deleteMember() {},
+            //当前选中user
+            curSelectUser(row) {
+                this.curSelectUserInfo = row;
+                this.imageUrl = '';
+                //    当前成员没有signId则显示上传
+                if (!this.curSelectUserInfo.signId) {
+                    this.hasImage = false;
+                } else {
+                    // 有则调取查看接口
+                    this.hasImage = true;
+                    api.getUserSign(this.curSelectUserInfo.signId).then(res => {
+                        this.imageUrl = res.data.result.url;
+                    })
+
+
+                }
+
+            },
+            //上传
             submitUpload() {
-                this.$refs.upload.submit();
+                if (!this.signName&&!this.hasImage) {
+                    alert('签名不能为空');
+                    return
+                }
+                this.actionUrl =
+                    `${window.serverPath.builderUrl}/userRest/addUserSign/${this.curSelectUserInfo.userName}/${this.signName}`
+                setTimeout(() => {
+                    this.$refs.upload.submit();
+                }, 10);
+
+            },
+            //上传成功
+            handleSuccess(response, file, fileList) {
+                console.log(response)
+                if (response.code == 200) {
+                    this.getUsersList()
+                    // api.getUserSign('5a449f9c84ae71e344818d5c').then(res => {
+                    //     console.log(res.data.result.url)
+                    //     this.imageUrl = res.data.result.url;
+                    //     this.hasImage = true;
+                    //     this.getUsersList()
+                    // })
+                }
+                this.$refs.upload.clearFiles()
             },
             handleRemove(file, fileList) {
                 console.log(file, fileList);
@@ -897,5 +965,26 @@
     .icon+.icon {
         margin-left: 15px;
     }
-
+    .avatar-wrap{
+        position: relative;
+    }
+    .avatar-proper{
+        bottom:4px;
+        width: 310px;
+        padding:20px 0;
+        position: absolute;
+        background-color: #000;
+        opacity: 0;
+        cursor: pointer;
+        text-align: center;
+        
+    }
+    .avatar-proper>span{
+        display: inline-block;  
+    }
+    .avatar-wrap:hover .avatar-proper{
+        /* display: block; */
+        transition: all .5s;
+        opacity: .4
+    }
 </style>
