@@ -20,7 +20,7 @@
                 </el-button>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                     <el-table ref="multipleTable" class="scroll-me" :data="tableData" border tooltip-effect="dark"
-                              style="min-width: 1537px;margin-top:20px">
+                              >
                         <el-table-column class="" type='index' label="序号" width="60"></el-table-column>
                         <el-table-column class="table-tr" prop="ip" label="通行证/账号名称" width="200"></el-table-column>
                         <el-table-column class="table-tr" prop="func" label="功能" width=""></el-table-column>
@@ -192,6 +192,9 @@ export default {
 </script>
 
 <style scoped>
+.my-scrollbar {
+    max-height: calc(100vh - 400px);
+}
 .header {
   height: 40px;
   background-color: #fff;
@@ -200,7 +203,7 @@ export default {
 }
 
 button.basic-btn {
-  margin-top: 15px;
+  margin: 15px 0;
 }
 .order-management .header .font-w-n {
   font-weight: normal;
