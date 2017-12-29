@@ -140,7 +140,7 @@
                         <div class="simulate-label" v-text="updateComList.templateFile"></div>
                         <el-upload :on-success = "updataSucess" :on-error = "updateError" :multiple ='true' :show-file-list="false"
                                    class="upload-demo"
-                                   action="https://jsonplaceholder.typicode.com/posts/"
+                                   action="uploadUrl"
                                    :on-preview="handlePreview"
                                    :on-remove="handleRemove"
                                    :file-list="fileList">
@@ -215,6 +215,7 @@ import {getCitys} from '../../api/getData.js'
     export default {
         data(){
             return {
+                uploadUrl:'',
                 cities: [],         //三级联动城市
                 province: [],       //三级联动省
                 counties: [],       //三级联动区
@@ -259,14 +260,14 @@ import {getCitys} from '../../api/getData.js'
                               "district": "上海",
                               "downloadTimes": 2017-12-25,
                               "fileName": "string",
-                              "listLibName": "26.1.1 土建新工程",
+                              "listLibName": "26.1.2 土建新工程",
                               "mode": "模式",
                               "productId": 0,
                               "productName": "33",
                               "provinceId": 0,
-                              "quotaLibName": "26.1.1 土建新工程",
+                              "quotaLibName": "26.1.2 土建新工程",
                               "time": "2017-12-13 12:16",
-                              "title": "26.1.1 土建新工程",
+                              "title": "26.1.2 土建新工程",
                               "version": "v2.0.0",
                               "major":"v2.0.0"
                             },
@@ -278,14 +279,14 @@ import {getCitys} from '../../api/getData.js'
                               "district": "上海",
                               "downloadTimes": 2017-12-25,
                               "fileName": "string",
-                              "listLibName": "26.1.1 土建新工程",
+                              "listLibName": "26.1.3 土建新工程",
                               "mode": "模式",
                               "productId": 0,
                               "productName": "33",
                               "provinceId": 0,
-                              "quotaLibName": "26.1.1 土建新工程",
+                              "quotaLibName": "26.1.3 土建新工程",
                               "time": "2017-12-13 12:16",
-                              "title": "26.1.1 土建新工程",
+                              "title": "26.1.3 土建新工程",
                               "version": "v2.0.0",
                               "major":"v2.0.0"
                             }],
@@ -326,6 +327,41 @@ import {getCitys} from '../../api/getData.js'
             }
         },
         methods: {
+            /**common-message(公用消息框)
+             * @params message   给出的错误提示
+             * @params success  成功处理的
+             * @params error    失败处理的
+             * */
+            commonConfirm(message, success, error, type){
+                this.$confirm(message, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: type
+                }).then(success).catch(error);
+            },
+            commonAlert(message){
+                this.$alert(message, '提示', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        console.log(1111)
+                    }
+                })
+            },
+            commonMessage(message, type){
+                this.$message({
+                    type: type,
+                    message: message
+                })
+            },
+            /**
+             * 上传文件再次上传 （ps:覆盖之前的)
+             * @param type  1.update上传 2.cover修改页面
+             **/
+            overUpdate(){
+                this.uploadUrl = `${window.serverPath.cloudUrl}/component/az/upload/${5}`;//上传接口
+                this.fileList = [];
+                this.updateComList.fileName= '';
+            },
             shorChange(type){
                 console.log(type)
             },
@@ -399,13 +435,12 @@ import {getCitys} from '../../api/getData.js'
              */
 
             selectAll(selection){
-                this.commonAlert('全部选中了哦')
+                deletArray =[];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,'title':val.title})
                     }
                 });
-                console.log(deletArray, 'selectionall')
             },
 
             /**
@@ -414,39 +449,52 @@ import {getCitys} from '../../api/getData.js'
              * @params row 列
              */
             selectChecked(selection, row){
+                deletArray = [];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.componentFileId) == -1) {
+                        deletArray.push({componentId:val.componentFileId,'title':val.title})
                     }
                 })
+            },
+            deleteComponent(param){
+                console.log(param)
+                let vm = this;
+                for(var i=0; i<this.tableData.length; i++){
+                    for(var j=0; j<param.del.length; j++){
+                        if(vm.tableData[i].title == param.del[j].title){
+                            vm.tableData.splice(i,1);
+                            
+                        }
+                    }
+                }
+                // componentDelete(param).then((data)=>{
+                //     if(data.data.code==200){
+                //          if(this.tableData.list.length===deletArray.length){
+                //             this.getTableList(this.tableParam)
+                //          }else{
+                //              for (let i = 0; i < deletArray.length; i++) {
+                //                  for (let j = 0; j < this.tableData.list.length; j++) {
+                //                      if (this.tableData.list[j].componentFileId == deletArray[i].componentId) {
+                //                          this.tableData.list.splice(j, 1);
+                //                      }
+                //                  }
+                //              }
+                //              this.tableData.totalRecords -=deletArray.length;
+                //          }
+                //         deletArray =[];
+                //     }
+                // })
             },
            //列表删除
             deleteComp(){
                 if (!deletArray.length) {
-                    this.commonMessage('请选择要删除的文件', 'warning')
+                    this.commonMessage('没有选中构件', 'warning')
                     return false;
                 }
-
-                this.commonConfirm('确定要删除吗', () => {
-                    /* if(this.tableData.length===deletArray.length){
-                     //重新渲染数据
-                     }else*/
-                    if (deletArray.length) {
-                        for (let i = 0; i < deletArray.length; i++) {
-                            for (let j = 0; j < this.tableData.length; j++) {
-                                if (this.tableData[j].index == deletArray[i]) {
-                                    this.tableData.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
-
-                    deletArray = [];//接口成功之后删除数据
+                this.commonConfirm('删除选中构件', () => {
+                    this.deleteComponent({productId:5,del:deletArray})
                 }, () => {
-
                 }, 'warning')
-
-
             },
             remoteMethod(query) {
                 if (query !== '') {

@@ -27,11 +27,11 @@
                               </el-button>
                           <el-button type="primary" class="basic-btn" @click=""><i class="left-icon icon icon-forbidden"></i><span class="btn-text">不更新</span>
                               </el-button>
-                          <el-button type="primary" class="basic-btn" @click=""><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
+                          <el-button type="primary" class="basic-btn" @click="deleteComp"><i class="components-icon icon-delete "></i><span class="btn-text">删除</span>
                               </el-button>
                       </el-col>
 
-                    <el-table ref="multipleTable scroll-me" :data="bindManageTableData" border tooltip-effect="dark"
+                    <el-table ref="multipleTable scroll-me" :data="tableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px" @selection-change="handleSelectionChange">
                         <el-table-column type="selection" width="60"></el-table-column>
                         <el-table-column type='index' label="编号" width="60"
@@ -104,6 +104,7 @@
 <script type="text/ecmascript-6">
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 import Sortable from "sortablejs";
+let deletArray = [];
 export default {
   data() {
     return {
@@ -148,22 +149,151 @@ export default {
         { name: "红烧胖大海" },
         { name: "连年有鱼" }
       ],
-      bindManageTableData: [
+      tableData: [
         {
           bindingId: 0,
-          binder:"fanweiqiu",
+          binder: "fanweiqiu",
           bindingTime: "2016-05-03 13:51",
           computerName: "26.1.1 土建新工程",
           enterprisePackageId: 0,
           hardwareCode: "正常",
           realName: "",
           remarks: "",
-          username: "fanweiqiu"
+          username: "fanweiqiu0",
+          title:"aaa"
+        },
+        {
+          bindingId: 0,
+          binder: "fanweiqiu1",
+          bindingTime: "2016-05-03 13:51",
+          computerName: "26.1.1 土建新工程",
+          enterprisePackageId: 0,
+          hardwareCode: "正常",
+          realName: "",
+          remarks: "",
+          username: "fanweiqiu1",
+          title:"bbb"
+        },
+        {
+          bindingId: 0,
+          binder: "fanweiqiu2",
+          bindingTime: "2016-05-03 13:51",
+          computerName: "26.1.1 土建新工程",
+          enterprisePackageId: 0,
+          hardwareCode: "正常",
+          realName: "",
+          remarks: "",
+          username: "fanweiqiu2",
+          title:"ccc"
         }
-      ],
+      ]
     };
   },
   methods: {
+    /**common-message(公用消息框)
+             * @params message   给出的错误提示
+             * @params success  成功处理的
+             * @params error    失败处理的
+             * */
+    commonConfirm(message, success, error, type) {
+      this.$confirm(message, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: type
+      })
+        .then(success)
+        .catch(error);
+    },
+    commonAlert(message) {
+      this.$alert(message, "提示", {
+        confirmButtonText: "确定",
+        callback: action => {
+          console.log(1111);
+        }
+      });
+    },
+    commonMessage(message, type) {
+      this.$message({
+        type: type,
+        message: message
+      });
+    },
+    deleteComponent(param) {
+      console.log(param);
+      let vm = this;
+      for (var i = 0; i < this.tableData.length; i++) {
+        for (var j = 0; j < param.del.length; j++) {
+          if (vm.tableData[i].title == param.del[j].title) {
+            vm.tableData.splice(i, 1);
+          }
+        }
+      }
+      // componentDelete(param).then((data)=>{
+      //     if(data.data.code==200){
+      //          if(this.tableData.list.length===deletArray.length){
+      //             this.getTableList(this.tableParam)
+      //          }else{
+      //              for (let i = 0; i < deletArray.length; i++) {
+      //                  for (let j = 0; j < this.tableData.list.length; j++) {
+      //                      if (this.tableData.list[j].componentFileId == deletArray[i].componentId) {
+      //                          this.tableData.list.splice(j, 1);
+      //                      }
+      //                  }
+      //              }
+      //              this.tableData.totalRecords -=deletArray.length;
+      //          }
+      //         deletArray =[];
+      //     }
+      // })
+    },
+    /**
+             * 全选
+             * @params [{type array}]  selection  选中的队列对象
+             */
+
+    selectAll(selection) {
+      deletArray = [];
+      selection.forEach(function(val, key) {
+        if (deletArray.indexOf(val.componentFileId) == -1) {
+          deletArray.push({
+            componentId: val.componentFileId,
+            title: val.title
+          });
+        }
+      });
+    },
+
+    /**
+             * 单选
+             * @params [{type obj}] selection    选中的对象
+             * @params row 列
+             */
+    selectChecked(selection, row) {
+      deletArray = [];
+      selection.forEach(function(val, key) {
+        if (deletArray.indexOf(val.componentFileId) == -1) {
+          deletArray.push({
+            componentId: val.componentFileId,
+            title: val.title
+          });
+        }
+      });
+    },
+    //列表删除
+    deleteComp() {
+      if (!deletArray.length) {
+        this.commonMessage("没有选中构件", "warning");
+        return false;
+      }
+      this.commonConfirm(
+        "删除选中构件",
+        () => {
+          this.deleteComponent({ productId: 5, del: deletArray });
+        },
+        () => {},
+        "warning"
+      );
+    },
     backToOrderList() {
       this.$router.push({ path: "/order-management/orders" });
     },
@@ -173,7 +303,8 @@ export default {
     },
     handleSelectionChange(val) {
       //                多选
-      this.multipleSelection = val;
+      deletArray = val;
+
     },
     sort() {
       //序号
@@ -263,6 +394,6 @@ export default {
   overflow: auto;
 }
 .order-management.order-detail .content .el-input {
-  width: 100% !important ;
+  width: 100% !important;
 }
 </style>
