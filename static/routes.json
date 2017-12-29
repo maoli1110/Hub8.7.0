@@ -134,14 +134,14 @@
         "name":"构件库",
         "sever":"",
 		"children":[
+            {
+                "url":"/componentlib/luban-mep",
+                "name":"鲁班安装",
+                "sever":"http://192.168.13.195:8989/cloud/"
+            },
 			{
 				"url":"/componentlib/luban-steel",
                 "name":"鲁班钢筋",
-				"sever":"http://192.168.13.195:8989/cloud/"
-			},
-			{
-				"url":"/componentlib/luban-mep",
-                "name":"鲁班安装",
 				"sever":"http://192.168.13.195:8989/cloud/"
 			},
             {

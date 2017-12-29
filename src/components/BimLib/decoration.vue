@@ -123,7 +123,7 @@
                                 <div v-if="item.projClassify==2" >-</div>
                                 <div v-else :title="item.createRealName+'\n'+item.createUserName"> {{item.createRealName}}</div>
                             </td>
-                            <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
+                            <td class="times">{{item.createDate}}</td>
                             <td  v-if="$route.params.typeId !=4">{{item.drawSize}}</td>
                             <td class="relat" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px">{{item.deptName}}</span></td>
                             <td>{{item.projSize>1024?item.projSize+'GB':item.projSize+'MB'}}</td>
@@ -196,7 +196,7 @@
                             <td v-if="$route.params.typeId !=3" class="bim-params">{{item.projGenre}}</td>
                             <td class="absol substr uploadPerson" :title="
                             item.createRealName+'\n'+item.createUserName">{{item.createRealName}}</td>
-                            <td class="times">{{new Date(item.createDate).toLocaleDateString()}}</td>
+                            <td class="times">{{item.createDate}}</td>
                             <td  v-if="$route.params.typeId !=3">{{item.drawSize}}</td>
                             <!--<td class="depart-pro">{{item.deptName}}</td>-->
                             <td class="relat depart-pro" :title="item.deptName" style="width:220px;"><span class="substr absol" style="display:inline-block;top:0;width:200px;left:0">{{item.deptName}}</span></td>
@@ -409,6 +409,7 @@
         saveMonitorInfo,
         checkMonitorSetInfo
     } from '../../api/getData-yhj.js';                                      //接口数据
+    import {dateFormat } from '../../utils/common.js';
     let deletArray = [];        //删除projIds队列
     let monitorPpids = [];
     let countIndex = 0;         //表格选中状态个数统计
@@ -607,6 +608,8 @@
                 this.tableParam.delete = this.isRecycle;
 
 //                this.tableParam.deptIds[0] = 'd68ceeb2d02043bd9ea5991ac44d649b';
+                console.log(this.filterParams.majorVal,'this.filterParams.majorVal')
+                this.tableParam.projType = this.filterParams.majorVal;
                 this.tableParam.packageType = this.$route.params.typeId;
                 this.tableParam.pageParam.orders[0].property = "t1.createDate";
                 this.tableParam.pageParam.orders[0].direction = 1;
@@ -879,12 +882,14 @@
                     if(data.data.result!=null){
                         this.tableData = data.data.result.content;
                         this.tableData.forEach((val,key)=>{
+                            val.createDate =  dateFormat(val.createDate);
                             this.$set(this.tableData[key],'checked',false);
                             if(val.status==2||val.status==3){
                                 this.$set(this.tableData[key],'disabled',true);
                             }else{
                                 this.$set(this.tableData[key],'disabled',false);
                             }
+
                         })
                         this.pagesList = data.data.result;
                     }
