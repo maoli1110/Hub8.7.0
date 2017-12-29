@@ -214,7 +214,7 @@
                     <el-input v-model="signName" auto-complete="off" style="width:80%"></el-input>
                 </div>
             </div>
-            <el-upload style="margin-top:30px;padding:0 20px" class="upload-demo" drag ref="upload" v-show="!hasImage" :on-preview="handlePreview"
+            <el-upload style="margin-top:20px;padding:0 20px" class="upload-demo" drag ref="upload" v-show="!hasImage" :on-preview="handlePreview"
                 :on-remove="handleRemove" :auto-upload="false" :action="actionUrl" :on-success='handleSuccess'>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">点击上传电子签名</div>
@@ -223,10 +223,13 @@
                 <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
             </el-upload>
             <div v-show="hasImage" class="avatar-wrap">
-                <img :src="imageUrl" class="avatar" style="width:310px;height:310px;margin:0 auto">
+                <img :src="imageUrl" class="avatar" style="width:310px;height:140px;margin-top:20px;">
+                <div class="el-upload__tip" slot="tip">
+                    <span style="color:#e30000">*</span>建议签名图片尺寸（宽：100px-高：40px）</div>
+                <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
                 <div class="avatar-proper">
                     <span @click="hasImage=false" class="avatar-upload"></span>
-                    <span class="avatar-delete"></span>                    
+                    <span @click="deleteAvatar()"        class="avatar-delete"></span>                    
                 </div>
             </div>
             
@@ -745,19 +748,17 @@
             curSelectUser(row) {
                 this.curSelectUserInfo = row;
                 this.imageUrl = '';
+                this.signName='';
                 //    当前成员没有signId则显示上传
                 if (!this.curSelectUserInfo.signId) {
                     this.hasImage = false;
                 } else {
-                    // 有则调取查看接口
+                // 有则调取查看接口
                     this.hasImage = true;
                     api.getUserSign(this.curSelectUserInfo.signId).then(res => {
                         this.imageUrl = res.data.result.url;
                     })
-
-
                 }
-
             },
             //上传
             submitUpload() {
@@ -765,35 +766,37 @@
                     alert('签名不能为空');
                     return
                 }
-                this.actionUrl =
-                    `${window.serverPath.builderUrl}/userRest/addUserSign/${this.curSelectUserInfo.userName}/${this.signName}`
+                this.actionUrl =`${window.serverPath.builderUrl}/userRest/addUserSign/${this.curSelectUserInfo.userName}/${this.signName}`
                 setTimeout(() => {
                     this.$refs.upload.submit();
                 }, 10);
-
+            },
+            // 删除签名
+            deleteAvatar(){
+                api.deleteUserSign(this.curSelectUserInfo.signId).then(res=>{
+                    if (res.data.code == 200) {
+                    this.getUsersList();
+                    this.signDialogVisible=false
+                }
+                })
             },
             //上传成功
             handleSuccess(response, file, fileList) {
                 console.log(response)
                 if (response.code == 200) {
-                    this.getUsersList()
-                    // api.getUserSign('5a449f9c84ae71e344818d5c').then(res => {
-                    //     console.log(res.data.result.url)
-                    //     this.imageUrl = res.data.result.url;
-                    //     this.hasImage = true;
-                    //     this.getUsersList()
-                    // })
+                    this.getUsersList();
+                    this.signDialogVisible=false
                 }
                 this.$refs.upload.clearFiles()
             },
             handleRemove(file, fileList) {
-                console.log(file, fileList);
+                // console.log(file, fileList);
             },
             handlePreview(file) {
-                console.log(file);
+                // console.log(file);
             },
             authorizedDataCatalog() {
-                console.log(this.cacheProjectTree);
+                // console.log(this.cacheProjectTree);
                 this.cacheProjectTree = [];
                 setTimeout(() => {
                     let zTree = $.fn.zTree.init(
@@ -969,9 +972,9 @@
         position: relative;
     }
     .avatar-proper{
-        bottom:4px;
+        bottom:48px;
         width: 310px;
-        padding:20px 0;
+        padding:15px 0;
         position: absolute;
         background-color: #000;
         opacity: 0;
@@ -981,6 +984,9 @@
     }
     .avatar-proper>span{
         display: inline-block;  
+    }
+    .avatar-upload+.avatar-delete{
+        margin-left:100px;
     }
     .avatar-wrap:hover .avatar-proper{
         /* display: block; */

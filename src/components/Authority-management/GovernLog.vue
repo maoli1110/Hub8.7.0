@@ -19,7 +19,7 @@
                     class="components-icon icon-update icon-map "></i><span class="btn-text">导出</span>
                 </el-button>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                    <el-table ref="multipleTable" class="scroll-me" :data="coinsManagementTableData.content" border tooltip-effect="dark"
+                    <el-table ref="multipleTable" class="scroll-me" :data="tableData" border tooltip-effect="dark"
                               style="min-width: 1537px;margin-top:20px">
                         <el-table-column class="" type='index' label="序号" width="60"></el-table-column>
                         <el-table-column class="table-tr" prop="ip" label="通行证/账号名称" width="200"></el-table-column>
@@ -33,11 +33,11 @@
                     <el-pagination style="margin-left:30%"
                                    @size-change="handleSizeChange"
                                    @current-change="handleCurrentChange"
-                                   current-page="1"
-                                   :page-size="5"
-                                   page-sizes="[5, 10, 20, 50]"
+                                   :current-page="1"
+                                   :page-size="logParameters.size"
+                                   :page-sizes="[5, 10, 20, 50]"
                                    layout="total, sizes, prev, pager, next, jumper"
-                                   :total="coinsManagementTableData.totalElements">
+                                   :total="logParameters.totalElements">
                     </el-pagination>
                 </div>
             </div>
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import '../../../static/css/components.css';
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 import { getLogs } from "../../api/getData-cxx.js";
 import { basePath } from "../../utils/common.js";
@@ -53,14 +54,13 @@ export default {
   props: ["nowPath"],
   data() {
     return {
-      coinsManagementTableData: {
-        totalElements: 0
-      },
+      tableData:[],
       logParameters: {
         beginTime: "",
         endTime: "",
         size: 10,
-        page: 0
+        page: 0,
+        totalElements: 0
       },
       selectDate: "",
       pathType: {
@@ -130,9 +130,11 @@ export default {
     },
     handleSizeChange(val) {
       console.log(val);
+      
     },
     handleCurrentChange(val) {
-      console.log(val);
+      this.logParameters.page = val-1;
+      this.getLogList();
     },
     getLogList() {
       let vm = this;
@@ -153,9 +155,8 @@ export default {
       //?page=1&size=2&sort=2&start=3&end=4
       getLogs(params).then(function(res) {
         if (res.data.msg == "success") {
-          //vm.coinsManagementTableData = res.data.content;
-          vm.coinsManagementTableData.totalElements = 5;
-          vm.coinsManagementTableData.content = res.data.result.content;
+          vm.tableData = res.data.result.content;
+          vm.logParameters.totalElements =  res.data.result.totalElements
         }
       });
     }
