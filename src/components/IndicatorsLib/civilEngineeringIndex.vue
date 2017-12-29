@@ -36,12 +36,12 @@
                         <el-table-column type='index' label="编号" width="60"
                                          :index="indexSort"></el-table-column>
                         <el-table-column prop="computerName" label="工程名称" width=""></el-table-column>
-                        <el-table-column label="上传人" width="200">
+                        <!-- <el-table-column label="上传人" width="200">
                             <template slot-scope="scope">
                                 <span>{{scope.row.username}}({{scope.row.realname}})</span>
                             </template>
-                        </el-table-column>
-                        <el-table-column prop="bindingTime" label="上传人" width="200"></el-table-column>
+                        </el-table-column> -->
+                        <el-table-column prop="binder" label="上传人" width="200"></el-table-column>
                         <el-table-column prop="bindingTime" label="上传时间" width="200"></el-table-column>
                         <el-table-column prop="remarks" label="备注" width="300" show-overflow-tooltip></el-table-column>
                     </el-table>
@@ -204,17 +204,18 @@ import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 export default {
   data() {
     return {
-      searchContent: "曹相相",
+      searchContent: "",
       multipleSelection: [],
       bindManageTableData: [
         {
           bindingId: 0,
-          bindingTime: "string",
-          computerName: "string",
+          binder:"fanweiqiu",
+          bindingTime: "2016-05-03 13:51",
+          computerName: "26.1.1 土建新工程",
           enterprisePackageId: 0,
           hardwareCode: "string",
           realName: "string",
-          remarks: "dsj大家觉得基督教的基督教的基督教的基督教多算胜少算哭哭哭",
+          remarks: "",
           username: "string"
         }
       ],
