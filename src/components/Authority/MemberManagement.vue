@@ -77,7 +77,7 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span class="icon-edit_    icon" @click="editMember(scope.row)"></span>
-                        <span class="icon-authorize_ icon" @click="authorizedDataCatalog();authorizedDataCatalogVisible=true;"></span>
+                        <span class="icon-authorize_ icon" @click="beforeOpen();authorizedDataCatalogVisible=true;"></span>
                         <span class="icon-sign  icon" @click="signDialogVisible=true;curSelectUser(scope.row)"></span>
                         <span class="icon-view icon" @click="serviceDetailsDialogVisible=true"></span>
                     </template>
@@ -202,16 +202,16 @@
             </div>
             <div style="clear:both;"></div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="authorizedDataCatalogVisible = false" class="dialog-btn">确 定</el-button>
-                <el-button @click="authorizedDataCatalogVisible = false" class="dialog-btn">取消</el-button>
+                <el-button type="primary" @click="authorizedDataCatalogVisible = false;saveAuthorizedData()" class="dialog-btn">确 定</el-button>
+                <el-button @click="authorizedDataCatalogVisible = false;" class="dialog-btn">取消</el-button>
             </span>
         </el-dialog>
         <!-- 设置电子签名 -->
         <el-dialog title="设置电子签名" :visible.sync="signDialogVisible" size='sign'>
             <div class="el-form-item" v-show="!hasImage">
-                <label class="el-form-item__label" style="width:92px">设置电子签名:</label>
+                <label class="el-form-item__label" style="width:62px">签名：</label>
                 <div class="el-form-item__content" style="margin-left: 55px;">
-                    <el-input v-model="signName" auto-complete="off" style="width:80%"></el-input>
+                    <el-input v-model="signName" auto-complete="off" style="width:91%"></el-input>
                 </div>
             </div>
             <el-upload style="margin-top:20px;padding:0 20px" class="upload-demo" drag ref="upload" v-show="!hasImage" :on-preview="handlePreview"
@@ -229,28 +229,27 @@
                 <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
                 <div class="avatar-proper">
                     <span @click="hasImage=false" class="avatar-upload"></span>
-                    <span @click="deleteAvatar()"        class="avatar-delete"></span>                    
+                    <span @click="deleteAvatar()" class="avatar-delete"></span>
                 </div>
             </div>
-            
-            
+
+
             <span slot="footer" class="dialog-footer" v-show="!hasImage">
                 <el-button type="primary" @click="submitUpload" class="dialog-btn">确 定</el-button>
                 <el-button @click="signDialogVisible = false" class="dialog-btn">取消</el-button>
             </span>
-            <span slot="footer" class="dialog-footer" v-show="hasImage" >
+            <span slot="footer" class="dialog-footer" v-show="hasImage">
                 <el-button type="primary" @click="signDialogVisible = false" class="dialog-btn">确 定</el-button>
                 <el-button @click="signDialogVisible = false" class="dialog-btn">取消</el-button>
             </span>
 
         </el-dialog>
-        
+
     </div>
 
 </template>
 <script>
     // 1349047949@qq.com
-    let hasChecked = false;
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
     import * as api from "../../api/getData-ppc";
@@ -283,31 +282,30 @@
                 }
             };
             return {
-                visible2:false,
                 url: "../../../static/tree1.json",
-                cacheProjectTree: [], //缓存树内容
                 addMemberDialogVisible: false,
                 batchAddMemberDialogVisible: false,
                 weeklyActivityDialogVisible: false,
                 serviceDetailsDialogVisible: false,
                 authorizedDataCatalogVisible: false,
                 signDialogVisible: false,
-                curPage: 1,
-                pageSize: 10,
-                total: 0,
+                curPage: 1,//当前页
+                pageSize: 10,//当前显示多少条
+                total: 0,//总条数
                 curSelectUserInfo: {}, //当前选中user
                 searchUsersListVal: '', //搜索成员
                 orgId: "", //组织树节点
                 roleId: "", //角色
-                roleData: [],
                 actionUrl: '', //上传签名地址
-                imageUrl: '', //成功后签名图片地址
+                imageUrl: '', // 上传签名成功后签名图片地址
                 signName: '', //签名
                 hasImage: false, //当前用户是否上传签名照
                 textarea: "布鲁斯123 布鲁斯", //批量添加文本内容
+                hasChecked:false,//添加成员前账号是否已经检查
                 dialogOrgName: "", //添加成员弹框树组织名称
                 dialogRoleName: "", //添加成员弹框角色名称
                 searchTypeId: 1,
+                //成员筛选字段
                 searchType: [{
                         searchTypeId: 0,
                         searchTypeName: "项目成员和管理员"
@@ -317,6 +315,7 @@
                         searchTypeName: "归属"
                     }
                 ],
+                // 添加成员的信息
                 ruleForm: {
                     userName: "", //鲁班通行证
                     realName: "", //姓名
@@ -325,6 +324,7 @@
                     mobile: "", //手机号
                     email: "" //邮箱
                 },
+                // 添加成员需要验证内容
                 rules: {
                     userName: [{
                         required: true,
@@ -347,18 +347,8 @@
                         trigger: "blur"
                     }]
                 },
-
+                // 组织树设置
                 orgSetting: {
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
-                    },
-                    callback: {
-                        onClick: this.orgTreeClick
-                    }
-                },
-                dialogOrgSetting: {
                     data: {
                         simpleData: {
                             enable: true,
@@ -367,15 +357,18 @@
                         }
                     },
                     callback: {
-                        onClick: this.dialogOrgTreeClick
+                        onClick: this.orgTreeClick
                     }
                 },
+                //默认组织树数据
                 zNodes: [],
-
+                //已授权项目树设置
                 authorizedProjectSetting: {
                     data: {
                         simpleData: {
-                            enable: true
+                            enable: true,
+                            idKey: "id",
+                            pIdKey: "parentId"
                         }
                     },
                     callback: {
@@ -383,6 +376,9 @@
                         beforeClick: this.authorizedProjectBeforeClick
                     }
                 },
+                //缓存树内容 记录已授权项目树对应资料目录文件夹树
+                cacheProjectTree: [], 
+                //已授权项目树
                 authorizedProjectNodes: [{
                         id: 1,
                         pId: 0,
@@ -455,6 +451,7 @@
                         name: "叶子节点3"
                     }
                 ],
+                //资料目录文件夹树设置
                 folderSetting: {
                     check: {
                         enable: true
@@ -465,6 +462,7 @@
                         }
                     }
                 },
+                //资料目录文件夹树
                 folderNodes: [{
                         id: 1,
                         pId: 0,
@@ -538,7 +536,9 @@
                         name: "我是开始 2-3"
                     }
                 ],
+                // 成员列表数据
                 memberTableData: [],
+                //周活跃度
                 weeklyActivityData: [{
                         date: "2017.9.30 17:43:57",
                         name: "Explorer",
@@ -564,7 +564,9 @@
                         times: "88"
                     }
                 ],
+                //角色列表
                 roles: [],
+                //当前已勾选的成员信息
                 multipleSelection: []
             };
         },
@@ -581,29 +583,26 @@
                 "curEditMember",
                 "curAddMember" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
             ]),
+            //获取组织节点
             getOrgTreeInfo() {
-                api.getOrgTreeList().then(res => {
-                    this.zNodes = res.data.result;
-                    this.zNodes.forEach((val, key) => {
-                        //添加icon
-                        //this.$set(val,'iconSkin',"");
-                        if (val.root) {
-                            this.$set(val, "iconSkin", "rootNode");
-                            console.log(val);
-                        } else if (!val.root && val.type == 0 && !val.direct) {
-                            this.$set(val, "iconSkin", "subNode");
-                        } else if (val.type == 1) {
-                            this.$set(val, "iconSkin", "projNode");
-                        } else if (val.direct) {
-                            this.$set(val, "iconSkin", "projNode");
-                        }
+                return new Promise((resolve, reject) => {
+                    api.getOrgTreeList().then(res => {
+                        this.zNodes = res.data.result;
+                        this.zNodes.forEach((val, key) => {
+                            if (val.root) {
+                                this.$set(val, "iconSkin", "rootNode");
+                                console.log(val);
+                            } else if (!val.root && val.type == 0 && !val.direct) {
+                                this.$set(val, "iconSkin", "subNode");
+                            } else if (val.type == 1) {
+                                this.$set(val, "iconSkin", "projNode");
+                            } else if (val.direct) {
+                                this.$set(val, "iconSkin", "projNode");
+                            }
+                        });
+                        resolve()
                     });
-                    $.fn.zTree.init(
-                        $("#dialogOrgTree"),
-                        this.dialogOrgSetting,
-                        this.zNodes
-                    );
-                });
+                })
             },
             /**获取角色*/
             getRoleList() {
@@ -639,20 +638,23 @@
                     this.total = res.data.result.pageInfo.totalNumber;
                 });
             },
+            //筛选成员
             searchUsersList() {
                 this.getUsersList()
             },
+            //组织树节点变化触发
             handleTreeNodeChange(currentTreeNode) {
                 this.orgId = currentTreeNode.id;
                 this.getUsersList();
             },
+            //添加成员对话框内部组织树
             dialogOrgTreeClick(event, treeId, treeNode) {
                 console.log(treeNode);
                 this.dialogOrgName = treeNode.name;
                 this.ruleForm.orgId = treeNode.id;
                 setTimeout(() => {
                     $(".el-select-dropdown__item.selected").click();
-                }, 100);
+                }, 0);
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -667,7 +669,7 @@
                 this.getUsersList();
                 console.log(`当前页: ${val}`);
             },
-            // a0e51be234784b9f9468511a7f456755
+            //添加成员
             addMember() {
                 setTimeout(() => {
                     this.resetForm("ruleForm");
@@ -677,17 +679,15 @@
                 for (var k in this.ruleForm) {
                     this.ruleForm[k] = "";
                 }
-                hasChecked = false;
-                (this.dialogOrgName = ""), this.getOrgTreeInfo();
+                this.hasChecked = false;
+                this.dialogOrgName = ""
+                this.getOrgTreeInfo().then(() => {$.fn.zTree.init($("#dialogOrgTree"),this.orgSetting,this.zNodes);});
             },
-            editMember(row) {
-                this.curEditMember(row);
-                this.$router.push({
-                    path: `/authority/edit-member/${row.userId}`
-                });
-            },
+            //删除成员
+            deleteMember() {},
+            //提交添加成员信息
             submitForm(formName) {
-                hasChecked = true; //通行证账号检查通过
+                this.hasChecked = true; //通行证账号检查通过
                 this.$refs[formName].validate(valid => {
                     if (valid) {
                         api.addUser(this.ruleForm).then(res => {
@@ -705,7 +705,7 @@
                                     confirmButtonText: "确定",
                                     type: "info"
                                 });
-                                hasChecked = false;
+                                this.hasChecked = false;
                             }
                         });
                     } else {
@@ -714,9 +714,18 @@
                     }
                 });
             },
+            //重置成员信息
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
+            //编辑成员
+            editMember(row) {
+                this.curEditMember(row);
+                this.$router.push({
+                    path: `/authority/edit-member/${row.userId}`
+                });
+            },
+            //批量添加成员
             batchAddMember() {
                 let textareaArray = this.textarea.split("\n");
                 let memberMessage = [];
@@ -743,13 +752,12 @@
                 });
                 console.log(memberMessage);
             },
-            deleteMember() {},
-            //当前选中user
+            //当前选中成员
             curSelectUser(row) {
                 this.curSelectUserInfo = row;
                 this.imageUrl = '';
-                this.signName='';
-                //    当前成员没有signId则显示上传
+                this.signName = '';
+                //当前成员没有signId则显示上传
                 if (!this.curSelectUserInfo.signId) {
                     this.hasImage = false;
                 } else {
@@ -760,61 +768,64 @@
                     })
                 }
             },
-            //上传
+            //上传签名
             submitUpload() {
-                if (!this.signName&&!this.hasImage) {
+                if (!this.signName && !this.hasImage) {
                     alert('签名不能为空');
                     return
                 }
-                this.actionUrl =`${window.serverPath.builderUrl}/userRest/addUserSign/${this.curSelectUserInfo.userName}/${this.signName}`
+                this.actionUrl =
+                    `${window.serverPath.builderUrl}/userRest/addUserSign/${this.curSelectUserInfo.userName}/${this.signName}`
                 setTimeout(() => {
                     this.$refs.upload.submit();
-                }, 10);
-            },
-            // 删除签名
-            deleteAvatar(){
-                api.deleteUserSign(this.curSelectUserInfo.signId).then(res=>{
-                    if (res.data.code == 200) {
-                    this.getUsersList();
-                    this.signDialogVisible=false
-                }
-                })
+                }, 0);
             },
             //上传成功
             handleSuccess(response, file, fileList) {
                 console.log(response)
                 if (response.code == 200) {
                     this.getUsersList();
-                    this.signDialogVisible=false
+                    this.signDialogVisible = false
                 }
                 this.$refs.upload.clearFiles()
             },
             handleRemove(file, fileList) {
-                // console.log(file, fileList);
             },
             handlePreview(file) {
-                // console.log(file);
             },
-            authorizedDataCatalog() {
-                // console.log(this.cacheProjectTree);
+            // 删除签名
+            deleteAvatar() {
+                api.deleteUserSign(this.curSelectUserInfo.signId).then(res => {
+                    if (res.data.code == 200) {
+                        this.getUsersList();
+                        this.signDialogVisible = false
+                    }
+                })
+            },            
+            // 保存授权信息并提交
+            saveAuthorizedData() {
+                console.log(this.cacheProjectTree)
+            },
+            //授权资料目录之前相关树初始化操作
+            beforeOpen() {
                 this.cacheProjectTree = [];
-                setTimeout(() => {
+                this.getOrgTreeInfo().then(() => {
                     let zTree = $.fn.zTree.init(
                         $("#authorizedProjectTree"),
                         this.authorizedProjectSetting,
-                        this.authorizedProjectNodes
+                        this.zNodes
                     );
                     $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
                     let nodes = zTree.getNodes();
                     if (nodes.length > 0) {
                         zTree.selectNode(nodes[0]);
                     }
-                }, 150);
+                })
+
             },
+            // 已授权项目树点击事件
             authorizedProjectClick(event, treeId, treeNode) {
-                let exsistCacheProjectTreeItem = this.cacheProjectTree.find(
-                    el => el.id == treeNode.id
-                );
+                let exsistCacheProjectTreeItem = this.cacheProjectTree.find(el => el.id == treeNode.id);
                 if (exsistCacheProjectTreeItem) {
                     this.folderNodes = exsistCacheProjectTreeItem.preTreeInfo;
                     $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
@@ -822,33 +833,30 @@
                     console.log("后台请求数据");
                     this.$axios.get(this.url).then(res => {
                         this.folderNodes = res.data;
-                        $.fn.zTree.init(
-                            $("#folderTree"),
-                            this.folderSetting,
-                            this.folderNodes
-                        );
+                        $.fn.zTree.init($("#folderTree"), this.folderSetting, this.folderNodes);
                     });
                 }
             },
+            // 已授权项目树点击前事件
             authorizedProjectBeforeClick() {
                 //  左侧组织树上次选中节点
                 let zTree = $.fn.zTree.getZTreeObj("authorizedProjectTree");
                 let preSelectNode = zTree.getSelectedNodes();
-                // 记录右侧文件夹树上次选中状态
+                // 记录右侧文件夹树上次状态
                 let preTreeObj = $.fn.zTree.getZTreeObj("folderTree");
+                // 记录右侧文件夹树被选中节点
+                // let preTreeObjChecked=preTreeObj.getCheckedNodes(true).filter(item => {
+                //     return !item.isParent
+                // })                
+                // console.log(preTreeObjChecked)
                 // let preNodes = preTreeObj.transformToArray(preTreeObj.getNodes());
                 let preNodes = preTreeObj.getNodes();
                 if (this.cacheProjectTree.length > 0) {
-                    let cacheProjectTreeItem = this.cacheProjectTree.find(
-                        el => el.id == preSelectNode[0].id
-                    );
-                    cacheProjectTreeItem
-                        ?
-                        (cacheProjectTreeItem.preTreeInfo = preNodes) :
-                        this.cacheProjectTree.push({
-                            id: preSelectNode[0].id,
-                            preTreeInfo: preNodes
-                        });
+                    let cacheProjectTreeItem = this.cacheProjectTree.find(el => el.id == preSelectNode[0].id);
+                    cacheProjectTreeItem ? (cacheProjectTreeItem.preTreeInfo = preNodes) : this.cacheProjectTree.push({
+                        id: preSelectNode[0].id,
+                        preTreeInfo: preNodes
+                    });
                 } else {
                     this.cacheProjectTree.push({
                         id: preSelectNode[0].id,
@@ -968,29 +976,34 @@
     .icon+.icon {
         margin-left: 15px;
     }
-    .avatar-wrap{
+
+    .avatar-wrap {
         position: relative;
     }
-    .avatar-proper{
-        bottom:48px;
+
+    .avatar-proper {
+        bottom: 48px;
         width: 310px;
-        padding:15px 0;
+        padding: 15px 0;
         position: absolute;
         background-color: #000;
         opacity: 0;
         cursor: pointer;
         text-align: center;
-        
     }
-    .avatar-proper>span{
-        display: inline-block;  
+
+    .avatar-proper>span {
+        display: inline-block;
     }
-    .avatar-upload+.avatar-delete{
-        margin-left:100px;
+
+    .avatar-upload+.avatar-delete {
+        margin-left: 100px;
     }
-    .avatar-wrap:hover .avatar-proper{
+
+    .avatar-wrap:hover .avatar-proper {
         /* display: block; */
         transition: all .5s;
         opacity: .4
     }
+
 </style>
