@@ -1048,5 +1048,4 @@
         transition: all .5s;
         opacity: .4
     }
-
 </style>
