@@ -689,7 +689,7 @@
                  }else{
                  this.rootInfoEdit.steps[editIndexTable].isAll = false;
                  }
-                 console.info(value,'value值变化的时候')*/
+                 */
             },
             //提示框
             messageBox(message) {
@@ -714,13 +714,10 @@
                 }
             },
             beforeRouteEnter() {
-                //            next(vm => vm.from = from);
-                console.info(this.$route.name, "from");
             },
             getTableList(params){
                 getProcessList(params)
                     .then(res => {
-                        //console.info(res.data.result,'我是流程列表数据')
                         this.tableData = res.data.result.content;
                         this.totalNumber = res.data.result.totalElements;
                         this.totalPages = res.data.result.pageSize;
@@ -800,7 +797,6 @@
                                 this.rootInfoEdit.steps[j].listVal = "任意";
                             }
                         }
-                        console.log(this.rootList,'this.rootInfoEdit.steps[j].roleIds')
                         for (let i = 0; i < this.rootList.length; i++) {
                             for (let j = 0; j < this.rootInfoEdit.steps.length; j++) {
                                 for (let l = 0;l < this.rootInfoEdit.steps[j].roleIds.length;l++) {
@@ -827,7 +823,6 @@
             },
             //删除接口
             delProcessList(params,index){
-                console.log(index,'index')
                 //删除流程
                 removeProcessInfo(params).then(res => {
                     if(res.data.code==200){
@@ -877,8 +872,6 @@
             },
             tableSearch(event) {
                 //搜索功能
-                console.log(event.type);
-
                 if (event.type == "click" || event.keyCode == 13) {
                     this.tableParam.searchKey = this.tableSearchKey;
                     this.getTableList(this.tableParam);
@@ -945,7 +938,6 @@
                     .catch(function (error) {
                         this.messageBox(error.response.data.message);
                     });
-                console.info(row.remark);
             },
 
             //模态框
@@ -961,11 +953,8 @@
             formModelType(params) {
                 getProcessRelFormList(params)
                     .then(res => {
-                        // console.info(res.data,'关联表单');
-                        console.log(this.formModelData,'eeee');
                         this.formModelData = res.data.result.content;
                         this.modelTotalNum = res.data.result.totalElements;
-                        console.info(this.modelTotalNum);
                     })
                     .catch(function (error) {
                         this.messageBox(error.response.data.message);
@@ -1030,10 +1019,8 @@
             },
             //表单模板分页数据展示
             formModelSizeChange(val) {
-                console.log(val,'va;');
                 this.formModelParams.pageParam.page = val;
                 this.formModelType(this.formModelParams);
-//                console.info(val, "显示的是第几页信息");
             },
             //表单查询
             formModelSearch(event) {
@@ -1044,7 +1031,6 @@
             },
             //关联表单删除
             modelSelectAll(selection) {
-                console.log(selection, "deleteAll");
                 if (selection.length) {
                     updateProcessRelFormParams.delFormIds = [];
                     for (let i = 0; i < selection.length; i++) {
@@ -1060,7 +1046,6 @@
                     updateProcessRelFormParams.delFormIds = [];
                 }
 
-                console.info(updateProcessRelFormParams.delFormIds);
             },
             modelSelectRow(selection, row) {
                 if (selection.length) {
@@ -1077,21 +1062,16 @@
                 } else {
                     updateProcessRelFormParams.delFormIds = [];
                 }
-                console.info(updateProcessRelFormParams.delFormIds);
             },
             modelSelectionChange(seletion) {
-                console.info(modelSelectionChange, "modelSelectionChange");
             },
             formModelTreeChange(modelId) {
                 updateProcessRelFormParams.delFormIds = [];
                 updateProcessRelFormParams.addFormIds = [];
                 formModelParams.modelId = modelId;
                 publickModelId = modelId;
-                console.log(publickModelId, "publickModelId");
                 getFormProcessParams.modelId = formModelParams.modelId;
-                console.log(updateProcessRelFormParams, "change");
                 /*    if(!updateProcessRelFormParams.addFormIds.length && !updateProcessRelFormParams.delFormIds.length){
-                 console.log(getFormProcessParams);
                  this.zTreeFiledProcess(getFormProcessParams);//改变树结构
                  }*/
             },
@@ -1127,7 +1107,6 @@
                     objTr[i].style.background = "#fff ";
                 }
                 event.currentTarget.style.background = "#f5f5f5";
-                console.info(indexTable, this.rootInfo);
             },
             //流程管理文件
             eidtProcessSetEdit(event, index) {
@@ -1156,13 +1135,11 @@
                     });
                 }
                 for (let i = 0; i < this.rootInfo.lenght; i++) {
-                    console.info(this.rootInfo[i].stepName, "stepName");
                     this.rootInfo[i].stepName = "";
                 }
             },
             //删除行
             deleteHandle(index) {
-                console.info(index, "index");
                 if (this.rootInfo.length > 0) {
                     this.rootInfo.splice(index, 1);
                 }
@@ -1191,7 +1168,6 @@
                     );
                     //                listParams.roleIds.push(this.rootList[index].roleId);
                     this.rootInfo[indexTable].listRolesId.push(this.rootList[index].roleId);
-                    console.info(this.rootInfo[indexTable].listRolesId);
                 }
             },
             //编辑添加角色
@@ -1225,10 +1201,8 @@
             },
             //编辑关闭标签
             eidtCloseSelf(index) {
-                console.log( this.rootInfo,'this.rootInfoEdit.steps[editIndexTable].roleIds')
                 this.rootInfoEdit.steps[editIndexTable].roleIds.splice(index, 1);
                 this.rootInfoEdit.steps[editIndexTable].rootEditArr.splice(index, 1);
-                //            console.info(this.rootInfoEdit.steps[editIndexTable],'splice')
             },
             //添加步骤
             addStep() {
@@ -1325,7 +1299,6 @@
                     }
                 }
                 if (!isUpdateStatus) {
-                    //                console.info('数据全为空')
                 }
                 $(".editPage .table-step tbody tr").map(function (i, val) {
                     if (
@@ -1512,7 +1485,6 @@
                 getFormInfosForProcess(getFormProcessParams).then(res => {
 
                         checkedCount = 0;
-                        //console.info(res.data,'树结构数据')
                         this.zNodes = res.data.result;
                         for (var i = 0; i < this.zNodes.length; i++) {
                             if (!this.zNodes[i].checked && this.zNodes[i].isForm) {
@@ -1552,7 +1524,6 @@
                             delete this.zNodes[k].isForm;
                             delete this.zNodes[k].permit;
                         }
-                        //                console.info(this.zNodes)
                         var zTree = $.fn.zTree.init(
                             $("#lineTree"),
                             this.setting,
@@ -1570,7 +1541,6 @@
             },
             //添加关联
             BMPAddLink() {
-                console.log(this.formModelParams)
                 this.linkTree = true;
                 this.dialogFormVisible = false;
                 //树结构
@@ -1635,7 +1605,6 @@
                 }
                 updateProcessRelFormParams.modelId = formModelParams.modelId;
                 updateProcessRelFormParams.processId = processId;
-                //console.info(updateProcessRelFormParams);
                 checkedCount = 0;
                 var zTree = $.fn.zTree.getZTreeObj("lineTree");
                 var treeNodes = zTree.transformToArray(zTree.getNodes());
@@ -1747,8 +1716,6 @@
                             updateProcessRelFormParams.addFormIds.push(nodes[i].formId);
                         }
                     }
-                    //console.info(updateProcessRelFormParams,'选中的')
-                    //console.info(nodes,'选中的数据')
                 } else if (type == "checkAllFalse") {
                     zTree.checkAllNodes(false);
                     updateProcessRelFormParams.addFormIds = [];
@@ -1762,7 +1729,6 @@
                             updateProcessRelFormParams.delFormIds.push(nodes[i].formId);
                         }
                     }
-                    //console.info(updateProcessRelFormParams,'非选中的')
                 } else {
                     /* var callbackFlag = $("#callbackTrigger").attr("checked");
                      for (var i=0, l=nodes.length; i<l; i++) {
@@ -1842,7 +1808,6 @@
             //删除关联模型记录
             linkDelete(index, row) {
                 updateProcessRelFormParams.delFormIds = [];
-                //console.log(row.formId);
                 updateProcessRelFormParams.processId = this.formModelParams.processId;
                 updateProcessRelFormParams.modelId = this.formModelParams.modelId;
                 updateProcessRelFormParams.delFormIds.push(row.formId);
@@ -1859,7 +1824,6 @@
             //树结构的搜索功能
             getZtreeParentNode(ztreeNode, nodes) {
                 var pNode = ztreeNode.getParentNode();
-                /*console.log(pNode);*/
                 if (pNode != null) {
                     if (nodes.indexOf(pNode) < 0) {
                         nodes.push(pNode);
@@ -1872,7 +1836,6 @@
                     return;
                 }
                 var children = ztreeNode.children;
-                /* console.log(children);*/
                 if (children.length > 0) {
                     for (var i = 0; i < children.length; i++) {
                         var child = children[i];

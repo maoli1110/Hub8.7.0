@@ -134,11 +134,9 @@
                     },
                     callback: {
                         onCollapse: function (event, treeId, treeNode) {
-                            console.info('折叠')
                             level = treeNode.level;
                         },
                         onExpand: function (event, treeId, treeNode) {
-                            console.info('展开');
                             level = treeNode.level;
                         },
                     }
@@ -190,7 +188,6 @@
                 }
             },
             onCheck(event, treeId, treeNode){
-//                console.log(treeNode);
             },
             handleSizeChange(){
 
@@ -459,14 +456,11 @@
                     //说明当前level的节点都为折叠或者展开状态
                     if (type == "expand") {
 //                        level++
-                        console.log(maxLevel,'maxLevel');
                         if (level < maxLevel - 1) {
                             level++;
-                            console.info(level,'++++level++')
                         }
 
                     } else if (type == "collapse") {
-                        console.info(level,'--level')
                         if (level != 0) {
                             level--;
                         }else{
