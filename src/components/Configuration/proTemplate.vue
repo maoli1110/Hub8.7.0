@@ -269,7 +269,6 @@
         updateProjModel,
         getFormPreview
     } from '../../api/getData-yhj';
-    import '../../../static/zTree/js/jquery.ztree.all.min';
     let level = 1;
     let maxLevel = -1;
     let newCount = 1;
