@@ -575,7 +575,8 @@
                             this.$set(val, "iconSkin", "projNode");
                         }
                         //添加时根据树id找到对应的树名称
-                        if (val.id == this.curMemberInfo.orgId) this.curEditOrgName = val.name;
+                        if (val.id == this.curMemberInfo.orgId)
+                            this.curEditOrgName = val.name;
                     });
                     $.fn.zTree.init(
                         $("#curEditOrgSetting"),
@@ -593,10 +594,12 @@
                     this.roleData.forEach(item => {
                         //添加时需要根据角色id找到对应的角色名
                         if (this.$route.path == "/authority/add-member") {
-                            item.roleId == this.curMemberInfo.roleId ? this.curEditRoleName = item.roleName:this.curEditRoleName = "没找到他的角色"
+                            item.roleId == this.curMemberInfo.roleId ?
+                                (this.curEditRoleName = item.roleName) :
+                                (this.curEditRoleName = "没找到他的角色");
                         } else {
                             // 编辑状态直接根据传过来对象获取
-                            this.curEditRoleName = this.curMemberInfo.roleName||'没找到该角色'
+                            this.curEditRoleName = this.curMemberInfo.roleName || "没找到该角色";
                         }
                         this.roles.push({
                             value: item.roleId,
@@ -611,6 +614,21 @@
             },
             saveCurUserInfo() {
                 console.log(this.curMemberInfo);
+                let params = {
+                    email: this.curMemberInfo.email,
+                    mobile: this.curMemberInfo.mobile,
+                    orgId: this.curMemberInfo.orgId,
+                    passWord: this.curMemberInfo.passWord,
+                    realName: this.curMemberInfo.realName,
+                    remarks: this.curMemberInfo.remarks,
+                    roleId: this.curMemberInfo.roleId,
+                    userId: this.curMemberInfo.userId,
+                    userName: this.curMemberInfo.userName
+                };
+                console.log(params);
+                api.upDateUser(params).then(res=>{
+                    console.log(res)
+                })
             },
             curEditOrgTreeClick(event, treeId, treeNode) {
                 this.curEditOrgName = treeNode.name; //span下显示的树名称和树对应的id互不干扰
@@ -664,7 +682,7 @@
             }
         },
         created() {
-            this.curMemberInfo = Object.assign({}, this.$store.getters.curEditMember); //获取vuex中的当前人员信息
+            this.curMemberInfo = Object.assign({}, this.curEditMember); //获取vuex中的当前人员信息
             console.log(this.curMemberInfo);
             if (this.$route.path == "/authority/add-member") {
                 // 添加

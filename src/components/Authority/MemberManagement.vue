@@ -108,7 +108,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="归属：" prop="orgId">
-                    <el-select v-model="dialogOrgName" placeholder="请选择" style="width:360px">
+                    <el-select v-model="dialogOrgName" placeholder="请选择" style="width:360px" ref="dialogSelect">
                         <el-option :value="dialogOrgName" v-show="false">
                         </el-option>
                         <ul id="dialogOrgTree" class="ztree"></ul>
@@ -228,7 +228,7 @@
                     <span style="color:#e30000">*</span>建议签名图片尺寸（宽：100px-高：40px）</div>
                 <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
                 <div class="avatar-proper">
-                    <span @click="hasImage=false" class="avatar-upload"></span>
+                    <span @click="hasImage=false;isUpdateUserSign=true" class="avatar-upload"></span>
                     <span @click="deleteAvatar()" class="avatar-delete"></span>
                 </div>
             </div>
@@ -263,7 +263,7 @@
                     callback(new Error("请输入通行证"));
                 } else {
                     console.log("后台验证中......");
-                    if (!hasChecked) {
+                    if (!this.hasChecked) {
                         api.getPassCheck(value).then(res => {
                             console.log(res.data);
                             if (res.data.code == 200) {
@@ -289,19 +289,20 @@
                 serviceDetailsDialogVisible: false,
                 authorizedDataCatalogVisible: false,
                 signDialogVisible: false,
-                curPage: 1,//当前页
-                pageSize: 10,//当前显示多少条
-                total: 0,//总条数
+                curPage: 1, //当前页
+                pageSize: 10, //当前显示多少条
+                total: 0, //总条数
                 curSelectUserInfo: {}, //当前选中user
                 searchUsersListVal: '', //搜索成员
                 orgId: "", //组织树节点
                 roleId: "", //角色
+                isUpdateUserSign: false, //判断是更新签名还是添加
                 actionUrl: '', //上传签名地址
                 imageUrl: '', // 上传签名成功后签名图片地址
                 signName: '', //签名
                 hasImage: false, //当前用户是否上传签名照
                 textarea: "布鲁斯123 布鲁斯", //批量添加文本内容
-                hasChecked:false,//添加成员前账号是否已经检查
+                hasChecked: false, //添加成员前账号是否已经检查
                 dialogOrgName: "", //添加成员弹框树组织名称
                 dialogRoleName: "", //添加成员弹框角色名称
                 searchTypeId: 1,
@@ -357,7 +358,7 @@
                         }
                     },
                     callback: {
-                        onClick: this.orgTreeClick
+                        onClick: this.dialogOrgTreeClick
                     }
                 },
                 //默认组织树数据
@@ -377,7 +378,7 @@
                     }
                 },
                 //缓存树内容 记录已授权项目树对应资料目录文件夹树
-                cacheProjectTree: [], 
+                cacheProjectTree: [],
                 //已授权项目树
                 authorizedProjectNodes: [{
                         id: 1,
@@ -652,6 +653,7 @@
                 console.log(treeNode);
                 this.dialogOrgName = treeNode.name;
                 this.ruleForm.orgId = treeNode.id;
+                console.log(this.$refs.dialogSelect)
                 setTimeout(() => {
                     $(".el-select-dropdown__item.selected").click();
                 }, 0);
@@ -681,10 +683,16 @@
                 }
                 this.hasChecked = false;
                 this.dialogOrgName = ""
-                this.getOrgTreeInfo().then(() => {$.fn.zTree.init($("#dialogOrgTree"),this.orgSetting,this.zNodes);});
+                this.getOrgTreeInfo().then(() => {
+                    $.fn.zTree.init($("#dialogOrgTree"), this.orgSetting, this.zNodes);
+                });
             },
             //删除成员
-            deleteMember() {},
+            deleteMember() {
+                this.multipleSelection.forEach(item => {
+
+                })
+            },
             //提交添加成员信息
             submitForm(formName) {
                 this.hasChecked = true; //通行证账号检查通过
@@ -757,11 +765,12 @@
                 this.curSelectUserInfo = row;
                 this.imageUrl = '';
                 this.signName = '';
+                this.isUpdateUserSign=false;
                 //当前成员没有signId则显示上传
                 if (!this.curSelectUserInfo.signId) {
                     this.hasImage = false;
                 } else {
-                // 有则调取查看接口
+                    // 有则调取查看接口
                     this.hasImage = true;
                     api.getUserSign(this.curSelectUserInfo.signId).then(res => {
                         this.imageUrl = res.data.result.url;
@@ -774,8 +783,18 @@
                     alert('签名不能为空');
                     return
                 }
-                this.actionUrl =
-                    `${window.serverPath.builderUrl}/userRest/addUserSign/${this.curSelectUserInfo.userName}/${this.signName}`
+                if (!this.isUpdateUserSign) {
+                    // 添加
+                    this.actionUrl =
+                        `${window.serverPath.builderUrl}/userRest/addUserSign/${this.curSelectUserInfo.userName}/${this.signName}`
+                } else {
+                    //更新
+                    this.actionUrl =
+                        `${window.serverPath.builderUrl}/userRest/updateUserSign/${this.curSelectUserInfo.signId}/${this.curSelectUserInfo.userName}/${this.signName}`
+                }
+
+
+
                 setTimeout(() => {
                     this.$refs.upload.submit();
                 }, 0);
@@ -789,10 +808,8 @@
                 }
                 this.$refs.upload.clearFiles()
             },
-            handleRemove(file, fileList) {
-            },
-            handlePreview(file) {
-            },
+            handleRemove(file, fileList) {},
+            handlePreview(file) {},
             // 删除签名
             deleteAvatar() {
                 api.deleteUserSign(this.curSelectUserInfo.signId).then(res => {
@@ -801,7 +818,7 @@
                         this.signDialogVisible = false
                     }
                 })
-            },            
+            },
             // 保存授权信息并提交
             saveAuthorizedData() {
                 console.log(this.cacheProjectTree)

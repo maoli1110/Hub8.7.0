@@ -23,6 +23,7 @@
 </template>
 <script>
     import * as types from "../../api/getData-ppc";
+    import "../../../static/zTree/js/jquery.ztree.exhide.min.js";
     export default {
         data() {
             return {
