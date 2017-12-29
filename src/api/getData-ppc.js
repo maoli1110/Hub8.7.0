@@ -31,6 +31,12 @@ export const getPassCheck = params => {
 export const addUser = params => {
     return axios.post(`${builderUrl}/userRest/addUser`, params);
 };
+/** 
+ * 更新单个用户信息
+ */
+export const upDateUser = params => {
+    return axios.post(`${builderUrl}/userRest/updateUser`, params);
+};
 /**
  * 获取角色列表(全部菲分页)
  */
@@ -42,6 +48,12 @@ export const getRoleList2 = params => {
 */
 export const getUserSign = params => {
     return axios.get(`${builderUrl}/userRest/findUserSign/${params}`);
+};
+/** 
+ * 修改用户签名照片
+*/
+export const upDateUserSign = params => {
+    return axios.get(`${builderUrl}POST /userRest/updateUserSign/${params.signId}/${params.userName}/${params.signName}`);
 };
 /** 
  * 删除用户签名照片
