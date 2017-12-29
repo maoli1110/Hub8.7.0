@@ -162,6 +162,8 @@
                         this.tableData.forEach((val,key)=>{
                             val.lastModifiedDate = dateFormat(val.lastModifiedDate);
                         })
+                    }else{
+                        this.tableData =[];
                     }
                 })
             },
@@ -195,7 +197,19 @@
                     })
                 }else{
                     labelDel(params).then((data)=>{
-
+                        this.commonMessage('删除成功','success');
+                        if(this.tableData.length==deletArray.length){
+                            //重新渲染数据
+                            this.getLableList(this.tableParam);
+                        }else {
+                            for (let i = 0; i < deletArray.length; i++) {
+                                for (let j = 0; j < this.tableData.length; j++) {
+                                    if (this.tableData[j].id == deletArray[i]) {
+                                        this.tableData.splice(j, 1);
+                                    }
+                                }
+                            }
+                        }
                     })
                 }
 
@@ -258,7 +272,7 @@
             //删除模板
             delTemplate(item){
                 if(item.id){
-                    deletArray = item.id;
+                    deletArray = [item.id];
                 };
                 if(!deletArray.length){
                     this.commonMessage('请选择要删除的文件','warning')
