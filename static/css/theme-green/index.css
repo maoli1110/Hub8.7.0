@@ -4782,6 +4782,9 @@
 .el-upload-cover:after {
     content: ""
 }
+.el-upload-list.el-upload-list--text {
+    display: none;
+}
 
 .el-tooltip__popper[x-placement^=top] {
     margin-bottom: 12px

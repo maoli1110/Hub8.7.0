@@ -1844,7 +1844,5 @@ body .el-popover.remark-popper {
     text-overflow: ellipsis;
 }
 .v-modal{z-index:2000 !important;}
-.el-upload-list.el-upload-list--text {
-    display: none;
-}
+
 
