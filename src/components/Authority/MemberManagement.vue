@@ -224,12 +224,12 @@
                     <span style="color:#e30000">*</span>建议签名图片尺寸（宽：100px-高：40px）</div>
                 <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
             </el-upload>
-            <div v-show="preview" class="avatar-wrap" style="margin-top:-20px">
-                <img :src="previewUrl" class="avatar" style="width:310px;height:140px;margin-top:20px;">
+            <div v-show="preview" class="avatar-wrap" style="margin-top:-20px;padding:20px">
+                <img :src="previewUrl" class="avatar" style="width:310px;height:124px;">
                 <div class="el-upload__tip" slot="tip">
                     <span style="color:#e30000">*</span>建议签名图片尺寸（宽：100px-高：40px）</div>
                 <div class="el-upload__tip" slot="tip">只能上传png和jpg格式的签名照片，且不超过500kb</div>
-                <div class="avatar-proper">
+                <div class="avatar-proper" style="bottom:70px">
                     <!-- <span @click="hasImage=false;" class="avatar-upload"></span> -->
                     <span @click="preview=false;deletePreview()" class="avatar-delete"></span>
                 </div>
@@ -828,9 +828,9 @@
             },
             handleChange(file, fileList) {
                 this.preview=true;
-                this.previewUrl=file.url;
-                
+                this.previewUrl=file.url;                
             },
+            //删除预览
             deletePreview(){
                 this.$refs.upload.clearFiles()
             },
@@ -841,7 +841,8 @@
                 api.deleteUserSign(this.curSelectUserInfo.signId).then(res => {
                     if (res.data.code == 200) {
                         this.getUsersList();
-                        this.signDialogVisible = false
+                        this.hasImage=false
+                        // this.signDialogVisible = false
                     }
                 })
             },
