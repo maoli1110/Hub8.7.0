@@ -1,15 +1,10 @@
 <template>
     <div style="position:relative;padding:15px 20px 20px ;background:#fff">
         <div class="basic-aside">
-            <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-                <el-menu-item index="/pricelib/material">鲁班场布（10）</el-menu-item>
-                <el-menu-item index="/pricelib/device">鲁班节点（10）</el-menu-item>
-                <el-menu-item index="/pricelib/artificial">鲁班下料 企业（10）</el-menu-item>
-                <el-menu-item index="/pricelib/mechanics">鲁班钢筋云功能（10）</el-menu-item>
-                <el-menu-item index="/pricelib/revolving-materials">鲁班土建云功能（10）</el-menu-item>
-                <el-menu-item index="/pricelib/specialty-subcontracting">鲁班安装云功能（10）</el-menu-item>
-                <el-menu-item index="/pricelib/clean-subcontracting">鲁班钢筋（10）</el-menu-item>
-            </el-menu>
+            <ul class="el-menu el-menu-vertical-demo">
+                <li class="el-menu-item" :class="{'is-active':index==currentIndex}" v-for='(item,index) in packageInfos' :key="index" @click="getPackageInfo(item);currentIndex=index"
+                    style="padding-left: 20px;">{{item.packageName}}</li>
+            </ul>
         </div>
         <div class="basic-main">
             <div>
@@ -23,15 +18,15 @@
                 </el-button>
                 <el-input placeholder="请选择日期" icon="search" style="float:right;width:281px"></el-input>
             </div>
-            <el-table ref="multipleTable" :data="roleTableData" border tooltip-effect="dark" style="width: 100%;margin-top:15px" @selection-change="handleSelectionChange">
+            <el-table ref="multipleTable" :data="packageInfoUserLists" border tooltip-effect="dark" style="width: 100%;margin-top:15px"  height='630'        @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="name" label="姓名" width="100">
+                <el-table-column prop="realName" label="姓名" width="100">
                 </el-table-column>
-                <el-table-column prop="pass" label="通信证账号" width="250">
+                <el-table-column prop="username" label="通信证账号" width="250">
                 </el-table-column>
-                <el-table-column label="订单到期时间" width="300">
-                    <template slot-scope="scope">{{ scope.row.deadDate }}</template>
-                </el-table-column>
+                <!-- <el-table-column label="订单到期时间" width="300">
+                    <template slot-scope="scope">{{ scope.row.operateTime }}</template>
+                </el-table-column> -->
                 <el-table-column label="操作人" width="200">
                     <template slot-scope="scope">
                         <div :title="scope.row.operator" class="textcell">
@@ -149,6 +144,7 @@
 </template>
 
 <script>
+    import * as api from "../../api/getData-ppc";
     const contains = (() =>
         Array.prototype.includes ?
         (arr, value) => arr.includes(value) :
@@ -157,7 +153,7 @@
         data() {
             return {
                 radio: "1",
-                activeIndex: "",
+                currentIndex: 0,
                 addAuthorizationDialogVisible: false,
                 modifyDialogVisible: false,
                 checkAll: false,
@@ -191,77 +187,10 @@
                     "西安4",
                     "成都5"
                 ],
-                roleTableData: [{
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    },
-                    {
-                        name: "赵四",
-                        pass: 1588885456596,
-                        deadDate: "2020年5月20日 剩余42个月29天",
-                        operator: "尼古拉斯-赵四",
-                        operateTime: "2016-05-03 13:51"
-                    }
-                ],
+                packageInfos: [],//套餐信息
+                packageInfoUserLists:[],//套餐用户列表
+                packageType: "",
+                heldId:'',
                 modifyTableData: [{
                         deadTime: "2017年9月",
                         distributable: "19/10",
@@ -308,9 +237,81 @@
                 if (!newVal) {
                     this.search();
                 }
+            },
+            $route() {
+                this.getAppAllocationPackageInfo();
+                this.currentIndex = 0;
             }
         },
         methods: {
+            getAppAllocationPackageInfo() {
+                let path = this.$route.path;
+                api.getAppAllocationPackageInfo().then(res => {
+                    let allPackageInfo = res.data.result;
+                    console.log(allPackageInfo);
+                    //  套餐类型：2：基础客户端 3：系统客户端 12：BIM应用套餐 11：定额库
+                    switch (path) {
+                        case "/authority/application-allot/basic-client": //基础客户端
+                            this.packageInfos = allPackageInfo.find(
+                                item => item.packageType == 2
+                            ).packageInfos;
+                            this.packageType = 2;
+                            break;
+                        case "/authority/application-allot/system-client": //系统客户端
+                            this.packageInfos = allPackageInfo.find(
+                                item => item.packageType == 3
+                            ).packageInfos;
+                            this.packageType = 3;
+                            break;
+                        case "/authority/application-allot/bim-meal": //bim应用套餐
+                            this.packageInfos = allPackageInfo.find(
+                                item => item.packageType == 12
+                            ).packageInfos;
+                            this.packageType = 12;
+                            break;
+                        case "/authority/application-allot/quota-lib": //定额库
+                            this.packageInfos = allPackageInfo.find(
+                                item => item.packageType == 11
+                            ).packageInfos;
+                            this.packageType = 11;
+                            break;
+
+                        default:
+                            console.log(1);
+                            break;
+                    }
+                });
+
+                console.log(path);
+            },
+            //获取heldid  展示套餐用户列表
+            getPackageInfo(item) {
+                let params = [{
+                    packageId: item.packageId,
+                    packageType: this.packageType
+                }];
+                // 查询套餐/产品对应的订单列表以及该套餐分配情况
+                api.getAppAllocatiosnPackageInfo(params).then(res => {
+                    // console.log(res)
+                    debugger
+                    this.heldId=res.data.result[0][orderAndAllocations][heldId];
+                    console.log(this.heldId)
+                    let allocatedUserListParams = {
+                        heldId: 2421,
+                        packageId: "ff8081813fc2794c013fc2d0dea20001",
+                        pageParam: {
+                            beginNumber: 1,
+                            page: 1,
+                            pageSize: 10
+                        },
+                        searchKey: ""
+                    };
+                    api.getPackageAllocatedUserList(allocatedUserListParams).then(res => {
+                        this.packageInfoUserLists=res.data.result.packageAllocatedUserInfos
+                        console.log(res.data.result.packageAllocatedUserInfos)
+                    });
+                });
+            },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);
             },
@@ -368,7 +369,7 @@
                             tempSearchResultChecked++;
                         }
                     });
-            
+
                     this.checkAll = tempSearchResultChecked == this.cities.length;
                 }
             },
@@ -410,6 +411,9 @@
                 });
                 this.checkAll = tempSearchResultChecked == tempSearchResult.length;
             }
+        },
+        mounted() {
+            this.getAppAllocationPackageInfo();
         }
     };
 
