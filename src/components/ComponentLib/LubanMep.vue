@@ -115,7 +115,7 @@
                     <div class="pagination" >
                         <span v-show="tableData" style="float:left;line-height:42px;">共 {{tableData.totalRecords}} 条构件,共 {{tableData.totalPages}} 页,累计下载 {{downloadCount}} 次</span>
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                       :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
+                                       :current-page="cur_page" :page-sizes="[1, 50, 100, 150]" :page-size="totalPage"
                                        layout=" sizes, prev, pager, next, jumper" :total="tableData.totalRecords">
                         </el-pagination>
                     </div>
@@ -264,7 +264,7 @@
                     pageSize: 10,
                     productId: 5,
                     smallTypeName: "",
-                    sort: "",
+                    sort: "editTime",
                     startTime: "",
                     title: ""
                 },
@@ -613,11 +613,23 @@
             searchComp(){
                 this.tableParam.startTime = this.searchKeyParams.startTime;
                 this.tableParam.endTime = this.searchKeyParams.endTime;
-                this.tableParam.majorName = this.searchKeyParams.majorName;
                 this.tableParam.title = this.searchKeyParams.searchVal;
-                this.tableParam.bigTypeName = this.searchKeyParams.bigType;
-                this.tableParam.smallTypeName = this.searchKeyParams.smallType;
                 this.downloadSum.title = this.searchKeyParams.searchVal;
+                if(this.searchKeyParams.majorName =='不限' && this.searchKeyParams.majorName){
+                    this.tableParam.majorName = "";
+                }else{
+                    this.tableParam.majorName = this.searchKeyParams.majorName;
+                }
+                if(this.searchKeyParams.bigType =='不限' && this.searchKeyParams.bigType){
+                    this.tableParam.bigTypeName = "";
+                }else{
+                    this.tableParam.bigTypeName = this.searchKeyParams.bigType;
+                }
+                if(this.searchKeyParams.smallType =='不限' && this.searchKeyParams.smallType){
+                    this.tableParam.smallTypeName = "";
+                }else{
+                    this.tableParam.smallTypeName = this.searchKeyParams.smallType;
+                }
                 this.getTableList(this.tableParam);
             },
             //列表删除
@@ -666,9 +678,9 @@
                this.cloudComTree = true;
             },
             getData(){
-                this.downloadSum.bigTypeName = this.searchKeyParams.bigType;
-                this.downloadSum.smallTypeName = this.searchKeyParams.smallType;
-                this.downloadSum.majorName  = this.searchKeyParams.majorVal;
+                this.searchKeyParams.bigType=="不限"?"": this.downloadSum.bigTypeName = this.searchKeyParams.bigType;
+                this.searchKeyParams.smallType=="不限"?"":this.downloadSum.smallTypeName = this.searchKeyParams.smallType;
+                this.searchKeyParams.majorVal=="不限"?"":this.downloadSum.majorName  = this.searchKeyParams.majorVal;
                 this.downloadSum.endTime = this.searchKeyParams.endTime;
                 this.downloadSum.startTime = this.searchKeyParams.startTime;
                 this.downloadSum.title =  this.searchKeyParams.searchVal;
@@ -686,8 +698,14 @@
                         this.compTypeBig = ['不限'];
                         this.searchKeyParams.bigType = this.compTypeBig[0];
                     }else{
-                        this.tableParam.majorName =  newVal;
-                        this.downloadSum.majorName = newVal;
+                        if( this.searchKeyParams.majorVal=='不限'){
+                            this.tableParam.majorName  = ""
+                            this.downloadSum.majorName = "";
+                        }else{
+                            this.tableParam.majorName =  newVal;
+                            this.downloadSum.majorName = newVal;
+                        }
+
                         this.getBigtypes({majorName:newVal})
                         this.getTableList( this.tableParam);
                     }
@@ -699,8 +717,13 @@
                         this.compTypeSmall = ['不限'];
                         this.searchKeyParams.smallType = this.compTypeSmall[0];
                     }else{
-                        this.tableParam.bigTypeName =  newVal;
-                        this.downloadSum.bigTypeName = newVal;
+                        if( this.searchKeyParams.bigType=='不限'){
+                            this.tableParam.bigTypeName  = ""
+                            this.downloadSum.bigTypeName = "";
+                        }else{
+                            this.tableParam.bigTypeName =  newVal;
+                            this.downloadSum.bigTypeName = newVal;
+                        }
                         this.getTableList( this.tableParam);
                         this.getSmalltypes({majorName:this.searchKeyParams.majorVal,bigType:newVal})
                     }
@@ -709,7 +732,14 @@
             'searchKeyParams.smallType':function(newVal,oldVal){
                 if(newVal!=oldVal && oldVal!=""){
                     this.tableParam.smallTypeName =  newVal;
-                    this.downloadSum.smallTypeName = newVal;
+
+                    if( this.searchKeyParams.smallType=='不限'){
+                        this.tableParam.smallTypeName  = "";
+                        this.downloadSum.smallTypeName = "";
+                    }else{
+                        this.tableParam.smallTypeName =  newVal;
+                        this.downloadSum.smallTypeName = newVal;
+                    }
                     this.getTableList( this.tableParam);
                 }
             }

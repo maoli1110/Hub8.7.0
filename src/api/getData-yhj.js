@@ -131,7 +131,7 @@ export const componentExist = params=>axios.post(`${cloudUrl}/component/az/exist
 //安装->上传
 export const upload = params=>axios.post(`${cloudUrl}/component/az/upload/${params.productId}`);
 //安装->添加
-export const componentAdd = params=>axios.put(`${cloudUrl}/component/az/add/${params.productId}`,params.civilUrl);
+export const componentAdd = params=>axios.put(`${cloudUrl}/component/az/add/${params.productId}`,params.base);
 //安装->更新
 export const componentUpdate = params=>axios.put(`${cloudUrl}/component/az/update/${params.productId}`,params.modify);
 
