@@ -18,6 +18,7 @@
                            @click="downLoadLogs"><i
                     class="components-icon icon-update icon-map "></i><span class="btn-text">导出</span>
                 </el-button>
+                <a :href="downUrl" download id="downBtn" style="display:none">11</a>
                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
                     <el-table ref="multipleTable" class="scroll-me" :data="tableData" border tooltip-effect="dark"
                               >
@@ -48,12 +49,15 @@
 <script>
 import "../../../static/css/components.css";
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
-import { getLogs } from "../../api/getData-cxx.js";
+import { getLogs , getLogsDownload } from "../../api/getData-cxx.js";
 import { basePath } from "../../utils/common.js";
 export default {
   props: ["nowPath"],
   data() {
     return {
+      baseUrl:basePath(this.$route.matched[3].path),
+      //导出地址
+      downUrl:'',
       tableData: [],
       logParameters: {
         beginTime: "",
@@ -83,14 +87,11 @@ export default {
       // 选择时间范围
       this.logParameters.beginTime = val.split(" - ")[0];
       this.logParameters.endTime = val.split(" - ")[1];
-     this.getLogList();
- 
+      this.getLogList();
     },
     downLoadLogs() {
-      alert("downLoad");
-
       let vm = this;
-      let baseUrl = basePath(this.$route.matched[3].path);
+      //let baseUrl = basePath(this.$route.matched[3].path);
       let args =
         "?page=" +
         this.logParameters.page +
@@ -100,27 +101,15 @@ export default {
         this.logParameters.beginTime +
         "&end=" +
         this.logParameters.endTime;
-      let params = {
+     /*  let params = {
         url: baseUrl,
         type: this.pathType[this.nowPath],
         args: args
-      };
-      //?page=1&size=2&sort=2&start=3&end=4
-      getLogsDownload(params).then(function(res) {
-        if (res.data.msg == "success") {
-          var form = $("<form>");
-          form.attr("style", "display:none");
-          form.attr("method", "post");
-          form.attr("action", res.data.downloadUrl);
-          var input = $("<input>");
-          input.attr("type", "hidden");
-          input.attr("name", "batchParam");
-          input.attr("value", res.data.downloadParam);
-          $("body").append(form);
-          form.append(input);
-          form.submit();
-        }
-      });
+      }; */
+      vm.downUrl = this.baseUrl +'business/'+ this.pathType[this.nowPath] +'/logs/download/'+ args;
+      //console.log(vm.downUrl)
+      //vm.downUrl = "http://192.168.13.195:8989/LBbuilder/business/old-govern/logs/download/?page=0&size=11&sort=asc&start=2017-07-12&end=2017-12-12"
+      document.getElementById("downBtn").click();
     },
     dateFormat(row, column) {
       var date = row[column.property];
@@ -138,9 +127,9 @@ export default {
     },
     getLogList() {
       let vm = this;
-      let baseUrl = basePath(this.$route.matched[3].path);
+      //let baseUrl = basePath(this.$route.matched[3].path);
       let params = {
-        url: baseUrl,
+        url: vm.baseUrl,
         type: this.pathType[this.nowPath],
         args:
           "?page=" +
@@ -193,7 +182,7 @@ export default {
 
 <style scoped>
 .my-scrollbar {
-    max-height: calc(100vh - 400px);
+  max-height: calc(100vh - 400px);
 }
 .header {
   height: 40px;
