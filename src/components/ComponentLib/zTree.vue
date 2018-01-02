@@ -277,6 +277,9 @@
                 let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
                 let nodes = treeObj.transformToArray(treeObj.getNodes());
                 let treeNodes = [];
+                if( !this.zNodes.length){
+                    return false;
+                }
                 this.zNodes.forEach((val,key)=>{
                     treeNodes.push({description:val.description,nodeCode:val.nodeCode, nodeName:val.nodeName,parentNodeCode:val.parentNodeCode,productId:val.productId,sortIndex:val.sortIndex,version:val.version});
                 });
