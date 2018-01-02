@@ -647,7 +647,6 @@
             updateOk(){
                 console.log( this.token,' this.token')
                 //保存上传到数据库
-
                 console.log(this.updateComList)
                 let modify = {
                     compntFileId: this.updateComList.componentFileId,
@@ -659,7 +658,6 @@
                     summaryFilePath:  this.updateComList.summaryFilePath,
                     title: this.updateComList.name
                 };
-
 
                 if(this.updateComList.componentFilePath ||  this.updateComList.summaryFilePath || this.updateComList.pictureFilePath){
                     modify.fileChanged = true;

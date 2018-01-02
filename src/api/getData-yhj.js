@@ -254,4 +254,17 @@ export const getProjModelNodeForms = params => axios.get(`${civilUrl}/inspector/
 /*更新工程模板的表单*/
 export const updateProjModel = params => axios.post(`${civilUrl}/inspector/projmodel/updateProjModel`, params);
 /*添加界面的下拉框选项*/
+//应用配置->plan模板
 
+//日历模板列表
+export const getCanBeCopyCTs = params=>axios.get(`${builderUrl}/calendarRest/getCanBeCopyCTs`);
+//创建日历模板
+export const addCalendarTemplate = params=>axios.post(`${builderUrl}/calendarRest/addCalendarTemplate`,params);
+//日历模板列表
+export const getCalendarTemplates = params =>axios.post(`${builderUrl}/calendarRest/getCalendarTemplates`,params);
+//删除模板列表
+export const deleteCalendarTemplate = params => axios.post(`${builderUrl}/calendarRest/deleteCalendarTemplate`,params);
+//创建日历模板操作
+export const createCalendarTemplate = params => axios.post(`${builderUrl}/calendarRest/createCalendarTemplate`,params)
+//更新日历模板操作
+export const createCalendarTemplate = params=>axios.post(`${builderUrl}/calendarRest/createCalendarTemplate/${params.ctid}`)
