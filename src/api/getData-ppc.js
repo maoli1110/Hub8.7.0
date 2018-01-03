@@ -119,27 +119,39 @@ export const deleteRole = params => {
 export const updateRoleAuth = params => {
     return axios.post(`${builderUrl}/roleRest/saveOrUpdateRoleAuth`, params);
 };
-/**
+/*
  * 权限管理-应用授权
  */
-/**
- /**
+/*
+/*
  * 获取各个分配类型各个套餐/产品信息
  */
 export const getAppAllocationPackageInfo = params => {
     return axios.get(`${builderUrl}/appallocation/getAppAllocationPackageInfo`);
 };
-/**
+/*
  * 查询套餐 / 产品对应的订单列表以及该套餐分配情况, 获取pds套餐订单分配情况时单独调用接口
  */
 export const getAppAllocatiosnPackageInfo = params => {
     return axios.post(`${builderUrl}/appallocation/getOrderAndAllocationInfoByPackage`,params);
 };
-/**
+/*
  * 查询云部署套餐用户授权列表 根据上一接口 获取heldid
  */
 export const getPackageAllocatedUserList= params => {
     return axios.post(`${builderUrl}/appallocation/getPackageAllocatedUserList`, params);
+};
+/*
+ * 获取管理员能够管理的用户列表
+ */
+export const getAdminManageUserList = params => {
+    return axios.get(`${builderUrl}/appallocation/getAdminManageUserList`);
+};
+/*
+ * 新增用户套餐授权
+ */
+export const addUserPackageAuth = params => {
+    return axios.post(`${builderUrl}/appallocation/updateUserPackageAuth`,params);
 };
 
 
