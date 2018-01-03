@@ -236,6 +236,9 @@
                 getCalendarTemplates(param).then((data)=>{
                     if(data.data.result.result.length){
                         this.tableData = data.data.result.result;
+                        this.tableData.forEach((val,key)=>{
+                            val.updateDate = dateFormat(val.updateDate);
+                        })
                     }
                 })
             },
