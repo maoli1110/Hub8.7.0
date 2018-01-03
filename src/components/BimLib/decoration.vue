@@ -56,7 +56,7 @@
             </el-col>-->
             <el-form :inline="true"  class="demo-form-inline" >
                 <el-form-item class="search-item date" label="组织结构：" style="max-width:350px;">
-                    <el-select class="absol" v-model="filterParams.orgNodeVal" placeholder="请选择" >
+                    <el-select class="" v-model="filterParams.orgNodeVal" placeholder="请选择" >
                         <el-option v-show="false"
                                    :value="filterParams.orgNodeVal">
                         </el-option>
