@@ -115,7 +115,7 @@
                     <div class="pagination" >
                         <span v-show="tableData" style="float:left;line-height:42px;">共 {{tableData.totalRecords}} 条构件,共 {{tableData.totalPages}} 页,累计下载 {{downloadCount}} 次</span>
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                       :current-page="cur_page" :page-sizes="[1, 50, 100, 150]" :page-size="totalPage"
+                                       :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
                                        layout=" sizes, prev, pager, next, jumper" :total="tableData.totalRecords">
                         </el-pagination>
                     </div>
