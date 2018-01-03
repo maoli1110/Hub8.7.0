@@ -319,6 +319,7 @@
                 this.checkedCities = [];
                 this.cities = [];
                 this.cities_clone = [];
+                this.checkAll=false;
                 // 获取管理员能够管理的用户列表
                 api.getAdminManageUserList().then(res => {
                     let allUserLists = res.data.result;
