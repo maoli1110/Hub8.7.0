@@ -6,15 +6,15 @@
                 <div id="chartDoughnut" style="width:100%; height:340px;"></div>
                 <el-row class="capacity">
                   <el-col :span="8">
-                    <b>1024GB</b>
+                    <b>{{DoughnutChartData.second+DoughnutChartData.first}}GB</b>
                     <span>全部容量</span>
                   </el-col>
                   <el-col :span="8">
-                    <b>324GB</b>
+                    <b>{{DoughnutChartData.first}}GB</b>
                     <span>已用</span>
                   </el-col>
                   <el-col :span="8">
-                    <b>524GB</b>
+                    <b>{{DoughnutChartData.second}}GB</b>
                     <span>可用</span>
                   </el-col>
                 </el-row>
@@ -57,7 +57,7 @@
         </el-row>
 
 
-        <!--购买云空间-->
+        <!-- 购买云空间
         <el-dialog
             title="购买云空间"
             :visible.sync="dialogVisible"
@@ -85,7 +85,7 @@
                 
                 <el-form-item label="发票类型：">
                     <!--1:不需要发票,0:普通发票,3专用发票 ,  -->
-                    <el-radio-group v-model="xxx" @change="removeDis">
+                    <!-- <el-radio-group v-model="xxx" @change="removeDis">
                         <el-radio label="-1">不需要发票</el-radio>
                         <el-radio label="1">需要发票</el-radio>
                         <el-button class="needrecharge" :disabled="disabledfalse" @click="">编辑</el-button>
@@ -109,15 +109,19 @@
                 </el-form-item>
             </el-form>
             
-        </el-dialog>
+        </el-dialog> -->
     </div>
 </template>
 
 <script>
 import echarts from "echarts";
+import { spaceAvailable } from "../../api/getData-cxx.js";
 export default {
   data() {
     return {
+      //已用、可用图标信息
+      DoughnutChartData: {},
+      baseUrl: window.serverPath.builderUrl,
       disabledfalse: true,
       isColumn: true,
       chartColumn: null,
@@ -232,57 +236,66 @@ export default {
       });
     },
     drawDoughnutChart() {
-      this.chartDoughnut = echarts.init(
-        document.getElementById("chartDoughnut")
-      );
-      this.chartDoughnut.setOption({
-        title: { text: "asdf" },
-        color: ["#e78788", "#7dc15c"],
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b}: {c}GB ({d}%)"
-        },
-        legend: {
-          bottom: 10,
-          left: "center",
-          data: ["可使用", "已用"],
-          itemWidth: 10, // 图例图形宽度
-          itemHeight: 10, // 图例图形高度
-          itemGap: 100 // 各个item之间的间隔，单位px，默认为10，
-        },
-        series: [
-          {
-            name: "空间使用情况",
-            type: "pie",
-            radius: ["40%", "60%"],
-            avoidLabelOverlap: false,
-            label: {
-              normal: {
-                show: false,
-                position: "center"
-              },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: "20",
-                  fontWeight: ""
-                }
-              }
+      let vm = this;
+      spaceAvailable({ url: vm.baseUrl }).then(function(res) {
+        if (res.data.msg == "success") {
+          vm.DoughnutChartData = res.data.result;
+          vm.chartDoughnut = echarts.init(
+            document.getElementById("chartDoughnut")
+          );
+          vm.chartDoughnut.setOption({
+            title: { text: "" },
+            color: ["#7dc15c", "#e78788"],
+            tooltip: {
+              trigger: "item",
+              formatter: "{a} <br/>{b}: {c}GB ({d}%)"
             },
-            labelLine: {
-              normal: {
-                show: true
-              }
+            legend: {
+              bottom: 10,
+              left: "center",
+              data: ["可使用", "已用"],
+              itemWidth: 10, // 图例图形宽度
+              itemHeight: 10, // 图例图形高度
+              itemGap: 100 // 各个item之间的间隔，单位px，默认为10，
             },
-            data: [{ value: 500, name: "可使用" }, { value: 222, name: "已用" }]
-          }
-        ]
+            series: [
+              {
+                name: "空间使用情况",
+                type: "pie",
+                radius: ["40%", "60%"],
+                avoidLabelOverlap: false,
+                label: {
+                  normal: {
+                    show: false,
+                    position: "center"
+                  },
+                  emphasis: {
+                    show: true,
+                    textStyle: {
+                      fontSize: "20",
+                      fontWeight: ""
+                    }
+                  }
+                },
+                labelLine: {
+                  normal: {
+                    show: true
+                  }
+                },
+                data: [
+                  { value: vm.DoughnutChartData.second, name: "可使用" },
+                  { value: vm.DoughnutChartData.first, name: "已用" }
+                ]
+              }
+            ]
+          });
+        }
       });
     },
     drawColumnChart() {
       this.chartColumn = echarts.init(document.getElementById("chartColumn"));
       // 添加点击事件
-     this.chartColumn.on("click", function(params) {
+      this.chartColumn.on("click", function(params) {
         // 控制台打印数据的名称
         console.log(params);
       });
@@ -377,7 +390,7 @@ export default {
     this.drawCharts();
   },
   updated: function() {
-    this.drawCharts();
+    //this.drawCharts();
   }
 };
 </script>

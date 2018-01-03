@@ -84,7 +84,7 @@
                 </el-table-column>
             </el-table>
             <div style="margin-top: 20px">
-                <div style="float:left;height:40px;line-height:40px">共10个结果</div>
+                <div style="float:left;height:40px;line-height:40px">共{{total}}个结果</div>
                 <el-pagination style="margin-left:30%" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage"
                     :page-sizes="[10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
@@ -267,6 +267,7 @@
     import "../../../static/zTree/js/jquery.ztree.core.min.js";
     import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
     import * as api from "../../api/getData-ppc";
+    import {dateFormat} from '../../utils/common.js'
     import {
         mapActions
     } from "vuex";
