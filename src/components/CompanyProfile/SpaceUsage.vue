@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       //已用、可用图标信息
-      DoughnutChartData:{},
+      DoughnutChartData: {},
       baseUrl: window.serverPath.builderUrl,
       disabledfalse: true,
       isColumn: true,
@@ -236,7 +236,7 @@ export default {
       });
     },
     drawDoughnutChart() {
-     let vm = this;
+      let vm = this;
       spaceAvailable({ url: vm.baseUrl }).then(function(res) {
         if (res.data.msg == "success") {
           vm.DoughnutChartData = res.data.result;
@@ -245,7 +245,7 @@ export default {
           );
           vm.chartDoughnut.setOption({
             title: { text: "" },
-            color: ["#7dc15c","#e78788"],
+            color: ["#7dc15c", "#e78788"],
             tooltip: {
               trigger: "item",
               formatter: "{a} <br/>{b}: {c}GB ({d}%)"
@@ -390,7 +390,7 @@ export default {
     this.drawCharts();
   },
   updated: function() {
-    this.drawCharts();
+    //this.drawCharts();
   }
 };
 </script>
