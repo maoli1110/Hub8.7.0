@@ -621,17 +621,20 @@
                         }
                     })
                     this.zNodes = data.data.result;
-                    this.filterParams.orgdeptId = data.data.result[0].id;
+
                     let treeObj = $.fn.zTree.init($("#OrgZtree"), this.setting, this.zNodes);//组织节点初始化
                     let nodes = treeObj.transformToArray(treeObj.getNodes());
                     this.zNodes.forEach((val,key)=>{
-                        if(val.id==1){
+                        if(val.root){
                             this.filterParams.orgNodeVal = val.name;
+                            this.filterParams.orgdeptId = val.id;
                         }
-                        if(val.type==1 || val.direct){
+                       /* if(val.type==1 || val.direct){
+                            console.log(val.id)
                             this.tableParam.deptIds.push(val.id)
-                        }
+                        }*/
                     })
+                    this.tableParam.deptIds = [];
                     this.getProjectList(this.tableParam)            //bim库列表
                 });
             },
@@ -756,6 +759,7 @@
             getDeptIds(nodes,name){
                 for(let key = 0;key<nodes.length;key++){
                     if(nodes[key].type==1 || nodes[key].direct){
+                        console.log(nodes[key].id,'deptIds')
                         deptIds.push(nodes[key].id);
                     };
                     if(nodes[key].children){
@@ -775,10 +779,14 @@
                if(treeNode.children){
                    deptIds = this.getDeptIds(treeNode.children,treeNode.name);
                    this.tableParam.deptIds = deptIds;
+
                }else{
                    if(treeNode.direct){
                        this.tableParam.deptIds.push(treeNode.id);
                    }
+               }
+               if(!deptIds.length){
+                   this.tableParam.deptIds = null;
                }
                 this.getProjectList(this.tableParam);
                 //关闭树结构的窗口
