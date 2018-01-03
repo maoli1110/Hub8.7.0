@@ -1844,12 +1844,16 @@ body .el-popover.remark-popper {
     text-overflow: ellipsis;
 }
 .v-modal{z-index:2000 !important;}
+.el-form--inline .el-form-item.search-item label.el-form-item__label{
+    width:auto !important;
+}
 .el-form--inline .el-form-item.search-item .el-form-item__content{
-    width:150px;
+    width:150px !important;
 }
 .el-form--inline .el-form-item.search-item.search .el-form-item__content{
-    width:220px;
+    width:220px!important;;
 }
 .el-form--inline .el-form-item.search-item.date .el-form-item__content{
-    width:260px;
+    width:260px!important;;
 }
+/*.el-form--inline .el-form-item.search-item .el-form-item__content .el-select{display:block !important;}*/
