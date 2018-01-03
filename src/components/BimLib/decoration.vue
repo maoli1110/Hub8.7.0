@@ -55,7 +55,7 @@
                 <el-input placeholder="搜索工程名称和上传人关键词" class="bim-search" v-model="filterParams.searchVal" icon="search" :on-icon-click="tableListSearch"></el-input>
             </el-col>-->
             <el-form :inline="true"  class="demo-form-inline" >
-                <el-form-item class="search-item" label="组织结构：" style="max-width:350px;">
+                <el-form-item class="search-item date" label="组织结构：" style="max-width:350px;">
                     <el-select class="absol" v-model="filterParams.orgNodeVal" placeholder="请选择" >
                         <el-option v-show="false"
                                    :value="filterParams.orgNodeVal">
