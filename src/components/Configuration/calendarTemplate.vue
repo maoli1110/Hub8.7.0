@@ -20,9 +20,9 @@
                     type="selection"
                     width="40">
                 </el-table-column>
-                <el-table-column prop="processName" width="" label="模板名称" show-overflow-tooltip>
+                <el-table-column prop="ctName" width="" label="模板名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="updateTime" width="200" label="更新时间">
+                <el-table-column prop="updateDate" width="200" label="更新时间">
                 </el-table-column>
                 <el-table-column prop="updateUser" width="200" label="更新人">
                 </el-table-column>
@@ -52,8 +52,9 @@
                 <el-form-item label="复制：">
                     <el-select v-model="templateType" placeholder="请选择" @change="">
                         <el-option v-for="item in templateInfo.template"
-                                   :key="item.templateType"
-                                   :value="item.templateType"
+                                   :key="item.ctid"
+                                   :value="item.ctid"
+                                   :label="item.ctname"
                         >
                         </el-option>
                     </el-select>
@@ -73,8 +74,14 @@
 <script>
     import "../../../static/css/configuration.css";
     import '../../../static/css/restdate.css';
-    import {FormIndex} from "../../utils/common.js";
-    import {getWorksetingList} from '../../api/getData.js'
+    import {FormIndex,dateFormat} from "../../utils/common.js";
+    import {getWorksetingList} from '../../api/getData.js';
+    import {
+        getCanBeCopyCTs,
+        addCalendarTemplate,
+        getCalendarTemplates,
+        deleteCalendarTemplate
+    }from '../../api/getData-yhj.js';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
     import createCalendar from 'components/Configuration/create-calendar.vue';
     import priviewCalendar from 'components/Configuration/priview-calendar.vue';
@@ -87,9 +94,9 @@
     export default {
         created(){
             FormIndex(this.tableData, 2, 10);
-//            this.getData();
+            this.getData();
         },
-        data: function () {
+        data () {
             return {
                 selectInteral: [],//日历选择时间范围
                 checkList: [],//星期的队列
@@ -105,12 +112,16 @@
                 totalPage: 50,//每页显示多少条
                 totalNumber: 300,//总条数
                 tableData: [],//表格列表
+                tableParam:{
+                    direction: 0,
+                    ignoreCase: false,
+                    pageNum: 1,
+                    pageSize: 10,
+                    property: ""
+                },
                 templateInfo: {//添加模板form
                     name: '',
-                    template: [
-                        {templateType: "24小时日历"},
-                        {templateType: "标准日历"}
-                    ]
+                    template: [ ]
                 },
                 workDay: [//周列表数据
                     {name: '星期一', key: 1},
@@ -140,11 +151,7 @@
             hidePanelLook(visible){
                 this.lookTemplate = visible;
             },
-            getData(){//初始化方法
-                for (let i = 0; i < this.tableData.length; i++) {
-                    this.tableData[i].index = 3 * 10 + this.tableData[i].index;
-                }
-            },
+
             /**common-message(公用消息框)
              * @params message   给出的错误提示
              * @params success  成功处理的
@@ -204,7 +211,34 @@
                     }
                 })
             },
-
+            getData(){//初始化方法
+                this.getTemplateList();
+                this.getTableList(this.tableParam);
+            },
+            //创建日历模板列表
+            getTemplateList(){
+                getCanBeCopyCTs().then((data)=>{
+                    this.templateInfo.template = data.data.result;
+                })
+            },
+            //创建日历模板
+            addTemplateList(param){
+                addCalendarTemplate(param).then((data)=>{
+                    if(data.data.code==200){
+                        this.commonMessage('创建日历模板成功','success');
+                        this.setTemplate = true;
+                        this.$refs.setTemplate.openWindow('set', '123',null,null)
+                    }
+                })
+            },
+            //模板列表
+            getTableList(param){
+                getCalendarTemplates(param).then((data)=>{
+                    if(data.data.result.result.length){
+                        this.tableData = data.data.result.result;
+                    }
+                })
+            },
             //删除模板
             delTemplate(){
                 if (!deletArray.length) {
@@ -247,79 +281,9 @@
                     return;
                 } else {
                     this.addVisible = false;
-                }
-                this.tableData.unshift({//模拟插入数据 此处应该走接口并更新数据
-                    processName: this.templateInfo.name,
-                    updateUser: "杨会杰",
-                    updateTime: currentTime,
-                    proDepartment: "初始项目部"
-                });
-                if (this.templateType.split('.')[1]) {//日历模板列表 名称延续
-                    if (this.templateType.split('.')[1].substr(0, 2) == '24') {
-                        ct.calendarFalg = 0;
-                    } else {
-                        ct.calendarFalg = 1;
-                    }
-                    this.templateInfo.template.push({templateType: this.templateInfo.name + "." + this.templateType.split('.')[1].substr(0, 2)})
-                } else {
-                    if (this.templateType.substr(0, 2) == '24') {
-                        ct = {
-                            calendarFalg: 0,
-                            copyid: "0",
-                            createDate: {
-                                date: 22,
-                                day: 3,
-                                hours: 14,
-                                minutes: 59,
-                                month: 10,
-                                seconds: 0,
-                                time: 1511333940854,
-                                timezoneOffset: -480,
-                                year: 117,
-                            },
-                            createUser: "13800138000",
-                            ctName: "123456",
-                            ctid: "f806217cdc0a457db956485b509abb8d",
-                            endDate: null,
-                            epid: -1,
-                            restDates: [],
-                            startDate: null,
-                            updateDate: Object,
-                            updateUser: "13800138000",
-                            workDates: [],
-                        }
-                    } else {
-                        ct = {
-                            calendarFalg: 1,
-                            copyid: "0",
-                            createDate: {
-                                date: 22,
-                                day: 3,
-                                hours: 14,
-                                minutes: 59,
-                                month: 10,
-                                seconds: 0,
-                                time: 1511333940854,
-                                timezoneOffset: -480,
-                                year: 117,
-                            },
-                            createUser: "13800138000",
-                            ctName: "123456",
-                            ctid: "f806217cdc0a457db956485b509abb8d",
-                            endDate: null,
-                            epid: -1,
-                            restDates: [],
-                            startDate: null,
-                            updateDate: Object,
-                            updateUser: "13800138000",
-                            workDates: [],
-                        }
-                    }
-                    this.templateInfo.template.push({templateType: this.templateInfo.name + "." + this.templateType.substr(0, 2)})
+                    this.addTemplateList({ctName:this.templateInfo.name,copyid:this.templateType})
                 }
 
-                this.setTemplate = true;
-                this.$refs.setTemplate.openWindow('set', '123',null,null)
             },
             //添加标签
             addTemplate(){
