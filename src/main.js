@@ -30,28 +30,29 @@ new Vue({
 }).$mount('#app');
 
 //获取接口地址
-// let currentUrlPath = window.location.host;
-let currentUrlPath = 'http://192.168.13.195:8080/';
-axios.get(currentUrlPath +'pds/rs/centerLogin/serverurl').then((res)=>{
-	console.log(currentUrlPath,'currentUrlPath')
-	let serverPath = res.data;
-	serverPath.forEach((value,key)=>{
-		switch (value.serverName){
-			case 'cas':
-			window.serverPath.casUrl = value.serverURL;
-			break;
-			case 'builder':
-			window.serverPath.builderUrl = value.serverURL;
-			break;
-			case 'cloud':
-			window.serverPath.cloudUrl = value.serverURL;
-			break;
-			case 'civil':
-			window.serverPath.civilUrl = value.serverURL;
-			break;
-		}
-	});
-	console.log(window.serverPath,'window.serverPath');
+//let currentUrlPath = 'http://172.16.21.47:8080';
+let currentUrlPath = 'http://192.168.13.195:8080';
+$.ajax({
+  url: currentUrlPath+'/pds/rs/centerLogin/serverurl',
+  async: false,
+  datatype: 'json',
+  type: 'get',
+  success: function (data) {
+      let serverPath = data;
+      serverPath.forEach(function(value, index, arr){
+              switch (value.serverName)  {
+              case 'cas' : window.serverPath.casUrl = value.serverURL;
+                  break;
+              case  'builder'  : window.serverPath.builderUrl = value.serverURL;
+                  break;
+              case  'cloud'  :  window.serverPath.cloudUrl = value.serverURL;
+                  break;
+              case  'civil'  : window.serverPath.civilUrl = value.serverURL;
+                  break;
+              }
+      })
+      console.log(window.serverPath, 'window.serverPath');
+  }
 });
 /**
  * http拦截器
