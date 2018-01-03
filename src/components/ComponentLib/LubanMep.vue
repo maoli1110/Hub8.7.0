@@ -61,7 +61,7 @@
                         <el-date-picker format="yyyy.MM.dd" @change="changeData"
                                         v-model="selectDate"
                                         type="daterange"
-                                        placeholder="选择日期范围" class="absol" >
+                                        placeholder="选择日期范围" >
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item class="search-item" label="专业：" style="max-width:230px;">
