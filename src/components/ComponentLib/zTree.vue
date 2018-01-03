@@ -277,14 +277,17 @@
                 let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
                 let nodes = treeObj.transformToArray(treeObj.getNodes());
                 let treeNodes = [];
-                if( !this.zNodes.length){
+                if(nodes.length){
                     return false;
+                }else{
+                    nodes.forEach((val,key)=>{
+                        treeNodes.push({description:val.description,nodeCode:val.nodeCode, nodeName:val.nodeName,parentNodeCode:val.parentNodeCode,productId:val.productId,sortIndex:val.sortIndex,version:val.version});
+                    });
+                    this.setZtree({version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
                 }
-                this.zNodes.forEach((val,key)=>{
-                    treeNodes.push({description:val.description,nodeCode:val.nodeCode, nodeName:val.nodeName,parentNodeCode:val.parentNodeCode,productId:val.productId,sortIndex:val.sortIndex,version:val.version});
-                });
 
-                this.setZtree({version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
+
+
             },
             //构件树保存
             cloudComTreeOk(){

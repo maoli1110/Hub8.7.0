@@ -1844,5 +1844,12 @@ body .el-popover.remark-popper {
     text-overflow: ellipsis;
 }
 .v-modal{z-index:2000 !important;}
-
-
+.el-form--inline .el-form-item.search-item .el-form-item__content{
+    width:150px;
+}
+.el-form--inline .el-form-item.search-item.search .el-form-item__content{
+    width:220px;
+}
+.el-form--inline .el-form-item.search-item.date .el-form-item__content{
+    width:260px;
+}

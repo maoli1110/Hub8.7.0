@@ -2,7 +2,7 @@
     <div>
         <div class="component-main">
             <el-row class="filter-toolbar">
-                <el-col :span="4" style="padding-right:50px;">
+                <!--<el-col :span="4" style="padding-right:50px;">
                     <span class="absol span-block" style="width:50px;">日期：</span>
                     <el-date-picker format="yyyy.MM.dd" @change="changeData"
                                     v-model="selectDate"
@@ -55,7 +55,53 @@
                 </el-col>
                 <el-col :span="4" :offset="2" style="text-align:right;">
                     <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件树管理</el-button>
-                </el-col>
+                </el-col>-->
+                <el-form :inline="true"  class="demo-form-inline" >
+                    <el-form-item class="search-item date" label="日期：" style="max-width:350px;">
+                        <el-date-picker format="yyyy.MM.dd" @change="changeData"
+                                        v-model="selectDate"
+                                        type="daterange"
+                                        placeholder="选择日期范围" class="absol" >
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item class="search-item" label="专业：" style="max-width:230px;">
+                        <el-select  v-model="searchKeyParams.majorVal" placeholder="请选择"  >
+                            <el-option
+                                v-for="item in majorOptions"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item class="search-item" label=" 构件大类：" style="max-width:230px;">
+                        <el-select  v-model="searchKeyParams.bigType" placeholder="请选择">
+                            <el-option
+                                v-for="item in compTypeBig"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="构件小类：" class="search-item" style="max-width:230px;">
+                        <el-select  v-model="searchKeyParams.smallType" placeholder="请选择"  >
+                            <el-option
+                                v-for="item in compTypeSmall"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item class="search-item search" style="max-width:350px;">
+                        <el-input placeholder="请输入要搜索的内容" icon="search" v-model="searchKeyParams.searchVal"
+                                  :on-icon-click="searchComp" ></el-input>
+                    </el-form-item>
+                    <el-form-item class="search-item" style="float:right;">
+                        <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件树管理</el-button>
+                    </el-form-item>
+                </el-form>
             </el-row>
             <el-row class="tools-bar">
                 <el-col>
@@ -297,7 +343,7 @@
                     title: ""
                 },
                 ztreeInfoParam:{
-                    version:'1.0.0',
+                    version:'1.0',
                     productId:5,
                 },
                 nodesList:[],//树结构副本
