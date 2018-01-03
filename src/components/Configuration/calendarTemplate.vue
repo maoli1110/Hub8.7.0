@@ -14,17 +14,17 @@
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
             <el-table class="house-table scroll-me" :data="tableData" @cell-click="previewTemplate"
                       style="min-width: 900px;"
-                      :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
+                      :default-sort="{prop: 'updateDate', order: 'descending'}" @sort-change="tableSort" @select-all="selectAll"
                       @select="selectChecked">
                 <el-table-column
                     type="selection"
                     width="40">
                 </el-table-column>
-                <el-table-column prop="ctName" width="" label="模板名称" show-overflow-tooltip>
+                <el-table-column prop="ctName" width="" label="模板名称" show-overflow-tooltip sortable>
                 </el-table-column>
-                <el-table-column prop="updateDate" width="200" label="更新时间">
+                <el-table-column prop="updateDate" width="200" label="更新时间" sortable>
                 </el-table-column>
-                <el-table-column prop="updateUser" width="200" label="更新人">
+                <el-table-column prop="updateUser" width="200" label="更新人" sortable>
                 </el-table-column>
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope">
@@ -38,7 +38,7 @@
         <div class="pagination">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
-                           layout="total, sizes, prev, pager, next, jumper" :total="totalNumber">
+                           layout="total, sizes, prev, pager, next, jumper" :total="tableInfo.totalNumber">
             </el-pagination>
         </div>
         <!--创建模板-->
@@ -109,15 +109,16 @@
                 priveiwDate: "",//预览模板日期范围
                 //分页的一些设置
                 cur_page: 1,//第几页
-                totalPage: 50,//每页显示多少条
+                totalPage: 10,//每页显示多少条
                 totalNumber: 300,//总条数
                 tableData: [],//表格列表
+                tableInfo:{},
                 tableParam:{
                     direction: 0,
                     ignoreCase: false,
                     pageNum: 1,
                     pageSize: 10,
-                    property: ""
+                    property: "updateDate"
                 },
                 templateInfo: {//添加模板form
                     name: '',
@@ -180,10 +181,16 @@
             },
             //分页器事件
             handleSizeChange(size){
-                console.log(`每页显示多少条${size}`);
+//                console.log(`每页显示多少条${size}`);
+                this.totalPage = size;
+                this.tableParam.pageSize = size;
+                this.getTableList( this.tableParam);
             },
             handleCurrentChange(currentPage){
-                console.log(`当前页${currentPage}`);
+//                console.log(`当前页${currentPage}`);
+                this.cur_page = currentPage;
+                this.tableParam.pageNum = currentPage;
+                this.getTableList(this.tableParam);
             },
 
             /**
@@ -227,7 +234,8 @@
                     if(data.data.code==200){
                         this.commonMessage('创建日历模板成功','success');
                         this.setTemplate = true;
-                        this.$refs.setTemplate.openWindow('set', '123',null,null)
+                        this.$refs.setTemplate.openWindow('set', '123',null,null);
+                        this.getTableList(this.tableParam);
                     }
                 })
             },
@@ -236,11 +244,21 @@
                 getCalendarTemplates(param).then((data)=>{
                     if(data.data.result.result.length){
                         this.tableData = data.data.result.result;
+                        this.tableInfo = data.data.result.pageInfo;
                         this.tableData.forEach((val,key)=>{
                             val.updateDate = dateFormat(val.updateDate);
                         })
                     }
                 })
+            },
+            tableSort(column){
+               if(column.order=='ascending'){
+                    this.tableParam.direction = 0;
+               }else{
+                    this.tableParam.direction = 1;
+               }
+               this.tableParam.property = column.prop;
+               this.getTableList(this.tableParam);
             },
             //删除模板
             delTemplate(){
