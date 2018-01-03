@@ -271,7 +271,7 @@
                     remark: "",         //备注
                 },
                 ztreeInfoParam:{
-                    version:"2.0.0",
+                    version:"2.0",
                     productId:2
                 },
             }
@@ -337,22 +337,22 @@
             handlePreview(file) {
                 console.log(file);
             },
-           /* /!**
+           /**
              *上传成功回调的函数
              * @params response 浏览器的响应返回值
              * @params file     文件信息
              * @params fileList 文件的信息
-             **!/
+             **/
 
             updataSucess(response, file, fileList){
                 this.updateComList = response.result;
             },
-            /!**
+            /**
              *上传失败回调的函数
              * @params err      上传失败的返回信息
              * @params file     文件信息
              * @params fileList 文件的信息
-             **!/
+             **/
             updateError(err, file, fileList){
                 this.commonMessage('上传失败哦。。。。', 'warning')
             },
@@ -364,14 +364,14 @@
                 }
             },
 
-            /!**
-             * 上传文件再次上传 （ps:覆盖之前的)
-             * @param type  1.update上传 2.cover修改页面
-             **!/
+            /**
+             *上传文件再次上传 （ps:覆盖之前的)
+             *@param type  1.update上传 2.cover修改页面
+             **/
             overUpdate(){
                 this.uploadUrl = `${baseUrl}component/gj/upload/2`;
                 this.fileList = [];
-            },*/
+            },
             /**
              * 获取构件大类
              * @params url  响应地址
@@ -409,7 +409,7 @@
                    this.downloadSum = data.data.result;
                 })
             },
-      /*      //创建时 token验证
+      //创建时 token验证
             getTokenId(){
                 generate().then((data)=>{
                     this.updateComList.token     = data.data.result;
@@ -417,7 +417,7 @@
             },
             //添加之前判断构件是否存在
             exists(url,param){
-                SteelExit(param}).then((data)=>{
+                SteelExit(param).then((data)=>{
                     console.log(data.data.result);
                     let addParam = {
                         author: this.updateComList.author,
@@ -454,13 +454,13 @@
                     }
                 })
             },
-            /!**
-             *钢筋添加功能
+            /**
+             钢筋添加功能
              * @param url      响应地址
              * @param param    响应参数
-             **!/
+             **/
             setAddInfo(url,param){
-                SteelAdd(param}).then((data)=>{
+                SteelAdd(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('添加构件成功','success');
                         this.getTableList(this.tableParam);
@@ -468,13 +468,13 @@
                 })
             },
             updateInfo(url,param){
-                SteelUpdate(param}).then((data)=>{
+                SteelUpdate(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('更新构件成功','success');
                         this.getTableList(this.tableParam);
                     };
                 })
-            },*/
+            },
             /**
              * 删除构件信息
              * @param url       响应地址
