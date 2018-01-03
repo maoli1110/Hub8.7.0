@@ -52,7 +52,7 @@ function transformToObjFormat(param, simpleOrgNodes) {
  * @returns {basePath}  分属模块对应的路径
  */
 function basePath(localhost) {
-    let baseUrl = "";  
+    let baseUrl = "";
     switch (localhost) {
         //cas
         case '/authority/administrators-list':             //权限管理->管理员管理
@@ -303,7 +303,7 @@ function basePath(localhost) {
 function dateFormat(date){
     date = new Date(date);
     let getYear = date.getFullYear();
-    let getMonth = date.getMonth();
+    let getMonth = date.getMonth()+1;
     let getdate = date.getDate();
     let getHou = date.getHours();
     let getMin = date.getMinutes();

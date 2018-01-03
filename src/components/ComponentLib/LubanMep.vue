@@ -2,7 +2,7 @@
     <div>
         <div class="component-main">
             <el-row class="filter-toolbar">
-                <el-col :span="4" style="padding-right:50px;">
+                <!--<el-col :span="4" style="padding-right:50px;">
                     <span class="absol span-block" style="width:50px;">日期：</span>
                     <el-date-picker format="yyyy.MM.dd" @change="changeData"
                                     v-model="selectDate"
@@ -55,7 +55,53 @@
                 </el-col>
                 <el-col :span="4" :offset="2" style="text-align:right;">
                     <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件树管理</el-button>
-                </el-col>
+                </el-col>-->
+                <el-form :inline="true"  class="demo-form-inline" >
+                    <el-form-item class="search-item date" label="日期：" style="max-width:350px;">
+                        <el-date-picker format="yyyy.MM.dd" @change="changeData"
+                                        v-model="selectDate"
+                                        type="daterange"
+                                        placeholder="选择日期范围" class="absol" >
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item class="search-item" label="专业：" style="max-width:230px;">
+                        <el-select  v-model="searchKeyParams.majorVal" placeholder="请选择"  >
+                            <el-option
+                                v-for="item in majorOptions"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item class="search-item" label=" 构件大类：" style="max-width:230px;">
+                        <el-select  v-model="searchKeyParams.bigType" placeholder="请选择">
+                            <el-option
+                                v-for="item in compTypeBig"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="构件小类：" class="search-item" style="max-width:230px;">
+                        <el-select  v-model="searchKeyParams.smallType" placeholder="请选择"  >
+                            <el-option
+                                v-for="item in compTypeSmall"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item class="search-item search" style="max-width:350px;">
+                        <el-input placeholder="请输入要搜索的内容" icon="search" v-model="searchKeyParams.searchVal"
+                                  :on-icon-click="searchComp" ></el-input>
+                    </el-form-item>
+                    <el-form-item class="search-item" style="float:right;">
+                        <el-button type="primary" class="basic-btn" @click="getCloudTree">云构件树管理</el-button>
+                    </el-form-item>
+                </el-form>
             </el-row>
             <el-row class="tools-bar">
                 <el-col>
@@ -115,7 +161,7 @@
                     <div class="pagination" >
                         <span v-show="tableData" style="float:left;line-height:42px;">共 {{tableData.totalRecords}} 条构件,共 {{tableData.totalPages}} 页,累计下载 {{downloadCount}} 次</span>
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                       :current-page="cur_page" :page-sizes="[1, 50, 100, 150]" :page-size="totalPage"
+                                       :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
                                        layout=" sizes, prev, pager, next, jumper" :total="tableData.totalRecords">
                         </el-pagination>
                     </div>
@@ -297,7 +343,7 @@
                     title: ""
                 },
                 ztreeInfoParam:{
-                    version:'1.0.0',
+                    version:'1.0',
                     productId:5,
                 },
                 nodesList:[],//树结构副本
@@ -647,7 +693,6 @@
             updateOk(){
                 console.log( this.token,' this.token')
                 //保存上传到数据库
-
                 console.log(this.updateComList)
                 let modify = {
                     compntFileId: this.updateComList.componentFileId,
@@ -659,7 +704,6 @@
                     summaryFilePath:  this.updateComList.summaryFilePath,
                     title: this.updateComList.name
                 };
-
 
                 if(this.updateComList.componentFilePath ||  this.updateComList.summaryFilePath || this.updateComList.pictureFilePath){
                     modify.fileChanged = true;

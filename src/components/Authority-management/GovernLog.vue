@@ -50,12 +50,12 @@
 import "../../../static/css/components.css";
 import VueScrollbar from "../../../static/scroll/vue-scrollbar.vue";
 import { getLogs , getLogsDownload } from "../../api/getData-cxx.js";
-import { basePath } from "../../utils/common.js";
+//import { basePath } from "../../utils/common.js";
 export default {
   props: ["nowPath"],
   data() {
     return {
-      baseUrl:basePath(this.$route.matched[3].path),
+      baseUrl:window.serverPath.builderUrl,
       //导出地址
       downUrl:'',
       tableData: [],

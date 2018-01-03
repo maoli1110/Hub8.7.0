@@ -9,6 +9,9 @@
  {cas}          'http://192.168.13.195:8989/cas/';
  {palace}       'http://192.168.13.195:8989/palace/';
  */
+let builderUrl = window.serverPath.builderUrl;
+let cloudUrl = window.serverPath.cloudUrl;
+
 import axios from "axios";
 
 //let builderUrl = 'http://192.168.13.195:8989/LBbuilder/'
@@ -78,8 +81,8 @@ export const allocateLubanBi = params=>axios.post(`${params.url}luban/bi/allocat
 /**
  * 应用配置
  */
- export const getLogs = params=> axios.get(`${params.url}business/${params.type}/logs/${params.args}`);
- export const getLogsDownload = params=> axios.get(`${params.url}business/${params.type}/logs/download/${params.args}`);
+ export const getLogs = params=> axios.get(`${params.url}/business/${params.type}/logs/${params.args}`);
+ export const getLogsDownload = params=> axios.get(`${params.url}/business/${params.type}/logs/download/${params.args}`);
 /**
 *原Govern工程属性
 **/
@@ -106,3 +109,12 @@ export const getReportListRoleId = params=> axios.get(`${params.url}/rs/oldgover
 //GET /roleRest/findRoles 获取角色列表
 export const findRoles = params=> axios.get(`${params.url}/roleRest/findRoles`);
 
+/** 
+*空间使用controller: Space Controller 
+**/
+//GET / space / available 查询企业的可用空间
+export const spaceAvailable = params => axios.get(`${params.url}/space/available`);
+//GET / space / dept 按组织查询组织已用空间占比
+export const spaceDept = params => axios.get(`${params.url}/space/dept`);
+//GET / space / org / { parentId } 按组织查询组织已用空间占比
+export const spaceOrg = params => axios.get(`${params.url}/space/org/${params.parentId}`);
