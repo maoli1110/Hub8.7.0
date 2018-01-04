@@ -265,6 +265,7 @@
                 let treeInfo = treeObj.transformToArray(
                     treeObj.getNodes()
                 );
+                console.log(treeInfo,'treeInfo')
                 // 添加模板树
                 if (this.templateParams.isAdd) {
                     let params = {

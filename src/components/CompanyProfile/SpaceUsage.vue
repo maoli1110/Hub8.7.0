@@ -33,8 +33,8 @@
                 <div class="bims-container">
                     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
                         <el-menu-item index="/companyprofile/space-usage/org">按组织</el-menu-item>
-                        <el-menu-item index="/companyprofile/space-usage/major">按专业</el-menu-item>
-                        <el-menu-item index="/companyprofile/space-usage/item">按项目</el-menu-item>
+                        <!-- <el-menu-item index="/companyprofile/space-usage/major">按专业</el-menu-item>
+                        <el-menu-item index="/companyprofile/space-usage/item">按项目</el-menu-item> -->
                     </el-menu>
                 </div>
 
@@ -45,11 +45,11 @@
                             <span @click="isColumn = false; drawCharts()"></span>
                         </div>
                     </div>
-                    <div v-if="isColumn">
-                        <div id="chartColumn" style="width:100%; height:calc(100vh - 450px)"></div>
+                    <div class="chartBox" style="position: relative; overflow:hidden;">
+                      <div class="chartShow" style="width:100%;position:absolute;">
+                        <div id="chartColumn"></div>
+                        <div id="chartPie"></div>
                     </div>
-                    <div v-else>
-                        <div id="chartPie" style="width:100%; height:calc(100vh - 450px)"></div>
                     </div>
                 </div>
             </div>
@@ -115,12 +115,14 @@
 
 <script>
 import echarts from "echarts";
-import { spaceAvailable } from "../../api/getData-cxx.js";
+import { spaceAvailable, spaceDept } from "../../api/getData-cxx.js";
 export default {
   data() {
     return {
       //已用、可用图标信息
       DoughnutChartData: {},
+      //柱状图信息&饼状图信息
+      ColumnAndPieChartData: {},
       baseUrl: window.serverPath.builderUrl,
       disabledfalse: true,
       isColumn: true,
@@ -150,7 +152,7 @@ export default {
     drawPieChart() {
       this.chartPie = echarts.init(document.getElementById("chartPie"));
       this.chartPie.setOption({
-        title: { text: "asdf11" },
+        //title: { text: "" },
         xAxis: [
           {
             show: false
@@ -182,18 +184,7 @@ export default {
           orient: "vertical",
           top: "30",
           right: "100",
-          data: [
-            "第1分公司",
-            "第2分公司",
-            "第3分公司",
-            "第4分公司",
-            "第5分公司",
-            "第6分公司",
-            "第7分公司",
-            "第8分公司",
-            "第9分公司",
-            "第10分公司"
-          ]
+          data: this.ColumnAndPieChartData
         },
         series: [
           {
@@ -219,18 +210,7 @@ export default {
                 show: true
               }
             },
-            data: [
-              { value: 33, name: "第1分公司" },
-              { value: 13, name: "第2分公司" },
-              { value: 53, name: "第3分公司" },
-              { value: 42, name: "第4分公司" },
-              { value: 44, name: "第5分公司" },
-              { value: 38, name: "第6分公司" },
-              { value: 28, name: "第7分公司" },
-              { value: 14, name: "第8分公司" },
-              { value: 31, name: "第9分公司" },
-              { value: 66, name: "第10分公司" }
-            ]
+            data: this.ColumnAndPieChartData
           }
         ]
       });
@@ -244,7 +224,7 @@ export default {
             document.getElementById("chartDoughnut")
           );
           vm.chartDoughnut.setOption({
-            title: { text: "" },
+            //title: { text: "" },
             color: ["#7dc15c", "#e78788"],
             tooltip: {
               trigger: "item",
@@ -300,7 +280,7 @@ export default {
         console.log(params);
       });
       this.chartColumn.setOption({
-        title: { text: "Column Chart" },
+        //title: { text: "" },
         tooltip: {
           trigger: "item",
           formatter: "{b} <br/> 已使用：{c}GB <br/> 占比：22%"
@@ -312,18 +292,7 @@ export default {
             }
           },
           show: true,
-          data: [
-            "第1分公司",
-            "第2分公司",
-            "第3分公司",
-            "第4分公司",
-            "第5分公司",
-            "第6分公司",
-            "第7分公司",
-            "第8分公司",
-            "第9分公司",
-            "第10分公司"
-          ]
+          data: this.ColumnAndPieChartData
         },
         textStyle: {
           fontSize: 12,
@@ -342,7 +311,7 @@ export default {
             name: "哈哈哈哈哈哈22222哈",
             type: "bar",
             barWidth: 30,
-            data: [12, 23, 4, 22, 56, 8, 44, 12, 4, 6],
+            data: this.ColumnAndPieChartData,
             itemStyle: {
               normal: {
                 color: function(params) {
@@ -376,18 +345,71 @@ export default {
 
     drawCharts() {
       if (this.isColumn) {
-        this.drawColumnChart();
+        //this.drawColumnChart();
         $(".chartBtn>div").removeClass("active");
+        $(".chartShow").css({ top: "0px" });
       } else {
-        this.drawPieChart();
+        // this.drawPieChart();
         $(".chartBtn>div").addClass("active");
+        $(".chartShow").css({ top: "", bottom: "0px" });
       }
-      this.drawDoughnutChart();
+      //this.drawDoughnutChart();
     }
   },
 
   mounted: function() {
-    this.drawCharts();
+    //this.drawCharts();
+    let vm = this;
+    spaceDept({ url: vm.baseUrl }).then(function(res) {
+      if (res.data.msg == "success") {
+       // vm.ColumnAndPieChartData = res.data.result;
+       vm.ColumnAndPieChartData = [
+                                    {
+                                      "id": "string",
+                                      "name": "string1",
+                                      "value": 5
+                                    },
+                                    {
+                                      "id": "string",
+                                      "name": "string2",
+                                      "value": 4
+                                    },
+                                    {
+                                      "id": "string",
+                                      "name": "string3",
+                                      "value": 7
+                                    },
+                                    {
+                                      "id": "string",
+                                      "name": "string4",
+                                      "value": 6
+                                    },
+                                    {
+                                      "id": "string",
+                                      "name": "string5",
+                                      "value": 10
+                                    },
+                                    {
+                                      "id": "string",
+                                      "name": "string6",
+                                      "value": 5
+                                    },
+                                    {
+                                      "id": "string",
+                                      "name": "string7",
+                                      "value": 3
+                                    },
+                                    {
+                                      "id": "string",
+                                      "name": "string8",
+                                      "value": 5
+                                    }
+                                  ]
+        vm.drawPieChart();
+        vm.drawColumnChart();
+      }
+    });
+    this.drawDoughnutChart();
   },
   updated: function() {
     //this.drawCharts();
@@ -492,6 +514,12 @@ export default {
   line-height: 30px;
   text-align: right;
   display: inline-block;
+}
+#chartColumn,
+#chartPie,
+.chartBox {
+  width: 100%;
+  height: calc(100vh - 415px);
 }
 </style>
 <style>
