@@ -15,3 +15,7 @@ export const curAddMember = function ({ commit }, param) {
   // 当前添加的人员（）
   commit(types.CUR_ADD_MEMBER, param)
 }
+export const curRoleId = function ({ commit }, param) {
+  // 当前添加的人员（）
+  commit(types.CUR_ROLE_ID, param)
+}

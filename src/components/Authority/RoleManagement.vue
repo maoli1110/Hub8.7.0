@@ -66,7 +66,9 @@
 
         methods: {
             ...mapActions([
-                "curEditRole" // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
+                "curEditRole" ,
+                'curRoleId'
+                // 映射 this.curSelectedNode() 为 this.$store.dispatch('curSelectedNode')
             ]),
             //获取角色列表
             getRoleList() {
@@ -110,7 +112,9 @@
                 });
                 this.curEditRole(row);
             },
-            searchRole(RoleId) {
+            searchRole(role) {
+                console.log(role)
+                this.curRoleId(role.roleId)
                 this.$router.push({
                     path: `/authority/member-management`
                 });

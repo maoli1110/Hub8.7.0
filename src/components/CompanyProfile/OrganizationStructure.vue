@@ -11,7 +11,9 @@
                     <div class="pop-manager-list">
                         <p class="name">负责人</p>
                         <div class="list">
-                            <span v-for="item in orgNodeInfo.admins"><i class="iconfont icon-user"></i>{{item.id}}</span>
+                            <span v-for="item in orgNodeInfo.admins"> <i class="iconfont icon-user"></i>
+                                {{item.id}}
+                            </span>
                         </div>
                     </div>
                     <div class="pop-operation">
@@ -25,99 +27,99 @@
             <!-- 负责人界面end -->
             <el-button type="primary" class="basic-btn" icon="plus" @click="expandTree(true)">全部展开</el-button>
             <el-button type="primary" class="basic-btn" icon="minus" @click="expandTree(false)">全部收起</el-button>
-            <!-- <el-button type="primary" class="basic-btn manager-popover" icon="plus" v-popover:popover4>负责人界面</el-button> -->
-            <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加项目部</el-button>
+            <!-- <el-button type="primary" class="basic-btn manager-popover" icon="plus" v-popover:popover4>负责人界面</el-button>
+        -->
+        <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加项目部</el-button>
+    </div>
+    <div class="org-wrap">
+        <div class="root-node">
+            <div class="root-name" @click="showRoot">{{rootName}}</div>
         </div>
-        <div class="org-wrap">
-            <div class="root-node">
-                <div>PDS没网测试公司</div>
+        <div id="organization-tree" class="clearfix"></div>
+    </div>
+    <!-- 添加分公司界面start -->
+    <el-dialog title="添加分公司" :visible.sync="dialogVisible" size="tiny">
+        <el-radio-group v-model="orgForm.resource">
+            <el-radio label="分公司"></el-radio>
+            <el-radio label="项目部"></el-radio>
+        </el-radio-group>
+        <el-form :model="companyForm" :rules="companyRules" ref="companyForm" label-width="100px">
+            <!-- 分公司 -->
+            <div class="branch-company">
+                <el-form-item label="分公司名称："  prop="name">
+                    <el-input v-model="companyForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="分公司负责人：" prop="responsible">
+                    <el-input v-model="companyForm.responsible"></el-input>
+                </el-form-item>
             </div>
-            <div id="organization-tree" class="clearfix"></div>
-        </div>
-        <!-- 添加分公司界面start -->
-        <el-dialog title="添加分公司" :visible.sync="dialogVisible" size="tiny">
-            <el-radio-group v-model="orgForm.resource">
-                <el-radio label="分公司"></el-radio>
-                <el-radio label="项目部"></el-radio>
-            </el-radio-group>
-            <el-form :model="companyForm" :rules="companyRules" ref="companyForm" label-width="100px">
-                <!-- 分公司 -->
-                <div class="branch-company">
-                    <el-form-item label="分公司名称："  prop="name">
-                        <el-input v-model="companyForm.name"></el-input>
+        </el-form>
+        <el-form :model="projectForm" :rules="projectRules" ref="projectForm" label-width="100px">
+            <!-- 项目部 -->
+            <div class="project">
+                <el-form-item label="项目名称：" prop="name">
+                    <el-input v-model="projectForm.name" placeholder="请输入项目名称"></el-input>
+                </el-form-item>
+                <el-form-item label="项目负责人：">
+                    <multiple-select  v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select>
+                </el-form-item>
+                <el-form-item label="项目经理：" prop="manager">
+                    <el-input v-model="projectForm.manager" placeholder="请输入项目经理"></el-input>
+                </el-form-item>
+                <!-- </el-form-item>
+                -->
+                <el-form-item label="手机号码：" prop="mobile">
+                    <el-input v-model="projectForm.mobile"></el-input>
+                </el-form-item>
+                <el-form-item label="项目开工日期：">
+                    <el-form-item prop="date1">
+                        <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.startDate" style="width: 100%;"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="分公司负责人：" prop="responsible">
-                        <el-input v-model="companyForm.responsible"></el-input>
+                </el-form-item>
+                <el-form-item label="项目竣工日期：">
+                    <el-form-item prop="date2">
+                        <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.endDate" style="width: 100%;"></el-date-picker>
                     </el-form-item>
-                </div>
-            </el-form>
-            <el-form :model="projectForm" :rules="projectRules" ref="projectForm" label-width="100px">
-                <!-- 项目部 -->
-                <div class="project">
-                    <el-form-item label="项目名称：" prop="name">
-                        <el-input v-model="projectForm.name" placeholder="请输入项目名称"></el-input>
-                    </el-form-item>
-                    <el-form-item label="项目负责人：">
-                        <multiple-select  v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select>
-                    </el-form-item>
-                    <el-form-item label="项目经理：" prop="manager">
-                        <el-input v-model="projectForm.manager" placeholder="请输入项目经理"></el-input>
-                    </el-form-item>
-                    <!-- </el-form-item> -->
-                    <el-form-item label="手机号码：" prop="mobile">
-                        <el-input v-model="projectForm.mobile"></el-input>
-                    </el-form-item>
-                    <el-form-item label="项目开工日期：">
-                        <el-form-item prop="date1">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.startDate" style="width: 100%;"></el-date-picker>
-                        </el-form-item>
-                    </el-form-item>
-                    <el-form-item label="项目竣工日期：">
-                        <el-form-item prop="date2">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.endDate" style="width: 100%;"></el-date-picker>
-                        </el-form-item>
-                    </el-form-item>
-                    <el-form-item label="建筑面积(m2)">
-                        <el-input v-model="projectForm.area" placeholder="请输入建筑面积大小，例：8888.00"></el-input>
-                    </el-form-item>
-                    <el-form-item label="里程：">
-                        <el-input v-model="projectForm.mileage"></el-input>
-                    </el-form-item>
-                    <el-form-item label="所在地：">
-                        <el-input v-model="projectForm.location"></el-input>
-                    </el-form-item>
-                    <el-form-item label="合同类型：">
-                        <el-select v-model="projectForm.contractType" placeholder="请选择">
-                            <el-option
+                </el-form-item>
+                <el-form-item label="建筑面积(m2)">
+                    <el-input v-model="projectForm.area" placeholder="请输入建筑面积大小，例：8888.00"></el-input>
+                </el-form-item>
+                <el-form-item label="里程：">
+                    <el-input v-model="projectForm.mileage"></el-input>
+                </el-form-item>
+                <el-form-item label="所在地：">
+                    <el-input v-model="projectForm.location"></el-input>
+                </el-form-item>
+                <el-form-item label="合同类型：">
+                    <el-select v-model="projectForm.contractType" placeholder="请选择">
+                        <el-option
                               v-for="item in contractTypeOptions"
                               :key="item.value"
                               :label="item.label"
-                              :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="状态：">
-                        <el-select v-model="projectForm.status" placeholder="请选择">
-                            <el-option
+                              :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="状态：">
+                    <el-select v-model="projectForm.status" placeholder="请选择">
+                        <el-option
                               v-for="item in statusOptions"
                               :key="item.value"
                               :label="item.label"
-                              :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="备注：" prop="remarks">
-                        <el-input type="textarea" v-model="projectForm.remarks"></el-input>
-                    </el-form-item>
-                </div>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="createOrgNode">确 定</el-button>
-                <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
+                              :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="备注：" prop="remarks">
+                    <el-input type="textarea" v-model="projectForm.remarks"></el-input>
+                </el-form-item>
             </div>
-        </el-dialog>
-        <!-- 添加分公司界面end -->
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="createOrgNode">确 定</el-button>
+            <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
         </div>
+    </el-dialog>
+    <!-- 添加分公司界面end -->
+</div>
 </template>
 <script>
 import '../../../static/css/select-vue-component.css'; // select2样式
@@ -138,10 +140,10 @@ const validateMobile = (rule, value, callback) => {
     callback(new Error("请输入正确的用户信息"));
   }
 };
-
 export default {
     data() {
         return {
+            isRoot: false,
             isPopover: false,
             //测试multiple select2
             single: {
@@ -161,6 +163,8 @@ export default {
             },
             //dialog属性
             dialogVisible: false,
+            rootName:'',
+            rootId: 0,
             orgForm: {
                 resource:'分公司'
             },
@@ -253,52 +257,58 @@ export default {
     },
     mounted() {
         // 获取原始树结构
-        getOrgTreeList().then(res => {
-            // 组合树结构需要的参数
-            let param = {
-                orgNodeKey: "id",
-                nodesCol:'children',
-                orgNodeParentKey: "parentId"
-            }
-            // 处理原始树结构,返回生成树结构所需要的对象()
-            for(let i=0;i<res.data.result.length;i++){
-                if(res.data.result[i].root === true){
-                    res.data.result[i].parentId = '0';
+        let self = this;
+        function initTreeNode() {
+            getOrgTreeList().then(res => {
+                // 组合树结构需要的参数
+                let param = {
+                    orgNodeKey: "id",
+                    nodesCol:'children',
+                    orgNodeParentKey: "parentId"
                 }
-            }
-
-            let tempzNodes = transformToObjFormat(param,res.data.result);
-
-            tempzNodes = tempzNodes[0].children;
-            /**
-             * 给数组添加key值
-             * @yield {obj} 返回都带有key键值的obj
-             */
-            function* entries(tempzNodes) {
-                for (let key of Object.keys(tempzNodes)) {
-                    yield [key, tempzNodes[key]];
+                // 处理原始树结构,返回生成树结构所需要的对象()
+                for(let i=0;i<res.data.result.length;i++){
+                    if(res.data.result[i].root === true){
+                        res.data.result[i].parentId = '0';
+                        self.rootName = res.data.result[i].name;
+                        self.rootId = res.data.result[i].id;
+                    }
                 }
-            }
 
-            this.zNodes = tempzNodes;
+                let tempzNodes = transformToObjFormat(param,res.data.result);
 
-            for(let [key,value] of entries(tempzNodes)){
-                let lineStyle = "";
-                if(key != 0 && key != tempzNodes.length-1){
-                    lineStyle = 'middleHLine';
-                } else if (key == "0"){
-                    lineStyle = 'firstHLine';
-                } else if(key == tempzNodes.length-1) {
-                    lineStyle = 'noneHLine';
+                tempzNodes = tempzNodes[0].children;
+                /**
+                 * 给数组添加key值
+                 * @yield {obj} 返回都带有key键值的obj
+                 */
+                function* entries(tempzNodes) {
+                    for (let key of Object.keys(tempzNodes)) {
+                        yield [key, tempzNodes[key]];
+                    }
                 }
-                let tree = '<ul id="ztree-'+key+'" class="ztree"></ul>';
-                let longLine ='<div class="'+lineStyle+'" style=""></div><div class="longitudinalLine2" style="height:25px;border-left:1px solid #4778c7;margin-left:120px"></div>';
-                let html = '<div style="float:left">'+longLine+''+tree+'</div>';
-                $("#organization-tree").append(html);
-                $.fn.zTree.init($("#ztree-"+key), this.setting, value);
-            }
-            $("#organization-tree").width(this.getOrgTreeWidth());
-        });
+
+                // this.zNodes = tempzNodes?tempzNodes:[];
+                console.log(self.zNodes,'this.zNodes');
+                for(let [key,value] of entries(tempzNodes)){
+                    let lineStyle = "";
+                    if(key != 0 && key != tempzNodes.length-1){
+                        lineStyle = 'middleHLine';
+                    } else if (key == "0"){
+                        lineStyle = 'firstHLine';
+                    } else if(key == tempzNodes.length-1) {
+                        lineStyle = 'noneHLine';
+                    }
+                    let tree = '<ul id="ztree-'+key+'" class="ztree"></ul>';
+                    let longLine ='<div class="'+lineStyle+'" style=""></div><div class="longitudinalLine2" style="height:25px;border-left:1px solid #4778c7;margin-left:120px"></div>';
+                    let html = '<div style="float:left">'+longLine+''+tree+'</div>';
+                    $("#organization-tree").append(html);
+                    $.fn.zTree.init($("#ztree-"+key), this.setting, value);
+                }
+                $("#organization-tree").width(this.getOrgTreeWidth());
+            });
+        }
+        initTreeNode();
     },
     methods: {
         //测试multiple select2
@@ -380,6 +390,7 @@ export default {
         },
         //mouseOn显示负责人信息
         addHoverDom(treeId,treeNode) {
+            this.isRoot = false;
            /* console.log('add');
             console.log(treeId,'treeId')
             console.log(treeNode,'treeId')*/
@@ -447,14 +458,24 @@ export default {
                 this.$refs.companyForm.validate(valid => {
                     if (valid) {
                         let params = {
-                            orgId: selectedNode.id,
+                            orgId: '',
                             companyInfo: this.companyForm
                         };
-                        createBranchCompany({params}).then((data)=>{
-                            let tempNode = data.data.result;
-                            addTreeNode(selectedNode, tempNode);
-                            self.dialogVisible = false;
-                        });
+                        if(self.isRoot){
+                            params.orgId = this.rootId;
+                            createBranchCompany({params}).then((data)=>{
+                                let tempNode = data.data.result;
+                                initTreeNode();
+                                self.dialogVisible = false;
+                            });
+                        } else {
+                            param.orgId = selectedNode.id;
+                            createBranchCompany({params}).then((data)=>{
+                                let tempNode = data.data.result;
+                                addTreeNode(selectedNode, tempNode);
+                                self.dialogVisible = false;
+                            });
+                        }
                     } else {
                       console.log("error submit!!");
                       return false;
@@ -478,6 +499,19 @@ export default {
                 });
 
             }
+        },
+        showRoot() {
+            this.isRoot = true;
+            this.isPopover = true;
+            let aObj = $(".root-name");
+            let mX = aObj.offset().left,
+                mY = aObj.offset().top;
+            let changePosition = function(){
+                $(".el-popover").css('left',mX+100);
+                $(".el-popover").css('top',mY-10);
+            }
+            this.isPopover = true;
+            changePosition();
         }
     },
     watch:{

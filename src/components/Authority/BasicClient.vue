@@ -7,6 +7,20 @@
             </ul>
         </div>
         <div class="basic-main">
+
+            <div>
+                <label class="el-form-item__label">订单号：</label>
+                <div class="el-form-item__content" style="margin-left: 55px;">
+                    <el-select v-model="orderHeldId" placeholder="请选择" style="max-width:200px" v-show="showOrderList">
+                        <el-option v-for="item in orderListSelect" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <span class="add-authorization-message" v-show="!showOrderList">{{orderNumber}}</span>
+                    <span class="add-authorization-message" style="margin-left:20px"> 可用数/总数: {{surplus}}/{{licenses}}</span>
+                    <span class="add-authorization-message">到期时间：{{dateFormat(expirationDate)}}</span>
+                </div>
+            </div>
+
             <div>
                 <el-button type="primary" class="basic-btn" @click="addAuthorizationDialogVisible=true;addAuthorization()">
                     <i class="icon-add-authorization pl-icon-s"></i>
@@ -16,7 +30,8 @@
                     <i class="icon-cancle-authorization pl-icon-s"></i>
                     <span>取消授权</span>
                 </el-button>
-                <el-input placeholder="请选择日期" icon="search" style="float:right;width:281px"></el-input>
+                <el-input placeholder="请输入" icon="search" style="float:right;width:20%" v-model="searchKey" :on-icon-click="searchOrdersList"
+                    @keyup.enter.native="searchOrdersList"></el-input>
             </div>
             <el-table ref="multipleTable" :data="packageInfoUserLists" border tooltip-effect="dark" style="width: 100%;margin-top:15px"
                 height='531' @selection-change="handleSelectionChange">
@@ -47,11 +62,11 @@
         </div>
         <!-- 新增授权 -->
         <el-dialog title="新增授权" :visible.sync="addAuthorizationDialogVisible" size='add-authorization'>
-            <div class="add-authorization-head">
+            <div class="add-authorization-head" style="position:relative">
                 <span class="add-authorization-message">订单号：{{orderNumber}}</span>
                 <span class="add-authorization-message">可用数 / 总数: {{surplus}} / {{licenses}}</span>
                 <span class="add-authorization-message">到期时间：{{dateFormat(expirationDate)}}</span>
-                <el-button type="primary" style="padding:5px 7px;margin-left:12px" @click="modifyDialogVisible=true;" v-show="showOrderList">
+                <el-button type="primary" style="position:absolute;right:0;top:-6px;padding:5px 7px" @click="modifyDialogVisible=true;" v-show="showOrderList">
                     更改
                 </el-button>
             </div>
@@ -91,7 +106,7 @@
                         <ul class="el-transfer-item el-transfer-panel__list">
                             <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:280px;">
                                 <div>
-                                    <li class="el-transfer-panel__item" v-for="(item,index) in checkedCities" :key="index" @click="deleteItem(item)" :title="item">
+                                    <li class="el-transfer-panel__item" v-for="(item,index) in checkedCities" :key="index" @click="deleteItem(item)" :title="item.realName">
                                         <span class="icon icon-remove" style="vertical-align:sub"> </span>
                                         <span style="margin-left:5px"> {{item.realName}}</span>
                                     </li>
@@ -108,13 +123,13 @@
             </div>
             <div slot="footer" class="dialog-footer" style="margin-top:10px">
                 <el-button type="primary" class="dialog-btn" @click="updateUserPackageAuth()">确 定</el-button>
-                <el-button @click="addAuthorizationDialogVisible = false" class="dialog-btn">取消</el-button>
+                <el-button @click="addAuthorizationDialogVisible = false;" class="dialog-btn">取消</el-button>
             </div>
         </el-dialog>
         <!-- 更改 -->
         <el-dialog title="选择授权订单" :visible.sync="modifyDialogVisible" size='modify'>
             <div>当前服务共有{{orderLists}}条订单，请选择后授权</div>
-            <el-table ref="multipleTable" :data="modifyOrderData" border tooltip-effect="dark" height="301" style="width: 100%;margin-top:15px"
+            <el-table ref="multipleTable" :data="modifyOrderData" border tooltip-effect="dark" height="348" style="width: 100%;margin-top:15px"
                 @selection-change="handleSelectionChange">
                 <el-table-column width="55" label="序号">
                     <template slot-scope="scope">
@@ -146,8 +161,8 @@
 
             </el-table>
             <div slot="footer" class="dialog-footer" style="margin-top:10px">
-                <el-button type="primary" class="dialog-btn" @click="handleSelectOrders">确 定</el-button>
-                <el-button @click="modifyDialogVisible = false;radio=1" class="dialog-btn">取消</el-button>
+                <el-button type="primary" class="dialog-btn" @click="handleSelectOrders()">确 定</el-button>
+                <el-button @click="modifyDialogVisible = false;" class="dialog-btn">取消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -176,10 +191,11 @@
                 cities_clone: [], //克隆
                 packageInfos: [], //套餐信息
                 packageInfoUserLists: [], //套餐用户列表
+                searchKey: '', //搜索套餐用户列表关键字
                 packageType: "", //当前套餐类型
                 packageId: "", //套餐id
                 heldId: "", //套餐持有id
-
+                cacheHeldId: '', //缓存held用于取消时使用
                 modifyOrderData: [], //订单数据
                 orderLists: "", //订单数
                 orderNumber: "", //订单号
@@ -187,7 +203,9 @@
                 licenses: "", //订单总数
                 expirationDate: "", //订单到期时间
                 multipleSelection: [], //当前已授权人员
-                showOrderList: false //选择授权订单
+                showOrderList: false, //选择授权订单
+                orderListSelect: [], //订单列表下拉
+                orderHeldId: '', //订单
 
             };
         },
@@ -210,6 +228,16 @@
                 this.cities = [];
                 this.cities_clone = [];
                 this.checkedCities = [];
+
+            },
+            // 下拉框中订单heldId变化
+            orderHeldId(newVal, oldVal) {
+                if (newVal != this.heldId) {
+                    this.heldId = newVal
+                    this.getPackageAllocatedUserList()
+                };
+                console.log(newVal, 'xialakuang')
+                console.log(this.heldId, 'held')
             }
         },
         methods: {
@@ -270,7 +298,10 @@
             },
             //获取heldid  （展示已分配套餐用户列表）
             getPackageInfo(packageInfo) {
-                console.log(packageInfo);
+                // 切换不同套餐初始化数据
+                this.orderListSelect = [];
+                this.radio = 1;
+
                 this.packageId = packageInfo.packageId;
                 let params = [{
                     packageId: this.packageId,
@@ -281,36 +312,38 @@
                     let orderResult = res.data.result;
                     //获取到heldId
                     this.heldId = orderResult[0].orderAndAllocations[0].heldId;
+                    // 缓存未更改前的heldId
+                    this.cacheHeldId = orderResult[0].orderAndAllocations[0].heldId
                     //获取当前套餐对应的订单信息
                     orderResult.forEach(val => {
                         if (val.packageId == this.packageId) {
-                            debugger
-                            console.log(val.packageId);
                             this.modifyOrderData = val.orderAndAllocations;
-                            
-                            
-                            for (var i = 0; i < 5; i++) {                                
-                               this.modifyOrderData.push({
-                                allocated: 1,
-                                boundComputers: 0,
-                                editBindingTimes: 0,
-                                expirationDate: 1576166400000,
-                                heldId: 2502+i,
-                                licenses: 99+i,
-                                maxBinding: 99+i,
-                                modifyBindingTimes: 0,
-                                orderId: "2017121202588518"+i,
-                                surplus: 98+i,
-                                surplusBinding: 99+i,
-                                surplusBindingTimes: 0,
-                            }) 
-                            }
-                            
+                            // for (var i = 0; i < 5; i++) {
+                            //     this.modifyOrderData.push({
+                            //         allocated: 1,
+                            //         boundComputers: 0,
+                            //         editBindingTimes: 0,
+                            //         expirationDate: 1576166400000,
+                            //         heldId: 2502 + i,
+                            //         licenses: 99 + i,
+                            //         maxBinding: 99 + i,
+                            //         modifyBindingTimes: 0,
+                            //         orderId: "2017121202588518" + i,
+                            //         surplus: 98 + i,
+                            //         surplusBinding: 99 + i,
+                            //         surplusBindingTimes: 0,
+                            //     })
+                            // }
                             // 给单选添加index序号
-                            this.modifyOrderData.forEach((item,i) =>{
-                               this.$set(item,'index',i+1)
-                            } )
-                            
+                            this.modifyOrderData.forEach((item, i) => {
+                                this.$set(item, 'index', i + 1);
+                                this.orderListSelect.push({
+                                    value: item.heldId,
+                                    label: item.orderId
+                                })
+                            })
+                            // console.log(this.orderListSelect)
+                            this.orderHeldId = this.orderListSelect[0].value //默认设置下拉列表中的订单
                             this.orderLists = this.modifyOrderData.length; //订单条数
                             this.orderNumber = this.modifyOrderData[0].orderId //订单号
                             this.surplus = this.modifyOrderData[0].surplus //订单可用数
@@ -320,7 +353,6 @@
 
                         }
                     });
-                    console.log(this.modifyOrderData);
                     this.getPackageAllocatedUserList();
                 });
             },
@@ -334,12 +366,16 @@
                         page: this.curPage,
                         pageSize: this.pageSize
                     },
-                    searchKey: ""
+                    searchKey: this.searchKey
                 };
                 api.getPackageAllocatedUserList(params).then(res => {
                     this.packageInfoUserLists = res.data.result.packageAllocatedUserInfos;
                     this.total = res.data.result.pageInfo.totalNumber;
                 });
+            },
+            // 搜索已分配套餐用户列表
+            searchOrdersList() {
+                this.getPackageAllocatedUserList()
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -353,17 +389,18 @@
                 this.getPackageAllocatedUserList();
             },
             // 更改订单
-            handleSelectOrders(){
-                this.modifyOrderData.forEach((item,i) =>{
-                     if(i+1==this.radio){
-                        //  console.log(item)
-                         this.orderNumber = item.orderId //订单号
-                         this.surplus = item.surplus //订单可用数
-                         this.licenses = item.licenses //订单总数
-                         this.expirationDate = item.expirationDate //订单到期时间
-                         this.modifyDialogVisible=false;
-                     }
-                } )
+            handleSelectOrders() {
+                //订单通过heldId区分            
+                this.modifyOrderData.forEach((item, i) => {
+                    if (i + 1 == this.radio) {
+                        this.orderNumber = item.orderId //订单号
+                        this.surplus = item.surplus //订单可用数
+                        this.licenses = item.licenses //订单总数
+                        this.expirationDate = item.expirationDate //订单到期时间
+                        this.modifyDialogVisible = false;
+                        this.heldId = item.heldId;
+                    }
+                })
             },
             //新增授权
             addAuthorization() {
@@ -372,6 +409,7 @@
                 this.cities = [];
                 this.cities_clone = [];
                 this.checkAll = false;
+                // this.radio = 1;
                 // 获取管理员能够管理的用户列表
                 api.getAdminManageUserList().then(res => {
                     let allUserLists = res.data.result;
@@ -432,7 +470,11 @@
             },
             //保存新增授权信息 并提交
             updateUserPackageAuth() {
-                console.log(this.checkedCities)
+                // 没有可添加账号
+                if(this.cities.length==0){
+                    this.addAuthorizationDialogVisible = false;
+                    return
+                }                
                 let memberIds = [];
                 this.checkedCities.forEach(item => {
                     memberIds.push(item.memberId);
@@ -449,6 +491,7 @@
                     if (res.data.code == 200) {
                         this.getPackageAllocatedUserList()
                         this.addAuthorizationDialogVisible = false;
+                        this.orderHeldId = this.heldId //下拉框列表中的订单号与切换后的订单保持一致
                     } else {
                         this.$alert(res.data.msg, "提示", {
                             confirmButtonText: "确定",
