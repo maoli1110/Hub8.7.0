@@ -133,7 +133,7 @@ table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .project-manage .el-select>.el-input{width:100% !important;}
 
 .bims-contents .el-form-item label.el-form-item__label{
-    /*width:97px ;text-align:right;*/
+    width:97px !important;text-align:right;
 }
 .bims-contents .el-form-item:not('.search-item') .el-select{
     width:73% !important;
@@ -263,4 +263,3 @@ text-align:left;}
     background:#84aaf5;
 }
 .el-pagination{text-align:center;}
-.el-select{display:block !important;}
