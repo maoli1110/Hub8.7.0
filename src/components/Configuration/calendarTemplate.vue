@@ -199,11 +199,13 @@
              */
 
             selectAll(selection){
+                deletArray=[];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.ctid) == -1) {
+                        deletArray.push(val.ctid)
                     }
                 });
+//                console.log(deletArray,'deleteListAll');
             },
             /**
              * 单选
@@ -211,11 +213,13 @@
              * @params row 列
              */
             selectChecked(selection, row){
+                deletArray =[];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray = selection
+                    if (deletArray.indexOf(val.ctid) == -1) {
+                        deletArray.push(val.ctid)
                     }
                 })
+//                console.log(deletArray,'deleteList');
             },
             getData(){//初始化方法
                 this.getTemplateList();
@@ -250,6 +254,27 @@
                     }
                 })
             },
+            //模板删除批量删除
+            deleteTemplate(param){
+                deleteCalendarTemplate(param).then((data)=>{
+                    if(data.data.code ==200){
+                        this.commonMessage('删除成功','success');
+                        if(this.tableData.length===deletArray.length){
+                            //重新渲染数据
+                            this.getTableList(this.tableParam);
+                        }else if (deletArray.length) {
+                            for (let i = 0; i < deletArray.length; i++) {
+                                for (let j = 0; j < this.tableData.length; j++) {
+                                    if (this.tableData[j].ctid == deletArray[i]) {
+                                        this.tableData.splice(j, 1);
+                                    }
+                                }
+                            }
+                        }
+                        deletArray = [];
+                    }
+                })
+            },
             tableSort(column){
                if(column.order=='ascending'){
                     this.tableParam.direction = 0;
@@ -266,25 +291,8 @@
                     return false;
                 }
                 this.commonConfirm('确定要删除吗', () => {
-                    /* if(this.tableData.length===deletArray.length){
-                     //重新渲染数据
-                     }else*/
-                    let deletArrayCopy = [];
-                    deletArray.forEach((val, key) => {
-                        deletArrayCopy.push(val.index)
-                    })
-                    deletArray = deletArrayCopy;
-                    if (deletArray.length) {
-                        for (let i = 0; i < deletArray.length; i++) {
-                            for (let j = 0; j < this.tableData.length; j++) {
-                                if (this.tableData[j].index == deletArray[i]) {
-                                    this.tableData.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
-                    console.log(deletArray, '数组')
-                    deletArray = [];//接口成功之后删除数据
+
+                  this.deleteTemplate(deletArray);
                 })
             },
             //设置模板确定
