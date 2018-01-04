@@ -47,7 +47,7 @@
         treeList,               //构件树
         treeSave,               //保存构件树
     } from '../../api/getData-yhj.js';
-    import "../../../static/zTree/js/jquery.ztree.all.min.js";
+//    import "../../../static/zTree/js/jquery.ztree.all.min.js";
     let level=1;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;//预览状态模板树的深度
     export default {
@@ -61,7 +61,7 @@
                         simpleData: {
                             enable: true,
                             idKey:'parentNodeCode',
-                            pIdKey:'nodeCode'
+                            pIdKey: "nodeCode",
                         },
                         key:{
                             name:'nodeName'
@@ -106,6 +106,7 @@
                     let treeNodes = zTree.transformToArray(zTree.getNodes());
                     //获取状态树的深度
                     for (let i = 0; i < treeNodes.length; i++) {
+
                         if (treeNodes[i].level >= maxLevel) {
                             maxLevel = treeNodes[i].level;
                         }
@@ -209,13 +210,8 @@
                     }
                 }
                 //判断状态前一个节点是否是节点，如果是，不能移动
-               /* for (var i = 0; i < nodes.length; i++) {
-                    if (!nodes[i].isParent && nodes[i].getPreNode().isParent) {
-                        return;
-                    }
-                }*/
                 for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].isParent && !nodes[i].getPreNode().isParent) {
+                    if (nodes[i].isParent && !nodes[i].getPreNode()) {
                         return;
                     }
                 }
@@ -238,6 +234,7 @@
 
                 //移动之前需要判断满足条件才能下移
                 //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许移动
+//                debugger;
                 for (var i = 0; i < nodes.length; i++) {
                     if (nodes[i].isParent != nodes[0].isParent) {
                         return;
@@ -258,7 +255,7 @@
                 }
                 //判断节点后一个节点是否是状态，如果是，不能移动
                 for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].isParent && !nodes[i].getNextNode().isParent) {
+                    if (nodes[i].isParent && !nodes[i].getNextNode()) {
                         return;
                     }
                 }
@@ -276,8 +273,9 @@
                 this.$emit('hidePanel',this.dialogVisible);
                 let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
                 let nodes = treeObj.transformToArray(treeObj.getNodes());
+                console.log(nodes,'nodes')
                 let treeNodes = [];
-                if(nodes.length){
+                if(!nodes.length){
                     return false;
                 }else{
                     nodes.forEach((val,key)=>{
