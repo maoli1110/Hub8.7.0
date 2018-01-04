@@ -47,7 +47,7 @@
         treeList,               //构件树
         treeSave,               //保存构件树
     } from '../../api/getData-yhj.js';
-//    import "../../../static/zTree/js/jquery.ztree.all.min.js";
+    import "../../../static/zTree/js/jquery.ztree.all.min.js";
     let level=1;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;//预览状态模板树的深度
     export default {
@@ -60,8 +60,8 @@
                     data: {
                         simpleData: {
                             enable: true,
-                            idKey:'parentNodeCode',
-                            pIdKey: "nodeCode",
+                            idKey:'nodeCode',
+                            pIdKey: "parentNodeCode",
                         },
                         key:{
                             name:'nodeName'
@@ -98,6 +98,9 @@
                 treeList(param).then((data)=>{
                     this.zNodes = data.data.result;
                     this.nodesList = data.data.result;
+                    this.zNodes.forEach((val,key)=>{
+                        this.$set(val,'pId',val.nodeCode)
+                    })
                     let zTree = $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
                     let nodes = zTree.getNodes();
                     if (nodes.length > 0) {
@@ -122,7 +125,9 @@
             setZtree(param){
                 treeSave(param).then((data)=>{
                     if(data.data.code==200){
-                        this.commonMessage('保存成功!','success')
+                        this.commonMessage('保存成功!','success');
+                        this.dialogVisible = false;
+                        this.$emit('hidePanel',this.dialogVisible);
                     }
                 })
             },
@@ -270,7 +275,7 @@
             },
             //保存
             ztreeSave(){
-                this.$emit('hidePanel',this.dialogVisible);
+
                 let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
                 let nodes = treeObj.transformToArray(treeObj.getNodes());
                 console.log(nodes,'nodes')
@@ -283,8 +288,6 @@
                     });
                     this.setZtree({version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
                 }
-
-
 
             },
             //构件树保存
