@@ -8,6 +8,8 @@ const state = {
   curEditMember:{},
   //当前添加人员
   curAddMember:{},
+  //角色授权跳转到人员授权时筛选角色id
+  roleId:''
 }
 
 export default state
