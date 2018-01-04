@@ -415,7 +415,9 @@
                     this.commonMessage('请选择安装的文件','warning');
                     return false;
                 };
+                let remark = this.updateComList.remark;
                 this.updateComList = response.result;
+                this.updateComList.remark = remark;
             },
             /**
              *上传失败回调的函数
