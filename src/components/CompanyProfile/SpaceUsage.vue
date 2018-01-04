@@ -45,11 +45,11 @@
                             <span @click="isColumn = false; drawCharts()"></span>
                         </div>
                     </div>
-                    <div v-if="isColumn">
-                        <div id="chartColumn" style="width:100%; height:calc(100vh - 450px)"></div>
+                    <div class="chartBox" style="position: relative; overflow:hidden;">
+                      <div class="chartShow" style="width:100%;position:absolute;">
+                        <div id="chartColumn"></div>
+                        <div id="chartPie"></div>
                     </div>
-                    <div v-else>
-                        <div id="chartPie" style="width:100%; height:calc(100vh - 450px)"></div>
                     </div>
                 </div>
             </div>
@@ -376,18 +376,23 @@ export default {
 
     drawCharts() {
       if (this.isColumn) {
-        this.drawColumnChart();
+        //this.drawColumnChart();
         $(".chartBtn>div").removeClass("active");
+        $(".chartShow").css({"top":"0px"})
       } else {
-        this.drawPieChart();
+        // this.drawPieChart();
         $(".chartBtn>div").addClass("active");
+        $(".chartShow").css({"top":"","bottom":"0px"})
       }
-      this.drawDoughnutChart();
+      //this.drawDoughnutChart();
     }
   },
 
   mounted: function() {
-    this.drawCharts();
+    //this.drawCharts();
+    this.drawPieChart();
+    this.drawColumnChart();
+    this.drawDoughnutChart();
   },
   updated: function() {
     //this.drawCharts();
@@ -492,6 +497,10 @@ export default {
   line-height: 30px;
   text-align: right;
   display: inline-block;
+}
+#chartColumn,#chartPie,.chartBox{
+  width:100%;
+  height:calc(100vh - 415px);
 }
 </style>
 <style>
