@@ -131,9 +131,9 @@
                                     <div class="imgUrl" :style="{backgroundImage: 'url('+scope.row.imgUrl+')'}"></div>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="version" width="70" label="版本" show-overflow-tooltip>
+                            <el-table-column prop="version" width="70" label="版本" sortable show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="majorName" width="70" label="专业" show-overflow-tooltip>
+                            <el-table-column prop="majorName" width="70" label="专业" sortable show-overflow-tooltip>
                             </el-table-column>
                             <el-table-column prop="bigTypeName" width="100" label="构件大类" sortable show-overflow-tooltip>
                             </el-table-column>
@@ -147,7 +147,7 @@
                             </el-table-column>
                             <el-table-column prop="addUser" width="80" label="上传人" sortable  show-overflow-tooltip>
                             </el-table-column>
-                            <el-table-column prop="addTime " width="135" label="更新时间" sortable show-overflow-tooltip>
+                            <el-table-column prop="editTime" width="135" label="更新时间" sortable show-overflow-tooltip>
                             </el-table-column>
                             <el-table-column prop="downloadTimes" width="100" label="下载次数" sortable show-overflow-tooltip>
                             </el-table-column>

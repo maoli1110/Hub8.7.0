@@ -91,16 +91,17 @@
     } from '../../api/getData-yhj.js';
     let baseUrl="";
     export default{
-        props:{isShow:Boolean,title:String,dataList:Object,uploadUrl:String,override:Boolean,tableParam:Object,downloadSum:Number},
+        props:{isShow:Boolean,title:String,uploadUrl:String,override:Boolean,tableParam:Object,downloadSum:Number},
         data(){
             return {
-                updateList:this.dataList,//上传弹窗信息
+                updateList:{},//上传弹窗信息
                 overrides:this.override,//是否是替换
                 fileList: [],           //上传的文件信息
                 uploadUri:this.uploadUrl,//上传地址
                 tableInfo:this.tableParam,//列表参数
                 tableDataList:{},
                 count:this.downloadSum,
+                uploadVisible:false
             }
         },
         methods:{
@@ -272,14 +273,17 @@
              * 上传文件再次上传 （ps:覆盖之前的)
              * @param type  1.update上传 2.cover修改页面
              **/
-            overUpdate(){
+            overUpdate(type){
                 this.uploadUri = `${window.serverPath.cloudUrl}/component/gj/upload/2`;
                 this.fileList = [];
+                if(type=='update'){
+                    this.clearUploadInfo();
+                }
             },
             //上传构件清除数据
             clearUploadInfo(){
                 for (var key in this.updateList) {
-                    console.log(this.updateList[key])
+                    console.log(this.updateList[key],'上传内容更新')
                     this.updateList[key] = '';
                 }
             },

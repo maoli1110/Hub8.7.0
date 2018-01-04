@@ -95,14 +95,13 @@
             <el-row>
                 <el-col>
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                        <el-table class="house-table scroll-me" :fit="true" :data="tableData.list" style="width: 100%"
-                                  :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
+                        <el-table class="house-table scroll-me" :fit="true" :data="tableData.list" style="width: 100%" @sort-change="tableSort"
                                   @select="selectChecked">
                             <el-table-column
                                 type="selection"
                                 width="40">
                             </el-table-column>
-                            <el-table-column prop="title" width="" label="构件名称" show-overflow-tooltip>
+                            <el-table-column prop="title" width="" label="构件名称" sortable show-overflow-tooltip>
                             </el-table-column>
                             <el-table-column prop="imgUrl" width="80" label="缩略图">
                                 <template slot-scope="scope">
@@ -110,21 +109,21 @@
                                     <!--<img :src="scope.row.imgUrl" alt="" style="width:44px;">-->
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="version" width="70" label="版本">
+                            <el-table-column prop="version" width="70" label="版本" sortable>
                             </el-table-column>
-                            <el-table-column prop="coding" width="100" label="构件编码">
+                            <el-table-column prop="coding" width="100" label="构件编码" sortable>
                             </el-table-column>
-                            <el-table-column prop="bigTypeName" width="100" label="构件大类">
+                            <el-table-column prop="bigTypeName" width="100" label="构件大类" sortable>
                             </el-table-column>
-                            <el-table-column prop="smallTypeName" width="100" label="构件小类">
+                            <el-table-column prop="smallTypeName" width="100" label="构件小类" sortable>
                             </el-table-column>
-                            <el-table-column prop="author" width="100" label="作者" show-overflow-tooltip>
+                            <el-table-column prop="author" width="100" label="作者" show-overflow-tooltip sortable>
                             </el-table-column>
-                            <el-table-column prop="addUser" width="130" label="上传人">
+                            <el-table-column prop="addUser" width="130" label="上传人" sortable>
                             </el-table-column>
-                            <el-table-column prop="addTime" width="" label="时间">
+                            <el-table-column prop="editTime" width="" label="时间" sortable>
                             </el-table-column>
-                            <el-table-column prop="downloadTimes" width="80" label="下载次数">
+                            <el-table-column prop="downloadTimes" width="80" label="下载次数" sortable>
                             </el-table-column>
                             <el-table-column label="操作" width="60">
                                 <template slot-scope="scope">
@@ -138,7 +137,7 @@
                         <span
                             style="float:left;line-height:42px;">共 {{tableData.totalRecords}} 条构件,共 {{tableData.totalPages}} 页,累计下载 {{downloadSum}} 次</span>
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                       :current-page="cur_page" :page-sizes="[1, 50, 100, 150]" :page-size="totalPage"
+                                       :current-page="cur_page" :page-sizes="[10, 50, 100, 150]" :page-size="totalPage"
                                        layout="sizes, prev, pager, next, jumper" :total="tableData.totalRecords">
                         </el-pagination>
                     </div>
@@ -222,7 +221,7 @@
                     </el-button>
                 </div>
             </el-dialog>-->
-            <upload-dialog @uploadClose= uploadClose v-show="uploadCompDialog" :table-param="tableParam" :override="override" :upload-url="uploadUrl" :title="title" :is-show="uploadCompDialog" :data-list="updateComList" :downloadSum="downloadSum" ref="upload"></upload-dialog>
+            <upload-dialog @uploadClose= uploadClose v-show="uploadCompDialog" :table-param="tableParam" :override="override" :upload-url="uploadUrl" :title="title" :is-show="uploadCompDialog"  :downloadSum="downloadSum" ref="upload"></upload-dialog>
             <!--云构件库-->
             <z-tree @hidePanel=hidePanel :ztreeInfo="ztreeInfoParam" v-show="ModifyTree" :is-show='ModifyTree' ref="cloudTrees"></z-tree>
         </div>
@@ -246,7 +245,7 @@
         SteelCountDownload, //下载次数
     } from '../../api/getData-yhj.js';
     import zTree from "./zTree.vue";
-    import uploadDialog from "components/ComponentLib/upload-dialog.vue";
+    import uploadDialog from "./upload-dialog.vue";
     let deletArray = [];    //删除数组
     let level;              //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;      //最大层级
@@ -511,6 +510,17 @@
                     };
                 })
             },
+            //          构件列表排序
+            tableSort(column, prop, order){
+                console.log(column,'column');
+                if(column.order=='descending'){
+                    this.tableParam.asc = false;
+                }else{
+                    this.tableParam.asc = true;
+                }
+                this.tableParam.sort = column.prop;
+                this.getTableList(this.tableParam);
+            },
             /**
              * 删除构件信息
              * @param url       响应地址
@@ -589,7 +599,7 @@
                 }
                 this.fileList = [];
                 this.getTokenId();
-                console.log(this.updateComList,'listList');
+               this.clearUploadInfo();
             },
 
             /**
