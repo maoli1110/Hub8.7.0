@@ -48,10 +48,10 @@
         <!-- 新增授权 -->
         <el-dialog title="新增授权" :visible.sync="addAuthorizationDialogVisible" size='add-authorization'>
             <div class="add-authorization-head">
-                <!-- <span class="add-authorization-message">订单号：{{modifyOrderData[0].orderId||0}}</span>
-                <span class="add-authorization-message">可用数 / 总数: {{modifyOrderData[0].surplus||0}} / {{modifyOrderData[0].licenses||0}}</span>
-                <span class="add-authorization-message">到期时间：{{dateFormat(modifyOrderData[0].expirationDate)||0}}</span> -->
-                <el-button type="primary" style="padding:5px 7px;margin-left:12px" @click="modifyDialogVisible=true;">
+                <span class="add-authorization-message">订单号：{{orderNumber}}</span>
+                <span class="add-authorization-message">可用数 / 总数: {{surplus}} / {{licenses}}</span>
+                <span class="add-authorization-message">到期时间：{{dateFormat(expirationDate)}}</span>
+                <el-button type="primary" style="padding:5px 7px;margin-left:12px" @click="modifyDialogVisible=true;" v-show="showOrderList">
                     更改
                 </el-button>
             </div>
@@ -118,7 +118,7 @@
                 @selection-change="handleSelectionChange">
                 <el-table-column width="55" label="序号">
                     <template slot-scope="scope">
-                        <el-radio class="radio" v-model="radio" :label="scope.row.id"></el-radio>
+                        <el-radio class="radio" v-model="radio" :label="scope.row.index"></el-radio>
                     </template>
                 </el-table-column>
                 <el-table-column prop="orderNumber" label="订单号" width="180">
@@ -146,8 +146,8 @@
 
             </el-table>
             <div slot="footer" class="dialog-footer" style="margin-top:10px">
-                <el-button type="primary" class="dialog-btn">确 定</el-button>
-                <el-button @click="modifyDialogVisible = false" class="dialog-btn">取消</el-button>
+                <el-button type="primary" class="dialog-btn" @click="handleSelectOrders">确 定</el-button>
+                <el-button @click="modifyDialogVisible = false;radio=1" class="dialog-btn">取消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -162,7 +162,7 @@
     export default {
         data() {
             return {
-                radio: "1",
+                radio: 1,
                 currentIndex: 0,
                 addAuthorizationDialogVisible: false,
                 modifyDialogVisible: false,
@@ -179,14 +179,22 @@
                 packageType: "", //当前套餐类型
                 packageId: "", //套餐id
                 heldId: "", //套餐持有id
+
                 modifyOrderData: [], //订单数据
-                orderLists: "",
-                multipleSelection: [] //当前已授权人员
+                orderLists: "", //订单数
+                orderNumber: "", //订单号
+                surplus: "", //订单可用数
+                licenses: "", //订单总数
+                expirationDate: "", //订单到期时间
+                multipleSelection: [], //当前已授权人员
+                showOrderList: false //选择授权订单
+
             };
         },
         watch: {
             radio(new_, old_) {
                 console.log(new_);
+
             },
             searchVal(newVal, oldVal) {
                 if (!newVal) {
@@ -276,9 +284,40 @@
                     //获取当前套餐对应的订单信息
                     orderResult.forEach(val => {
                         if (val.packageId == this.packageId) {
+                            debugger
                             console.log(val.packageId);
                             this.modifyOrderData = val.orderAndAllocations;
+                            
+                            
+                            for (var i = 0; i < 5; i++) {                                
+                               this.modifyOrderData.push({
+                                allocated: 1,
+                                boundComputers: 0,
+                                editBindingTimes: 0,
+                                expirationDate: 1576166400000,
+                                heldId: 2502+i,
+                                licenses: 99+i,
+                                maxBinding: 99+i,
+                                modifyBindingTimes: 0,
+                                orderId: "2017121202588518"+i,
+                                surplus: 98+i,
+                                surplusBinding: 99+i,
+                                surplusBindingTimes: 0,
+                            }) 
+                            }
+                            
+                            // 给单选添加index序号
+                            this.modifyOrderData.forEach((item,i) =>{
+                               this.$set(item,'index',i+1)
+                            } )
+                            
                             this.orderLists = this.modifyOrderData.length; //订单条数
+                            this.orderNumber = this.modifyOrderData[0].orderId //订单号
+                            this.surplus = this.modifyOrderData[0].surplus //订单可用数
+                            this.licenses = this.modifyOrderData[0].licenses //订单总数
+                            this.expirationDate = this.modifyOrderData[0].expirationDate //订单到期时间
+                            this.showOrderList = (this.orderLists > 1)
+
                         }
                     });
                     console.log(this.modifyOrderData);
@@ -313,13 +352,26 @@
                 this.curPage = val;
                 this.getPackageAllocatedUserList();
             },
+            // 更改订单
+            handleSelectOrders(){
+                this.modifyOrderData.forEach((item,i) =>{
+                     if(i+1==this.radio){
+                        //  console.log(item)
+                         this.orderNumber = item.orderId //订单号
+                         this.surplus = item.surplus //订单可用数
+                         this.licenses = item.licenses //订单总数
+                         this.expirationDate = item.expirationDate //订单到期时间
+                         this.modifyDialogVisible=false;
+                     }
+                } )
+            },
             //新增授权
             addAuthorization() {
                 // 初始化数据
                 this.checkedCities = [];
                 this.cities = [];
                 this.cities_clone = [];
-                this.checkAll=false;
+                this.checkAll = false;
                 // 获取管理员能够管理的用户列表
                 api.getAdminManageUserList().then(res => {
                     let allUserLists = res.data.result;
@@ -356,7 +408,7 @@
                 }
                 let memberIds = [];
                 this.multipleSelection.forEach(item => {
-                     memberIds.push(item.memberId);
+                    memberIds.push(item.memberId);
                 });
                 let params = {
                     functionId: this.packageId,

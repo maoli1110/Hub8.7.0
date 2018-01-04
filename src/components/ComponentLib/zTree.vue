@@ -60,8 +60,8 @@
                     data: {
                         simpleData: {
                             enable: true,
-                            idKey:'parentNodeCode',
-                            pIdKey:'nodeCode'
+                            idKey:'nodeCode',
+                            pIdKey: "parentNodeCode",
                         },
                         key:{
                             name:'nodeName'
@@ -98,6 +98,9 @@
                 treeList(param).then((data)=>{
                     this.zNodes = data.data.result;
                     this.nodesList = data.data.result;
+                    this.zNodes.forEach((val,key)=>{
+                        this.$set(val,'pId',val.nodeCode)
+                    })
                     let zTree = $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
                     let nodes = zTree.getNodes();
                     if (nodes.length > 0) {
@@ -106,6 +109,7 @@
                     let treeNodes = zTree.transformToArray(zTree.getNodes());
                     //获取状态树的深度
                     for (let i = 0; i < treeNodes.length; i++) {
+
                         if (treeNodes[i].level >= maxLevel) {
                             maxLevel = treeNodes[i].level;
                         }
@@ -121,7 +125,10 @@
             setZtree(param){
                 treeSave(param).then((data)=>{
                     if(data.data.code==200){
-                        this.commonMessage('保存成功!','success')
+                        this.commonMessage('保存成功!','success');
+                        setTimeout(()=>{
+                            this.getZtree({version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
+                        },1000)
                     }
                 })
             },
@@ -209,13 +216,8 @@
                     }
                 }
                 //判断状态前一个节点是否是节点，如果是，不能移动
-               /* for (var i = 0; i < nodes.length; i++) {
-                    if (!nodes[i].isParent && nodes[i].getPreNode().isParent) {
-                        return;
-                    }
-                }*/
                 for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].isParent && !nodes[i].getPreNode().isParent) {
+                    if (nodes[i].isParent && !nodes[i].getPreNode()) {
                         return;
                     }
                 }
@@ -238,6 +240,7 @@
 
                 //移动之前需要判断满足条件才能下移
                 //判断多选的内容是否是纯节点/纯状态，如果选择的既有节点又有状态不允许移动
+//                debugger;
                 for (var i = 0; i < nodes.length; i++) {
                     if (nodes[i].isParent != nodes[0].isParent) {
                         return;
@@ -258,7 +261,7 @@
                 }
                 //判断节点后一个节点是否是状态，如果是，不能移动
                 for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].isParent && !nodes[i].getNextNode().isParent) {
+                    if (nodes[i].isParent && !nodes[i].getNextNode()) {
                         return;
                     }
                 }
@@ -276,8 +279,9 @@
                 this.$emit('hidePanel',this.dialogVisible);
                 let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
                 let nodes = treeObj.transformToArray(treeObj.getNodes());
+                console.log(nodes,'nodes')
                 let treeNodes = [];
-                if(nodes.length){
+                if(!nodes.length){
                     return false;
                 }else{
                     nodes.forEach((val,key)=>{
