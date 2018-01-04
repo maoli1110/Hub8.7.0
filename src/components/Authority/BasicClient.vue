@@ -12,7 +12,7 @@
                     <i class="icon-add-authorization pl-icon-s"></i>
                     <span>新增授权</span>
                 </el-button>
-                <el-button type="primary" class="basic-btn">
+                <el-button type="primary" class="basic-btn" @click="cancleAuthorization()">
                     <i class="icon-cancle-authorization pl-icon-s"></i>
                     <span>取消授权</span>
                 </el-button>
@@ -180,7 +180,8 @@
                 packageId: "", //套餐id
                 heldId: "", //套餐持有id
                 modifyOrderData: [], //订单数据
-                orderLists: ""
+                orderLists: "",
+                multipleSelection: [] //当前已授权人员
             };
         },
         watch: {
@@ -301,7 +302,9 @@
                     this.total = res.data.result.pageInfo.totalNumber;
                 });
             },
-            handleSelectionChange(val) {},
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
             handleSizeChange(val) {
                 this.pageSize = val;
                 this.getPackageAllocatedUserList();
@@ -316,6 +319,7 @@
                 this.checkedCities = [];
                 this.cities = [];
                 this.cities_clone = [];
+                this.checkAll=false;
                 // 获取管理员能够管理的用户列表
                 api.getAdminManageUserList().then(res => {
                     let allUserLists = res.data.result;
@@ -340,6 +344,40 @@
                     console.log(this.cities);
                 });
             },
+            // 取消授权
+            cancleAuthorization() {
+                console.log(this.multipleSelection)
+                if (!this.multipleSelection.length) {
+                    this.$alert('请选择用户', "提示", {
+                        confirmButtonText: "确定",
+                        type: "info"
+                    });
+                    return;
+                }
+                let memberIds = [];
+                this.multipleSelection.forEach(item => {
+                     memberIds.push(item.memberId);
+                });
+                let params = {
+                    functionId: this.packageId,
+                    heldId: this.heldId,
+                    memberIds: memberIds,
+                    operType: 0,
+                    packageType: this.packageType
+                };
+                api.addUserPackageAuth(params).then(res => {
+                    console.log(res)
+                    if (res.data.code == 200) {
+                        this.getPackageAllocatedUserList()
+                    } else {
+                        this.$alert(res.data.msg, "提示", {
+                            confirmButtonText: "确定",
+                            type: "info"
+                        });
+                    }
+                })
+
+            },
             //保存新增授权信息 并提交
             updateUserPackageAuth() {
                 console.log(this.checkedCities)
@@ -350,14 +388,20 @@
                 let params = {
                     functionId: this.packageId,
                     heldId: this.heldId,
-                    memberIds:memberIds,
-                    operType: 1,
+                    memberIds: memberIds,
+                    operType: '1',
                     packageType: this.packageType
                 };
-                api.addUserPackageAuth(params).then(res=>{
+                api.addUserPackageAuth(params).then(res => {
                     console.log(res)
-                    if(res.data.code==200){
-                        console.log(123)
+                    if (res.data.code == 200) {
+                        this.getPackageAllocatedUserList()
+                        this.addAuthorizationDialogVisible = false;
+                    } else {
+                        this.$alert(res.data.msg, "提示", {
+                            confirmButtonText: "确定",
+                            type: "info"
+                        });
                     }
                 })
 
@@ -411,7 +455,6 @@
                         }
                     });
                     this.checkAll = tempSearchResultChecked == this.cities.length;
-                    this.checkedCities.reverse()
                 }
             },
             //删除单个账号人员
