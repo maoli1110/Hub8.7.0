@@ -47,7 +47,7 @@
         treeList,               //构件树
         treeSave,               //保存构件树
     } from '../../api/getData-yhj.js';
-//    import "../../../static/zTree/js/jquery.ztree.all.min.js";
+    import "../../../static/zTree/js/jquery.ztree.all.min.js";
     let level=1;//状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;//预览状态模板树的深度
     export default {
@@ -60,8 +60,8 @@
                     data: {
                         simpleData: {
                             enable: true,
-                            idKey:'parentNodeCode',
-                            pIdKey: "pid",
+                            idKey:'nodeCode',
+                            pIdKey: "parentNodeCode",
                         },
                         key:{
                             name:'nodeName'
@@ -99,7 +99,7 @@
                     this.zNodes = data.data.result;
                     this.nodesList = data.data.result;
                     this.zNodes.forEach((val,key)=>{
-                        this.$set(val,'pid',val.nodeCode)
+                        this.$set(val,'pId',val.nodeCode)
                     })
                     let zTree = $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
                     let nodes = zTree.getNodes();
@@ -107,7 +107,6 @@
                         zTree.selectNode(nodes[0]);
                     }
                     let treeNodes = zTree.transformToArray(zTree.getNodes());
-
                     //获取状态树的深度
                     for (let i = 0; i < treeNodes.length; i++) {
 
@@ -126,7 +125,10 @@
             setZtree(param){
                 treeSave(param).then((data)=>{
                     if(data.data.code==200){
-                        this.commonMessage('保存成功!','success')
+                        this.commonMessage('保存成功!','success');
+                        setTimeout(()=>{
+                            this.getZtree({version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
+                        },1000)
                     }
                 })
             },
