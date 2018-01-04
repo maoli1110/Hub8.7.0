@@ -273,17 +273,26 @@ export default {
       });
     },
     drawColumnChart() {
+      let vm = this;
       this.chartColumn = echarts.init(document.getElementById("chartColumn"));
       // 添加点击事件
       this.chartColumn.on("click", function(params) {
         // 控制台打印数据的名称
         console.log(params);
       });
+      
       this.chartColumn.setOption({
         //title: { text: "" },
         tooltip: {
           trigger: "item",
-          formatter: "{b} <br/> 已使用：{c}GB <br/> 占比：22%"
+          formatter: function(params){
+            let sum = 0;
+            vm.ColumnAndPieChartData.forEach(element => {
+              sum = sum+element.value;
+            });
+            return (params.name+" <br/> 已使用："+ params.value +"GB <br/> 占比："+ (params.value/sum*100).toFixed(2) +"%")
+          }
+          //"{b} <br/> 已使用：{c}GB <br/> 占比：{d}%"
         },
         xAxis: {
           axisLine: {
@@ -334,7 +343,15 @@ export default {
                 label: {
                   show: true,
                   position: "top",
-                  formatter: "{c}GB  {d}%"
+                  //formatter: "{c}GB  "+ 5 +"%"
+                  formatter: function(params){
+                    let sum = 0;
+                    vm.ColumnAndPieChartData.forEach(element => {
+                      sum = sum+element.value;
+                    });
+                    return (params.value +"GB  "+ (params.value/sum*100).toFixed(2) +"%")
+                  },
+                  //"{b} <br/> 已使用：{c}GB <br/> 占比：{d}%"
                 }
               }
             }
