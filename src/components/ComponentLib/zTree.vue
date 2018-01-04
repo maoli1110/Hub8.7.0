@@ -61,7 +61,7 @@
                         simpleData: {
                             enable: true,
                             idKey:'parentNodeCode',
-                            pIdKey: "nodeCode",
+                            pIdKey: "pid",
                         },
                         key:{
                             name:'nodeName'
@@ -98,12 +98,16 @@
                 treeList(param).then((data)=>{
                     this.zNodes = data.data.result;
                     this.nodesList = data.data.result;
+                    this.zNodes.forEach((val,key)=>{
+                        this.$set(val,'pid',val.nodeCode)
+                    })
                     let zTree = $.fn.zTree.init($("#cloudTree"), this.setting, this.zNodes);
                     let nodes = zTree.getNodes();
                     if (nodes.length > 0) {
                         zTree.selectNode(nodes[0]);
                     }
                     let treeNodes = zTree.transformToArray(zTree.getNodes());
+
                     //获取状态树的深度
                     for (let i = 0; i < treeNodes.length; i++) {
 
