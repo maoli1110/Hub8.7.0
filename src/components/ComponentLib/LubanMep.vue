@@ -247,6 +247,7 @@
 <script>
     import '../../../static/css/components.css';
     import VueScrollbar from '../../../static/scroll/vue-scrollbar.vue';
+    import {dateFormat} from "../../utils/common.js";
     import {getCitys,cloudTree} from '../../api/getData.js';
     import {
         treeList,               //构件树
@@ -645,8 +646,8 @@
                 if (val) {
                     this.searchKeyParams.startTime = val.split('-')[0];
                     this.searchKeyParams.endTime = val.split('-')[1];
-                    this.searchKeyParams.startTime = new Date(this.searchKeyParams.startTime).toLocaleDateString();
-                    this.searchKeyParams.endTime = new Date(this.searchKeyParams.endTime).toLocaleDateString();
+                    this.searchKeyParams.startTime = dateFormat(new Date(this.searchKeyParams.startTime),'date');
+                    this.searchKeyParams.endTime = dateFormat(new Date(this.searchKeyParams.endTime),'date');
                     this.tableParam.startTime =  this.searchKeyParams.startTime;
                     this.tableParam.endTime =  this.searchKeyParams.endTime;
                     this.downloadSum.startTime =  this.searchKeyParams.startTime;
