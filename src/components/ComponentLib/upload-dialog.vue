@@ -90,6 +90,7 @@
         SteelCountDownload, //下载次数
     } from '../../api/getData-yhj.js';
     let baseUrl="";
+    let componentId = 0;
     export default{
         props:{isShow:Boolean,title:String,uploadUrl:String,override:Boolean,tableParam:Object,downloadSum:Number},
         data(){
@@ -170,7 +171,7 @@
                         this.commonConfirm('构件已经存在，是否替换？',()=>{
                             this.updateInfo({productId:2,update:{
                                 coding:this.updateList.componentCoding,
-                                compntFileId:this.updateList.componentFileId,
+                                compntFileId:componentId,
                                 componentFilePath:this.updateList.componentFilePath,
                                 description:this.updateList.remark,
                                 fileChanged:true,
@@ -205,8 +206,10 @@
                 SteelUpdate(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('更新构件成功','success');
-                        this.getTableList(this.tableInfo);
-
+                        setTimeout(()=>{
+                            this.getTableList(this.tableInfo);
+                        },1200)
+                        this.$emit('uploadClose',{visible:this.uploadVisible,data:this.tableDataList,count:this.count})
                     };
                 })
             },
@@ -234,7 +237,12 @@
                 })
             },
             updateeDialogInfo(data){
-                this.updateList = data;
+                if(data){
+                    this.updateList = data;
+                    componentId = data.componentFileId;
+                }else{
+                    this.clearUploadInfo();
+                }
             },
             getData(){
                 this.getBaseUrl();
@@ -258,7 +266,9 @@
                     this.commonMessage('请选择安装的文件','warning');
                     return false;
                 };
+                let remark = this.updateList.remark;
                 this.updateList = response.result;
+                this.updateList.remark = remark;
             },
             /**
              *上传失败回调的函数
@@ -292,7 +302,7 @@
             updateOk(){
                 let updateParam = {
                     coding: this.updateList.componentCoding,
-                    compntFileId: this.updateList.componentFileId,
+                    compntFileId:componentId,
                     componentFilePath:this.updateList.componentFilePath,
                     description: this.updateList.remark,
                     fileChanged: false,

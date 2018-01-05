@@ -271,6 +271,7 @@
     //预览状态模板树的深度
     let maxLevel = -1;
     let updateToken = '';
+    let componentId = 0;
     export default {
         data(){
             return {
@@ -370,7 +371,6 @@
                 this.$alert(message, '提示', {
                     confirmButtonText: '确定',
                     callback: action => {
-                        console.log(1111)
                     }
                 })
             },
@@ -415,7 +415,13 @@
                     this.commonMessage('请选择安装的文件','warning');
                     return false;
                 };
+                let remark = this.updateComList.remark;
+                let componentFileId = this.updateComList.componentFileId;
                 this.updateComList = response.result;
+                if(componentFileId){
+                    this.updateComList.remark = remark;
+                    this.updateComList.componentFileId = componentFileId;
+                }
             },
             /**
              *上传失败回调的函数
@@ -486,7 +492,7 @@
                         this.commonMessage('更新成功','warning');
                         setTimeout(()=>{
                             this.getTableList(this.tableParam)
-                        },2000)
+                        },1000)
                     }
                 })
             },
@@ -520,6 +526,7 @@
                     if(data.data.result){
                         this.commonConfirm('构件已经存在是否替换', () => {
                             setTimeout(()=>{
+                                console.log(this.updateComList,'this.updateComList')
                                 this.modifyComponent({productId:this.updateComList.productId,modify:{compntFileId:this.updateComList.componentFileId,componentFilePath:this.updateComList.componentFilePath,description:this.updateComList.remark,fileChanged:true,fileName:this.updateComList.fileName,pictureFilePath:this.updateComList.pictureFilePath,summaryFilePath:this.updateComList.summaryFilePath,title:this.updateComList.title}});
                             },1200)
                         }, () => {
@@ -692,9 +699,8 @@
             },
             //上传构件到服务器
             updateOk(){
-                console.log( this.token,' this.token')
+                console.log( this.updateComList,'还有没有compontId')
                 //保存上传到数据库
-                console.log(this.updateComList)
                 let modify = {
                     compntFileId: this.updateComList.componentFileId,
                     componentFilePath: this.updateComList.componentFilePath,

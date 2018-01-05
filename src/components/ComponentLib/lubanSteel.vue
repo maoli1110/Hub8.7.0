@@ -95,8 +95,9 @@
             <el-row>
                 <el-col>
                     <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-                        <el-table class="house-table scroll-me" :fit="true" :data="tableData.list" style="width: 100%" @sort-change="tableSort"
-                                  @select="selectChecked">
+                        <el-table class="house-table scroll-me" :fit="true" :data="tableData.list" style="width: 100%"
+                                  :default-sort="{prop: 'date', order: 'descending'}" @select-all="selectAll"
+                                  @select="selectChecked" @sort-change="tableSort">
                             <el-table-column
                                 type="selection"
                                 width="40">
@@ -121,7 +122,7 @@
                             </el-table-column>
                             <el-table-column prop="addUser" width="130" label="上传人" sortable>
                             </el-table-column>
-                            <el-table-column prop="editTime" width="" label="更新时间" sortable>
+                            <el-table-column prop="addTime" width="" label="时间" sortable>
                             </el-table-column>
                             <el-table-column prop="downloadTimes" width="80" label="下载次数" sortable>
                             </el-table-column>
@@ -221,7 +222,7 @@
                     </el-button>
                 </div>
             </el-dialog>-->
-            <upload-dialog @uploadClose= uploadClose v-show="uploadCompDialog" :table-param="tableParam" :override="override" :upload-url="uploadUrl" :title="title" :is-show="uploadCompDialog"  :downloadSum="downloadSum" ref="upload"></upload-dialog>
+            <upload-dialog @uploadClose= uploadClose v-show="uploadCompDialog" :table-param="tableParam" :override="override" :upload-url="uploadUrl" :title="title" :is-show="uploadCompDialog" :data-list="updateComList" :downloadSum="downloadSum" ref="upload"></upload-dialog>
             <!--云构件库-->
             <z-tree @hidePanel=hidePanel :ztreeInfo="ztreeInfoParam" v-show="ModifyTree" :is-show='ModifyTree' ref="cloudTrees"></z-tree>
         </div>
@@ -246,7 +247,7 @@
     } from '../../api/getData-yhj.js';
     import zTree from "./zTree.vue";
     import uploadDialog from "./upload-dialog.vue";
-    import {dateFormat} from '../../utils/common.js';
+    import {dateFormat} from "../../utils/common.js";
     let deletArray = [];    //删除数组
     let level;              //状态树展开、折叠深度(代表点击"展开、折叠"按钮时应该展开的节点的level)
     let maxLevel = -1;      //最大层级
@@ -600,7 +601,7 @@
                 }
                 this.fileList = [];
                 this.getTokenId();
-               this.clearUploadInfo();
+                this.$refs.upload.updateeDialogInfo();
             },
 
             /**
@@ -637,11 +638,8 @@
                 if (val) {
                     this.searchKeyParams.startTime = val.split('-')[0].trim();
                     this.searchKeyParams.endTime = val.split('-')[1].trim();
-                   /* this.searchKeyParams.startTime = new Date(this.searchKeyParams.startTime).toLocaleDateString();
-                    this.searchKeyParams.endTime = new Date(this.searchKeyParams.endTime).toLocaleDateString();*/
                     this.searchKeyParams.startTime = dateFormat(new Date(this.searchKeyParams.startTime),'date');
-                    this.searchKeyParams.endTime = dateFormat(new Date(this.searchKeyParams.endTime),'date');
-
+                    this.searchKeyParams.endTime = dateFormat(new Date(this.searchKeyParams.endTime),'date')
                 }
                 this.tableParam.startTime = this.searchKeyParams.startTime;
                 this.tableParam.endTime = this.searchKeyParams.endTime;
