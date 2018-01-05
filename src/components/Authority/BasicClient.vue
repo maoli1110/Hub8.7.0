@@ -51,6 +51,12 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="操作时间" prop="operateTime">
+                    <!-- dateFormat -->
+                    <template slot-scope="scope">
+                        <div  class="textcell">
+                            {{ dateFormat(scope.row.operateTime) }}
+                        </div>
+                    </template>
                 </el-table-column>
             </el-table>
             <div style="margin-top: 20px">
@@ -170,6 +176,9 @@
 
 <script>
     import * as api from "../../api/getData-ppc";
+    import {
+        dateFormat
+    } from "../../utils/common.js";
     const contains = (() =>
         Array.prototype.includes ?
         (arr, value) => arr.includes(value) :
@@ -206,6 +215,7 @@
                 showOrderList: false, //选择授权订单
                 orderListSelect: [], //订单列表下拉
                 orderHeldId: '', //订单
+                dateFormat: dateFormat
 
             };
         },
@@ -236,8 +246,6 @@
                     this.heldId = newVal
                     this.getPackageAllocatedUserList()
                 };
-                console.log(newVal, 'xialakuang')
-                console.log(this.heldId, 'held')
             }
         },
         methods: {
@@ -390,7 +398,7 @@
             },
             // 更改订单
             handleSelectOrders() {
-                //订单通过heldId区分            
+                //订单通过heldId区分 每次修改订单heldid改变       
                 this.modifyOrderData.forEach((item, i) => {
                     if (i + 1 == this.radio) {
                         this.orderNumber = item.orderId //订单号
