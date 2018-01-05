@@ -1,6 +1,6 @@
 <template>
     <div class="bims-container">
-        <div class="bims-contents Bim-libs shadow-style">
+        <div class="bims-contents shadow-style">
             <transition :name="transitionName">
                 <router-view class="main-shadow" :nowPath="nowPath"></router-view><!--:tableData="tableData"-->
             </transition>
@@ -22,25 +22,12 @@
             }
         },
         methods: {
-            handleOpen(key, keyPath) {
-                //console.log(key, keyPath);
-            },
-            handleClose(key, keyPath) {
-                //console.log(key, keyPath);
-            },
-            /**页签形式菜单 重新渲染问题
-             * @params pathIndex  选中的路径
-             **/
-            handleSelect(index,path){
-
-            },
         },
-
         watch: {
-            '$route' (to, from) {
-                console.log(this.$route.query.typeId,this.$route.path);
-                this.nowPath = this.$route.path.split("/")[3];  
-            }
+            // '$route' (to, from) {
+            //     console.log(this.$route.query.typeId,this.$route.path);
+            //     this.nowPath = this.$route.path.split("/")[3];  
+            // }
         }
     }
 </script>
