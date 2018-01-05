@@ -31,7 +31,7 @@
                         </el-col>
                     </el-col>
                     <el-col :span="17"  class="cal-template" >
-                        <el-col class="template-tips">克隆：{{!templateInfo.name?template.name:templateInfo.name}}</el-col>
+                        <el-col class="template-tips">克隆：{{calendar.ctName}}</el-col>
                         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height: 510px;padding:10px;" >
                             <el-col style="min-height:500px;overflow:auto;" class="scroll-me">
                                 <div class="calendar"></div>
@@ -49,7 +49,7 @@
             <span slot="footer" class="dialog-footer" >
                     <el-button class="dialog-btn dialog-btn-ok" type="primary"
                                @click="createVisible = false;setTemplateOK()">确 定</el-button>
-                    <el-button class="dialog-btn dialog-btn-cancel" @click="createVisible = false;handleClose()">取 消</el-button>
+                    <el-button class="dialog-btn dialog-btn-cancel" @click="handleClose()">取 消</el-button>
                 </span>
         </el-dialog>
     </div>
@@ -60,7 +60,10 @@
     let notWekendRestDates = [];//非工作日
     let ct = {};//
     let restDates = [];//24非工作日
-
+    import {
+        createCalendarTemplate,
+        createCalendarTemplateUpdate
+    }from "../../api/getData-yhj.js";
     export default{
         props:{isCreateCalendar:Boolean,dateArr:Array},
         data(){
@@ -79,6 +82,9 @@
                         {templateType: "24小时日历"},
                         {templateType: "标准日历"}
                     ]
+                },
+                calendar:{
+                    name:""
                 },
                 workDay: [//周列表数据
                     {name: '星期一', key: 1},
@@ -99,7 +105,7 @@
         methods:{
             handleClose(done){
                 this.createVisible = false;
-                this.$emit('hidePanel',this.createVisible)
+                this.$emit('hidePanel',{visible:this.createVisible})
             },
             /**common-message(公用消息框)
              * @params message   给出的错误提示
@@ -184,7 +190,39 @@
                 })
 //                }
             },
-
+            getCalendarTemplate(param,type,checkedTime,timeList){
+                createCalendarTemplate(param).then((data)=>{
+                    ct = data.data.result;
+                    this.selectInteral[0] = new Date(data.data.result.startDate).toLocaleDateString();
+                    this.selectInteral[1] = new Date(data.data.result.endDate).toLocaleDateString();
+                    this.calendar = data.data.result;
+                    if (ct.calendarFalg == 0) {//24小时(自定义时间)
+                        restDates = [];
+                        if (ct.restDates != null && ct.restDates.length > 0) {
+                            restDates = dealJavaDateArr(ct.restDates);
+                        }
+                    } else {//标准时间(周一到周五工作日  周六周日非工作日)
+                        isWekendWorkDates = [];
+                        if (ct.workDates != null && ct.workDates.length > 0) {
+                            isWekendWorkDates = dealJavaDateArr(ct.workDates);
+                        }
+                        notWekendRestDates = [];
+                        if (ct.restDates != null && ct.restDates.length > 0) {
+                            notWekendRestDates = dealJavaDateArr(ct.restDates);
+                        }
+                    }
+                    if(type=='set'){//设置模板
+                        this.initCalendarSetMethod(checkedTime,timeList)
+                    }else{//预览模板
+                        this.detailCalendarSetMethod(checkedTime,timeList);
+                    }
+                })
+            },
+            setCalendarTemplate(param){
+                createCalendarTemplateUpdate(param).then((data)=>{
+                    console.log(data.data.result,'设置日历');
+                })
+            },
             /* 初始化设置日历模板页面 */
             inittocopystate(timeList) {
                 restDates = timeList;
@@ -353,28 +391,11 @@
              * @param type ps(set:添加修改，show:预览模板)
              * @param cpt 模板cpt
              * */
-            openWindow(type, cpt,checkedTime,timeList){
+            openWindow(type, cpt,checkedTime,timeList,param){
                 //执行ajax
-                if (ct.calendarFalg == 0) {//24小时(自定义时间)
-                    restDates = [];
-                    if (ct.restDates != null && ct.restDates.length > 0) {
-                        restDates = dealJavaDateArr(ct.restDates);
-                    }
-                } else {//标准时间(周一到周五工作日  周六周日非工作日)
-                    isWekendWorkDates = [];
-                    if (ct.workDates != null && ct.workDates.length > 0) {
-                        isWekendWorkDates = dealJavaDateArr(ct.workDates);
-                    }
-                    notWekendRestDates = [];
-                    if (ct.restDates != null && ct.restDates.length > 0) {
-                        notWekendRestDates = dealJavaDateArr(ct.restDates);
-                    }
-                }
-                if(type=='set'){//设置模板
-                    this.initCalendarSetMethod(checkedTime,timeList)
-                }else{//预览模板
-                    this.detailCalendarSetMethod(checkedTime,timeList);
-                }
+                ct.calendarFalg = param.copyid;
+                this.getCalendarTemplate({ctid:cpt},type,checkedTime,timeList);
+
             },
             //日历时间发生改变重绘日历
             modifyDataPicker(value){
@@ -423,6 +444,7 @@
                 console.log(restDate, '设置工作日和非工作日');
                 this.restDates = restDate;
 //                console.log( this.restDates,' this.restDates');
+                this.createVisible = false;
                 this.$emit("hidePanel",{visible:this.createVisible,checkedDate:this.restDates})
             },
 

@@ -17,10 +17,13 @@ const matutaions = {
   [types.CUR_ADD_MEMBER](state, curAddMember) {
     state.curAddMember = curAddMember
   },
+  //角色授权跳转到人员授权时筛选角色id
+  [types.CUR_ROLE_ID](state, curRoleId) {
+    state.roleId = curRoleId
+  },
   // //修改归属
   // [types.CUR_ADD_MEMBER](state, curAddMember) {
   //   state.curAddMember = curAddMember
   // },
 }
-
 export default matutaions

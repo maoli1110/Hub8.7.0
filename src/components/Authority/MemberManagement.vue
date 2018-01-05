@@ -269,7 +269,7 @@
     import * as api from "../../api/getData-ppc";
     import {dateFormat} from '../../utils/common.js'
     import {
-        mapActions
+        mapActions,mapGetters
     } from "vuex";
     export default {
         data() {
@@ -317,7 +317,7 @@
                 signName: '', //签名;
                 preview:false,
                 previewUrl:'',
-                hasImage: false, //当前用户是否上传签名照
+                hasImage: false, //当前用户是否有上传签名照
                 textarea: "布鲁斯123 布鲁斯", //批量添加文本内容
                 hasChecked: false, //添加成员前账号是否已经检查
                 dialogOrgName: "", //添加成员弹框树组织名称
@@ -588,8 +588,12 @@
                 multipleSelection: []
             };
         },
+        computed: {
+            ...mapGetters(["curRoleId"])
+        },
         watch: {
             roleId(newVal, oldVal) {
+
                 this.getUsersList()
             },
             searchTypeId(newVal, oldVal) {
@@ -634,7 +638,14 @@
                             label: item.roleName
                         });
                     });
-                    this.roleId = this.roles[0].value; //默认角色
+
+                    console.log(this.curRoleId,'roleId')
+                    if(this.curRoleId){
+                        this.roleId=this.curRoleId;//角色跳转过来的
+                    }else{
+                        this.roleId = this.roles[0].value; //默认角色
+                    }
+                    
                 });
             },
             //获取用户列表
@@ -650,7 +661,7 @@
                     pageSize: this.pageSize,
                     searchType: this.searchTypeId
                 };
-                if (!this.orgId) return;
+                if (!this.orgId||!this.roleId) return;
                 api.getUsersList(params).then(res => {
                     this.memberTableData = res.data.result.result;
                     this.total = res.data.result.pageInfo.totalNumber;
@@ -913,6 +924,7 @@
         mounted() {
             this.getRoleList();
             this.getUsersList();
+            
         },
         created() {
             this.$emit("routerActive");

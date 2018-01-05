@@ -29,8 +29,7 @@
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope">
                         <span class="icon-template icon-edit"
-                              @click="setTemplate= true;openCreateCalendar('set','16a5da8f68bc45f08755309dee7bec89')"></span>
-                        <!--openWindow('set','16a5da8f68bc45f08755309dee7bec89')-->
+                              @click="setTemplate= true;openCreateCalendar('set',scope.row)"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -199,11 +198,13 @@
              */
 
             selectAll(selection){
+                deletArray=[];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray.push(val.index)
+                    if (deletArray.indexOf(val.ctid) == -1) {
+                        deletArray.push(val.ctid)
                     }
                 });
+//                console.log(deletArray,'deleteListAll');
             },
             /**
              * 单选
@@ -211,11 +212,13 @@
              * @params row 列
              */
             selectChecked(selection, row){
+                deletArray =[];
                 selection.forEach(function (val, key) {
-                    if (deletArray.indexOf(val.index) == -1) {
-                        deletArray = selection
+                    if (deletArray.indexOf(val.ctid) == -1) {
+                        deletArray.push(val.ctid)
                     }
                 })
+//                console.log(deletArray,'deleteList');
             },
             getData(){//初始化方法
                 this.getTemplateList();
@@ -233,7 +236,7 @@
                     if(data.data.code==200){
                         this.commonMessage('创建日历模板成功','success');
                         this.setTemplate = true;
-                        this.$refs.setTemplate.openWindow('set', '123',null,null);
+                        this.$refs.setTemplate.openWindow('set',data.data.result,null,null,{copyid:param.copyid});
                         this.getTableList(this.tableParam);
                     }
                 })
@@ -247,6 +250,27 @@
                         this.tableData.forEach((val,key)=>{
                             val.updateDate = dateFormat(val.updateDate);
                         })
+                    }
+                })
+            },
+            //模板删除批量删除
+            deleteTemplate(param){
+                deleteCalendarTemplate(param).then((data)=>{
+                    if(data.data.code ==200){
+                        this.commonMessage('删除成功','success');
+                        if(this.tableData.length===deletArray.length){
+                            //重新渲染数据
+                            this.getTableList(this.tableParam);
+                        }else if (deletArray.length) {
+                            for (let i = 0; i < deletArray.length; i++) {
+                                for (let j = 0; j < this.tableData.length; j++) {
+                                    if (this.tableData[j].ctid == deletArray[i]) {
+                                        this.tableData.splice(j, 1);
+                                    }
+                                }
+                            }
+                        }
+                        deletArray = [];
                     }
                 })
             },
@@ -266,25 +290,8 @@
                     return false;
                 }
                 this.commonConfirm('确定要删除吗', () => {
-                    /* if(this.tableData.length===deletArray.length){
-                     //重新渲染数据
-                     }else*/
-                    let deletArrayCopy = [];
-                    deletArray.forEach((val, key) => {
-                        deletArrayCopy.push(val.index)
-                    })
-                    deletArray = deletArrayCopy;
-                    if (deletArray.length) {
-                        for (let i = 0; i < deletArray.length; i++) {
-                            for (let j = 0; j < this.tableData.length; j++) {
-                                if (this.tableData[j].index == deletArray[i]) {
-                                    this.tableData.splice(j, 1);
-                                }
-                            }
-                        }
-                    }
-                    console.log(deletArray, '数组')
-                    deletArray = [];//接口成功之后删除数据
+
+                  this.deleteTemplate(deletArray);
                 })
             },
             //设置模板确定
@@ -309,8 +316,8 @@
             addTemplate(){
                 this.templateInfo.name = "";
             },
-            openCreateCalendar(){
-                this.$refs.setTemplate.openWindow('set', '123',{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate)
+            openCreateCalendar(method,param){
+                this.$refs.setTemplate.openWindow(method, param.ctid,{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate,param)
             },
             //日历设置模板确定
             setTemplateOK(){
@@ -329,11 +336,12 @@
             },
             //el-table 单元格单机事件
             previewTemplate(row, column, cell, event){
+                console.log(row,'row')
                 if (column.id == 'el-table_1_column_2') {//查看模板
                     console.log(row, 'columnssssss')
                     this.lookTemplate = true;
                     this.template.name = row.name;
-                    this.$refs.priviewTemplate.openWindow('show', '123',{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate)
+                    this.$refs.priviewTemplate.openWindow('show', row.ctid,{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate)
                 }
             },
         },

@@ -126,9 +126,8 @@
                 treeSave(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('保存成功!','success');
-                        setTimeout(()=>{
-                            this.getZtree({version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
-                        },1000)
+                        this.dialogVisible = false;
+                        this.$emit('hidePanel',this.dialogVisible);
                     }
                 })
             },
@@ -276,7 +275,7 @@
             },
             //保存
             ztreeSave(){
-                this.$emit('hidePanel',this.dialogVisible);
+
                 let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
                 let nodes = treeObj.transformToArray(treeObj.getNodes());
                 console.log(nodes,'nodes')
@@ -289,8 +288,6 @@
                     });
                     this.setZtree({version:this.zTreeParam.version,productId:this.zTreeParam.productId,componentTree:treeNodes})
                 }
-
-
 
             },
             //构件树保存

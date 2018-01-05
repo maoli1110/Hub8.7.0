@@ -6,4 +6,6 @@ export const curEditRole = state => state.curEditRole
 export const curEditMember = state => state.curEditMember 
 // 获取当前添加的成员
 export const curAddMember = state => state.curAddMember 
+//角色授权跳转到人员授权时筛选角色id
+export const curRoleId = state => state.roleId
 

@@ -90,17 +90,19 @@
         SteelCountDownload, //下载次数
     } from '../../api/getData-yhj.js';
     let baseUrl="";
+    let componentId = 0;
     export default{
-        props:{isShow:Boolean,title:String,dataList:Object,uploadUrl:String,override:Boolean,tableParam:Object,downloadSum:Number},
+        props:{isShow:Boolean,title:String,uploadUrl:String,override:Boolean,tableParam:Object,downloadSum:Number},
         data(){
             return {
-                updateList:this.dataList,//上传弹窗信息
+                updateList:{},//上传弹窗信息
                 overrides:this.override,//是否是替换
                 fileList: [],           //上传的文件信息
                 uploadUri:this.uploadUrl,//上传地址
                 tableInfo:this.tableParam,//列表参数
                 tableDataList:{},
                 count:this.downloadSum,
+                uploadVisible:false
             }
         },
         methods:{
@@ -169,7 +171,7 @@
                         this.commonConfirm('构件已经存在，是否替换？',()=>{
                             this.updateInfo({productId:2,update:{
                                 coding:this.updateList.componentCoding,
-                                compntFileId:this.updateList.componentFileId,
+                                compntFileId:componentId,
                                 componentFilePath:this.updateList.componentFilePath,
                                 description:this.updateList.remark,
                                 fileChanged:true,
@@ -204,8 +206,10 @@
                 SteelUpdate(param).then((data)=>{
                     if(data.data.code==200){
                         this.commonMessage('更新构件成功','success');
-                        this.getTableList(this.tableInfo);
-
+                        setTimeout(()=>{
+                            this.getTableList(this.tableInfo);
+                        },1200)
+                        this.$emit('uploadClose',{visible:this.uploadVisible,data:this.tableDataList,count:this.count})
                     };
                 })
             },
@@ -233,7 +237,12 @@
                 })
             },
             updateeDialogInfo(data){
-                this.updateList = data;
+                if(data){
+                    this.updateList = data;
+                    componentId = data.componentFileId;
+                }else{
+                    this.clearUploadInfo();
+                }
             },
             getData(){
                 this.getBaseUrl();
@@ -257,7 +266,9 @@
                     this.commonMessage('请选择安装的文件','warning');
                     return false;
                 };
+                let remark = this.updateList.remark;
                 this.updateList = response.result;
+                this.updateList.remark = remark;
             },
             /**
              *上传失败回调的函数
@@ -272,14 +283,17 @@
              * 上传文件再次上传 （ps:覆盖之前的)
              * @param type  1.update上传 2.cover修改页面
              **/
-            overUpdate(){
+            overUpdate(type){
                 this.uploadUri = `${window.serverPath.cloudUrl}/component/gj/upload/2`;
                 this.fileList = [];
+                if(type=='update'){
+                    this.clearUploadInfo();
+                }
             },
             //上传构件清除数据
             clearUploadInfo(){
                 for (var key in this.updateList) {
-                    console.log(this.updateList[key])
+                    console.log(this.updateList[key],'上传内容更新')
                     this.updateList[key] = '';
                 }
             },
@@ -288,7 +302,7 @@
             updateOk(){
                 let updateParam = {
                     coding: this.updateList.componentCoding,
-                    compntFileId: this.updateList.componentFileId,
+                    compntFileId:componentId,
                     componentFilePath:this.updateList.componentFilePath,
                     description: this.updateList.remark,
                     fileChanged: false,
