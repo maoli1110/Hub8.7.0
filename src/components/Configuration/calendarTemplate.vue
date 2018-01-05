@@ -29,8 +29,7 @@
                 <el-table-column label="操作" width="60" class="quality-page-tableIcon">
                     <template slot-scope="scope">
                         <span class="icon-template icon-edit"
-                              @click="setTemplate= true;openCreateCalendar('set','16a5da8f68bc45f08755309dee7bec89')"></span>
-                        <!--openWindow('set','16a5da8f68bc45f08755309dee7bec89')-->
+                              @click="setTemplate= true;openCreateCalendar('set',scope.row)"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -237,7 +236,7 @@
                     if(data.data.code==200){
                         this.commonMessage('创建日历模板成功','success');
                         this.setTemplate = true;
-                        this.$refs.setTemplate.openWindow('set', '123',null,null);
+                        this.$refs.setTemplate.openWindow('set',data.data.result,null,null,{copyid:param.copyid});
                         this.getTableList(this.tableParam);
                     }
                 })
@@ -317,8 +316,8 @@
             addTemplate(){
                 this.templateInfo.name = "";
             },
-            openCreateCalendar(){
-                this.$refs.setTemplate.openWindow('set', '123',{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate)
+            openCreateCalendar(method,param){
+                this.$refs.setTemplate.openWindow(method, param.ctid,{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate,param)
             },
             //日历设置模板确定
             setTemplateOK(){
@@ -337,11 +336,12 @@
             },
             //el-table 单元格单机事件
             previewTemplate(row, column, cell, event){
+                console.log(row,'row')
                 if (column.id == 'el-table_1_column_2') {//查看模板
                     console.log(row, 'columnssssss')
                     this.lookTemplate = true;
                     this.template.name = row.name;
-                    this.$refs.priviewTemplate.openWindow('show', '123',{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate)
+                    this.$refs.priviewTemplate.openWindow('show', row.ctid,{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate)
                 }
             },
         },

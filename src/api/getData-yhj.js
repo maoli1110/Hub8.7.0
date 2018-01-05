@@ -270,6 +270,6 @@ export const deleteCalendarTemplate = params => axios.post(`${builderUrl}/calend
     }
 });
 //创建日历模板操作
-export const createCalendarTemplate = params => axios.post(`${builderUrl}/calendarRest/createCalendarTemplate`,params)
+export const createCalendarTemplateUpdate = params => axios.post(`${builderUrl}/calendarRest/createCalendarTemplate`,params)
 //更新日历模板操作
-export const createCalendarTemplateUpdate = params=>axios.post(`${builderUrl}/calendarRest/createCalendarTemplate/${params.ctid}`)
+export const createCalendarTemplate = params=>axios.post(`${builderUrl}/calendarRest/createCalendarTemplate/${params.ctid}`)
