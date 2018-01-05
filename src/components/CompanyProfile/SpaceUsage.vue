@@ -45,11 +45,8 @@
                             <span @click="isColumn = false; drawCharts()"></span>
                         </div>
                     </div>
-                    <div class="chartBox" style="position: relative; overflow:hidden;">
-                      <div class="chartShow" style="width:100%;position:absolute;">
-                        <div id="chartColumn"></div>
-                        <div id="chartPie"></div>
-                    </div>
+                    <div style="width: 100%;height: calc(100vh - 415px);">
+                        <div id="chartBox" style="width: 100%;height: calc(100vh - 415px);"></div>
                     </div>
                 </div>
             </div>
@@ -115,7 +112,7 @@
 
 <script>
 import echarts from "echarts";
-import { spaceAvailable, spaceDept } from "../../api/getData-cxx.js";
+import { spaceAvailable, spaceDept, spaceOrg } from "../../api/getData-cxx.js";
 export default {
   data() {
     return {
@@ -124,7 +121,7 @@ export default {
       //柱状图信息&饼状图信息
       ColumnAndPieChartData: {},
       baseUrl: window.serverPath.builderUrl,
-      disabledfalse: true,
+      //disabledfalsedisabledfalse: true,
       isColumn: true,
       chartColumn: null,
       chartDoughnut: null,
@@ -138,82 +135,200 @@ export default {
     this.activeIndex = this.$route.path;
   },
   methods: {
-    removeDis(dis) {
+    /*    removeDis(dis) {
       let vm = this;
       if (dis == "1") {
         vm.disabledfalse = false;
       } else {
         this.disabledfalse = true;
       }
-    },
-    getInvoice() {
-      //发票类型
-    },
-    drawPieChart() {
-      this.chartPie = echarts.init(document.getElementById("chartPie"));
-      this.chartPie.setOption({
-        //title: { text: "" },
-        xAxis: [
-          {
-            show: false
+    }, */
+    drawChartBox() {
+      let vm = this;
+      this.myChart = echarts.init(document.getElementById("chartBox"));
+      //添加点击事件
+      this.myChart.on("click", function(params) {
+        // 控制台打印数据的名称
+        console.log(params.data.id);
+        spaceOrg({ url: vm.baseUrl,parentId:params.data.id }).then(function(res) {
+          if (res.data.msg == "success") {
+            // vm.ColumnAndPieChartData = res.data.result;
           }
-        ],
-        yAxis: [
+        });
+        vm.ColumnAndPieChartData = [
           {
-            show: false
+            id: "aaa",
+            name: "aaa",
+            value: 15
+          },
+          {
+            id: "ccc",
+            name: "ccc",
+            value: 5
+          },
+          {
+            id: "ddd",
+            name: "ddd",
+            value: 6
           }
-        ],
-        color: [
-          "#c04e4e",
-          "#958bc8",
-          "#4b618a",
-          "#cac4c4",
-          "#e5b189",
-          "#6d95db",
-          "#66bced",
-          "#7dc15c",
-          "#8accda",
-          "#e7b01f",
-          "#eab0eb"
-        ],
-        tooltip: {
-          trigger: "item",
-          formatter: "已使用：{c}GB<br/>占比：{d}%"
-        },
-        legend: {
-          orient: "vertical",
-          top: "30",
-          right: "100",
-          data: this.ColumnAndPieChartData
-        },
-        series: [
-          {
-            name: "111",
-            type: "pie",
-            radius: ["55%", "85%"],
-            avoidLabelOverlap: false,
-            label: {
-              normal: {
-                show: false,
-                position: "center"
-              },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: "20",
-                  fontWeight: ""
+        ];
+        vm.drawChartBox();
+      });
+      if (this.isColumn) {
+        this.myChart.setOption({
+          //title: { text: "" },
+          tooltip: {
+            trigger: "item",
+            formatter: function(params) {
+              let sum = 0;
+              vm.ColumnAndPieChartData.forEach(element => {
+                sum = sum + element.value;
+              });
+              return (
+                params.name +
+                " <br/> 已使用：" +
+                params.value +
+                "GB <br/> 占比：" +
+                (params.value / sum * 100).toFixed(2) +
+                "%"
+              );
+            }
+            //"{b} <br/> 已使用：{c}GB <br/> 占比：{d}%"
+          },
+          xAxis: {
+            axisLine: {
+              lineStyle: {
+                color: "#ccc"
+              }
+            },
+            show: true,
+            data: this.ColumnAndPieChartData
+          },
+          textStyle: {
+            fontSize: 12,
+            color: "#000"
+          },
+          yAxis: {
+            show: true,
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
+            }
+          },
+          series: [
+            {
+              name: "哈哈哈哈哈哈22222哈",
+              type: "bar",
+              barWidth: 30,
+              data: this.ColumnAndPieChartData,
+              itemStyle: {
+                normal: {
+                  color: function(params) {
+                    // build a color map as your need.
+                    var colorList = [
+                      "#7dc15c",
+                      "#958bc8",
+                      "#36bdfd",
+                      "#8accda",
+                      "#6d95db",
+                      "#b46cb6",
+                      "#e7b01f",
+                      "#4b8970",
+                      "#b2cc9f",
+                      "#e68888"
+                    ];
+                    return colorList[params.dataIndex];
+                  },
+                  barBorderRadius: [4, 4, 4, 4],
+                  label: {
+                    show: true,
+                    position: "top",
+                    //formatter: "{c}GB  "+ 5 +"%"
+                    formatter: function(params) {
+                      let sum = 0;
+                      vm.ColumnAndPieChartData.forEach(element => {
+                        sum = sum + element.value;
+                      });
+                      return (
+                        params.value +
+                        "GB  " +
+                        (params.value / sum * 100).toFixed(2) +
+                        "%"
+                      );
+                    }
+                    //"{b} <br/> 已使用：{c}GB <br/> 占比：{d}%"
+                  }
                 }
               }
-            },
-            labelLine: {
-              normal: {
-                show: true
-              }
-            },
+            }
+          ]
+        });
+      } else {
+        this.myChart.setOption({
+          //title: { text: "" },
+          xAxis: [
+            {
+              show: false
+            }
+          ],
+          yAxis: [
+            {
+              show: false
+            }
+          ],
+          color: [
+            "#c04e4e",
+            "#958bc8",
+            "#4b618a",
+            "#cac4c4",
+            "#e5b189",
+            "#6d95db",
+            "#66bced",
+            "#7dc15c",
+            "#8accda",
+            "#e7b01f",
+            "#eab0eb"
+          ],
+          tooltip: {
+            trigger: "item",
+            formatter: "已使用：{c}GB<br/>占比：{d}%"
+          },
+          legend: {
+            orient: "vertical",
+            top: "30",
+            right: "100",
             data: this.ColumnAndPieChartData
-          }
-        ]
-      });
+          },
+          series: [
+            {
+              name: "111",
+              type: "pie",
+              radius: ["55%", "85%"],
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  show: false,
+                  position: "center"
+                },
+                emphasis: {
+                  show: true,
+                  textStyle: {
+                    fontSize: "20",
+                    fontWeight: ""
+                  }
+                }
+              },
+              labelLine: {
+                normal: {
+                  show: true
+                }
+              },
+              data: this.ColumnAndPieChartData
+            }
+          ]
+        });
+      }
     },
     drawDoughnutChart() {
       let vm = this;
@@ -272,104 +387,28 @@ export default {
         }
       });
     },
-    drawColumnChart() {
-      let vm = this;
-      this.chartColumn = echarts.init(document.getElementById("chartColumn"));
-      // 添加点击事件
-      this.chartColumn.on("click", function(params) {
-        // 控制台打印数据的名称
-        console.log(params);
-      });
-      
-      this.chartColumn.setOption({
-        //title: { text: "" },
-        tooltip: {
-          trigger: "item",
-          formatter: function(params){
-            let sum = 0;
-            vm.ColumnAndPieChartData.forEach(element => {
-              sum = sum+element.value;
-            });
-            return (params.name+" <br/> 已使用："+ params.value +"GB <br/> 占比："+ (params.value/sum*100).toFixed(2) +"%")
-          }
-          //"{b} <br/> 已使用：{c}GB <br/> 占比：{d}%"
-        },
-        xAxis: {
-          axisLine: {
-            lineStyle: {
-              color: "#ccc"
-            }
-          },
-          show: true,
-          data: this.ColumnAndPieChartData
-        },
-        textStyle: {
-          fontSize: 12,
-          color: "#000"
-        },
-        yAxis: {
-          show: true,
-          axisLine: {
-            lineStyle: {
-              color: "#fff"
-            }
-          }
-        },
-        series: [
-          {
-            name: "哈哈哈哈哈哈22222哈",
-            type: "bar",
-            barWidth: 30,
-            data: this.ColumnAndPieChartData,
-            itemStyle: {
-              normal: {
-                color: function(params) {
-                  // build a color map as your need.
-                  var colorList = [
-                    "#7dc15c",
-                    "#958bc8",
-                    "#36bdfd",
-                    "#8accda",
-                    "#6d95db",
-                    "#b46cb6",
-                    "#e7b01f",
-                    "#4b8970",
-                    "#b2cc9f",
-                    "#e68888"
-                  ];
-                  return colorList[params.dataIndex];
-                },
-                barBorderRadius: [4, 4, 4, 4],
-                label: {
-                  show: true,
-                  position: "top",
-                  //formatter: "{c}GB  "+ 5 +"%"
-                  formatter: function(params){
-                    let sum = 0;
-                    vm.ColumnAndPieChartData.forEach(element => {
-                      sum = sum+element.value;
-                    });
-                    return (params.value +"GB  "+ (params.value/sum*100).toFixed(2) +"%")
-                  },
-                  //"{b} <br/> 已使用：{c}GB <br/> 占比：{d}%"
-                }
-              }
-            }
-          }
-        ]
-      });
-    },
+    // drawColumnChart() {
+    //   let vm = this;
+    //   this.chartColumn = echarts.init(document.getElementById("chartColumn"));
+    //   // 添加点击事件
+    //   this.chartColumn.on("click", function(params) {
+    //     // 控制台打印数据的名称
+    //     console.log(params);
+    //   });
+
+    //   this.chartColumn.setOption({});
+    // },
 
     drawCharts() {
       if (this.isColumn) {
         //this.drawColumnChart();
         $(".chartBtn>div").removeClass("active");
-        $(".chartShow").css({ top: "0px" });
+        //$(".chartShow").css({ top: "0px" });
       } else {
-        // this.drawPieChart();
         $(".chartBtn>div").addClass("active");
-        $(".chartShow").css({ top: "", bottom: "0px" });
+        //$(".chartShow").css({ top: "", bottom: "0px" });
       }
+      this.drawChartBox();
       //this.drawDoughnutChart();
     }
   },
@@ -379,51 +418,51 @@ export default {
     let vm = this;
     spaceDept({ url: vm.baseUrl }).then(function(res) {
       if (res.data.msg == "success") {
-       // vm.ColumnAndPieChartData = res.data.result;
-       vm.ColumnAndPieChartData = [
-                                    {
-                                      "id": "string",
-                                      "name": "string1",
-                                      "value": 5
-                                    },
-                                    {
-                                      "id": "string",
-                                      "name": "string2",
-                                      "value": 4
-                                    },
-                                    {
-                                      "id": "string",
-                                      "name": "string3",
-                                      "value": 7
-                                    },
-                                    {
-                                      "id": "string",
-                                      "name": "string4",
-                                      "value": 6
-                                    },
-                                    {
-                                      "id": "string",
-                                      "name": "string5",
-                                      "value": 10
-                                    },
-                                    {
-                                      "id": "string",
-                                      "name": "string6",
-                                      "value": 5
-                                    },
-                                    {
-                                      "id": "string",
-                                      "name": "string7",
-                                      "value": 3
-                                    },
-                                    {
-                                      "id": "string",
-                                      "name": "string8",
-                                      "value": 5
-                                    }
-                                  ]
-        vm.drawPieChart();
-        vm.drawColumnChart();
+        // vm.ColumnAndPieChartData = res.data.result;
+        vm.ColumnAndPieChartData = [
+          {
+            id: "string",
+            name: "string1",
+            value: 5
+          },
+          {
+            id: "string",
+            name: "string2",
+            value: 4
+          },
+          {
+            id: "string",
+            name: "string3",
+            value: 7
+          },
+          {
+            id: "string",
+            name: "string4",
+            value: 6
+          },
+          {
+            id: "string",
+            name: "string5",
+            value: 10
+          },
+          {
+            id: "string",
+            name: "string6",
+            value: 5
+          },
+          {
+            id: "string",
+            name: "string7",
+            value: 3
+          },
+          {
+            id: "string",
+            name: "string8",
+            value: 5
+          }
+        ];
+        vm.drawChartBox();
+        //vm.drawColumnChart();
       }
     });
     this.drawDoughnutChart();
@@ -531,12 +570,6 @@ export default {
   line-height: 30px;
   text-align: right;
   display: inline-block;
-}
-#chartColumn,
-#chartPie,
-.chartBox {
-  width: 100%;
-  height: calc(100vh - 415px);
 }
 </style>
 <style>
