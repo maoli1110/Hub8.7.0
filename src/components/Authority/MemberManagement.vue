@@ -264,8 +264,8 @@
 </template>
 <script>
     // 1349047949@qq.com
-    import "../../../static/zTree/js/jquery.ztree.core.min.js";
-    import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
+    // import "../../../static/zTree/js/jquery.ztree.core.min.js";
+    // import "../../../static/zTree/js/jquery.ztree.excheck.min.js";
     import * as api from "../../api/getData-ppc";
     import {dateFormat} from '../../utils/common.js'
     import {

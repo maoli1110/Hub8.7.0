@@ -153,8 +153,24 @@ export const getAdminManageUserList = params => {
 export const addUserPackageAuth = params => {
     return axios.post(`${builderUrl}/appallocation/updateUserPackageAuth`,params);
 };
-
-
+/*
+ * 权限管理-管理员列表
+ */
+export const getAdminLists = params => {
+    return axios.post(`http://192.168.13.195:8080/pds/rs/admin/subs`, params);
+};
+/*
+ * 菜单权限范围
+ */
+export const getControlMenu = params => {
+    return axios.get(`http://192.168.13.195:8080/pds/rs/admin/subs/menu`);
+};
+/*
+ * 修改、管理员权限
+ */
+export const modifyAdmin = (userName, params) => {
+    return axios.put(`http://192.168.13.195:8080/pds/rs/admin/subs/${userName}`, params);
+};
 
 
 

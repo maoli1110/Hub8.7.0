@@ -126,11 +126,11 @@
 }
 
 .ztree li span.button.chk.checkbox_false_full {
-	background-position: -29px -87px
+	background-position: -29px -85px
 }
 
 .ztree li span.button.chk.checkbox_false_full_focus {
-	background-position: -29px -115px
+	background-position: -29px -113px
 }
 
 .ztree li span.button.chk.checkbox_false_part {
@@ -146,11 +146,11 @@
 }
 
 .ztree li span.button.chk.checkbox_true_full {
-	background-position: -58px -88px
+	background-position: -58px -86px
 }
 
 .ztree li span.button.chk.checkbox_true_full_focus {
-	background-position: -58px -115px
+	background-position: -58px -113px
 }
 
 .ztree li span.button.chk.checkbox_true_part {
@@ -212,7 +212,7 @@
 }
 
 .ztree li span.button.root_open {
-	background-position: -28px -33px
+	background-position: -28px -31px
 }
 
 .ztree li span.button.root_open_hover {
@@ -220,7 +220,7 @@
 }
 
 .ztree li span.button.root_close {
-	background-position: 0px -33px
+	background-position: 0px -31px
 }
 
 .ztree li span.button.root_close_hover {
