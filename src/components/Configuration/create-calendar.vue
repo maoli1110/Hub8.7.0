@@ -60,10 +60,12 @@
     let notWekendRestDates = [];//非工作日
     let ct = {};//
     let restDates = [];//24非工作日
+//    let chooseDate = [];
     import {
-        createCalendarTemplate,
-        createCalendarTemplateUpdate
+        queryCalendarTemplateById,
+        updateCalendarTemplate
     }from "../../api/getData-yhj.js";
+    import {dateFormat} from "../../utils/common.js";
     export default{
         props:{isCreateCalendar:Boolean,dateArr:Array},
         data(){
@@ -99,7 +101,14 @@
                     name:""
                 },
                 createVisible:false,
-                checkedDateArray:this.dateArr
+                checkedDateArray:this.dateArr,
+                updateCalendarParam:{
+                    ctid: "",
+                    endDate: "",
+                    startDate: "",
+                    restDates: [],
+                    workDates: []
+                }
             }
         },
         methods:{
@@ -179,8 +188,8 @@
                 setTimeout(()=>{
                     if(!this.selectInteral.length){
                         let fullYear =  new Date().getFullYear();
-                        startTime = fullYear+'/01/01';
-                        endTime = fullYear+"/12/30"
+                        startTime = fullYear+'-01-01';
+                        endTime = fullYear+"-12-30"
                     }else{
                         startTime = this.selectInteral[0];
                         endTime = this.selectInteral[1];
@@ -188,44 +197,65 @@
                     calendarTemplate = new CalendarSet(startTime, endTime);
                     this.inittocopystate(timeList);
                 })
-//                }
+
             },
-            getCalendarTemplate(param,type,checkedTime,timeList){
-                createCalendarTemplate(param).then((data)=>{
+            getCalendarTemplate(param,type){
+                queryCalendarTemplateById(param).then((data)=>{
                     ct = data.data.result;
-                    this.selectInteral[0] = new Date(data.data.result.startDate).toLocaleDateString();
-                    this.selectInteral[1] = new Date(data.data.result.endDate).toLocaleDateString();
+                    this.selectInteral[0] = data.data.result.startDate;
+                    this.selectInteral[1] =data.data.result.endDate;
                     this.calendar = data.data.result;
+                    let time = new Date();
+                    if( this.selectInteral[0]==null &&  this.selectInteral[1]==null){
+                        this.selectInteral[1] = `${time.getFullYear()}-12-31`
+                        this.selectInteral[0] = `${time.getFullYear()}-01-01`
+                    }
+
                     if (ct.calendarFalg == 0) {//24小时(自定义时间)
                         restDates = [];
                         if (ct.restDates != null && ct.restDates.length > 0) {
-                            restDates = dealJavaDateArr(ct.restDates);
+                            restDates = this.dealJavaDateArr(ct.restDates);
                         }
                     } else {//标准时间(周一到周五工作日  周六周日非工作日)
                         isWekendWorkDates = [];
                         if (ct.workDates != null && ct.workDates.length > 0) {
-                            isWekendWorkDates = dealJavaDateArr(ct.workDates);
+                            isWekendWorkDates =  this.dealJavaDateArr(ct.workDates);
                         }
                         notWekendRestDates = [];
+                        console.log(restDates,'restDates')
                         if (ct.restDates != null && ct.restDates.length > 0) {
-                            notWekendRestDates = dealJavaDateArr(ct.restDates);
+                            ct.restDates.forEach((val,key)=>{
+                                val = dateFormat(val);
+                            })
+
+                            notWekendRestDates =  this.dealJavaDateArr(ct.restDates);
                         }
                     }
                     if(type=='set'){//设置模板
-                        this.initCalendarSetMethod(checkedTime,timeList)
+                        this.initCalendarSetMethod({startTime:this.selectInteral[0],endTime:this.selectInteral[1]},{restDates:ct.restDates,workDates:ct.workDates})
                     }else{//预览模板
-                        this.detailCalendarSetMethod(checkedTime,timeList);
+                        this.detailCalendarSetMethod({startTime:this.selectInteral[0],endTime:this.selectInteral[1]},{restDates:ct.restDates,workDates:ct.workDates});
                     }
                 })
             },
             setCalendarTemplate(param){
-                createCalendarTemplateUpdate(param).then((data)=>{
-                    console.log(data.data.result,'设置日历');
+                updateCalendarTemplate(param).then((data)=>{
+                    if(data.data.code==200){
+                        this.createVisible = false;
+                        this.$emit("hidePanel",{visible:this.createVisible,checkedDate:this.restDates})
+                    }
+
                 })
             },
             /* 初始化设置日历模板页面 */
             inittocopystate(timeList) {
-                restDates = timeList;
+                let newArray = [];
+                if( timeList.restDates!=null){
+                    timeList.restDates.forEach((val,key)=>{
+                        newArray.push(dateFormat(val,'format'));
+                    })
+                }
+                restDates = newArray;
                 //修改页面渲染逻辑
                 if (ct.calendarFalg == 0) {//复制24小时
                     if (restDates != null && restDates.length > 0) {// 已经设置过的
@@ -240,10 +270,11 @@
                     }
                 } else {//复制标准
                     var arr = new Array(6, 0);
-                    var chooseDate = this.getRulesDate(arr, this.selectInteral[0],  this.selectInteral[1]);
+                    var chooseDate = this.getRulesDate(arr, this.selectInteral[0],this.selectInteral[1]);
                     //将所有展示的周六，周日设置为非工作日
-                    console.log(chooseDate,'chooseDate')
-                    calendarTemplate.setRestDate(chooseDate);
+                    let choiceList = chooseDate;
+                    restDates =  restDates.concat(choiceList)
+                    calendarTemplate.setRestDate(restDates);
                     if (notWekendRestDates != null && notWekendRestDates.length > 0) {// 已经设置过的
                         var arr = [];
                         for (var i = 0; i < notWekendRestDates.length; i++) {
@@ -391,11 +422,9 @@
              * @param type ps(set:添加修改，show:预览模板)
              * @param cpt 模板cpt
              * */
-            openWindow(type, cpt,checkedTime,timeList,param){
+            openWindow(type, cpt,param){
                 //执行ajax
-                ct.calendarFalg = param.copyid;
-                this.getCalendarTemplate({ctid:cpt},type,checkedTime,timeList);
-
+                this.getCalendarTemplate({ctid:cpt},type);
             },
             //日历时间发生改变重绘日历
             modifyDataPicker(value){
@@ -434,18 +463,33 @@
             //日历设置模板确定
             setTemplateOK(){
                 let restDate;
-                let startTime,endTime;
-                ct.calendarFalg = 0;
+                let startTime,endTime,dateWhile;
                 if(ct.calendarFalg==0){
                     restDate = calendarTemplate.getRestDate();
+                    this.restDates = restDate;
                 }else{
                     this.dealDatas();//总时间段的普通时间标准
                 }
-                console.log(restDate, '设置工作日和非工作日');
-                this.restDates = restDate;
-//                console.log( this.restDates,' this.restDates');
                 this.createVisible = false;
-                this.$emit("hidePanel",{visible:this.createVisible,checkedDate:this.restDates})
+                this.updateCalendarParam.startDate = this.selectInteral[0];
+                this.updateCalendarParam.endDate = this.selectInteral[1];
+                this.updateCalendarParam.ctid = ct.ctid;
+               /* if(dateWhile.isWekendWorkDates.length){
+                    this.updateCalendarParam.workDates = dateWhile.isWekendWorkDates
+                }*/
+                if(ct.calendarFalg==1){
+                    if(notWekendRestDates.length){
+                        notWekendRestDates.forEach((val,key)=>{
+                            val = dateFormat(val);
+                        })
+                        this.updateCalendarParam.restDates = notWekendRestDates;
+                    }
+                }else{
+                console.log(restDate,'restDate')
+                    this.updateCalendarParam.restDates = restDate;
+                }
+                this.setCalendarTemplate( this.updateCalendarParam);
+
             },
 
         }

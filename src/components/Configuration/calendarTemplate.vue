@@ -12,7 +12,7 @@
             </el-col>
         </el-row>
         <vue-scrollbar class="my-scrollbar" ref="VueScrollbar">
-            <el-table class="house-table scroll-me" :data="tableData" @cell-click="previewTemplate"
+            <el-table class="house-table scroll-me" :data="tableData" @cell-click="previewTemplate" ref="tableList"
                       style="min-width: 900px;"
                       :default-sort="{prop: 'updateDate', order: 'descending'}" @sort-change="tableSort" @select-all="selectAll"
                       @select="selectChecked">
@@ -113,7 +113,7 @@
                 tableData: [],//表格列表
                 tableInfo:{},
                 tableParam:{
-                    direction: 0,
+                    direction: 1,
                     ignoreCase: false,
                     pageNum: 1,
                     pageSize: 10,
@@ -236,15 +236,14 @@
                     if(data.data.code==200){
                         this.commonMessage('创建日历模板成功','success');
                         this.setTemplate = true;
-                        this.$refs.setTemplate.openWindow('set',data.data.result,null,null,{copyid:param.copyid});
-                        this.getTableList(this.tableParam);
+                        this.$refs.setTemplate.openWindow('set',data.data.result,{copyid:param.copyid});
                     }
                 })
             },
             //模板列表
             getTableList(param){
                 getCalendarTemplates(param).then((data)=>{
-                    if(data.data.result.result.length){
+                    if(data.data.result!=null){
                         this.tableData = data.data.result.result;
                         this.tableInfo = data.data.result.pageInfo;
                         this.tableData.forEach((val,key)=>{
@@ -258,9 +257,10 @@
                 deleteCalendarTemplate(param).then((data)=>{
                     if(data.data.code ==200){
                         this.commonMessage('删除成功','success');
-                        if(this.tableData.length===deletArray.length){
+                        if(this.tableData.length==deletArray.length){
                             //重新渲染数据
                             this.getTableList(this.tableParam);
+                            this.tableData =[];
                         }else if (deletArray.length) {
                             for (let i = 0; i < deletArray.length; i++) {
                                 for (let j = 0; j < this.tableData.length; j++) {
@@ -317,7 +317,7 @@
                 this.templateInfo.name = "";
             },
             openCreateCalendar(method,param){
-                this.$refs.setTemplate.openWindow(method, param.ctid,{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate,param)
+                this.$refs.setTemplate.openWindow(method, param.ctid,param)
             },
             //日历设置模板确定
             setTemplateOK(){
@@ -341,7 +341,7 @@
                     console.log(row, 'columnssssss')
                     this.lookTemplate = true;
                     this.template.name = row.name;
-                    this.$refs.priviewTemplate.openWindow('show', row.ctid,{startTime:'2017-11-01',endTime:"2017-12-31"},this.checkedDate)
+                    this.$refs.priviewTemplate.openWindow('show', row.ctid)
                 }
             },
         },
@@ -350,6 +350,16 @@
         mounted(){
 
         },
+        watch:{
+            setTemplate:function(newVal,oldVal){
+                if(newVal!=oldVal){
+                    if(newVal == false){
+                        this.getTableList(this.tableParam);
+                        this.getTemplateList();
+                    }
+                }
+            }
+        }
     }
 </script>
 <style scoped>

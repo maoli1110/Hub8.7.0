@@ -219,6 +219,7 @@ CalendarSet.prototype={
      },
     /*设置非工作日*/
     setRestDate:function(calendarDates){
+        console.log(calendarDates.length)
         for(var i=0;i<calendarDates.length;i++ ){
             if($("td[data-date='"+calendarDates[i]+"']")){
                 $("td[data-date='"+calendarDates[i]+"']").each(function(){

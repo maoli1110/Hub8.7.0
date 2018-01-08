@@ -263,13 +263,8 @@ export const addCalendarTemplate = params=>axios.post(`${builderUrl}/calendarRes
 //日历模板列表
 export const getCalendarTemplates = params =>axios.post(`${builderUrl}/calendarRest/getCalendarTemplates`,params);
 //删除模板列表
-export const deleteCalendarTemplate = params => axios.post(`${builderUrl}/calendarRest/deleteCalendarTemplate`,params,{
-    headers:{
-        'Content-Type': 'text/plain',
-        'Accept': 'application/json'
-    }
-});
+export const deleteCalendarTemplate = params => axios.post(`${builderUrl}/calendarRest/deleteCalendarTemplate`,params);
 //创建日历模板操作
-export const createCalendarTemplateUpdate = params => axios.post(`${builderUrl}/calendarRest/createCalendarTemplate`,params)
+export const updateCalendarTemplate = params => axios.post(`${builderUrl}/calendarRest/updateCalendarTemplate`,params)
 //更新日历模板操作
-export const createCalendarTemplate = params=>axios.post(`${builderUrl}/calendarRest/createCalendarTemplate/${params.ctid}`)
+export const queryCalendarTemplateById = params=>axios.post(`${builderUrl}/calendarRest/queryCalendarTemplateById/${params.ctid}`)
