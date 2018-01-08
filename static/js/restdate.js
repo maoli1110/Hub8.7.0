@@ -93,7 +93,6 @@ CalendarSet.prototype={
                 +'</div>';
         $(".calendar").append($(tpl));
         this.setData(calendarDomId);
-        console.log(calendarDomId,'calendarDomId')
     },
     setData:function(calendarDomId){
         this.date = new Date(calendarDomId.replace(/_/g,'/')+"/1");
@@ -220,6 +219,7 @@ CalendarSet.prototype={
      },
     /*设置非工作日*/
     setRestDate:function(calendarDates){
+        console.log(calendarDates.length)
         for(var i=0;i<calendarDates.length;i++ ){
             if($("td[data-date='"+calendarDates[i]+"']")){
                 $("td[data-date='"+calendarDates[i]+"']").each(function(){

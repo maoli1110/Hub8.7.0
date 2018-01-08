@@ -183,7 +183,6 @@
             },
             //上移
             upMove() {
-//                debugger;
                 let treeObj = $.fn.zTree.getZTreeObj("cloudTree");
                 let nodes = treeObj.getSelectedNodes();
                 if (nodes.length == 0) {

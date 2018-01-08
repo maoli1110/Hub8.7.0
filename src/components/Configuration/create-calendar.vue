@@ -249,16 +249,12 @@
             },
             /* 初始化设置日历模板页面 */
             inittocopystate(timeList) {
-                console.log(timeList,'timeList')
-                let itemDate = '';
                 let newArray = [];
                 if( timeList.restDates!=null){
                     timeList.restDates.forEach((val,key)=>{
-                        itemDate = dateFormat(val,'format');
-                        newArray.push(itemDate);
+                        newArray.push(dateFormat(val,'format'));
                     })
                 }
-
                 restDates = newArray;
                 //修改页面渲染逻辑
                 if (ct.calendarFalg == 0) {//复制24小时
@@ -419,8 +415,6 @@
                     }
                     isWekendWorkDates = [];
                     isWekendWorkDates = thisIsWekendRestDates;
-                    console.log(notWekendRestDates,isWekendWorkDates,'isWekendWorkDates')
-                    return {notWekendRestDates,isWekendWorkDates}
                 }
             },
             /**
@@ -468,22 +462,21 @@
 
             //日历设置模板确定
             setTemplateOK(){
-                console.log(ct,'chooseDate')
                 let restDate;
-                let startTime,endTime;
+                let startTime,endTime,dateWhile;
                 if(ct.calendarFalg==0){
                     restDate = calendarTemplate.getRestDate();
                     this.restDates = restDate;
                 }else{
-                    let dateWhile = this.dealDatas();//总时间段的普通时间标准
-                    this.restDates = dateWhile.notWekendRestDates;
-//                    this.worksList = dateWhile.isWekendWorkDates
+                    this.dealDatas();//总时间段的普通时间标准
                 }
-//                this.restDates = restDates;
                 this.createVisible = false;
                 this.updateCalendarParam.startDate = this.selectInteral[0];
                 this.updateCalendarParam.endDate = this.selectInteral[1];
                 this.updateCalendarParam.ctid = ct.ctid;
+               /* if(dateWhile.isWekendWorkDates.length){
+                    this.updateCalendarParam.workDates = dateWhile.isWekendWorkDates
+                }*/
                 if(ct.calendarFalg==1){
                     if(notWekendRestDates.length){
                         notWekendRestDates.forEach((val,key)=>{
