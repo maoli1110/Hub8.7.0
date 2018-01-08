@@ -39,6 +39,11 @@
                 </div>
 
                 <div class="main">
+                  <el-breadcrumb separator=">" class="breadcrumb">
+                          <el-breadcrumb-item v-for="(item,index) in breadcrumb">
+                              <span @click=go(index,item)>{{item.name}}</span>
+                          </el-breadcrumb-item>
+                        </el-breadcrumb>
                     <div class="chartBtn">
                         <div class="icon icon-bar-chart">
                             <span @click="isColumn = true; drawCharts()"></span>
@@ -116,6 +121,8 @@ import { spaceAvailable, spaceDept, spaceOrg } from "../../api/getData-cxx.js";
 export default {
   data() {
     return {
+      //洋葱皮菜单数据
+      breadcrumb: [{ name: "全部" }],
       //已用、可用图标信息
       DoughnutChartData: {},
       //柱状图信息&饼状图信息
@@ -135,6 +142,89 @@ export default {
     this.activeIndex = this.$route.path;
   },
   methods: {
+    go(index, item) {
+      let vm = this;
+      let myChart = echarts.init(document.getElementById("chartBox"));
+      if (index == 0) {
+        //第一个全部公司
+        vm.breadcrumb = [{ name: "全部" }];
+        spaceDept({ url: vm.baseUrl }).then(function(res) {
+          if (res.data.msg == "success") {
+            // vm.ColumnAndPieChartData = res.data.result;
+          }
+        });
+        vm.ColumnAndPieChartData = [
+          {
+            id: "string223",
+            name: "string133333",
+            value: 5
+          },
+          {
+            id: "string",
+            name: "string2",
+            value: 4
+          },
+          {
+            id: "string",
+            name: "string3",
+            value: 7
+          },
+          {
+            id: "string",
+            name: "string4",
+            value: 6
+          },
+          {
+            id: "string",
+            name: "string5",
+            value: 10
+          },
+          {
+            id: "string",
+            name: "string6",
+            value: 5
+          },
+          {
+            id: "string",
+            name: "string7",
+            value: 3
+          },
+          {
+            id: "string",
+            name: "string8",
+            value: 5
+          }
+        ];
+
+        vm.setOptions(myChart);
+      } else {
+        //子公司
+        vm.breadcrumb = vm.breadcrumb.slice(0, index + 1);
+        spaceOrg({ url: vm.baseUrl, parentId: item.id }).then(function(res) {
+          if (res.data.msg == "success") {
+            // vm.ColumnAndPieChartData = res.data.result;
+          }
+        });
+        vm.ColumnAndPieChartData = [
+          {
+            id: "aaa1",
+            name: "aaa1",
+            value: 15
+          },
+          {
+            id: "ccc",
+            name: "ccc",
+            value: 5
+          },
+          {
+            id: "ddd",
+            name: "ddd",
+            value: 6
+          }
+        ];
+        vm.setOptions(myChart);
+      }
+    },
     /*    removeDis(dis) {
       let vm = this;
       if (dis == "1") {
@@ -145,12 +235,15 @@ export default {
     }, */
     drawChartBox() {
       let vm = this;
-      this.myChart = echarts.init(document.getElementById("chartBox"));
+      let myChart = echarts.init(document.getElementById("chartBox"));
       //添加点击事件
-      this.myChart.on("click", function(params) {
+      myChart.on("click", function(params) {
         // 控制台打印数据的名称
-        console.log(params.data.id);
-        spaceOrg({ url: vm.baseUrl,parentId:params.data.id }).then(function(res) {
+        console.log(params);
+        vm.breadcrumb.push(params.data);
+        spaceOrg({ url: vm.baseUrl, parentId: params.data.id }).then(function(
+          res
+        ) {
           if (res.data.msg == "success") {
             // vm.ColumnAndPieChartData = res.data.result;
           }
@@ -172,10 +265,15 @@ export default {
             value: 6
           }
         ];
-        vm.drawChartBox();
+        vm.setOptions(myChart);
       });
+      vm.setOptions(myChart);
+    },
+    //图标参数；
+    setOptions(myChart) {
+      let vm = this;
       if (this.isColumn) {
-        this.myChart.setOption({
+        myChart.setOption({
           //title: { text: "" },
           tooltip: {
             trigger: "item",
@@ -265,7 +363,7 @@ export default {
           ]
         });
       } else {
-        this.myChart.setOption({
+        myChart.setOption({
           //title: { text: "" },
           xAxis: [
             {
@@ -408,8 +506,11 @@ export default {
         $(".chartBtn>div").addClass("active");
         //$(".chartShow").css({ top: "", bottom: "0px" });
       }
-      this.drawChartBox();
+      //this.drawChartBox();
       //this.drawDoughnutChart();
+      let myChart = echarts.init(document.getElementById("chartBox"));
+      myChart.clear();
+      this.setOptions(myChart);
     }
   },
 
@@ -573,6 +674,17 @@ export default {
 }
 </style>
 <style>
+.breadcrumb {
+  float: left;
+  display: inline-block;
+  max-width: calc(100% - 150px);
+}
+.breadcrumb .el-breadcrumb__item__inner {
+  font-size: 14px;
+}
+.el-breadcrumb__separator {
+  color: #000;
+}
 .modelwidth752px .el-dialog .el-form-item__content {
   margin-left: 100px !important;
   padding-bottom: 25px;

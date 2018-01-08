@@ -378,7 +378,7 @@ export default new Router({
                                 {
                                     //钢筋指标
                                     path: 'reinforcement-index',
-                                    component: resolve => require(['../components/IndicatorsLib/reinforcementIndex.vue'], resolve)
+                                    component: resolve => require(['../components/IndicatorsLib/civilEngineeringIndex.vue'], resolve)
                                 }
                             ]
                         },
@@ -390,7 +390,7 @@ export default new Router({
                                 {
                                     //土建指标
                                     path: 'civil-engineering-index',
-                                    component: resolve => require(['../components/IndicatorsLib/civilEngineeringIndex.vue'], resolve)
+                                    component: resolve => require(['../components/IndicatorsLib/reinforcementIndex.vue'], resolve)
                                 },
                                 {
                                     //钢筋指标

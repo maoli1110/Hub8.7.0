@@ -119,7 +119,6 @@ export const spaceDept = params => axios.get(`${params.url}/space/dept`);
 //GET / space / org / { parentId } 按组织查询组织已用空间占比
 export const spaceOrg = params => axios.get(`${params.url}/space/org/${params.parentId}`);
 
-
 /**
 GET / online / all / list 在线人数统计 - 所有客户端
 GET / online / be / list 在线人数统计 - BE在线人数
