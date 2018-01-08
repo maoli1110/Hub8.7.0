@@ -631,8 +631,8 @@
                 let roleData = [];
                 //获取角色列表
                 api.getRoleList2().then(res => {
-                    this.roleData = res.data.result;
-                    this.roleData.forEach(item => {
+                    roleData = res.data.result;
+                    roleData.forEach(item => {
                         this.roles.push({
                             value: item.roleId,
                             label: item.roleName
