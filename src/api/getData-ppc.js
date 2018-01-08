@@ -171,7 +171,14 @@ export const getControlMenu = params => {
 export const modifyAdmin = (userName, params) => {
     return axios.put(`http://192.168.13.195:8080/pds/rs/admin/subs/${userName}`, params);
 };
-
+/*
+ * 取消管理员权限
+ */
+export const cancleAdmin = (params) => {
+    return axios.delete(`http://192.168.13.195:8080/pds/rs/admin/subs/`,{
+        data: params,
+    });
+};
 
 
 

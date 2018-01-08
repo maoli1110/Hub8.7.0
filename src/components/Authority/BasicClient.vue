@@ -17,7 +17,7 @@
                     </el-select>
                     <span class="add-authorization-message" v-show="!showOrderList">{{orderNumber}}</span>
                     <span class="add-authorization-message" style="margin-left:20px"> 可用数/总数: {{surplus}}/{{licenses}}</span>
-                    <span class="add-authorization-message">到期时间：{{dateFormat(expirationDate)}}</span>
+                    <span class="add-authorization-message">到期时间：{{expirationDate}}</span>
                 </div>
             </div>
 
@@ -54,7 +54,7 @@
                     <!-- dateFormat -->
                     <template slot-scope="scope">
                         <div  class="textcell">
-                            {{ dateFormat(scope.row.operateTime) }}
+                            {{ scope.row.operateTime }}
                         </div>
                     </template>
                 </el-table-column>
@@ -71,7 +71,7 @@
             <div class="add-authorization-head" style="position:relative">
                 <span class="add-authorization-message">订单号：{{orderNumber}}</span>
                 <span class="add-authorization-message">可用数 / 总数: {{surplus}} / {{licenses}}</span>
-                <span class="add-authorization-message">到期时间：{{dateFormat(expirationDate)}}</span>
+                <span class="add-authorization-message">到期时间：{{expirationDate}}</span>
                 <el-button type="primary" style="position:absolute;right:0;top:-6px;padding:5px 7px" @click="modifyDialogVisible=true;" v-show="showOrderList">
                     更改
                 </el-button>
@@ -151,7 +151,7 @@
                 </el-table-column>
                 <el-table-column prop="expirationDate" label="到期时间">
                     <template slot-scope="scope">
-                        {{ dateFormat(scope.row.expirationDate) }}
+                        {{ scope.row.expirationDate}}
                     </template>
                 </el-table-column>
                 <el-table-column prop="distributable" label="可分配/总数量">
@@ -176,9 +176,6 @@
 
 <script>
     import * as api from "../../api/getData-ppc";
-    import {
-        dateFormat
-    } from "../../utils/common.js";
     const contains = (() =>
         Array.prototype.includes ?
         (arr, value) => arr.includes(value) :
@@ -215,8 +212,6 @@
                 showOrderList: false, //选择授权订单
                 orderListSelect: [], //订单列表下拉
                 orderHeldId: '', //订单
-                dateFormat: dateFormat
-
             };
         },
         watch: {
@@ -323,7 +318,7 @@
                     // 缓存未更改前的heldId
                     this.cacheHeldId = orderResult[0].orderAndAllocations[0].heldId
                     //获取当前套餐对应的订单信息
-                    orderResult.forEach(val => {
+                    orderResult.forEach(val => {                        
                         if (val.packageId == this.packageId) {
                             this.modifyOrderData = val.orderAndAllocations;
                             // for (var i = 0; i < 5; i++) {
@@ -350,15 +345,13 @@
                                     label: item.orderId
                                 })
                             })
-                            // console.log(this.orderListSelect)
                             this.orderHeldId = this.orderListSelect[0].value //默认设置下拉列表中的订单
                             this.orderLists = this.modifyOrderData.length; //订单条数
                             this.orderNumber = this.modifyOrderData[0].orderId //订单号
                             this.surplus = this.modifyOrderData[0].surplus //订单可用数
                             this.licenses = this.modifyOrderData[0].licenses //订单总数
-                            this.expirationDate = this.modifyOrderData[0].expirationDate //订单到期时间
+                            this.expirationDate = this.dateFormat(this.modifyOrderData[0].expirationDate) //订单到期时间
                             this.showOrderList = (this.orderLists > 1)
-
                         }
                     });
                     this.getPackageAllocatedUserList();
@@ -378,6 +371,11 @@
                 };
                 api.getPackageAllocatedUserList(params).then(res => {
                     this.packageInfoUserLists = res.data.result.packageAllocatedUserInfos;
+                    console.log(this.packageInfoUserLists,'packageInfoUserLists')
+                    this.packageInfoUserLists.forEach(item =>{
+                        this.$set(item,'operateTime',this.dateFormat(item.operateTime))
+                    } )
+                    
                     this.total = res.data.result.pageInfo.totalNumber;
                 });
             },
