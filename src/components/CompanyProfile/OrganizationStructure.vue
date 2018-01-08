@@ -28,8 +28,8 @@
             <el-button type="primary" class="basic-btn" icon="plus" @click="expandTree(true)">全部展开</el-button>
             <el-button type="primary" class="basic-btn" icon="minus" @click="expandTree(false)">全部收起</el-button>
             <!-- <el-button type="primary" class="basic-btn manager-popover" icon="plus" v-popover:popover4>负责人界面</el-button>
-        -->
-            <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加项目部</el-button>
+            -->
+            <!-- <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加项目部</el-button> -->
         </div>
         <div class="org-wrap">
             <div class="root-node">
@@ -60,14 +60,13 @@
                     <el-form-item label="项目名称：" prop="name">
                         <el-input v-model="projectForm.name" placeholder="请输入项目名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="项目负责人：">
+                    <!-- 勿删 -->
+                    <!-- <el-form-item label="项目负责人：">
                         <multiple-select v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item label="项目经理：" prop="manager">
                         <el-input v-model="projectForm.manager" placeholder="请输入项目经理"></el-input>
                     </el-form-item>
-                    <!-- </el-form-item>
-                -->
                     <el-form-item label="手机号码：" prop="mobile">
                         <el-input v-model="projectForm.mobile"></el-input>
                     </el-form-item>
@@ -273,6 +272,8 @@ export default {
                 let tempzNodes = transformToObjFormat(param, res.data.result);
 
                 tempzNodes = tempzNodes[0].children;
+
+                this.zNodes = tempzNodes;
                 /**
                  * 给数组添加key值
                  * @yield {obj} 返回都带有key键值的obj
@@ -400,9 +401,9 @@ export default {
             };
             //获取对应节点的信息
             getOrgNodeInfo({ params: params }).then((res) => {
-                this.orgNodeInfo.admins = res.data.result.admins;
+                // this.orgNodeInfo.admins = res.data.result.admins;
                 this.orgNodeInfo.org = res.data.result.org;
-                console.log(this.orgNodeInfo.admins, 'admins')
+                // console.log(this.orgNodeInfo.admins, 'admins')
             });
             if (self.isPopover) return;
             let aObj = $("#" + treeNode.tId + "_a");
