@@ -145,9 +145,9 @@ export default {
     }, */
     drawChartBox() {
       let vm = this;
-      this.myChart = echarts.init(document.getElementById("chartBox"));
+      let myChart = echarts.init(document.getElementById("chartBox"));
       //添加点击事件
-      this.myChart.on("click", function(params) {
+      myChart.on("click", function(params) {
         // 控制台打印数据的名称
         console.log(params.data.id);
         spaceOrg({ url: vm.baseUrl,parentId:params.data.id }).then(function(res) {
@@ -174,8 +174,9 @@ export default {
         ];
         vm.drawChartBox();
       });
+      myChart.clear();
       if (this.isColumn) {
-        this.myChart.setOption({
+        myChart.setOption({
           //title: { text: "" },
           tooltip: {
             trigger: "item",
@@ -265,7 +266,7 @@ export default {
           ]
         });
       } else {
-        this.myChart.setOption({
+        myChart.setOption({
           //title: { text: "" },
           xAxis: [
             {
