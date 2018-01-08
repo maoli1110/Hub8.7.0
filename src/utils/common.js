@@ -63,8 +63,10 @@ function dateFormat(date,type){
     let getHou = date.getHours();
     let getMin = date.getMinutes();
     date = `${getYear}.${getMonth}.${getdate}  ${getHou}:${getMin}`;
-    if(type){
+    if(type=='date'){
         return `${getYear}.${getMonth}.${getdate}`
+    }else if(type=='format'){
+        return `${getYear}-${getMonth}-${getdate}`
     }else{
         return date;
     }

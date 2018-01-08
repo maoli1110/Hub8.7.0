@@ -93,6 +93,7 @@ CalendarSet.prototype={
                 +'</div>';
         $(".calendar").append($(tpl));
         this.setData(calendarDomId);
+        console.log(calendarDomId,'calendarDomId')
     },
     setData:function(calendarDomId){
         this.date = new Date(calendarDomId.replace(/_/g,'/')+"/1");
