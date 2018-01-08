@@ -18,8 +18,8 @@
                     </div>
                     <div class="pop-operation">
                         <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加</el-button>
-                        <el-button type="primary" class="basic-btn" icon="plus">删除</el-button>
-                        <el-button type="primary" class="basic-btn" icon="plus">编辑</el-button>
+                        <el-button type="primary" class="basic-btn" icon="plus" @click="deleteNode">删除</el-button>
+                        <el-button type="primary" class="basic-btn" icon="plus" @click="editInit">编辑</el-button>
                     </div>
                     <div x-arrow="" class="popper__arrow" style="top: 112.5px;"></div>
                 </div>
@@ -56,7 +56,82 @@
             </el-form>
             <el-form :model="projectForm" :rules="projectRules" ref="projectForm" label-width="100px">
                 <!-- 项目部 -->
-                <div class="project">
+                <div class="edit-project">
+                    <el-form-item label="项目名称：" prop="name">
+                        <el-input v-model="projectForm.name" placeholder="请输入项目名称"></el-input>
+                    </el-form-item>
+                    <!-- 勿删 -->
+                    <!-- <el-form-item label="项目负责人：">
+                        <multiple-select v-bind:optionsdata="multiple.originOptions" v-bind:selecteddata="multiple.selectedList" v-on:selected="multipleCallback"></multiple-select>
+                    </el-form-item> -->
+                    <el-form-item label="项目经理：" prop="managerName">
+                        <el-input v-model="projectForm.managerName" placeholder="请输入项目经理"></el-input>
+                    </el-form-item>
+                    <el-form-item label="手机号码：" prop="mobile">
+                        <el-input v-model="projectForm.mobile"></el-input>
+                    </el-form-item>
+                    <el-form-item label="项目开工日期：">
+                        <el-form-item prop="date1">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.startDate" style="width: 100%;"></el-date-picker>
+                        </el-form-item>
+                    </el-form-item>
+                    <el-form-item label="项目竣工日期：">
+                        <el-form-item prop="date2">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.endDate" style="width: 100%;"></el-date-picker>
+                        </el-form-item>
+                    </el-form-item>
+                    <el-form-item label="建筑面积(m2)">
+                        <el-input v-model="projectForm.area" placeholder="请输入建筑面积大小，例：8888.00"></el-input>
+                    </el-form-item>
+                    <el-form-item label="里程：">
+                        <el-input v-model="projectForm.mileage"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所在地：">
+                        <el-input v-model="projectForm.location"></el-input>
+                    </el-form-item>
+                    <el-form-item label="合同类型：">
+                        <el-select v-model="projectForm.contractType" placeholder="请选择">
+                            <el-option v-for="item in contractTypeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="状态：">
+                        <el-select v-model="projectForm.status" placeholder="请选择">
+                            <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="备注：" prop="remarks">
+                        <el-input type="textarea" v-model="projectForm.remarks"></el-input>
+                    </el-form-item>
+                </div>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="createOrgNode">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
+            </div>
+        </el-dialog>
+        <!-- 添加分公司界面end -->
+        <!-- 编辑start -->
+        <el-dialog title="编辑分公司" :visible.sync="editCompanyDialogVisible" size="tiny">
+            <el-form :model="companyForm" :rules="companyRules" ref="companyForm" label-width="100px">
+                <!-- 分公司 -->
+                <div class="branch-company">
+                    <el-form-item label="分公司名称：" prop="name">
+                        <el-input v-model="companyForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="分公司负责人：" prop="responsible">
+                        <el-input v-model="companyForm.responsible"></el-input>
+                    </el-form-item>
+                </div>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="editNode('company')">确 定</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="编辑项目部" :visible.sync="editProjectDialogVisible" size="tiny">
+            <el-form :model="projectForm" :rules="projectRules" ref="projectForm" label-width="100px">
+                <!-- 项目部 -->
+                <div class="edit-project">
                     <el-form-item label="项目名称：" prop="name">
                         <el-input v-model="projectForm.name" placeholder="请输入项目名称"></el-input>
                     </el-form-item>
@@ -105,11 +180,11 @@
                 </div>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="createOrgNode">确 定</el-button>
+                <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="editNode('project')">确 定</el-button>
                 <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
-        <!-- 添加分公司界面end -->
+        <!-- 编辑界面end -->
     </div>
 </template>
 <script>
@@ -155,6 +230,8 @@ export default {
             },
             //dialog属性
             dialogVisible: false,
+            editCompanyDialogVisible:false,
+            editProjectDialogVisible:false,
             rootName: '',
             rootId: 0,
             orgForm: {
@@ -171,10 +248,8 @@ export default {
             projectForm: {
                 name: "新增项目部节点",
                 admins: [],
-                manager: "string",
-                managerId: "string",
                 managerName: "string",
-                mobile: "string",
+                mobile: "",
                 startDate: "2017-12-06T07:50:54.471Z",
                 endDate: "2017-12-06T07:50:54.471Z",
                 area: 0,
@@ -195,7 +270,7 @@ export default {
                     { required: true, message: '请输入公司名称', trigger: 'blur' },
                     { min: 3, max: 25, message: '长度在 3-25个字符', trigger: 'blur' }
                 ],
-                manager: [
+                managerName: [
                     { required: true, message: '请输入项目经理', trigger: 'blur' },
                     { min: 3, max: 25, message: '长度在 3-25个字符', trigger: 'blur' }
                 ],
@@ -387,9 +462,6 @@ export default {
         //mouseOn显示负责人信息
         addHoverDom(treeId, treeNode) {
             this.isRoot = false;
-            /* console.log('add');
-             console.log(treeId,'treeId')
-             console.log(treeNode,'treeId')*/
             /**
              * 1.获取当前鼠标的位置
              * 2.更改属性显示界面，获取数据
@@ -434,7 +506,7 @@ export default {
         //创建分公司、项目部节点
         createOrgNode() {
             let self = this;
-            console.log(this.orgForm.resource)
+            console.log(this.orgForm.resource);
             /**
              * 创建树节点
              * @param {obj} selectedNode 当前选中节点
@@ -498,8 +570,53 @@ export default {
                         return false;
                     }
                 });
-
             }
+        },
+        deleteNode () {
+            let params = {
+                orgId: selectedNode.id,
+            };
+            deleteNode({params}).then((res)=>{
+                console.log('success remove');
+            });
+        },
+        editInit() {
+            if(selectedNode.type === 0){
+                this.companyForm.name = this.orgNodeInfo.org.name;
+                this.editCompanyDialogVisible = true;
+            } else {
+                this.projectForm.name = this.orgNodeInfo.org.name,
+                this.projectForm.managerName= this.orgNodeInfo.org.managerName,
+                this.projectForm.mobile= this.orgNodeInfo.org.mobile,
+                this.projectForm.startDate= this.orgNodeInfo.org.startDate,
+                this.projectForm.endDate= this.orgNodeInfo.org.endDate,
+                this.projectForm.area= this.orgNodeInfo.org.area,
+                this.projectForm.ileage= this.orgNodeInfo.org.mileage,
+                this.projectForm.location= this.orgNodeInfo.org.location,
+                this.projectForm.contractType= this.orgNodeInfo.org.contractType,
+                this.projectForm.status= this.orgNodeInfo.org.satus,
+                this.projectForm.remarks= this.orgNodeInfo.org.remarks
+                this.editProjectDialogVisible = true;
+            }
+            
+        },
+        editNode (source) {
+            let params = {}
+            if(source == 'company'){
+                params = {
+                    deptId: selectedNode.id,
+                    projectInfo: this.companyForm
+                }
+            } else {
+                params = {
+                    deptId: selectedNode.id,
+                    projectInfo: this.projectForm
+                }
+            }
+            console.log(params,'let params');
+            editProject({params}).then((res)=>{ 
+                console.log('success edit');
+            });
         },
         showRoot() {
             this.isRoot = true;

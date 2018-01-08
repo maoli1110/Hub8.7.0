@@ -59,6 +59,6 @@ export const createProject = params=> axios.post(`${builderUrl}/org/${params.par
 //编辑组织机构
 export const editBranchCompany = params=> axios.put(`${builderUrl}/org/${params.params.orgId}`,params.params.companyInfo);
 //编辑项目部信息
-export const editProject = params=> axios.put(`${builderUrl}/org/${params.params.orgId}/depts/${params.params.deptId}`,params.params.projectInfo)
+export const editProject = params=> axios.put(`${builderUrl}/org/${params.params.orgId}/depts/${params.params.deptId}`,params.params.projectInfo);
 //删除节点
 export const deleteNode = params=> axios.delete(`${builderUrl}/org/${params.params.orgId}`);
