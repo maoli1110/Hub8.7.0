@@ -39,11 +39,13 @@ $.ajax({
   type: 'get',
   success: function (data) {
       let serverPath = data;
+      debugger
       serverPath.forEach(function(value, index, arr){
               switch (value.serverName)  {
               case 'cas' : window.serverPath.casUrl = value.serverURL;
                   break;
-              case  'builder'  : window.serverPath.builderUrl = value.serverURL;
+              case  'builder'  : 
+              window.serverPath.builderUrl = value.serverURL;
                   break;
               case  'cloud'  :  window.serverPath.cloudUrl = value.serverURL;
                   break;
@@ -54,6 +56,7 @@ $.ajax({
       console.log(window.serverPath, 'window.serverPath');
   }
 });
+
 /**
  * http拦截器
  * Add a request interceptor

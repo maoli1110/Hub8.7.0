@@ -80,11 +80,11 @@
             <div class="member-title" style="margin-top:30px">客户端节点授权</div>
             <div>
                 <el-tabs v-model="activeName" class="member-tabs" @tab-click="handleClick">
-                    <el-tab-pane label="系统客户端" name="first">
+                    <el-tab-pane label="系统客户端" name="first"  @click="getClientInfo(12)">
                     </el-tab-pane>
-                    <el-tab-pane label="算量云功能" name="second">
+                    <el-tab-pane label="算量云功能" name="second" @click="getClientInfo()">
                     </el-tab-pane>
-                    <el-tab-pane label="精装" name="third"></el-tab-pane>
+                    <el-tab-pane label="精装" name="third"  @click="getClientInfo()"></el-tab-pane>
                     <el-carousel trigger="click" height="270px" arrow="always" :interval="99999999">
                         <el-carousel-item v-for="item in 4" :key="item">
                             <div style="padding:25px">
@@ -608,6 +608,12 @@
                     });
                 });
             },
+            //获取客户端授权信息
+            getAppAllocationPackageInfo(){
+                api.getAppAllocationPackageInfo(1).then(res=>{
+                    console.log(res,1111111111111111111)
+                })
+            },
             // 选择角色变化
             curRoleNameChange(v) {
                 this.curEditRoleName = this.$refs.roleSelect.selectedLabel; //span下对应的角色名称
@@ -696,6 +702,7 @@
         mounted() {
             this.getOrgTreeInfo();
             this.getRoleList();
+            this.getAppAllocationPackageInfo()
         }
     };
 

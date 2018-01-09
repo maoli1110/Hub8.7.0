@@ -256,7 +256,7 @@
             //获取各个分配类型各个套餐/产品信息(所有)
             getAppAllocationPackageInfo() {
                 let path = this.$route.path;
-                api.getAppAllocationPackageInfo().then(res => {
+                api.getAppAllocationPackageInfo(0).then(res => {
                     let allPackageInfo = res.data.result;
                     //  套餐类型：2：基础客户端 3：系统客户端 12：BIM应用套餐 11：定额库
                     switch (path) {

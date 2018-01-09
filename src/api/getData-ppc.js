@@ -2,9 +2,10 @@ import axios from 'axios';
 /**
  * builder模块
  */
-let builderUrl = window.serverPath.builderUrl
-let civilUrl = window.serverPath.civilUrl
-// let builderUrl = 'http://192.168.13.195:8989/LBbuilder'
+
+// let builderUrl = window.serverPath.builderUrl
+// let civilUrl = window.serverPath.civilUrl
+let builderUrl = 'http://192.168.13.195:8989/LBbuilder'
 /**
  * 组织树结构
  */
@@ -133,8 +134,9 @@ export const updateRoleAuth = params => {
 /*
  * 获取各个分配类型各个套餐/产品信息
  */
-export const getAppAllocationPackageInfo = params => {
-    return axios.get(`${builderUrl}/appallocation/getAppAllocationPackageInfo`);
+export const getAppAllocationPackageInfo = (types) => {
+    //0 应用授权使用  1人员授权使用
+    return axios.get(`${builderUrl}/appallocation/getAppAllocationPackageInfo/${types}`);
 };
 /*
  * 查询套餐 / 产品对应的订单列表以及该套餐分配情况, 获取pds套餐订单分配情况时单独调用接口
