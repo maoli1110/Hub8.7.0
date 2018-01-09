@@ -2,8 +2,9 @@ import axios from 'axios';
 /**
  * builder模块
  */
-// let builderUrl = window.serverPath.builderUrl
-let builderUrl = 'http://192.168.13.195:8989/LBbuilder'
+let builderUrl = window.serverPath.builderUrl
+let civilUrl = window.serverPath.civilUrl
+// let builderUrl = 'http://192.168.13.195:8989/LBbuilder'
 /**
  * 组织树结构
  */
@@ -32,6 +33,12 @@ export const addUser = params => {
     return axios.post(`${builderUrl}/userRest/addUser`, params);
 };
 /** 
+ * 删除用户
+ */
+export const deleteUser = params => {
+    return axios.post(`${builderUrl}/userRest/batchSaveUser`, params);
+};
+/** 
  * 更新单个用户信息
  */
 export const upDateUser = params => {
@@ -45,19 +52,19 @@ export const getRoleList2 = params => {
 };
 /** 
  * 获取用户签名照片
-*/
+ */
 export const getUserSign = params => {
     return axios.get(`${builderUrl}/userRest/findUserSign/${params}`);
 };
 /** 
  * 修改用户签名照片
-*/
+ */
 export const upDateUserSign = params => {
     return axios.get(`${builderUrl}POST /userRest/updateUserSign/${params.signId}/${params.userName}/${params.signName}`);
 };
 /** 
  * 删除用户签名照片
-*/
+ */
 export const deleteUserSign = params => {
     return axios.delete(`${builderUrl}/userRest/deleteSign/${params}`);
 };
@@ -133,12 +140,12 @@ export const getAppAllocationPackageInfo = params => {
  * 查询套餐 / 产品对应的订单列表以及该套餐分配情况, 获取pds套餐订单分配情况时单独调用接口
  */
 export const getAppAllocatiosnPackageInfo = params => {
-    return axios.post(`${builderUrl}/appallocation/getOrderAndAllocationInfoByPackage`,params);
+    return axios.post(`${builderUrl}/appallocation/getOrderAndAllocationInfoByPackage`, params);
 };
 /*
  * 查询云部署套餐用户授权列表 根据上一接口 获取heldid
  */
-export const getPackageAllocatedUserList= params => {
+export const getPackageAllocatedUserList = params => {
     return axios.post(`${builderUrl}/appallocation/getPackageAllocatedUserList`, params);
 };
 /*
@@ -151,7 +158,7 @@ export const getAdminManageUserList = params => {
  * 新增用户套餐授权
  */
 export const addUserPackageAuth = params => {
-    return axios.post(`${builderUrl}/appallocation/updateUserPackageAuth`,params);
+    return axios.post(`${builderUrl}/appallocation/updateUserPackageAuth`, params);
 };
 /*
  * 权限管理-管理员列表
@@ -175,7 +182,7 @@ export const modifyAdmin = (userName, params) => {
  * 取消管理员权限
  */
 export const cancleAdmin = (params) => {
-    return axios.delete(`http://192.168.13.195:8080/pds/rs/admin/subs/`,{
+    return axios.delete(`http://192.168.13.195:8080/pds/rs/admin/subs/`, {
         data: params,
     });
 };
@@ -238,48 +245,68 @@ export const modDirectoryInfo = params => {
 /**
  * 应用配置-通用-属性模板
  * baseUrl = 'http://192.168.13.195:8989/builder/';
+ * baseUrl = 'http://192.168.13.195:8989/LBcivil/material/template'
  */
 /**
  * @param {*} params
  * 获取实现模板列表
  */
-export const getAttributeTemplateList = params => {
-    return axios.post(`${builderUrl}/appconfig/general/attribute/template/getAttributeTemplateList`, params);
+export const getAttributeTemplateList = (params, types) => {
+    //1表示 通用下的属性模板 其他表示explorecivil下材料模板
+    let url = '';
+    types == 1 ? url = `${builderUrl}/appconfig/general/attribute/template/getAttributeTemplateList` :
+        url = `http://192.168.13.195:8989/LBcivil/material/template/getMaterialTemplateList`
+    return axios.post(url, params);
 };
 /**
  * @param {*} params
  * 获取属性模板信息
  */
-export const getAttributeTemplateInfo = params => {
-    return axios.post(`${builderUrl}/appconfig/general/attribute/template/getAttributeTemplateInfoList`, params);
+export const getAttributeTemplateInfo = (params, types) => {
+    let url = '';
+    types == 1 ? url = `${builderUrl}/appconfig/general/attribute/template/getAttributeTemplateInfoList` :
+        url = `http://192.168.13.195:8989/LBcivil/material/template/getAttrTemplateInfoList`
+    return axios.post(`${url}`, params);
 };
 /**
  * @param {*} params
  * 编辑属性模板信息
  */
-export const modAttributeTemplateInfo = params => {
-    return axios.post(`${builderUrl}/appconfig/general/attribute/template/modifyAttributeTemplateInfo`, params);
+export const modAttributeTemplateInfo = (params, types) => {
+    let url = '';
+    types == 1 ? url = `${builderUrl}/appconfig/general/attribute/template/modifyAttributeTemplateInfo` :
+        url = `http://192.168.13.195:8989/LBcivil/material/template/modifyMaterialTemplateInfo`
+    return axios.post(`${url}`, params);
 };
 /**
  * @param {*} params
  * 添加属性模板信息
  */
-export const addAttributeTemplateInfo = params => {
-    return axios.post(`${builderUrl}/appconfig/general/attribute/template/addAttributeTemplateInfo`, params);
+export const addAttributeTemplateInfo = (params, types) => {
+    let url = '';
+    types == 1 ? url = `${builderUrl}/appconfig/general/attribute/template/addAttributeTemplateInfo` :
+        url = `http://192.168.13.195:8989/LBcivil/material/template/addMaterialTemplateInfo`
+    return axios.post(`${url}`, params);
 };
 /**
  * @param {*} params
  * 删除属性模板信息
  */
-export const delAttributeTemplateInfo = params => {
-    return axios.post(`${builderUrl}/appconfig/general/attribute/template/deleteAttributeTemplateInfo`, params);
+export const delAttributeTemplateInfo = (params, types) => {
+    let url = '';
+    types == 1 ? url = `${builderUrl}/appconfig/general/attribute/template/deleteAttributeTemplateInfo` :
+        url = `http://192.168.13.195:8989/LBcivil/material/template/deleteMaterialTemplateInfo`
+    return axios.post(`${url}`, params);
 };
 /**
  * @param {*} params
  * 上移 下移模板
  */
-export const moveAttributeTemplateInfo = params => {
-    return axios.post(`${builderUrl}/appconfig/general/attribute/template/moveAttributeTemplateInfo`, params);
+export const moveAttributeTemplateInfo = (params, types) => {
+    let url = '';
+    types == 1 ? url = `${builderUrl}/appconfig/general/attribute/template/moveAttributeTemplateInfo` :
+        url = `http://192.168.13.195:8989/LBcivil/material/template/modifyMaterialTemplateInfo`
+    return axios.post(`${url}`, params);
 };
 /**
  * 应用配置-通用-工序模板
@@ -312,7 +339,7 @@ export const getDefaultProcessTemplateTreeInfo = params => {
  * 添加工序模板
  */
 export const addProcessTemplateInfo = params => {
-    return axios.post(`${builderUrl}/appconfig/general/process/template/addProcessTemplateInfo`,params)
+    return axios.post(`${builderUrl}/appconfig/general/process/template/addProcessTemplateInfo`, params)
 };
 
 /**
@@ -320,7 +347,7 @@ export const addProcessTemplateInfo = params => {
  * 批量删除工序模板
  */
 export const deleteProcessTemplateInfos = params => {
-    return axios.post(`${builderUrl}/appconfig/general/process/template/deleteProcessTemplateInfos`,params)
+    return axios.post(`${builderUrl}/appconfig/general/process/template/deleteProcessTemplateInfos`, params)
 };
 /**
  * @param {*} params
@@ -329,5 +356,3 @@ export const deleteProcessTemplateInfos = params => {
 export const modifyProcessTemplateInfo = params => {
     return axios.post(`${builderUrl}/appconfig/general/process/template/modifyProcessTemplateInfo`, params)
 };
-
-
