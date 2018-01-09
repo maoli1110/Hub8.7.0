@@ -126,6 +126,8 @@
                         ct.restDates[key] = dateFormat(val,'format');
                     })
                     restDates = ct.restDates;
+                }else{
+                    restDates = [];
                 }
 
                 //修改页面渲染逻辑
