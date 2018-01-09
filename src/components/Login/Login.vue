@@ -60,11 +60,11 @@ import {casLogin,getCompanyList,centerRealLogin,getMenusList} from "../../api/ge
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (validatephoneNumber(value) || validateEmail(value)) {
-        callback();
-      } else {
-        callback(new Error("请输入正确的用户信息"));
-      }
+      // if (validatephoneNumber(value) || validateEmail(value)) {
+      //   callback();
+      // } else {
+      //   callback(new Error("请输入正确的用户信息"));
+      // }
     };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
@@ -86,7 +86,7 @@ export default {
         },
         loginRules: {
             username: [
-                { required: true, trigger: "blur", validator: validateUsername }
+                { required: true, trigger: "blur"}
             ],
             password: [
                 { required: true, trigger: "blur", validator: validatePassword }

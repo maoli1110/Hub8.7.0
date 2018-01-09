@@ -147,7 +147,7 @@
                                     <el-checkbox v-model="item.checked" @change="singChecked" :disabled="item.disabled"></el-checkbox>
                                 </template>
                             </td>
-                            <td>{{item.projName}}</td>
+                            <td class="relat"><span class="substr absol" :title="item.projName" style="top:0;width:94%">{{item.projName}}</span></td>
                             <td class="bim-projType">
                                 <span v-if="item.projType==1" title="土建预算" class="icon-projType" style="background-position: -55px -15px;"></span>
                                 <span v-if="item.projType==2" title="钢筋预算" class="icon-projType" style="background-position: -87px -15px;"></span>

@@ -1,12 +1,9 @@
 <template>
     <div class="workSeting">
         <el-row class="work-toobar" :gutter="15">
-            <el-col  :span="24">
-                <span style="float:left;font-size:14px;margin-top:5px;">项目部：</span>
-                <el-col :span="6" >
+            <el-form :inline="true"  class="demo-form-inline" >
+                <el-form-item class="search-item date" label="项目部：" style="max-width:350px;">
                     <el-select v-model="filterParm.workValue" placeholder="请选择" @change="changeProject">
-                        <!-- :key="item.deptId"
-                            :value="item.deptId"-->
                         <el-option
                             v-for="item in projectList"
                             :key="item.deptId"
@@ -14,11 +11,11 @@
                             :label="item.deptName">
                         </el-option>
                     </el-select>
-                </el-col>
-                <el-col :span="5">
+                </el-form-item>
+                <el-form-item>
                     <el-input v-model="filterParm.searchKey" icon="search" placeholder="请输入搜索关键字" :on-icon-click="searchClick"></el-input>
-                </el-col>
-            </el-col>
+                </el-form-item>
+            </el-form>
             <el-col :span="24" style="padding-top:20px;">
                 <el-button class="basic-btn relat" type="primary" @click="delWork">
                     <span class="work-icon icon-delete " style="width:11px;margin-left:20px;"></span>

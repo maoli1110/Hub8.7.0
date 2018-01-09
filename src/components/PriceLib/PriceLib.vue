@@ -19,7 +19,7 @@
                     <router-view></router-view>
                 </div>
                 <div class="plugins-tips scroll-me" v-if="$route.params.isRoot=='false'" style="width:1300px;">
-                    <div style="background:#fff url(../../../static/img/pricelib-bj.png) 0 0 no-repeat;background-size:100%;height:99%;min-width:1300px;"></div>
+                    <div style="background:#fff url(./static/img/pricelib-bj.png) 0 0 no-repeat;background-size:100%;height:99%;min-width:1300px;"></div>
                 </div>
             </vue-scrollbar>
 
