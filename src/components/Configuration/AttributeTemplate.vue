@@ -126,6 +126,7 @@
         data() {
             return {
                 zNodes: [],
+                types:'',//判断当前是属性模板还是材料模板  1属性模板 0材料模板
                 setting: {
                     data: {
                         simpleData: {
@@ -166,7 +167,7 @@
                     orgType: this.orgType,
                     orgid: this.orgid
                 };
-                types.getAttributeTemplateList(params).then(res => {
+                types.getAttributeTemplateList(params,this.types).then(res => {
                     this.attrTemplateTableData = res.data.result;
                     console.log(this.attrTemplateTableData);
                 });
@@ -178,7 +179,7 @@
                     orgid: this.orgid,
                     templateId: this.templateId
                 };
-                types.getAttributeTemplateInfo(params).then(res => {
+                types.getAttributeTemplateInfo(params,this.types).then(res => {
                     this.attrTemplateInfoTableData = res.data.result;
                     //初始化父级模板
                     this.attrTemplateParentInfo = [];
@@ -221,6 +222,8 @@
                             this.$set(val, "iconSkin", "projNode");
                         } else if (val.direct) {
                             this.$set(val, "iconSkin", "projNode");
+                        }else{
+                            this.$set(val, "iconSkin", "rootNode");
                         }
                     });
                     this.orgValue = res.data.result[0].name;
@@ -297,7 +300,7 @@
                     templateId: this.templateId
                 };
                 this.sourceAttrId = this.currentRow.attrId;
-                types.addAttributeTemplateInfo(params).then(res => {
+                types.addAttributeTemplateInfo(params,this.types).then(res => {
                     if (res.data.code == 200) {
                         this.addAttributeTemplateVisible = false;
                         this.addAttributeTemplateVisible_ = false;
@@ -328,7 +331,7 @@
                     templateId: this.templateId
                 };
                 this.sourceAttrId = this.currentRow.attrId;
-                types.modAttributeTemplateInfo(params).then(res => {
+                types.modAttributeTemplateInfo(params,this.types).then(res => {
                     if (res.data.code == 200) {
                         this.editAttributesDialogVisible = false;
                         this.getAttributeTemplateInfo();
@@ -351,7 +354,7 @@
                     orgid: this.orgid,
                     templateId: this.templateId
                 };
-                types.delAttributeTemplateInfo(params).then(res => {
+                types.delAttributeTemplateInfo(params,this.types).then(res => {
                     if (res.data.code == 200) {
                         this.getAttributeTemplateInfo();
                         this.getAttributeTemplateList();
@@ -415,7 +418,7 @@
                     }
                 });
                 this.sourceAttrId = moveParams.sourceAttrId;
-                types.moveAttributeTemplateInfo(moveParams).then(res => {
+                types.moveAttributeTemplateInfo(moveParams,this.types).then(res => {
                     if (res.data.code == 200) {
                         this.getAttributeTemplateInfo();
                         this.getAttributeTemplateList();
@@ -433,7 +436,14 @@
         created() {
             this.getOrgTreeList();
         },
-        mounted() {}
+        mounted() {      
+            if(this.$route.path=='/configuration/explorerCivil'){
+               this.types=0//explorerCivil下材料模板
+            }else{
+               this.types=1//通用下属性模板
+            }
+            
+        }
     };
 
 </script>

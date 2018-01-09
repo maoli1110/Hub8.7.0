@@ -717,8 +717,12 @@
             },
             //删除成员
             deleteMember() {
+                let params=[]
                 this.multipleSelection.forEach(item => {
-
+                     params.push(item.userId)
+                })
+                api.deleteUser(params).then(res=>{
+                    console.log(res)
                 })
             },
             //提交添加成员信息
