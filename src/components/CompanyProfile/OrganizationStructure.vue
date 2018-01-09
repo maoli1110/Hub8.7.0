@@ -17,9 +17,9 @@
                         </div>
                     </div>
                     <div class="pop-operation">
-                        <el-button type="primary" class="basic-btn" icon="plus" @click="dialogVisible = true">添加</el-button>
-                        <el-button type="primary" class="basic-btn" icon="plus" @click="deleteNode">删除</el-button>
-                        <el-button type="primary" class="basic-btn" icon="plus" @click="editInit">编辑</el-button>
+                        <el-button type="primary" class="basic-btn el-icon-plus" v-if="addVisible" @click="dialogVisible = true">添加</el-button>
+                        <el-button type="primary" class="basic-btn el-icon-delete" @click="deleteNode">删除</el-button>
+                        <el-button type="primary" class="basic-btn el-icon-edit" @click="editInit">编辑</el-button>
                     </div>
                     <div x-arrow="" class="popper__arrow" style="top: 112.5px;"></div>
                 </div>
@@ -56,7 +56,7 @@
             </el-form>
             <el-form :model="projectForm" :rules="projectRules" ref="projectForm" label-width="100px">
                 <!-- 项目部 -->
-                <div class="edit-project">
+                <div class="project">
                     <el-form-item label="项目名称：" prop="name">
                         <el-input v-model="projectForm.name" placeholder="请输入项目名称"></el-input>
                     </el-form-item>
@@ -117,9 +117,6 @@
                 <div class="branch-company">
                     <el-form-item label="分公司名称：" prop="name">
                         <el-input v-model="companyForm.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="分公司负责人：" prop="responsible">
-                        <el-input v-model="companyForm.responsible"></el-input>
                     </el-form-item>
                 </div>
             </el-form>
@@ -232,6 +229,7 @@ export default {
             dialogVisible: false,
             editCompanyDialogVisible:false,
             editProjectDialogVisible:false,
+            addVisible:true,
             rootName: '',
             rootId: 0,
             orgForm: {
@@ -439,7 +437,7 @@ export default {
             }
         },
         zTreeBeforeExpand() {
-            $("#organization-tree").width(this.getOrgTreeWidth() + 300);
+            $(".main").width(this.getOrgTreeWidth() + 500);
         },
         //监控树节点展开
         zTreeOnExpand() {
@@ -483,6 +481,11 @@ export default {
             let changePosition = function() {
                 $(".el-popover").css('left', mX + 185);
                 $(".el-popover").css('top', mY - 10);
+            }
+            if(selectedNode.type == 1){
+                this.addVisible = false;
+            } else {
+                this.addVisible = true;
             }
             this.isPopover = true;
             changePosition();
@@ -533,6 +536,7 @@ export default {
                             companyInfo: this.companyForm
                         };
                         if (self.isRoot) {
+                            debugger
                             params.orgId = this.rootId;
                             createBranchCompany({ params }).then((data) => {
                                 let tempNode = data.data.result;
@@ -562,6 +566,7 @@ export default {
                         createProject({ params }).then((data) => {
                             let tempNode = data.data.result;
                             addTreeNode(selectedNode, tempNode);
+                            self.dialogVisible = false;
                         });
                     } else {
                         console.log("error submit!!");
@@ -688,11 +693,12 @@ export default {
 
 .org .ztree li span.button.ico_open,
 .org .ztree li span.button.ico_close {
-    background-position: -237px -18px;
+    background-position: -273px 2px;
+    vertical-align: middle;
 }
 
 .org .ztree li span.button.ico_docu {
-    background-position: -237px -36px;
+    background-position: -273px -36px;
 }
 
 .org ul.ztree {
@@ -702,7 +708,7 @@ export default {
 .org ul.ztree {
     margin-top: 10px;
     margin: 0 auto;
-    min-width: 260px;
+    min-width: 300px;
 }
 
 .org #organization-tree {
@@ -723,7 +729,9 @@ export default {
 }
 
 .org .ztree li span.button {
-    margin: 0 !important;
+    /*margin: 0 !important;*/
+    line-height: 21px;
+    height: 21px;
 }
 
 .org #organization-tree>ul {
@@ -755,7 +763,7 @@ export default {
 
 .org .noneHLine {
     margin: 0px;
-    margin-right: 139px;
+    margin-right: 179px;
     height: 1px;
     display: block;
     padding: 0px;
@@ -777,18 +785,20 @@ export default {
     font-weight: bold;
 }
 
+.org .ztree li span.button {
+    margin-left: 2px;
+    vertical-align: middle !important;;
+    background-image: url(../../../static/img/org-tree-new.png);
+}
+
 .org .ztree li ul.line {
     background: url(../../../static/img/line_conn1.png) repeat-y;
-    background-position: 17px 0;
+    background-position: 19px 0;
 }
 
 .org .ztree li span.button.switch {
     width: 50px !important;
     height: 59px;
-}
-
-.org .ztree li span.button {
-    background-image: url(../../../static/img/org-tree-new.png);
 }
 
 .org .ztree li span.button.root_docu {
