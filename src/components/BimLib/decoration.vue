@@ -346,7 +346,7 @@
                             <el-col :span="24" class="border">
                                 <vue-scrollbar class="my-scrollbar" ref="VueScrollbar" style="height:306px;padding:10px;">
                                     <ul class="scroll-me delete-rootPerson" style="background:#fff;">
-                                        <li  v-for="(item,index) in authUserListItem" v-if="!item.allAuth" :key="index" class="substr" :title=" item.userName"  @click="delRootItem(item,item.userId)">
+                                        <li  v-for="(item,index) in authUserListItem" v-if="!item.allAuth" :key="index" class="substr" :title=" item.userName"  @click="delRootItem(item,item.userName)">
                                             <span class="radius" >
                                                 <i class="radius-lines"></i>
                                             </span>
@@ -1250,7 +1250,7 @@
              **/
             delRootItem(item,index){
                 this.authUserListItem.forEach((val,key)=>{//删除已选中的数据
-                    if(val.userId.indexOf(index)!=-1){
+                    if(val.userName.indexOf(index)!=-1){
                         this.authUserListItem.splice(key,1);
 
                     }

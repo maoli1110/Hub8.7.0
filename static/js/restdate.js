@@ -2,7 +2,6 @@
         this.init(startDate,endDate);//初始化日历
         this.render(startDate,endDate);//渲染（生成模板）
         this.bind(startDate,endDate);//绑定事件
-        console.log(startDate,endDate,'123')
     }
 CalendarSet.prototype={
     init:function(startDate,endDate){

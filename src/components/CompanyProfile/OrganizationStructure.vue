@@ -125,7 +125,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="editNode('company')">确 定</el-button>
-                <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="editCompanyDialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
         <el-dialog title="编辑项目部" :visible.sync="editProjectDialogVisible" size="tiny">
@@ -181,7 +181,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" class="dialog-btn dialog-btn-ok" @click="editNode('project')">确 定</el-button>
-                <el-button class="dialog-btn dialog-btn-cancel" @click="dialogVisible = false">取 消</el-button>
+                <el-button class="dialog-btn dialog-btn-cancel" @click="editProjectDialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
         <!-- 编辑界面end -->
@@ -475,7 +475,6 @@ export default {
             getOrgNodeInfo({ params: params }).then((res) => {
                 // this.orgNodeInfo.admins = res.data.result.admins;
                 this.orgNodeInfo.org = res.data.result.org;
-                // console.log(this.orgNodeInfo.admins, 'admins')
             });
             if (self.isPopover) return;
             let aObj = $("#" + treeNode.tId + "_a");
@@ -490,15 +489,14 @@ export default {
         },
         //mouseOff鼠标划过负责人信息
         removeHoverDom(treeId, treeNode) {
-            console.log('remove')
             let popDiv = $(".el-popover");
             this.isPopover = false;
             popDiv.mouseover(() => {
-                console.log('over')
+                // console.log('over')
                 this.isPopover = true;
             })
             popDiv.mouseout(() => {
-                console.log('out')
+                // console.log('out')
                 this.isPopover = false;
             })
         },
@@ -573,11 +571,21 @@ export default {
             }
         },
         deleteNode () {
-            let params = {
-                orgId: selectedNode.id,
-            };
-            deleteNode({params}).then((res)=>{
-                console.log('success remove');
+            this.$confirm("确认删除当前节点?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+            .then(() => {
+                let params = {
+                    orgId: selectedNode.id,
+                };
+                deleteNode({params}).then((res)=>{
+                    console.log('success remove');
+                });
+            })
+            .catch(() => {
+                console.log(1);
             });
         },
         editInit() {
