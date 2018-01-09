@@ -159,7 +159,7 @@
         },
         data() {
             return {
-                name: "鱼遇雨欲与雨语",
+                name: "南城旧梦",
                 showSetting: false,
                 currentIndex: 0,
                 index: 1,

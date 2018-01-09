@@ -544,7 +544,7 @@ export default new Router({
                         {
                             // explorerCivil
                             path: 'explorerCivil',
-                            component: resolve => require(['../components/Configuration/Cim.vue'], resolve)
+                            component: resolve => require(['../components/Configuration/AttributeTemplate.vue'], resolve)
                         }
                     ]
                 },
