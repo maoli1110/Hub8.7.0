@@ -13,7 +13,7 @@ table.bim-lib thead>tr>th:nth-child(7){width:60px;}
 table.bim-lib thead>tr>th:nth-child(8){width:0%;}*/
 .Bim-libs table tbody>tr:hover{background:#f0f0f0}
 .Bim-libs table thead>tr>th{border-right:1px solid #e6e6e6;}
-.Bim-libs table tbody>tr>td{height:45px;line-height:45px;text-align:center;padding:0 10px;border-bottom:1px solid #e6e6e6;border-right:1px solid #e6e6e6}
+.Bim-libs table tbody>tr>td{height:44px;line-height:44px;text-align:center;padding:0 10px;border-bottom:1px solid #e6e6e6;border-right:1px solid #e6e6e6}
 .Bim-libs table tbody>tr>td:nth-child(1){border-left:1px solid #e6e6e6;}
 .Bim-libs table.bim-lib tbody>tr>td:nth-child(2),
 .Bim-libs table.bim-lib tbody>tr>td:nth-child(8)

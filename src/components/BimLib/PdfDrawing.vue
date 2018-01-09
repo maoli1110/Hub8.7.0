@@ -1,10 +1,9 @@
 <template>
     <div class="workSeting pdfDrawing">
         <el-row class="work-toobar" :gutter="5">
-            <el-col  :span="24">
-                <el-col :span="7"  class="relat">
-                    <span class="absol span-block" style="width:80px;">所属工程：</span>
-                    <el-select class="absol" v-model="filterParam.proVal" placeholder="请选择" style="left:72px">
+            <el-form :inline="true"  class="demo-form-inline" >
+                <el-form-item class="search-item date" label="所属工程：" style="max-width:350px;">
+                    <el-select class="absol" v-model="filterParam.proVal" placeholder="请选择" >
                         <el-option
                             v-for="item in projectList"
                             :key="item.ppid"
@@ -12,22 +11,21 @@
                             :value="item.ppid">
                         </el-option>
                     </el-select>
-                </el-col>
-                <el-col :span="5" class="relat" style="left:80px;">
-                    <span  class="absol span-block" style="width:45px;">分类：</span>
-                    <el-select class="absol" v-model="filterParam.typeVal" placeholder="请选择"  style="left:45px">
+                </el-form-item>
+                <el-form-item class="search-item date" label="分类：" style="max-width:350px;">
+                    <el-select class="absol" v-model="filterParam.typeVal" placeholder="请选择"  >
                         <el-option
                             v-for="item in typeList"
                             :key="item.classifyName"
                             :value="item.classifyId" :label="item.classifyName">
                         </el-option>
                     </el-select>
-                </el-col>
-                <el-col :span="5" class="relat" style="left:135px;" >
+                </el-form-item>
+                <el-form-item class="search-item date" >
                     <el-input icon="search" v-model="filterParam.searchKey" placeholder="搜索图纸名称和上传人关键词" :on-icon-click="searchClick"></el-input>
                     <span class="absol el-icon-circle-close draw-clear" v-show="filterParam.searchKey.length" @click="clearSearchKey" ></span>
-                </el-col>
-            </el-col>
+                </el-form-item>
+            </el-form>
             <el-col :span="24" style="padding-top:20px;">
                 <el-button class="basic-btn relat" type="primary" @click="delDrawList"><span class="pdf-icon icon-delete "></span><span class="btn-text">删除</span></el-button>
             </el-col>
@@ -233,7 +231,7 @@
             getProjGroup(){
                 getProjHasPdfDraw().then((data)=>{
                     console.log(data.data.result,'list');
-                    if(data.data.result.length>0){
+                    if(data.data.result!=null){
                         this.projectList = data.data.result;
                         this.filterParam.proVal = this.projectList[0].ppid;
                     }

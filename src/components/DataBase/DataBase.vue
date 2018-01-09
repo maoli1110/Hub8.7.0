@@ -23,7 +23,7 @@
                     <router-view></router-view>
                 </div>
                 <div class="plugins-tips scroll-me" v-if="$route.params.building=='false'" style="width:1300px;" >
-                    <div style="background:#fff url(../../../static/img/basicData_03.png) 0 0 no-repeat;background-size:100%;height:100%;min-width:1300px;"></div>
+                    <div style="background:#fff url(./static/img/basicData_03.png) 0 0 no-repeat;background-size:100%;height:100%;min-width:1300px;"></div>
                 </div>
 
             </vue-scrollbar>

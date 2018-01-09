@@ -176,7 +176,7 @@
                 headers: {
                     smail: '*_~'
                 },
-                imgDataUrl: '../../../static/img/dog.jpg',//上传图像成功返回地址
+                imgDataUrl: './static/img/dog.jpg',//上传图像成功返回地址
                 ruleForm: {
                     password: "",
                     newPassword: "",
@@ -199,7 +199,7 @@
                         trigger: "blur"
                     }]
                 },
-                imageUrl: "",//企业logo地址                
+                imageUrl: "",//企业logo地址
                 issueShow: false,
                 loginInfo: {
                     phone: 18888888881,
@@ -229,7 +229,7 @@
             // 上传图像？
             toggleShow() {
                 this.myUploadShow = !this.myUploadShow;
-            },            
+            },
             cropSuccess(data, field, key) {
                 // if (field == 'avatar1') {
                 //     this.avatarUrl1 = data;
