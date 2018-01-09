@@ -5,7 +5,7 @@
                 <el-row class="calendar-main">
                     <el-col :span="24"  class="cal-template" style="margin:0">
                         <el-col class="template-tips" style="line-height:58px;">
-                            <el-col :span="4">{{template.name}}</el-col>
+                            <el-col :span="4" class="substr" :title="template.name" style="padding-right:10px;">{{template.name}}</el-col>
                             <el-col :span="6">
                                 <span class="absol span-block" style="width:108px;top:0">日历有效范围：</span><el-input v-model = "priveiwDate" readonly placeholder="显示时间范围" style="margin-left:108px;"></el-input>
                             </el-col>
@@ -29,7 +29,6 @@
     let restDates = [];//24非工作日
     import {
         queryCalendarTemplateById,
-        updateCalendarTemplate
     }from "../../api/getData-yhj.js";
     import {dateFormat} from "../../utils/common.js";
     export default{
@@ -63,7 +62,11 @@
             },
             queryCalendar(params,type){
                 queryCalendarTemplateById(params).then((data)=>{
-                    ct = data.data.result;
+                    if(data.data.result !=null){
+                        ct = data.data.result;
+                        this.template.name = ct.ctName;
+                    }
+
                     if(data.data.code==200 && data.data.result !=null){
                         if (ct.calendarFalg == 0) {//24小时(自定义时间)
                             restDates = [];
